@@ -5,16 +5,16 @@
   </head>
   <body>
     <div id = "backBtn">
-      <a href = "<?php echo base_url('index.php/guardwatch_controller/viewHomepage');?>" id = "back">BACK TO LOG IN</a>
+      <a href = "<?php echo base_url('index.php/controller/login');?>" id = "back">BACK TO LOG IN</a>
     </div>
     <div id = lawinContainer class = "image">
-      <img id = "lawin" src = "<?php echo base_url("/assets/media/lawin.png")?>">
+      <img id = "lawin" src = "<?php echo base_url("/assets/media/taters.png")?>">
     </div>
     <div id = tamarawContainer class = "image">
-      <img id = "tamaraw" src = "<?php echo base_url("/assets/media/tamaraw.png")?>">
+      <img id = "tamaraw" src = "<?php echo base_url("/assets/media/chimara.png")?>">
     </div>
     <div id = "mainContent">
-      <h1>Contact Lawin Security Services</h1>
+      <h1>Contact Taters Enterprises Inc. - MIS Department</h1>
 
       <div class = "groups" id = "address">
         <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTQ0Ni44MTIsNDkzLjk2NmwtNjcuNDk5LTE0Mi43ODFjLTEuMzQ3LTIuODQ5LTMuNjgxLTUuMDMyLTYuNDgtNi4yMjNsLTMzLjU4LTE0Ljk0OWw1OC4xODUtOTcuNTE4ICAgIGMwLjEzOS0wLjIzNCwwLjI3LTAuNDcxLDAuMzk1LTAuNzEzYzExLjU2OC0yMi41NzksMTcuNDM0LTQ2Ljk3OCwxNy40MzQtNzIuNTE1YzAtNDIuOTU5LTE2Ljg0Ni04My4yMzMtNDcuNDM1LTExMy40MDIgICAgQzMzNy4yNDgsMTUuNzAzLDI5Ni43My0wLjU4OCwyNTMuNzQ1LDAuMDE2Yy00MS43NDgsMC41NzktODEuMDU2LDE3LjM0OC0xMTAuNjg1LDQ3LjIyICAgIGMtMjkuNjI2LDI5Ljg3LTQ2LjA3OCw2OS4zMTMtNDYuMzI2LDExMS4wNjZjLTAuMTUyLDI1LjUxNSw1Ljg3Nyw1MC45MjMsMTcuNDMxLDczLjQ3OWMwLjEyNCwwLjI0MSwwLjI1NSwwLjQ3OSwwLjM5NCwwLjcxMyAgICBsNTguMTg0LDk3LjUxN2wtMzMuNzc0LDE1LjAzMWMtMi43NjMsMS4yMjktNC45OTMsMy40MDgtNi4yODUsNi4xNDJMNjUuMTg3LDQ5My45NjZjLTIuMjU5LDQuNzc1LTEuMzA2LDEwLjQ1MywyLjM4OCwxNC4yMyAgICBjMy42OTMsMy43NzcsOS4zNDUsNC44NTksMTQuMTcyLDIuNzExbDg0LjU1OC0zNy42NDZsODQuNTU4LDM3LjY0NmMzLjI3MSwxLjQ1NSw3LjAwNiwxLjQ1NSwxMC4yNzcsMGw4NC41NTgtMzcuNjQ2ICAgIGw4NC41NTgsMzcuNjQ2YzEuNjUyLDAuNzM1LDMuNDAxLDEuMDkzLDUuMTM1LDEuMDkzYzMuMzMxLDAsNi42MDgtMS4zMTgsOS4wMzctMy44MDMgICAgQzQ0OC4xMTksNTA0LjQxOSw0NDkuMDcxLDQ5OC43NDMsNDQ2LjgxMiw0OTMuOTY2eiBNMTM2LjQ3MywyMTkuOTA2Yy05LjczLTE5LjEzMi0xNC41OTktMzkuODA1LTE0LjQ3LTYxLjQ1MyAgICBjMC40MjgtNzIuNDI5LDU5LjY4Ni0xMzIuMTcsMTMyLjA5NC0xMzMuMTczYzM2LjE2Ni0wLjQ4Niw3MC4yNjMsMTMuMTk5LDk1Ljk5MywzOC41NzYgICAgYzI1LjczOCwyNS4zODMsMzkuOTExLDU5LjI2NywzOS45MTEsOTUuNDEyYzAsMjEuMzU5LTQuODY5LDQxLjc1Ny0xNC40NzMsNjAuNjM4TDI2Ni44NSw0MDIuMDU0ICAgIGMtMy4zMTgsNS41Ni04LjY5Miw2LjE2LTEwLjg0OSw2LjE2Yy0yLjE1OCwwLTcuNTMyLTAuNi0xMC44NDktNi4xNkwxMzYuNDczLDIxOS45MDZ6IE0zNTAuODM0LDQ0Ny44OTEgICAgYy0zLjI3MS0xLjQ1NS03LjAwNi0xLjQ1NS0xMC4yNzcsMGwtODQuNTU4LDM3LjY0NmwtODQuNTU4LTM3LjY0NmMtMy4yNzEtMS40NTUtNy4wMDYtMS40NTUtMTAuMjc3LDBsLTU4LjU3OCwyNi4wOCAgICBsNTAuOTM4LTEwNy43NDlsMzIuMjU4LTE0LjM1NmwzNy42NjgsNjMuMTMzYzYuOTA0LDExLjU3MiwxOS4wNzIsMTguNDgxLDMyLjU0NywxOC40ODFjMTMuNDc1LDAsMjUuNjQzLTYuOTA5LDMyLjU0Ny0xOC40OCAgICBsMzcuNjY4LTYzLjEzM2wzMi4yNjEsMTQuMzYxbDUwLjkzNSwxMDcuNzQ0TDM1MC44MzQsNDQ3Ljg5MXoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KCTxnPgoJCTxwYXRoIGQ9Ik0yNTYuMDA0LDEwMS42MDdjLTMxLjc5NCwwLTU3LjY1OSwyNS44NjUtNTcuNjU5LDU3LjY1OHMyNS44NjUsNTcuNjU4LDU3LjY1OSw1Ny42NTggICAgYzMxLjc5MywwLjAwMSw1Ny42NTgtMjUuODY1LDU3LjY1OC01Ny42NThTMjg3Ljc5NywxMDEuNjA3LDI1Ni4wMDQsMTAxLjYwN3ogTTI1Ni4wMDQsMTkxLjY1NyAgICBjLTE3Ljg2MSwwLjAwMS0zMi4zOTMtMTQuNTI5LTMyLjM5My0zMi4zOTJjMC0xNy44NjEsMTQuNTMxLTMyLjM5MiwzMi4zOTMtMzIuMzkyYzE3Ljg2MSwwLDMyLjM5MiwxNC41MzEsMzIuMzkyLDMyLjM5MiAgICBTMjczLjg2NSwxOTEuNjU3LDI1Ni4wMDQsMTkxLjY1N3oiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
@@ -45,7 +45,7 @@
     <!-- PLACE A RETURN TO HOMEPAGE BUTTON SOMEWHERE IN THIS PAGE -->
 
     <footer>
-      <p>© 2017 Team Lowkey, Inc. All Rights Reserved. Icons made by <a href="http://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></p>
+      <p>© 2018 Team Lowkey, Inc. All Rights Reserved. Icons made by <a href="http://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></p>
     </footer>
 
     <script src = "<?php base_url("/assets/jquery-3.1.1.min.js");?>"></script>

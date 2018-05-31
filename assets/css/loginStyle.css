@@ -1,9 +1,3 @@
-@font-face
-{
-  font-family: Karla-Regular;
-  src: url('Karla-Regular.ttf');
-}
-
 body
 {
   background-attachment: fixed;
@@ -11,7 +5,6 @@ body
   text-align: center;
   background-color: #E9EBEE;
   color: black;
-  font-family: Karla-Regular;
 }
 
 #mainContainer
@@ -29,7 +22,6 @@ body
 h1
 {
   height: auto;
-  font-family: arial;
   font-weight: 100;
   font-size: 1em;
   letter-spacing: 2px;
@@ -111,9 +103,8 @@ input[type = "submit"]:hover
   font-size: 14px;
 }
 
-a
+#mainContainer a
 {
-  font-family: sans-serif;
   font-size: .8em;
   text-decoration: none;
   color: #999999;
@@ -135,6 +126,12 @@ footer p
   font-size: .75em;
   left: 0;
   color: #cccccc;
+}
+
+footer a
+{
+  text-decoration: none;
+  color: #999999;
 }
 
 /**************** ALERT STUFF *******************/
@@ -174,22 +171,4 @@ div#alertMessage
     background-color: #ffffcc;
     border-left: 6px solid #ffeb3b;
     color: #ffeb3b;
-}
-
-.closebtn
-{
-    margin-left: 15px;
-    color: gray;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.closebtn:hover
-{
-    cursor: pointer;
-    color: black;
 }
