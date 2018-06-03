@@ -30,10 +30,7 @@ class controller extends CI_Controller
 // DELETE THIS AFTER
 	public function frame()
 	{
-		$test['t1'] = $this->model->testing();
-		$test['t2'] = "hello";
-
-		$this->load->view('frame', $test);
+		$this->load->view('frame');
 
 	}
 }

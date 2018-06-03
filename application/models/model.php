@@ -5,12 +5,5 @@ class model extends CI_Model
   {
     $this -> load -> database();
   }
-
-  public function testing()
-  {
-    $test="does it work";
-
-    return $test;
-  }
 }
 ?>
