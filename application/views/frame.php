@@ -105,7 +105,7 @@ desired effect
               <!-- The user image in the navbar-->
               <img src="<?php echo base_url()."assets/"; ?>dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Marko Socco</span>
+              <span class="hidden-xs">firstName lastName</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -113,8 +113,8 @@ desired effect
                 <img src="<?php echo base_url()."assets/"; ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Marko Socco
-                  <small>President</small>
+                  firstName lastName
+                  <small>Position</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -151,15 +151,11 @@ desired effect
         </div>
       </div>
 
-      <!-- search form (Optional) -->
-
-      <!-- /.search form -->
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Project Management</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="<?php echo base_url("index.php/controller/dashboard"); ?>#"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
+        <li class="active"><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
         <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-link"></i> <span>My Projects</span></a></li>
         <li><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-link"></i> <span>My Team</span></a></li>
         <!-- <li class="treeview">
@@ -180,28 +176,11 @@ desired effect
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
+
+<!--THIS IS DIFFERENT PER PAGE  -->
+
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Dashboard
-        <small>What's going on</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li class ="active"><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <!-- <li class="active">Here</li> -->
-      </ol>
-    </section>
 
-    <!-- Main content -->
-    <section class="content container-fluid">
-
-      <!--------------------------
-        | Your Page Content Here |
-        -------------------------->
-
-    </section>
-    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
 

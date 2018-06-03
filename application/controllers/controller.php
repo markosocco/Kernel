@@ -27,6 +27,41 @@ class controller extends CI_Controller
 		$this->load->view('contact');
 	}
 
+	public function dashboard()
+	{
+		$this->load->view('dashboard');
+	}
+
+	public function myProjects()
+	{
+		$this->load->view('myProjects');
+	}
+
+	public function myTeam()
+	{
+		$this->load->view('myTeam');
+	}
+
+	public function myTasks()
+	{
+		$this->load->view('myTasks');
+	}
+
+	public function templates()
+	{
+		$this->load->view('templates');
+	}
+
+	public function archives()
+	{
+		$this->load->view('archives');
+	}
+
+	public function newProject()
+	{
+		$this->load->view('newProject');
+	}
+
 // DELETE THIS AFTER
 	public function frame()
 	{
