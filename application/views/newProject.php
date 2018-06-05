@@ -29,7 +29,7 @@
 	  <link rel="stylesheet"
 	        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectStyle.css")?>">
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<div class="wrapper">
@@ -68,39 +68,25 @@
                 </div>
 
 								<div class="form-group">
-	                <label>Start date and end date:</label>
-<!--can you extract the dates here seperately?  -->
-	                <div class="input-group">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-calendar"></i>
-	                  </div>
-	                  <input type="text" class="form-control pull-right" id="reservation">
-	                </div>
-	                <!-- /.input group -->
-	              </div>
-
-								<div class="form-group">
 	                <label>Start Date:</label>
 
 	                <div class="input-group date">
 	                  <div class="input-group-addon">
 	                    <i class="fa fa-calendar"></i>
 	                  </div>
-	                  <input type="text" class="form-control pull-right" id="datepicker">
+	                  <input type="text" class="form-control pull-right" id="starDate">
 	                </div>
-	                <!-- /.input group -->
 	              </div>
 
 								<div class="form-group">
-	                <label>End Date:</label>
+	                <label>Target End Date:</label>
 
 	                <div class="input-group date">
 	                  <div class="input-group-addon">
 	                    <i class="fa fa-calendar"></i>
 	                  </div>
-	                  <input type="text" class="form-control pull-right" id="datepicker">
+	                  <input type="text" class="form-control pull-right" id="endDate">
 	                </div>
-	                <!-- /.input group -->
 	              </div>
               </div>
               <!-- /.box-body -->
@@ -137,18 +123,15 @@
 		<script>
 		  $(function ()
 			{
-		    //Initialize Select2 Elements
-		    $('.select2').select2()
-
-		    //Date range picker
-		    $('#reservation').daterangepicker()
-
 		    //Date picker
-		    $('#datepicker').datepicker({
-		      autoclose: true
+		    $('#startDate').datepicker({
+		      autoclose: true;
 		    })
 
-		    })
+				// $('#endDate').datepicker({
+		    //   autoclose: true
+		    // })
+
 		  })
 		</script>
 
