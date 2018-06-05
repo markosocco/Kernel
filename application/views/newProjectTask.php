@@ -60,12 +60,15 @@
 		      <h1>
 		        <?php echo $project['PROJECTTITLE'] ?>
 
-						<?php if ($dateDiff <= 1): ?>
-							<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $dateDiff . " day remaining"?></small>
+						<?php if ($dateDiff <= 1):
+							$diff = $dateDiff + 1;?>
+							<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " day remaining"?></small>
 							<?php endif; ?>
 
-						<?php if ($dateDiff > 1): ?>
-						<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $dateDiff . " days remaining"?></small>
+						<?php if ($dateDiff > 1):
+							$diff = $dateDiff + 1;
+							?>
+						<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " days remaining"?></small>
 						<?php endif; ?>
 		      </h1>
 		      <ol class="breadcrumb">
