@@ -13,6 +13,8 @@
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/Ionicons/css/ionicons.min.css">
 	  <!-- Theme style -->
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>dist/css/AdminLTE.css">
+		<!-- bootstrap datepicker -->
+		<link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 	  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
 	        page. However, you can choose any other skin. Make sure you
 	        apply the skin class to the body tag so the changes take effect. -->
@@ -56,15 +58,15 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form" name = "addProject" id = "addProject" action = "addProject" method = "POST">
+						<form role="form" name = "addProject" id = "addProject" action = "addProject" method = "POST">
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
-                  <input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
+									<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-                  <textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
+									<textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
                 </div>
 
 								<div class="form-group">
@@ -74,22 +76,22 @@
 	                  <div class="input-group-addon">
 	                    <i class="fa fa-calendar"></i>
 	                  </div>
-	                  <input type="text" class="form-control pull-right" id="starDate" name="startDate" required>
+	                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
 	                </div>
+	                <!-- /.input group -->
 	              </div>
-
-								<div class="form-group">
+	              <!-- /.form group -->
+	              <div class="form-group">
 	                <label>Target End Date:</label>
 
 	                <div class="input-group date">
 	                  <div class="input-group-addon">
 	                    <i class="fa fa-calendar"></i>
 	                  </div>
-	                  <input type="text" class="form-control pull-right" id="endDate" name="endDate" required>
+	                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
 	                </div>
+	                <!-- /.input group -->
 	              </div>
-              </div>
-              <!-- /.box-body -->
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Create Project</button>
@@ -123,15 +125,14 @@
 		<script>
 		  $(function ()
 			{
-		    //Date picker
-		    $('#startDate').datepicker({
-		      autoclose: true;
-		    })
+				//Date picker
+ 	     $('#startDate').datepicker({
+ 	       autoclose: true
+ 	     })
 
-				// $('#endDate').datepicker({
-		    //   autoclose: true
-		    // })
-
+ 	     $('#endDate').datepicker({
+ 	       autoclose: true
+ 	     })
 		  })
 		</script>
 
