@@ -6,6 +6,7 @@ class model extends CI_Model
     $this -> load -> database();
   }
 
+// CHECK IF EMAIL AND PASSWORD EXIST AND MATCH IN DB
   public function checkDatabase($data)
   {
     $condition = "EMAIL =" . "'" . $data['email'] . "' AND " . "PASSWORD =" . "'" . $data['password'] . "'";
@@ -26,6 +27,7 @@ class model extends CI_Model
     }
   }
 
+// GET DATA OF USER, GIVEN THE EMAIL
   public function getUserData($data)
   {
     $condition = "EMAIL =" . "'" . $data['email'] ."'";
@@ -37,6 +39,7 @@ class model extends CI_Model
     return $query->row_array();
   }
 
+// SAVE NEW PROJECT TO DB
   public function addProject($data)
   {
     $result = $this->db->insert('projects', $data);
@@ -58,6 +61,7 @@ class model extends CI_Model
     }
   }
 
+// COMPUTE FOR NUMBER OF DAYS, GIVEN A DATE PERIOD
   public function getDateDiff($data)
   {
     $startDate = $data['PROJECTSTARTDATE'];
