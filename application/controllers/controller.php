@@ -225,6 +225,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function addTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("addTasks");
+		}
+	}
+
 	public function addProject()
 	{
 		//$this->load->view("contact");
@@ -258,7 +271,7 @@ class controller extends CI_Controller
 		if ($data)
 		{
 			//echo $project['PROJECTTITLE'];
-			$this->load->view('newProjectTask', $data);
+			$this->load->view('addTasks', $data);
 			//redirect('controller/newProject');
 		}
 
