@@ -13,7 +13,7 @@
 
 			<div id = "login" class = "loginElements">
 				<form name = "loginForm" action = "validateLogin" method = "POST">
-					<input type = "text" placeholder = "USERNAME" name = "username" value = "<?php if (isset($_SESSION['stickyUsername'])) echo $_SESSION['stickyUsername']; ?>" required>
+					<input type = "text" placeholder = "USERNAME" name = "email" value = "<?php if (isset($_SESSION['stickyEmail'])) echo $_SESSION['stickyEmail']; ?>" required>
 					<input type = "password" placeholder = "PASSWORD" name = "password" required>
 
 					<input type = "submit" name = "submitLogin" value = "LOG IN">
