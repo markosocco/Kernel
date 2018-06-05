@@ -40,13 +40,20 @@
 		    <!-- Content Header (Page header) -->
 		    <section class="content-header">
 		      <h1>
-		        Place Project title here
-		        <small>Project period + days before deadline</small>
+		        <?php echo $project['PROJECTTITLE'] ?>
+
+						<?php if ($dateDiff <= 1): ?>
+							<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $dateDiff . " day remaining"?></small>
+							<?php endif; ?>
+
+						<?php if ($dateDiff > 1): ?>
+						<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $dateDiff . " days remaining"?></small>
+						<?php endif; ?>
 		      </h1>
 		      <ol class="breadcrumb">
 		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 		        <li class="active">New Project</li>
-						<li class="active">Pull Project title Tasks</li>
+						<li class="active"><?php echo $project['PROJECTTITLE'] . " Tasks" ?></li>
 		      </ol>
 		    </section>
 
