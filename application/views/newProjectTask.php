@@ -13,6 +13,8 @@
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/Ionicons/css/ionicons.min.css">
 	  <!-- Theme style -->
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>dist/css/AdminLTE.css">
+		<!-- Select2 -->
+	  <link rel="stylesheet" href="../../assets/bower_components/select2/dist/css/select2.min.css">
 		<!-- bootstrap datepicker -->
 		<link rel="stylesheet" href="../../assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 	  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -31,7 +33,23 @@
 	  <link rel="stylesheet"
 	        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectStyle.css")?>"> -->
+		<style>
+	    .example-modal .modal {
+	      position: relative;
+	      top: auto;
+	      bottom: auto;
+	      right: auto;
+	      left: auto;
+	      display: block;
+	      z-index: 1;
+	    }
+
+	    .example-modal .modal {
+	      background: transparent !important;
+	    }
+	  </style>
+
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<div class="wrapper">
@@ -52,9 +70,81 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+						Add new task
+					</button>
 
+					<div class="modal fade" id="modal-default">
+	          <div class="modal-dialog">
+	            <div class="modal-content">
+	              <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                  <span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title">Add new task</h4>
+	              </div>
+	              <div class="modal-body">
+									<div class="form-group">
+	                  <label>Select task category</label>
+	                  <select class="form-control">
+											<option disabled selected value> -- select an option -- </option>
+											<option>Main Activity</option>
+		                  <option>Sub Activity</option>
+		                  <option>Task</option>
+	                  </select>
+	                </div>
+									<!--Display if category picked above is sub activity  -->
+									<div class="form-group">
+		                <label>Select parent main activity</label>
+		                <select class="form-control select2" style="width: 100%;">
+											<option disabled selected value> -- select an option -- </option>
+		                  <option>Loop through the list of main activity in the project</option>
+		                </select>
+		              </div>
+									<!--Display if category picked above is task -->
+									<div class="form-group">
+		                <label>Select parent sub activity</label>
+		                <select class="form-control select2" style="width: 100%;">
+											<option disabled selected value> -- select an option -- </option>
+		                  <option>Loop through the list of sub activity in the project</option>
+		                </select>
+		              </div>
+									<div class="form-group">
+	                  <label>Task Title</label>
+	                  <input type="text" class="form-control" placeholder="Enter task title">
+	                </div>
+									<div class="form-group">
+		                <label>Start Date:</label>
 
+		                <div class="input-group date">
+		                  <div class="input-group-addon">
+		                    <i class="fa fa-calendar"></i>
+		                  </div>
+		                  <input type="text" class="form-control pull-right" id="taskStartDate" name="taskStartDate" required>
+		                </div>
+		                <!-- /.input group -->
+		              </div>
+		              <!-- /.form group -->
+		              <div class="form-group">
+		                <label>Target End Date:</label>
 
+		                <div class="input-group date">
+		                  <div class="input-group-addon">
+		                    <i class="fa fa-calendar"></i>
+		                  </div>
+		                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
+		                </div>
+		                <!-- /.input group -->
+		              </div>
+	              </div>
+	              <div class="modal-footer">
+	                <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
+	                <button type="button" class="btn btn-primary">Add task</button>
+	              </div>
+	            </div>
+	            <!-- /.modal-content -->
+	          </div>
+	          <!-- /.modal-dialog -->
+	        </div>
 		    </section>
 		    <!-- /.content -->
 		  </div>
@@ -76,17 +166,19 @@
 		<!-- bootstrap datepicker -->
 		<script src="../../assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 		<!-- Select2 -->
-	  <link rel="stylesheet" href="../../assets/bower_components/select2/dist/css/select2.min.css">
-
+		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 		<script>
 		  $(function ()
 			{
+				//Initialize Select2 Elements
+		    $('.select2').select2()
+
 				//Date picker
- 	     $('#startDate').datepicker({
+ 	     $('#taskStartDate').datepicker({
  	       autoclose: true
  	     })
 
- 	     $('#endDate').datepicker({
+ 	     $('#taskEndDate').datepicker({
  	       autoclose: true
  	     })
 		  })
