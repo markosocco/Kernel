@@ -252,12 +252,14 @@ class controller extends CI_Controller
 				'users_USERID' => $_SESSION['USERID']
 		);
 
-		$result = $this->model->addProject($data);
+		$data['project'] = $this->model->addProject($data);
+		$data['dateDiff'] = $this->model->getDateDiff($data);
 
-		if ($result)
+		if ($data)
 		{
-			//redirect('controller/newProjectTask');
-			redirect('controller/newProject');
+			//echo $project['PROJECTTITLE'];
+			$this->load->view('newProjectTask', $data);
+			//redirect('controller/newProject');
 		}
 
 		else

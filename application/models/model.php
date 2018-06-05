@@ -39,9 +39,48 @@ class model extends CI_Model
 
   public function addProject($data)
   {
-    $this->db->insert('projects', $data);
+    $result = $this->db->insert('projects', $data);
 
-    return true;
+    if ($result)
+    {
+      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND '". $data['PROJECTENDDATE'] ."'";
+      $this->db->select('*');
+      $this->db->from('projects');
+      $this->db->where($condition);
+      $query = $this->db->get();
+
+      return $query->row_array();
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
+  public function getDateDiff($data)
+  {
+    $startDate = $data['PROJECTSTARTDATE'];
+    $endDate = $data['PROJECTENDDATE'];
+
+    $start = str_replace("/", "-", $startDate);
+    $end = str_replace("/", "-", $endDate);
+
+    $startMonth = substr($start, 0, 2);
+    $startDay = substr($start, 3, 2);
+    $startYear = substr($start, 6, 4);
+    $sDate = $startYear . "-" . $startMonth . "-" . $startDay;
+
+    $endMonth = substr($end, 0, 2);
+    $endDay = substr($end, 3, 2);
+    $endYear = substr($end, 6, 4);
+    $eDate = $endYear . "-" . $endMonth . "-" . $endDay;
+
+    $sql = "SELECT DATEDIFF('" . $eDate . "', '" . $sDate . "') as datediff";
+
+		$data = $this->db->query($sql);
+
+    return $data->row('datediff');
   }
 }
 ?>
