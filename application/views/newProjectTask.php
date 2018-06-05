@@ -141,6 +141,14 @@
 		                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
 		                </div>
 		                <!-- /.input group -->
+
+										<div class="form-group">
+		                  <label>Department assigned</label>
+		                  <select class="form-control">
+												<option disabled selected value> -- select an option -- </option>
+												<option>Loop through department table</option>
+		                  </select>
+		                </div>
 		              </div>
 	              </div>
 	              <div class="modal-footer">
