@@ -143,8 +143,6 @@
 		                  </div>
 		                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
 		                </div>
-		                <!-- /.input group -->
-
 										<div class="form-group">
 		                  <label>Department assigned</label>
 		                  <select class="form-control">
@@ -152,6 +150,14 @@
 												<option>Loop through department table</option>
 		                  </select>
 		                </div>
+										<!--Display if project owner is same department with department chosen above  -->
+										<div class="form-group">
+											<label>Select team member</label>
+			                <select class="form-control select2" style="width: 100%;">
+												<option disabled selected value> -- select an option -- </option>
+												<option>Loop through all employess with the same department as the project owner</option>
+			                </select>
+			              </div>
 		              </div>
 	              </div>
 	              <div class="modal-footer">
