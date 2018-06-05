@@ -74,11 +74,12 @@
 	                  <div class="input-group-addon">
 	                    <i class="fa fa-calendar"></i>
 	                  </div>
-	                  <input type="text" class="form-control pull-right" id="starDate">
+	                  <input type="text" class="form-control pull-right" id="startDate">
 	                </div>
+	                <!-- /.input group -->
 	              </div>
-
-								<div class="form-group">
+	              <!-- /.form group -->
+	              <div class="form-group">
 	                <label>Target End Date:</label>
 
 	                <div class="input-group date">
@@ -87,9 +88,8 @@
 	                  </div>
 	                  <input type="text" class="form-control pull-right" id="endDate">
 	                </div>
+	                <!-- /.input group -->
 	              </div>
-              </div>
-              <!-- /.box-body -->
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Create Project</button>
@@ -123,15 +123,14 @@
 		<script>
 		  $(function ()
 			{
-		    //Date picker
-		    $('#startDate').datepicker({
-		      autoclose: true;
-		    })
+				//Date picker
+ 	     $('#startDate').datepicker({
+ 	       autoclose: true
+ 	     })
 
-				// $('#endDate').datepicker({
-		    //   autoclose: true
-		    // })
-
+ 	     $('#endDate').datepicker({
+ 	       autoclose: true
+ 	     })
 		  })
 		</script>
 

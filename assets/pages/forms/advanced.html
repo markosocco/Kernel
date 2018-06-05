@@ -754,18 +754,28 @@
             <div class="box-body">
               <!-- Date -->
               <div class="form-group">
-                <label>Date:</label>
+                <label>Start Date:</label>
 
                 <div class="input-group date">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" class="form-control pull-right" id="datepicker">
+                  <input type="text" class="form-control pull-right" id="startDate">
                 </div>
                 <!-- /.input group -->
               </div>
               <!-- /.form group -->
+              <div class="form-group">
+                <label>Target End Date:</label>
 
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="endDate">
+                </div>
+                <!-- /.input group -->
+              </div>
               <!-- Date range -->
               <div class="form-group">
                 <label>Date range:</label>
@@ -1195,7 +1205,11 @@
     )
 
     //Date picker
-    $('#datepicker').datepicker({
+    $('#startDate').datepicker({
+      autoclose: true
+    })
+
+    $('#endDate').datepicker({
       autoclose: true
     })
 
