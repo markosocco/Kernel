@@ -40,7 +40,7 @@ class controller extends CI_Controller
 		$this->load->view("login");
 	}
 
-// CHECKS IF email AND PASSWORD MATCH DB
+// CHECKS IF EMAIL AND PASSWORD MATCH DB
 	public function validateLogin()
 	{
 		$this->load->library('form_validation');
@@ -115,6 +115,8 @@ class controller extends CI_Controller
 			}
 		}
 	}
+
+	/******************** START OF VIEWS ********************/
 
 	public function contact()
 	{
@@ -225,6 +227,11 @@ class controller extends CI_Controller
 		}
 	}
 
+	/******************** END OF VIEWS ********************/
+
+	/******************** MY PROJECTS START ********************/
+
+// SAVE NEW PROJECT WITH TITLE, DETAILS, START DATE, END DATE
 	public function addProject()
 	{
 		//$this->load->view("contact");
@@ -267,6 +274,8 @@ class controller extends CI_Controller
 			redirect('controller/contact');
 		}
 	}
+
+	/******************** MY PROJECTS END ********************/
 
 // DELETE THIS AFTER
 	public function frame()
