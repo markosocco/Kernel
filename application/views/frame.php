@@ -105,7 +105,7 @@ desired effect
               <!-- The user image in the navbar-->
               <img src="<?php echo base_url()."assets/"; ?>dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">firstName lastName</span>
+              <span class="hidden-xs"><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -113,8 +113,8 @@ desired effect
                 <img src="<?php echo base_url()."assets/"; ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  firstName lastName
-                  <small>Position</small>
+                  <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?>
+                  <small><?php echo $_SESSION['POSITION']; ?></small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -145,7 +145,7 @@ desired effect
           <img src="<?php echo base_url()."assets/"; ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Marko Socco</p>
+          <p><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></p>
           <!-- Status -->
           <!-- <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-circle text-success"></i> Online</a> -->
         </div>

@@ -58,15 +58,15 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form">
+						<form role="form" name = "addProject" id = "addProject" action = "addProject" method = "POST">
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
-                  <input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title">
+									<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-                  <textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails"></textarea>
+									<textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
                 </div>
 
 								<div class="form-group">
@@ -76,7 +76,7 @@
 	                  <div class="input-group-addon">
 	                    <i class="fa fa-calendar"></i>
 	                  </div>
-	                  <input type="text" class="form-control pull-right" id="startDate">
+	                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
 	                </div>
 	                <!-- /.input group -->
 	              </div>
@@ -88,7 +88,7 @@
 	                  <div class="input-group-addon">
 	                    <i class="fa fa-calendar"></i>
 	                  </div>
-	                  <input type="text" class="form-control pull-right" id="endDate">
+	                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
 	                </div>
 	                <!-- /.input group -->
 	              </div>

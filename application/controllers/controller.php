@@ -70,7 +70,6 @@ class controller extends CI_Controller
 				$this->session->set_userdata($sessionData);
 
 				redirect('controller/frame');
-				//$userType = $this->dbtest_model->getUserType($data);
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -210,6 +209,47 @@ class controller extends CI_Controller
 		else
 		{
 			$this->load->view("newProject");
+		}
+	}
+
+	public function addProject()
+	{
+		//$this->load->view("contact");
+
+		$startDate = $this->input->post('startDate');
+		date_default_timezone_set("Singapore");
+		$currDate = date("mm-dd-YYYY");
+
+		if ($currDate >= $startDate)
+		{
+			$status = 'Ongoing';
+		}
+
+		else
+		{
+			$status = 'Pending';
+		}
+
+		$data = array(
+				'PROJECTTITLE' => $this->input->post('projectTitle'),
+				'PROJECTSTARTDATE' => $startDate,
+				'PROJECTENDDATE' => $this->input->post('endDate'),
+				'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
+				'PROJECTSTATUS' => $status,
+				'users_USERID' => $_SESSION['USERID']
+		);
+
+		$result = $this->model->addProject($data);
+
+		if ($result)
+		{
+			//redirect('controller/newProjectTask');
+			redirect('controller/newProject');
+		}
+
+		else
+		{
+			redirect('controller/contact');
 		}
 	}
 

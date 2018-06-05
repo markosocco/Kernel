@@ -36,5 +36,12 @@ class model extends CI_Model
 
     return $query->row_array();
   }
+
+  public function addProject($data)
+  {
+    $this->db->insert('projects', $data);
+
+    return true;
+  }
 }
 ?>
