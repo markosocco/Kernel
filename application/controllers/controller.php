@@ -70,7 +70,6 @@ class controller extends CI_Controller
 				$this->session->set_userdata($sessionData);
 
 				redirect('controller/frame');
-				//$userType = $this->dbtest_model->getUserType($data);
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -211,6 +210,20 @@ class controller extends CI_Controller
 		{
 			$this->load->view("newProject");
 		}
+	}
+
+	public function addProject()
+	{
+		//$this->load->view("contact");
+
+		$data = array(
+				'PROJECTTITLE' => $this->input->post('projectTitle'),
+				'PROJECTDETAILS' => $this->input->post('projectDetails'),
+				'PROJECTSTARTDATE' => $this->input->post('startDate'),
+				'PROJECTENDDATE' => $this->input->post('endDate')
+		);
+
+		$result = $this->model->addProject($data);
 	}
 
 // DELETE THIS AFTER
