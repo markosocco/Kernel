@@ -19,7 +19,7 @@ class controller extends CI_Controller
 
 	public function login()
 	{
-		if (!isset($_SESSION['email']))
+		if (!isset($_SESSION['EMAIL']))
 		{
 			$this->load->view('login');
 		}
@@ -33,19 +33,11 @@ class controller extends CI_Controller
 //LOGS USER OUT AND DESTROYS SESSION
 	public function logout()
 	{
-		if (isset($_SESSION['email']))
-		{
-			$this->load->view('contact');
-		}
+		unset($_SESSION);
+	  session_destroy();
+	  session_write_close();
 
-		else
-		{
-			unset($_SESSION);
-		  session_destroy();
-		  session_write_close();
-
-			$this->load->view("login");
-		}
+		$this->load->view("login");
 	}
 
 // CHECKS IF email AND PASSWORD MATCH DB
@@ -132,43 +124,106 @@ class controller extends CI_Controller
 
 	public function dashboard()
 	{
-		$this->load->view('dashboard');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("dashboard");
+		}
 	}
 
 	public function myProjects()
 	{
-		$this->load->view('myProjects');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("myProjects");
+		}
 	}
 
 	public function myTeam()
 	{
-		$this->load->view('myTeam');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("myTeam");
+		}
 	}
 
 	public function myTasks()
 	{
-		$this->load->view('myTasks');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("myTasks");
+		}
 	}
 
 	public function templates()
 	{
-		$this->load->view('templates');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("templates");
+		}
 	}
 
 	public function archives()
 	{
-		$this->load->view('archives');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("archives");
+		}
 	}
 
 	public function newProject()
 	{
-		$this->load->view('newProject');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("newProject");
+		}
 	}
 
 // DELETE THIS AFTER
 	public function frame()
 	{
-		$this->load->view('frame');
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
 
+		else
+		{
+			$this->load->view("frame");
+		}
 	}
 }

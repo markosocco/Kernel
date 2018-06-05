@@ -60,11 +60,11 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Project Title">
+                  <input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title">
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-                  <textarea class="form-control" rows="3" placeholder="Enter project detals..."></textarea>
+                  <textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails"></textarea>
                 </div>
 
 								<div class="form-group">
