@@ -4,8 +4,8 @@
 		<!-- <link rel = "stylesheet" href = "<?php //echo base_url("/assets/css/myTeamStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<?php require("frame.php"); ?>
-			<div class="content-wrapper" id="mainContent">
+		<?php include_once("frame.php"); ?>
+			<div class="content-wrapper" id="mainContent" style="display:inline-block">
 		    <!-- Content Header (Page header) -->
 		    <section class="content-header">
 		      <h1>
@@ -18,12 +18,8 @@
 		      </ol>
 		    </section>
 
-		    <!-- Main content -->
-				<div class="content-wrapper">
-
-			  </div>
 		    <!-- /.content -->
 		<!-- ./wrapper -->
-	</div>
+		</div>
 	</body>
 </html>

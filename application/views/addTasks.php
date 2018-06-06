@@ -64,11 +64,23 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<div class="btn-group">
+						<button type="button" class="btn btn-warning">Return to step 1</button>
+						<button type="button" class="btn btn-primary">Save</button>
+						<button type="button" class="btn btn-success">Proceed to step 3</button>
+					</div>
+
+					<div class="btn-group">
+						<button type="button" class="btn btn-default">Left</button>
+						<button type="button" class="btn btn-default">Middle</button>
+						<button type="button" class="btn btn-default">Right</button>
+					</div>
+
 					<div class="row">
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Activities and tasks</h3>
+		              <h3 class="box-title">Step 2: Enter all tasks for this project</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -122,11 +134,10 @@
 		                </tr>
 										<tr id="row1"></tr>
 		              </table>
-									<button type="button" class="btn btn-block btn-primary">Save</button>
-									<button type="button" class="btn btn-block btn-success">Proceed to step 2</button>
-		            </div>
+								</div>
 		            <!-- /.box-body -->
 		          </div>
+
 		          <!-- /.box -->
 		        </div>
 		      </div>
