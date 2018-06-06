@@ -83,7 +83,7 @@
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
-		                  <th></th>
+		                  <th>No.</th>
 		                  <th>Category</th>
 											<th>Title</th>
 											<th>Department</th>
@@ -91,7 +91,7 @@
 											<th></th>
 		                </tr>
 		                <tr id="row0">
-											<td class="handle"><i class="fa fa-arrows"></i></td>
+											<td>1</td>
 		                  <td><div class="form-group">
 			                  <select class="form-control">
 													<option disabled selected value> -- Select Category -- </option>
@@ -174,38 +174,54 @@
 
 		 $(document).ready(function() {
 			 var i = 1;
+			 var x = 2;
 
 			 $(document).on("click", "a.addButton", function() {
 
-					 $('#row' + i).html("<td class='handle'><i class='glyphicon glyphicon-move'></i></td><td><div class='form-group'><select class ='form-control'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title'</div></td>  <td><select class='form-control' id ='dept'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>");
+					 $('#row' + i).html("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title'</div></td>  <td><select class='form-control' id ='dept'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
 					 i++;
+					 x++;
 				});
 
 				$(document).on("click", "a.delButton", function() {
 
 					var i = $(this).attr('data-id');
+					//var before = i - 1;
+					// var after = i + 1;
+					// var counter = $(this).attr('counter');
+					// console.log(counter);
 
 					$('#row' + i).remove();
 
-					console.log(i);
- 					 // $('#row' + i).empty();
- 					 // $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
- 					 // i++;
+
+					// for (var x = 0; x <= counter; x++)
+					// {
+					// 	//$('.num' + i ).text(i);
+					// 	//console.log(i);
+					// 	//console.log(i);
+					// 	i--;
+					// }
+
  				});
 
-				var el = document.getElementById('table');
-				var dragger = tableDragger(el, {
-				 mode: 'row',
-				 dragHandler: '.handle',
-				 onlyBody: true,
-				 animation: 300
-				});
-				dragger.on('drop',function(from, to){
-				 console.log(from);
-				 console.log(to);
-				});
+				// var el = document.getElementById('table');
+				// var dragger = tableDragger(el, {
+				//  mode: 'row',
+				//  dragHandler: '.handle',
+				//  onlyBody: true,
+				//  animation: 300
+				// });
+
+				// $(document).on("drop", "a.handle", function() {
+				//
+ 				// });
+
+				// dragger.on('drop',function(from, to){
+				//  console.log(from);
+				//  console.log(to);
+				// });
 	 });
 		</script>
 	</body>
