@@ -68,8 +68,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Responsive Hover Table</h3>
-
+		              <h3 class="box-title">Step 3: Organize task sequence and heirarchy</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -85,49 +84,26 @@
 		              <table class="table table-hover" id="table">
 										<thead>
 		                <tr>
+		                  <th></th>
+		                  <th>Category</th>
+											<th>Title</th>
+											<th>Department</th>
 											<th></th>
-		                  <th>ID</th>
-		                  <th>User</th>
-		                  <th>Date</th>
-		                  <th>Status</th>
-		                  <th>Reason</th>
+											<th></th>
 		                </tr>
-										</thead>
-										<tbody>
-		                <tr>
+									</thead>
+									<tbody>
+		                <tr id="row0">
 											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>183</td>
-		                  <td>John Doe</td>
-		                  <td>11-7-2014</td>
-		                  <td><span class="label label-success">Approved</span></td>
-		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+		                  <td>Get Task Category</td>
+		                  <td>Get Task Title</td>
+											<td>Get Department assigned</td>
 		                </tr>
-		                <tr>
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>219</td>
-		                  <td>Alexander Pierce</td>
-		                  <td>11-7-2014</td>
-		                  <td><span class="label label-warning">Pending</span></td>
-		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-		                </tr>
-		                <tr>
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>657</td>
-		                  <td>Bob Doe</td>
-		                  <td>11-7-2014</td>
-		                  <td><span class="label label-primary">Approved</span></td>
-		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-		                </tr>
-		                <tr>
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>175</td>
-		                  <td>Mike Doe</td>
-		                  <td>11-7-2014</td>
-		                  <td><span class="label label-danger">Denied</span></td>
-		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-		                </tr>
-										</tbody>
+										<tr id="row1"></tr>
+									</tbody>
 		              </table>
+									<button type="button" class="btn btn-block btn-primary">Save</button>
+									<button type="button" class="btn btn-block btn-success">Proceed to step 3</button>
 		            </div>
 		            <!-- /.box-body -->
 		          </div>
@@ -156,7 +132,6 @@
 		<script src="../../assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 		<!-- Select2 -->
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
-		npm install table-dragger --save
 		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
 		  $(function ()
