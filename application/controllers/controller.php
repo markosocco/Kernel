@@ -240,7 +240,6 @@ class controller extends CI_Controller
 		}
 	}
 
-<<<<<<< HEAD
 	public function step2()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -266,9 +265,6 @@ class controller extends CI_Controller
 			$this->load->view("step3");
 		}
 	}
-
-=======
->>>>>>> c67c8997cd748b02dee6bed459cc5f7dc22ab36f
 	/******************** END OF VIEWS ********************/
 
 	/******************** MY PROJECTS START ********************/

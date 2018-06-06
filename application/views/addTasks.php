@@ -83,7 +83,7 @@
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
-		                  <th>No.</th>
+		                  <th></th>
 		                  <th>Category</th>
 											<th>Title</th>
 											<th>Department</th>
@@ -91,11 +91,7 @@
 											<th></th>
 		                </tr>
 		                <tr id="row0">
-		                  <td>
-												<?php
-												echo $counter;
-											?>
-											</td>
+											<td class="handle"><i class="fa fa-arrows"></i></td>
 		                  <td><div class="form-group">
 			                  <select class="form-control">
 													<option disabled selected value> -- Select Category -- </option>
@@ -156,6 +152,7 @@
 		<script src="../../assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 		<!-- Select2 -->
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
+		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
 		  $(function ()
 			{
@@ -177,7 +174,7 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-					 $('#row' + i).html("<td>" + (i + 1) + "</td><td><div class='form-group'><select class ='form-control'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title'</div></td>  <td><select class='form-control' id ='dept'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>");
+					 $('#row' + i).html("<td class='handle'><i class='glyphicon glyphicon-move'></i></td><td><div class='form-group'><select class ='form-control'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title'</div></td>  <td><select class='form-control' id ='dept'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
 					 i++;
@@ -194,6 +191,18 @@
  					 // $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
  					 // i++;
  				});
+
+				var el = document.getElementById('table');
+				var dragger = tableDragger(el, {
+				 mode: 'row',
+				 dragHandler: '.handle',
+				 onlyBody: true,
+				 animation: 300
+				});
+				dragger.on('drop',function(from, to){
+				 console.log(from);
+				 console.log(to);
+				});
 	 });
 		</script>
 	</body>
