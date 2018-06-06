@@ -86,5 +86,14 @@ class model extends CI_Model
 
     return $data->row('datediff');
   }
+
+  public function getAllDepartments($data)
+  {
+    $this->db->select('*');
+    $this->db->from('departments');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
 }
 ?>

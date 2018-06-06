@@ -227,7 +227,6 @@ class controller extends CI_Controller
 		}
 	}
 
-<<<<<<< HEAD
 	public function addTasks()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -241,13 +240,11 @@ class controller extends CI_Controller
 		}
 	}
 
-=======
 	/******************** END OF VIEWS ********************/
 
 	/******************** MY PROJECTS START ********************/
 
 // SAVE NEW PROJECT WITH TITLE, DETAILS, START DATE, END DATE
->>>>>>> 88ebf2e2f56fe0ff15d862d548a0a9fe37b64b50
 	public function addProject()
 	{
 		//$this->load->view("contact");
@@ -277,6 +274,8 @@ class controller extends CI_Controller
 
 		$data['project'] = $this->model->addProject($data);
 		$data['dateDiff'] = $this->model->getDateDiff($data);
+		$data['departments'] = $this->model->getAllDepartments($data);
+		$data['counter'] = 1;
 
 		if ($data)
 		{
