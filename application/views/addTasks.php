@@ -81,16 +81,21 @@
 		            </div>
 		            <!-- /.box-header -->
 		            <div class="box-body table-responsive no-padding">
-		              <table class="table table-hover">
+		              <table class="table table-hover" id="table">
 		                <tr>
 		                  <th>No.</th>
 		                  <th>Category</th>
 											<th>Title</th>
 											<th>Department</th>
 											<th></th>
+											<th></th>
 		                </tr>
-		                <tr>
-		                  <td>1</td>
+		                <tr id="row0">
+		                  <td>
+												<?php
+												echo $counter;
+											?>
+											</td>
 		                  <td><div class="form-group">
 			                  <select class="form-control">
 													<option disabled selected value> -- Select Category -- </option>
@@ -104,12 +109,22 @@
 			                </div></td>
 											<td><select class="form-control">
 												<option disabled selected value> -- Select Department -- </option>
-												<option>Loop the table of depts</option>
-												<option>Sub Activity</option>
-												<option>Task</option>
+
+												<?php $counter = 0; ?>
+
+												<?php foreach ($departments as $row): ?>
+
+													<option>
+														<?php echo $row['DEPARTMENTNAME']; ?>
+													</option>
+
+											<?php endforeach; ?>
 											</select></td>
-										<td><a class="btn"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+										<td class="btn" id="addRow"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+										<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
+										<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 		                </tr>
+										<tr id="row1"></tr>
 		              </table>
 									<button type="button" class="btn btn-block btn-primary">Save</button>
 									<button type="button" class="btn btn-block btn-success">Proceed to step 2</button>
@@ -155,8 +170,31 @@
  	     $('#taskEndDate').datepicker({
  	       autoclose: true
  	     })
-		  })
-		</script>
+		 });
 
+		 $(document).ready(function() {
+			 var i = 1;
+
+			 $(document).on("click", "a.addButton", function() {
+
+					 $('#row' + i).html("<td>" + (i + 1) + "</td><td><div class='form-group'><select class ='form-control'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title'</div></td>  <td><select class='form-control' id ='dept'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
+					 i++;
+				});
+
+				$(document).on("click", "a.delButton", function() {
+
+					var i = $(this).attr('data-id');
+
+					$('#row' + i).remove();
+
+					console.log(i);
+ 					 // $('#row' + i).empty();
+ 					 // $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
+ 					 // i++;
+ 				});
+	 });
+		</script>
 	</body>
 </html>

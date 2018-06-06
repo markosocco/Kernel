@@ -240,6 +240,7 @@ class controller extends CI_Controller
 		}
 	}
 
+<<<<<<< HEAD
 	public function step2()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -266,6 +267,8 @@ class controller extends CI_Controller
 		}
 	}
 
+=======
+>>>>>>> c67c8997cd748b02dee6bed459cc5f7dc22ab36f
 	/******************** END OF VIEWS ********************/
 
 	/******************** MY PROJECTS START ********************/
@@ -300,6 +303,8 @@ class controller extends CI_Controller
 
 		$data['project'] = $this->model->addProject($data);
 		$data['dateDiff'] = $this->model->getDateDiff($data);
+		$data['departments'] = $this->model->getAllDepartments($data);
+		$data['counter'] = 1;
 
 		if ($data)
 		{
