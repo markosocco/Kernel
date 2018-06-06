@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - Project Tasks</title>
+		<title>Kernel - Step 2: Arrange tasks</title>
 
 		<meta charset="utf-8">
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,22 +33,6 @@
 	  <link rel="stylesheet"
 	        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-		<style>
-	    .example-modal .modal {
-	      position: relative;
-	      top: auto;
-	      bottom: auto;
-	      right: auto;
-	      left: auto;
-	      display: block;
-	      z-index: 1;
-	    }
-
-	    .example-modal .modal {
-	      background: transparent !important;
-	    }
-	  </style>
-
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
@@ -80,97 +64,76 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
-					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
-						Add new task
-					</button>
+					<div class="row">
+		        <div class="col-xs-12">
+		          <div class="box">
+		            <div class="box-header">
+		              <h3 class="box-title">Responsive Hover Table</h3>
 
-					<div class="modal fade" id="modal-default">
-	          <div class="modal-dialog">
-	            <div class="modal-content">
-	              <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                  <span aria-hidden="true">&times;</span></button>
-	                <h4 class="modal-title">Add new task</h4>
-	              </div>
-	              <div class="modal-body">
-									<div class="form-group">
-	                  <label>Select task category</label>
-	                  <select class="form-control">
-											<option disabled selected value> -- Select an option -- </option>
-											<option>Main Activity</option>
-		                  <option>Sub Activity</option>
-		                  <option>Task</option>
-	                  </select>
-	                </div>
-									<!--Display if category picked above is sub activity  -->
-									<div class="form-group">
-		                <label>Select parent main activity</label>
-		                <select class="form-control select2" style="width: 100%;">
-											<option disabled selected value> -- select an option -- </option>
-		                  <option>Loop through the list of main activity in the project</option>
-		                </select>
-		              </div>
-									<!--Display if category picked above is task -->
-									<div class="form-group">
-		                <label>Select parent sub activity</label>
-		                <select class="form-control select2" style="width: 100%;">
-											<option disabled selected value> -- select an option -- </option>
-		                  <option>Loop through the list of sub activity in the project</option>
-		                </select>
-		              </div>
-									<div class="form-group">
-	                  <label>Task Title</label>
-	                  <input type="text" class="form-control" placeholder="Enter task title">
-	                </div>
-									<div class="form-group">
-		                <label>Start Date:</label>
+		              <div class="box-tools">
+		                <div class="input-group input-group-sm" style="width: 150px;">
+		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-		                <div class="input-group date">
-		                  <div class="input-group-addon">
-		                    <i class="fa fa-calendar"></i>
+		                  <div class="input-group-btn">
+		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
 		                  </div>
-		                  <input type="text" class="form-control pull-right" id="taskStartDate" name="taskStartDate" required>
 		                </div>
-		                <!-- /.input group -->
 		              </div>
-		              <!-- /.form group -->
-		              <div class="form-group">
-		                <label>Target End Date:</label>
-
-		                <div class="input-group date">
-		                  <div class="input-group-addon">
-		                    <i class="fa fa-calendar"></i>
-		                  </div>
-		                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
-		                </div>
-									</div>
-
-										<div class="form-group">
-		                  <label>Department assigned</label>
-		                  <select class="form-control">
-												<option disabled selected value> -- select an option -- </option>
-												<option>Loop through department table</option>
-		                  </select>
-		                </div>
-										<!--Display if project owner is same department with department chosen above  -->
-										<div class="form-group">
-											<label>Select team member</label>
-			                <select class="form-control select2" style="width: 100%;">
-												<option disabled selected value> -- select an option -- </option>
-												<option>Loop through all employess with the same department as the project owner</option>
-			                </select>
-			              </div>
-		              </div>
-	              </div>
-	              <div class="modal-footer">
-	                <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
-	                <button type="button" class="btn btn-primary">Add task</button>
-	              </div>
-	            </div>
-	            <!-- /.modal-content -->
-	          </div>
-	          <!-- /.modal-dialog -->
-	        </div>
+		            </div>
+		            <!-- /.box-header -->
+		            <div class="box-body table-responsive no-padding">
+		              <table class="table table-hover" id="table">
+										<thead>
+		                <tr>
+											<th></th>
+		                  <th>ID</th>
+		                  <th>User</th>
+		                  <th>Date</th>
+		                  <th>Status</th>
+		                  <th>Reason</th>
+		                </tr>
+										</thead>
+										<tbody>
+		                <tr>
+											<td class="handle"><i class="fa fa-arrows"></i></td>
+		                  <td>183</td>
+		                  <td>John Doe</td>
+		                  <td>11-7-2014</td>
+		                  <td><span class="label label-success">Approved</span></td>
+		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+		                </tr>
+		                <tr>
+											<td class="handle"><i class="fa fa-arrows"></i></td>
+		                  <td>219</td>
+		                  <td>Alexander Pierce</td>
+		                  <td>11-7-2014</td>
+		                  <td><span class="label label-warning">Pending</span></td>
+		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+		                </tr>
+		                <tr>
+											<td class="handle"><i class="fa fa-arrows"></i></td>
+		                  <td>657</td>
+		                  <td>Bob Doe</td>
+		                  <td>11-7-2014</td>
+		                  <td><span class="label label-primary">Approved</span></td>
+		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+		                </tr>
+		                <tr>
+											<td class="handle"><i class="fa fa-arrows"></i></td>
+		                  <td>175</td>
+		                  <td>Mike Doe</td>
+		                  <td>11-7-2014</td>
+		                  <td><span class="label label-danger">Denied</span></td>
+		                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+		                </tr>
+										</tbody>
+		              </table>
+		            </div>
+		            <!-- /.box-body -->
+		          </div>
+		          <!-- /.box -->
+		        </div>
+		      </div>
 		    </section>
 		    <!-- /.content -->
 		  </div>
@@ -193,6 +156,8 @@
 		<script src="../../assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 		<!-- Select2 -->
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
+		npm install table-dragger --save
+		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
 		  $(function ()
 			{
@@ -207,7 +172,19 @@
  	     $('#taskEndDate').datepicker({
  	       autoclose: true
  	     })
-		  })
+		 });
+
+		 var el = document.getElementById('table');
+		 var dragger = tableDragger(el, {
+		   mode: 'row',
+		   dragHandler: '.handle',
+		   onlyBody: true,
+		   animation: 300
+		 });
+		 dragger.on('drop',function(from, to){
+		   console.log(from);
+		   console.log(to);
+		 });
 		</script>
 
 	</body>
