@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Starter</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -179,7 +178,7 @@ desired effect
 
 <!--THIS IS DIFFERENT PER PAGE  -->
 
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="mainContent" style="display:inline-block">
 
   </div>
   <!-- /.content-wrapper -->

@@ -227,6 +227,44 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function addTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("addTasks");
+		}
+	}
+
+	public function step2()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("step2");
+		}
+	}
+
+	public function step3()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("step3");
+		}
+	}
 	/******************** END OF VIEWS ********************/
 
 	/******************** MY PROJECTS START ********************/
@@ -261,11 +299,13 @@ class controller extends CI_Controller
 
 		$data['project'] = $this->model->addProject($data);
 		$data['dateDiff'] = $this->model->getDateDiff($data);
+		$data['departments'] = $this->model->getAllDepartments($data);
+		$data['counter'] = 1;
 
 		if ($data)
 		{
 			//echo $project['PROJECTTITLE'];
-			$this->load->view('newProjectTask', $data);
+			$this->load->view('addTasks', $data);
 			//redirect('controller/newProject');
 		}
 
