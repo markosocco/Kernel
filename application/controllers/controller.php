@@ -315,6 +315,30 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function addTasksToProject()
+	{
+		$departments = $this->model->getAllDepartments();
+
+		foreach($this->input->post('categories[]') as $category)
+		{
+			foreach ($this->input->post('depts[]') as $dept)
+			{
+				foreach ($departments as $row)
+				{
+					if ($dept == $row['DEPARTMENTNAME'])
+					{
+						$data = array (
+							'TASKTITLE' => $dtrNumber,
+							'CATEGORY' =>  $day,
+							'projects_PROJECTID' => $shiftPeriod,
+							'users_USERID' => $shift
+						);
+					}
+				}
+			}
+		}
+	}
+
 	/******************** MY PROJECTS END ********************/
 
 // DELETE THIS AFTER
