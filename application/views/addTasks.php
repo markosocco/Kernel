@@ -90,7 +90,7 @@
 											<th></th>
 											<th></th>
 		                </tr>
-										<form id='addTasks' name = 'addTasks' action='' method="POST">
+										<form id='addTasks' name = 'addTasks' action='<?php echo base_url('index.php/controller/addTasksToProject/?id=') . $project['PROJECTID']; ?> " ' method="POST">
 		                <tr id="row0">
 											<td>1</td>
 		                  <td><div class="form-group">
@@ -222,7 +222,7 @@
 				$("#step3").click(function()
         {
 					var $id = $(this).attr('data-id');
-					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
+					//$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
 					$("#addTasks").submit();
         	});
         });

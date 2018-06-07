@@ -100,12 +100,6 @@ public function addProject($data)
     return $data->row('datediff');
   }
 
-<<<<<<< HEAD
-  public function getAllDepartments()
-=======
-<<<<<<< HEAD
-// GET DATA FOR THE GANTT CHART
-// TODO: edit condition
   public function getGanttData()
   {
     $condition = "projects.PROJECTID = 1";
@@ -133,11 +127,7 @@ public function addProject($data)
     return $this->db->get()->result_array();
   }
 
-
-
-=======
-  public function getAllDepartments($data)
->>>>>>> d190edf97a9f66864dc25ee77e1d8496488a2356
+  public function getAllDepartments()
   {
     $this->db->select('*');
     $this->db->from('departments');
@@ -145,6 +135,5 @@ public function addProject($data)
 
     return $query->result_array();
   }
->>>>>>> de1a2b12b05a583a294de7763b017149fd5d89f3
 }
 ?>
