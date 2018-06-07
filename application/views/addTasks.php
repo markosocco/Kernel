@@ -64,18 +64,6 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
-					<div class="btn-group">
-						<button type="button" class="btn btn-warning">Return to step 1</button>
-						<button type="button" class="btn btn-primary">Save</button>
-						<button type="button" class="btn btn-success">Proceed to step 3</button>
-					</div>
-
-					<div class="btn-group">
-						<button type="button" class="btn btn-default">Left</button>
-						<button type="button" class="btn btn-default">Middle</button>
-						<button type="button" class="btn btn-default">Right</button>
-					</div>
-
 					<div class="row">
 		        <div class="col-xs-12">
 		          <div class="box">
@@ -138,7 +126,11 @@
 								</div>
 		            <!-- /.box-body -->
 		          </div>
-
+							<div class="btn-group">
+								<button type="button" class="btn btn-warning">Return to step 1</button>
+								<button type="button" class="btn btn-primary">Save</button>
+								<button type="button" class="btn btn-success">Proceed to step 3</button>
+							</div>
 		          <!-- /.box -->
 		        </div>
 		      </div>
