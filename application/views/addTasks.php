@@ -68,7 +68,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Step 2: Enter all tasks for this project</h3>
+		              <h3 class="box-title">Enter all tasks for this project</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -126,12 +126,13 @@
 								</form>
 								</div>
 		            <!-- /.box-body -->
+								<div class="box-footer">
+									<button type="button" class="btn btn-warning">Previous: Project details</button>
+									<button type="button" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Arrange tasks</button>
+									<button type="button" class="btn btn-primary pull-right">Save</button>
+								</div>
 		          </div>
-							<div class="box-footer">
-								<button type="button" class="btn btn-warning">Return to step 1</button>
-								<button type="button" class="btn btn-success pull-right" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</button>
-								<button type="button" class="btn btn-primary pull-right">Save</button>
-							</div>
+
 		          <!-- /.box -->
 		        </div>
 
@@ -169,7 +170,7 @@
 
 				//Date picker
  	     $('#taskStartDate').datepicker({
- 	       autoclose: true
+ 	       autoclose: true;
  	     })
 
  	     $('#taskEndDate').datepicker({
@@ -211,7 +212,7 @@
 
  				});
 
-				$("#step3").click(function()
+				$("#arrangeTask").click(function()
         {
 					var $id = $(this).attr('data-id');
 					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);

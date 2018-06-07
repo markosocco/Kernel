@@ -94,7 +94,7 @@
 	              </div>
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Create Project</button>
+                <button type="submit" class="btn btn-primary pull-right">Next: Add tasks</button>
               </div>
             </form>
           </div>

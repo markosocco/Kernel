@@ -87,8 +87,8 @@
 		                  <th>Category</th>
 											<th>Title</th>
 											<th>Department</th>
-											<th>Start date</th>
-											<th>Target end date</th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
 											<th>Dependencies</th>
 		                </tr>
 		                <tr>
@@ -121,10 +121,13 @@
 				              </div></td>
 		                </tr>
 		              </table>
-									<button type="button" class="btn btn-block btn-primary">Save</button>
-									<button type="button" class="btn btn-block btn-success">Publish</button>
 		            </div>
 		            <!-- /.box-body -->
+								<div class="box-footer">
+									<button type="button" class="btn btn-warning">Previous: Arrange tasks</button>
+									<button type="button" class="btn btn-success pull-right" id="ganttChart">Next: Generate Gantt chart</button>
+									<button type="button" class="btn btn-primary pull-right">Save</button>
+								</div>
 		          </div>
 		          <!-- /.box -->
 		        </div>
