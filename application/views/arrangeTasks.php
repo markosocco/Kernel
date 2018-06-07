@@ -68,7 +68,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Step 3: Organize task sequence and heirarchy</h3>
+		              <h3 class="box-title">Arrange Task Sequence</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -102,10 +102,13 @@
 										<tr id="row1"></tr>
 									</tbody>
 		              </table>
-									<button type="button" class="btn btn-block btn-primary">Save</button>
-									<button type="button" class="btn btn-block btn-success">Next: Schedule tasks</button>
 		            </div>
 		            <!-- /.box-body -->
+								<div class="box-footer">
+									<button type="button" class="btn btn-warning">Previous: Add tasks</button>
+									<button type="button" class="btn btn-success pull-right" id="scheduleTask">Next: Schedule tasks</button>
+									<button type="button" class="btn btn-primary pull-right">Save</button>
+								</div>
 		          </div>
 		          <!-- /.box -->
 		        </div>
