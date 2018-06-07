@@ -58,7 +58,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-						<form role="form" name = "addProject" id = "addProject" action = "addProject" method = "POST">
+						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>

@@ -229,51 +229,6 @@ class controller extends CI_Controller
 
 	public function addTasks()
 	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
-
-		else
-		{
-			$this->load->view("addTasks");
-		}
-	}
-
-	public function arrangeTasks()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
-
-		else
-		{
-			$this->load->view("arrangeTasks");
-		}
-	}
-
-	public function scheduleTasks()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
-
-		else
-		{
-			$this->load->view("scheduleTasks");
-		}
-	}
-	/******************** END OF VIEWS ********************/
-
-	/******************** MY PROJECTS START ********************/
-
-// SAVE NEW PROJECT WITH TITLE, DETAILS, START DATE, END DATE
-	public function addProject()
-	{
-		//$this->load->view("contact");
-
 		$startDate = $this->input->post('startDate');
 		date_default_timezone_set("Singapore");
 		$currDate = date("mm-dd-YYYY");
@@ -314,6 +269,35 @@ class controller extends CI_Controller
 			redirect('controller/contact');
 		}
 	}
+
+	public function arrangeTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("arrangeTasks");
+		}
+	}
+
+	public function scheduleTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("scheduleTasks");
+		}
+	}
+	/******************** END OF VIEWS ********************/
+
+	/******************** MY PROJECTS START ********************/
 
 	public function addTasksToProject()
 	{
