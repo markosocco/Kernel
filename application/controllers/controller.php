@@ -299,7 +299,7 @@ class controller extends CI_Controller
 
 		$data['project'] = $this->model->addProject($data);
 		$data['dateDiff'] = $this->model->getDateDiff($data);
-		$data['departments'] = $this->model->getAllDepartments($data);
+		$data['departments'] = $this->model->getAllDepartments();
 		$data['counter'] = 1;
 
 		if ($data)
@@ -317,26 +317,34 @@ class controller extends CI_Controller
 
 	public function addTasksToProject()
 	{
+		$id = $this->input->get("id");
 		$departments = $this->model->getAllDepartments();
 
-		foreach($this->input->post('categories[]') as $category)
+		foreach ($this->input->post("categories[]") as $i)
 		{
-			foreach ($this->input->post('depts[]') as $dept)
-			{
-				foreach ($departments as $row)
-				{
-					if ($dept == $row['DEPARTMENTNAME'])
-					{
-						$data = array (
-							'TASKTITLE' => $dtrNumber,
-							'CATEGORY' =>  $day,
-							'projects_PROJECTID' => $shiftPeriod,
-							'users_USERID' => $shift
-						);
-					}
-				}
-			}
+			echo $i;
 		}
+
+		// foreach($array as $i)
+		// //foreach($this->input->post("title[]") as $category)
+		// {
+		// 	echo hello;
+		// 	// foreach ($this->input->post('depts[]') as $dept)
+		// 	// {
+		// 	// 	foreach ($departments as $row)
+		// 	// 	{
+		// 	// 		if ($dept == $row['DEPARTMENTNAME'])
+		// 	// 		{
+		// 	// 			$data = array (
+		// 	// 				'TASKTITLE' => $dtrNumber,
+		// 	// 				'CATEGORY' =>  $day,
+		// 	// 				'projects_PROJECTID' => $shiftPeriod,
+		// 	// 				'users_USERID' => $shift
+		// 	// 			);
+		// 	// 		}
+		// 	// 	}
+		// 	// }
+		// }
 	}
 
 	/******************** MY PROJECTS END ********************/

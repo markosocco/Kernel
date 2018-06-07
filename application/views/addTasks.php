@@ -90,11 +90,11 @@
 											<th></th>
 											<th></th>
 		                </tr>
+										<form id='addTasks' name = 'addTasks' action='' method="POST">
 		                <tr id="row0">
 											<td>1</td>
-											<form name = 'addTasks' action='addTasksToProject' method="POST">
 		                  <td><div class="form-group">
-			                  <select class="form-control">
+			                  <select class="form-control" name = "categories[]">
 													<option disabled selected value> -- Select Category -- </option>
 													<option>Main Activity</option>
 				                  <option>Sub Activity</option>
@@ -102,9 +102,9 @@
 			                  </select>
 			                </div></td>
 		                  <td><div class="form-group">
-			                  <input type="text" class="form-control" placeholder="Enter task title">
+			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title[]">
 			                </div></td>
-											<td><select class="form-control">
+											<td><select class="form-control" name = "depts[]">
 												<option disabled selected value> -- Select Department -- </option>
 
 												<?php $counter = 0; ?>
@@ -123,13 +123,14 @@
 		                </tr>
 										<tr id="row1"></tr>
 		              </table>
+								</form>
 								</div>
 		            <!-- /.box-body -->
 		          </div>
 							<div class="btn-group">
 								<button type="button" class="btn btn-warning">Return to step 1</button>
 								<button type="button" class="btn btn-primary">Save</button>
-								<button type="button" class="btn btn-success">Proceed to step 3</button>
+								<button type="button" class="btn btn-success" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</button>
 							</div>
 		          <!-- /.box -->
 		        </div>
@@ -179,7 +180,7 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-					 $('#row' + i).html("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control' name = categories[]><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name = 'taskTitle" + i + "'</div></td>  <td><select class='form-control' id ='dept' name = depts[]><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+					 $('#row' + i).html("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'categories[]'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]'</div></td>  <td><select class='form-control' id ='dept' name = 'depts[]'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
 					 i++;
@@ -207,6 +208,14 @@
 
  				});
 
+				$("#step3").click(function()
+        {
+					var $id = $(this).attr('data-id');
+					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
+					$("#addTasks").submit();
+        	});
+        });
+
 				// var el = document.getElementById('table');
 				// var dragger = tableDragger(el, {
 				//  mode: 'row',
@@ -223,7 +232,6 @@
 				//  console.log(from);
 				//  console.log(to);
 				// });
-	 });
 		</script>
 	</body>
 </html>
