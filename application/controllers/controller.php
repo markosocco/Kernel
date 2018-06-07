@@ -304,7 +304,7 @@ class controller extends CI_Controller
 		$id = $this->input->get("id");
 		$departments = $this->model->getAllDepartments();
 
-		foreach ($this->input->post("categories[]") as $i)
+		foreach ($this->input->post("title[]") as $i)
 		{
 			echo $i;
 		}

@@ -90,7 +90,7 @@
 											<th></th>
 											<th></th>
 		                </tr>
-										<form id='addTasks' name = 'addTasks' action='' method="POST">
+										<form id='addTasks' name = 'addTasks' action='<?php echo base_url('index.php/controller/addTasksToProject/?id=') . $project['PROJECTID'];?> ' method="POST">
 		                <tr id="row0">
 											<td>1</td>
 		                  <td><div class="form-group">
@@ -123,14 +123,15 @@
 		                </tr>
 										<tr id="row1"></tr>
 		              </table>
-								</form>
+
 								</div>
 		            <!-- /.box-body -->
 		          </div>
 							<div class="box-footer">
 								<button type="button" class="btn btn-warning">Return to step 1</button>
-								<button type="button" class="btn btn-success pull-right" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</button>
+								<input type="submit" class="btn btn-success pull-right" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</input>
 								<button type="button" class="btn btn-primary pull-right">Save</button>
+								</form>
 							</div>
 		          <!-- /.box -->
 		        </div>
@@ -215,7 +216,7 @@
         {
 					var $id = $(this).attr('data-id');
 					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
-					$("#addTasks").submit();
+					//$("#addTasks").submit();
         	});
         });
 
