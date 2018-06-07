@@ -317,6 +317,23 @@ class controller extends CI_Controller
 
 	/******************** MY PROJECTS END ********************/
 
+	public function gantt()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$data['ganttData'] = $this->model->getGanttData();
+			$data['preReq'] = $this->model->getPreReqID();
+			$this->load->view("gantt", $data);
+		}
+	}
+
+
+
 // DELETE THIS AFTER
 	public function frame()
 	{
