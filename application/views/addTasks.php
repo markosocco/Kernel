@@ -122,16 +122,18 @@
 		                </tr>
 										<tr id="row1"></tr>
 		              </table>
-								</div>
 		            <!-- /.box-body -->
 		          </div>
-							<div class="btn-group">
+							<div class="box-footer">
 								<button type="button" class="btn btn-warning">Return to step 1</button>
-								<button type="button" class="btn btn-primary">Save</button>
-								<button type="button" class="btn btn-success">Proceed to step 3</button>
+								<button type="button" class="btn btn-success pull-right">Proceed to step 3</button>
+								<button type="button" class="btn btn-primary pull-right">Save</button>
 							</div>
 		          <!-- /.box -->
 		        </div>
+
+				</div>
+
 		      </div>
 		    </section>
 		    <!-- /.content -->

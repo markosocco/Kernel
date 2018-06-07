@@ -240,7 +240,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function step2()
+	public function arrangeTasks()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -249,11 +249,11 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("step2");
+			$this->load->view("arrangeTasks");
 		}
 	}
 
-	public function step3()
+	public function scheduleTasks()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -262,7 +262,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("step3");
+			$this->load->view("scheduleTasks");
 		}
 	}
 	/******************** END OF VIEWS ********************/
