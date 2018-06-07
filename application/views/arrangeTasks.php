@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - Step 2: Arrange tasks</title>
+		<title>Kernel - Arrange tasks</title>
 
 		<meta charset="utf-8">
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -103,7 +103,7 @@
 									</tbody>
 		              </table>
 									<button type="button" class="btn btn-block btn-primary">Save</button>
-									<button type="button" class="btn btn-block btn-success">Proceed to step 3</button>
+									<button type="button" class="btn btn-block btn-success">Next: Schedule tasks</button>
 		            </div>
 		            <!-- /.box-body -->
 		          </div>

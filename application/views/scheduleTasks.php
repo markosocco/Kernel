@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - Step 3: Schedule tasks</title>
+		<title>Kernel - Schedule tasks</title>
 
 		<meta charset="utf-8">
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge">

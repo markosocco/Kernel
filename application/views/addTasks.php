@@ -123,17 +123,28 @@
 		                </tr>
 										<tr id="row1"></tr>
 		              </table>
+<<<<<<< HEAD
 								</form>
 								</div>
+=======
+>>>>>>> d190edf97a9f66864dc25ee77e1d8496488a2356
 		            <!-- /.box-body -->
 		          </div>
-							<div class="btn-group">
+							<div class="box-footer">
 								<button type="button" class="btn btn-warning">Return to step 1</button>
+<<<<<<< HEAD
 								<button type="button" class="btn btn-primary">Save</button>
 								<button type="button" class="btn btn-success" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</button>
+=======
+								<button type="button" class="btn btn-success pull-right">Proceed to step 3</button>
+								<button type="button" class="btn btn-primary pull-right">Save</button>
+>>>>>>> d190edf97a9f66864dc25ee77e1d8496488a2356
 							</div>
 		          <!-- /.box -->
 		        </div>
+
+				</div>
+
 		      </div>
 		    </section>
 		    <!-- /.content -->
