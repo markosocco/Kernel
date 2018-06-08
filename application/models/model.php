@@ -39,8 +39,21 @@ class model extends CI_Model
     return $query->row_array();
   }
 
+// GET PROJECTID
+
+  public function getProjectID($data)
+  {
+    $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND '". $data['PROJECTENDDATE'] ."'";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->row("PROJECTID");
+  }
+
 // SAVE NEW PROJECT TO DB
-  public function addProject($data)
+public function addProject($data)
   {
     $result = $this->db->insert('projects', $data);
 
@@ -85,6 +98,42 @@ class model extends CI_Model
 		$data = $this->db->query($sql);
 
     return $data->row('datediff');
+  }
+
+  public function getGanttData()
+  {
+    $condition = "projects.PROJECTID = 1";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('users', 'tasks.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+// GET PRE-REQUISITE ID
+// TODO: edit condition
+  public function getPreReqID()
+  {
+    $condition = "projects.PROJECTID = 1";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('dependencies', 'tasks.TASKID = dependencies.PRETASKID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllDepartments()
+  {
+    $this->db->select('*');
+    $this->db->from('departments');
+    $query = $this->db->get();
+
+    return $query->result_array();
   }
 }
 ?>

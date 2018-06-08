@@ -227,15 +227,8 @@ class controller extends CI_Controller
 		}
 	}
 
-	/******************** END OF VIEWS ********************/
-
-	/******************** MY PROJECTS START ********************/
-
-// SAVE NEW PROJECT WITH TITLE, DETAILS, START DATE, END DATE
-	public function addProject()
+	public function addTasks()
 	{
-		//$this->load->view("contact");
-
 		$startDate = $this->input->post('startDate');
 		date_default_timezone_set("Singapore");
 		$currDate = date("mm-dd-YYYY");
@@ -261,11 +254,13 @@ class controller extends CI_Controller
 
 		$data['project'] = $this->model->addProject($data);
 		$data['dateDiff'] = $this->model->getDateDiff($data);
+		$data['departments'] = $this->model->getAllDepartments();
+		$data['counter'] = 1;
 
 		if ($data)
 		{
 			//echo $project['PROJECTTITLE'];
-			$this->load->view('newProjectTask', $data);
+			$this->load->view('addTasks', $data);
 			//redirect('controller/newProject');
 		}
 
@@ -275,7 +270,85 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function arrangeTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("arrangeTasks");
+		}
+	}
+
+	public function scheduleTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("scheduleTasks");
+		}
+	}
+	/******************** END OF VIEWS ********************/
+
+	/******************** MY PROJECTS START ********************/
+
+	public function addTasksToProject()
+	{
+		$id = $this->input->get("id");
+		$departments = $this->model->getAllDepartments();
+
+		foreach ($this->input->post("title[]") as $i)
+		{
+			echo $i;
+		}
+
+		// foreach($array as $i)
+		// //foreach($this->input->post("title[]") as $category)
+		// {
+		// 	echo hello;
+		// 	// foreach ($this->input->post('depts[]') as $dept)
+		// 	// {
+		// 	// 	foreach ($departments as $row)
+		// 	// 	{
+		// 	// 		if ($dept == $row['DEPARTMENTNAME'])
+		// 	// 		{
+		// 	// 			$data = array (
+		// 	// 				'TASKTITLE' => $dtrNumber,
+		// 	// 				'CATEGORY' =>  $day,
+		// 	// 				'projects_PROJECTID' => $shiftPeriod,
+		// 	// 				'users_USERID' => $shift
+		// 	// 			);
+		// 	// 		}
+		// 	// 	}
+		// 	// }
+		// }
+	}
+
 	/******************** MY PROJECTS END ********************/
+
+	public function gantt()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$data['ganttData'] = $this->model->getGanttData();
+			$data['preReq'] = $this->model->getPreReqID();
+			$this->load->view("gantt", $data);
+		}
+	}
+
+
 
 // DELETE THIS AFTER
 	public function frame()

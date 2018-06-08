@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - New Project</title>
+		<title>Kernel - Arrange tasks</title>
 
 		<meta charset="utf-8">
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +13,8 @@
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/Ionicons/css/ionicons.min.css">
 	  <!-- Theme style -->
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>dist/css/AdminLTE.css">
+		<!-- Select2 -->
+	  <link rel="stylesheet" href="../../assets/bower_components/select2/dist/css/select2.min.css">
 		<!-- bootstrap datepicker -->
 		<link rel="stylesheet" href="../../assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 	  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -31,7 +33,7 @@
 	  <link rel="stylesheet"
 	        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectStyle.css")?>"> -->
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<div class="wrapper">
@@ -40,65 +42,77 @@
 		    <!-- Content Header (Page header) -->
 		    <section class="content-header">
 		      <h1>
-		        Create a new project
-		        <small>Let's create a new project</small>
+		        <?php echo $project['PROJECTTITLE'] ?>
+
+						<?php if ($dateDiff <= 1):
+							$diff = $dateDiff + 1;?>
+							<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " day remaining"?></small>
+							<?php endif; ?>
+
+						<?php if ($dateDiff > 1):
+							$diff = $dateDiff + 1;
+							?>
+						<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " days remaining"?></small>
+						<?php endif; ?>
 		      </h1>
 		      <ol class="breadcrumb">
 		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 		        <li class="active">New Project</li>
+						<li class="active"><?php echo $project['PROJECTTITLE'] . " Tasks" ?></li>
 		      </ol>
 		    </section>
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<div class="row">
+		        <div class="col-xs-12">
+		          <div class="box">
+		            <div class="box-header">
+		              <h3 class="box-title">Arrange Task Sequence</h3>
+		              <div class="box-tools">
+		                <div class="input-group input-group-sm" style="width: 150px;">
+		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-					<div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Input project details</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Project Title</label>
-									<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
-                </div>
-                <div class="form-group">
-									<label>Project Details</label>
-									<textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
-                </div>
-
-								<div class="form-group">
-	                <label>Start Date:</label>
-
-	                <div class="input-group date">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-calendar"></i>
-	                  </div>
-	                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
-	                </div>
-	                <!-- /.input group -->
-	              </div>
-	              <!-- /.form group -->
-	              <div class="form-group">
-	                <label>Target End Date:</label>
-
-	                <div class="input-group date">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-calendar"></i>
-	                  </div>
-	                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
-	                </div>
-	                <!-- /.input group -->
-	              </div>
-
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary pull-right">Next: Add tasks</button>
-              </div>
-            </form>
-          </div>
-
+		                  <div class="input-group-btn">
+		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+		                  </div>
+		                </div>
+		              </div>
+		            </div>
+		            <!-- /.box-header -->
+		            <div class="box-body table-responsive no-padding">
+		              <table class="table table-hover" id="table">
+										<thead>
+		                <tr>
+		                  <th></th>
+		                  <th>Category</th>
+											<th>Title</th>
+											<th>Department</th>
+											<th></th>
+											<th></th>
+		                </tr>
+									</thead>
+									<tbody>
+		                <tr id="row0">
+											<td class="handle"><i class="fa fa-arrows"></i></td>
+		                  <td>Get Task Category</td>
+		                  <td>Get Task Title</td>
+											<td>Get Department assigned</td>
+		                </tr>
+										<tr id="row1"></tr>
+									</tbody>
+		              </table>
+		            </div>
+		            <!-- /.box-body -->
+								<div class="box-footer">
+									<button type="button" class="btn btn-warning">Previous: Add tasks</button>
+									<button type="button" class="btn btn-success pull-right" id="scheduleTask">Next: Schedule tasks</button>
+									<button type="button" class="btn btn-primary pull-right">Save</button>
+								</div>
+		          </div>
+		          <!-- /.box -->
+		        </div>
+		      </div>
 		    </section>
 		    <!-- /.content -->
 		  </div>
@@ -120,20 +134,35 @@
 		<!-- bootstrap datepicker -->
 		<script src="../../assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 		<!-- Select2 -->
-	  <link rel="stylesheet" href="../../assets/bower_components/select2/dist/css/select2.min.css">
-
+		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
+		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
 		  $(function ()
 			{
+				//Initialize Select2 Elements
+		    $('.select2').select2()
+
 				//Date picker
- 	     $('#startDate').datepicker({
+ 	     $('#taskStartDate').datepicker({
  	       autoclose: true
  	     })
 
- 	     $('#endDate').datepicker({
+ 	     $('#taskEndDate').datepicker({
  	       autoclose: true
  	     })
-		  })
+		 });
+
+		 var el = document.getElementById('table');
+		 var dragger = tableDragger(el, {
+		   mode: 'row',
+		   dragHandler: '.handle',
+		   onlyBody: true,
+		   animation: 300
+		 });
+		 dragger.on('drop',function(from, to){
+		   console.log(from);
+		   console.log(to);
+		 });
 		</script>
 
 	</body>

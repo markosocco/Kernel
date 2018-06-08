@@ -96,7 +96,7 @@
 									<div class="form-group">
 	                  <label>Select task category</label>
 	                  <select class="form-control">
-											<option disabled selected value> -- select an option -- </option>
+											<option disabled selected value> -- Select an option -- </option>
 											<option>Main Activity</option>
 		                  <option>Sub Activity</option>
 		                  <option>Task</option>
@@ -143,11 +143,20 @@
 		                  </div>
 		                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
 		                </div>
+									</div>
+
 										<div class="form-group">
 		                  <label>Department assigned</label>
 		                  <select class="form-control">
 												<option disabled selected value> -- select an option -- </option>
-												<option>Loop through department table</option>
+												<?php
+
+												foreach ($departments as $row)
+												{
+													echo "<option>" . $row['DEPARTMENTNAME'] . "</option>";
+												}
+
+												?>
 		                  </select>
 		                </div>
 										<!--Display if project owner is same department with department chosen above  -->
@@ -155,7 +164,14 @@
 											<label>Select team member</label>
 			                <select class="form-control select2" style="width: 100%;">
 												<option disabled selected value> -- select an option -- </option>
-												<option>Loop through all employess with the same department as the project owner</option>
+												<?php
+
+												foreach ($departments as $row)
+												{
+													echo "<option>" . $row['DEPARTMENTNAME'] . "</option>";
+												}
+
+												?>
 			                </select>
 			              </div>
 		              </div>
