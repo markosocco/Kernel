@@ -34,7 +34,8 @@
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<div class="wrapper">
+		<?php include_once("frame.php"); ?>
+
 
 			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
@@ -102,6 +103,8 @@
 		    </section>
 		    <!-- /.content -->
 		  </div>
+			<?php include_once("footer.php"); ?>
+
 
 		</div>
 		<!-- ./wrapper -->
@@ -123,6 +126,8 @@
 	  <link rel="stylesheet" href="../../assets/bower_components/select2/dist/css/select2.min.css">
 
 		<script>
+		$("#myProjects").addClass("active");
+
 		  $(function ()
 			{
 				//Date picker

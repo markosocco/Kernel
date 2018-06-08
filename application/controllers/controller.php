@@ -69,7 +69,7 @@ class controller extends CI_Controller
 				$sessionData = $this->model->getUserData($data);
 				$this->session->set_userdata($sessionData);
 
-				redirect('controller/frame');
+				redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {

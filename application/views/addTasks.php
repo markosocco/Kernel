@@ -36,7 +36,7 @@
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<div class="wrapper">
+		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
@@ -138,6 +138,10 @@
 								<button type="button" class="btn btn-primary pull-right">Save</button>
 								</form>
 							</div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f45a6fc3f0d71e1f09c32b85b6bc54b2c65474b
 		          <!-- /.box -->
 		        </div>
 
@@ -146,6 +150,8 @@
 		      </div>
 		    </section>
 		    <!-- /.content -->
+				<?php require("footer.php"); ?>
+
 		  </div>
 
 		</div>
@@ -168,6 +174,8 @@
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
+			$("#myProjects").addClass("active");
+
 		  $(function ()
 			{
 				//Initialize Select2 Elements
@@ -175,7 +183,7 @@
 
 				//Date picker
  	     $('#taskStartDate').datepicker({
- 	       autoclose: true;
+ 	       autoclose: true
  	     })
 
  	     $('#taskEndDate').datepicker({
