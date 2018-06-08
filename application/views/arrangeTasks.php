@@ -36,7 +36,7 @@
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<div class="wrapper">
+		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
@@ -116,6 +116,8 @@
 		    </section>
 		    <!-- /.content -->
 		  </div>
+			<?php require("footer.php"); ?>
+
 
 		</div>
 		<!-- ./wrapper -->
@@ -137,6 +139,8 @@
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
+		$("#myProjects").addClass("active");
+
 		  $(function ()
 			{
 				//Initialize Select2 Elements

@@ -36,7 +36,7 @@
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<div class="wrapper">
+		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
@@ -132,16 +132,13 @@
 									<button type="button" class="btn btn-primary pull-right">Save</button>
 								</div>
 		          </div>
-<<<<<<< HEAD
 							<div class="box-footer">
 								<button type="button" class="btn btn-warning">Return to step 1</button>
 								<input type="submit" class="btn btn-success pull-right" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</input>
 								<button type="button" class="btn btn-primary pull-right">Save</button>
 								</form>
 							</div>
-=======
 
->>>>>>> 6f530cc096028f60fff8ba611c06ed766e6a76fe
 		          <!-- /.box -->
 		        </div>
 
@@ -150,6 +147,8 @@
 		      </div>
 		    </section>
 		    <!-- /.content -->
+				<?php require("footer.php"); ?>
+
 		  </div>
 
 		</div>
@@ -172,6 +171,8 @@
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
+			$("#myProjects").addClass("active");
+
 		  $(function ()
 			{
 				//Initialize Select2 Elements
@@ -179,7 +180,7 @@
 
 				//Date picker
  	     $('#taskStartDate').datepicker({
- 	       autoclose: true;
+ 	       autoclose: true
  	     })
 
  	     $('#taskEndDate').datepicker({

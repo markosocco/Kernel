@@ -5,7 +5,7 @@
 		<!-- <link rel = "stylesheet" href = "<?php //echo base_url("/assets/css/myProjectsStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<?php include_once("frame.php"); ?>
+		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
