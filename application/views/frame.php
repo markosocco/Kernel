@@ -155,9 +155,9 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Project Management</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
-        <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-link"></i> <span>My Projects</span></a></li>
-        <li><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-link"></i> <span>My Team</span></a></li>
+        <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
+        <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-link"></i> <span>My Projects</span></a></li>
+        <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-link"></i> <span>My Team</span></a></li>
         <!-- <li class="treeview">
           <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
@@ -177,22 +177,15 @@ desired effect
 
   <!-- Content Wrapper. Contains page content -->
 
-<!--THIS IS DIFFERENT PER PAGE  -->
+  <!--THIS IS DIFFERENT PER PAGE  -->
 
-  <div class="content-wrapper">
+    <!-- <div class="content-wrapper">
 
-  </div>
+    </div> -->
+
   <!-- /.content-wrapper -->
 
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-      Developed by Team Lowkey of DLSU
-    </div>
-    <!-- Default to the left -->
-    <strong>&copy; 2018 <a href="http://www.ilovetaters.com">Taters Enterprises Inc</a>.</strong> All rights reserved.
-  </footer>
+
 
   <!-- Control Sidebar -->
 
@@ -200,7 +193,7 @@ desired effect
   <!-- Add the sidebar's background. This div must be placed
   immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
-</div>
+<!-- </div> -->
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
@@ -215,5 +208,6 @@ desired effect
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+
 </body>
 </html>
