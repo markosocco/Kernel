@@ -132,16 +132,12 @@
 									<button type="button" class="btn btn-primary pull-right">Save</button>
 								</div>
 		          </div>
-<<<<<<< HEAD
 							<div class="box-footer">
 								<button type="button" class="btn btn-warning">Return to step 1</button>
 								<input type="submit" class="btn btn-success pull-right" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</input>
 								<button type="button" class="btn btn-primary pull-right">Save</button>
 								</form>
 							</div>
-=======
-
->>>>>>> 6f530cc096028f60fff8ba611c06ed766e6a76fe
 		          <!-- /.box -->
 		        </div>
 
