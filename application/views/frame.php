@@ -178,7 +178,7 @@ desired effect
 
   <!--THIS IS DIFFERENT PER PAGE  -->
 
-  <div class="content-wrapper" id="mainContent" style="display:inline-block">
+  <!-- <div class="content-wrapper" id="mainContent" style="display:inline-block"> -->
 
   <!-- /.content-wrapper -->
 

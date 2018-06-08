@@ -6,19 +6,6 @@
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php include_once("frame.php"); ?>
-		<div class="wrapper">
-			<div class="content-wrapper">
-		    <!-- Content Header (Page header) -->
-		    <section class="content-header">
-		      <h1>
-		        My Projects
-		        <small>What are my projects</small>
-		      </h1>
-		      <ol class="breadcrumb">
-		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-		        <!-- <li class="active">Here</li> -->
-		      </ol>
-		    </section>
 
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
@@ -97,11 +84,9 @@
 							</div>
 						</div>
 						<!-- ./col -->
-					</div>
-
 				</section>
-				<!-- /.content -->
 			</div>
+				<!-- /.content -->
 
 			<?php require("footer.php"); ?>
 
