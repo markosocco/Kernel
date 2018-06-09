@@ -100,6 +100,11 @@ public function addProject($data)
     return $data->row('datediff');
   }
 
+<<<<<<< HEAD
+// GET DATA FOR THE GANTT CHART
+// TODO: edit condition
+=======
+>>>>>>> 769290f22e1a1d4846f9050feb12fc466fb8bdb5
   public function getGanttData()
   {
     $condition = "projects.PROJECTID = 1";
@@ -115,17 +120,32 @@ public function addProject($data)
 
 // GET PRE-REQUISITE ID
 // TODO: edit condition
-  public function getPreReqID()
+  public function getDependecies()
   {
     $condition = "projects.PROJECTID = 1";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-    $this->db->join('dependencies', 'tasks.TASKID = dependencies.PRETASKID');
+    $this->db->join('dependencies', 'tasks.TASKID = dependencies.tasks_POSTTASKID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
   }
+<<<<<<< HEAD
+//
+//
+//
+// =======
+//   public function getAllDepartments($data)
+//   {
+//     $this->db->select('*');
+//     $this->db->from('departments');
+//     $query = $this->db->get();
+//
+//     return $query->result_array();
+//   }
+// >>>>>>> de1a2b12b05a583a294de7763b017149fd5d89f3
+=======
 
   public function getAllDepartments()
   {
@@ -135,5 +155,6 @@ public function addProject($data)
 
     return $query->result_array();
   }
+>>>>>>> 769290f22e1a1d4846f9050feb12fc466fb8bdb5
 }
 ?>
