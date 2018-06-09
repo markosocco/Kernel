@@ -356,11 +356,8 @@ class controller extends CI_Controller
 		else
 		{
 			$data['ganttData'] = $this->model->getGanttData();
-<<<<<<< HEAD
 			// $data['preReq'] = $this->model->getPreReqID();
-=======
 			$data['dependencies'] = $this->model->getDependecies();
->>>>>>> af9f08c110cd447f4df960fd177f5f403277fa99
 			$this->load->view("gantt", $data);
 		}
 	}

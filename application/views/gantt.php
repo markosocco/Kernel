@@ -140,7 +140,6 @@
 
       // $curTask = $row['CATEGORY'];
 
-// DATE FORMATTING
       $startDate = $row['TASKSTARTDATE'];
 
       $startMonth = substr($startDate, 0, 2);
@@ -162,10 +161,6 @@
       } else {
         $departmentName = $row['DEPARTMENTNAME'];
       }
-
-// TODO: Completion rate computation
-// TODO: Check if parent or not
-// TODO: How to group?
 
         $parent = 1;
         $hasChildren = false;
@@ -211,12 +206,52 @@
 //           $group = 1;
 //       }
 
+// FOR GROUPING
+			$currentTask = $row['TASKID'];
+      $group = 0;
+			$isParent = 0; // 1 = true, 0 = false
+			foreach ($ganttData as $data) {
+				if($data['tasks_TASKPARENT'] == $currentTask ){
+					$group = 1;
+				}
+			}
+
+// FOR PARENT
+			if($row['tasks_TASKPARENT'] == NULL){
+				$parent = 0;
+			} else {
+				$parent = $row['tasks_TASKPARENT'];
+			}
+
+// FOR COMPLETION
+			if($row['TASKSTATUS'] == 'Pending'){
+				$complete = 0;
+			} else {
+				$complete = 100;
+			}
+
 // TODO: CHECK FOR PREREQ
+		$dependency = '';
+		foreach ($dependencies as $data) {
+			if($currentTask == $data['tasks_POSTTASKID']){
+				if($row['TASKSTARTDATE'] == $data["TASKSTARTDATE"])
+				{
+					echo "console.log('".$row['TASKSTARTDATE']." = ".$data["TASKSTARTDATE"]."');";
+					$dependency = $data['PRETASKID'];
+
+					echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
+		      $row['TASKTITLE'] . "','" . $formattedStartDate . "','" . $formattedEndDate . "'," .
+		      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+					$parent . ", 1, '". $dependency."SS', '', '', g));";
+				}
+			}
+		}
 
 
       echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
       $row['TASKTITLE'] . "','" . $formattedStartDate . "','" . $formattedEndDate . "'," .
-      "'gtaskRed', '', 0, '" . $departmentName . "', " . $completion . ", " . $group . ", " . $parent . ", 1, '', '', '', g));";
+      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+			$parent . ", 1, '". $dependency."', '', '', g));";
 
     }
 
