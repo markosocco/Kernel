@@ -317,6 +317,8 @@ class controller extends CI_Controller
 
 	/******************** MY PROJECTS END ********************/
 
+
+	/******************** GANTT CHART DELETE THIS AFTER ********************/
 	public function gantt()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -327,7 +329,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['ganttData'] = $this->model->getGanttData();
-			$data['preReq'] = $this->model->getPreReqID();
+			$data['dependencies'] = $this->model->getDependecies();
 			$this->load->view("gantt", $data);
 		}
 	}
