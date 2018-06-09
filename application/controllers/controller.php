@@ -302,11 +302,22 @@ class controller extends CI_Controller
 	public function addTasksToProject()
 	{
 		$id = $this->input->get("id");
+		$temp = $this->input->get("counter");
+		$category = $this->input->post('category');
+		// $counter = $temp - 1;
 		$departments = $this->model->getAllDepartments();
 
-		foreach ($this->input->post("title[]") as $i)
+		// for ($x = 0; $x <= $temp; $x++)
+		// {
+		// 	echo $this->input->post('category' . $x);
+		// }
+
+		$data = $this->input->post();
+
+		foreach ($data as $key => $value)
 		{
-			echo $i;
+			$$key = $value;
+			echo $$key . "<br>";
 		}
 
 		// foreach($array as $i)
@@ -343,7 +354,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['ganttData'] = $this->model->getGanttData();
-			$data['preReq'] = $this->model->getPreReqID();
+			// $data['preReq'] = $this->model->getPreReqID();
 			$this->load->view("gantt", $data);
 		}
 	}

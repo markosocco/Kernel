@@ -90,11 +90,11 @@
 											<th></th>
 											<th></th>
 		                </tr>
-										<form id='addTasks' name = 'addTasks' action='<?php echo base_url('index.php/controller/addTasksToProject/?id=') . $project['PROJECTID'];?> ' method="POST">
+										<form id='addTasks' name = 'addTasks' action='' method="POST">
 		                <tr id="row0">
 											<td>1</td>
 		                  <td><div class="form-group">
-			                  <select class="form-control" name = "categories[]">
+			                  <select class="form-control" name = "category0">
 													<option disabled selected value> -- Select Category -- </option>
 													<option>Main Activity</option>
 				                  <option>Sub Activity</option>
@@ -102,9 +102,9 @@
 			                  </select>
 			                </div></td>
 		                  <td><div class="form-group">
-			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title[]">
+			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title0">
 			                </div></td>
-											<td><select class="form-control" name = "depts[]">
+											<td><select class="form-control" name = "department0">
 												<option disabled selected value> -- Select Department -- </option>
 
 												<?php $counter = 0; ?>
@@ -121,9 +121,12 @@
 										<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
 										<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 		                </tr>
+
+
+
 										<tr id="row1"></tr>
 		              </table>
-
+								</form>
 								</div>
 		            <!-- /.box-body -->
 								<div class="box-footer">
@@ -132,16 +135,6 @@
 									<button type="button" class="btn btn-primary pull-right">Save</button>
 								</div>
 		          </div>
-							<div class="box-footer">
-								<button type="button" class="btn btn-warning">Return to step 1</button>
-								<input type="submit" class="btn btn-success pull-right" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</input>
-								<button type="button" class="btn btn-primary pull-right">Save</button>
-								</form>
-							</div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 1f45a6fc3f0d71e1f09c32b85b6bc54b2c65474b
 		          <!-- /.box -->
 		        </div>
 
@@ -197,7 +190,7 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-					 $('#row' + i).html("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'categories[]'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]'</div></td>  <td><select class='form-control' id ='dept' name = 'depts[]'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+					 $('#row' + i).append("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
 					 i++;
@@ -206,14 +199,16 @@
 
 				$(document).on("click", "a.delButton", function() {
 
-					var i = $(this).attr('data-id');
-					//var before = i - 1;
-					// var after = i + 1;
-					// var counter = $(this).attr('counter');
-					// console.log(counter);
+					// console.log("before removing: " + x);
 
-					$('#row' + i).remove();
+					if (x > 2)
+					{
+						x = x -1;
+						var i = $(this).attr('data-id');
 
+						$('#row' + i).remove();
+						console.log("after removing: " + x);
+					}
 
 					// for (var x = 0; x <= counter; x++)
 					// {
@@ -228,8 +223,10 @@
 				$("#arrangeTask").click(function()
         {
 					var $id = $(this).attr('data-id');
-					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
-					//$("#addTasks").submit();
+					// console.log(x);
+
+					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id + "&counter=" + x );
+					$("#addTasks").submit();
         	});
         });
 

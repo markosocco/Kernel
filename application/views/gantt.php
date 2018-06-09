@@ -138,7 +138,7 @@
     foreach($ganttData as $row)
     {
 
-      $curTask = $row['CATEGORY'];
+      // $curTask = $row['CATEGORY'];
 
 // DATE FORMATTING
       $startDate = $row['TASKSTARTDATE'];
@@ -171,24 +171,25 @@
         $hasChildren = false;
         $completion = 100;
         $MAcounter = 0;
-
-        if ($row['CATEGORY'] == 1){
-          $MAcounter++;
-        }
-
-        foreach ($ganttData as $row) {
-
-          if($row['CATEGORY'] != $curTask){
-            if ($row['CATEGORY'] == 1)
-            {
-              $MAcurrent = $row;
-            }
-
-            else {
-              $SAcurrent = $row;
-            }
-          }
-        }
+				$group = 0;
+				//
+        // if ($row['CATEGORY'] == 1){
+        //   $MAcounter++;
+        // }
+				//
+        // foreach ($ganttData as $row) {
+				//
+        //   if($row['CATEGORY'] != $curTask){
+        //     if ($row['CATEGORY'] == 1)
+        //     {
+        //       $MAcurrent = $row;
+        //     }
+				//
+        //     else {
+        //       $SAcurrent = $row;
+        //     }
+        //   }
+        // }
 
 
 // // CATEGORY 3 = TASKS
