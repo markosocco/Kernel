@@ -36,7 +36,7 @@
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<div class="wrapper">
+		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
@@ -68,7 +68,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Step 2: Enter all tasks for this project</h3>
+		              <h3 class="box-title">Enter all tasks for this project</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -90,10 +90,11 @@
 											<th></th>
 											<th></th>
 		                </tr>
+										<form id='addTasks' name = 'addTasks' action='<?php echo base_url('index.php/controller/addTasksToProject/?id=') . $project['PROJECTID'];?> ' method="POST">
 		                <tr id="row0">
 											<td>1</td>
 		                  <td><div class="form-group">
-			                  <select class="form-control">
+			                  <select class="form-control" name = "categories[]">
 													<option disabled selected value> -- Select Category -- </option>
 													<option>Main Activity</option>
 				                  <option>Sub Activity</option>
@@ -101,9 +102,9 @@
 			                  </select>
 			                </div></td>
 		                  <td><div class="form-group">
-			                  <input type="text" class="form-control" placeholder="Enter task title">
+			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title[]">
 			                </div></td>
-											<td><select class="form-control">
+											<td><select class="form-control" name = "depts[]">
 												<option disabled selected value> -- Select Department -- </option>
 
 												<?php $counter = 0; ?>
@@ -122,19 +123,35 @@
 		                </tr>
 										<tr id="row1"></tr>
 		              </table>
+
 								</div>
 		            <!-- /.box-body -->
+								<div class="box-footer">
+									<button type="button" class="btn btn-warning">Previous: Project details</button>
+									<button type="button" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Arrange tasks</button>
+									<button type="button" class="btn btn-primary pull-right">Save</button>
+								</div>
 		          </div>
-							<div class="btn-group">
+							<div class="box-footer">
 								<button type="button" class="btn btn-warning">Return to step 1</button>
-								<button type="button" class="btn btn-primary">Save</button>
-								<button type="button" class="btn btn-success">Proceed to step 3</button>
+								<input type="submit" class="btn btn-success pull-right" id="step3" data-id= <?php echo $project['PROJECTID']; ?>>Proceed to step 3</input>
+								<button type="button" class="btn btn-primary pull-right">Save</button>
+								</form>
 							</div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f45a6fc3f0d71e1f09c32b85b6bc54b2c65474b
 		          <!-- /.box -->
 		        </div>
+
+				</div>
+
 		      </div>
 		    </section>
 		    <!-- /.content -->
+				<?php require("footer.php"); ?>
+
 		  </div>
 
 		</div>
@@ -157,6 +174,8 @@
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
+			$("#myProjects").addClass("active");
+
 		  $(function ()
 			{
 				//Initialize Select2 Elements
@@ -178,7 +197,7 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-					 $('#row' + i).html("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title'</div></td>  <td><select class='form-control' id ='dept'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+					 $('#row' + i).html("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'categories[]'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]'</div></td>  <td><select class='form-control' id ='dept' name = 'depts[]'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
 					 i++;
@@ -206,6 +225,14 @@
 
  				});
 
+				$("#arrangeTask").click(function()
+        {
+					var $id = $(this).attr('data-id');
+					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
+					//$("#addTasks").submit();
+        	});
+        });
+
 				// var el = document.getElementById('table');
 				// var dragger = tableDragger(el, {
 				//  mode: 'row',
@@ -222,7 +249,6 @@
 				//  console.log(from);
 				//  console.log(to);
 				// });
-	 });
 		</script>
 	</body>
 </html>

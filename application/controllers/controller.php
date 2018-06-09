@@ -69,7 +69,7 @@ class controller extends CI_Controller
 				$sessionData = $this->model->getUserData($data);
 				$this->session->set_userdata($sessionData);
 
-				redirect('controller/frame');
+				redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -229,51 +229,6 @@ class controller extends CI_Controller
 
 	public function addTasks()
 	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
-
-		else
-		{
-			$this->load->view("addTasks");
-		}
-	}
-
-	public function step2()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
-
-		else
-		{
-			$this->load->view("step2");
-		}
-	}
-
-	public function step3()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
-
-		else
-		{
-			$this->load->view("step3");
-		}
-	}
-	/******************** END OF VIEWS ********************/
-
-	/******************** MY PROJECTS START ********************/
-
-// SAVE NEW PROJECT WITH TITLE, DETAILS, START DATE, END DATE
-	public function addProject()
-	{
-		//$this->load->view("contact");
-
 		$startDate = $this->input->post('startDate');
 		date_default_timezone_set("Singapore");
 		$currDate = date("mm-dd-YYYY");
@@ -299,7 +254,7 @@ class controller extends CI_Controller
 
 		$data['project'] = $this->model->addProject($data);
 		$data['dateDiff'] = $this->model->getDateDiff($data);
-		$data['departments'] = $this->model->getAllDepartments($data);
+		$data['departments'] = $this->model->getAllDepartments();
 		$data['counter'] = 1;
 
 		if ($data)
@@ -313,6 +268,67 @@ class controller extends CI_Controller
 		{
 			redirect('controller/contact');
 		}
+	}
+
+	public function arrangeTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("arrangeTasks");
+		}
+	}
+
+	public function scheduleTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("scheduleTasks");
+		}
+	}
+	/******************** END OF VIEWS ********************/
+
+	/******************** MY PROJECTS START ********************/
+
+	public function addTasksToProject()
+	{
+		$id = $this->input->get("id");
+		$departments = $this->model->getAllDepartments();
+
+		foreach ($this->input->post("title[]") as $i)
+		{
+			echo $i;
+		}
+
+		// foreach($array as $i)
+		// //foreach($this->input->post("title[]") as $category)
+		// {
+		// 	echo hello;
+		// 	// foreach ($this->input->post('depts[]') as $dept)
+		// 	// {
+		// 	// 	foreach ($departments as $row)
+		// 	// 	{
+		// 	// 		if ($dept == $row['DEPARTMENTNAME'])
+		// 	// 		{
+		// 	// 			$data = array (
+		// 	// 				'TASKTITLE' => $dtrNumber,
+		// 	// 				'CATEGORY' =>  $day,
+		// 	// 				'projects_PROJECTID' => $shiftPeriod,
+		// 	// 				'users_USERID' => $shift
+		// 	// 			);
+		// 	// 		}
+		// 	// 	}
+		// 	// }
+		// }
 	}
 
 	/******************** MY PROJECTS END ********************/

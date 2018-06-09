@@ -34,7 +34,8 @@
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
-		<div class="wrapper">
+		<?php include_once("frame.php"); ?>
+
 
 			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
@@ -58,7 +59,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-						<form role="form" name = "addProject" id = "addProject" action = "addProject" method = "POST">
+						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
@@ -94,7 +95,7 @@
 	              </div>
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Create Project</button>
+                <button type="submit" class="btn btn-primary pull-right">Next: Add tasks</button>
               </div>
             </form>
           </div>
@@ -102,6 +103,8 @@
 		    </section>
 		    <!-- /.content -->
 		  </div>
+			<?php include_once("footer.php"); ?>
+
 
 		</div>
 		<!-- ./wrapper -->
@@ -123,6 +126,8 @@
 	  <link rel="stylesheet" href="../../assets/bower_components/select2/dist/css/select2.min.css">
 
 		<script>
+		$("#myProjects").addClass("active");
+
 		  $(function ()
 			{
 				//Date picker

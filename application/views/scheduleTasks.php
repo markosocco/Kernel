@@ -1,11 +1,11 @@
 <html>
 	<head>
-		<title>Kernel - Step 2: Arrange tasks</title>
+		<title>Kernel - Schedule tasks</title>
 
 		<meta charset="utf-8">
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	  <!-- Tell the browser to be responsive to screen width -->
-	  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	  <!-- <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"> -->
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
 	  <!-- Font Awesome -->
 	  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/font-awesome/css/font-awesome.min.css">
@@ -68,7 +68,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Step 3: Organize task sequence and heirarchy</h3>
+		              <h3 class="box-title">Activities and tasks</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -81,31 +81,53 @@
 		            </div>
 		            <!-- /.box-header -->
 		            <div class="box-body table-responsive no-padding">
-		              <table class="table table-hover" id="table">
-										<thead>
+		              <table class="table table-hover">
 		                <tr>
-		                  <th></th>
+		                  <th>No.</th>
 		                  <th>Category</th>
 											<th>Title</th>
 											<th>Department</th>
-											<th></th>
-											<th></th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
+											<th>Dependencies</th>
 		                </tr>
-									</thead>
-									<tbody>
-		                <tr id="row0">
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>Get Task Category</td>
-		                  <td>Get Task Title</td>
-											<td>Get Department assigned</td>
+		                <tr>
+		                  <td>1</td>
+		                  <td>Main</td>
+		                  <td>Receive lease offer</td>
+											<td>Marketing</td>
+											<td><div class="form-group">
+				                <div class="input-group date">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-calendar"></i>
+				                  </div>
+				                  <input type="text" class="form-control pull-right" id="taskStartDate" name="taskStartDate" required>
+				                </div>
+				                <!-- /.input group -->
+				              </div></td>
+											<td><div class="form-group">
+				                <div class="input-group date">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-calendar"></i>
+				                  </div>
+				                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
+				                </div>
+											</div></td>
+											<td><div class="form-group">
+				                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites"
+				                        style="width: 100%;">
+				                  <option>List per number of total task count</option>
+				                </select>
+				              </div></td>
 		                </tr>
-										<tr id="row1"></tr>
-									</tbody>
 		              </table>
-									<button type="button" class="btn btn-block btn-primary">Save</button>
-									<button type="button" class="btn btn-block btn-success">Proceed to step 3</button>
 		            </div>
 		            <!-- /.box-body -->
+								<div class="box-footer">
+									<button type="button" class="btn btn-warning">Previous: Arrange tasks</button>
+									<button type="button" class="btn btn-success pull-right" id="ganttChart">Next: Generate Gantt chart</button>
+									<button type="button" class="btn btn-primary pull-right">Save</button>
+								</div>
 		          </div>
 		          <!-- /.box -->
 		        </div>
@@ -132,7 +154,6 @@
 		<script src="../../assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 		<!-- Select2 -->
 		<script src="../../assets/bower_components/select2/dist/js/select2.full.min.js"></script>
-		<script src="../../tabledragger/dist/table-dragger.min.js"></script>
 		<script>
 		  $(function ()
 			{
@@ -147,19 +168,7 @@
  	     $('#taskEndDate').datepicker({
  	       autoclose: true
  	     })
-		 });
-
-		 var el = document.getElementById('table');
-		 var dragger = tableDragger(el, {
-		   mode: 'row',
-		   dragHandler: '.handle',
-		   onlyBody: true,
-		   animation: 300
-		 });
-		 dragger.on('drop',function(from, to){
-		   console.log(from);
-		   console.log(to);
-		 });
+		  })
 		</script>
 
 	</body>
