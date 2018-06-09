@@ -302,7 +302,7 @@ class controller extends CI_Controller
 	public function addTasksToProject()
 	{
 		$id = $this->input->get("id");
-		// $temp = $this->input->get("counter");
+		$temp = $this->input->get("counter");
 		$category = $this->input->post('category');
 		// $counter = $temp - 1;
 		$departments = $this->model->getAllDepartments();
@@ -316,9 +316,14 @@ class controller extends CI_Controller
 		$data = $this->input->post();
 
 		// SHOULD RETURN EVERYTHING BUT ONLY RETURNS FIRST ROW
-		foreach ($category as $key => $value)
+		// foreach ($category as $key => $value)
+		// {
+		// 	echo $value . "<br>";
+		// }
+
+		for ($x = 1; $x <= $temp; $x++)
 		{
-			echo $value . "<br>";
+			echo $_POST['category' . $x];
 		}
 
 		// foreach($array as $i)
