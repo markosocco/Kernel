@@ -39,7 +39,7 @@ class model extends CI_Model
     return $query->row_array();
   }
 
-// GET PROJECTID
+// GET PROJECTID GIVEN TITLE AND DATES
   public function getProjectID($data)
   {
     $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND '". $data['PROJECTENDDATE'] ."'";
@@ -89,7 +89,7 @@ public function addProject($data)
     }
   }
 
-  // GETS PROJECT BY ID
+  // GETS PROJECT BY ID; RETURNS PROJECT
   public function getProjectByID($data)
   {
     $condition = "PROJECTID =" . $data;
@@ -192,6 +192,7 @@ public function addProject($data)
 //     return $query->result_array();
 //   }
 
+// RETURNS ARRAY OF DEPARTMENTS
   public function getAllDepartments()
   {
     $this->db->select('*');

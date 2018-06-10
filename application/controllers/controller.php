@@ -116,8 +116,6 @@ class controller extends CI_Controller
 		}
 	}
 
-	/******************** START OF VIEWS ********************/
-
 	public function contact()
 	{
 		$this->load->view('contact');
@@ -296,7 +294,6 @@ class controller extends CI_Controller
 			$this->load->view("scheduleTasks");
 		}
 	}
-	/******************** END OF VIEWS ********************/
 
 	/******************** MY PROJECTS START ********************/
 
