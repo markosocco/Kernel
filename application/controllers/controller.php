@@ -410,6 +410,7 @@ class controller extends CI_Controller
 		$data['tasks'] = $this->model->getAllProjectTasks($id);
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
+		$data['dateDiff'] = $this->model->getDateDiff($data['project']);
 
 		$this->load->view('arrangeTasks', $data);
 	}

@@ -101,16 +101,21 @@ public function addProject($data)
     return $query->row_array();
   }
 
-  // GETS ALL TASKS OF A PROJECT
+  // GETS ALL TASKS OF A PROJECT AND DEPARTMENT
   public function getAllProjectTasks($data)
   {
-    $condition = "projects_PROJECTID =" . $data;
-    $this->db->select('*');
-    $this->db->from('tasks');
-    $this->db->where($condition);
-    $query = $this->db->get();
+    // $condition = "projects_PROJECTID =" . $data;
+    // $this->db->select('*');
+    // $this->db->from('tasks');
+    // $this->db->where($condition);
+    // $query = $this->db->get();
+    //
+    // return $query->result_array();
 
-    return $query->result_array();
+    $sql = "SELECT t.*, d.DEPARTMENTNAME as dName FROM tasks as t JOIN users as u on t.users_USERID = u.USERID JOIN departments as d on u.departments_DEPARTMENTID = d.DEPARTMENTID WHERE t.projects_PROJECTID = " . $data;
+
+		$data = $this->db->query($sql);
+    return $data->result_array();
   }
 
   public function getAllUsers()

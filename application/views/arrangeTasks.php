@@ -94,32 +94,29 @@
 									</thead>
 									<tbody>
 										<?php foreach ($tasks as $row): ?>
-											<tr>
-												<td class="handle"><i class="fa fa-arrows"></i></td>
-			                  <td><?php echo $row['CATEGORY']; ?></td>
-			                  <td><?php echo $row['TASKTITLE']; ?></td>
+		                <tr>
+											<td class="handle"><i class="fa fa-arrows"></i></td>
 
-												<?php
-													foreach ($user as $x)
-													{
-														if ($row['users_USERID'] == $x['USERID'])
-														{
-															$deptID = $x['departments_DEPARTMENTID'];
-														}
-													}
+											<?php
+												switch ($row['CATEGORY'])
+												{
+													case 1:
+														$cat = 'Main Activity';
+														break;
+													case 2:
+														$cat = 'Sub Activity';
+														break;
+													case 3:
+														$cat = 'Task';
+												}
+											?>
 
-													foreach ($department as $y)
-													{
-														if ($deptID == $y['DEPARTMENTID'])
-														{
-															$dept = $y['DEPARTMENTNAME'];
-														}
-													}
-												?>
-
-												<td><?php echo $dept; ?></td>
-			                </tr>
-										<? endforeach; ?>
+		                  <td><?php echo $cat; ?></td>
+		                  <td><?php echo $row['TASKTITLE']; ?></td>
+											<td><?php echo $row['dName']; ?></td>
+		                </tr>
+									<?php endforeach; ?>
+										<tr id="row1"></tr>
 									</tbody>
 		              </table>
 		            </div>
