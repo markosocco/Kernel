@@ -80,6 +80,7 @@
 		              </div>
 		            </div>
 		            <!-- /.box-header -->
+								<form id='addTasks' name = 'addTasks' action='' method="POST">
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
@@ -91,11 +92,11 @@
 											<th></th>
 		                </tr>
 
-										<form id='addTasks' name = 'addTasks' action='' method="POST">
+
 		                <tr id="row0">
 											<td>1</td>
 		                  <td><div class="form-group">
-			                  <select class="form-control" name = "category0">
+			                  <select class="form-control" name = "category[]" required>
 													<option disabled selected value> -- Select Category -- </option>
 													<option>Main Activity</option>
 				                  <option>Sub Activity</option>
@@ -103,12 +104,10 @@
 			                  </select>
 			                </div></td>
 		                  <td><div class="form-group">
-			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title0">
+			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
 			                </div></td>
-											<td><select class="form-control" name = "department0">
+											<td><select class="form-control" name = "department[]" required>
 												<option disabled selected value> -- Select Department -- </option>
-
-												<?php $counter = 0; ?>
 
 												<?php foreach ($departments as $row): ?>
 
@@ -124,8 +123,8 @@
 		                </tr>
 
 										<tr id="row1"></tr>
-		              </table>
 
+		              </table>
 								</form>
 
 								</div>
@@ -191,7 +190,9 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-					 $('#row' + i).append("<td id='num' " + i + ">" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category'" + i + "><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title'" + i +"</div></td>  <td><select class='form-control' id ='dept' name = 'department'" + i +"><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+				 $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category[]' required><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td><select class='form-control' id ='dept' name = 'department[]' required><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+					 // $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
 					 i++;
@@ -205,9 +206,9 @@
 					if (x > 2)
 					{
 						x = x -1;
-						var i = $(this).attr('data-id');
+						var j = $(this).attr('data-id');
 
-						$('#row' + i).remove();
+						$('#row' + j).remove();
 						console.log("after removing: " + x);
 					}
 
@@ -224,9 +225,8 @@
 				$("#arrangeTask").click(function()
         {
 					var $id = $(this).attr('data-id');
-					// console.log(x);
 
-					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id + "&counter = " + x);
+					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
 					$("#addTasks").submit();
         	});
         });

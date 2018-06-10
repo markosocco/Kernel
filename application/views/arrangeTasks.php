@@ -93,37 +93,33 @@
 		                </tr>
 									</thead>
 									<tbody>
-		                <tr id="row0">
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>Get 1Task Category</td>
-		                  <td>Get Task Title</td>
-											<td>Get Department assigned</td>
-		                </tr>
-										<tr id="row3">
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>Get2 Task Category</td>
-		                  <td>Get Task Title</td>
-											<td>Get Department assigned</td>
-		                </tr>
-										<tr id="row3">
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>Get 3Task Category</td>
-		                  <td>Get Task Title</td>
-											<td>Get Department assigned</td>
-		                </tr>
-										<tr id="row5">
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>Get 4Task Category</td>
-		                  <td>Get Task Title</td>
-											<td>Get Department assigned</td>
-		                </tr>
-										<tr id="row7">
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-		                  <td>Get 5Task Category</td>
-		                  <td>Get Task Title</td>
-											<td>Get Department assigned</td>
-		                </tr>
-										<tr id="row1"></tr>
+										<?php foreach ($tasks as $row): ?>
+											<tr>
+												<td class="handle"><i class="fa fa-arrows"></i></td>
+			                  <td><?php echo $row['CATEGORY']; ?></td>
+			                  <td><?php echo $row['TASKTITLE']; ?></td>
+
+												<?php
+													foreach ($user as $x)
+													{
+														if ($row['users_USERID'] == $x['USERID'])
+														{
+															$deptID = $x['departments_DEPARTMENTID'];
+														}
+													}
+
+													foreach ($department as $y)
+													{
+														if ($deptID == $y['DEPARTMENTID'])
+														{
+															$dept = $y['DEPARTMENTNAME'];
+														}
+													}
+												?>
+
+												<td><?php echo $dept; ?></td>
+			                </tr>
+										<? endforeach; ?>
 									</tbody>
 		              </table>
 		            </div>

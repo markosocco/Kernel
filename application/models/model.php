@@ -40,7 +40,6 @@ class model extends CI_Model
   }
 
 // GET PROJECTID
-
   public function getProjectID($data)
   {
     $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND '". $data['PROJECTENDDATE'] ."'";
@@ -52,7 +51,7 @@ class model extends CI_Model
     return $query->row("PROJECTID");
   }
 
-// SAVE NEW PROJECT TO DB
+// SAVE NEW PROJECT TO DB; RETURNS PROJECT
 public function addProject($data)
   {
     $result = $this->db->insert('projects', $data);
@@ -72,6 +71,55 @@ public function addProject($data)
     {
       return false;
     }
+  }
+
+  // SAVE INDIVIDUAL TASK TO PROJECT
+  public function addTasksToProject($data)
+  {
+    $result = $this->db->insert('tasks', $data);
+
+    if ($result)
+    {
+      return true;
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
+  // GETS PROJECT BY ID
+  public function getProjectByID($data)
+  {
+    $condition = "PROJECTID =" . $data;
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->row_array();
+  }
+
+  // GETS ALL TASKS OF A PROJECT
+  public function getAllProjectTasks($data)
+  {
+    $condition = "projects_PROJECTID =" . $data;
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getAllUsers()
+  {
+    $this->db->select('*');
+    $this->db->from('users');
+    $query = $this->db->get();
+
+    return $query->result_array();
   }
 
 // COMPUTE FOR NUMBER OF DAYS, GIVEN A DATE PERIOD

@@ -229,6 +229,7 @@ class controller extends CI_Controller
 
 	public function addTasks()
 	{
+		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
 		$startDate = $this->input->post('startDate');
 		date_default_timezone_set("Singapore");
 		$currDate = date("mm-dd-YYYY");
@@ -252,20 +253,20 @@ class controller extends CI_Controller
 				'users_USERID' => $_SESSION['USERID']
 		);
 
+		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
 		$data['project'] = $this->model->addProject($data);
 		$data['dateDiff'] = $this->model->getDateDiff($data);
 		$data['departments'] = $this->model->getAllDepartments();
-		$data['counter'] = 1;
 
 		if ($data)
 		{
-			//echo $project['PROJECTTITLE'];
+			// TODO PUT ALERT
 			$this->load->view('addTasks', $data);
-			//redirect('controller/newProject');
 		}
 
 		else
 		{
+			// TODO PUT ALERT
 			redirect('controller/contact');
 		}
 	}
@@ -301,51 +302,116 @@ class controller extends CI_Controller
 
 	public function addTasksToProject()
 	{
+		// GET PROJECT ID
 		$id = $this->input->get("id");
-		$temp = $this->input->get("counter");
+
+		// GET ARRAY OF INPUTS FROM VIEW
 		$category = $this->input->post('category');
-		// $counter = $temp - 1;
+		$title = $this->input->post('title');
+		$department = $this->input->post('department');
+
+		// GET ALL DEPTS TO ASSIGN DEPT HEAD TO TASK
 		$departments = $this->model->getAllDepartments();
 
-		// for ($x = 0; $x <= $temp; $x++)
-		// {
-		// 	echo $this->input->post('category' . $x);
-		// }
-
-		// GETS ALL POST DATA
-		$data = $this->input->post();
-
-		// SHOULD RETURN EVERYTHING BUT ONLY RETURNS FIRST ROW
-		// foreach ($category as $key => $value)
-		// {
-		// 	echo $value . "<br>";
-		// }
-
-		for ($x = 1; $x <= $temp; $x++)
+		// SAVES DATA FROM ARRAY VIA INDEX AND PLUGS INTO DB
+		foreach ($category as $key => $value)
 		{
-			echo $_POST['category' . $x];
+			switch ($category[$key])
+			{
+				case 'Main Activity':
+					$cat = 1;
+					break;
+				case 'Sub Activity':
+					$cat = 2;
+					break;
+				case 'Task':
+					$cat = 3;
+					break;
+			}
+
+			// ASSIGN DEPARTMENT HEAD PER VARIABLE
+			foreach ($departments as $row)
+			{
+				switch ($row['DEPARTMENTNAME'])
+				{
+					case 'Executive':
+						$execHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Marketing':
+						$mktHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Finance':
+						$finHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Procurement':
+						$proHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'HR':
+						$hrHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'MIS':
+						$misHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Store Operations':
+						$opsHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Facilities Administration':
+						$fadHead = $row['users_DEPARTMENTHEAD'];
+						break;
+				}
+			}
+
+			switch ($department[$key])
+			{
+				case 'Executive':
+					$deptHead = $execHead;
+					break;
+				case 'Marketing':
+					$deptHead = $mktHead;
+					break;
+				case 'Finance':
+					$deptHead = $finHead;
+					break;
+				case 'Procurement':
+					$deptHead = $proHead;
+					break;
+				case 'HR':
+					$deptHead = $hrHead;
+					break;
+				case 'MIS':
+					$deptHead = $misHead;
+					break;
+				case 'Store Operations':
+					$deptHead = $opsHead;
+					break;
+				case 'Facilities Administration':
+					$deptHead = $fadHead;
+					break;
+			}
+
+			$data = array(
+					'TASKTITLE' => $title[$key],
+					'TASKSTATUS' => 'Pending',
+					'CATEGORY' => $cat,
+					'projects_PROJECTID' => $id,
+					'users_USERID' => $deptHead
+			);
+
+			$addTasks = $this->model->addTasksToProject($data);
+
+			if (!$addTasks)
+			{
+				// TODO PUT ALERT
+				redirect('controller/contact');
+			}
 		}
 
-		// foreach($array as $i)
-		// //foreach($this->input->post("title[]") as $category)
-		// {
-		// 	echo hello;
-		// 	// foreach ($this->input->post('depts[]') as $dept)
-		// 	// {
-		// 	// 	foreach ($departments as $row)
-		// 	// 	{
-		// 	// 		if ($dept == $row['DEPARTMENTNAME'])
-		// 	// 		{
-		// 	// 			$data = array (
-		// 	// 				'TASKTITLE' => $dtrNumber,
-		// 	// 				'CATEGORY' =>  $day,
-		// 	// 				'projects_PROJECTID' => $shiftPeriod,
-		// 	// 				'users_USERID' => $shift
-		// 	// 			);
-		// 	// 		}
-		// 	// 	}
-		// 	// }
-		// }
+		$data['project'] = $this->model->getProjectByID($id);
+		$data['tasks'] = $this->model->getAllProjectTasks($id);
+		$data['users'] = $this->model->getAllUsers();
+		$data['departments'] = $this->model->getAllDepartments();
+
+		$this->load->view('arrangeTasks', $data);
 	}
 
 	/******************** MY PROJECTS END ********************/
