@@ -145,7 +145,7 @@ class controller extends CI_Controller
 		{
 			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
 			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
-
+			
 			$this->load->view("myProjects", $data);
 		}
 	}

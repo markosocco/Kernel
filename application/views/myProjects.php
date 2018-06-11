@@ -40,7 +40,6 @@
 							</div>
 						</div>
 						<!-- ./col -->
-
 						<?php foreach ($ongoingProjects as $row):?>
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->

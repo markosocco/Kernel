@@ -127,13 +127,22 @@ public function addProject($data)
     return $query->result_array();
   }
 
-  public function getAllOngoingProjects()
+// GET CURRENT DATE IN MM/DD/YYYY FORMAT
+  public function getCurrentDate()
   {
     $this->db->select('CURDATE()');
     $queryDate = $this->db->get();
     $CURDATE = $this->convertDateFormat2($queryDate->row("CURDATE()"));
 
-    $condition = "PROJECTSTARTDATE < '. $CURDATE .' && PROJECTENDDATE > '. $CURDATE .'";
+    return $CURDATE;
+  }
+
+  public function getAllOngoingProjects()
+  {
+    $CURDATE = $this->getCurrentDate();
+
+    $condition = "PROJECTSTARTDATE < '$CURDATE' && PROJECTENDDATE > '$CURDATE'";
+    // $condition = "PROJECTSTARTDATE < '06/11/2018' && PROJECTENDDATE > '06/11/2018'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
@@ -144,11 +153,9 @@ public function addProject($data)
 
   public function getAllPlannedProjects()
   {
-    $this->db->select('CURDATE()');
-    $queryDate = $this->db->get();
-    $CURDATE = $this->convertDateFormat2($queryDate->row("CURDATE()"));
+    $CURDATE = $this->getCurrentDate();
 
-    $condition = "PROJECTSTARTDATE > '. $CURDATE .'";
+    $condition = "PROJECTSTARTDATE > '$CURDATE'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
