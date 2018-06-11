@@ -145,7 +145,7 @@ class controller extends CI_Controller
 		{
 			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
 			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
-			
+
 			$this->load->view("myProjects", $data);
 		}
 	}
@@ -185,7 +185,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("templates");
+			$data['templates'] = $this->model->getAllTemplates();
+
+			$this->load->view("templates", $data);
 		}
 	}
 
@@ -198,7 +200,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("archives");
+			$data['archives'] = $this->model->getAllProjectArchives();
+
+			$this->load->view("archives", $data);
 		}
 	}
 

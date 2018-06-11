@@ -154,9 +154,13 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Project Management</li>
         <!-- Optionally, you can add icons to the links -->
-        <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
-        <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-link"></i> <span>My Projects</span></a></li>
-        <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-link"></i> <span>My Team</span></a></li>
+        <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span>Dashboard</span></a></li>
+        <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i> <span>Templates</span></a></li>
+        <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span>My Projects</span></a></li>
+        <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span>My Team</span></a></li>
+        <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-database"></i> <span>Project Archives</span></a></li>
+
+
         <!-- <li class="treeview">
           <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">

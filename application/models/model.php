@@ -165,6 +165,28 @@ public function addProject($data)
     return $query->result_array();
   }
 
+  // GET ALL PROJECT ARCHIVES
+    public function getAllProjectArchives()
+    {
+      $condition = "PROJECTSTATUS = 'Complete'";
+      $this->db->select('*');
+      $this->db->from('projects');
+      $this->db->where($condition);
+      $query = $this->db->get();
+
+      return $query->result_array();
+    }
+
+    // GET ALL TEMPLATES
+      public function getAllTemplates()
+      {
+        $this->db->select('*');
+        $this->db->from('templates');
+        $query = $this->db->get();
+
+        return $query->result_array();
+      }
+
 // CONVERTS MM/DD/YYYY TO YYYY-MM-DD
   public function convertDateFormat1($oldDate)
   {
