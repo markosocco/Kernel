@@ -137,12 +137,12 @@ public function addProject($data)
     return $CURDATE;
   }
 
+// GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE
   public function getAllOngoingProjects()
   {
     $CURDATE = $this->getCurrentDate();
 
-    $condition = "PROJECTSTARTDATE < '$CURDATE' && PROJECTENDDATE > '$CURDATE'";
-    // $condition = "PROJECTSTARTDATE < '06/11/2018' && PROJECTENDDATE > '06/11/2018'";
+    $condition = "PROJECTSTARTDATE < '$CURDATE' && PROJECTENDDATE > '$CURDATE' && PROJECTSTATUS != 'Complete'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
@@ -151,11 +151,12 @@ public function addProject($data)
     return $query->result_array();
   }
 
+// GET ALL PLANNED PROJECTS BASED ON PROJECTSTARTDATE
   public function getAllPlannedProjects()
   {
     $CURDATE = $this->getCurrentDate();
 
-    $condition = "PROJECTSTARTDATE > '$CURDATE'";
+    $condition = "PROJECTSTARTDATE > '$CURDATE' && PROJECTSTATUS != 'Complete'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
