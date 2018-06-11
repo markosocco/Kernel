@@ -129,7 +129,11 @@ public function addProject($data)
 
   public function getAllOngoingProjects()
   {
-    $condition = "PROJECTSTATUS = 'ONGOING' ";
+    $this->db->select('CURDATE()');
+    $queryDate = $this->db->get();
+    $CURDATE = $this->convertDateFormat2($queryDate->row("CURDATE()"));
+
+    $condition = "PROJECTSTARTDATE < '. $CURDATE .' && PROJECTENDDATE > '. $CURDATE .'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
@@ -138,25 +142,53 @@ public function addProject($data)
     return $query->result_array();
   }
 
+  public function getAllPlannedProjects()
+  {
+    $this->db->select('CURDATE()');
+    $queryDate = $this->db->get();
+    $CURDATE = $this->convertDateFormat2($queryDate->row("CURDATE()"));
+
+    $condition = "PROJECTSTARTDATE > '. $CURDATE .'";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+// CONVERTS MM/DD/YYYY TO YYYY-MM-DD
+  public function convertDateFormat1($oldDate)
+  {
+    $date = str_replace("/", "-", $oldDate);
+    $month = substr($date, 0, 2);
+    $day = substr($date, 3, 2);
+    $year = substr($date, 6, 4);
+    $newDate = $year . "-" . $month . "-" . $day;
+
+    return $newDate;
+  }
+
+  // CONVERTS YYYY-MM-DD TO MM/DD/YYYY
+    public function convertDateFormat2($oldDate)
+    {
+      $date = str_replace("-", "/", $oldDate);
+      $day = substr($date, 8, 2);
+      $month = substr($date, 5, 2);
+      $year = substr($date, 0, 4);
+      $newDate = $month . "/" . $day . "/" . $year;
+
+      return $newDate;
+    }
 
 // COMPUTE FOR NUMBER OF DAYS, GIVEN A DATE PERIOD
   public function getDateDiff($data)
   {
-    $startDate = $data['PROJECTSTARTDATE'];
-    $endDate = $data['PROJECTENDDATE'];
+    // $startDate = $data['PROJECTSTARTDATE'];
+    // $endDate = $data['PROJECTENDDATE'];
 
-    $start = str_replace("/", "-", $startDate);
-    $end = str_replace("/", "-", $endDate);
-
-    $startMonth = substr($start, 0, 2);
-    $startDay = substr($start, 3, 2);
-    $startYear = substr($start, 6, 4);
-    $sDate = $startYear . "-" . $startMonth . "-" . $startDay;
-
-    $endMonth = substr($end, 0, 2);
-    $endDay = substr($end, 3, 2);
-    $endYear = substr($end, 6, 4);
-    $eDate = $endYear . "-" . $endMonth . "-" . $endDay;
+    $sDate = $this->convertDateFormat1($data['PROJECTSTARTDATE']);
+    $eDate = $this->convertDateFormat1($data['PROJECTENDDATE']);
 
     $sql = "SELECT DATEDIFF('" . $eDate . "', '" . $sDate . "') as datediff";
 

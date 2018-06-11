@@ -143,7 +143,10 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("myProjects");
+			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
+			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+
+			$this->load->view("myProjects", $data);
 		}
 	}
 
@@ -413,7 +416,6 @@ class controller extends CI_Controller
 	}
 
 	/******************** MY PROJECTS END ********************/
-
 
 	/******************** GANTT CHART DELETE THIS AFTER ********************/
 	public function gantt()
