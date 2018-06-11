@@ -7,14 +7,21 @@
 		<?php require("frame.php"); ?>
 
 		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					WELCOME, <b><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></b>
+					<small>(If you put content, the sidebar starts to work everywhere!)</small>
+				</h1>
+			</section>
 
 		</div>
-
 
 
 		<?php require("footer.php"); ?>
 
 	</div> <!--.wrapper closing div-->
+
 	<script>
 		$("#dashboard").addClass("active");
 	</script>

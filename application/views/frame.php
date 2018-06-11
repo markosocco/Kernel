@@ -174,16 +174,6 @@ desired effect
     <!-- /.sidebar -->
   </aside>
 
-  <!-- Content Wrapper. Contains page content -->
-
-  <!--THIS IS DIFFERENT PER PAGE  -->
-
-  <!-- <div class="content-wrapper" id="mainContent" style="display:inline-block"> -->
-
-  <!-- /.content-wrapper -->
-
-
-
   <!-- Control Sidebar -->
 
   <!-- /.control-sidebar -->

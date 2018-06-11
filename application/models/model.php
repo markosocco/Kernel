@@ -127,6 +127,18 @@ public function addProject($data)
     return $query->result_array();
   }
 
+  public function getAllOngoingProjects()
+  {
+    $condition = "PROJECTSTATUS = 'ONGOING' ";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+
 // COMPUTE FOR NUMBER OF DAYS, GIVEN A DATE PERIOD
   public function getDateDiff($data)
   {

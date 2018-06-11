@@ -28,9 +28,9 @@
 							<!-- small box -->
 							<div class="small-box bg-aqua">
 								<div class="inner">
-									<h3></h3>
+									<h3>+</h3>
 
-									<p>Create a project</p>
+									<p>Create A Project</p>
 								</div>
 								<div class="icon">
 									<i class="ion ion-bag"></i>
@@ -85,6 +85,7 @@
 						</div>
 						<!-- ./col -->
 				</section>
+
 			</div>
 				<!-- /.content -->
 
@@ -92,15 +93,6 @@
 
 		</div> <!--.wrapper closing div-->
 		<!-- ./wrapper -->
-
-		<!-- REQUIRED JS SCRIPTS -->
-
-		<!-- jQuery 3 -->
-		<script src="<?php echo base_url()."assets/"; ?>bower_components/jquery/dist/jquery.min.js"></script>
-		<!-- Bootstrap 3.3.7 -->
-		<script src="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-		<!-- AdminLTE App -->
-		<script src="<?php echo base_url()."assets/"; ?>dist/js/adminlte.min.js"></script>
 
 		<script>
 			$("#myProjects").addClass("active");
