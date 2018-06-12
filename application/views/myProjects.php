@@ -13,7 +13,7 @@
 					<h1>
 						My Projects
 						<small>What are my projects</small>
-						<small>(YELLOW = ONGOING; GREEN = PLANNED *FOR NOW*)</small>
+						<small>(GREEN = ONGOING; YELLOW = PLANNED *FOR NOW*)</small>
 					</h1>
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
@@ -27,33 +27,37 @@
 					<div class="row">
 						<div class="col-lg-3 col-xs-6">
 							<!-- small box -->
-							<div class="small-box bg-aqua">
+							<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+							<div class="small-box bg-red">
 								<div class="inner">
-									<h3>+</h3>
+									<h2>Create</h2>
 
-									<p>Create A Project</p>
+									<p>New<br>Project</p>
 								</div>
 								<div class="icon">
-									<i class="ion ion-bag"></i>
+									<i class="ion ion-plus-round"></i>
 								</div>
-								<a href="<?php echo base_url("index.php/controller/newProject"); ?>" class="small-box-footer">Create <i class="fa fa-files-o"></i></a>
 							</div>
+						</a>
 						</div>
 						<!-- ./col -->
+
 						<?php foreach ($ongoingProjects as $row):?>
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->
-								<div class="small-box bg-yellow">
+								<a href="#">
+								<div class="small-box bg-green">
 									<div class="inner">
-										<h2><?php echo $row['PROJECTTITLE']; ?></h2>
+										<h2>82%</h2>
 
-										<p><?php echo $row['PROJECTSTARTDATE']; ?>-<?php echo $row['PROJECTENDDATE']; ?></p>
+										<!-- <p><?php echo $row['PROJECTSTARTDATE']; ?>-<?php echo $row['PROJECTENDDATE']; ?></p> -->
+										<p><?php echo $row['PROJECTTITLE']; ?><br>420 days remaining</p>
 									</div>
 									<div class="icon">
-										<i class="ion ion-stats-bars"></i>
+										<i class="ion ion-beaker"></i>
 									</div>
-									<a href="#" class="small-box-footer">View Details <i class="fa fa-arrow-circle-right"></i></a>
 								</div>
+							</a>
 							</div>
 							<!-- ./col -->
 						<?php endforeach;?>
@@ -61,17 +65,18 @@
 						<?php foreach ($plannedProjects as $row):?>
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->
-								<div class="small-box bg-green">
+								<a href="#">
+								<div class="small-box bg-yellow">
 									<div class="inner">
 										<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-										<p><?php echo $row['PROJECTSTARTDATE']; ?>-<?php echo $row['PROJECTENDDATE']; ?></p>
+										<p><?php echo $row['PROJECTSTARTDATE']; ?><br>Launch in 70 days</p>
 									</div>
 									<div class="icon">
-										<i class="ion ion-stats-bars"></i>
+										<i class="ion ion-clock"></i>
 									</div>
-									<a href="#" class="small-box-footer">View Details <i class="fa fa-arrow-circle-right"></i></a>
 								</div>
+							</a>
 							</div>
 							<!-- ./col -->
 						<?php endforeach;?>
