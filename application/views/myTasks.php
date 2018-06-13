@@ -30,9 +30,9 @@
 		          <div class="box">
 		            <div class="box-header">
 		              <h3 class="box-title">Arrange by</h3>
-									<button type="button" class="btn btn-primary btn-xs" style="margin-left:">Project</button>
+									<button type="button" class="btn btn-info btn-xs" style="margin-left:">Project</button>
 									<h3 class="box-title">or</h3>
-									<button type="button" class="btn btn-primary btn-xs" style="margin-left:">Priority</button>
+									<button type="button" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
