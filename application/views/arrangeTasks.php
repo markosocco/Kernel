@@ -37,7 +37,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Arrange Task Sequence</h3>
+		              <h3 class="box-title">Arrange and Schedule Tasks</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -54,17 +54,20 @@
 										<thead>
 		                <tr>
 		                  <th></th>
+											<th>No.</th>
 		                  <th>Category</th>
 											<th>Title</th>
 											<th>Department</th>
-											<th></th>
-											<th></th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
+											<th>Dependencies</th>
 		                </tr>
 									</thead>
 									<tbody>
 										<?php foreach ($tasks as $row): ?>
 		                <tr>
 											<td class="handle"><i class="fa fa-arrows"></i></td>
+											<td>1</td>
 
 											<?php
 												switch ($row['CATEGORY'])
@@ -83,6 +86,29 @@
 		                  <td><?php echo $cat; ?></td>
 		                  <td><?php echo $row['TASKTITLE']; ?></td>
 											<td><?php echo $row['dName']; ?></td>
+											<td><div class="form-group">
+				                <div class="input-group date">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-calendar"></i>
+				                  </div>
+				                  <input type="text" class="form-control pull-right" id="taskStartDate" name="taskStartDate" required>
+				                </div>
+				                <!-- /.input group -->
+				              </div></td>
+											<td><div class="form-group">
+				                <div class="input-group date">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-calendar"></i>
+				                  </div>
+				                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
+				                </div>
+											</div></td>
+											<td><div class="form-group">
+				                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites"
+				                        style="width: 100%;">
+				                  <option>List per number of total task count</option>
+				                </select>
+				              </div></td>
 		                </tr>
 									<?php endforeach; ?>
 										<tr id="row1"></tr>
@@ -91,9 +117,9 @@
 		            </div>
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-warning">Previous: Add tasks</button>
-									<button type="button" class="btn btn-success pull-right" id="scheduleTask">Next: Schedule tasks</button>
-									<button type="button" class="btn btn-primary pull-right">Save</button>
+									<button type="button" class="btn btn-success">Previous: Add tasks</button>
+									<button type="button" class="btn btn-success pull-right" id="ganttChart">Next: Generate Gantt chart</button>
+									<button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button>
 								</div>
 		          </div>
 		          <!-- /.box -->
