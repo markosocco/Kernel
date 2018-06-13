@@ -219,6 +219,7 @@ class controller extends CI_Controller
 		}
 	}
 
+// DELETE THIS MAYBE?
 	public function newProjectTask()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -289,6 +290,7 @@ class controller extends CI_Controller
 		}
 	}
 
+// DELETE THIS MAYBE??
 	public function scheduleTasks()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -299,6 +301,19 @@ class controller extends CI_Controller
 		else
 		{
 			$this->load->view("scheduleTasks");
+		}
+	}
+
+	public function projectGantt()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("projectGantt");
 		}
 	}
 

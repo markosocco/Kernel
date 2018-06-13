@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/select2/dist/css/select2.min.css">
+  <!-- Gantt Chart style -->
+  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>css/jsgantt.css" type="text/css"/>
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
@@ -151,6 +153,7 @@ desired effect
           <p><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></p>
           <!-- Status -->
           <!-- <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-circle text-success"></i> Online</a> -->
+          <p style="color:gray">Show position here</p>
         </div>
       </div>
 
@@ -158,10 +161,13 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Project Management</li>
         <!-- Optionally, you can add icons to the links -->
+
+        <!--IF STATEMENTS DEPENDING ON USER TYPE  -->
         <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span>Dashboard</span></a></li>
-        <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i> <span>Templates</span></a></li>
         <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span>My Projects</span></a></li>
+        <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span>My Tasks</span></a></li>
         <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span>My Team</span></a></li>
+        <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i> <span>Templates</span></a></li>
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-database"></i> <span>Project Archives</span></a></li>
 
 
