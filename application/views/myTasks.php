@@ -21,7 +21,54 @@
 
 				<!-- Main content -->
 				<section class="content container-fluid">
-					<div>
+					<!-- <div id="filterButtons">
+						<h5>Arrange by</h5>
+					</div> -->
+
+					<div class="row">
+		        <div class="col-xs-12">
+		          <div class="box">
+		            <div class="box-header">
+		              <h3 class="box-title">Arrange by</h3>
+									<button type="button" class="btn btn-primary btn-xs" style="margin-left:">Project</button>
+									<h3 class="box-title">or</h3>
+									<button type="button" class="btn btn-primary btn-xs" style="margin-left:">Priority</button>
+		              <div class="box-tools">
+		                <div class="input-group input-group-sm" style="width: 150px;">
+		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+		                  <div class="input-group-btn">
+		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+		                  </div>
+		                </div>
+		              </div>
+		            </div>
+		            <!-- /.box-header -->
+		            <div class="box-body table-responsive no-padding">
+		              <table class="table table-hover">
+		                <tr>
+		                  <th>Task</th>
+		                  <th>Project</th>
+		                  <th>Start Date</th>
+		                  <th>Target End Date</th>
+		                  <th>Delegate</th>
+											<th>Done</th>
+		                </tr>
+										<tr>
+											<td>Find something something from somewhere</td>
+											<td>Store Opening - SM Southmall</td>
+											<td>06/32/2020</td>
+											<td>06/33/2021</td>
+											<td><button type="button" class="btn btn-primary" style="margin-left: 1%">Delegate</button></td>
+											<td><button type="button" class="btn btn-success" style="margin-left: 1%">Done</button></td>
+										</tr>
+
+		              </table>
+		            </div>
+		            <!-- /.box-body -->
+		          </div>
+		          <!-- /.box -->
+		        </div>
 				</section>
 					</div>
 			<?php require("footer.php"); ?>
