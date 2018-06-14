@@ -313,10 +313,13 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("projectGantt");
+			$data['ganttData'] = $this->model->getGanttData();
+			// $data['preReq'] = $this->model->getPreReqID();
+			$data['dependencies'] = $this->model->getDependecies();
+			$this->load->view("projectGantt", $data);
 		}
 	}
-
+	
 	/******************** MY PROJECTS START ********************/
 
 	public function addTasksToProject()
