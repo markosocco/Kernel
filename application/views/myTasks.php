@@ -51,6 +51,7 @@
 		                  <th>Project</th>
 		                  <th>Start Date</th>
 		                  <th>Target End Date</th>
+											<th>Period</th>
 		                  <th align="center"></th>
 											<th align="center"></th>
 		                </tr>
@@ -59,6 +60,7 @@
 											<td>Store Opening - SM Southmall</td>
 											<td>06/32/2020</td>
 											<td>06/33/2021</td>
+											<td>98 days</td>
 											<td align="center"><button type="button" class="btn btn-primary" style="margin-left: 1%">Delegate</button></td>
 											<td align="center"><button type="button" class="btn btn-success" style="margin-left: 1%">Done</button></td>
 										</tr>

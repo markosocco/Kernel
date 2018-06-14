@@ -45,7 +45,7 @@
 						<?php foreach ($ongoingProjects as $row):?>
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->
-								<a href="#">
+								<a href="<?php echo base_url("index.php/controller/projectGantt"); ?>">
 								<div class="small-box bg-green">
 									<div class="inner">
 										<h2>82%</h2>
@@ -65,7 +65,7 @@
 						<?php foreach ($plannedProjects as $row):?>
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->
-								<a href="#">
+								<a href="<?php echo base_url("index.php/controller/projectGantt"); ?>">
 								<div class="small-box bg-yellow">
 									<div class="inner">
 										<h2><?php echo $row['PROJECTTITLE']; ?></h2>
