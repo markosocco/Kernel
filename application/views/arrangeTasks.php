@@ -64,53 +64,61 @@
 		                </tr>
 									</thead>
 									<tbody>
-										<?php foreach ($tasks as $row): ?>
-		                <tr>
-											<td class="handle"><i class="fa fa-arrows"></i></td>
-											<td>1</td>
 
-											<?php
-												switch ($row['CATEGORY'])
-												{
-													case 1:
-														$cat = 'Main Activity';
-														break;
-													case 2:
-														$cat = 'Sub Activity';
-														break;
-													case 3:
-														$cat = 'Task';
-												}
-											?>
+										<?php $i = 1; ?>
+											<?php foreach ($tasks as $row): ?>
 
-		                  <td><?php echo $cat; ?></td>
-		                  <td><?php echo $row['TASKTITLE']; ?></td>
-											<td><?php echo $row['dName']; ?></td>
-											<td><div class="form-group">
-				                <div class="input-group date">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-calendar"></i>
-				                  </div>
-				                  <input type="text" class="form-control pull-right" id="taskStartDate" name="taskStartDate" required>
-				                </div>
-				                <!-- /.input group -->
-				              </div></td>
-											<td><div class="form-group">
-				                <div class="input-group date">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-calendar"></i>
-				                  </div>
-				                  <input type="text" class="form-control pull-right" id="taskEndDate" name ="taskEndDate" required>
-				                </div>
-											</div></td>
-											<td><div class="form-group">
-				                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites"
-				                        style="width: 100%;">
-				                  <option>List per number of total task count</option>
-				                </select>
-				              </div></td>
-		                </tr>
-									<?php endforeach; ?>
+			                <tr>
+												<td class="handle"><i class="fa fa-arrows"></i></td>
+												<td> <?php echo $i; ?></td>
+
+												<?php
+													switch ($row['CATEGORY'])
+													{
+														case 1:
+															$cat = 'Main Activity';
+															break;
+														case 2:
+															$cat = 'Sub Activity';
+															break;
+														case 3:
+															$cat = 'Task';
+													}
+												?>
+
+			                  <td><?php echo $cat; ?></td>
+			                  <td><?php echo $row['TASKTITLE']; ?></td>
+												<td><?php echo $row['dName']; ?></td>
+												<td><div class="form-group">
+					                <div class="input-group date">
+					                  <div class="input-group-addon">
+					                    <i class="fa fa-calendar"></i>
+					                  </div>
+					                  <input type="text" class="form-control pull-right" id ="taskStartDate" name="taskStartDate" required>
+					                </div>
+					                <!-- /.input group -->
+					              </div></td>
+												<td><div class="form-group">
+					                <div class="input-group date">
+					                  <div class="input-group-addon">
+					                    <i class="fa fa-calendar"></i>
+					                  </div>
+					                  <input type="text" class="form-control pull-right" id ="taskEndDate" name ="taskEndDate" required>
+					                </div>
+												</div></td>
+												<td><div class="form-group">
+					                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites" style="width: 100%;" id = "selector">
+															<?php $x = 1; ?>
+															<?php foreach ($tasks as $row): ?>
+																<?php echo "<option value = '" . $row['TASKID'] . "'>" . $x . "</option>"; ?>
+																<?php $x++; ?>
+														<?php endforeach; ?>
+														<?php $i++; ?>
+					                </select>
+					              </div></td>
+			                </tr>
+										<?php endforeach; ?>
+
 										<tr id="row1"></tr>
 									</tbody>
 		              </table>
