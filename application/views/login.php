@@ -8,8 +8,8 @@
 		<div id = mainContainer>
 
 			<img id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>">
-			<h1>KERNEL<br>
-			INFORMATION SYSTEM</h1>
+			<h1>KERNEL:<br>
+			PROJECT MANAGEMENT</h1>
 
 			<div id = "login" class = "loginElements">
 				<form name = "loginForm" action = "validateLogin" method = "POST">

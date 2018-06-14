@@ -1,10 +1,14 @@
 body
 {
   background-attachment: fixed;
-  background-size: cover;
+  /* background-size: cover; */
   text-align: center;
-  background-color: #E9EBEE;
-  color: black;
+  /* background-color: #E9EBEE; */
+  color: white;
+  background: url('../media/popcorn.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 #mainContainer
@@ -27,7 +31,8 @@ h1
   letter-spacing: 2px;
   margin-top: 15px;
   margin-bottom: 0;
-  color: black;
+  color: #cccccc;
+  font-weight: bold;
 }
 
 .loginElements
@@ -53,11 +58,12 @@ input[type = "text"], input[type = "password"]
   padding-left: 5px;
   background: transparent;
   border-style: solid;
-  border-color: black;
+  border-color: white;
   border-width: thin;
   border-radius: 3px;
   font-size: 1em;
-  color: black;
+  color: white;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 input[type = "submit"]
@@ -66,7 +72,8 @@ input[type = "submit"]
   border-style: none;
   border-color: white;
   border-width: 2px;
-  border-radius: 40px;
+  /* border-radius: 40px; */
+  border-radius: 5px;
   width: 230px;
   height: 35px;
   margin-top: 10px;
@@ -83,12 +90,12 @@ input[type = "submit"]
 
 input[type = "text"]:hover, input[type = "password"]:hover
 {
-  border-color: #0F9FB4;
+  border-color: #cc9900;
 }
 
 input[type = "text"]:focus, input[type = "password"]:focus
 {
-  border-color: #0F9FB4;
+  border-color: #cc9900;
 }
 
 input[type = "submit"]:hover
@@ -131,7 +138,7 @@ footer p
 footer a
 {
   text-decoration: none;
-  color: #999999;
+  color: #cccccc;
 }
 
 /**************** ALERT STUFF *******************/
