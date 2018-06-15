@@ -158,8 +158,9 @@ public function addProject($data)
 
     $condition = "PROJECTSTARTDATE > '$CURDATE' && PROJECTSTATUS != 'Complete'";
     $this->db->select('*');
-    $this->db->from('projects');
+    $this->db->from('PROJECTS');
     $this->db->where($condition);
+    $this->db->order_by('PROJECTSTARTDATE', 'ASC');
     $query = $this->db->get();
 
     return $query->result_array();

@@ -71,7 +71,8 @@
 									<div class="inner">
 										<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-										<p><?php echo $row['PROJECTSTARTDATE']; ?><br>Launch in 70 days</p>
+										<?php $startdate = date_create($row['PROJECTSTARTDATE']);?>
+										<p><?php echo date_format($startdate, "F d, Y"); ?><br>Launch in 70 days</p>
 									</div>
 									<div class="icon">
 										<i class="ion ion-clock"></i>
