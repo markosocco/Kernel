@@ -1,15 +1,3 @@
-@font-face
-{
-  font-family: Karla-Regular;
-  src: url('Karla-Regular.ttf');
-}
-
-@font-face
-{
-  font-family: Karla-Bold;
-  src: url('Karla-Bold.ttf');
-}
-
 *
 {
   /*border: 1px solid white;*/
@@ -19,9 +7,14 @@ body
 {
   background-color: #E9EBEE;
   font-family: Karla-Regular;
-  color: black;
+  color: white;
   text-align: center;
   height: auto;
+  font-family: 'Source Sans Pro', sans-serif;
+
+  background: url('../media/contact.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #backBtn
@@ -39,7 +32,7 @@ body
   padding-right: 25px;
   padding-top: 5px;
   padding-bottom: 5px;
-  border-radius: 40px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 12px;
   font-family: Karla-Bold;
@@ -89,7 +82,6 @@ body
 
 #mainContent h1
 {
-  font-family: Karla-Bold;
   font-size: 40px;
 }
 
@@ -97,11 +89,6 @@ body
 {
   display: inline-block;
   margin: 30px;
-}
-
-.groups p
-{
-  font-family: Karla-Bold;
 }
 
 .groups img

@@ -9,9 +9,11 @@
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
-					<h1>Project Title here</h1>
-					<h4>Project Details here. Project Details here. Project Details here. Project Details here. Project Details here. Project Details here.</h4>
-					<h4>Start date to End date</h4>
+					<h1><?php echo $projectProfile['PROJECTTITLE']; ?></h1>
+					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
+					<?php $startdate = date_create($projectProfile['PROJECTSTARTDATE']);?>
+					<?php $enddate = date_create($projectProfile['PROJECTENDDATE']);?>
+					<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?></h4>
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-dashboard"></i> My Tasks</a></li>
 						<!-- <li class="active">Here</li> -->

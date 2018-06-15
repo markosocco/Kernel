@@ -45,12 +45,12 @@
 						<?php foreach ($ongoingProjects as $row):?>
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->
-								<a href="<?php echo base_url("index.php/controller/projectGantt"); ?>">
+								<!-- <a href="<?php echo base_url("index.php/controller/projectGantt"); ?>" data-id = "<?php echo $row['PROJECTID']; ?>"> -->
+								<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
 								<div class="small-box bg-green">
 									<div class="inner">
 										<h2>82%</h2>
 
-										<!-- <p><?php echo $row['PROJECTSTARTDATE']; ?>-<?php echo $row['PROJECTENDDATE']; ?></p> -->
 										<p><?php echo $row['PROJECTTITLE']; ?><br>420 days remaining</p>
 									</div>
 									<div class="icon">
@@ -65,7 +65,8 @@
 						<?php foreach ($plannedProjects as $row):?>
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->
-								<a href="<?php echo base_url("index.php/controller/projectGantt"); ?>">
+								<!-- <a href="<?php echo base_url("index.php/controller/projectGantt"); ?>" data-id = "<?php echo $row['PROJECTID']; ?>"> -->
+								<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
 								<div class="small-box bg-yellow">
 									<div class="inner">
 										<h2><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -92,6 +93,12 @@
 
 		<script>
 			$("#myProjects").addClass("active");
+
+			$("a.project").click(function() //redirect to individual project profile
+      {
+        var $id = $(this).attr('data-id');
+        window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
+      });
 		</script>
 	</body>
 </html>
