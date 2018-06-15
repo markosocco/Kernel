@@ -11,9 +11,22 @@
 				<section class="content-header">
 					<h1><?php echo $projectProfile['PROJECTTITLE']; ?></h1>
 					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
-					<?php $startdate = date_create($projectProfile['PROJECTSTARTDATE']);?>
-					<?php $enddate = date_create($projectProfile['PROJECTENDDATE']);?>
-					<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?></h4>
+
+					<?php // compute for days remaining and fix date format
+					$startdate = date_create($projectProfile['PROJECTSTARTDATE']);
+					$enddate = date_create($projectProfile['PROJECTENDDATE']);
+					$current = date_create(date("Y-m-d")); // get current date
+					$edate = date_format($enddate, "Y-m-d");
+					$sdate = date_format($startdate, "Y-m-d");
+					$enddate2 = date_create($edate);
+					$startdate2 = date_create($sdate);
+					if ($current > $startdate2) //if ongoing
+						$datediff = date_diff($enddate2, $current);
+					else // if planned
+						$datediff = date_diff($startdate2, $current);
+					?>
+
+					<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $datediff->format('%a');?> days remaining)</h4>
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-dashboard"></i> My Tasks</a></li>
 						<!-- <li class="active">Here</li> -->
