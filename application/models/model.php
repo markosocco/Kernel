@@ -218,8 +218,17 @@ public function addProject($data)
     // $startDate = $data['PROJECTSTARTDATE'];
     // $endDate = $data['PROJECTENDDATE'];
 
-    $sDate = $this->convertDateFormat1($data['PROJECTSTARTDATE']);
-    $eDate = $this->convertDateFormat1($data['PROJECTENDDATE']);
+    if (isset($data['PROJECTTITLE']))
+    {
+      $sDate = $this->convertDateFormat1($data['PROJECTSTARTDATE']);
+      $eDate = $this->convertDateFormat1($data['PROJECTENDDATE']);
+    }
+
+    else
+    {
+      $sDate = $this->convertDateFormat1($data['sDate']);;
+      $eDate = $this->convertDateFormat1($data['eDate']);;
+    }
 
     $sql = "SELECT DATEDIFF('" . $eDate . "', '" . $sDate . "') as datediff";
 

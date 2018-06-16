@@ -74,7 +74,7 @@
 
 			                <tr id = "<?php echo $row['TASKID']; ?>">
 
-												<input type="hidden" name="task_ID" value="<?php echo $row['TASKID']; ?>">
+												<input type="hidden" name="task_ID[]" value="<?php echo $row['TASKID']; ?>">
 
 												<td class="handle"><i class="fa fa-arrows"></i></td>
 												<td> <?php echo $i; ?></td>

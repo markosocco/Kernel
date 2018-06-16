@@ -432,7 +432,28 @@ class controller extends CI_Controller
 		public function arrangeTasks()
 		{
 			$id = $this->input->post('project_ID');
-			
+
+			$task = $this->input->post('task_ID');
+			$startDates = $this->input->post('taskStartDate');
+			$endDates = $this->input->post('taskEndDate');
+
+			foreach ($task as $key => $value)
+			{
+				$dates = array(
+						'sDate' => $startDates[$key],
+						'eDate' => $endDates[$key]
+				);
+
+				$period = $this->model->getDateDiff($dates);
+
+				$data = array(
+						'TASKSTARTDATE' => $startDates[$key],
+						'TASKENDDATE' => $endDates[$key],
+						'PERIOD' => $period
+				);
+
+				
+			}
 		}
 
 	/******************** MY PROJECTS END ********************/
