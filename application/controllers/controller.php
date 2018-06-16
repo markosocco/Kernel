@@ -452,7 +452,7 @@ class controller extends CI_Controller
 						'PERIOD' => $period
 				);
 
-				
+				$arrangeTasks = $this->model->arrangeTasks($data, $task[$key]);
 			}
 		}
 

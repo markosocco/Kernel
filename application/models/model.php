@@ -285,5 +285,12 @@ public function addProject($data)
 
     return $query->result_array();
   }
+
+  public function arrangeTasks($data, $id)
+  {
+    $condition = "TASKID = " . $id;
+    $this->db->where($condition);
+    $this->db->update('tasks', $data);
+  }
 }
 ?>
