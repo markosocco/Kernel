@@ -277,19 +277,6 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function arrangeTasks()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
-
-		else
-		{
-			$this->load->view("arrangeTasks");
-		}
-	}
-
 // DELETE THIS MAYBE??
 	public function scheduleTasks()
 	{
@@ -329,7 +316,7 @@ class controller extends CI_Controller
 	public function addTasksToProject()
 	{
 		// GET PROJECT ID
-		$id = $this->input->get("id");
+		$id = $this->input->post("project_ID");
 
 		// GET ARRAY OF INPUTS FROM VIEW
 		$category = $this->input->post('category');
@@ -440,6 +427,13 @@ class controller extends CI_Controller
 
 		$this->load->view('arrangeTasks', $data);
 	}
+
+
+		public function arrangeTasks()
+		{
+			$id = $this->input->post('project_ID');
+			
+		}
 
 	/******************** MY PROJECTS END ********************/
 

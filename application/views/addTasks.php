@@ -48,7 +48,10 @@
 		              </div>
 		            </div>
 		            <!-- /.box-header -->
-								<form id='addTasks' name = 'addTasks' action='' method="POST">
+								<form id='addTasks' name = 'addTasks' action = 'addTasksToProject' method="POST">
+
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
@@ -92,15 +95,15 @@
 										<tr id="row1"></tr>
 
 		              </table>
-								</form>
 
 								</div>
 		            <!-- /.box-body -->
 								<div class="box-footer">
 									<button type="button" class="btn btn-success">Previous: Project details</button>
-									<button type="button" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Arrange tasks</button>
+									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Arrange tasks</button>
 									<button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button>
 								</div>
+								</form>
 		          </div>
 		          <!-- /.box -->
 		        </div>
@@ -154,36 +157,15 @@
 				});
 
 				$(document).on("click", "a.delButton", function() {
+						if (x > 2)
+						{
+							x = x -1;
+							var j = $(this).attr('data-id');
 
-					// console.log("before removing: " + x);
-
-					if (x > 2)
-					{
-						x = x -1;
-						var j = $(this).attr('data-id');
-
-						$('#row' + j).remove();
-						console.log("after removing: " + x);
-					}
-
-					// for (var x = 0; x <= counter; x++)
-					// {
-					// 	//$('.num' + i ).text(i);
-					// 	//console.log(i);
-					// 	//console.log(i);
-					// 	i--;
-					// }
-
- 				});
-
-				$("#arrangeTask").click(function()
-        {
-
-					var $id = $(this).attr('data-id');
-
-					$("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
-					$("#addTasks").submit();
-        	});
+							$('#row' + j).remove();
+							console.log("after removing: " + x);
+						}
+					});
         });
 
 				// var el = document.getElementById('table');

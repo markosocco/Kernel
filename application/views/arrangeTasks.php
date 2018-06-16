@@ -49,6 +49,10 @@
 		              </div>
 		            </div>
 		            <!-- /.box-header -->
+								<form id='arrangeTasks' name = 'arrangeTasks' action = '<?php echo base_url('index.php/controller/arrangeTasks');?>' method="POST">
+
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 										<thead>
@@ -68,7 +72,10 @@
 										<?php $i = 1; ?>
 											<?php foreach ($tasks as $row): ?>
 
-			                <tr>
+			                <tr id = "<?php echo $row['TASKID']; ?>">
+
+												<input type="hidden" name="task_ID" value="<?php echo $row['TASKID']; ?>">
+
 												<td class="handle"><i class="fa fa-arrows"></i></td>
 												<td> <?php echo $i; ?></td>
 
@@ -94,16 +101,17 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right" id ="taskStartDate" name="taskStartDate" required>
+					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
 					                </div>
 					                <!-- /.input group -->
-					              </div></td>
+					              </div>
+											</td>
 												<td><div class="form-group">
 					                <div class="input-group date">
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right" id ="taskEndDate" name ="taskEndDate" required>
+					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
 					                </div>
 												</div></td>
 												<td><div class="form-group">
@@ -123,12 +131,14 @@
 									</tbody>
 		              </table>
 		            </div>
+
 		            <!-- /.box-body -->
 								<div class="box-footer">
 									<button type="button" class="btn btn-success">Previous: Add tasks</button>
-									<button type="button" class="btn btn-success pull-right" id="ganttChart">Next: Generate Gantt chart</button>
+									<button type="submit" class="btn btn-success pull-right" id="ganttChart">Next: Generate Gantt chart</button>
 									<button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button>
 								</div>
+								</form>
 		          </div>
 		          <!-- /.box -->
 		        </div>
@@ -143,6 +153,16 @@
 		<!-- ./wrapper -->
 
 		<script>
+
+		$("#ganttChart").click(function()
+		{
+
+			// var $id = $(this).attr('data-id');
+			//
+			// $("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
+			$("#ganttChart").submit();
+		});
+
 		$("#myProjects").addClass("active");
 
 		  $(function ()
@@ -151,11 +171,11 @@
 		    $('.select2').select2()
 
 				//Date picker
- 	     $('#taskStartDate').datepicker({
+ 	     $('.taskStartDate').datepicker({
  	       autoclose: true
  	     })
 
- 	     $('#taskEndDate').datepicker({
+ 	     $('.taskEndDate').datepicker({
  	       autoclose: true
  	     })
 		 });
