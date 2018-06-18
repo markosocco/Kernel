@@ -64,7 +64,7 @@
 	              </div>
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary pull-right">Next: Add tasks</button>
+                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-forward"></i> Next: Add tasks</button>
               </div>
             </form>
           </div>
@@ -79,7 +79,7 @@
 		<!-- ./wrapper -->
 
 		<script>
-		$("#myProjects").addClass("active");
+			$("#myProjects").addClass("active");
 
 		  $(function ()
 			{

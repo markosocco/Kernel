@@ -61,7 +61,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="<?php echo base_url()."assets/"; ?>dashboard.php" class="logo">
+    <a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>TEI</b></span>
       <!-- logo for regular state and mobile devices -->
@@ -126,8 +126,11 @@ desired effect
 
               <!-- Menu Footer-->
               <li class="user-footer">
+                <div class="pull-left">
+                  <a href="<?php echo base_url("index.php/controller/changePassword"); ?>" class="btn btn-default btn-flat">Change Password</a>
+                </div>
                 <div class="pull-right">
-                  <a href="<?php echo base_url()."index.php/controller/logout"; ?>#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?php echo base_url()."index.php/controller/logout"; ?>" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -163,14 +166,14 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
 
         <!--IF STATEMENTS DEPENDING ON USER TYPE  -->
-        <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span>Dashboard</span></a></li>
-        <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span>My Projects</span></a></li>
+        <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
+        <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
         <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
-          <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span>My Tasks</span></a></li>
-          <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span>My Team</span></a></li>
+          <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
+          <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span> My Team</span></a></li>
         <?php endif;?>
-        <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i> <span>Templates</span></a></li>
-        <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-database"></i> <span>Project Archives</span></a></li>
+        <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i><span> Templates</span></a></li>
+        <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Project Archives</span></a></li>
 
 
         <!-- <li class="treeview">

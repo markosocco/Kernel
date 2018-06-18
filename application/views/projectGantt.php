@@ -10,33 +10,39 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					<h1><?php echo $projectProfile['PROJECTTITLE']; ?></h1>
-					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
 
-					<?php // compute for days remaining and fix date format
-					$startdate = date_create($projectProfile['PROJECTSTARTDATE']);
-					$enddate = date_create($projectProfile['PROJECTENDDATE']);
-					$current = date_create(date("Y-m-d")); // get current date
-					$edate = date_format($enddate, "Y-m-d");
-					$sdate = date_format($startdate, "Y-m-d");
-					$enddate2 = date_create($edate);
-					$startdate2 = date_create($sdate);
-					if ($current > $startdate2) //if ongoing
-						$datediff = date_diff($enddate2, $current);
-					else // if planned
-						$datediff = date_diff($startdate2, $current);
-					?>
-
-					<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $datediff->format('%a');?> days remaining)</h4>
 					<ol class="breadcrumb">
-						<li class ="active"><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-dashboard"></i> My Tasks</a></li>
+						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 						<!-- <li class="active">Here</li> -->
 					</ol>
 				</section>
 
 				<!-- Main content -->
 				<section class="content container-fluid">
-					<div style="position: relative" class="gantt" id="GanttChartDIV">
+					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
+					<div>
 
+						<?php // compute for days remaining and fix date format
+						$startdate = date_create($projectProfile['PROJECTSTARTDATE']);
+						$enddate = date_create($projectProfile['PROJECTENDDATE']);
+						$current = date_create(date("Y-m-d")); // get current date
+						$edate = date_format($enddate, "Y-m-d");
+						$sdate = date_format($startdate, "Y-m-d");
+						$enddate2 = date_create($edate);
+						$startdate2 = date_create($sdate);
+						if ($current > $startdate2) //if ongoing
+							$datediff = date_diff($enddate2, $current);
+						else // if planned
+							$datediff = date_diff($startdate2, $current);
+						?>
+
+						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?></h4>
+						<h4>Project duration here (100 days)</h4>
+						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
+						<a href="<?php echo base_url()."index.php/controller/projectDocuments"; ?>" class="btn btn-success btn-xs"><i class="fa fa-folder"></i> View Documents</a>
+						<a href="<?php echo base_url()."index.php/controller/projectLog"; ?>" class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
+					</div>
+					<div style="position: relative" class="gantt" id="GanttChartDIV">
 				</section>
 					</div>
 			<?php require("footer.php"); ?>

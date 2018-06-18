@@ -311,6 +311,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function projectDocuments()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("projectDocuments");
+		}
+	}
+
 	/******************** MY PROJECTS START ********************/
 
 	public function addTasksToProject()

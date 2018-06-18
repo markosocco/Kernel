@@ -20,30 +20,17 @@
 			<section class="content container-fluid">
 
 				<!-- IF ARCHIVES IS EMPTY -->
-				<?php if(!$templates):?>
+				<!-- <?php if(!$templates):?>
 					<h1>You do not have any project templates</h1>
 					<p>(How are we templating? I don't understand the table and columns)</p>
 
-					<?endif;?>
+					<?endif;?> -->
 
 					<!-- IF ARCHIVES IS NOT EMPTY -->
-					<?php foreach ($templates as $row):?>
-						<div class="col-lg-3 col-xs-6">
-							<!-- small box -->
-							<div class="small-box bg-yellow">
-								<div class="inner">
-									<h2><?php echo $row['PROJECTTITLE']; ?></h2>
-
-									<p><?php echo $row['PROJECTSTARTDATE']; ?>-<?php echo $row['PROJECTENDDATE']; ?></p>
-								</div>
-								<div class="icon">
-									<i class="ion ion-stats-bars"></i>
-								</div>
-								<a href="#" class="small-box-footer">View Details <i class="fa fa-arrow-circle-right"></i></a>
-							</div>
-						</div>
+					<?php //foreach ($templates as $row):?>
+						
 						<!-- ./col -->
-					<?php endforeach;?>
+					<?php //endforeach;?>
 
 			</section>
 
