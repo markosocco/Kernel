@@ -463,9 +463,54 @@ class controller extends CI_Controller
 						'TASKSTARTDATE' => $startDates[$key],
 						'TASKENDDATE' => $endDates[$key],
 						'PERIOD' => $period
+
 				);
 
 				$arrangeTasks = $this->model->arrangeTasks($data, $task[$key]);
+			}
+
+			// SET PARENT TASK
+			$allTasks = $this->model->getAllProjectTasksByDate($id);
+
+			foreach ($allTasks as $row)
+			{
+				$taskID = $task[$key];
+				$currTask = $this->model->getTaskByID($taskID);
+
+				switch ($currTask['CATEGORY'])
+				{
+					case "2":
+
+						while ($row['TASKID'] != $currTask['TASKID'])
+						{
+							foreach ($row as $current)
+							{
+								if ($current['CATEGORY'] == '1')
+								{
+									$parent = $current;
+								}
+							}
+						}
+
+						echo $parent;
+						break;
+
+					case "3":
+
+						// while ($row['TASKID'] != $currTask['TASKID'])
+						// {
+						// 	foreach ($row as $current)
+						// 	{
+						// 		if ($current['CATEGORY'] == '2')
+						// 		{
+						// 			$parent = $current;
+						// 		}
+						// 	}
+						// }
+
+						echo $currTask['CATEGORY'] . "<br>";
+						break;
+				}
 			}
 		}
 

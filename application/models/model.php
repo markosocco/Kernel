@@ -102,21 +102,21 @@ public function addProject($data)
   }
 
   // GETS ALL TASKS OF A PROJECT AND DEPARTMENT
-  public function getAllProjectTasks($data)
-  {
-    // $condition = "projects_PROJECTID =" . $data;
-    // $this->db->select('*');
-    // $this->db->from('tasks');
-    // $this->db->where($condition);
-    // $query = $this->db->get();
-    //
-    // return $query->result_array();
-
-    $sql = "SELECT t.*, d.DEPARTMENTNAME as dName FROM tasks as t JOIN users as u on t.users_USERID = u.USERID JOIN departments as d on u.departments_DEPARTMENTID = d.DEPARTMENTID WHERE t.projects_PROJECTID = " . $data;
-
-		$data = $this->db->query($sql);
-    return $data->result_array();
-  }
+  // public function getAllProjectTasks($data)
+  // {
+  //   // $condition = "projects_PROJECTID =" . $data;
+  //   // $this->db->select('*');
+  //   // $this->db->from('tasks');
+  //   // $this->db->where($condition);
+  //   // $query = $this->db->get();
+  //   //
+  //   // return $query->result_array();
+  //
+  //   $sql = "SELECT t.*, d.DEPARTMENTNAME as dName FROM tasks as t JOIN users as u on t.users_USERID = u.USERID JOIN departments as d on u.departments_DEPARTMENTID = d.DEPARTMENTID WHERE t.projects_PROJECTID = " . $data;
+  //
+	// 	$data = $this->db->query($sql);
+  //   return $data->result_array();
+  // }
 
   public function getAllUsers()
   {
@@ -240,17 +240,22 @@ public function addProject($data)
 // GET DATA FOR THE GANTT CHART
 // TODO: edit condition
 
-  public function getGanttData()
+  public function getAllProjectTasks($id)
   {
-    $condition = "projects.PROJECTID = 1";
-    $this->db->select('*');
-    $this->db->from('projects');
-    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-    $this->db->join('users', 'tasks.users_USERID = users.USERID');
-    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
-    $this->db->where($condition);
+    // $condition = "projects.PROJECTID = " . $id;
+    // $this->db->select('task.*');
+    // $this->db->from('projects');
+    // $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    // $this->db->join('users', 'tasks.users_USERID = users.USERID');
+    // $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    // $this->db->where($condition);
+    //
+    // return $this->db->get()->result_array();
 
-    return $this->db->get()->result_array();
+    $sql = "SELECT t.*, d.DEPARTMENTNAME as dName FROM tasks as t JOIN users as u on t.users_USERID = u.USERID JOIN departments as d on u.departments_DEPARTMENTID = d.DEPARTMENTID WHERE t.projects_PROJECTID = " . $id;
+
+   	$data = $this->db->query($sql);
+     return $data->result_array();
   }
 
 // GET PRE-REQUISITE ID
@@ -291,6 +296,30 @@ public function addProject($data)
     $condition = "TASKID = " . $id;
     $this->db->where($condition);
     $this->db->update('tasks', $data);
+  }
+
+  public function getTaskByID($id)
+  {
+    $condition = "TASKID = " . $id;
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->where($condition);
+
+    return $this->db->get()->row_array();
+  }
+
+  public function getAllProjectTasksByDate($id)
+  {
+    $condition = "projects.PROJECTID = " . $id;
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('users', 'tasks.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->order_by('TASKSTARTDATE');
+
+    return $this->db->get()->result_array();
   }
 }
 ?>
