@@ -321,5 +321,13 @@ public function addProject($data)
 
     return $this->db->get()->result_array();
   }
+
+  public function insertParentTask($data, $id)
+  {
+    // $parent = $data['tasks_TASKPARENT'];
+
+    $this->db->where('TASKID', $id);
+    $this->db->update('tasks', $data);
+  }
 }
 ?>

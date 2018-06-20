@@ -446,11 +446,11 @@ class controller extends CI_Controller
 		{
 			$id = $this->input->post('project_ID');
 
-			$task = $this->input->post('task_ID');
+			$tasks = $this->input->post('task_ID');
 			$startDates = $this->input->post('taskStartDate');
 			$endDates = $this->input->post('taskEndDate');
 
-			foreach ($task as $key => $value)
+			foreach ($tasks as $key => $value)
 			{
 				$dates = array(
 						'sDate' => $startDates[$key],
@@ -463,53 +463,48 @@ class controller extends CI_Controller
 						'TASKSTARTDATE' => $startDates[$key],
 						'TASKENDDATE' => $endDates[$key],
 						'PERIOD' => $period
-
 				);
 
-				$arrangeTasks = $this->model->arrangeTasks($data, $task[$key]);
+				$arrangeTasks = $this->model->arrangeTasks($data, $tasks[$key]);
 			}
 
 			// SET PARENT TASK
+			$currentTask = $this->model->getTaskByID($tasks[$key]);
 			$allTasks = $this->model->getAllProjectTasksByDate($id);
+
 
 			foreach ($allTasks as $row)
 			{
-				$taskID = $task[$key];
-				$currTask = $this->model->getTaskByID($taskID);
+				$isCurrent = false;
 
-				switch ($currTask['CATEGORY'])
+				if ($row['CATEGORY'] == 2)
 				{
-					case "2":
-
-						while ($row['TASKID'] != $currTask['TASKID'])
+					if ($isCurrent == false)
+					{
+						foreach($allTasks as $x)
 						{
-							foreach ($row as $current)
+							if ($x['TASKID'] == $currentTask['TASKID'])
 							{
-								if ($current['CATEGORY'] == '1')
+								$isCurrent = true;
+							}
+
+							else
+							{
+								if ($x['CATEGORY'] == 1 && $isCurrent == false)
 								{
-									$parent = $current;
+									$parent = $x['TASKID'];
 								}
 							}
 						}
 
-						echo $parent;
-						break;
+						echo $row['TASKTITLE'] . ": " . $parent . "<br>";
+					}
 
-					case "3":
-
-						// while ($row['TASKID'] != $currTask['TASKID'])
-						// {
-						// 	foreach ($row as $current)
-						// 	{
-						// 		if ($current['CATEGORY'] == '2')
-						// 		{
-						// 			$parent = $current;
-						// 		}
-						// 	}
-						// }
-
-						echo $currTask['CATEGORY'] . "<br>";
-						break;
+					// $data = array (
+					// 	'tasks_TASKPARENT' => $parent
+					// );
+					//
+					// $insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
 				}
 			}
 		}
