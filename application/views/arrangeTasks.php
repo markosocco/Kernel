@@ -115,7 +115,7 @@
 					                </div>
 												</div></td>
 												<td><div class="form-group">
-					                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites" style="width: 100%;" id = "selector">
+					                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites" style="width: 100%;" id = "selector" name = "dependencies[]">
 															<?php $x = 1; ?>
 															<?php foreach ($tasks as $row): ?>
 																<?php echo "<option value = '" . $row['TASKID'] . "'>" . $x . "</option>"; ?>
@@ -126,8 +126,6 @@
 					              </div></td>
 			                </tr>
 										<?php endforeach; ?>
-
-										<tr id="row1"></tr>
 									</tbody>
 		              </table>
 		            </div>
@@ -153,15 +151,6 @@
 		<!-- ./wrapper -->
 
 		<script>
-
-		$("#ganttChart").click(function()
-		{
-
-			// var $id = $(this).attr('data-id');
-			//
-			// $("#addTasks").attr("action", "<?php echo base_url('index.php/controller/addTasksToProject/?id=');?> " + $id);
-			$("#ganttChart").submit();
-		});
 
 		$("#myProjects").addClass("active");
 

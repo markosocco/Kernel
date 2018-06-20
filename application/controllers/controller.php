@@ -450,6 +450,8 @@ class controller extends CI_Controller
 			$startDates = $this->input->post('taskStartDate');
 			$endDates = $this->input->post('taskEndDate');
 
+			$dependencies = $this->input->post('dependencies');
+
 			foreach ($tasks as $key => $value)
 			{
 				$dates = array(
@@ -468,45 +470,75 @@ class controller extends CI_Controller
 				$arrangeTasks = $this->model->arrangeTasks($data, $tasks[$key]);
 			}
 
-			// SET PARENT TASK
-			$currentTask = $this->model->getTaskByID($tasks[$key]);
-			$allTasks = $this->model->getAllProjectTasksByDate($id);
-
-
-			foreach ($allTasks as $row)
+			foreach ($dependencies as $row)
 			{
-				$isCurrent = false;
-
-				if ($row['CATEGORY'] == 2)
-				{
-					if ($isCurrent == false)
-					{
-						foreach($allTasks as $x)
-						{
-							if ($x['TASKID'] == $currentTask['TASKID'])
-							{
-								$isCurrent = true;
-							}
-
-							else
-							{
-								if ($x['CATEGORY'] == 1 && $isCurrent == false)
-								{
-									$parent = $x['TASKID'];
-								}
-							}
-						}
-
-						echo $row['TASKTITLE'] . ": " . $parent . "<br>";
-					}
-
-					// $data = array (
-					// 	'tasks_TASKPARENT' => $parent
-					// );
-					//
-					// $insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
-				}
+				echo $row . "<br>";
 			}
+
+			// // SET PARENT TASK
+			// $allTasks = $this->model->getAllProjectTasksByDate($id);
+			//
+			// foreach ($allTasks as $row)
+			// {
+			// 	$currentTask = $this->model->getTaskByID($row['TASKID']);
+			// 	$isCurrent = false;
+			//
+			// 	if ($row['CATEGORY'] == 2)
+			// 	{
+			// 		foreach ($allTasks as $row_2)
+			// 		{
+			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
+			// 			{
+			// 				$isCurrent = true;
+			// 			}
+			//
+			// 			else
+			// 			{
+			// 				if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
+			// 				{
+			// 					$parent = $row_2['TASKID'];
+			// 				}
+			// 			}
+			// 		}
+			//
+			// 		$data = array (
+			// 			'tasks_TASKPARENT' => $parent
+			// 		);
+			//
+			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+			// 	}
+			//
+			// 	if ($row['CATEGORY'] == 3)
+			// 	{
+			// 		foreach ($allTasks as $row_2)
+			// 		{
+			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
+			// 			{
+			// 				$isCurrent = true;
+			// 			}
+			//
+			// 			else
+			// 			{
+			// 				if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
+			// 				{
+			// 					$parent = $row_2['TASKID'];
+			// 				}
+			// 			}
+			// 		}
+			//
+			// 		$data = array (
+			// 			'tasks_TASKPARENT' => $parent
+			// 		);
+			//
+			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+			// 	}
+			// }
+			//
+			// // GANTT CODE
+			// $data['ganttData'] = $this->model->getAllProjectTasks($id);
+			// // $data['preReq'] = $this->model->getPreReqID();
+			// $data['dependencies'] = $this->model->getDependecies();
+			// $this->load->view("gantt", $data);
 		}
 
 	/******************** MY PROJECTS END ********************/
