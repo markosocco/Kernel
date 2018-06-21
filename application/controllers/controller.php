@@ -478,6 +478,75 @@ class controller extends CI_Controller
 			{
 				echo $row . "<br>";
 			}
+<<<<<<< HEAD
+=======
+
+			// // SET PARENT TASK
+			// $allTasks = $this->model->getAllProjectTasksByDate($id);
+			//
+			// foreach ($allTasks as $row)
+			// {
+			// 	$currentTask = $this->model->getTaskByID($row['TASKID']);
+			// 	$isCurrent = false;
+			//
+			// 	if ($row['CATEGORY'] == 2)
+			// 	{
+			// 		foreach ($allTasks as $row_2)
+			// 		{
+			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
+			// 			{
+			// 				$isCurrent = true;
+			// 			}
+			//
+			// 			else
+			// 			{
+			// 				if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
+			// 				{
+			// 					$parent = $row_2['TASKID'];
+			// 				}
+			// 			}
+			// 		}
+			//
+			// 		$data = array (
+			// 			'tasks_TASKPARENT' => $parent
+			// 		);
+			//
+			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+			// 	}
+			//
+			// 	if ($row['CATEGORY'] == 3)
+			// 	{
+			// 		foreach ($allTasks as $row_2)
+			// 		{
+			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
+			// 			{
+			// 				$isCurrent = true;
+			// 			}
+			//
+			// 			else
+			// 			{
+			// 				if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
+			// 				{
+			// 					$parent = $row_2['TASKID'];
+			// 				}
+			// 			}
+			// 		}
+			//
+			// 		$data = array (
+			// 			'tasks_TASKPARENT' => $parent
+			// 		);
+			//
+			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+			// 	}
+			// }
+			//
+			// // GANTT CODE
+			// $data['ganttData'] = $this->model->getAllProjectTasks($id);
+			// // $data['preReq'] = $this->model->getPreReqID();
+			// $data['dependencies'] = $this->model->getDependecies();
+			// $this->load->view("gantt", $data);
+		}
+>>>>>>> 89c26b8f2c446679059e14b327f022204eabfc92
 
 			// // SET PARENT TASK
 			// $allTasks = $this->model->getAllProjectTasksByDate($id);
