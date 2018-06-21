@@ -320,11 +320,12 @@ class controller extends CI_Controller
 
 		else
 		{
-			$id = $this->input->get("PROJECTID");
+			// $id = $this->input->post("project_ID");
+			$id = $this->input->get("id");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 
 			$this->load->view("projectDocuments", $data);
-			// echo $data['PROJECTID'];
+			// echo $id;
 		}
 	}
 
@@ -448,7 +449,7 @@ class controller extends CI_Controller
 
 		public function arrangeTasks()
 		{
-			$id = $this->input->post('projectID');
+			$id = $this->input->post('project_ID');
 
 			$tasks = $this->input->post('task_ID');
 			$startDates = $this->input->post('taskStartDate');
@@ -469,9 +470,9 @@ class controller extends CI_Controller
 						'PERIOD' => $period
 				);
 
-				$dependencies = $this->input->post('dependencies_' . $tasks[$key]);
-
-				echo $tasks[$key] . ": " . $dependencies . "<br>";
+				// $dependencies = $this->input->post('dependencies_' . $tasks[$key]);
+				//
+				// echo $tasks[$key] . ": " . $dependencies . "<br>";
 
 				// foreach ($dependencies as $row)
 				// {
@@ -480,139 +481,77 @@ class controller extends CI_Controller
 
 				$arrangeTasks = $this->model->arrangeTasks($data, $tasks[$key]);
 
-				echo "-------------------------------------<br>";
+				// echo "-------------------------------------<br>";
 			}
 
 			// // SET PARENT TASK
-			// $allTasks = $this->model->getAllProjectTasksByDate($id);
-			//
-			// foreach ($allTasks as $row)
-			// {
-			// 	$currentTask = $this->model->getTaskByID($row['TASKID']);
-			// 	$isCurrent = false;
-			//
-			// 	if ($row['CATEGORY'] == 2)
-			// 	{
-			// 		foreach ($allTasks as $row_2)
-			// 		{
-			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
-			// 			{
-			// 				$isCurrent = true;
-			// 			}
-			//
-			// 			else
-			// 			{
-			// 				if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
-			// 				{
-			// 					$parent = $row_2['TASKID'];
-			// 				}
-			// 			}
-			// 		}
-			//
-			// 		$data = array (
-			// 			'tasks_TASKPARENT' => $parent
-			// 		);
-			//
-			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
-			// 	}
-			//
-			// 	if ($row['CATEGORY'] == 3)
-			// 	{
-			// 		foreach ($allTasks as $row_2)
-			// 		{
-			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
-			// 			{
-			// 				$isCurrent = true;
-			// 			}
-			//
-			// 			else
-			// 			{
-			// 				if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
-			// 				{
-			// 					$parent = $row_2['TASKID'];
-			// 				}
-			// 			}
-			// 		}
-			//
-			// 		$data = array (
-			// 			'tasks_TASKPARENT' => $parent
-			// 		);
-			//
-			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
-			// 	}
-			// }
-			//
-			// // GANTT CODE
-			// $data['ganttData'] = $this->model->getAllProjectTasks($id);
-			// // $data['preReq'] = $this->model->getPreReqID();
-			// $data['dependencies'] = $this->model->getDependecies();
-			// $this->load->view("gantt", $data);
-		}
+			$allTasks = $this->model->getAllProjectTasksByDate($id);
 
-			// // SET PARENT TASK
-			// $allTasks = $this->model->getAllProjectTasksByDate($id);
-			//
-			// foreach ($allTasks as $row)
-			// {
-			// 	$currentTask = $this->model->getTaskByID($row['TASKID']);
-			// 	$isCurrent = false;
-			//
-			// 	if ($row['CATEGORY'] == 2)
-			// 	{
-			// 		foreach ($allTasks as $row_2)
-			// 		{
-			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
-			// 			{
-			// 				$isCurrent = true;
-			// 			}
-			//
-			// 			else
-			// 			{
-			// 				if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
-			// 				{
-			// 					$parent = $row_2['TASKID'];
-			// 				}
-			// 			}
-			// 		}
-			//
-			// 		$data = array (
-			// 			'tasks_TASKPARENT' => $parent
-			// 		);
-			//
-			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
-			// 	}
-			//
-			// 	if ($row['CATEGORY'] == 3)
-			// 	{
-			// 		foreach ($allTasks as $row_2)
-			// 		{
-			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
-			// 			{
-			// 				$isCurrent = true;
-			// 			}
-			//
-			// 			else
-			// 			{
-			// 				if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
-			// 				{
-			// 					$parent = $row_2['TASKID'];
-			// 				}
-			// 			}
-			// 		}
-			//
-			// 		$data = array (
-			// 			'tasks_TASKPARENT' => $parent
-			// 		);
-			//
-			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
-			// 	}
-			// }
+			foreach ($allTasks as $row)
+			{
+				$currentTask = $this->model->getTaskByID($row['TASKID']);
+				$isCurrent = false;
+
+				if ($row['CATEGORY'] == 2)
+				{
+					foreach ($allTasks as $row_2)
+					{
+						if ($row_2['TASKID'] == $currentTask['TASKID'])
+						{
+							$isCurrent = true;
+							echo $row_2['TASKID'] . ": this is the current task <br>";
+						}
+
+						else
+						{
+							if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
+							{
+								$parent = $row_2['TASKID'];
+							}
+						}
+
+						echo $row_2['TASKID'] . "<br>";
+					}
+
+					$data = array (
+						'tasks_TASKPARENT' => $parent
+					);
+
+					$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+				}
+
+				if ($row['CATEGORY'] == 3)
+				{
+					foreach ($allTasks as $row_2)
+					{
+						if ($row_2['TASKID'] == $currentTask['TASKID'])
+						{
+							$isCurrent = true;
+						}
+
+						else
+						{
+							if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
+							{
+								$parent = $row_2['TASKID'];
+							}
+						}
+					}
+
+					$data = array (
+						'tasks_TASKPARENT' => $parent
+					);
+
+					$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+				}
+			}
 			//
 			// // GANTT CODE
 			// $data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// // $data['preReq'] = $this->model->getPreReqID();
 			// $data['dependencies'] = $this->model->getDependecies();
 			// $this->load->view("gantt", $data);
+	}
 
 	public function uploadDocument()
 	{
@@ -624,16 +563,21 @@ class controller extends CI_Controller
 
 		if (!$this->upload->do_upload('docu'))
 		{
-			$this->load->view('projectDocuments');
+			$this->load->view('newProject');
 		}
-		else {
+
+		else
+		{
 			// GET PROJECT ID
-			$id = $this->input->get("PROJECTID");
+			$id = $this->input->get("id");
+			// $id = $this->input->post("projectID");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 
 			$user = $_SESSION['USERID'];
 			$fileName = $this->upload->data('file_name');
 			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
+
+			// echo $id;
 
 			$uploadData = array(
 				'DOCUMENTSTATUS' => 'Uploaded',
@@ -647,7 +591,6 @@ class controller extends CI_Controller
 
 			$result = $this->model->uploadDocument($uploadData);
 		}
-
 	}
 
 	/******************** MY PROJECTS END ********************/

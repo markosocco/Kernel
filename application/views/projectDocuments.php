@@ -33,7 +33,7 @@
 					</div>
 					<h1>
 						Documents
-						<small>Project Title</small>
+						<small><?php echo $projectProfile['PROJECTTITLE']; ?></small>
 					</h1>
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
@@ -108,7 +108,12 @@
 		          <!-- /.box -->
 		        </div>
 
-						<?php echo form_open_multipart('controller/uploadDocument');?>
+						<?php echo form_open_multipart('controller/uploadDocument/?id=' . $projectProfile['PROJECTID']);?>
+
+						<input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>">
+
+						<?php echo $projectProfile['PROJECTID']; ?>
+
 						<div class="modal fade" id="modal-upload" tabindex="-1">
 		          <div class="modal-dialog">
 		            <div class="modal-content">
@@ -120,19 +125,20 @@
 											<div class="form-group">
 			                  <label for="uploadDoc">Select a file to upload</label>
 			                  <input type="file" id="uploadDoc" name="docu">
-												
+
 			                  <!-- <p class="help-block"></p> -->
 			                </div>
 											<div class="form-group">
 			                  <label>Remarks</label>
 			                  <input type="text" class="form-control" placeholder="Ex. Approved, Final">
 			                </div>
-										</form>
+
 		              </div>
 		              <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
 		                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Upload Document</button>
 		              </div>
+									</form>
 		            </div>
 		            <!-- /.modal-content -->
 		          </div>

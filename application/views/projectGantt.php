@@ -40,7 +40,12 @@
 						<h4>Project duration here (100 days)</h4>
 						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
 
-						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs"><i class="fa fa-folder"></i> View Documents</a>
+						
+						<!-- <form name="gantt" method="POST">
+							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
+						</form> -->
+
+						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
 						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
 					</div>
 					<div style="position: relative" class="gantt" id="GanttChartDIV">
@@ -50,6 +55,11 @@
 		</div>
 		<script>
 			$("#myProjects").addClass("active");
+
+			// $("#projectDocu").click(function()
+			// {
+			// 	("#gantt").submit();
+      // });
 
 		</script>
 
