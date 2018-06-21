@@ -304,7 +304,7 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 
 
-			$data['ganttData'] = $this->model->getGanttData();
+			$data['ganttData'] = $this->model->getAllProjectTasksByDate($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$this->load->view("projectGantt", $data);
@@ -320,7 +320,11 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("projectDocuments");
+			$id = $this->input->get("PROJECTID");
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+
+			$this->load->view("projectDocuments", $data);
+			// echo $data['PROJECTID'];
 		}
 	}
 
@@ -444,13 +448,15 @@ class controller extends CI_Controller
 
 		public function arrangeTasks()
 		{
-			$id = $this->input->post('project_ID');
+			$id = $this->input->post('projectID');
 
-			$task = $this->input->post('task_ID');
+			$tasks = $this->input->post('task_ID');
 			$startDates = $this->input->post('taskStartDate');
 			$endDates = $this->input->post('taskEndDate');
 
-			foreach ($task as $key => $value)
+			$dependencies = $this->input->post('dependencies');
+
+			foreach ($tasks as $key => $value)
 			{
 				$dates = array(
 						'sDate' => $startDates[$key],
@@ -463,76 +469,118 @@ class controller extends CI_Controller
 						'TASKSTARTDATE' => $startDates[$key],
 						'TASKENDDATE' => $endDates[$key],
 						'PERIOD' => $period
-
 				);
 
-				$arrangeTasks = $this->model->arrangeTasks($data, $task[$key]);
+				$arrangeTasks = $this->model->arrangeTasks($data, $tasks[$key]);
 			}
 
-			// SET PARENT TASK
-			$allTasks = $this->model->getAllProjectTasksByDate($id);
-
-			foreach ($allTasks as $row)
+			foreach ($dependencies as $row)
 			{
-				$taskID = $task[$key];
-				$currTask = $this->model->getTaskByID($taskID);
-
-				switch ($currTask['CATEGORY'])
-				{
-					case "2":
-
-						while ($row['TASKID'] != $currTask['TASKID'])
-						{
-							foreach ($row as $current)
-							{
-								if ($current['CATEGORY'] == '1')
-								{
-									$parent = $current;
-								}
-							}
-						}
-
-						echo $parent;
-						break;
-
-					case "3":
-
-						// while ($row['TASKID'] != $currTask['TASKID'])
-						// {
-						// 	foreach ($row as $current)
-						// 	{
-						// 		if ($current['CATEGORY'] == '2')
-						// 		{
-						// 			$parent = $current;
-						// 		}
-						// 	}
-						// }
-
-						echo $currTask['CATEGORY'] . "<br>";
-						break;
-				}
+				echo $row . "<br>";
 			}
+
+			// // SET PARENT TASK
+			// $allTasks = $this->model->getAllProjectTasksByDate($id);
+			//
+			// foreach ($allTasks as $row)
+			// {
+			// 	$currentTask = $this->model->getTaskByID($row['TASKID']);
+			// 	$isCurrent = false;
+			//
+			// 	if ($row['CATEGORY'] == 2)
+			// 	{
+			// 		foreach ($allTasks as $row_2)
+			// 		{
+			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
+			// 			{
+			// 				$isCurrent = true;
+			// 			}
+			//
+			// 			else
+			// 			{
+			// 				if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
+			// 				{
+			// 					$parent = $row_2['TASKID'];
+			// 				}
+			// 			}
+			// 		}
+			//
+			// 		$data = array (
+			// 			'tasks_TASKPARENT' => $parent
+			// 		);
+			//
+			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+			// 	}
+			//
+			// 	if ($row['CATEGORY'] == 3)
+			// 	{
+			// 		foreach ($allTasks as $row_2)
+			// 		{
+			// 			if ($row_2['TASKID'] == $currentTask['TASKID'])
+			// 			{
+			// 				$isCurrent = true;
+			// 			}
+			//
+			// 			else
+			// 			{
+			// 				if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
+			// 				{
+			// 					$parent = $row_2['TASKID'];
+			// 				}
+			// 			}
+			// 		}
+			//
+			// 		$data = array (
+			// 			'tasks_TASKPARENT' => $parent
+			// 		);
+			//
+			// 		$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+			// 	}
+			// }
+			//
+			// // GANTT CODE
+			// $data['ganttData'] = $this->model->getAllProjectTasks($id);
+			// // $data['preReq'] = $this->model->getPreReqID();
+			// $data['dependencies'] = $this->model->getDependecies();
+			// $this->load->view("gantt", $data);
 		}
 
-	/******************** MY PROJECTS END ********************/
+	public function uploadDocument(){
+		$config['upload_path']          = './assets/uploads';
+		$config['allowed_types'] 				= '*';
 
-	/******************** GANTT CHART DELETE THIS AFTER ********************/
-	public function gantt()
-	{
-		if (!isset($_SESSION['EMAIL']))
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+
+		if (!$this->upload->do_upload('docu'))
 		{
-			$this->load->view('contact');
+			$this->load->view('projectDocuments');
+		}
+		else {
+			// GET PROJECT ID
+			$id = $this->input->get("PROJECTID");
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+
+			$user = $_SESSION['USERID'];
+			$fileName = $this->upload->data('file_name');
+			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
+
+			$uploadData = array(
+				'DOCUMENTSTATUS' => 'Uploaded',
+				'DOCUMENTNAME' => $fileName,
+				'DOCUMENTLINK' => $src,
+				'VERSION' => '1',
+				'users_UPLOADEDBY' => $user,
+				'UPLOADEDDATE' => date('m/d/Y'),
+				'projects_PROJECTID' => $id
+			);
+
+			$result = $this->model->uploadDocument($uploadData);
 		}
 
-		else
-		{
-			$data['ganttData'] = $this->model->getGanttData();
-			// $data['preReq'] = $this->model->getPreReqID();
-			$data['dependencies'] = $this->model->getDependecies();
-			$this->load->view("gantt", $data);
-		}
 	}
 
+	/******************** MY PROJECTS END ********************/
 
 
 // DELETE THIS AFTER

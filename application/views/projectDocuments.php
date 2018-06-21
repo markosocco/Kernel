@@ -108,6 +108,7 @@
 		          <!-- /.box -->
 		        </div>
 
+						<?php echo form_open_multipart('controller/uploadDocument');?>
 						<div class="modal fade" id="modal-upload" tabindex="-1">
 		          <div class="modal-dialog">
 		            <div class="modal-content">
@@ -115,11 +116,11 @@
 		                <h4 class="modal-title">Upload a Document</h4>
 		              </div>
 		              <div class="modal-body">
-		                <form>
+
 											<div class="form-group">
 			                  <label for="uploadDoc">Select a file to upload</label>
-			                  <input type="file" id="uploadDoc">
-
+			                  <input type="file" id="uploadDoc" name="docu">
+												
 			                  <!-- <p class="help-block"></p> -->
 			                </div>
 											<div class="form-group">
@@ -130,7 +131,7 @@
 		              </div>
 		              <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-		                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Upload Document</button>
+		                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Upload Document</button>
 		              </div>
 		            </div>
 		            <!-- /.modal-content -->

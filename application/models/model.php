@@ -321,5 +321,20 @@ public function addProject($data)
 
     return $this->db->get()->result_array();
   }
+
+<<<<<<< HEAD
+  public function uploadDocument($data)
+  {
+    $this->db->insert('documents', $data);
+    return true;
+=======
+  public function insertParentTask($data, $id)
+  {
+    // $parent = $data['tasks_TASKPARENT'];
+
+    $this->db->where('TASKID', $id);
+    $this->db->update('tasks', $data);
+>>>>>>> 89c26b8f2c446679059e14b327f022204eabfc92
+  }
 }
 ?>

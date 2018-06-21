@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Contact Lawin</title>
+    <title>Contact TEI</title>
     <link rel = "stylesheet" href = "<?php echo base_url("/assets/CSS/contactStyle.css");?>">
   </head>
   <body>
