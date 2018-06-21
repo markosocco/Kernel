@@ -450,8 +450,6 @@ class controller extends CI_Controller
 			$startDates = $this->input->post('taskStartDate');
 			$endDates = $this->input->post('taskEndDate');
 
-			$dependencies = $this->input->post('dependencies');
-
 			foreach ($tasks as $key => $value)
 			{
 				$dates = array(
@@ -467,12 +465,18 @@ class controller extends CI_Controller
 						'PERIOD' => $period
 				);
 
-				$arrangeTasks = $this->model->arrangeTasks($data, $tasks[$key]);
-			}
+				$dependencies = $this->input->post('dependencies_' . $tasks[$key]);
 
-			foreach ($dependencies as $row)
-			{
-				echo $row . "<br>";
+				echo $tasks[$key] . ": " . $dependencies . "<br>";
+
+				// foreach ($dependencies as $row)
+				// {
+				// 	echo $tasks['TASKID'] . ": " . $row . "<br>";
+				// }
+
+				$arrangeTasks = $this->model->arrangeTasks($data, $tasks[$key]);
+
+				echo "-------------------------------------<br>";
 			}
 
 			// // SET PARENT TASK

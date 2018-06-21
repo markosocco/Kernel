@@ -115,7 +115,7 @@
 					                </div>
 												</div></td>
 												<td><div class="form-group">
-					                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites" style="width: 100%;" id = "selector" name = "dependencies[]">
+					                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites" style="width: 100%;" id = "selector" name = "dependencies_ <?php echo $row['TASKID']; ?>[]" >
 															<?php $x = 1; ?>
 															<?php foreach ($tasks as $row): ?>
 																<?php echo "<option value = '" . $row['TASKID'] . "'>" . $x . "</option>"; ?>
