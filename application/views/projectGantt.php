@@ -39,8 +39,9 @@
 						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?></h4>
 						<h4>Project duration here (100 days)</h4>
 						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
-						<a href="<?php echo base_url()."index.php/controller/projectDocuments"; ?>" class="btn btn-success btn-xs"><i class="fa fa-folder"></i> View Documents</a>
-						<a href="<?php echo base_url()."index.php/controller/projectLog"; ?>" class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
+
+						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs"><i class="fa fa-folder"></i> View Documents</a>
+						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
 					</div>
 					<div style="position: relative" class="gantt" id="GanttChartDIV">
 				</section>
@@ -49,6 +50,7 @@
 		</div>
 		<script>
 			$("#myProjects").addClass("active");
+
 		</script>
 
 			<!-- Javascript for Gantt Chart -->
@@ -61,8 +63,6 @@
 
 		    foreach($ganttData as $row)
 		    {
-
-		      // $curTask = $row['CATEGORY'];
 
 		      $startDate = $row['TASKSTARTDATE'];
 
@@ -91,44 +91,6 @@
 		        $completion = 100;
 		        $MAcounter = 0;
 						$group = 0;
-						//
-		        // if ($row['CATEGORY'] == 1){
-		        //   $MAcounter++;
-		        // }
-						//
-		        // foreach ($ganttData as $row) {
-						//
-		        //   if($row['CATEGORY'] != $curTask){
-		        //     if ($row['CATEGORY'] == 1)
-		        //     {
-		        //       $MAcurrent = $row;
-		        //     }
-						//
-		        //     else {
-		        //       $SAcurrent = $row;
-		        //     }
-		        //   }
-		        // }
-
-
-		// // CATEGORY 3 = TASKS
-		//       if ($row['CATEGORY'] == 3){
-		//         $group = 0;
-		//
-		//         if ($row['TASKSTATUS'] == 'Pending'){
-		//           $completion = 0;
-		//         }
-		//
-		// // CATEGORY 2 = SUBACTIVITY
-		//       } else if ($row['CATEGORY'] == 2) {
-		//         if ($row['TASKID'] == $row['tasks_TASKPARENT']){
-		//           echo "console.log(". $row['TASKID'] ." + ' yes ' + ". $row['tasks_TASKPARENT'] .");";
-		//         }
-		//
-		// // CATEGORY 1 = MAIN ACTIVITY
-		//       } else {
-		//           $group = 1;
-		//       }
 
 		// FOR GROUPING
 					$currentTask = $row['TASKID'];
