@@ -499,7 +499,7 @@ class controller extends CI_Controller
 						if ($row_2['TASKID'] == $currentTask['TASKID'])
 						{
 							$isCurrent = true;
-							echo $row_2['TASKID'] . ": this is the current task <br>";
+							// echo $row_2['TASKID'] . ": this is the current task <br>";
 						}
 
 						else
@@ -510,7 +510,7 @@ class controller extends CI_Controller
 							}
 						}
 
-						echo $row_2['TASKID'] . "<br>";
+						// echo $row_2['TASKID'] . "<br>";
 					}
 
 					$data = array (
@@ -545,12 +545,12 @@ class controller extends CI_Controller
 					$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
 				}
 			}
-			//
-			// // GANTT CODE
-			// $data['ganttData'] = $this->model->getAllProjectTasks($id);
-			// // $data['preReq'] = $this->model->getPreReqID();
-			// $data['dependencies'] = $this->model->getDependecies();
-			// $this->load->view("gantt", $data);
+
+			// GANTT CODE
+			$data['ganttData'] = $this->model->getAllProjectTasks($id);
+			// $data['preReq'] = $this->model->getPreReqID();
+			$data['dependencies'] = $this->model->getDependecies();
+			$this->load->view("gantt", $data);
 	}
 
 	public function uploadDocument()
@@ -563,7 +563,7 @@ class controller extends CI_Controller
 
 		if (!$this->upload->do_upload('docu'))
 		{
-			$this->load->view('newProject');
+			$this->load->view('myProjects');
 		}
 
 		else
@@ -591,6 +591,11 @@ class controller extends CI_Controller
 			);
 
 			$result = $this->model->uploadDocument($uploadData);
+
+			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
+			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+
+			$this->load->view("myProjects", $data);
 		}
 	}
 

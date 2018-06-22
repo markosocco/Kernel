@@ -39,7 +39,7 @@
 		<!-- <link rel = "stylesheet" href = "<?php //echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
-		<div class="wrapper">
+		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
@@ -74,6 +74,8 @@
 		    </section>
 		    <!-- /.content -->
 		  </div>
+			<?php require("footer.php"); ?>
+
 		</div>
 		<!-- ./wrapper -->
 
@@ -155,11 +157,11 @@
       $formattedEndDate = $endYear . "-" . $endMonth . "-" . $endDay;
 
 // CHANGING OF DEPARTMENT NAME
-      if($row['DEPARTMENTNAME'] == "Facilities Administration")
+      if($row['dName'] == "Facilities Administration")
       {
         $departmentName = 'FAD';
       } else {
-        $departmentName = $row['DEPARTMENTNAME'];
+        $departmentName = $row['dName'];
       }
 
         $parent = 1;

@@ -110,9 +110,7 @@
 
 						<?php echo form_open_multipart('controller/uploadDocument/?id=' . $projectProfile['PROJECTID']);?>
 
-						<input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>">
-
-						<?php echo $projectProfile['PROJECTID']; ?>
+						<!-- <input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>"> -->
 
 						<div class="modal fade" id="modal-upload" tabindex="-1">
 		          <div class="modal-dialog">
