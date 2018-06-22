@@ -569,6 +569,7 @@ class controller extends CI_Controller
 		else
 		{
 			// GET PROJECT ID
+			// Hi nami this should work
 			$id = $this->input->get("id");
 			// $id = $this->input->post("projectID");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
