@@ -48,7 +48,178 @@
 						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
 						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
 					</div>
-					<div style="position: relative" class="gantt" id="GanttChartDIV">
+					<div style="position: relative" class="gantt" id="GanttChartDIV"></div>
+
+						<!-- START OF TASKS -->
+						<div class="row">
+			        <div class="col-xs-12">
+			          <div class="box">
+			            <div class="box-header">
+			              <h3 class="box-title">Arrange by</h3>
+										<button type="button" class="btn btn-info btn-xs" style="margin-left:">Project</button>
+										<h3 class="box-title">or</h3>
+										<button type="button" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
+			              <div class="box-tools">
+			                <div class="input-group input-group-sm" style="width: 150px;">
+			                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+			                  <div class="input-group-btn">
+			                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>
+			            <!-- /.box-header -->
+			            <div class="box-body table-responsive no-padding">
+			              <table class="table table-hover">
+			                <tr>
+			                  <th>Task</th>
+			                  <th>Project</th>
+			                  <th align="center">Duration</th>
+												<!-- <th>Period<br><span style="font-size:12px">(In Days)</span></th> -->
+												<th>Period</th>
+			                  <!-- <th align="center"></th>
+												<th align="center"></th>
+												<th align="center"></th> -->
+			                </tr>
+											<tr>
+												<td>Find something something from somewhere</td>
+												<td>Store Opening - SM Southmall</td>
+												<td>06/32/2020 - 06/33/2021</td>
+												<td align = "center">98 Days</td>
+												<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
+												<!-- HIDE IF STAFF LEVEL -->
+												<?php if($_SESSION['usertype_USERTYPEID'] != '5') :?>
+													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
+												<?php endif;?>
+												<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
+											</tr>
+
+			              </table>
+			            </div>
+			            <!-- /.box-body -->
+			          </div>
+			          <!-- /.box -->
+			        </div>
+
+							<div class="modal fade" id="modal-request" tabindex="-1">
+			          <div class="modal-dialog">
+			            <div class="modal-content">
+			              <div class="modal-header">
+			                <h4 class="modal-title">Request for Change</h4>
+			              </div>
+			              <div class="modal-body">
+			                <form>
+												<div class="form-group">
+				                  <label>Request Type</label>
+				                  <select class="form-control">
+														<option disabled selected value> -- Select Request Type -- </option>
+				                    <option>Change Task Performer</option>
+				                    <option>Change Task Dates</option>
+				                  </select>
+				                </div>
+
+												<!-- DISPLAY IF CHANGE TASK DATE OPTION -->
+												<!-- IF()...AJAX? -->
+												<div class="form-group">
+					                <label>New Start Date</label>
+
+					                <div class="input-group date">
+					                  <div class="input-group-addon">
+					                    <i class="fa fa-calendar"></i>
+					                  </div>
+					                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
+					                </div>
+					                <!-- /.input group -->
+					              </div>
+					              <!-- /.form group -->
+					              <div class="form-group">
+					                <label>New Target End Date</label>
+
+					                <div class="input-group date">
+					                  <div class="input-group-addon">
+					                    <i class="fa fa-calendar"></i>
+					                  </div>
+					                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
+					                </div>
+					                <!-- /.input group -->
+					              </div>
+
+												<!-- DISPLAY ON BOTH OPTIONS -->
+												<div class="form-group">
+				                  <label>Reason</label>
+				                  <textarea class="form-control" placeholder="State your reason here"></textarea>
+				                </div>
+											</form>
+			              </div>
+			              <div class="modal-footer">
+			                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+			                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Submit Request</button>
+			              </div>
+			            </div>
+			            <!-- /.modal-content -->
+			          </div>
+			          <!-- /.modal-dialog -->
+			        </div>
+			        <!-- /.modal -->
+
+							<div class="modal fade" id="modal-delegate">
+			          <div class="modal-dialog">
+			            <div class="modal-content">
+			              <div class="modal-header">
+			                <h4 class="modal-title">Delegate Task to a Team Member</h4>
+			              </div>
+			              <div class="modal-body">
+			                <form>
+												<div class="form-group" style="text-align:center">
+					                <!-- <label>Select a Team Member</label> -->
+					                <select class="form-control select2" style="width: 100%;" data-placeholder=" -- Select a Team Member -- ">
+														<option disabled selected value> -- Select Request Type -- </option>
+														<option>Loop through members under the same supervisor</option>
+														<option>With the session user excluding session owner</option>
+					                </select>
+					              </div>
+											</form>
+			              </div>
+			              <div class="modal-footer">
+			                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+			                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Delegate Task</button>
+			              </div>
+			            </div>
+			            <!-- /.modal-content -->
+			          </div>
+			          <!-- /.modal-dialog -->
+			        </div>
+			        <!-- /.modal -->
+
+							<div class="modal fade" id="modal-done" tabindex="-1">
+			          <div class="modal-dialog">
+			            <div class="modal-content">
+			              <div class="modal-header">
+			                <h4 class="modal-title">Task Finished</h4>
+			              </div>
+			              <div class="modal-body">
+											<!-- DISPLAY IF CURRDATE>TASKENDDATE -->
+											<h3 style="color:red">Task is Delayed</h3>
+			                <form>
+												<div class="form-group">
+				                  <textarea class="form-control" placeholder="State the reason for the delay"></textarea>
+				                </div>
+											</form>
+											<p>Are you sure that this task is done?</p>
+
+			              </div>
+			              <div class="modal-footer">
+			                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+			                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button>
+			              </div>
+			            </div>
+			            <!-- /.modal-content -->
+			          </div>
+			          <!-- /.modal-dialog -->
+			        </div>
+			        <!-- /.modal -->
+					<!-- </section> -->
 				</section>
 					</div>
 			<?php require("footer.php"); ?>
@@ -61,6 +232,25 @@
 			// 	("#gantt").submit();
       // });
 
+		</script>
+
+		<!-- Javascript for Tasks -->
+
+		<script>
+
+			$('.select2').select2()
+
+			$(function ()
+			{
+				//Date picker
+ 	     $('#startDate').datepicker({
+ 	       autoclose: true
+ 	     })
+
+ 	     $('#endDate').datepicker({
+ 	       autoclose: true
+ 	     })
+		  })
 		</script>
 
 			<!-- Javascript for Gantt Chart -->

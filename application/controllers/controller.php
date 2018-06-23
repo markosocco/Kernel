@@ -309,9 +309,8 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->get("id");
+
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-
-
 			$data['ganttData'] = $this->model->getAllProjectTasksByDate($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();

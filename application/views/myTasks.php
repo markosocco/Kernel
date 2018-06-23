@@ -81,7 +81,7 @@
 											<td align = "center">98 Days</td>
 											<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
 											<!-- HIDE IF STAFF LEVEL -->
-											<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
+											<!-- <td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td> -->
 											<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
 										</tr>
 
@@ -153,7 +153,7 @@
 		        </div>
 		        <!-- /.modal -->
 
-						<div class="modal fade" id="modal-delegate">
+						<!-- <div class="modal fade" id="modal-delegate">
 		          <div class="modal-dialog">
 		            <div class="modal-content">
 		              <div class="modal-header">
@@ -162,7 +162,7 @@
 		              <div class="modal-body">
 		                <form>
 											<div class="form-group" style="text-align:center">
-				                <!-- <label>Select a Team Member</label> -->
+				                <!-- <label>Select a Team Member</label>
 				                <select class="form-control select2" style="width: 100%;" data-placeholder=" -- Select a Team Member -- ">
 													<option disabled selected value> -- Select Request Type -- </option>
 													<option>Loop through members under the same supervisor</option>
@@ -176,9 +176,9 @@
 		                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Delegate Task</button>
 		              </div>
 		            </div>
-		            <!-- /.modal-content -->
+		            <!-- /.modal-content
 		          </div>
-		          <!-- /.modal-dialog -->
+		          <!-- /.modal-dialog
 		        </div>
 		        <!-- /.modal -->
 
