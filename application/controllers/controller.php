@@ -143,8 +143,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+			if ($_SESSION['departments_DEPARTMENTID'] == '1') //ONLY EXECUTIVES CAN VIEW ALL PROJECTS
+			{
+				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
+				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+			}
+			else
+			{
+				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
+				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+			}
 
 			$this->load->view("myProjects", $data);
 		}

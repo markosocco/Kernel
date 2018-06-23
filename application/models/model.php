@@ -166,6 +166,43 @@ public function addProject($data)
     return $query->result_array();
   }
 
+  // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
+    public function getAllOngoingProjectsByUser($userID)
+    {
+      $CURDATE = $this->getCurrentDate();
+
+      $condition = "tasks.users_USERID = '$userID' && projects.PROJECTSTARTDATE < '$CURDATE' && projects.PROJECTENDDATE > '$CURDATE' && projects.PROJECTSTATUS != 'Complete'";
+      $this->db->select('projects.*');
+      $this->db->from('projects');
+      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+      $this->db->where($condition);
+      $this->db->group_by('projects.PROJECTID');
+      $this->db->order_by('projects.PROJECTENDDATE');
+
+
+      $query = $this->db->get();
+
+      return $query->result_array();
+    }
+
+    // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
+      public function getAllPlannedProjectsByUser($userID)
+      {
+        $CURDATE = $this->getCurrentDate();
+
+        $condition = "tasks.users_USERID = '$userID' && projects.PROJECTSTARTDATE > '$CURDATE' && projects.PROJECTSTATUS != 'Complete'";
+        $this->db->select('projects.*');
+        $this->db->from('projects');
+        $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+        $this->db->where($condition);
+        $this->db->group_by('projects.PROJECTID');
+        $this->db->order_by('projects.PROJECTSTARTDATE');
+
+        $query = $this->db->get();
+
+        return $query->result_array();
+      }
+
   // GET ALL PROJECT ARCHIVES
     public function getAllProjectArchives()
     {

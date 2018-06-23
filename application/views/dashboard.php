@@ -17,7 +17,6 @@
 
 		</div>
 
-
 		<?php require("footer.php"); ?>
 
 	</div> <!--.wrapper closing div-->
