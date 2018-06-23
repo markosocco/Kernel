@@ -13,7 +13,7 @@
 
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-						<!-- <li class="active">Here</li> -->
+						<li class="active"><?php echo $projectProfile['PROJECTTITLE']; ?></li>
 					</ol>
 				</section>
 
@@ -30,17 +30,17 @@
 						$sdate = date_format($startdate, "Y-m-d");
 						$enddate2 = date_create($edate);
 						$startdate2 = date_create($sdate);
+						$duration = date_diff($startdate2, $enddate2);
 						if ($current > $startdate2) //if ongoing
 							$datediff = date_diff($enddate2, $current);
 						else // if planned
 							$datediff = date_diff($startdate2, $current);
 						?>
 
-						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?></h4>
-						<h4>Project duration here (100 days)</h4>
+						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $duration->format('%a') ;?> days)</h4>
 						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
 
-						
+
 						<!-- <form name="gantt" method="POST">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form> -->

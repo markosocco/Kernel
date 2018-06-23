@@ -57,7 +57,6 @@
 										$enddate = date_create($edate);
 										$datediff = date_diff($enddate, $current);
 										?>
-
 										<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $datediff->format('%a');?> days remaining</i></p>
 									</div>
 									<div class="icon">
