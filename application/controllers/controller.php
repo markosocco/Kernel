@@ -308,13 +308,18 @@ class controller extends CI_Controller
 
 		else
 		{
-			$id = $this->input->get("id");
+			// $id = $this->input->get("id");
+
+			$id = $this->input->post('project_ID');
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksByDate($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$this->load->view("projectGantt", $data);
+
+
+			// echo "Project ID: 	" . $id;
 		}
 	}
 
@@ -327,8 +332,8 @@ class controller extends CI_Controller
 
 		else
 		{
-			// $id = $this->input->post("project_ID");
-			$id = $this->input->get("id");
+			$id = $this->input->post("project_ID");
+			// $id = $this->input->get("id");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 
 			$this->load->view("projectDocuments", $data);

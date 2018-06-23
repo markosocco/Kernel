@@ -50,6 +50,11 @@
 									<div class="inner">
 										<h2>82%</h2>
 
+										<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+											<input type = "hidden" class = "inputID">
+											<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
+										</form>
+
 										<?php //Compute for days remaining
 										$current = date_create(date("Y-m-d"));
 										$end = date_create($row['PROJECTENDDATE']);
@@ -108,11 +113,22 @@
 		<script>
 			$("#myProjects").addClass("active");
 
-			$("a.project").click(function() //redirect to individual project profile
-      {
-        var $id = $(this).attr('data-id');
-        window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
-      });
+			// IF USING GET METHOD FOR PROJECT ID
+			// $("a.project").click(function() //redirect to individual project profile
+      // {
+			//	var $id = $(this).attr('data-id');
+
+      //   // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
+      // });
+
+			// IF USING POST METHOD FOR PROJECT ID
+			$(document).on("click", "a.project", function() {
+				var $id = $(this).attr('data-id');
+				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
+				// $("form").attr('id', 'x');
+				// $("#prjID_" + $id).attr('name', 'project_ID');
+				$("form").submit();
+				});
 		</script>
 	</body>
 </html>

@@ -41,11 +41,15 @@
 						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
 
 
-						<!-- <form name="gantt" method="POST">
+						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
-						</form> -->
+						</form>
 
-						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
+						<!-- IF USING GET METHOD
+						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
+
+						<a name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
+
 						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
 					</div>
 					<div style="position: relative" class="gantt" id="GanttChartDIV"></div>
@@ -251,6 +255,13 @@
  	       autoclose: true
  	     })
 		  })
+
+			$("#projectDocu").click(function() //redirect to individual project profile
+      {
+				// var $id = $(this).attr('data-id');
+				$("#prjID").submit();
+        // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
+      });
 		</script>
 
 			<!-- Javascript for Gantt Chart -->
