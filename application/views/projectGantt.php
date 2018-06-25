@@ -58,9 +58,15 @@
 			          <div class="box">
 			            <div class="box-header">
 			              <h3 class="box-title">Arrange by</h3>
-										<button type="button" class="btn btn-info btn-xs" style="margin-left:">Project</button>
-										<h3 class="box-title">or</h3>
-										<button type="button" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
+										<div class = "btn-group">
+											<button type="button" id = "filterPriority" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
+											<button type="button" id = "filterStatus" class="btn btn-info btn-xs" style="margin-left:">Status</button>
+										</div>
+
+										<form id = 'arrangeForm' name = "filter" action = 'projectGantt' method="POST">
+											<input type = "hidden" class = "filterID">
+										</form>
+										
 			              <div class="box-tools">
 			                <div class="input-group input-group-sm" style="width: 150px;">
 			                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -88,21 +94,16 @@
 
 											<?php foreach($ganttData as $row):?>
 											<tr>
-												<td><?php echo $row['TASKTITLE'];?></td>
-												<td><?php echo $row['TASKSTARTDATE'];?> - <?php echo $row['TASKENDDATE'];?></td>
 
 												<!-- PERIOD COMPUTATION -->
-												<?php // compute for days remaining and fix date format
+												<?php // to fix date format
 												$taskstartdate = date_create($row['TASKSTARTDATE']);
 												$taskenddate = date_create($row['TASKENDDATE']);
-												$taskedate = date_format($taskenddate, "Y-m-d");
-												$tasksdate = date_format($taskstartdate, "Y-m-d");
-												$taskenddate2 = date_create($taskedate);
-												$taskstartdate2 = date_create($tasksdate);
-												$taskperiod = date_diff($taskstartdate2, $taskenddate2);
 												?>
 
-												<td align = "center"><?php echo $taskperiod->format('%a');?> Days</td>
+												<td><?php echo $row['TASKTITLE'];?></td>
+												<td><?php echo date_format($taskstartdate, "M d, Y"); ?> to <?php echo date_format($taskenddate, "M d, Y"); ?></td>
+												<td align = "center"><?php echo $row['taskDuration'];?> Days</td>
 												<td><?php echo $row['TASKSTATUS'];?></td>
 												<td><?php echo $row ['FIRSTNAME'];?> <?php echo $row['LASTNAME'];?></td>
 												<!-- HIDE IF STAFF LEVEL AND IF TASK IS NOT ASSIGNED TO USER-->
@@ -262,6 +263,21 @@
 			// 	("#gantt").submit();
       // });
 
+			$(document).ready(function()
+ 		 {
+ 			$("#filterPriority").click(function()
+ 			{
+ 				$(".filterID").html("<input type='hidden' name='filterID' value='tasks.TASKSTARTDATE'>");
+ 				$("#arrangeForm").submit();
+ 			});
+
+ 			$("#filterStatus").click(function()
+ 			{
+ 				$(".filterID").html("<input type='hidden' name='filterID' value='tasks.TASKSTATUS'>");
+ 				$("#arrangeForm").submit();
+ 			});
+ 		 });
+
 		</script>
 
 		<!-- Javascript for Tasks -->
@@ -275,12 +291,12 @@
 				//Date picker
  	     $('#startDate').datepicker({
  	       autoclose: true
- 	     })
+ 	     });
 
  	     $('#endDate').datepicker({
  	       autoclose: true
- 	     })
-		  })
+ 	     });
+		 });
 
 			$("#projectDocu").click(function() //redirect to individual project profile
       {
@@ -300,21 +316,6 @@
 
 		    foreach($ganttData as $row)
 		    {
-
-		      $startDate = $row['TASKSTARTDATE'];
-
-		      $startMonth = substr($startDate, 0, 2);
-		      $startDay = substr($startDate, 3, 2);
-		      $startYear = substr($startDate, 6, 4);
-		      $formattedStartDate = $startYear . "-" . $startMonth . "-" . $startDay;
-
-		      $endDate = $row['TASKENDDATE'];
-
-		      $endMonth = substr($endDate, 0, 2);
-		      $endDay = substr($endDate, 3, 2);
-		      $endYear = substr($endDate, 6, 4);
-		      $formattedEndDate = $endYear . "-" . $endMonth . "-" . $endDay;
-
 		// CHANGING OF DEPARTMENT NAME
 		      if($row['DEPARTMENTNAME'] == "Facilities Administration")
 		      {
@@ -363,7 +364,7 @@
 							$dependency = $data['PRETASKID'];
 
 							echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
-				      $row['TASKTITLE'] . "','" . $formattedStartDate . "','" . $formattedEndDate . "'," .
+				      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
 				      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
 							$parent . ", 1, '". $dependency."SS', '', '', g));";
 						}
@@ -372,7 +373,7 @@
 
 
 		      echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
-		      $row['TASKTITLE'] . "','" . $formattedStartDate . "','" . $formattedEndDate . "'," .
+		      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
 		      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
 					$parent . ", 1, '". $dependency."', '', '', g));";
 

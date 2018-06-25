@@ -40,7 +40,7 @@
 									<form id = 'arrangeForm' name = "filter" action = 'myTasks' method="POST">
 										<input type = "hidden" class = "filterID">
 									</form>
-									
+
 									<div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -65,22 +65,15 @@
 
 										<?php foreach($tasks as $row):?>
 										<tr>
-											<td><?php echo $row['TASKTITLE'];?></td>
-											<td><?php echo $row['PROJECTTITLE'];?></td>
-											<td><?php echo $row['TASKSTARTDATE'];?> - <?php echo $row['TASKENDDATE'];?></td>
-
-											<!-- PERIOD COMPUTATION -->
-											<?php // compute for days remaining and fix date format
+											<?php // to fix date format
 											$taskstartdate = date_create($row['TASKSTARTDATE']);
 											$taskenddate = date_create($row['TASKENDDATE']);
-											$taskedate = date_format($taskenddate, "Y-m-d");
-											$tasksdate = date_format($taskstartdate, "Y-m-d");
-											$taskenddate2 = date_create($taskedate);
-											$taskstartdate2 = date_create($tasksdate);
-											$taskperiod = date_diff($taskstartdate2, $taskenddate2);
 											?>
 
-											<td align = "center"><?php echo $taskperiod->format('%a');?> Days</td>
+											<td><?php echo $row['TASKTITLE'];?></td>
+											<td><?php echo $row['PROJECTTITLE'];?></td>
+											<td><?php echo date_format($taskstartdate, "M d, Y");?> - <?php echo date_format($taskenddate, "M d, Y");?></td>
+											<td align = "center"><?php echo $row['taskDuration'];?> Days</td>
 											<td><?php echo $row['TASKSTATUS'];?></td>
 											<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
 											<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>

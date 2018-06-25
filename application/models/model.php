@@ -281,7 +281,7 @@ public function addProject($data)
   public function getAllTasksByUser($id, $filter)
   {
     $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Completed'";
-    $this->db->select('*');
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->where($condition);
@@ -341,16 +341,16 @@ public function addProject($data)
     return $this->db->get()->row_array();
   }
 
-  public function getAllProjectTasksByDate($id)
+  public function getAllProjectTasksByFilter($id, $filter)
   {
     $condition = "projects.PROJECTID = " . $id;
-    $this->db->select('*');
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->join('users', 'tasks.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
-    $this->db->order_by('TASKSTARTDATE');
+    $this->db->order_by($filter);
 
     return $this->db->get()->result_array();
   }

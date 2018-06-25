@@ -318,6 +318,7 @@ class controller extends CI_Controller
 			{
 				$id = $_SESSION['projectID'];
 				echo "session " . $id;
+				$this->session->set_flashdata('projectID', $id);
 			}
 
 			else
@@ -326,8 +327,10 @@ class controller extends CI_Controller
 				$this->session->set_flashdata('projectID', $id);
 			}
 
+			$filter = 'tasks.TASKSTARTDATE'; // default
+			$filter = $this->input->post("filterID");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasksByDate($id);
+			$data['ganttData'] = $this->model->getAllProjectTasksByFilter($id, $filter);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
@@ -513,7 +516,7 @@ class controller extends CI_Controller
 			}
 
 			// // SET PARENT TASK
-			$allTasks = $this->model->getAllProjectTasksByDate($id);
+			$allTasks = $this->model->getAllProjectTasksByFilter($id, 'tasks.TASKSTARTDATE');
 
 			foreach ($allTasks as $row)
 			{
