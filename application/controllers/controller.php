@@ -559,10 +559,11 @@ class controller extends CI_Controller
 			}
 
 			// GANTT CODE
+			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
-			$this->load->view("gantt", $data);
+			$this->load->view("projectGantt", $data);
 	}
 
 	public function uploadDocument()

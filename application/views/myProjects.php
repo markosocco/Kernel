@@ -81,6 +81,11 @@
 									<div class="inner">
 										<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
+										<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+											<input type = "hidden" class = "inputID">
+											<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
+										</form>
+
 										<?php //Compute for days remaining
 										$current = date_create(date("Y-m-d"));
 										$start = date_create($row['PROJECTSTARTDATE']);
