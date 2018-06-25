@@ -40,7 +40,7 @@
 						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $duration->format('%a') ;?> days)</h4>
 						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
 
-
+						<?php echo "Session: " . $_SESSION['projectID']; ?>
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>

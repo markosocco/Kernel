@@ -310,7 +310,17 @@ class controller extends CI_Controller
 		{
 			// $id = $this->input->get("id");
 
-			$id = $this->input->post('project_ID');
+			if (isset($_SESSION['projectID']))
+			{
+				$id = $_SESSION['projectID'];
+				echo "session " . $id;
+			}
+
+			else
+			{
+				$id = $this->input->post("project_ID");
+				$this->session->set_flashdata('projectID', $id);
+			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksByDate($id);
@@ -333,6 +343,7 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post("project_ID");
+			$this->session->set_flashdata('projectID', $id);
 			// $id = $this->input->get("id");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 
