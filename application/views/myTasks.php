@@ -217,10 +217,12 @@
 			{
 				//Date picker
  	     $('#startDate').datepicker({
+				 format: 'yyyy-mm-dd',
  	       autoclose: true
  	     })
 
  	     $('#endDate').datepicker({
+				 format: 'yyyy-mm-dd',
  	       autoclose: true
  	     })
 		 });

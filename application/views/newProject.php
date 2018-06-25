@@ -80,6 +80,8 @@
 
 		<script>
 			$("#myProjects").addClass("active");
+			$("#endDate").prop('disabled', true);
+
 
 			var currDate = new Date();
 		  $(function ()
@@ -90,6 +92,13 @@
 				 startDate: currDate,
  	       autoclose: true
  	     });
+
+			 $("#startDate").on("change", function() {
+				$("#endDate").prop('disabled', false);
+				$('#endDate').data('datepicker').setStartDate(new Date($(this).val()));
+				if(new Date($("#endDate").val()) < new Date($("#startDate").val())) //Removes Target Date Input if new Start Date comes after it
+					$("#endDate").val("");
+			 });
 
  	     $('#endDate').datepicker({
 				 format: 'yyyy-mm-dd',

@@ -101,7 +101,7 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
+					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" data-id="<?php echo $row['TASKID'];?>" required>
 					                </div>
 					                <!-- /.input group -->
 					              </div>
@@ -111,7 +111,7 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
+					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" data-id="<?php echo $row['TASKID'];?>" required>
 					                </div>
 												</div></td>
 												<td><div class="form-group">
@@ -150,7 +150,7 @@
 		</div>
 		<!-- ./wrapper -->
 
-		<script>
+		<script type='text/javascript'>
 
 		$("#myProjects").addClass("active");
 
@@ -161,12 +161,14 @@
 
 				//Date picker
  	     $('.taskStartDate').datepicker({
+				 format: 'yyyy-mm-dd',
  	       autoclose: true
- 	     })
+ 	     });
 
  	     $('.taskEndDate').datepicker({
+				 format: 'yyyy-mm-dd',
  	       autoclose: true
- 	     })
+ 	     });
 		 });
 
 		 var el = document.getElementById('table');
