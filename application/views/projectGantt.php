@@ -31,7 +31,7 @@
 						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'];?> days)</h4>
 
 						<h4 style="color:red">
-							<?php if ($current >= $projectProfile['PROJECTSTARTDATE']):?>
+							<?php if ($current >= $startdate):?>
 								<?php echo $projectProfile['remaining'];?> Days Remaining
 							<?php else:?>
 								<?php echo $projectProfile['launching'];?> Days Remaining before Project Launch

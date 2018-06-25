@@ -133,7 +133,7 @@ public function addProject($data)
   public function getAllOngoingProjects()
   {
     $condition = "PROJECTSTARTDATE < CURDATE() && PROJECTENDDATE > CURDATE() && PROJECTSTATUS != 'Complete'";
-    $this->db->select('*');
+    $this->db->select('*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->where($condition);
     $query = $this->db->get();
@@ -145,7 +145,7 @@ public function addProject($data)
   public function getAllPlannedProjects()
   {
     $condition = "PROJECTSTARTDATE > CURDATE() && PROJECTSTATUS != 'Complete'";
-    $this->db->select('*');
+    $this->db->select('*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "datediff"');
     $this->db->from('PROJECTS');
     $this->db->where($condition);
     $this->db->order_by('PROJECTSTARTDATE', 'ASC');
