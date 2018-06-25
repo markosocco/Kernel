@@ -295,6 +295,17 @@ public function addProject($data)
      return $data->result_array();
   }
 
+  public function getAllTasksByUser($id)
+  {
+    $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Completed'";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
 // GET PRE-REQUISITE ID
 // TODO: edit condition
   public function getDependecies()

@@ -56,20 +56,39 @@
 		                  <th align="center">Duration</th>
 											<!-- <th>Period<br><span style="font-size:12px">(In Days)</span></th> -->
 											<th>Period</th>
+<<<<<<< HEAD
 		                  <th align="center"></th>
 											<th align="center"></th>
+=======
+											<th>Status</th>
+		                  <!-- <th align="center"></th>
+>>>>>>> 1cb7c945a0a032dea7d6f57bd09319b4977e92ab
 											<th align="center"></th>
 		                </tr>
+
+										<?php foreach($tasks as $row):?>
 										<tr>
-											<td>Find something something from somewhere</td>
-											<td>Store Opening - SM Southmall</td>
-											<td>06/32/2020 - 06/33/2021</td>
-											<td align = "center">98 Days</td>
+											<td><?php echo $row['TASKTITLE'];?></td>
+											<td><?php echo $row['PROJECTTITLE'];?></td>
+											<td><?php echo $row['TASKSTARTDATE'];?> - <?php echo $row['TASKENDDATE'];?></td>
+
+											<!-- PERIOD COMPUTATION -->
+											<?php // compute for days remaining and fix date format
+											$taskstartdate = date_create($row['TASKSTARTDATE']);
+											$taskenddate = date_create($row['TASKENDDATE']);
+											$taskedate = date_format($taskenddate, "Y-m-d");
+											$tasksdate = date_format($taskstartdate, "Y-m-d");
+											$taskenddate2 = date_create($taskedate);
+											$taskstartdate2 = date_create($tasksdate);
+											$taskperiod = date_diff($taskstartdate2, $taskenddate2);
+											?>
+
+											<td align = "center"><?php echo $taskperiod->format('%a');?> Days</td>
+											<td><?php echo $row['TASKSTATUS'];?></td>
 											<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
-											<!-- HIDE IF STAFF LEVEL -->
-											<!-- <td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td> -->
 											<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
 										</tr>
+									<?php endforeach;?>
 
 		              </table>
 		            </div>

@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - My Tasks</title>
+		<title>Kernel - <?php echo  $projectProfile['PROJECTTITLE'];?></title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTasksStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
@@ -40,7 +40,7 @@
 						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $duration->format('%a') ;?> days)</h4>
 						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
 
-
+						<?php echo "Session: " . $_SESSION['projectID']; ?>
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
@@ -78,26 +78,48 @@
 			              <table class="table table-hover">
 			                <tr>
 			                  <th>Task</th>
-			                  <th>Project</th>
 			                  <th align="center">Duration</th>
 												<!-- <th>Period<br><span style="font-size:12px">(In Days)</span></th> -->
 												<th>Period</th>
+												<th>Status</th>
+												<th colspan="2">Responsible</th>
 			                  <!-- <th align="center"></th>
 												<th align="center"></th>
 												<th align="center"></th> -->
 			                </tr>
+
+											<?php foreach($ganttData as $row):?>
 											<tr>
-												<td>Find something something from somewhere</td>
-												<td>Store Opening - SM Southmall</td>
-												<td>06/32/2020 - 06/33/2021</td>
-												<td align = "center">98 Days</td>
-												<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
-												<!-- HIDE IF STAFF LEVEL -->
-												<?php if($_SESSION['usertype_USERTYPEID'] != '5') :?>
+												<td><?php echo $row['TASKTITLE'];?></td>
+												<td><?php echo $row['TASKSTARTDATE'];?> - <?php echo $row['TASKENDDATE'];?></td>
+
+												<!-- PERIOD COMPUTATION -->
+												<?php // compute for days remaining and fix date format
+												$taskstartdate = date_create($row['TASKSTARTDATE']);
+												$taskenddate = date_create($row['TASKENDDATE']);
+												$taskedate = date_format($taskenddate, "Y-m-d");
+												$tasksdate = date_format($taskstartdate, "Y-m-d");
+												$taskenddate2 = date_create($taskedate);
+												$taskstartdate2 = date_create($tasksdate);
+												$taskperiod = date_diff($taskstartdate2, $taskenddate2);
+												?>
+
+												<td align = "center"><?php echo $taskperiod->format('%a');?> Days</td>
+												<td><?php echo $row['TASKSTATUS'];?></td>
+												<td><?php echo $row ['FIRSTNAME'];?> <?php echo $row['LASTNAME'];?></td>
+												<!-- HIDE IF STAFF LEVEL AND IF TASK IS NOT ASSIGNED TO USER-->
+												<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
 													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
+												<?php else:?>
+													<td></td>
 												<?php endif;?>
-												<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
+												<!-- HIDE IF TASK IS NOT ASSIGNED TO USER-->
+												<?php if($row['users_USERID'] == $_SESSION['USERID']):?>
+													<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
+													<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
+												<?php endif;?>
 											</tr>
+										<?php endforeach;?>
 
 			              </table>
 			            </div>
@@ -106,6 +128,7 @@
 			          <!-- /.box -->
 			        </div>
 
+							<!-- RFC MODAL -->
 							<div class="modal fade" id="modal-request" tabindex="-1">
 			          <div class="modal-dialog">
 			            <div class="modal-content">
@@ -167,6 +190,7 @@
 			        </div>
 			        <!-- /.modal -->
 
+							<!-- DELEGATE MODAL -->
 							<div class="modal fade" id="modal-delegate">
 			          <div class="modal-dialog">
 			            <div class="modal-content">
@@ -178,9 +202,12 @@
 												<div class="form-group" style="text-align:center">
 					                <!-- <label>Select a Team Member</label> -->
 					                <select class="form-control select2" style="width: 100%;" data-placeholder=" -- Select a Team Member -- ">
-														<option disabled selected value> -- Select Request Type -- </option>
-														<option>Loop through members under the same supervisor</option>
-														<option>With the session user excluding session owner</option>
+														<option disabled selected value> -- Select a Team Member -- </option>
+														<?php foreach($users as $user):?>
+															<?php if($user['users_SUPERVISORS'] == $_SESSION['USERID']):?>
+																<option><?php echo $user['FIRSTNAME'];?> <?php echo $user['LASTNAME'];?></option>
+															<?php endif;?>
+														<?php endforeach;?>
 					                </select>
 					              </div>
 											</form>
@@ -196,6 +223,7 @@
 			        </div>
 			        <!-- /.modal -->
 
+							<!-- "DONE" MODAL -->
 							<div class="modal fade" id="modal-done" tabindex="-1">
 			          <div class="modal-dialog">
 			            <div class="modal-content">

@@ -180,7 +180,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("myTasks");
+			$data['users'] = $this->model->getAllUsers();
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+			$this->load->view("myTasks", $data);
 		}
 	}
 
@@ -310,12 +312,23 @@ class controller extends CI_Controller
 		{
 			// $id = $this->input->get("id");
 
-			$id = $this->input->post('project_ID');
+			if (isset($_SESSION['projectID']))
+			{
+				$id = $_SESSION['projectID'];
+				echo "session " . $id;
+			}
+
+			else
+			{
+				$id = $this->input->post("project_ID");
+				$this->session->set_flashdata('projectID', $id);
+			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksByDate($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
+			$data['users'] = $this->model->getAllUsers();
 			$this->load->view("projectGantt", $data);
 
 
@@ -333,6 +346,7 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post("project_ID");
+			$this->session->set_flashdata('projectID', $id);
 			// $id = $this->input->get("id");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 
@@ -559,10 +573,12 @@ class controller extends CI_Controller
 			}
 
 			// GANTT CODE
+			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
-			$this->load->view("gantt", $data);
+			$data['users'] = $this->model->getAllUsers();
+			$this->load->view("projectGantt", $data);
 	}
 
 	public function uploadDocument()
