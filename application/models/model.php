@@ -295,13 +295,15 @@ public function addProject($data)
      return $data->result_array();
   }
 
-  public function getAllTasksByUser($id)
+  public function getAllTasksByUser($id, $filter)
   {
     $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Completed'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->where($condition);
+    $this->db->order_by($filter);
+
 
     return $this->db->get()->result_array();
   }

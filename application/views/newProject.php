@@ -91,7 +91,7 @@
  	     $('#endDate').datepicker({
  	       autoclose: true
  	     })
-		  })
+		 });
 		</script>
 
 	</body>

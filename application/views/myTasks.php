@@ -48,10 +48,30 @@
 		          <div class="box">
 		            <div class="box-header">
 		              <h3 class="box-title">Arrange by</h3>
-									<button type="button" class="btn btn-info btn-xs" style="margin-left:">Project</button>
+
+									<form name = "filter" action = 'myTasks' method="POST">
+										<input type = "hidden" name = "filterID" class = "filterID" value = "projects.PROJECTTITLE">
+										<button type="submit" class="btn btn-info btn-xs" style="margin-left:">Project</button>
+									</form>
+
+									<!-- <button type="button" id = "filterProject" class="btn btn-info btn-xs" style="margin-left:">Project</button> -->
 									<h3 class="box-title">or</h3>
-									<button type="button" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
-		              <div class="box-tools">
+
+									<form name = "filter" action = 'myTasks' method="POST">
+										<input type = "hidden"  name = "filterID" class = "filterID" value = "tasks.TASKSTARTDATE">
+										<button type="submit" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
+									</form>
+
+									<!-- <button type="button" id = "filterPriority" class="btn btn-info btn-xs" style="margin-left:">Priority</button> -->
+									<h3 class="box-title">or</h3>
+
+									<form name = "filter" action = 'myTasks' method="POST">
+										<input type = "hidden" name = "filterID" class = "filterID" value = "tasks.TASKSTATUS">
+										<button type="submit" class="btn btn-info btn-xs" style="margin-left:">Status</button>
+									</form>
+									<!-- <button type="button" id = "filterStatus" class="btn btn-info btn-xs" style="margin-left:">Status</button> -->
+
+									<div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
@@ -231,7 +251,7 @@
 		<script>
 			$("#myTasks").addClass("active");
 
-			$('.select2').select2()
+			$('.select2').select2();
 
 			$(function ()
 			{
@@ -243,7 +263,25 @@
  	     $('#endDate').datepicker({
  	       autoclose: true
  	     })
-		  })
+		 });
+
+		 $(document).ready(function()
+		 {
+		 	$("#filterProject").click(function()
+		 	{
+
+		 	});
+
+			$("#filterPriority").click(function()
+			{
+
+			});
+
+			$("#filterStatus").click(function()
+			{
+
+			});
+		 });
 		</script>
 	</body>
 </html>
