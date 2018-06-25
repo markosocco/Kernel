@@ -1,25 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - My Tasks</title>
-		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTasksStyle.css")?>"> -->
-		<!-- TRANSFER TO CSS -->
-		<style>
-	    .example-modal .modal
-			{
-	      position: relative;
-	      top: auto;
-	      bottom: auto;
-	      right: auto;
-	      left: auto;
-	      display: block;
-	      z-index: 1;
-	    }
-
-	    .example-modal .modal
-			{
-	      background: transparent !important;
-	    }
-	  </style>
+		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTasksStyle.css")?>">
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -47,10 +29,14 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Arrange by</h3>
-									<button type="button" class="btn btn-info btn-xs" style="margin-left:">Project</button>
-									<h3 class="box-title">or</h3>
-									<button type="button" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
+		              <h3 class="box-title">Arranged By
+										<!-- <div class="form-group" style="display:inline-block"> -->
+		                  <select class="form-control" style="display:inline-block">
+		                    <option selected>Priority</option>
+		                    <option>Project</option>
+		                  </select>
+		                <!-- </div> -->
+									</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -70,9 +56,9 @@
 		                  <th align="center">Duration</th>
 											<!-- <th>Period<br><span style="font-size:12px">(In Days)</span></th> -->
 											<th>Period</th>
-		                  <!-- <th align="center"></th>
+		                  <th align="center"></th>
 											<th align="center"></th>
-											<th align="center"></th> -->
+											<th align="center"></th>
 		                </tr>
 										<tr>
 											<td>Find something something from somewhere</td>
