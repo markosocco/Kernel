@@ -1,25 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - My Tasks</title>
-		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTasksStyle.css")?>"> -->
-		<!-- TRANSFER TO CSS -->
-		<style>
-	    .example-modal .modal
-			{
-	      position: relative;
-	      top: auto;
-	      bottom: auto;
-	      right: auto;
-	      left: auto;
-	      display: block;
-	      z-index: 1;
-	    }
-
-	    .example-modal .modal
-			{
-	      background: transparent !important;
-	    }
-	  </style>
+		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTasksStyle.css")?>">
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -91,9 +73,6 @@
 											<!-- <th>Period<br><span style="font-size:12px">(In Days)</span></th> -->
 											<th>Period</th>
 											<th>Status</th>
-		                  <!-- <th align="center"></th>
-											<th align="center"></th>
-											<th align="center"></th> -->
 		                </tr>
 
 										<?php foreach($tasks as $row):?>
