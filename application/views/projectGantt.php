@@ -106,13 +106,18 @@
 
 												<td align = "center"><?php echo $taskperiod->format('%a');?> Days</td>
 												<td><?php echo $row['TASKSTATUS'];?></td>
-												<td><?php echo $row ['FIRSTNAME'];?>  <?php echo $row['LASTNAME'];?></td>
-												<!-- HIDE IF STAFF LEVEL -->
-												<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
+												<td><?php echo $row ['FIRSTNAME'];?> <?php echo $row['LASTNAME'];?></td>
+												<!-- HIDE IF STAFF LEVEL AND IF TASK IS NOT ASSIGNED TO USER-->
+												<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
 													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
+												<?php else:?>
+													<td></td>
 												<?php endif;?>
-												<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
-												<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
+												<!-- HIDE IF TASK IS NOT ASSIGNED TO USER-->
+												<?php if($row['users_USERID'] == $_SESSION['USERID']):?>
+													<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
+													<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
+												<?php endif;?>
 											</tr>
 										<?php endforeach;?>
 
@@ -123,6 +128,7 @@
 			          <!-- /.box -->
 			        </div>
 
+							<!-- RFC MODAL -->
 							<div class="modal fade" id="modal-request" tabindex="-1">
 			          <div class="modal-dialog">
 			            <div class="modal-content">
@@ -184,6 +190,7 @@
 			        </div>
 			        <!-- /.modal -->
 
+							<!-- DELEGATE MODAL -->
 							<div class="modal fade" id="modal-delegate">
 			          <div class="modal-dialog">
 			            <div class="modal-content">
@@ -195,9 +202,12 @@
 												<div class="form-group" style="text-align:center">
 					                <!-- <label>Select a Team Member</label> -->
 					                <select class="form-control select2" style="width: 100%;" data-placeholder=" -- Select a Team Member -- ">
-														<option disabled selected value> -- Select Request Type -- </option>
-														<option>Loop through members under the same supervisor</option>
-														<option>With the session user excluding session owner</option>
+														<option disabled selected value> -- Select a Team Member -- </option>
+														<?php foreach($users as $user):?>
+															<?php if($user['users_SUPERVISORS'] == $_SESSION['USERID']):?>
+																<option><?php echo $user['FIRSTNAME'];?> <?php echo $user['LASTNAME'];?></option>
+															<?php endif;?>
+														<?php endforeach;?>
 					                </select>
 					              </div>
 											</form>
@@ -213,6 +223,7 @@
 			        </div>
 			        <!-- /.modal -->
 
+							<!-- "DONE" MODAL -->
 							<div class="modal fade" id="modal-done" tabindex="-1">
 			          <div class="modal-dialog">
 			            <div class="modal-content">

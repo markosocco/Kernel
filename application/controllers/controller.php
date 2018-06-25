@@ -180,7 +180,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("myTasks");
+			$data['users'] = $this->model->getAllUsers();
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+			$this->load->view("myTasks", $data);
 		}
 	}
 
@@ -326,6 +328,7 @@ class controller extends CI_Controller
 			$data['ganttData'] = $this->model->getAllProjectTasksByDate($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
+			$data['users'] = $this->model->getAllUsers();
 			$this->load->view("projectGantt", $data);
 
 
@@ -574,6 +577,7 @@ class controller extends CI_Controller
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
+			$data['users'] = $this->model->getAllUsers();
 			$this->load->view("projectGantt", $data);
 	}
 
