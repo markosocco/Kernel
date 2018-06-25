@@ -22,23 +22,21 @@
 					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
 					<div>
 
-						<?php // compute for days remaining and fix date format
+						<?php
 						$startdate = date_create($projectProfile['PROJECTSTARTDATE']);
 						$enddate = date_create($projectProfile['PROJECTENDDATE']);
 						$current = date_create(date("Y-m-d")); // get current date
-						$edate = date_format($enddate, "Y-m-d");
-						$sdate = date_format($startdate, "Y-m-d");
-						$enddate2 = date_create($edate);
-						$startdate2 = date_create($sdate);
-						$duration = date_diff($startdate2, $enddate2);
-						if ($current > $startdate2) //if ongoing
-							$datediff = date_diff($enddate2, $current);
-						else // if planned
-							$datediff = date_diff($startdate2, $current);
 						?>
 
-						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $duration->format('%a') ;?> days)</h4>
-						<h4 style="color:red"><?php echo $datediff->format('%a');?> Days Remaining</h4>
+						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'];?> days)</h4>
+
+						<h4 style="color:red">
+							<?php if ($current >= $projectProfile['PROJECTSTARTDATE']):?>
+								<?php echo $projectProfile['remaining'];?> Days Remaining
+							<?php else:?>
+								<?php echo $projectProfile['launching'];?> Days Remaining before Project Launch
+							<?php endif;?>
+						</h4>
 
 						<?php echo "Session: " . $_SESSION['projectID']; ?>
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">

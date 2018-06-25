@@ -93,7 +93,9 @@ public function addProject($data)
   public function getProjectByID($data)
   {
     $condition = "PROJECTID =" . $data;
-    $this->db->select('*');
+    $this->db->select('*, DATEDIFF(PROJECTENDDATE, PROJECTSTARTDATE) as "duration",
+    DATEDIFF(PROJECTENDDATE, CURDATE()) as "remaining",
+    DATEDIFF(PROJECTSTARTDATE, CURDATE()) as "launching"');
     $this->db->from('projects');
     $this->db->where($condition);
     $query = $this->db->get();
@@ -127,22 +129,10 @@ public function addProject($data)
     return $query->result_array();
   }
 
-// GET CURRENT DATE IN MM/DD/YYYY FORMAT
-  public function getCurrentDate()
-  {
-    $this->db->select('CURDATE()');
-    $queryDate = $this->db->get();
-    $CURDATE = $this->convertDateFormat2($queryDate->row("CURDATE()"));
-
-    return $CURDATE;
-  }
-
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE
   public function getAllOngoingProjects()
   {
-    $CURDATE = $this->getCurrentDate();
-
-    $condition = "PROJECTSTARTDATE < '$CURDATE' && PROJECTENDDATE > '$CURDATE' && PROJECTSTATUS != 'Complete'";
+    $condition = "PROJECTSTARTDATE < CURDATE() && PROJECTENDDATE > CURDATE() && PROJECTSTATUS != 'Complete'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
@@ -154,9 +144,7 @@ public function addProject($data)
 // GET ALL PLANNED PROJECTS BASED ON PROJECTSTARTDATE
   public function getAllPlannedProjects()
   {
-    $CURDATE = $this->getCurrentDate();
-
-    $condition = "PROJECTSTARTDATE > '$CURDATE' && PROJECTSTATUS != 'Complete'";
+    $condition = "PROJECTSTARTDATE > CURDATE() && PROJECTSTATUS != 'Complete'";
     $this->db->select('*');
     $this->db->from('PROJECTS');
     $this->db->where($condition);
@@ -169,16 +157,13 @@ public function addProject($data)
   // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
     public function getAllOngoingProjectsByUser($userID)
     {
-      $CURDATE = $this->getCurrentDate();
-
-      $condition = "tasks.users_USERID = '$userID' && projects.PROJECTSTARTDATE < '$CURDATE' && projects.PROJECTENDDATE > '$CURDATE' && projects.PROJECTSTATUS != 'Complete'";
-      $this->db->select('projects.*');
+      $condition = "tasks.users_USERID = '$userID' && projects.PROJECTSTARTDATE < CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS != 'Complete'";
+      $this->db->select('projects.*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
       $this->db->from('projects');
       $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
       $this->db->where($condition);
       $this->db->group_by('projects.PROJECTID');
       $this->db->order_by('projects.PROJECTENDDATE');
-
 
       $query = $this->db->get();
 
@@ -188,10 +173,8 @@ public function addProject($data)
     // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
       public function getAllPlannedProjectsByUser($userID)
       {
-        $CURDATE = $this->getCurrentDate();
-
-        $condition = "tasks.users_USERID = '$userID' && projects.PROJECTSTARTDATE > '$CURDATE' && projects.PROJECTSTATUS != 'Complete'";
-        $this->db->select('projects.*');
+        $condition = "tasks.users_USERID = '$userID' && projects.PROJECTSTARTDATE > CURDATE() && projects.PROJECTSTATUS != 'Complete'";
+        $this->db->select('projects.*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "datediff"');
         $this->db->from('projects');
         $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
         $this->db->where($condition);

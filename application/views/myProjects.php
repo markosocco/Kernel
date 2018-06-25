@@ -28,7 +28,7 @@
 						<div class="col-lg-3 col-xs-6">
 							<!-- small box -->
 							<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
-							<div class="small-box bg-red">
+							<div class="small-box bg-blue">
 								<div class="inner">
 									<h2>Create</h2>
 
@@ -54,15 +54,7 @@
 											<input type = "hidden" class = "inputID">
 											<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
 										</form>
-
-										<?php //Compute for days remaining
-										$current = date_create(date("Y-m-d"));
-										$end = date_create($row['PROJECTENDDATE']);
-										$edate = date_format($end, "Y-m-d");
-										$enddate = date_create($edate);
-										$datediff = date_diff($enddate, $current);
-										?>
-										<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $datediff->format('%a');?> days remaining</i></p>
+										<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'];?> days remaining</i></p>
 									</div>
 									<div class="icon">
 										<i class="ion ion-beaker"></i>
@@ -87,15 +79,9 @@
 										</form>
 
 										<?php //Compute for days remaining
-										$current = date_create(date("Y-m-d"));
-										$start = date_create($row['PROJECTSTARTDATE']);
-										$sdate = date_format($start, "Y-m-d");
-										$startdate = date_create($sdate);
-										$datediff = date_diff($startdate, $current);
+										$startdate = date_create($row['PROJECTSTARTDATE']);
 										?>
-
-										<?php $startdate = date_create($row['PROJECTSTARTDATE']);?>
-										<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $datediff->format('%a');?> days</i></p>
+										<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $row['datediff'];?> days</i></p>
 									</div>
 									<div class="icon">
 										<i class="ion ion-clock"></i>

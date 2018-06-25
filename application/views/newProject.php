@@ -81,16 +81,20 @@
 		<script>
 			$("#myProjects").addClass("active");
 
+			var currDate = new Date();
 		  $(function ()
 			{
 				//Date picker
- 	     $('#startDate').datepicker({
+ 	    $('#startDate').datepicker({
+				 format: 'yyyy-mm-dd',
+				 startDate: currDate,
  	       autoclose: true
- 	     })
+ 	     });
 
  	     $('#endDate').datepicker({
+				 format: 'yyyy-mm-dd',
  	       autoclose: true
- 	     })
+ 	     });
 		 });
 		</script>
 
