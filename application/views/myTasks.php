@@ -31,28 +31,16 @@
 		            <div class="box-header">
 		              <h3 class="box-title">Arrange by</h3>
 
-									<form name = "filter" action = 'myTasks' method="POST">
-										<input type = "hidden" name = "filterID" class = "filterID" value = "projects.PROJECTTITLE">
-										<button type="submit" class="btn btn-info btn-xs" style="margin-left:">Project</button>
+									<div class = "btn-group">
+										<button type="button" id = "filterPriority" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
+										<button type="button" id = "filterProject" class="btn btn-info btn-xs" style="margin-left:">Project</button>
+										<button type="button" id = "filterStatus" class="btn btn-info btn-xs" style="margin-left:">Status</button>
+									</div>
+
+									<form id = 'arrangeForm' name = "filter" action = 'myTasks' method="POST">
+										<input type = "hidden" class = "filterID">
 									</form>
-
-									<!-- <button type="button" id = "filterProject" class="btn btn-info btn-xs" style="margin-left:">Project</button> -->
-									<h3 class="box-title">or</h3>
-
-									<form name = "filter" action = 'myTasks' method="POST">
-										<input type = "hidden"  name = "filterID" class = "filterID" value = "tasks.TASKSTARTDATE">
-										<button type="submit" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
-									</form>
-
-									<!-- <button type="button" id = "filterPriority" class="btn btn-info btn-xs" style="margin-left:">Priority</button> -->
-									<h3 class="box-title">or</h3>
-
-									<form name = "filter" action = 'myTasks' method="POST">
-										<input type = "hidden" name = "filterID" class = "filterID" value = "tasks.TASKSTATUS">
-										<button type="submit" class="btn btn-info btn-xs" style="margin-left:">Status</button>
-									</form>
-									<!-- <button type="button" id = "filterStatus" class="btn btn-info btn-xs" style="margin-left:">Status</button> -->
-
+									
 									<div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -248,17 +236,20 @@
 		 {
 		 	$("#filterProject").click(function()
 		 	{
-
+				$(".filterID").html("<input type='hidden' name='filterID' value='projects.PROJECTTITLE'>");
+				$("#arrangeForm").submit();
 		 	});
 
 			$("#filterPriority").click(function()
 			{
-
+				$(".filterID").html("<input type='hidden' name='filterID' value='tasks.TASKSTARTDATE'>");
+				$("#arrangeForm").submit();
 			});
 
 			$("#filterStatus").click(function()
 			{
-
+				$(".filterID").html("<input type='hidden' name='filterID' value='tasks.TASKSTATUS'>");
+				$("#arrangeForm").submit();
 			});
 		 });
 		</script>
