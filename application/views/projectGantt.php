@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - My Tasks</title>
+		<title>Kernel - <?php echo  $projectProfile['PROJECTTITLE'];?></title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTasksStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
@@ -78,26 +78,43 @@
 			              <table class="table table-hover">
 			                <tr>
 			                  <th>Task</th>
-			                  <th>Project</th>
 			                  <th align="center">Duration</th>
 												<!-- <th>Period<br><span style="font-size:12px">(In Days)</span></th> -->
 												<th>Period</th>
+												<th>Status</th>
+												<th colspan="2">Responsible</th>
 			                  <!-- <th align="center"></th>
 												<th align="center"></th>
 												<th align="center"></th> -->
 			                </tr>
+
+											<?php foreach($ganttData as $row):?>
 											<tr>
-												<td>Find something something from somewhere</td>
-												<td>Store Opening - SM Southmall</td>
-												<td>06/32/2020 - 06/33/2021</td>
-												<td align = "center">98 Days</td>
-												<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
+												<td><?php echo $row['TASKTITLE'];?></td>
+												<td><?php echo $row['TASKSTARTDATE'];?> - <?php echo $row['TASKENDDATE'];?></td>
+
+												<!-- PERIOD COMPUTATION -->
+												<?php // compute for days remaining and fix date format
+												$taskstartdate = date_create($row['TASKSTARTDATE']);
+												$taskenddate = date_create($row['TASKENDDATE']);
+												$taskedate = date_format($taskenddate, "Y-m-d");
+												$tasksdate = date_format($taskstartdate, "Y-m-d");
+												$taskenddate2 = date_create($taskedate);
+												$taskstartdate2 = date_create($tasksdate);
+												$taskperiod = date_diff($taskstartdate2, $taskenddate2);
+												?>
+
+												<td align = "center"><?php echo $taskperiod->format('%a');?> Days</td>
+												<td><?php echo $row['TASKSTATUS'];?></td>
+												<td><?php echo $row ['FIRSTNAME'];?>  <?php echo $row['LASTNAME'];?></td>
 												<!-- HIDE IF STAFF LEVEL -->
-												<?php if($_SESSION['usertype_USERTYPEID'] != '5') :?>
+												<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
 													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
 												<?php endif;?>
 												<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
+												<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
 											</tr>
+										<?php endforeach;?>
 
 			              </table>
 			            </div>
