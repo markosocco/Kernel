@@ -72,7 +72,7 @@
 										<?php $i = 1; ?>
 											<?php foreach ($tasks as $row): ?>
 
-			                <tr id = "<?php echo $row['TASKID']; ?>">
+			                <tr class='row' id = "<?php echo $row['TASKID']; ?>" data-id='<?php echo $project['PROJECTSTARTDATE']; ?>'>
 
 												<input type="hidden" name="task_ID[]" value="<?php echo $row['TASKID']; ?>">
 
@@ -156,12 +156,20 @@
 
 		  $(function ()
 			{
+				//
+
+				$(".row").on("click", function() {
+					var startDate = $('.row').attr('data-id');
+					console.log("HELLO " + startDate);
+ 			 });
+
 				//Initialize Select2 Elements
 		    $('.select2').select2()
 
 				//Date picker
  	     $('.taskStartDate').datepicker({
 				 format: 'yyyy-mm-dd',
+
  	       autoclose: true
  	     });
 
