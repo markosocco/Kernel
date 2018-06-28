@@ -37,7 +37,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Arrange and Schedule Tasks</h3>
+		              <h3 class="box-title">Sub Activities</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -132,9 +132,9 @@
 
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success">Previous: Add tasks</button>
+									<button type="button" class="btn btn-success">Previous: Main Activities</button>
 									<button type="submit" class="btn btn-success pull-right" id="ganttChart">Next: Generate Gantt chart</button>
-									<button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button>
+									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button> -->
 								</div>
 								</form>
 		          </div>
