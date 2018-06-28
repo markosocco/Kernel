@@ -583,6 +583,10 @@ class controller extends CI_Controller
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
+
+			// $this->load->view("dashboard", $data);
+			// echo "hello";
+			// redirect('controller/projectGantt');
 			$this->load->view("projectGantt", $data);
 	}
 
