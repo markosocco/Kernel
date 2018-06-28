@@ -38,9 +38,8 @@
 									<label>Project Details</label>
 									<textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
                 </div>
-
 								<div class="form-group">
-	                <label>Start Date:</label>
+	                <label>Start Date</label>
 
 	                <div class="input-group date">
 	                  <div class="input-group-addon">
@@ -52,7 +51,7 @@
 	              </div>
 	              <!-- /.form group -->
 	              <div class="form-group">
-	                <label>Target End Date:</label>
+	                <label>Target End Date</label>
 
 	                <div class="input-group date">
 	                  <div class="input-group-addon">
@@ -62,6 +61,12 @@
 	                </div>
 	                <!-- /.input group -->
 	              </div>
+
+								<div class="form-group">
+									<label for="exampleInputEmail1">Project Period</label>
+									<input type="text" class="form-control" id="projectPeriod" name="projectTitle" placeholder="1000 days" disabled>
+								</div>
+
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-forward"></i> Next: Add tasks</button>
