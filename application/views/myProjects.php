@@ -21,9 +21,11 @@
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 						<!-- <li class="active">Here</li> -->
 					</ol>
-					<div class="pull-right" style="margin-top:10px">
-						<a href="#" class="btn btn-default btn"><i class="fa fa-th-list"></i></a>
-						<a href="#" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+
+					<!-- LIST AND GRID TOGGLE -->
+					<div id = "toggleView" class="pull-right" style="margin-top:10px">
+						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
 					</div>
 
 				</section>
@@ -100,12 +102,18 @@
 								<!-- ./col -->
 							<?php endforeach;?>
 						</div>
+					</div>
+
+
+						<!-- LIST VIEW -->
 
 						<div id="listView">
 							<div class="box">
 								<div class="box-header">
 									<h3 class="box-title">
-										<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i> Create Project</button>
+										<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+											<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i> Create Project</button>
+										</a>
 									</h3>
 								</div>
 								<!-- /.box-header -->
@@ -141,6 +149,7 @@
 								<!-- /.box-body -->
 							</div>
 						</div>
+
 					</section>
 				</div>
 
@@ -152,6 +161,8 @@
 		<!-- ./wrapper -->
 
 		<script>
+			$("#listView").hide();
+			$("#toggleGrid").hide();
 			$("#myProjects").addClass("active");
 
 			// IF USING GET METHOD FOR PROJECT ID
@@ -170,6 +181,23 @@
 				// $("#prjID_" + $id).attr('name', 'project_ID');
 				$("form").submit();
 				});
+
+			$("#toggleView").click(function(){
+				if($("#gridView").css("display") == "block")
+				{
+					$("#gridView").hide();
+					$("#listView").show();
+					$("#toggleGrid").show();
+					$("#toggleList").hide();
+				}
+				else
+				{
+					$("#listView").hide();
+					$("#gridView").show();
+					$("#toggleGrid").hide();
+					$("#toggleList").show();
+				}
+			});
 
 			$(function () {
 		    $('#projectList').DataTable({
