@@ -330,7 +330,7 @@ class controller extends CI_Controller
 			$filter = 'tasks.TASKSTARTDATE'; // default
 			$filter = $this->input->post("filterID");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasksByFilter($id, $filter);
+			$data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
@@ -516,7 +516,7 @@ class controller extends CI_Controller
 			}
 
 			// // SET PARENT TASK
-			$allTasks = $this->model->getAllProjectTasksByFilter($id, 'tasks.TASKSTARTDATE');
+			$allTasks = $this->model->getAllProjectTasks($id, 'tasks.TASKSTARTDATE');
 
 			foreach ($allTasks as $row)
 			{
@@ -578,8 +578,9 @@ class controller extends CI_Controller
 			}
 
 			// GANTT CODE
+			$filter = 'tasks.TASKSTARTDATE'; // default
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasks($id);
+			$data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
