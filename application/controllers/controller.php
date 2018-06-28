@@ -632,10 +632,15 @@ class controller extends CI_Controller
 
 			$result = $this->model->uploadDocument($uploadData);
 
-			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+			// $data['ongoingProjects'] = $this->model->getAllOngoingProjects();
+			// $data['plannedProjects'] = $this->model->getAllPlannedProjects();
 
-			$this->load->view("myProjects", $data);
+			$id = $this->input->post("project_ID");
+			$this->session->set_flashdata('projectID', $id);
+			// $id = $this->input->get("id");
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+
+			$this->load->view("projectDocuments", $data);
 		}
 	}
 
