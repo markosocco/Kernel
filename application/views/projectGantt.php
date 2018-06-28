@@ -38,7 +38,7 @@
 							<?php endif;?>
 						</h4>
 
-						<?php echo "Session: " . $_SESSION['projectID']; ?>
+						<!-- <?php echo "Session: " . $_SESSION['projectID']; ?> -->
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
@@ -66,7 +66,7 @@
 										<form id = 'arrangeForm' name = "filter" action = 'projectGantt' method="POST">
 											<input type = "hidden" class = "filterID">
 										</form>
-										
+
 			              <div class="box-tools">
 			                <div class="input-group input-group-sm" style="width: 150px;">
 			                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
