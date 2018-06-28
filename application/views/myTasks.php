@@ -75,6 +75,11 @@
 											<td><?php echo date_format($taskstartdate, "M d, Y");?> - <?php echo date_format($taskenddate, "M d, Y");?></td>
 											<td align = "center"><?php echo $row['taskDuration'];?> Days</td>
 											<td><?php echo $row['TASKSTATUS'];?></td>
+											<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
+												<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
+											<?php else:?>
+												<td></td>
+											<?php endif;?>
 											<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
 											<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
 										</tr>
@@ -148,34 +153,38 @@
 		        </div>
 		        <!-- /.modal -->
 
-						<!-- <div class="modal fade" id="modal-delegate">
-		          <div class="modal-dialog">
-		            <div class="modal-content">
-		              <div class="modal-header">
-		                <h4 class="modal-title">Delegate Task to a Team Member</h4>
-		              </div>
-		              <div class="modal-body">
-		                <form>
+						<!-- DELEGATE MODAL -->
+						<div class="modal fade" id="modal-delegate">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Delegate Task to a Team Member</h4>
+									</div>
+									<div class="modal-body">
+										<form>
 											<div class="form-group" style="text-align:center">
-				                <!-- <label>Select a Team Member</label>
-				                <select class="form-control select2" style="width: 100%;" data-placeholder=" -- Select a Team Member -- ">
-													<option disabled selected value> -- Select Request Type -- </option>
-													<option>Loop through members under the same supervisor</option>
-													<option>With the session user excluding session owner</option>
-				                </select>
-				              </div>
+												<!-- <label>Select a Team Member</label> -->
+												<select class="form-control select2" style="width: 100%;" data-placeholder=" -- Select a Team Member -- ">
+													<option disabled selected value> -- Select a Team Member -- </option>
+													<?php foreach($users as $user):?>
+														<?php if($user['users_SUPERVISORS'] == $_SESSION['USERID']):?>
+															<option><?php echo $user['FIRSTNAME'];?> <?php echo $user['LASTNAME'];?></option>
+														<?php endif;?>
+													<?php endforeach;?>
+												</select>
+											</div>
 										</form>
-		              </div>
-		              <div class="modal-footer">
-		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-		                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Delegate Task</button>
-		              </div>
-		            </div>
-		            <!-- /.modal-content
-		          </div>
-		          <!-- /.modal-dialog
-		        </div>
-		        <!-- /.modal -->
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+										<button type="button" class="btn btn-success"><i class="fa fa-check"></i> Delegate Task</button>
+									</div>
+								</div>
+								<!-- /.modal-content -->
+							</div>
+							<!-- /.modal-dialog -->
+						</div>
+						<!-- /.modal -->
 
 						<div class="modal fade" id="modal-done" tabindex="-1">
 		          <div class="modal-dialog">
