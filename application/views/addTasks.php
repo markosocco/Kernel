@@ -82,7 +82,7 @@
 										<tr id="row1">
 											<!-- NEW LINE WILL BE INSERTED HERE  -->
 										</tr>
-											<td class="btn" id="addRow" colspan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+											<td class="btn" id="addRow" colspan="3" align="center" style.display="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
 										<tr>
 		              </table>
 
