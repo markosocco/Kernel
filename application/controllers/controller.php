@@ -468,8 +468,9 @@ class controller extends CI_Controller
 			}
 		}
 
+		$filter = "tasks.TASKSTARTDATE";
 		$data['project'] = $this->model->getProjectByID($id);
-		$data['tasks'] = $this->model->getAllProjectTasks($id);
+		$data['tasks'] = $this->model->getAllProjectTasks($id, $filter);
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['dateDiff'] = $this->model->getDateDiff($data['project']);
@@ -578,7 +579,8 @@ class controller extends CI_Controller
 			}
 
 			// GANTT CODE
-			$filter = 'tasks.TASKSTARTDATE'; // default
+			$filter = "tasks.TASKSTARTDATE"; // default
+			// echo $filter;
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
 			// $data['preReq'] = $this->model->getPreReqID();
