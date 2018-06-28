@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - Add Tasks</title>
+		<title>Kernel - Add Main Activities</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
@@ -36,7 +36,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Enter all tasks for this project</h3>
+		              <h3 class="box-title">Enter main activities for this project</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -55,24 +55,12 @@
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
-		                  <th>No.</th>
-		                  <th>Category</th>
-											<th>Title</th>
+											<th>Main Activity Title</th>
 											<th>Department</th>
-											<th></th>
 											<th></th>
 		                </tr>
 
 		                <tr id="row0">
-											<td>1</td>
-		                  <td><div class="form-group">
-			                  <select class="form-control" name = "category[]" required>
-													<option disabled selected value> -- Select Category -- </option>
-													<option>Main Activity</option>
-				                  <option>Sub Activity</option>
-				                  <option>Task</option>
-			                  </select>
-			                </div></td>
 		                  <td><div class="form-group">
 			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
 			                </div></td>
@@ -87,13 +75,15 @@
 
 											<?php endforeach; ?>
 											</select></td>
-										<td class="btn" id="addRow"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 										<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
 										<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 		                </tr>
 
-										<tr id="row1"></tr>
-
+										<tr id="row1">
+											<!-- NEW LINE WILL BE INSERTED HERE  -->
+										</tr>
+											<td class="btn" id="addRow"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+										<tr>
 		              </table>
 
 								</div>
@@ -101,7 +91,7 @@
 								<div class="box-footer">
 									<button type="button" class="btn btn-success">Previous: Project details</button>
 									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Arrange tasks</button>
-									<button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button>
+									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button> -->
 								</div>
 								</form>
 		          </div>
@@ -147,7 +137,7 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-				 $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category[]' required><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td><select class='form-control' id ='dept' name = 'department[]' required><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td><select class='form-control' id ='dept' name = 'department[]' required><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 // $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
