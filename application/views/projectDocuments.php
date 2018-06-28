@@ -111,7 +111,7 @@
 						<!-- SET FLASHDATA -->
 						<!-- <?php $this->session->set_flashdata('projectID', $projectProfile['PROJECTID']); ?> -->
 
-						<?php echo "Session: " . $_SESSION['projectID']; ?>
+						<!-- <?php echo "Session: " . $_SESSION['projectID']; ?> -->
 						<?php echo form_open_multipart('controller/uploadDocument/?id=' . $projectProfile['PROJECTID']);?>
 
 						<!-- <input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>"> -->

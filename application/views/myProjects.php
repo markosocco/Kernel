@@ -54,7 +54,7 @@
 											<input type = "hidden" class = "inputID">
 											<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
 										</form>
-										<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'];?> days remaining</i></p>
+										<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'] +1;?> day/s remaining</i></p>
 									</div>
 									<div class="icon">
 										<i class="ion ion-beaker"></i>
@@ -81,7 +81,7 @@
 										<?php //Compute for days remaining
 										$startdate = date_create($row['PROJECTSTARTDATE']);
 										?>
-										<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $row['datediff'];?> days</i></p>
+										<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $row['datediff'] +1;?> day/s</i></p>
 									</div>
 									<div class="icon">
 										<i class="ion ion-clock"></i>

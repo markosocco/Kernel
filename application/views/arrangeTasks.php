@@ -95,7 +95,7 @@
 
 			                  <td><?php echo $cat; ?></td>
 			                  <td><?php echo $row['TASKTITLE']; ?></td>
-												<td><?php echo $row['dName']; ?></td>
+												<td><?php echo $row['DEPARTMENTNAME']; ?></td>
 												<td><div class="form-group">
 					                <div class="input-group date">
 					                  <div class="input-group-addon">
