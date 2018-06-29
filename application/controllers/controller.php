@@ -180,12 +180,27 @@ class controller extends CI_Controller
 
 		else
 		{
-			$filter = 'tasks.TASKSTARTDATE'; // default
-			$filter = $this->input->post("filterID");
 			$data['users'] = $this->model->getAllUsers();
-			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID'], $filter);
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 			$this->load->view("myTasks", $data);
 		}
+	}
+
+	public function doneTask()
+	{
+		$id = $this->input->post("task_ID");
+		$remarks = $this->input->post('remarks');
+
+		$data = array(
+					'TASKSTATUS' => 'Complete',
+					'TASKREMARKS' => $remarks
+		);
+
+		$updateTasks = $this->model->updateTaskDone($id, $data);
+
+		$data['users'] = $this->model->getAllUsers();
+		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+		$this->load->view("myTasks", $data);
 	}
 
 	public function templates()
@@ -228,6 +243,45 @@ class controller extends CI_Controller
 		else
 		{
 			$this->load->view("newProject");
+		}
+	}
+
+	public function calendar()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("calendar");
+		}
+	}
+
+	public function documents()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("documents");
+		}
+	}
+
+	public function reports()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reports");
 		}
 	}
 

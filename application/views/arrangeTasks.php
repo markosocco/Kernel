@@ -171,14 +171,16 @@
 				$('body').on('focus',".taskStartDate", function(){
 				    $(this).datepicker({
 							format: 'yyyy-mm-dd',
-		  	       autoclose: true
+		  	       autoclose: true,
+							 orientation: 'bottom'
 						});
 				});
 
 				$('body').on('focus',".taskEndDate", function(){
 						$(this).datepicker({
 							format: 'yyyy-mm-dd',
-							 autoclose: true
+							 autoclose: true,
+							 orientation: 'bottom'
 						});
 				});
 		 });

@@ -11,7 +11,7 @@
 				<section class="content-header">
 					<h1>
 						My Tasks
-						<small>What do I need to do</small>
+						<small>What do I need to do?</small>
 					</h1>
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-dashboard"></i> My Tasks</a></li>
@@ -36,7 +36,7 @@
 											<th>Project</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
-											<th>Period</th>
+											<th>Period <small>(Day/s)</small></th>
 											<th>Status</th>
 											<th></th>
 											<th></th>
@@ -55,15 +55,21 @@
 												<td><?php echo $row['PROJECTTITLE'];?></td>
 												<td><?php echo date_format($taskstartdate, "M d, Y");?></td>
 												<td><?php echo date_format($taskenddate, "M d, Y");?></td>
-												<td align = "center"><?php echo $row['taskDuration'];?> Days</td>
+												<td align = "center"><?php echo $row['taskDuration']+1;?></td>
 												<td><?php echo $row['TASKSTATUS'];?></td>
 												<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
 													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
 												<?php else:?>
 													<td></td>
 												<?php endif;?>
-												<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
-												<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
+												<?php if($row['CURDATE()'] >= $row['TASKSTARTDATE']):?> <!-- Show buttons if ongoing task -->
+												<td align="center"><button type="button" class="btn btn-warning btn-sm rfcBtn" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
+												<td align="center"><button type="button" class="btn btn-success btn-sm doneBtn" data-toggle="modal" data-target="#modal-done"
+													data-id="<?php echo $row['TASKID'];?>" data-title="<?php echo $row['TASKTITLE'];?>" data-delay="<?php echo $row['CURDATE()'] >= $row['TASKENDDATE'];?>"><i class="fa fa-check"></i> Done</button></td>
+												<?php else:?>
+													<td></td>
+													<td></td>
+												<?php endif;?>
 											</tr>
 										<?php endforeach;?>
 										</tbody>
@@ -75,6 +81,7 @@
 
 		        </div>
 
+						<!-- RFC MODAL -->
 						<div class="modal fade" id="modal-request" tabindex="-1">
 		          <div class="modal-dialog">
 		            <div class="modal-content">
@@ -137,7 +144,7 @@
 		        <!-- /.modal -->
 
 						<!-- DELEGATE MODAL -->
-						<div class="modal fade" id="modal-delegate" tabindex="-1">
+						<div class="modal fade" id="modal-delegate">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -212,6 +219,8 @@
 						</div>
 						<!-- /.modal -->
 
+
+						<!-- CONFIRM MODAL -->
 						<div class="modal fade" id="modal-delegateConfirm">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -232,6 +241,7 @@
 						</div>
 						<!-- /.modal -->
 
+						<!-- WORKLOAD ASSESSMENT MODAL -->
 						<div class="modal fade" id="modal-moreInfo">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -240,11 +250,77 @@
 										<h4>Start Date - End Date (Days)</h4>
 									</div>
 									<div class="modal-body">
-										<p>Project Name here</p>
+										<div class="box">
+											<div class="box-header">
+												<h3 class="box-title">Project Title 1 Tasks</h3>
+											</div>
+											<!-- /.box-header -->
+											<div class="box-body table-responsive no-padding">
+												<table class="table table-hover">
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+												</table>
+											</div>
+											<!-- /.box-body -->
+										</div>
+										<!-- /.box -->
+
+										<div class="box">
+											<div class="box-header">
+												<h3 class="box-title">Project Title 2 Tasks</h3>
+											</div>
+											<!-- /.box-header -->
+											<div class="box-body table-responsive no-padding">
+												<table class="table table-hover">
+													<tr>
+														<td>Poop tomorrow</td>
+														<td>0%</td>
+													</tr>
+												</table>
+											</div>
+											<!-- /.box-body -->
+										</div>
+										<!-- /.box -->
+
+
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button>
+										<button type="button" class="btn btn-default pull-right" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+										<!-- <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button> -->
 									</div>
 								</div>
 								<!-- /.modal-content -->
@@ -253,27 +329,27 @@
 						</div>
 						<!-- /.modal -->
 
-						<div class="modal fade" id="modal-done" tabindex="-1">
+						<!-- DONE MODAL -->
+						<div id = "doneModal" class="modal fade" id="modal-done" tabindex="-1">
 		          <div class="modal-dialog">
 		            <div class="modal-content">
 		              <div class="modal-header">
-		                <h4 class="modal-title">Task Finished</h4>
+		                <h4 class="modal-title" id = "doneTitle">Task Finished</h4>
 		              </div>
 		              <div class="modal-body">
-										<!-- DISPLAY IF CURRDATE>TASKENDDATE -->
-										<h3 style="color:red">Task is Delayed</h3>
-		                <form>
+										<h3 id ="delayed" style="color:red">Task is Delayed</h3>
+										<h4 id ="early">Are you sure that this task is done?</h4>
+										<form id = "doneForm" method="POST">
 											<div class="form-group">
-			                  <textarea class="form-control" placeholder="State the reason for the delay"></textarea>
-			                </div>
+												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required="false"></textarea>
+											</div>
+											<div class="modal-footer">
+				                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+				                <button type="submit" class="btn btn-success doneConfirm" data-id=""><i class="fa fa-check"></i> Confirm</button>
+				              </div>
 										</form>
-										<p>Are you sure that this task is done?</p>
+		              </div>
 
-		              </div>
-		              <div class="modal-footer">
-		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-		                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button>
-		              </div>
 		            </div>
 		            <!-- /.modal-content -->
 		          </div>
@@ -281,12 +357,11 @@
 		        </div>
 		        <!-- /.modal -->
 				</section>
+				<?php require("footer.php"); ?>
 					</div>
-			<?php require("footer.php"); ?>
 		</div>
 		<script>
 			$("#myTasks").addClass("active");
-
 			$('.select2').select2();
 
 			$(function ()
@@ -294,34 +369,51 @@
 				//Date picker
  	     $('#startDate').datepicker({
 				 format: 'yyyy-mm-dd',
- 	       autoclose: true
+ 	       autoclose: true,
+				 orientation: 'bottom'
  	     })
 
  	     $('#endDate').datepicker({
 				 format: 'yyyy-mm-dd',
- 	       autoclose: true
+ 	       autoclose: true,
+				 orientation: 'bottom'
  	     })
 		 });
 
-		 $(document).ready(function()
-		 {
-		 	$("#filterProject").click(function()
-		 	{
-				$(".filterID").html("<input type='hidden' name='filterID' value='projects.PROJECTTITLE'>");
-				$("#arrangeForm").submit();
-		 	});
+		 $(document).ready(function() {
 
-			$("#filterPriority").click(function()
-			{
-				$(".filterID").html("<input type='hidden' name='filterID' value='tasks.TASKSTARTDATE'>");
-				$("#arrangeForm").submit();
-			});
+			 // MARK TASK AS DONE
+			 $(".doneBtn").click(function(){
+				 $("#remarks").val("");
+				 var $id = $(this).attr('data-id');
+				 var $title = $(this).attr('data-title');
+				 $("#doneTitle").html($title);
+				 $(".doneConfirm").attr("data-id", $id); //pass data id to confirm button
+				 var isDelayed = $(this).attr('data-delay'); // 1 = delayed
+				 if(isDelayed != "1")
+				 {
+					 $("#delayed").hide();
+					 $("#early").show();
+					 $("#remarks").attr("placeholder", "Enter remarks (optional)");
+				 }
+				 else
+				 {
+					 $("#early").hide();
+					 $("#delayed").show();
+					 $("#remarks").attr("placeholder", "Why were you not able to accomplish the task before the target date?");
+					 $("#remarks").attr("required", true);
+				 }
+				 $("#doneModal").modal("show");
+			 });
 
-			$("#filterStatus").click(function()
-			{
-				$(".filterID").html("<input type='hidden' name='filterID' value='tasks.TASKSTATUS'>");
-				$("#arrangeForm").submit();
-			});
+			 $(".doneConfirm").click(function(){
+				 var $id = $(".doneConfirm").attr('data-id');
+				 $("#doneForm").attr("name", "formSubmit");
+				 $("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+				 // $("#doneForm").submit();
+			 });
+
+
 		 });
 
 		 $(function () {
