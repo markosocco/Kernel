@@ -66,18 +66,16 @@
 			                  	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
 			                	</div>
 											</td>
-											<td>
-												<select class="form-control" name = "department[]" required>
-												<option disabled selected value> -- Select Department -- </option>
+											<td width="40%">
+				                <select class="form-control select2" multiple="multiple" name = "department[]" data-placeholder="Select Departments">
+													<?php foreach ($departments as $row): ?>
 
-												<?php foreach ($departments as $row): ?>
+														<option>
+															<?php echo $row['DEPARTMENTNAME']; ?>
+														</option>
 
-													<option>
-														<?php echo $row['DEPARTMENTNAME']; ?>
-													</option>
-
-												<?php endforeach; ?>
-												</select>
+													<?php endforeach; ?>
+				                </select>
 											</td>
 											<td class='btn'>
 												<a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
