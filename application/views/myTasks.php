@@ -144,12 +144,12 @@
 		        <!-- /.modal -->
 
 						<!-- DELEGATE MODAL -->
-						<div class="modal fade" id="modal-delegate" tabindex="-1">
+						<div class="modal fade" id="modal-delegate">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h4 class="modal-title">Task Name here</h4>
-										<h6>Start Date - End Date (Days)</h6>
+										<h2 class="modal-title">Task Name here</h2>
+										<h4>Start Date - End Date (Days)</h4>
 									</div>
 									<div class="modal-body">
 										<div class="box">
@@ -200,7 +200,7 @@
 														<td>Manuel Cabacaba</td>
 														<td align="center">20k</td>
 														<td align="center">80%</td>
-														<td class="btn" id="moreInfo"><a class="btn moreBtn"><i class="fa fa-info-circle"></i> More Info</a></td>
+														<td class="btn" id="moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 													</tbody>
 												</table>
 											</div>
@@ -210,7 +210,114 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button type="button" class="btn btn-success"><i class="fa fa-check"></i> Delegate Task</button>
+										<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
+									</div>
+								</div>
+								<!-- /.modal-content -->
+							</div>
+							<!-- /.modal-dialog -->
+						</div>
+						<!-- /.modal -->
+
+						<div class="modal fade" id="modal-delegateConfirm">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Confirmation</h4>
+									</div>
+									<div class="modal-body">
+										<p>Are you sure you want to delegate this task?</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+										<button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button>
+									</div>
+								</div>
+								<!-- /.modal-content -->
+							</div>
+							<!-- /.modal-dialog -->
+						</div>
+						<!-- /.modal -->
+
+						<div class="modal fade" id="modal-moreInfo">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h2 class="modal-title">Task Name here</h2>
+										<h4>Start Date - End Date (Days)</h4>
+									</div>
+									<div class="modal-body">
+										<div class="box">
+											<div class="box-header">
+												<h3 class="box-title">Project Title 1 Tasks</h3>
+											</div>
+											<!-- /.box-header -->
+											<div class="box-body table-responsive no-padding">
+												<table class="table table-hover">
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+													<tr>
+														<td>Poop today</td>
+														<td>80%</td>
+													</tr>
+												</table>
+											</div>
+											<!-- /.box-body -->
+										</div>
+										<!-- /.box -->
+
+										<div class="box">
+											<div class="box-header">
+												<h3 class="box-title">Project Title 2 Tasks</h3>
+											</div>
+											<!-- /.box-header -->
+											<div class="box-body table-responsive no-padding">
+												<table class="table table-hover">
+													<tr>
+														<td>Poop tomorrow</td>
+														<td>0%</td>
+													</tr>
+												</table>
+											</div>
+											<!-- /.box-body -->
+										</div>
+										<!-- /.box -->
+
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-right" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+										<!-- <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button> -->
 									</div>
 								</div>
 								<!-- /.modal-content -->
