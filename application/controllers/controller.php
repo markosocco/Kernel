@@ -351,115 +351,193 @@ class controller extends CI_Controller
 		$id = $this->input->post("project_ID");
 
 		// GET ARRAY OF INPUTS FROM VIEW
-		// $category = $this->input->post('category');
 		$title = $this->input->post('title');
-		$department = $this->input->post('department');
 
 		// GET ALL DEPTS TO ASSIGN DEPT HEAD TO TASK
 		$departments = $this->model->getAllDepartments();
 
-		// SAVES DATA FROM ARRAY VIA INDEX AND PLUGS INTO DB
-		foreach ($title as $key => $value)
+		foreach($departments as $row)
 		{
-			// switch ($category[$key])
-			// {
-			// 	case 'Main Activity':
-			// 		$cat = 1;
-			// 		break;
-			// 	case 'Sub Activity':
-			// 		$cat = 2;
-			// 		break;
-			// 	case 'Task':
-			// 		$cat = 3;
-			// 		break;
-			// }
-
-			// ASSIGN DEPARTMENT HEAD PER VARIABLE
-			foreach ($departments as $row)
-			{
-				switch ($row['DEPARTMENTNAME'])
-				{
-					case 'Executive':
-						$execHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Marketing':
-						$mktHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Finance':
-						$finHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Procurement':
-						$proHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'HR':
-						$hrHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'MIS':
-						$misHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Store Operations':
-						$opsHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Facilities Administration':
-						$fadHead = $row['users_DEPARTMENTHEAD'];
-						break;
-				}
-			}
-
-			switch ($department[$key])
+			switch ($row['DEPARTMENTNAME'])
 			{
 				case 'Executive':
-					$deptHead = $execHead;
+					$execHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'Marketing':
-					$deptHead = $mktHead;
+					$mktHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'Finance':
-					$deptHead = $finHead;
+					$finHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'Procurement':
-					$deptHead = $proHead;
+					$proHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'HR':
-					$deptHead = $hrHead;
+					$hrHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'MIS':
-					$deptHead = $misHead;
+					$misHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'Store Operations':
-					$deptHead = $opsHead;
+					$opsHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'Facilities Administration':
-					$deptHead = $fadHead;
+					$fadHead = $row['users_DEPARTMENTHEAD'];
 					break;
-			}
-
-			$data = array(
-					'TASKTITLE' => $title[$key],
-					'TASKSTATUS' => 'Pending',
-					'CATEGORY' => 'Main Activity',
-					'projects_PROJECTID' => $id,
-					'users_USERID' => $deptHead
-			);
-
-			$addTasks = $this->model->addTasksToProject($data);
-
-			if (!$addTasks)
-			{
-				// TODO PUT ALERT
-				redirect('controller/contact');
 			}
 		}
 
-		$data['project'] = $this->model->getProjectByID($id);
-		$data['tasks'] = $this->model->getAllProjectTasks($id);
-		$data['users'] = $this->model->getAllUsers();
-		$data['departments'] = $this->model->getAllDepartments();
-		$data['dateDiff'] = $this->model->getDateDiff($data['project']);
+		$x = 0;
 
-		$this->load->view('arrangeTasks', $data);
-	}
+		foreach ($title as $row)
+		{
+			$department = $this->input->post('department_' . $x);
 
+			foreach ($departments as $row2)
+				{
+					switch ($row2)
+					{
+						case 'Executive':
+							$deptHead = $execHead;
+							break;
+						case 'Marketing':
+							$deptHead = $mktHead;
+							break;
+						case 'Finance':
+							$deptHead = $finHead;
+							break;
+						case 'Procurement':
+							$deptHead = $proHead;
+							break;
+						case 'HR':
+							$deptHead = $hrHead;
+							break;
+						case 'MIS':
+							$deptHead = $misHead;
+							break;
+						case 'Store Operations':
+							$deptHead = $opsHead;
+							break;
+						case 'Facilities Administration':
+							$deptHead = $fadHead;
+							break;
+					}
+				}
+
+				echo "Title: " . $row . "<br>";
+				echo "Project ID: " . $id . "<br>";
+				echo "Departments: ";
+
+				foreach($department as $a)
+				{
+					echo $a . ", ";
+				}
+
+				echo "<br>---------------------------------------------<br>";
+				$x++;
+			}
+		}
+
+		// SAVES DATA FROM ARRAY VIA INDEX AND PLUGS INTO DB
+		// foreach ($title as $key => $value)
+		// {
+		// 	// switch ($category[$key])
+		// 	// {
+		// 	// 	case 'Main Activity':
+		// 	// 		$cat = 1;
+		// 	// 		break;
+		// 	// 	case 'Sub Activity':
+		// 	// 		$cat = 2;
+		// 	// 		break;
+		// 	// 	case 'Task':
+		// 	// 		$cat = 3;
+		// 	// 		break;
+		// 	// }
+		//
+		// 	// ASSIGN DEPARTMENT HEAD PER VARIABLE
+		// 	foreach ($departments as $row)
+		// 	{
+		// 		switch ($row['DEPARTMENTNAME'])
+		// 		{
+		// 			case 'Executive':
+		// 				$execHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 			case 'Marketing':
+		// 				$mktHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 			case 'Finance':
+		// 				$finHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 			case 'Procurement':
+		// 				$proHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 			case 'HR':
+		// 				$hrHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 			case 'MIS':
+		// 				$misHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 			case 'Store Operations':
+		// 				$opsHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 			case 'Facilities Administration':
+		// 				$fadHead = $row['users_DEPARTMENTHEAD'];
+		// 				break;
+		// 		}
+		// 	}
+		//
+		// 	switch ($department[$key])
+		// 	{
+		// 		case 'Executive':
+		// 			$deptHead = $execHead;
+		// 			break;
+		// 		case 'Marketing':
+		// 			$deptHead = $mktHead;
+		// 			break;
+		// 		case 'Finance':
+		// 			$deptHead = $finHead;
+		// 			break;
+		// 		case 'Procurement':
+		// 			$deptHead = $proHead;
+		// 			break;
+		// 		case 'HR':
+		// 			$deptHead = $hrHead;
+		// 			break;
+		// 		case 'MIS':
+		// 			$deptHead = $misHead;
+		// 			break;
+		// 		case 'Store Operations':
+		// 			$deptHead = $opsHead;
+		// 			break;
+		// 		case 'Facilities Administration':
+		// 			$deptHead = $fadHead;
+		// 			break;
+		// 	}
+		//
+		// 	$data = array(
+		// 			'TASKTITLE' => $title[$key],
+		// 			'TASKSTATUS' => 'Pending',
+		// 			'CATEGORY' => 'Main Activity',
+		// 			'projects_PROJECTID' => $id,
+		// 			'users_USERID' => $deptHead
+		// 	);
+		//
+		// 	$addTasks = $this->model->addTasksToProject($data);
+		//
+		// 	if (!$addTasks)
+		// 	{
+		// 		// TODO PUT ALERT
+		// 		redirect('controller/contact');
+		// 	}
+		// }
+		//
+		// $data['project'] = $this->model->getProjectByID($id);
+		// $data['tasks'] = $this->model->getAllProjectTasks($id);
+		// $data['users'] = $this->model->getAllUsers();
+		// $data['departments'] = $this->model->getAllDepartments();
+		// $data['dateDiff'] = $this->model->getDateDiff($data['project']);
+		//
+		// $this->load->view('arrangeTasks', $data);
 
 		public function arrangeTasks()
 		{
