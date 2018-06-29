@@ -248,13 +248,7 @@
 			// IF USING POST METHOD FOR PROJECT ID
 			$(document).on("click", ".project", function() {
 				var $id = $(this).attr('data-id');
-
-				// alert($id);
 				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
-				// $("form").attr('id', 'x');
-				// $("#prjID_" + $id).attr('name', 'project_ID');
-				// $("form").attr('name', 'formSub');
-				// $(".inputID").attr('name', 'projectID');
 				$("form").submit();
 				});
 
