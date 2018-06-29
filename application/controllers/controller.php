@@ -246,7 +246,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function calendar()
+	public function myCalendar()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -255,7 +255,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("calendar");
+			$this->load->view("myCalendar");
 		}
 	}
 
