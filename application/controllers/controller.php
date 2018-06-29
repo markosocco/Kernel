@@ -246,6 +246,45 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function calendar()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("calendar");
+		}
+	}
+
+	public function documents()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("documents");
+		}
+	}
+
+	public function reports()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reports");
+		}
+	}
+
 // DELETE THIS MAYBE?
 	public function newProjectTask()
 	{
