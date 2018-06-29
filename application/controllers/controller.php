@@ -512,10 +512,12 @@ class controller extends CI_Controller
 								'tasks_TASKID' => $addedTask['TASKID']
 						);
 
+						// ENTER INTO RACI
 						$result = $this->model->addToRaci($data);
 
 						if($result)
 						{
+							// GO TO NEXT STEP
 							$data['project'] = $this->model->getProjectByID($id);
 							$data['tasks'] = $this->model->getAllProjectTasks($id);
 							$data['users'] = $this->model->getAllUsers();
