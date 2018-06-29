@@ -137,26 +137,69 @@
 		        <!-- /.modal -->
 
 						<!-- DELEGATE MODAL -->
-						<div class="modal fade" id="modal-delegate">
+						<div class="modal fade" id="modal-delegate" tabindex="-1">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h4 class="modal-title">Delegate Task to a Team Member</h4>
+										<h4 class="modal-title">Task Name here</h4>
+										<h6>Start Date - End Date (Days)</h6>
 									</div>
 									<div class="modal-body">
-										<form>
-											<div class="form-group" style="text-align:center">
-												<!-- <label>Select a Team Member</label> -->
-												<select class="form-control select2" style="width: 100%;" data-placeholder=" -- Select a Team Member -- ">
-													<option disabled selected value> -- Select a Team Member -- </option>
-													<?php foreach($users as $user):?>
-														<?php if($user['users_SUPERVISORS'] == $_SESSION['USERID']):?>
-															<option><?php echo $user['FIRSTNAME'];?> <?php echo $user['LASTNAME'];?></option>
-														<?php endif;?>
-													<?php endforeach;?>
-												</select>
+										<div class="box">
+											<div class="box-header" style="display:inline-block">
+												<h3 class="box-title">
+													<div class="btn-group">
+														<button type="button" class="btn btn-default btn-sm" id="responsible">Responsible</button>
+														<button type="button" class="btn btn-default btn-sm" id="accountable">Accountable</button>
+														<button type="button" class="btn btn-default btn-sm" id="consulted">Consulted</button>
+														<button type="button" class="btn btn-default btn-sm" id="informed">Informed</button>
+													</div>
+
+												</h3>
 											</div>
-										</form>
+											<!-- /.box-header -->
+											<div class="box-body">
+												<div class="form-group">
+
+													<select class="form-control" name = "department[]" align="center" required>
+													<option disabled selected value> -- Select Department -- </option>
+
+													<?php foreach ($departments as $row): ?>
+
+														<option>
+															<?php echo $row['DEPARTMENTNAME']; ?>
+														</option>
+
+													<?php endforeach; ?>
+													</select>
+												</div>
+
+												<table id="teamList" class="table table-bordered table-hover">
+													<thead>
+													<tr>
+														<th></th>
+														<th>Name</th>
+														<th align="center">No. of Projects</th>
+														<th align="center">Progress</th>
+														<th></th>
+													</tr>
+													</thead>
+													<tbody>
+														<td><div class="radio">
+					                    <label>
+																<input type="radio" name="" id="" value="">
+					                    </label>
+					                  </div></td>
+														<td>Manuel Cabacaba</td>
+														<td align="center">20k</td>
+														<td align="center">80%</td>
+														<td class="btn" id="moreInfo"><a class="btn moreBtn"><i class="fa fa-info-circle"></i> More Info</a></td>
+													</tbody>
+												</table>
+											</div>
+											<!-- /.box-body -->
+										</div>
+
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -249,6 +292,18 @@
 				 'info'        : false,
 				 'autoWidth'   : false
 			 });
+		 });
+
+		 $(function () {
+			 $('#employeeList').DataTable({
+				 'paging'      : false,
+				 'lengthChange': false,
+				 'searching'   : true,
+				 'ordering'    : true,
+				 'info'        : false,
+				 'autoWidth'   : false
+			 });
+			 $('#projectList').DataTable().columns(-1).order('asc').draw();
 		 })
 		</script>
 	</body>
