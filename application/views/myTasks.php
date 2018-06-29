@@ -339,13 +339,13 @@
 		              <div class="modal-body">
 										<h3 id ="delayed" style="color:red">Task is Delayed</h3>
 										<h4 id ="early">Are you sure that this task is done?</h4>
-										<form id = "doneForm" method="POST">
+										<form id = "doneForm" action="doneTask" method="POST">
 											<div class="form-group">
-												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required="false"></textarea>
+												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 											</div>
 											<div class="modal-footer">
 				                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-				                <button type="submit" class="btn btn-success doneConfirm" data-id=""><i class="fa fa-check"></i> Confirm</button>
+				                <button id = "doneConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
 				              </div>
 										</form>
 		              </div>
@@ -388,29 +388,29 @@
 				 var $id = $(this).attr('data-id');
 				 var $title = $(this).attr('data-title');
 				 $("#doneTitle").html($title);
-				 $(".doneConfirm").attr("data-id", $id); //pass data id to confirm button
+				 $("#doneConfirm").attr("data-id", $id); //pass data id to confirm button
 				 var isDelayed = $(this).attr('data-delay'); // 1 = delayed
 				 if(isDelayed != "1")
 				 {
 					 $("#delayed").hide();
 					 $("#early").show();
+					 $("#remarks").attr("required", false);
 					 $("#remarks").attr("placeholder", "Enter remarks (optional)");
 				 }
 				 else
 				 {
 					 $("#early").hide();
 					 $("#delayed").show();
-					 $("#remarks").attr("placeholder", "Why were you not able to accomplish the task before the target date?");
 					 $("#remarks").attr("required", true);
+					 $("#remarks").attr("placeholder", "Why were you not able to accomplish the task before the target date?");
 				 }
 				 $("#doneModal").modal("show");
 			 });
 
-			 $(".doneConfirm").click(function(){
-				 var $id = $(".doneConfirm").attr('data-id');
+			 $("#doneConfirm").click(function(){
+				 var $id = $("#doneConfirm").attr('data-id');
 				 $("#doneForm").attr("name", "formSubmit");
 				 $("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
-				 // $("#doneForm").submit();
 			 });
 
 

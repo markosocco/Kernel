@@ -285,6 +285,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function projectLogs()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("projectLogs");
+		}
+	}
+
 // DELETE THIS MAYBE?
 	public function newProjectTask()
 	{
@@ -447,47 +460,81 @@ class controller extends CI_Controller
 		{
 			$department = $this->input->post('department_' . $x);
 
-			foreach ($departments as $row2)
+				$data = array(
+						'TASKTITLE' => $row,
+						'TASKSTATUS' => 'Planning',
+						'CATEGORY' => '1',
+						'projects_PROJECTID' => $id
+				);
+
+				$addedTask = $this->model->addTasksToProject($data);
+
+				if (!$addedTask)
 				{
-					switch ($row2)
+					echo "false";
+				}
+
+				else
+				{
+					foreach($department as $a)
 					{
-						case 'Executive':
-							$deptHead = $execHead;
-							break;
-						case 'Marketing':
-							$deptHead = $mktHead;
-							break;
-						case 'Finance':
-							$deptHead = $finHead;
-							break;
-						case 'Procurement':
-							$deptHead = $proHead;
-							break;
-						case 'HR':
-							$deptHead = $hrHead;
-							break;
-						case 'MIS':
-							$deptHead = $misHead;
-							break;
-						case 'Store Operations':
-							$deptHead = $opsHead;
-							break;
-						case 'Facilities Administration':
-							$deptHead = $fadHead;
-							break;
+						switch ($a)
+						{
+							case 'Executive':
+								$deptHead = $execHead;
+								break;
+							case 'Marketing':
+								$deptHead = $mktHead;
+								break;
+							case 'Finance':
+								$deptHead = $finHead;
+								break;
+							case 'Procurement':
+								$deptHead = $proHead;
+								break;
+							case 'HR':
+								$deptHead = $hrHead;
+								break;
+							case 'MIS':
+								$deptHead = $misHead;
+								break;
+							case 'Store Operations':
+								$deptHead = $opsHead;
+								break;
+							case 'Facilities Administration':
+								$deptHead = $fadHead;
+								break;
+						}
+
+						$data = array(
+								'ROLE' => '1',
+								'users_USERID' => $deptHead,
+								'tasks_TASKID' => $addedTask['TASKID']
+						);
+
+						// ENTER INTO RACI
+						$result = $this->model->addToRaci($data);
+
+						if($result)
+						{
+							// GO TO NEXT STEP
+							$data['project'] = $this->model->getProjectByID($id);
+							$data['tasks'] = $this->model->getAllProjectTasks($id);
+							$data['users'] = $this->model->getAllUsers();
+							$data['departments'] = $this->model->getAllDepartments();
+							$data['dateDiff'] = $this->model->getDateDiff($data['project']);
+
+							$this->load->view('arrangeTasks', $data);
+						}
+
+						else
+						{
+							//TODO Add alert
+							echo "fail";
+						}
 					}
 				}
 
-				echo "Title: " . $row . "<br>";
-				echo "Project ID: " . $id . "<br>";
-				echo "Departments: ";
-
-				foreach($department as $a)
-				{
-					echo $a . ", ";
-				}
-
-				echo "<br>---------------------------------------------<br>";
 				$x++;
 			}
 		}
