@@ -61,7 +61,6 @@
 											<h2>82%</h2>
 
 											<form action = 'projectGantt'  method="POST">
-												<input type = "hidden" class = "inputID">
 											</form>
 
 											<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'] +1;?> day/s remaining</i></p>
@@ -103,6 +102,47 @@
 							<?php endforeach;?>
 						</div>
 					</div>
+
+					<div class="box box-solid bg-teal-gradient">
+            <div class="box-header">
+              <i class="fa fa-th"></i>
+
+              <h3 class="box-title">Sales Graph</h3>
+
+            </div>
+            <div class="box-body border-radius-none">
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-border">
+              <div class="row">
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <input type="text" class="knob" data-readonly="true" value="20%" data-width="60" data-height="60"
+                         data-fgColor="#39CCCC">
+
+                  <div class="knob-label">Progress</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <input type="text" class="knob" data-readonly="true" value="50%" data-width="60" data-height="60"
+                         data-fgColor="#39CCCC">
+
+                  <div class="knob-label">Completeness</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center">
+                  <input type="text" class="knob" data-readonly="true" value="30%" data-width="60" data-height="60"
+                         data-fgColor="#39CCCC">
+
+                  <div class="knob-label">Timeliness</div>
+                </div>
+                <!-- ./col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+
 
 						<!-- LIST VIEW -->
 
@@ -195,11 +235,19 @@
 			$("#toggleGrid").hide();
 			$("#myProjects").addClass("active");
 
+			// IF USING GET METHOD FOR PROJECT ID
+			// $("a.project").click(function() //redirect to individual project profile
+      // {
+			//	var $id = $(this).attr('data-id');
+
+      //   // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
+      // });
+
 			// IF USING POST METHOD FOR PROJECT ID
 			$(document).on("click", ".project", function() {
 				var $id = $(this).attr('data-id');
-				// $("form").attr("name", "formSubmit");
-				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
+				$("form").attr("name", "formSubmit");
+				$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
 				$("form").submit();
 				});
 
