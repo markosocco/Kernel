@@ -360,12 +360,14 @@
 				//Date picker
  	     $('#startDate').datepicker({
 				 format: 'yyyy-mm-dd',
- 	       autoclose: true
+ 	       autoclose: true,
+				 orientation: 'bottom'
  	     })
 
  	     $('#endDate').datepicker({
 				 format: 'yyyy-mm-dd',
- 	       autoclose: true
+ 	       autoclose: true,
+				 orientation: 'bottom'
  	     })
 		 });
 

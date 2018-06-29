@@ -12,7 +12,7 @@
 				<section class="content-header">
 					<h1>
 						My Projects
-						<small>What are my projects?</small>
+						<small>What are my projects</small>
 						<small>(GREEN = ONGOING; ORANGE = PLANNED; RED = DELAYED; GRAY = PARKED; WHITE = DRAFT)</small>
 					</h1>
 

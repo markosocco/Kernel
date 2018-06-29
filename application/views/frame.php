@@ -198,6 +198,9 @@ desired effect
         <?php endif;?>
         <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i><span> Templates</span></a></li>
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Project Archives</span></a></li>
+        <li id = 'documents'><a href="<?php echo base_url("index.php/controller/documents"); ?>"><i class="fa fa-folder"></i><span> Documents</span></a></li>
+        <li id = 'reports'><a href="<?php echo base_url("index.php/controller/reports"); ?>"><i class="fa fa-tachometer"></i><span> Reports</span></a></li>
+        <li id = 'calendar'><a href="<?php echo base_url("index.php/controller/calendar"); ?>"><i class="fa fa-calendar"></i><span> Calendar</span></a></li>
 
 
         <!-- <li class="treeview">

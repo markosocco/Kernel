@@ -12,7 +12,7 @@
 			<section class="content-header">
 				<h1>
 					Project Archives
-					<small>Review past projects</small>
+					<small>What are the projects I have done</small>
 				</h1>
 			</section>
 
@@ -28,7 +28,7 @@
 
 					<!-- IF ARCHIVES IS NOT EMPTY -->
 					<?php //foreach ($archives as $row):?>
-						
+
 						<!-- ./col -->
 					<?php //endforeach;?>
 
