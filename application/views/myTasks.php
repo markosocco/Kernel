@@ -62,7 +62,7 @@
 												<?php else:?>
 													<td></td>
 												<?php endif;?>
-												<?php if($row['CURDATE()'] >= $row['TASKSTARTDATE'] && $row['PROJECTSTATUS'] != "Complete"):?>
+												<?php if($row['CURDATE()'] >= $row['TASKSTARTDATE']):?> <!-- Show buttons if ongoing task -->
 												<td align="center"><button type="button" class="btn btn-warning btn-sm rfcBtn" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
 												<td align="center"><button type="button" class="btn btn-success btn-sm doneBtn" data-toggle="modal" data-target="#modal-done"
 													data-id="<?php echo $row['TASKID'];?>" data-title="<?php echo $row['TASKTITLE'];?>" data-delay="<?php echo $row['CURDATE()'] >= $row['TASKENDDATE'];?>"><i class="fa fa-check"></i> Done</button></td>
@@ -219,6 +219,8 @@
 						</div>
 						<!-- /.modal -->
 
+
+						<!-- CONFIRM MODAL -->
 						<div class="modal fade" id="modal-delegateConfirm">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -239,6 +241,7 @@
 						</div>
 						<!-- /.modal -->
 
+						<!-- WORKLOAD ASSESSMENT MODAL -->
 						<div class="modal fade" id="modal-moreInfo">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -336,16 +339,17 @@
 		              <div class="modal-body">
 										<h3 id ="delayed" style="color:red">Task is Delayed</h3>
 										<h4 id ="early">Are you sure that this task is done?</h4>
-										<form>
+										<form id = "doneForm" method="POST">
 											<div class="form-group">
-												<textarea id = "remarks" class="form-control" placeholder="Enter remarks"></textarea>
+												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required="false"></textarea>
 											</div>
+											<div class="modal-footer">
+				                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+				                <button type="submit" class="btn btn-success doneConfirm" data-id=""><i class="fa fa-check"></i> Confirm</button>
+				              </div>
 										</form>
 		              </div>
-		              <div class="modal-footer">
-		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-		                <button type="button" class="btn btn-success doneBtn1" data-id=""><i class="fa fa-check"></i> Confirm</button>
-		              </div>
+
 		            </div>
 		            <!-- /.modal-content -->
 		          </div>
@@ -375,11 +379,14 @@
 		 });
 
 		 $(document).ready(function() {
+
+			 // MARK TASK AS DONE
 			 $(".doneBtn").click(function(){
+				 $("#remarks").val("");
 				 var $id = $(this).attr('data-id');
 				 var $title = $(this).attr('data-title');
 				 $("#doneTitle").html($title);
-				 $(".doneBtn1").attr("data-id", $id); //pass data id to confirm button
+				 $(".doneConfirm").attr("data-id", $id); //pass data id to confirm button
 				 var isDelayed = $(this).attr('data-delay'); // 1 = delayed
 				 if(isDelayed != "1")
 				 {
@@ -392,9 +399,16 @@
 					 $("#early").hide();
 					 $("#delayed").show();
 					 $("#remarks").attr("placeholder", "Why were you not able to accomplish the task before the target date?");
+					 $("#remarks").attr("required", true);
 				 }
-
 				 $("#doneModal").modal("show");
+			 });
+
+			 $(".doneConfirm").click(function(){
+				 var $id = $(".doneConfirm").attr('data-id');
+				 $("#doneForm").attr("name", "formSubmit");
+				 $("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+				 // $("#doneForm").submit();
 			 });
 
 

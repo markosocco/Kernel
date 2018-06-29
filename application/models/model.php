@@ -89,6 +89,24 @@ public function addProject($data)
     }
   }
 
+  // MARK TASK AS COMPLETE
+  public function updateTaskDone($id, $data)
+  {
+    $this->db->where('TASKID', $id);
+
+    $result = $this->db->update('tasks', $data);
+
+    if ($result)
+    {
+      return true;
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
   // GETS PROJECT BY ID; RETURNS PROJECT
   public function getProjectByID($data)
   {
@@ -260,7 +278,7 @@ public function addProject($data)
 
   public function getAllTasksByUser($id)
   {
-    $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Completed'";
+    $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
     $this->db->select('*, CURDATE(), DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
