@@ -24,73 +24,6 @@
 					<!-- <div id="filterButtons">
 						<h5>Arrange by</h5>
 					</div> -->
-
-					<div class="row">
-		        <div class="col-xs-12">
-		          <div class="box">
-		            <div class="box-header">
-		              <h3 class="box-title">Arrange by</h3>
-
-									<div class = "btn-group">
-										<button type="button" id = "filterPriority" class="btn btn-info btn-xs" style="margin-left:">Priority</button>
-										<button type="button" id = "filterProject" class="btn btn-info btn-xs" style="margin-left:">Project</button>
-										<button type="button" id = "filterStatus" class="btn btn-info btn-xs" style="margin-left:">Status</button>
-									</div>
-
-									<form id = 'arrangeForm' name = "filter" action = 'myTasks' method="POST">
-										<input type = "hidden" class = "filterID">
-									</form>
-
-									<div class="box-tools">
-		                <div class="input-group input-group-sm" style="width: 150px;">
-		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-		                  <div class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-		                  </div>
-		                </div>
-		              </div>
-		            </div>
-		            <!-- /.box-header -->
-		            <div class="box-body table-responsive no-padding">
-		              <table class="table table-hover">
-		                <tr>
-		                  <th>Task</th>
-		                  <th>Project</th>
-		                  <th align="center">Duration</th>
-											<!-- <th>Period<br><span style="font-size:12px">(In Days)</span></th> -->
-											<th>Period</th>
-											<th>Status</th>
-		                </tr>
-
-										<?php foreach($tasks as $row):?>
-										<tr>
-											<?php // to fix date format
-											$taskstartdate = date_create($row['TASKSTARTDATE']);
-											$taskenddate = date_create($row['TASKENDDATE']);
-											?>
-
-											<td><?php echo $row['TASKTITLE'];?></td>
-											<td><?php echo $row['PROJECTTITLE'];?></td>
-											<td><?php echo date_format($taskstartdate, "M d, Y");?> - <?php echo date_format($taskenddate, "M d, Y");?></td>
-											<td align = "center"><?php echo $row['taskDuration'];?> Days</td>
-											<td><?php echo $row['TASKSTATUS'];?></td>
-											<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
-												<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
-											<?php else:?>
-												<td></td>
-											<?php endif;?>
-											<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
-											<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
-										</tr>
-									<?php endforeach;?>
-
-		              </table>
-		            </div>
-		            <!-- /.box-body -->
-		          </div>
-		          <!-- /.box -->
-
 							<div class="box">
 								<div class="box-header">
 								</div>
@@ -99,23 +32,40 @@
 									<table id="taskList" class="table table-bordered table-hover">
 										<thead>
 										<tr>
-											<th>Rendering engine</th>
-											<th>Browser</th>
-											<th>Platform(s)</th>
-											<th>Engine version</th>
-											<th>CSS grade</th>
+											<th>Task</th>
+											<th>Project</th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
+											<th>Period</th>
+											<th>Status</th>
+											<th></th>
+											<th></th>
+											<th></th>
 										</tr>
 										</thead>
 										<tbody>
-										<tr>
-											<td>Trident</td>
-											<td>Internet
-												Explorer 4.0
-											</td>
-											<td>Win 95+</td>
-											<td> 4</td>
-											<td>X</td>
-										</tr>
+											<?php foreach($tasks as $row):?>
+											<tr>
+												<?php // to fix date format
+												$taskstartdate = date_create($row['TASKSTARTDATE']);
+												$taskenddate = date_create($row['TASKENDDATE']);
+												?>
+
+												<td><?php echo $row['TASKTITLE'];?></td>
+												<td><?php echo $row['PROJECTTITLE'];?></td>
+												<td><?php echo date_format($taskstartdate, "M d, Y");?></td>
+												<td><?php echo date_format($taskenddate, "M d, Y");?></td>
+												<td align = "center"><?php echo $row['taskDuration'];?> Days</td>
+												<td><?php echo $row['TASKSTATUS'];?></td>
+												<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
+													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
+												<?php else:?>
+													<td></td>
+												<?php endif;?>
+												<td align="center"><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
+												<td align="center"><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-done"><i class="fa fa-check"></i> Done</button></td>
+											</tr>
+										<?php endforeach;?>
 										</tbody>
 									</table>
 								</div>
