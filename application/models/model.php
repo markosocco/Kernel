@@ -149,7 +149,7 @@ public function addProject($data)
     $this->db->select('*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "datediff"');
     $this->db->from('PROJECTS');
     $this->db->where($condition);
-    $this->db->order_by('PROJECTSTARTDATE', 'ASC');
+    $this->db->order_by('PROJECTSTARTDATE');
     $query = $this->db->get();
 
     return $query->result_array();

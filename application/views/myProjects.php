@@ -60,10 +60,11 @@
 										<div class="inner">
 											<h2>82%</h2>
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+											<form action = 'projectGantt'  method="POST">
 												<input type = "hidden" class = "inputID">
 												<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
 											</form>
+
 											<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'] +1;?> day/s remaining</i></p>
 										</div>
 										<div class="icon">
@@ -189,8 +190,9 @@
 											<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
 											<td>80%</td>
 											<td><?php echo $row['PROJECTSTATUS']; ?></td>
-										<?php endforeach;?>
 										</tr>
+									<?php endforeach;?>
+
 
 										<?php foreach ($plannedProjects as $row):?>
 
@@ -199,7 +201,7 @@
 											$plannedEnd = date_create($row['PROJECTENDDATE']);
 											?>
 
-										<tr class="btn-warning project">
+										<tr class="btn-warning project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
 											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
 												<input type = "hidden" class = "inputID">
@@ -210,9 +212,8 @@
 											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
 											<td>0%</td>
 											<td><?php echo $row['PROJECTSTATUS']; ?></td>
-										<?php endforeach;?>
-
 										</tr>
+									<?php endforeach;?>
 
 										</tbody>
 									</table>
@@ -247,10 +248,13 @@
 			// IF USING POST METHOD FOR PROJECT ID
 			$(document).on("click", ".project", function() {
 				var $id = $(this).attr('data-id');
-				alert($id);
+
+				// alert($id);
 				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
 				// $("form").attr('id', 'x');
 				// $("#prjID_" + $id).attr('name', 'project_ID');
+				// $("form").attr('name', 'formSub');
+				// $(".inputID").attr('name', 'projectID');
 				$("form").submit();
 				});
 
@@ -273,13 +277,14 @@
 
 			$(function () {
 		    $('#projectList').DataTable({
-		      'paging'      : true,
+		      'paging'      : false,
 		      'lengthChange': false,
 		      'searching'   : false,
 		      'ordering'    : true,
-		      'info'        : true,
+		      'info'        : false,
 		      'autoWidth'   : false
-		    })
+		    });
+				$('#projectList').DataTable().columns(-1).order('asc').draw();
 		  })
 		</script>
 	</body>
