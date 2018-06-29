@@ -29,7 +29,7 @@
 		</div> <!--.wrapper closing div-->
 
 		<script>
-		$("#Documents").addClass("active");
+		$("#documents").addClass("active");
 		</script>
 
 	</body>
