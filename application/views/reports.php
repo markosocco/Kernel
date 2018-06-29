@@ -24,7 +24,7 @@
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-						<table id="documentList" class="table table-bordered table-hover">
+						<table id="reportList" class="table table-bordered table-hover">
 							<tbody>
 								<!-- SAMPLE DATA. PLEASE DELETE  -->
 								<tr>

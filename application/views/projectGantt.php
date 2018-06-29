@@ -48,6 +48,7 @@
 						<a name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
 
 						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
+						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-edit"></i> Edit Project</a>
 					</div>
 					<div style="position: relative" class="gantt" id="GanttChartDIV"></div>
 
@@ -146,21 +147,19 @@
 					if($currentTask == $data['tasks_POSTTASKID']){
 						if($row['TASKSTARTDATE'] == $data["TASKSTARTDATE"])
 						{
-							echo "console.log('".$row['TASKSTARTDATE']." = ".$data["TASKSTARTDATE"]."');";
 							$dependency = $data['PRETASKID'];
 
 							echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
 				      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-				      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+				      "'gtaskBlue', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
 							$parent . ", 1, '". $dependency."SS', '', '', g));";
 						}
 					}
 				}
 
-
 		      echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
 		      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-		      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+		      "'gtaskBlue', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
 					$parent . ", 1, '". $dependency."', '', '', g));";
 
 		    }

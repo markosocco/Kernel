@@ -3,6 +3,7 @@
   <head>
 
     <title>Gantt # 2</title>
+    <h1>https://docs.anychart.com/Quick_Start/Quick_Start</h1>
 
   </head>
 
