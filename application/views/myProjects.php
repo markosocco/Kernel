@@ -61,8 +61,6 @@
 											<h2>82%</h2>
 
 											<form action = 'projectGantt'  method="POST">
-												<input type = "hidden" class = "inputID">
-												<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
 											</form>
 
 											<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'] +1;?> day/s remaining</i></p>
@@ -84,9 +82,7 @@
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
-												<input type = "hidden" class = "inputID">
-												<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
+											<form action = 'projectGantt' method="POST">
 											</form>
 
 											<?php //Compute for days remaining
@@ -104,6 +100,47 @@
 							<?php endforeach;?>
 						</div>
 					</div>
+
+					<div class="box box-solid bg-teal-gradient">
+            <div class="box-header">
+              <i class="fa fa-th"></i>
+
+              <h3 class="box-title">Sales Graph</h3>
+
+            </div>
+            <div class="box-body border-radius-none">
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-border">
+              <div class="row">
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <input type="text" class="knob" data-readonly="true" value="20%" data-width="60" data-height="60"
+                         data-fgColor="#39CCCC">
+
+                  <div class="knob-label">Progress</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <input type="text" class="knob" data-readonly="true" value="50%" data-width="60" data-height="60"
+                         data-fgColor="#39CCCC">
+
+                  <div class="knob-label">Completeness</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center">
+                  <input type="text" class="knob" data-readonly="true" value="30%" data-width="60" data-height="60"
+                         data-fgColor="#39CCCC">
+
+                  <div class="knob-label">Timeliness</div>
+                </div>
+                <!-- ./col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+
 
 						<!-- LIST VIEW -->
 
@@ -140,8 +177,7 @@
 
 										<tr class="btn-success project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
-												<input type = "hidden" class = "inputID">
+											<form action = 'projectGantt' method="POST">
 											</form>
 
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
@@ -162,8 +198,7 @@
 
 										<tr class="btn-warning project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
-												<input type = "hidden" class = "inputID">
+											<form action = 'projectGantt' method="POST">
 											</form>
 
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
@@ -207,7 +242,8 @@
 			// IF USING POST METHOD FOR PROJECT ID
 			$(document).on("click", ".project", function() {
 				var $id = $(this).attr('data-id');
-				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
+				$("form").attr("name", "formSubmit");
+				$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
 				$("form").submit();
 				});
 

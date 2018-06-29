@@ -319,6 +319,7 @@ class controller extends CI_Controller
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
+			
 			$this->load->view("projectGantt", $data);
 		}
 	}
