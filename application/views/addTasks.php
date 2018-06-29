@@ -67,7 +67,7 @@
 			                	</div>
 											</td>
 											<td width="40%">
-				                <select class="form-control select2" multiple="multiple" name = "department[]" data-placeholder="Select Departments">
+				                <select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
 													<?php foreach ($departments as $row): ?>
 
 														<option>
@@ -146,7 +146,9 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td><select class='form-control' id ='dept' name = 'department[]' required><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td width = '40%'> <select class='form-control select2' multiple='multiple' name = 'department_" + i + "[]' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" + "</select></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+				 	$('.select2').select2();
 
 					 // $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
