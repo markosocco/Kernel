@@ -189,6 +189,8 @@
 			$("#listView").hide();
 			$("#toggleGrid").hide();
 			$("#myProjects").addClass("active");
+			$("#projects").addClass("active");
+
 
 			// IF USING GET METHOD FOR PROJECT ID
 			// $("a.project").click(function() //redirect to individual project profile
