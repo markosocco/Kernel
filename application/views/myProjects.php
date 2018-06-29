@@ -62,7 +62,6 @@
 
 											<form action = 'projectGantt'  method="POST">
 												<input type = "hidden" class = "inputID">
-												<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
 											</form>
 
 											<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'] +1;?> day/s remaining</i></p>
@@ -237,17 +236,10 @@
 			$("#toggleGrid").hide();
 			$("#myProjects").addClass("active");
 
-			// IF USING GET METHOD FOR PROJECT ID
-			// $("a.project").click(function() //redirect to individual project profile
-      // {
-			//	var $id = $(this).attr('data-id');
-
-      //   // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
-      // });
-
 			// IF USING POST METHOD FOR PROJECT ID
 			$(document).on("click", ".project", function() {
 				var $id = $(this).attr('data-id');
+				// $("form").attr("name", "formSubmit");
 				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
 				$("form").submit();
 				});

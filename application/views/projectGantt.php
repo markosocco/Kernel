@@ -38,7 +38,6 @@
 							<?php endif;?>
 						</h4>
 
-						<!-- <?php echo "Session: " . $_SESSION['projectID']; ?> -->
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
