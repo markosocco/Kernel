@@ -12,8 +12,8 @@
 				<section class="content-header">
 					<h1>
 						My Projects
-						<small>What are my projects</small>
-						<small>(GREEN = ONGOING; YELLOW = PLANNED *FOR NOW*)</small>
+						<small>What are my projects?</small>
+						<small>(GREEN = ONGOING; ORANGE = PLANNED; RED = DELAYED; GRAY = PARKED; WHITE = DRAFT)</small>
 					</h1>
 
 
@@ -123,26 +123,57 @@
 										<tr>
 											<th>Project Title</th>
 											<th>Start Date</th>
-											<th>Target Start Date</th>
-											<th>Status</th>
+											<th>Target End Date</th>
 											<th>Progress</th>
+											<th>Status</th>
 										</tr>
 										</thead>
+
 										<tbody>
-										<tr class="btn-success">
-											<td>Southmall Opening</td>
-											<td>Today</td>
-											<td>Tomorrow</td>
-											<td>Ongoing</td>
-											<td>X</td>
+
+										<?php foreach ($ongoingProjects as $row):?>
+
+											<?php // to fix date format
+											$ongoingStart = date_create($row['PROJECTSTARTDATE']);
+											$ongoingEnd = date_create($row['PROJECTENDDATE']);
+											?>
+
+										<tr class="btn-success project" data-id = "<?php echo $row['PROJECTID']; ?>">
+
+											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+												<input type = "hidden" class = "inputID">
+											</form>
+
+											<td><?php echo $row['PROJECTTITLE']; ?></td>
+											<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+											<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+											<td>80%</td>
+											<td><?php echo $row['PROJECTSTATUS']; ?></td>
+										<?php endforeach;?>
 										</tr>
-										<a href=""><tr class="btn-warning">
-											<td>Southmall Opening</td>
-											<td>Today</td>
-											<td>Tomorrow</td>
-											<td>Planning</td>
-											<td>X</td>
-										</tr></a>
+
+										<?php foreach ($plannedProjects as $row):?>
+
+											<?php // to fix date format
+											$plannedStart = date_create($row['PROJECTSTARTDATE']);
+											$plannedEnd = date_create($row['PROJECTENDDATE']);
+											?>
+
+										<tr class="btn-warning project">
+
+											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+												<input type = "hidden" class = "inputID">
+											</form>
+
+											<td><?php echo $row['PROJECTTITLE']; ?></td>
+											<td><?php echo date_format($plannedStart, "M d, Y");?></td>
+											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
+											<td>0%</td>
+											<td><?php echo $row['PROJECTSTATUS']; ?></td>
+										<?php endforeach;?>
+
+										</tr>
+
 										</tbody>
 									</table>
 								</div>
@@ -174,8 +205,9 @@
       // });
 
 			// IF USING POST METHOD FOR PROJECT ID
-			$(document).on("click", "a.project", function() {
+			$(document).on("click", ".project", function() {
 				var $id = $(this).attr('data-id');
+				alert($id);
 				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
 				// $("form").attr('id', 'x');
 				// $("#prjID_" + $id).attr('name', 'project_ID');
