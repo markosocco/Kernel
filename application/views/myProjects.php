@@ -109,7 +109,7 @@
 
 						<div id="listView">
 							<div class="box">
-								<div class="box-header">
+								<div class="box-header" style="display:inline-block">
 									<h3 class="box-title">
 										<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
 											<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i> Create Project</button>
@@ -232,7 +232,7 @@
 		    $('#projectList').DataTable({
 		      'paging'      : false,
 		      'lengthChange': false,
-		      'searching'   : false,
+		      'searching'   : true,
 		      'ordering'    : true,
 		      'info'        : false,
 		      'autoWidth'   : false
