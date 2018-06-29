@@ -258,15 +258,13 @@ public function addProject($data)
     return $data->row('datediff');
   }
 
-  public function getAllTasksByUser($id, $filter)
+  public function getAllTasksByUser($id)
   {
     $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Completed'";
-    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
+    $this->db->select('*, CURDATE(), DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->where($condition);
-    $this->db->order_by($filter);
-
 
     return $this->db->get()->result_array();
   }

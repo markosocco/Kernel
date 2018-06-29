@@ -180,10 +180,8 @@ class controller extends CI_Controller
 
 		else
 		{
-			$filter = 'tasks.TASKSTARTDATE'; // default
-			$filter = $this->input->post("filterID");
 			$data['users'] = $this->model->getAllUsers();
-			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID'], $filter);
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 			$this->load->view("myTasks", $data);
 		}
 	}
