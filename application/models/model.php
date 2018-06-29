@@ -279,7 +279,7 @@ public function addProject($data)
   public function getAllTasksByUser($id)
   {
     $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
-    $this->db->select('*, CURDATE(), DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
+    $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->where($condition);
@@ -338,12 +338,8 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-  public function getAllProjectTasks($id, $filter)
-=======
   // TODO: edit condition
   public function getAllProjectTasks($id)
->>>>>>> 49331fe75b7adee2ff5579aa289afd1ec6261217
   {
     $condition = "projects.PROJECTID = " . $id;
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
@@ -353,7 +349,6 @@ public function addProject($data)
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
-    // $this->db->order_by($filter);
 
     return $this->db->get()->result_array();
   }
