@@ -169,7 +169,29 @@ desired effect
 
         <!--IF STATEMENTS DEPENDING ON USER TYPE  -->
         <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
-        <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
+        <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
+          <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
+        <?php else:?>
+          <li class="treeview">
+            <a href="allprojects">
+              <i class="fa fa-briefcase"></i> <span>Projects</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="finance"><i class="fa fa-circle-o"></i> All</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Finance</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> General Service</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Human Resource</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Marketing</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> MIS</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Store Operations</a></li>
+
+            </ul>
+          </li>
+        <?php endif;?>
+
         <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
         <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span> My Team</span></a></li>
