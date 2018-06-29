@@ -285,6 +285,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function projectLogs()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("projectLogs");
+		}
+	}
+
 // DELETE THIS MAYBE?
 	public function newProjectTask()
 	{
