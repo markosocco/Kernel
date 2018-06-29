@@ -482,6 +482,13 @@ class controller extends CI_Controller
 				echo "Project ID: " . $id . "<br>";
 				echo "Departments: ";
 
+				$data = array(
+						'TASKTITLE' => $row,
+						'TASKSTATUS' => $endDates[$key],
+						'CATEGORY' => $period,
+						'projects.PROJECTID' => $id
+				);
+
 				foreach($department as $a)
 				{
 					echo $a . ", ";
