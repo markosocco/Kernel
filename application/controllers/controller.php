@@ -368,7 +368,7 @@ class controller extends CI_Controller
 		$id = $this->input->post("project_ID");
 
 		// GET ARRAY OF INPUTS FROM VIEW
-		$category = $this->input->post('category');
+		// $category = $this->input->post('category');
 		$title = $this->input->post('title');
 		$department = $this->input->post('department');
 
@@ -376,20 +376,20 @@ class controller extends CI_Controller
 		$departments = $this->model->getAllDepartments();
 
 		// SAVES DATA FROM ARRAY VIA INDEX AND PLUGS INTO DB
-		foreach ($category as $key => $value)
+		foreach ($title as $key => $value)
 		{
-			switch ($category[$key])
-			{
-				case 'Main Activity':
-					$cat = 1;
-					break;
-				case 'Sub Activity':
-					$cat = 2;
-					break;
-				case 'Task':
-					$cat = 3;
-					break;
-			}
+			// switch ($category[$key])
+			// {
+			// 	case 'Main Activity':
+			// 		$cat = 1;
+			// 		break;
+			// 	case 'Sub Activity':
+			// 		$cat = 2;
+			// 		break;
+			// 	case 'Task':
+			// 		$cat = 3;
+			// 		break;
+			// }
 
 			// ASSIGN DEPARTMENT HEAD PER VARIABLE
 			foreach ($departments as $row)
@@ -454,7 +454,7 @@ class controller extends CI_Controller
 			$data = array(
 					'TASKTITLE' => $title[$key],
 					'TASKSTATUS' => 'Pending',
-					'CATEGORY' => $cat,
+					'CATEGORY' => 'Main Activity',
 					'projects_PROJECTID' => $id,
 					'users_USERID' => $deptHead
 			);
