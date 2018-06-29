@@ -63,8 +63,8 @@
 	              </div>
 
 								<div class="form-group">
-									<label for="exampleInputEmail1">Project Period</label>
-									<input type="text" class="form-control" id="projectPeriod" name="projectTitle" placeholder="1000 days" disabled>
+									<label for="projectperiod">Project Period</label>
+									<input type="text" class="form-control" id="projectPeriod" name="projectTitle" placeholder="" disabled>
 								</div>
 
 
@@ -87,7 +87,6 @@
 			$("#myProjects").addClass("active");
 			$("#endDate").prop('disabled', true);
 
-
 			var currDate = new Date();
 		  $(function ()
 			{
@@ -103,13 +102,29 @@
 				$('#endDate').data('datepicker').setStartDate(new Date($(this).val()));
 				if(new Date($("#endDate").val()) < new Date($("#startDate").val())) //Removes Target Date Input if new Start Date comes after it
 					$("#endDate").val("");
+				var diff = new Date($("#endDate").datepicker("getDate") - $("#startDate").datepicker("getDate"));
+				var period = (diff/1000/60/60/24)+1;
+				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
+					$("#projectPeriod").attr("placeholder", period + " day/s");
+			 	else
+					$("#projectPeriod").attr("placeholder", "");
 			 });
 
  	     $('#endDate').datepicker({
 				 format: 'yyyy-mm-dd',
  	       autoclose: true
  	     });
+
+			 $("#endDate").on("change", function() {
+				var diff = new Date($("#endDate").datepicker("getDate") - $("#startDate").datepicker("getDate"));
+				var period = (diff/1000/60/60/24)+1;
+				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
+				 	$("#projectPeriod").attr("placeholder", period + " day/s");
+				else
+					$("#projectPeriod").attr("placeholder", "");
+			 });
 		 });
+
 		</script>
 
 	</body>
