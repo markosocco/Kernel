@@ -90,7 +90,7 @@
 										<!-- </tr> -->
 										<tfoot>
 											<tr align="center">
-												<td class="btn" id="addRow" colspan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
+												<td class="btn" id="addRow" colSpan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
 											</tr>
 										</tfoot>
 
