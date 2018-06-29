@@ -82,9 +82,7 @@
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
-												<input type = "hidden" class = "inputID">
-												<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
+											<form action = 'projectGantt' method="POST">
 											</form>
 
 											<?php //Compute for days remaining
@@ -179,8 +177,7 @@
 
 										<tr class="btn-success project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
-												<input type = "hidden" class = "inputID">
+											<form action = 'projectGantt' method="POST">
 											</form>
 
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
@@ -201,8 +198,7 @@
 
 										<tr class="btn-warning project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
-												<input type = "hidden" class = "inputID">
+											<form action = 'projectGantt' method="POST">
 											</form>
 
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
