@@ -65,9 +65,7 @@
 		                </tr>
 									</thead>
 									<tbody>
-		                <!-- <tr class='row' id = "<?php //echo $row['TASKID']; ?>" data-id='<?php //echo $project['PROJECTSTARTDATE']; ?>'> -->
-										<!-- <input type="hidden" name="task_ID[]" value="<?php echo $row['TASKID']; ?>"> -->
-										<td><div class="form-group">
+		                <td><div class="form-group">
 											<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
 										</div></td>
 										<td><select class="form-control" name = "department[]" required>
@@ -99,10 +97,11 @@
 				                </div>
 											</div></td>
 											<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
-		                </tr>
-										<tr>
+
+										<tr id="row1">
 											<!-- NEW LINE WILL BE INSERTED HERE -->
 										</tr>
+
 										<tfoot>
 											<tr>
 												<td class="btn" id="addRow" colspan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more sub activities</a></td>
@@ -136,42 +135,65 @@
 
 		$("#myProjects").addClass("active");
 
+		$(document).ready(function() {
+
+		 var i = 1;
+		 var x = 2;
+
+		 $(document).on("click", "a.addButton", function() {
+
+			 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td><select class='form-control' id ='dept' name = 'department[]' required><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' required></div></div></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+				 // $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+				 $('table').append('<tr id="row' + (i + 1) + '"></tr>');
+				 i++;
+				 x++;
+			});
+
+			$(document).on("click", "a.delButton", function() {
+					if (x > 2)
+					{
+						x = x -1;
+						var j = $(this).attr('data-id');
+
+						$('#row' + j).remove();
+					}
+				});
+			 });
+
 		  $(function ()
 			{
-				//
-
-				$(".row").on("click", function() {
-					var startDate = $('.row').attr('data-id');
-					console.log("HELLO " + startDate);
- 			 });
-
 				//Initialize Select2 Elements
 		    $('.select2').select2()
 
 				//Date picker
- 	     $('.taskStartDate').datepicker({
-				 format: 'yyyy-mm-dd',
+				$('body').on('focus',".taskStartDate", function(){
+				    $(this).datepicker({
+							format: 'yyyy-mm-dd',
+		  	       autoclose: true
+						});
+				});
 
- 	       autoclose: true
- 	     });
-
- 	     $('.taskEndDate').datepicker({
-				 format: 'yyyy-mm-dd',
- 	       autoclose: true
- 	     });
+				$('body').on('focus',".taskEndDate", function(){
+						$(this).datepicker({
+							format: 'yyyy-mm-dd',
+							 autoclose: true
+						});
+				});
 		 });
 
-		 var el = document.getElementById('table');
-		 var dragger = tableDragger(el, {
-		   mode: 'row',
-		   dragHandler: '.handle',
-		   onlyBody: true,
-		   animation: 300
-		 });
-		 dragger.on('drop',function(from, to){
-		   console.log(from);
-		   console.log(to);
-		 });
+		 // var el = document.getElementById('table');
+		 // var dragger = tableDragger(el, {
+		 //   mode: 'row',
+		 //   dragHandler: '.handle',
+		 //   onlyBody: true,
+		 //   animation: 300
+		 // });
+		 // dragger.on('drop',function(from, to){
+		 //   console.log(from);
+		 //   console.log(to);
+		 // });
 		</script>
 
 	</body>

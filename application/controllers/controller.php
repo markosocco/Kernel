@@ -314,10 +314,8 @@ class controller extends CI_Controller
 		{
 			$id = $this->input->post("project_ID");
 
-			$filter = 'tasks.TASKSTARTDATE'; // default
-			$filter = $this->input->post("filterID"); // override if filter chosen
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
+			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
@@ -352,7 +350,7 @@ class controller extends CI_Controller
 		$id = $this->input->post("project_ID");
 
 		// GET ARRAY OF INPUTS FROM VIEW
-		$category = $this->input->post('category');
+		// $category = $this->input->post('category');
 		$title = $this->input->post('title');
 		$department = $this->input->post('department');
 
@@ -360,20 +358,20 @@ class controller extends CI_Controller
 		$departments = $this->model->getAllDepartments();
 
 		// SAVES DATA FROM ARRAY VIA INDEX AND PLUGS INTO DB
-		foreach ($category as $key => $value)
+		foreach ($title as $key => $value)
 		{
-			switch ($category[$key])
-			{
-				case 'Main Activity':
-					$cat = 1;
-					break;
-				case 'Sub Activity':
-					$cat = 2;
-					break;
-				case 'Task':
-					$cat = 3;
-					break;
-			}
+			// switch ($category[$key])
+			// {
+			// 	case 'Main Activity':
+			// 		$cat = 1;
+			// 		break;
+			// 	case 'Sub Activity':
+			// 		$cat = 2;
+			// 		break;
+			// 	case 'Task':
+			// 		$cat = 3;
+			// 		break;
+			// }
 
 			// ASSIGN DEPARTMENT HEAD PER VARIABLE
 			foreach ($departments as $row)
@@ -438,7 +436,7 @@ class controller extends CI_Controller
 			$data = array(
 					'TASKTITLE' => $title[$key],
 					'TASKSTATUS' => 'Pending',
-					'CATEGORY' => $cat,
+					'CATEGORY' => 'Main Activity',
 					'projects_PROJECTID' => $id,
 					'users_USERID' => $deptHead
 			);
@@ -452,9 +450,8 @@ class controller extends CI_Controller
 			}
 		}
 
-		$filter = "tasks.TASKSTARTDATE";
 		$data['project'] = $this->model->getProjectByID($id);
-		$data['tasks'] = $this->model->getAllProjectTasks($id, $filter);
+		$data['tasks'] = $this->model->getAllProjectTasks($id);
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['dateDiff'] = $this->model->getDateDiff($data['project']);
@@ -501,7 +498,7 @@ class controller extends CI_Controller
 			}
 
 			// // SET PARENT TASK
-			$allTasks = $this->model->getAllProjectTasks($id, 'tasks.TASKSTARTDATE');
+			$allTasks = $this->model->getAllProjectTasks($id);
 
 			foreach ($allTasks as $row)
 			{
@@ -563,16 +560,13 @@ class controller extends CI_Controller
 			}
 
 			// GANTT CODE
-			$filter = "tasks.TASKSTARTDATE"; // default
-			// echo $filter;
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
+			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
 
 			// $this->load->view("dashboard", $data);
-			// echo "hello";
 			// redirect('controller/projectGantt');
 			$this->load->view("projectGantt", $data);
 	}

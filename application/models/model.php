@@ -323,7 +323,7 @@ public function addProject($data)
 
   // GET DATA FOR THE GANTT CHART
   // TODO: edit condition
-  public function getAllProjectTasks($id, $filter)
+  public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
@@ -332,7 +332,7 @@ public function addProject($data)
     $this->db->join('users', 'tasks.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
-    $this->db->order_by($filter);
+    // $this->db->order_by($filter);
 
     return $this->db->get()->result_array();
   }
