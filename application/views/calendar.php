@@ -11,26 +11,13 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					Templates
-					<small>What are my past projects</small>
+					Calendar
+					<small>When do I have to finish</small>
 				</h1>
 			</section>
 
 			<!-- Main content -->
 			<section class="content container-fluid">
-
-				<!-- IF ARCHIVES IS EMPTY -->
-				<!-- <?php if(!$templates):?>
-					<h1>You do not have any project templates</h1>
-					<p>(How are we templating? I don't understand the table and columns)</p>
-
-					<?endif;?> -->
-
-					<!-- IF ARCHIVES IS NOT EMPTY -->
-					<?php //foreach ($templates as $row):?>
-
-						<!-- ./col -->
-					<?php //endforeach;?>
 
 			</section>
 
@@ -42,7 +29,7 @@
 		</div> <!--.wrapper closing div-->
 
 		<script>
-		$("#templates").addClass("active");
+		$("#calendar").addClass("active");
 		</script>
 
 	</body>

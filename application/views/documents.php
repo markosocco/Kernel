@@ -1,18 +1,24 @@
 <html>
 	<head>
-		<title>Kernel - My Team</title>
-		<!-- <link rel = "stylesheet" href = "<?php //echo base_url("/assets/css/myTeamStyle.css")?>"> -->
+		<title>Kernel - Documents</title>
+		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/documentsStyle.css")?>">
 	</head>
-	<body class="hold-transition skin-red sidebar-mini">
+	<body>
+
 		<?php require("frame.php"); ?>
 
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					My Team
-					<small>What is my team doing</small>
+					Documents
+					<small>What documents do I have</small>
 				</h1>
+			</section>
+
+			<!-- Main content -->
+			<section class="content container-fluid">
+
 			</section>
 
 		</div>
@@ -23,7 +29,7 @@
 		</div> <!--.wrapper closing div-->
 
 		<script>
-		$("#myTeam").addClass("active");
+		$("#documents").addClass("active");
 		</script>
 
 	</body>

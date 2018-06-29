@@ -89,6 +89,24 @@ public function addProject($data)
     }
   }
 
+  // MARK TASK AS COMPLETE
+  public function updateTaskDone($id, $data)
+  {
+    $this->db->where('TASKID', $id);
+
+    $result = $this->db->update('tasks', $data);
+
+    if ($result)
+    {
+      return true;
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
   // GETS PROJECT BY ID; RETURNS PROJECT
   public function getProjectByID($data)
   {
@@ -132,10 +150,11 @@ public function addProject($data)
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE
   public function getAllOngoingProjects()
   {
-    $condition = "PROJECTSTARTDATE < CURDATE() && PROJECTENDDATE > CURDATE() && PROJECTSTATUS != 'Complete'";
+    $condition = "PROJECTSTARTDATE < CURDATE() && PROJECTENDDATE > CURDATE() && PROJECTSTATUS = 'Ongoing'";
     $this->db->select('*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->where($condition);
+    $this->db->order_by('PROJECTSTARTDATE');
     $query = $this->db->get();
 
     return $query->result_array();
@@ -144,11 +163,11 @@ public function addProject($data)
 // GET ALL PLANNED PROJECTS BASED ON PROJECTSTARTDATE
   public function getAllPlannedProjects()
   {
-    $condition = "PROJECTSTARTDATE > CURDATE() && PROJECTSTATUS != 'Complete'";
+    $condition = "PROJECTSTARTDATE > CURDATE() && PROJECTSTATUS = 'Planning'";
     $this->db->select('*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "datediff"');
     $this->db->from('PROJECTS');
     $this->db->where($condition);
-    $this->db->order_by('PROJECTSTARTDATE', 'ASC');
+    $this->db->order_by('PROJECTSTARTDATE');
     $query = $this->db->get();
 
     return $query->result_array();
@@ -257,15 +276,13 @@ public function addProject($data)
     return $data->row('datediff');
   }
 
-  public function getAllTasksByUser($id, $filter)
+  public function getAllTasksByUser($id)
   {
-    $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Completed'";
-    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
+    $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
+    $this->db->select('*, CURDATE(), DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->where($condition);
-    $this->db->order_by($filter);
-
 
     return $this->db->get()->result_array();
   }
@@ -321,7 +338,12 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
+<<<<<<< HEAD
   public function getAllProjectTasks($id, $filter)
+=======
+  // TODO: edit condition
+  public function getAllProjectTasks($id)
+>>>>>>> 49331fe75b7adee2ff5579aa289afd1ec6261217
   {
     $condition = "projects.PROJECTID = " . $id;
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
@@ -331,7 +353,7 @@ public function addProject($data)
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
-    $this->db->order_by($filter);
+    // $this->db->order_by($filter);
 
     return $this->db->get()->result_array();
   }

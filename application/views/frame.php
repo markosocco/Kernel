@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/select2/dist/css/select2.min.css">
   <!-- Gantt Chart style -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>css/jsgantt.css" type="text/css"/>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
@@ -167,14 +169,38 @@ desired effect
 
         <!--IF STATEMENTS DEPENDING ON USER TYPE  -->
         <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
-        <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
         <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
-          <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
+          <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
+        <?php else:?>
+          <li class="treeview">
+            <a href="allprojects">
+              <i class="fa fa-briefcase"></i> <span>Projects</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="finance"><i class="fa fa-circle-o"></i> All</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Finance</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> General Service</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Human Resource</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Marketing</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> MIS</a></li>
+              <li><a href="finance"><i class="fa fa-circle-o"></i> Store Operations</a></li>
+
+            </ul>
+          </li>
+        <?php endif;?>
+
+        <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
+        <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <li id = 'myTeam'><a href="<?php echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span> My Team</span></a></li>
         <?php endif;?>
+        <li id = 'reports'><a href="<?php echo base_url("index.php/controller/reports"); ?>"><i class="fa fa-tachometer"></i><span> Reports</span></a></li>
+        <li id = 'calendar'><a href="<?php echo base_url("index.php/controller/calendar"); ?>"><i class="fa fa-calendar"></i><span> Calendar</span></a></li>
         <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i><span> Templates</span></a></li>
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Project Archives</span></a></li>
-
+        <li id = 'documents'><a href="<?php echo base_url("index.php/controller/documents"); ?>"><i class="fa fa-folder"></i><span> Documents</span></a></li>
 
         <!-- <li class="treeview">
           <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-link"></i> <span>Multilevel</span>
@@ -217,6 +243,9 @@ desired effect
 <script src="<?php echo base_url()."assets/"; ?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- Select2 -->
 <script src="<?php echo base_url()."assets/"; ?>bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- DataTables -->
+<script src="<?php echo base_url()."assets/"; ?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url()."assets/"; ?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="<?php echo base_url()."assets/"; ?>../tabledragger/dist/table-dragger.min.js"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.

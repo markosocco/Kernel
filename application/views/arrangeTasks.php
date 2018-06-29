@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - Arrange tasks</title>
+		<title>Kernel - Add Sub Activity</title>
 
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
@@ -37,7 +37,7 @@
 		        <div class="col-xs-12">
 		          <div class="box">
 		            <div class="box-header">
-		              <h3 class="box-title">Sub Activities</h3>
+		              <h3 class="box-title">Enter sub activities for this project</h3>
 		              <div class="box-tools">
 		                <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -57,75 +57,56 @@
 		              <table class="table table-hover" id="table">
 										<thead>
 		                <tr>
-		                  <th></th>
-											<th>No.</th>
-		                  <th>Category</th>
-											<th>Title</th>
+											<th>Sub Activity Title</th>
 											<th>Department</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
-											<th>Dependencies</th>
+											<th></th>
 		                </tr>
 									</thead>
 									<tbody>
+		                <td><div class="form-group">
+											<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+										</div></td>
+										<td><select class="form-control" name = "department[]" required>
+											<option disabled selected value> -- Select Department -- </option>
 
-										<?php $i = 1; ?>
-											<?php foreach ($tasks as $row): ?>
+											<?php foreach ($departments as $row): ?>
 
-			                <tr class='row' id = "<?php echo $row['TASKID']; ?>" data-id='<?php echo $project['PROJECTSTARTDATE']; ?>'>
+												<option>
+													<?php echo $row['DEPARTMENTNAME']; ?>
+												</option>
 
-												<input type="hidden" name="task_ID[]" value="<?php echo $row['TASKID']; ?>">
+											<?php endforeach; ?>
+										</select></td>
+										<td><div class="form-group">
+			                <div class="input-group date">
+			                  <div class="input-group-addon">
+			                    <i class="fa fa-calendar"></i>
+			                  </div>
+			                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
+			                </div>
+			                <!-- /.input group -->
+			              </div></td>
+											<td><div class="form-group">
+				                <div class="input-group date">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-calendar"></i>
+				                  </div>
+				                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
+				                </div>
+											</div></td>
+											<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
 
-												<td class="handle"><i class="fa fa-arrows"></i></td>
-												<td> <?php echo $i; ?></td>
+										<tr id="row1">
+											<!-- NEW LINE WILL BE INSERTED HERE -->
+										</tr>
 
-												<?php
-													switch ($row['CATEGORY'])
-													{
-														case 1:
-															$cat = 'Main Activity';
-															break;
-														case 2:
-															$cat = 'Sub Activity';
-															break;
-														case 3:
-															$cat = 'Task';
-													}
-												?>
-
-			                  <td><?php echo $cat; ?></td>
-			                  <td><?php echo $row['TASKTITLE']; ?></td>
-												<td><?php echo $row['DEPARTMENTNAME']; ?></td>
-												<td><div class="form-group">
-					                <div class="input-group date">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-calendar"></i>
-					                  </div>
-					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" data-id="<?php echo $row['TASKID'];?>" required>
-					                </div>
-					                <!-- /.input group -->
-					              </div>
-											</td>
-												<td><div class="form-group">
-					                <div class="input-group date">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-calendar"></i>
-					                  </div>
-					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" data-id="<?php echo $row['TASKID'];?>" required>
-					                </div>
-												</div></td>
-												<td><div class="form-group">
-					                <select class="form-control select2" multiple="multiple" data-placeholder="Select prerequisites" style="width: 100%;" id = "selector" name = "dependencies_ <?php echo $row['TASKID']; ?>[]" >
-															<?php $x = 1; ?>
-															<?php foreach ($tasks as $row): ?>
-																<?php echo "<option value = '" . $row['TASKID'] . "'>" . $x . "</option>"; ?>
-																<?php $x++; ?>
-														<?php endforeach; ?>
-														<?php $i++; ?>
-					                </select>
-					              </div></td>
-			                </tr>
-										<?php endforeach; ?>
+										<tfoot>
+											<tr>
+												<td class="btn" id="addRow" colspan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more sub activities</a></td>
+											</tr>
+										</tfoot>
 									</tbody>
 		              </table>
 		            </div>
@@ -154,42 +135,67 @@
 
 		$("#myProjects").addClass("active");
 
+		$(document).ready(function() {
+
+		 var i = 1;
+		 var x = 2;
+
+		 $(document).on("click", "a.addButton", function() {
+
+			 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td><select class='form-control' id ='dept' name = 'department[]' required><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' required></div></div></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+				 // $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+				 $('table').append('<tr id="row' + (i + 1) + '"></tr>');
+				 i++;
+				 x++;
+			});
+
+			$(document).on("click", "a.delButton", function() {
+					if (x > 2)
+					{
+						x = x -1;
+						var j = $(this).attr('data-id');
+
+						$('#row' + j).remove();
+					}
+				});
+			 });
+
 		  $(function ()
 			{
-				//
-
-				$(".row").on("click", function() {
-					var startDate = $('.row').attr('data-id');
-					console.log("HELLO " + startDate);
- 			 });
-
 				//Initialize Select2 Elements
 		    $('.select2').select2()
 
 				//Date picker
- 	     $('.taskStartDate').datepicker({
-				 format: 'yyyy-mm-dd',
+				$('body').on('focus',".taskStartDate", function(){
+				    $(this).datepicker({
+							format: 'yyyy-mm-dd',
+		  	       autoclose: true,
+							 orientation: 'bottom'
+						});
+				});
 
- 	       autoclose: true
- 	     });
-
- 	     $('.taskEndDate').datepicker({
-				 format: 'yyyy-mm-dd',
- 	       autoclose: true
- 	     });
+				$('body').on('focus',".taskEndDate", function(){
+						$(this).datepicker({
+							format: 'yyyy-mm-dd',
+							 autoclose: true,
+							 orientation: 'bottom'
+						});
+				});
 		 });
 
-		 var el = document.getElementById('table');
-		 var dragger = tableDragger(el, {
-		   mode: 'row',
-		   dragHandler: '.handle',
-		   onlyBody: true,
-		   animation: 300
-		 });
-		 dragger.on('drop',function(from, to){
-		   console.log(from);
-		   console.log(to);
-		 });
+		 // var el = document.getElementById('table');
+		 // var dragger = tableDragger(el, {
+		 //   mode: 'row',
+		 //   dragHandler: '.handle',
+		 //   onlyBody: true,
+		 //   animation: 300
+		 // });
+		 // dragger.on('drop',function(from, to){
+		 //   console.log(from);
+		 //   console.log(to);
+		 // });
 		</script>
 
 	</body>
