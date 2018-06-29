@@ -721,7 +721,7 @@ class controller extends CI_Controller
 
 		if (!$this->upload->do_upload('docu'))
 		{
-			$this->load->view('myProjects');
+			$this->load->view('dashboard');
 		}
 
 		else
@@ -742,7 +742,6 @@ class controller extends CI_Controller
 				'DOCUMENTSTATUS' => 'Uploaded',
 				'DOCUMENTNAME' => $fileName,
 				'DOCUMENTLINK' => $src,
-				'VERSION' => '1',
 				'users_UPLOADEDBY' => $user,
 				'UPLOADEDDATE' => date('m/d/Y'),
 				'projects_PROJECTID' => $id
@@ -764,6 +763,15 @@ class controller extends CI_Controller
 
 	/******************** MY PROJECTS END ********************/
 
+	public function gantt2(){
+
+		$filter = "tasks.TASKSTARTDATE"; // default
+		$data['ganttData'] = $this->model->getAllProjectTasks(1, $filter);
+		// $data['preReq'] = $this->model->getPreReqID();
+		$data['dependencies'] = $this->model->getDependecies();
+
+		$this->load->view("gantt2", $data);
+	}
 
 // DELETE THIS AFTER
 	public function frame()
