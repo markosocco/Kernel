@@ -85,9 +85,10 @@
 										<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 		                </tr>
 
-										<!-- <tr id="row1"> -->
+										<tr id="row1">
 											<!-- NEW LINE WILL BE INSERTED HERE  -->
-										<!-- </tr> -->
+										</tr>
+
 										<tfoot>
 											<tr align="center">
 												<td class="btn" id="addRow" colSpan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
