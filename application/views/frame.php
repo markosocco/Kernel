@@ -187,7 +187,6 @@ desired effect
               <li><a href="finance"><i class="fa fa-circle-o"></i> Marketing</a></li>
               <li><a href="finance"><i class="fa fa-circle-o"></i> MIS</a></li>
               <li><a href="finance"><i class="fa fa-circle-o"></i> Store Operations</a></li>
-
             </ul>
           </li>
         <?php endif;?>
