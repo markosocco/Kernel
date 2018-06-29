@@ -12,8 +12,8 @@
 				<section class="content-header">
 					<h1>
 						My Projects
-						<small>What are my projects</small>
-						<small>(GREEN = ONGOING; YELLOW = PLANNED *FOR NOW*)</small>
+						<small>What are my projects?</small>
+						<small>(GREEN = ONGOING; ORANGE = PLANNED; RED = DELAYED; GRAY = PARKED; WHITE = DRAFT)</small>
 					</h1>
 
 
@@ -21,9 +21,11 @@
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 						<!-- <li class="active">Here</li> -->
 					</ol>
-					<div class="pull-right" style="margin-top:10px">
-						<a href="#" class="btn btn-default btn"><i class="fa fa-th-list"></i></a>
-						<a href="#" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+
+					<!-- LIST AND GRID TOGGLE -->
+					<div id = "toggleView" class="pull-right" style="margin-top:10px">
+						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
 					</div>
 
 				</section>
@@ -58,10 +60,11 @@
 										<div class="inner">
 											<h2>82%</h2>
 
-											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+											<form action = 'projectGantt'  method="POST">
 												<input type = "hidden" class = "inputID">
 												<!-- <input type="hidden" name="project_ID" value="<?php echo $row['PROJECTID']; ?>" id ="prjID_<?php echo $row['PROJECTID']; ?>"> -->
 											</form>
+
 											<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'] +1;?> day/s remaining</i></p>
 										</div>
 										<div class="icon">
@@ -100,12 +103,18 @@
 								<!-- ./col -->
 							<?php endforeach;?>
 						</div>
+					</div>
+
+
+						<!-- LIST VIEW -->
 
 						<div id="listView">
 							<div class="box">
 								<div class="box-header">
 									<h3 class="box-title">
-										<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i> Create Project</button>
+										<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+											<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i> Create Project</button>
+										</a>
 									</h3>
 								</div>
 								<!-- /.box-header -->
@@ -115,32 +124,64 @@
 										<tr>
 											<th>Project Title</th>
 											<th>Start Date</th>
-											<th>Target Start Date</th>
-											<th>Status</th>
+											<th>Target End Date</th>
 											<th>Progress</th>
+											<th>Status</th>
 										</tr>
 										</thead>
+
 										<tbody>
-										<tr class="btn-success">
-											<td>Southmall Opening</td>
-											<td>Today</td>
-											<td>Tomorrow</td>
-											<td>Ongoing</td>
-											<td>X</td>
+
+										<?php foreach ($ongoingProjects as $row):?>
+
+											<?php // to fix date format
+											$ongoingStart = date_create($row['PROJECTSTARTDATE']);
+											$ongoingEnd = date_create($row['PROJECTENDDATE']);
+											?>
+
+										<tr class="btn-success project" data-id = "<?php echo $row['PROJECTID']; ?>">
+
+											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+												<input type = "hidden" class = "inputID">
+											</form>
+
+											<td><?php echo $row['PROJECTTITLE']; ?></td>
+											<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+											<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+											<td>80%</td>
+											<td><?php echo $row['PROJECTSTATUS']; ?></td>
 										</tr>
-										<a href=""><tr class="btn-warning">
-											<td>Southmall Opening</td>
-											<td>Today</td>
-											<td>Tomorrow</td>
-											<td>Planning</td>
-											<td>X</td>
-										</tr></a>
+									<?php endforeach;?>
+
+
+										<?php foreach ($plannedProjects as $row):?>
+
+											<?php // to fix date format
+											$plannedStart = date_create($row['PROJECTSTARTDATE']);
+											$plannedEnd = date_create($row['PROJECTENDDATE']);
+											?>
+
+										<tr class="btn-warning project" data-id = "<?php echo $row['PROJECTID']; ?>">
+
+											<form name = "projectID_<?php echo $row['PROJECTID']; ?>" action = 'projectGantt' method="POST">
+												<input type = "hidden" class = "inputID">
+											</form>
+
+											<td><?php echo $row['PROJECTTITLE']; ?></td>
+											<td><?php echo date_format($plannedStart, "M d, Y");?></td>
+											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
+											<td>0%</td>
+											<td><?php echo $row['PROJECTSTATUS']; ?></td>
+										</tr>
+									<?php endforeach;?>
+
 										</tbody>
 									</table>
 								</div>
 								<!-- /.box-body -->
 							</div>
 						</div>
+
 					</section>
 				</div>
 
@@ -152,6 +193,8 @@
 		<!-- ./wrapper -->
 
 		<script>
+			$("#listView").hide();
+			$("#toggleGrid").hide();
 			$("#myProjects").addClass("active");
 
 			// IF USING GET METHOD FOR PROJECT ID
@@ -163,23 +206,45 @@
       // });
 
 			// IF USING POST METHOD FOR PROJECT ID
-			$(document).on("click", "a.project", function() {
+			$(document).on("click", ".project", function() {
 				var $id = $(this).attr('data-id');
+
+				// alert($id);
 				$(".inputID").html("<input type='hidden' name='project_ID' value= " + $id + ">");
 				// $("form").attr('id', 'x');
 				// $("#prjID_" + $id).attr('name', 'project_ID');
+				// $("form").attr('name', 'formSub');
+				// $(".inputID").attr('name', 'projectID');
 				$("form").submit();
 				});
 
+			$("#toggleView").click(function(){
+				if($("#gridView").css("display") == "block")
+				{
+					$("#gridView").hide();
+					$("#listView").show();
+					$("#toggleGrid").show();
+					$("#toggleList").hide();
+				}
+				else
+				{
+					$("#listView").hide();
+					$("#gridView").show();
+					$("#toggleGrid").hide();
+					$("#toggleList").show();
+				}
+			});
+
 			$(function () {
 		    $('#projectList').DataTable({
-		      'paging'      : true,
+		      'paging'      : false,
 		      'lengthChange': false,
 		      'searching'   : false,
 		      'ordering'    : true,
-		      'info'        : true,
+		      'info'        : false,
 		      'autoWidth'   : false
-		    })
+		    });
+				$('#projectList').DataTable().columns(-1).order('asc').draw();
 		  })
 		</script>
 	</body>

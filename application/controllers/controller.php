@@ -312,32 +312,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			// $id = $this->input->get("id");
-
-			if (isset($_SESSION['projectID']))
-			{
-				$id = $_SESSION['projectID'];
-				echo "session " . $id;
-				$this->session->set_flashdata('projectID', $id);
-			}
-
-			else
-			{
-				$id = $this->input->post("project_ID");
-				$this->session->set_flashdata('projectID', $id);
-			}
+			$id = $this->input->post("project_ID");
 
 			$filter = 'tasks.TASKSTARTDATE'; // default
-			$filter = $this->input->post("filterID");
+			$filter = $this->input->post("filterID"); // override if filter chosen
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
 			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
 			$this->load->view("projectGantt", $data);
-
-
-			// echo "Project ID: 	" . $id;
 		}
 	}
 
