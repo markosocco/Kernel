@@ -338,12 +338,7 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-  public function getAllProjectTasks($id, $filter)
-=======
-  // TODO: edit condition
   public function getAllProjectTasks($id)
->>>>>>> 49331fe75b7adee2ff5579aa289afd1ec6261217
   {
     $condition = "projects.PROJECTID = " . $id;
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
