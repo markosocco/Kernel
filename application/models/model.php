@@ -80,7 +80,13 @@ public function addProject($data)
 
     if ($result)
     {
-      return true;
+      $this->db->select('*');
+      $this->db->from('tasks');
+      $this->db->order_by('TASKID', 'DESC');
+      $this->db->limit(1);
+      $query = $this->db->get();
+
+      return $query->row_array();
     }
 
     else
@@ -338,12 +344,8 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-  public function getAllProjectTasks($id, $filter)
-=======
   // TODO: edit condition
   public function getAllProjectTasks($id)
->>>>>>> 49331fe75b7adee2ff5579aa289afd1ec6261217
   {
     $condition = "projects.PROJECTID = " . $id;
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
@@ -386,5 +388,10 @@ public function addProject($data)
   //   return $this->db->get()->row_array();
   // }
 
+  public function addToRaci($data)
+  {
+    $this->db->insert('raci', $data);
+    return true;
+  }
 }
 ?>
