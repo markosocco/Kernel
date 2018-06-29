@@ -101,18 +101,12 @@
 										<tr id="row1">
 											<!-- NEW LINE WILL BE INSERTED HERE -->
 										</tr>
-<<<<<<< HEAD
 
-										<tr>
-											<td class="btn" id="addRow" colspan="5"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-										</tr>
-=======
 										<tfoot>
 											<tr>
 												<td class="btn" id="addRow" colspan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more sub activities</a></td>
 											</tr>
 										</tfoot>
->>>>>>> b3594a952f2192b1ebdeb18fa7312b8c3b2be4c1
 									</tbody>
 		              </table>
 		            </div>
