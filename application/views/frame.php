@@ -171,8 +171,8 @@ desired effect
         <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
         <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
-        <?php else:?>
-          <li class="treeview">
+        <?php else:?> <!-- FOR EXECUTIVE LEVEL -->
+          <li id = 'projects' class="treeview">
             <a href="allprojects">
               <i class="fa fa-briefcase"></i> <span>Projects</span>
               <span class="pull-right-container">
@@ -180,11 +180,11 @@ desired effect
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="finance"><i class="fa fa-circle-o"></i> All</a></li>
-              <li><a href="finance"><i class="fa fa-circle-o"></i> Finance</a></li>
-              <li><a href="finance"><i class="fa fa-circle-o"></i> General Service</a></li>
-              <li><a href="finance"><i class="fa fa-circle-o"></i> Human Resource</a></li>
-              <li><a href="finance"><i class="fa fa-circle-o"></i> Marketing</a></li>
+              <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-circle-o"></i> All</a></li>
+              <li><a href=""><i class="fa fa-circle-o"></i> Finance</a></li>
+              <li><a href=""><i class="fa fa-circle-o"></i> General Service</a></li>
+              <li><a href=""><i class="fa fa-circle-o"></i> Human Resource</a></li>
+              <li><a href=""><i class="fa fa-circle-o"></i> Marketing</a></li>
               <li><a href="finance"><i class="fa fa-circle-o"></i> MIS</a></li>
               <li><a href="finance"><i class="fa fa-circle-o"></i> Store Operations</a></li>
             </ul>
