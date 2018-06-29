@@ -146,21 +146,19 @@
 					if($currentTask == $data['tasks_POSTTASKID']){
 						if($row['TASKSTARTDATE'] == $data["TASKSTARTDATE"])
 						{
-							echo "console.log('".$row['TASKSTARTDATE']." = ".$data["TASKSTARTDATE"]."');";
 							$dependency = $data['PRETASKID'];
 
 							echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
 				      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-				      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+				      "'gtaskBlue', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
 							$parent . ", 1, '". $dependency."SS', '', '', g));";
 						}
 					}
 				}
 
-
 		      echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
 		      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-		      "'gtaskRed', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+		      "'gtaskBlue', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
 					$parent . ", 1, '". $dependency."', '', '', g));";
 
 		    }
