@@ -103,9 +103,11 @@
 										<tr>
 											<!-- NEW LINE WILL BE INSERTED HERE -->
 										</tr>
-										<tr>
-											<td class="btn" id="addRow" colspan="5"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-										</tr>
+										<tfoot>
+											<tr>
+												<td class="btn" id="addRow" colspan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more sub activities</a></td>
+											</tr>
+										</tfoot>
 									</tbody>
 		              </table>
 		            </div>

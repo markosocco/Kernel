@@ -61,10 +61,13 @@
 		                </tr>
 
 		                <tr id="row0">
-		                  <td><div class="form-group">
-			                  <input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-			                </div></td>
-											<td><select class="form-control" name = "department[]" required>
+		                  <td>
+												<div class="form-group">
+			                  	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+			                	</div>
+											</td>
+											<td>
+												<select class="form-control" name = "department[]" required>
 												<option disabled selected value> -- Select Department -- </option>
 
 												<?php foreach ($departments as $row): ?>
@@ -73,17 +76,24 @@
 														<?php echo $row['DEPARTMENTNAME']; ?>
 													</option>
 
-											<?php endforeach; ?>
-											</select></td>
-										<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
+												<?php endforeach; ?>
+												</select>
+											</td>
+											<td class='btn'>
+												<a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
+											</td>
 										<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 		                </tr>
 
-										<tr id="row1">
+										<!-- <tr id="row1"> -->
 											<!-- NEW LINE WILL BE INSERTED HERE  -->
-										</tr>
-											<td class="btn" id="addRow" colspan="3" align="center" style.display="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
-										<tr>
+										<!-- </tr> -->
+										<tfoot>
+											<tr align="center">
+												<td class="btn" id="addRow" colspan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
+											</tr>
+										</tfoot>
+
 		              </table>
 
 								</div>
