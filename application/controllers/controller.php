@@ -200,6 +200,8 @@ class controller extends CI_Controller
 
 		$data['users'] = $this->model->getAllUsers();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+		// echo json_encode($data);
+
 		$this->load->view("myTasks", $data);
 	}
 
