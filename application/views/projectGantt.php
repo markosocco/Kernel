@@ -28,11 +28,11 @@
 						$current = date_create(date("Y-m-d")); // get current date
 						?>
 
-						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'] + 1;?> day/s)</h4>
+						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'];?> day/s)</h4>
 
 						<h4 style="color:red">
 							<?php if ($current >= $startdate):?>
-								<?php echo $projectProfile['remaining'] + 1;?> Day/s Remaining
+								<?php echo $projectProfile['remaining'];?> Day/s Remaining
 							<?php else:?>
 								<?php echo $projectProfile['launching'];?> Day/s Remaining before Project Launch
 							<?php endif;?>

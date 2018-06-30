@@ -117,8 +117,8 @@ public function addProject($data)
   public function getProjectByID($data)
   {
     $condition = "PROJECTID =" . $data;
-    $this->db->select('*, DATEDIFF(PROJECTENDDATE, PROJECTSTARTDATE) as "duration",
-    DATEDIFF(PROJECTENDDATE, CURDATE()) as "remaining",
+    $this->db->select('*, DATEDIFF(PROJECTENDDATE, PROJECTSTARTDATE) +1 as "duration",
+    DATEDIFF(PROJECTENDDATE, CURDATE())+1 as "remaining",
     DATEDIFF(PROJECTSTARTDATE, CURDATE()) as "launching"');
     $this->db->from('projects');
     $this->db->where($condition);
@@ -286,13 +286,37 @@ public function addProject($data)
 
   public function getAllTasksByUser($id)
   {
-    $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
-    $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
-    $this->db->from('projects');
-    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    // $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
+    // $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
+    // $this->db->from('projects');
+    // $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    // $this->db->where($condition);
+    //
+    // return $this->db->get()->result_array();
+
+
+    $condition = "raci.users_USERID = '" . $id . "' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
+    $this->db->select('*, CURDATE() as "currentDate", (DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1) as "taskDuration"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+
+
+    // $condition = "raci.users_USERID = " . $id;
+    // $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
+    // $this->db->from('tasks');
+    // $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    // $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    // $this->db->join('users', 'raci.users_USERID = users.USERID');
+    // $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    // $this->db->where($condition);
+    // return $this->db->get()->result_array();
+
   }
 
 // GET PRE-REQUISITE ID
@@ -346,13 +370,7 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> b1b31be608ce8a654d13ac4a6b9e55f721b136db
   // TODO: edit condition
->>>>>>> 196cdd1592bd4c65d209f0d6bf220c194c2dee56
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;

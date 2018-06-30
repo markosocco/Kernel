@@ -51,20 +51,22 @@
 												$taskenddate = date_create($row['TASKENDDATE']);
 												?>
 
+
+
 												<td><?php echo $row['TASKTITLE'];?></td>
 												<td><?php echo $row['PROJECTTITLE'];?></td>
 												<td><?php echo date_format($taskstartdate, "M d, Y");?></td>
 												<td><?php echo date_format($taskenddate, "M d, Y");?></td>
-												<td align = "center"><?php echo $row['taskDuration']+1;?></td>
+												<td align = "center"><?php echo $row['taskDuration'];?></td>
 												<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
-													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
+													<td data-id='<?php echo $row['users_USERID']; ?>' align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
 												<?php else:?>
 													<td></td>
 												<?php endif;?>
 												<?php if($row['currentDate'] >= $row['TASKSTARTDATE']):?> <!-- Show buttons if ongoing task -->
 												<td align="center"><button type="button" class="btn btn-warning btn-sm rfcBtn" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
 												<td align="center"><button type="button" class="btn btn-success btn-sm doneBtn" data-toggle="modal" data-target="#modal-done"
-													data-id="<?php echo $row['TASKID'];?>" data-title="<?php echo $row['TASKTITLE'];?>" data-delay="<?php echo $row['currentDate'] >= $row['TASKENDDATE'];?>"><i class="fa fa-check"></i> Done</button></td>
+													data-id="<?php echo $row['TASKID'];?>" data-title="<?php echo $row['TASKTITLE'];?>" data-delay="<?php echo $row['currentDate'] > $row['TASKENDDATE'];?>"><i class="fa fa-check"></i> Done</button></td>
 												<?php else:?>
 													<td></td>
 													<td></td>
