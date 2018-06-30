@@ -370,22 +370,8 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
   // TODO: edit condition
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> b1b31be608ce8a654d13ac4a6b9e55f721b136db
->>>>>>> 196cdd1592bd4c65d209f0d6bf220c194c2dee56
->>>>>>> 7ff2458677e01e9329f23fbaba29cc320f39caea
->>>>>>> da6ef67052f15025c0ffbc326f9adf4721022e5e
->>>>>>> 89733851548f7d74307cc0155c78b784aa9f5bf9
+
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
@@ -418,6 +404,16 @@ public function addProject($data)
   {
     $this->db->insert('raci', $data);
     return true;
+  }
+
+  public function getProjectLogs($id)
+  {
+    $condition = "projects_PROJECTID = " . $id;
+    $this->db->select('*');
+    $this->db->from('logs');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
   }
 }
 ?>
