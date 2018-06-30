@@ -370,7 +370,22 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
+<<<<<<< HEAD
   // TODO: edit condition
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> b1b31be608ce8a654d13ac4a6b9e55f721b136db
+>>>>>>> 196cdd1592bd4c65d209f0d6bf220c194c2dee56
+>>>>>>> 7ff2458677e01e9329f23fbaba29cc320f39caea
+>>>>>>> da6ef67052f15025c0ffbc326f9adf4721022e5e
+>>>>>>> 89733851548f7d74307cc0155c78b784aa9f5bf9
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
@@ -398,20 +413,6 @@ public function addProject($data)
     $this->db->where('TASKID', $id);
     $this->db->update('tasks', $data);
   }
-
-  // public function getRACI_responsibility()
-  // {
-  //   $condition = "raci.role = 1 and projects.PROJECTID = 1 and tasks.taskID = 1");
-  //   // $condition = "role = 1 and projects.PROJECTID = " . $projectID . "and tasks.taskID = " . $taskID);
-  //   $this->db->select('*, CONCAT(users.FIRSTNAME, ' ', users.LASTNAME as "name")');
-  //   $this->db->from('projects');
-  //   $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-  //   $this->db->join('raci', 'tasks.taskID = raci.task_TASKID');
-  //   $this->db->join('users', 'raci.users_USERID = users.USERID');
-  //   $this->db->where($condition);
-  //
-  //   return $this->db->get()->row_array();
-  // }
 
   public function addToRaci($data)
   {
