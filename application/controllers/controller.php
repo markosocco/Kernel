@@ -200,6 +200,8 @@ class controller extends CI_Controller
 
 		$data['users'] = $this->model->getAllUsers();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+		// echo json_encode($data);
+
 		$this->load->view("myTasks", $data);
 	}
 
@@ -246,7 +248,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function calendar()
+	public function myCalendar()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -255,7 +257,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("calendar");
+			$this->load->view("myCalendar");
 		}
 	}
 
