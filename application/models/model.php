@@ -412,6 +412,7 @@ public function addProject($data)
     $this->db->select('*');
     $this->db->from('logs');
     $this->db->where($condition);
+    $this->db->order_by('TIMESTAMP','DESC');
 
     return $this->db->get()->result_array();
   }
