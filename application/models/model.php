@@ -346,10 +346,6 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-=======
-  // TODO: edit condition
->>>>>>> 196cdd1592bd4c65d209f0d6bf220c194c2dee56
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
@@ -379,24 +375,20 @@ public function addProject($data)
     $this->db->update('tasks', $data);
   }
 
-  // public function getRACI_responsibility()
-  // {
-  //   $condition = "raci.role = 1 and projects.PROJECTID = 1 and tasks.taskID = 1");
-  //   // $condition = "role = 1 and projects.PROJECTID = " . $projectID . "and tasks.taskID = " . $taskID);
-  //   $this->db->select('*, CONCAT(users.FIRSTNAME, ' ', users.LASTNAME as "name")');
-  //   $this->db->from('projects');
-  //   $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-  //   $this->db->join('raci', 'tasks.taskID = raci.task_TASKID');
-  //   $this->db->join('users', 'raci.users_USERID = users.USERID');
-  //   $this->db->where($condition);
-  //
-  //   return $this->db->get()->row_array();
-  // }
-
   public function addToRaci($data)
   {
     $this->db->insert('raci', $data);
     return true;
+  }
+
+  public function getProjectLogs($id)
+  {
+    $condition = "projects_PROJECTID = " . $id;
+    $this->db->select('*');
+    $this->db->from('logs');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
   }
 }
 ?>

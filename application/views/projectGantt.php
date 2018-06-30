@@ -40,14 +40,17 @@
 
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
+							<input type="hidden" name="projectID_logs" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
 
 						<!-- IF USING GET METHOD
 						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
+						<!-- <a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a> -->
 
 						<a name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
 
-						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
+						<a name="PROJECTID_logs" class="btn btn-success btn-xs" id="projectLog"><i class="fa fa-folder"></i> View Logs</a>
+
 						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-edit"></i> Edit Project</a>
 					</div>
 					<div style="position: relative" class="gantt" id="GanttChartDIV"></div>
@@ -87,9 +90,14 @@
 
 			$("#projectDocu").click(function() //redirect to individual project profile
       {
-				// var $id = $(this).attr('data-id');
 				$("#prjID").submit();
-        // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
+      });
+
+			$("#projectLog").click(function() //redirect to individual project logs
+      {
+				$("#prjID").attr("action","projectLogs");
+				// console.log("hello");
+				$("#prjID").submit();
       });
 		</script>
 
