@@ -184,29 +184,30 @@ class controller extends CI_Controller
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 			$this->load->view("myTasks", $data);
 		}
+
 	}
 
 	public function doneTask()
 	{
 
-		// if ($this->input->post('task_ID'))
-		// {
-		// 	$id = $this->input->post("task_ID");
-		// 	$remarks = $this->input->post('remarks');
-		//
-		// 	$data = array(
-		// 				'TASKSTATUS' => 'Complete',
-		// 				'TASKREMARKS' => $remarks
-		// 	);
-		//
-		// 	$updateTasks = $this->model->updateTaskDone($id, $data);
-		// }
+		if ($this->input->post('task_ID'))
+		{
+			$id = $this->input->post("task_ID");
+			$remarks = $this->input->post('remarks');
+
+			$data = array(
+						'TASKSTATUS' => 'Complete',
+						'TASKREMARKS' => $remarks
+			);
+
+			$updateTasks = $this->model->updateTaskDone($id, $data);
+		}
 
 		$data['users'] = $this->model->getAllUsers();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
-		// echo json_encode($data);
+		echo json_encode($data);
 
-		$this->load->view("myTasks", $data);
+		// $this->load->view("myTasks", $data);
 	}
 
 	public function templates()
