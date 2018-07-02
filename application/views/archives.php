@@ -12,7 +12,7 @@
 			<section class="content-header">
 				<h1>
 					Project Archives
-					<small>What are the projects I have done</small>
+					<small>What are the projects I have done?</small>
 				</h1>
 			</section>
 

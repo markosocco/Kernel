@@ -44,36 +44,6 @@
 										</thead>
 										<tbody id="taskTable">
 
-											<?php foreach($tasks as $row):?>
-												<tr>
-													<?php // to fix date format
-												$taskstartdate = date_create($row['TASKSTARTDATE']);
-												$taskenddate = date_create($row['TASKENDDATE']);
-												?>
-
-
-
-												<td><?php echo $row['TASKTITLE'];?></td>
-												<td><?php echo $row['PROJECTTITLE'];?></td>
-												<td><?php echo date_format($taskstartdate, "M d, Y");?></td>
-												<td><?php echo date_format($taskenddate, "M d, Y");?></td>
-												<td align = "center"><?php echo $row['taskDuration'];?></td>
-												<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
-													<td data-id='<?php echo $row['users_USERID']; ?>' align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
-												<?php else:?>
-													<td></td>
-												<?php endif;?>
-												<?php if($row['currentDate'] >= $row['TASKSTARTDATE']):?> <!-- Show buttons if ongoing task -->
-												<td align="center"><button type="button" class="btn btn-warning btn-sm rfcBtn" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
-												<td align="center"><button type="button" class="btn btn-success btn-sm doneBtn" data-toggle="modal" data-target="#modal-done"
-													data-id="<?php echo $row['TASKID'];?>" data-title="<?php echo $row['TASKTITLE'];?>" data-delay="<?php echo $row['currentDate'] > $row['TASKENDDATE'];?>"><i class="fa fa-check"></i> Done</button></td>
-												<?php else:?>
-													<td></td>
-													<td></td>
-												<?php endif;?>
-											</tr>
-										<?php endforeach;?>
-
 										</tbody>
 									</table>
 								</div>
@@ -430,6 +400,8 @@
 			// 		 success: function(data){
 			// 			 var html = "";
 			// 			 var i;
+			// 			 console.log(data);
+		 //
 			// 			 for(i=0; i<data['tasks'].length; i++)
 			// 			 {
 			// 				 console.log(data['tasks'][i].current);
@@ -460,6 +432,43 @@
 		 // });
 
 		 $(function () {
+
+			 loadTasks();
+
+			 function loadTasks(){
+
+				 $.ajax({
+					 type:"POST",
+					 url: "<?php echo base_url("index.php/controller/doneTask"); ?>",
+					 dataType: 'json',
+					 success:function(data)
+					 {
+						 console.log(data['tasks']);
+
+						 // for(i=0; i<data['tasks'].length; i++)
+ 						 // {
+ 							//  console.log(data['tasks'][i].current);
+						 //
+ 						 // 	var taskDuration = parseInt(data['tasks'][i].taskDuration)+1;
+ 							//  html += "<tr>" +
+ 							//  							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+ 							// 							"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
+ 							// 							"<td>" + data['tasks'][i].TASKSTARTDATE+"</td>"+
+ 							// 							"<td>" + data['tasks'][i].TASKENDDATE+"</td>"+
+ 							// 							"<td>" + taskDuration+"</td>";
+						 //
+ 							// 	if(data['tasks'][i].users_USERID == '4') //SHOW BUTTON for assignment
+ 							// 		html+="<td><button>Delegate</button></td>";
+					 		// }
+						},
+						error:function()
+						{
+							alert("Sorry. I'm trying AJAX. -Andre'")
+						}
+				 });
+			 }
+
+
 			 $('#taskList').DataTable({
 				 'paging'      : false,
 				 'lengthChange': false,
@@ -468,9 +477,7 @@
 				 'info'        : false,
 				 'autoWidth'   : false
 			 });
-		 });
 
-		 $(function () {
 			 $('#employeeList').DataTable({
 				 'paging'      : false,
 				 'lengthChange': false,
@@ -480,7 +487,7 @@
 				 'autoWidth'   : false
 			 });
 			 $('#projectList').DataTable().columns(-1).order('asc').draw();
-		 })
+		 });
 
 		</script>
 	</body>

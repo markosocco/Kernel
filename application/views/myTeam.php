@@ -11,7 +11,7 @@
 			<section class="content-header">
 				<h1>
 					My Team
-					<small>What is my team doing</small>
+					<small>What is my team doing?</small>
 				</h1>
 			</section>
 

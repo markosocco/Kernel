@@ -188,15 +188,19 @@ class controller extends CI_Controller
 
 	public function doneTask()
 	{
-		$id = $this->input->post("task_ID");
-		$remarks = $this->input->post('remarks');
 
-		$data = array(
-					'TASKSTATUS' => 'Complete',
-					'TASKREMARKS' => $remarks
-		);
-
-		$updateTasks = $this->model->updateTaskDone($id, $data);
+		// if ($this->input->post('task_ID'))
+		// {
+		// 	$id = $this->input->post("task_ID");
+		// 	$remarks = $this->input->post('remarks');
+		//
+		// 	$data = array(
+		// 				'TASKSTATUS' => 'Complete',
+		// 				'TASKREMARKS' => $remarks
+		// 	);
+		//
+		// 	$updateTasks = $this->model->updateTaskDone($id, $data);
+		// }
 
 		$data['users'] = $this->model->getAllUsers();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);

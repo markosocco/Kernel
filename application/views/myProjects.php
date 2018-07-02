@@ -12,27 +12,39 @@
 				<section class="content-header">
 					<h1>
 						My Projects
-						<small>What are my projects</small>
-						<small>(GREEN = ONGOING; ORANGE = PLANNED; RED = DELAYED; GRAY = PARKED; WHITE = DRAFT)</small>
+						<small>What are my projects?</small>
 					</h1>
-
 
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 						<!-- <li class="active">Here</li> -->
 					</ol>
 
-					<!-- LIST AND GRID TOGGLE -->
-					<div id = "toggleView" class="pull-right" style="margin-top:10px">
-						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
-						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
-					</div>
-
 				</section>
 
 				<!-- Main content -->
-				<section class="content container-fluid" style="padding-top:50px">
+				<section class="content container-fluid" style="padding-top:30px">
 					<div id="gridView">
+
+						<div class="btn-group"> <!-- SORT/LEGEND -->
+
+							<button type="button" class="btn btn-primary">All</button>
+							<button type="button" class="btn btn.bg-white">Draft</button>
+							<button type="button" class="btn btn-warning">Planned</button>
+							<button type="button" class="btn btn-success">Ongoing</button>
+							<button type="button" class="btn btn-danger">Delayed</button>
+							<button type="button" class="btn btn-default">Parked</button>
+
+						</div>
+
+						<!-- LIST AND GRID TOGGLE -->
+						<!-- <div id = "toggleView" class="pull-right" style="margin-top:10px"> -->
+						<div id = "toggleView" class="pull-right">
+							<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+							<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+						</div>
+
+						<br><br>
 
 						<div class="row">
 							<div class="col-lg-3 col-xs-6">
