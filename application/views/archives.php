@@ -12,25 +12,36 @@
 			<section class="content-header">
 				<h1>
 					Project Archives
-					<small>What are the projects I have done</small>
+					<small>What are the projects I have done?</small>
 				</h1>
 			</section>
 
 			<!-- Main content -->
 			<section class="content container-fluid">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<table id="archiveList" class="table table-bordered table-hover">
+							<thead>
+							<tr>
+								<th>Project Title</th>
+								<!-- IS THIS NEEDED?? -->
+								<th>Project Owner</th>
+								<th>Start Date</th>
+								<th>Target End Date</th>
+								<th>Actual End Date</th>
+							</tr>
+							</thead>
+							<tbody>
 
-				<!-- IF ARCHIVES IS EMPTY -->
-				<!-- <?php if(!$archives):?>
-					<h1>You have not completed a project yet</h1>
-					<p>(Change a Project's PROJECTSTATUS to "Complete" to view dummy Archive)</p>
-
-					<?endif;?> -->
-
-					<!-- IF ARCHIVES IS NOT EMPTY -->
-					<?php //foreach ($archives as $row):?>
-
-						<!-- ./col -->
-					<?php //endforeach;?>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
 
 			</section>
 
@@ -43,6 +54,16 @@
 
 		<script>
 		$("#projectArchives").addClass("active");
+		$(function () {
+			$('#archiveList').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false
+			});
+		});
 		</script>
 
 	</body>

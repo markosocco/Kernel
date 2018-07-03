@@ -11,8 +11,14 @@
 			<section class="content-header">
 				<h1>
 					My Team
-					<small>What is my team doing</small>
+					<small>What is my team doing?</small>
 				</h1>
+
+				<!-- LIST AND GRID TOGGLE -->
+				<div id = "toggleView" class="pull-right" style="margin-top:10px">
+					<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+					<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+				</div>
 			</section>
 
 		</div>

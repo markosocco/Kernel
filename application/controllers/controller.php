@@ -300,6 +300,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function teamGantt()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("teamGantt");
+		}
+	}
+
 // DELETE THIS MAYBE?
 	public function newProjectTask()
 	{
