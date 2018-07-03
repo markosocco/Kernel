@@ -12,7 +12,8 @@
 			<section class="content-header">
 				<h1>
 					Calendar
-					<small>When do I have to finish</small>
+					<!-- <small>When do I have to finish</small> -->
+					<small>When are my dues?</small>
 				</h1>
 			</section>
 

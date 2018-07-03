@@ -12,7 +12,11 @@
 			<section class="content-header">
 				<h1>
 					Templates
+<<<<<<< HEAD
 					<small>What are my past projects?</small>
+=======
+					<small>What are the sample project models?</small>
+>>>>>>> ef6172f8af9f6e0716cf0a8c73eec0e00ac36d33
 				</h1>
 			</section>
 

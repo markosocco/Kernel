@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - Project Logs</title>
-		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectLogsStyle.css")?>">
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectLogsStyle.css")?>"> -->
 	</head>
 	<body>
 
@@ -26,17 +26,14 @@
 					<div class="box-body">
 						<table id="logsList" class="table table-bordered table-hover">
 							<tbody>
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
-								<tr>
-									<td>User + Action here</td>
-									<td>Date and time here</td>
-								</tr>
-
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
-								<tr>
-									<td>User + Action here</td>
-									<td>Date and time here</td>
-								</tr>
+								<?php
+									foreach ($projectLog as $row) {
+										echo "<tr>";
+											echo "<td>" . $row['TIMESTAMP'] . "</td>";
+											echo "<td>" . $row['LOGDETAILS'] . "</td>";
+										echo "</tr>";
+									}
+								?>
 							</tbody>
 						</table>
 					</div>

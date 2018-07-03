@@ -117,8 +117,8 @@ public function addProject($data)
   public function getProjectByID($data)
   {
     $condition = "PROJECTID =" . $data;
-    $this->db->select('*, DATEDIFF(PROJECTENDDATE, PROJECTSTARTDATE) as "duration",
-    DATEDIFF(PROJECTENDDATE, CURDATE()) as "remaining",
+    $this->db->select('*, DATEDIFF(PROJECTENDDATE, PROJECTSTARTDATE) +1 as "duration",
+    DATEDIFF(PROJECTENDDATE, CURDATE())+1 as "remaining",
     DATEDIFF(PROJECTSTARTDATE, CURDATE()) as "launching"');
     $this->db->from('projects');
     $this->db->where($condition);
@@ -286,13 +286,37 @@ public function addProject($data)
 
   public function getAllTasksByUser($id)
   {
-    $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
-    $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
-    $this->db->from('projects');
-    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    // $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
+    // $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
+    // $this->db->from('projects');
+    // $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    // $this->db->where($condition);
+    //
+    // return $this->db->get()->result_array();
+
+
+    $condition = "raci.users_USERID = '" . $id . "' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
+    $this->db->select('*, CURDATE() as "currentDate", (DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1) as "taskDuration"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+
+
+    // $condition = "raci.users_USERID = " . $id;
+    // $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
+    // $this->db->from('tasks');
+    // $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    // $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    // $this->db->join('users', 'raci.users_USERID = users.USERID');
+    // $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    // $this->db->where($condition);
+    // return $this->db->get()->result_array();
+
   }
 
 // GET PRE-REQUISITE ID
@@ -346,6 +370,11 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
+<<<<<<< HEAD
+=======
+  // TODO: edit condition
+
+>>>>>>> ef6172f8af9f6e0716cf0a8c73eec0e00ac36d33
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
@@ -374,24 +403,21 @@ public function addProject($data)
     $this->db->update('tasks', $data);
   }
 
-  // public function getRACI_responsibility()
-  // {
-  //   $condition = "raci.role = 1 and projects.PROJECTID = 1 and tasks.taskID = 1");
-  //   // $condition = "role = 1 and projects.PROJECTID = " . $projectID . "and tasks.taskID = " . $taskID);
-  //   $this->db->select('*, CONCAT(users.FIRSTNAME, ' ', users.LASTNAME as "name")');
-  //   $this->db->from('projects');
-  //   $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-  //   $this->db->join('raci', 'tasks.taskID = raci.task_TASKID');
-  //   $this->db->join('users', 'raci.users_USERID = users.USERID');
-  //   $this->db->where($condition);
-  //
-  //   return $this->db->get()->row_array();
-  // }
-
   public function addToRaci($data)
   {
     $this->db->insert('raci', $data);
     return true;
+  }
+
+  public function getProjectLogs($id)
+  {
+    $condition = "projects_PROJECTID = " . $id;
+    $this->db->select('*');
+    $this->db->from('logs');
+    $this->db->where($condition);
+    $this->db->order_by('TIMESTAMP','DESC');
+
+    return $this->db->get()->result_array();
   }
 }
 ?>

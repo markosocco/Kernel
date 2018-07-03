@@ -184,25 +184,30 @@ class controller extends CI_Controller
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 			$this->load->view("myTasks", $data);
 		}
+
 	}
 
 	public function doneTask()
 	{
-		$id = $this->input->post("task_ID");
-		$remarks = $this->input->post('remarks');
 
-		$data = array(
-					'TASKSTATUS' => 'Complete',
-					'TASKREMARKS' => $remarks
-		);
+		if ($this->input->post('task_ID'))
+		{
+			$id = $this->input->post("task_ID");
+			$remarks = $this->input->post('remarks');
 
-		$updateTasks = $this->model->updateTaskDone($id, $data);
+			$data = array(
+						'TASKSTATUS' => 'Complete',
+						'TASKREMARKS' => $remarks
+			);
+
+			$updateTasks = $this->model->updateTaskDone($id, $data);
+		}
 
 		$data['users'] = $this->model->getAllUsers();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
-		// echo json_encode($data);
+		echo json_encode($data);
 
-		$this->load->view("myTasks", $data);
+		// $this->load->view("myTasks", $data);
 	}
 
 	public function templates()
@@ -296,7 +301,10 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("projectLogs");
+			$id = $this->input->post("projectID_logs");
+			$this->session->set_flashdata('projectIDlogs', $id);
+			$data['projectLog'] = $this->model->getProjectLogs($id);
+			$this->load->view("projectLogs", $data);
 		}
 	}
 
