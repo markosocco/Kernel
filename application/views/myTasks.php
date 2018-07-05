@@ -120,8 +120,8 @@
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h2 class="modal-title">Task Name here</h2>
-										<h4>Start Date - End Date (Days)</h4>
+										<h2 class="modal-title taskTitle">Task Name</h2>
+										<h4 class="taskDates">Start Date - End Date (Days)</h4>
 									</div>
 									<div class="modal-body">
 										<div class="box">
@@ -138,9 +138,9 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body">
-												<div class="form-group">
+												<div class="form-group responsibleDiv">
 
-													<select class="form-control" name = "department[]" align="center" required>
+													<select id = "depts" class="form-control" name = "department[]" align="center" required>
 													<option disabled selected value> -- Select Department -- </option>
 
 													<?php foreach ($departments as $row): ?>
@@ -164,15 +164,19 @@
 													</tr>
 													</thead>
 													<tbody>
-														<td><div class="radio">
-					                    <label>
-																<input type="radio" name="" id="" value="">
-					                    </label>
-					                  </div></td>
-														<td>Manuel Cabacaba</td>
-														<td align="center">20k</td>
-														<td align="center">80%</td>
-														<td class="btn" id="moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+														<?php foreach($deptEmployees as $employee):?>
+															<tr>
+																<td><div class="radio">
+							                    <label>
+																		<input type="radio" name="" id="" value="">
+							                    </label>
+							                  </div></td>
+																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
+																<td align="center">N</td>
+																<td align="center">N%</td>
+																<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+															</tr>
+														<?php endforeach;?>
 													</tbody>
 												</table>
 											</div>
@@ -306,7 +310,8 @@
 		          <div class="modal-dialog">
 		            <div class="modal-content">
 		              <div class="modal-header">
-		                <h4 class="modal-title" id = "doneTitle">Task Finished</h4>
+		                <h2 class="modal-title" id = "doneTitle">Task Finished</h2>
+										<h4 id="doneDates">Start Date - End Date (Days)</h4>
 		              </div>
 		              <div class="modal-body">
 										<h3 id ="delayed" style="color:red">Task is Delayed</h3>
@@ -359,7 +364,11 @@
 				 $("#remarks").val("");
 				 var $id = $(this).attr('data-id');
 				 var $title = $(this).attr('data-title');
+				 var $start = new Date($(this).attr('data-start'));
+				 var $end = new Date($(this).attr('data-end'));
+				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 				 $("#doneTitle").html($title);
+				 $("#doneDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 				 $("#doneConfirm").attr("data-id", $id); //pass data id to confirm button
 				 var isDelayed = $(this).attr('data-delay'); // 1 = delayed
 				 if(isDelayed == 'false')
@@ -385,6 +394,28 @@
 				 $("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 			 });
 
+			 $("body").on('click','.delegateBtn',function(){
+				 var $id = $(this).attr('data-id');
+				 var $title = $(this).attr('data-title');
+				 var $start = new Date($(this).attr('data-start'));
+				 var $end = new Date($(this).attr('data-end'));
+				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+
+				 $(".taskTitle").html($title);
+				 $(".taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
+			 });
+
+			 $("#depts").change(function(){
+				 // $(".responsibleDiv").hide();
+			 });
+
+			 $("body").on("click", function(){ // REMOVE SELECTED DEPARTMENT IN DROPDOWN
+				 if($("#modal-delegate").css("display") == 'none')
+				 {
+					 $("#depts").val("");
+				 }
+			 });
+
 		 });
 
 		 $(function () {
@@ -404,19 +435,24 @@
 						 for(i=0; i<data['tasks'].length; i++)
  						 {
  							 // console.log(data['tasks'][i].currentDate);
- 						 	var taskDuration = parseInt(data['tasks'][i].taskDuration)+1;
+ 						 	var taskDuration = parseInt(data['tasks'][i].taskDuration);
+							var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+							var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
  							 table += "<tr>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
- 														"<td>" + data['tasks'][i].TASKSTARTDATE+"</td>"+
- 														"<td>" + data['tasks'][i].TASKENDDATE+"</td>"+
+ 														"<td>" + taskStart +"</td>"+
+ 														"<td>" + taskEnd +"</td>"+
  														"<td>" + taskDuration+"</td>";
 
 								// DELEGATE BUTTON
  								if(data['tasks'][i].users_USERID == '4' && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
 								{
-									table+='<td align="center"><button type="button" class="btn btn-primary btn-sm"' +
-												'data-toggle="modal" data-target="#modal-delegate">' +
+									table+='<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+												'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+												data['tasks'][i].TASKID + '" data-title="' + data['tasks'][i].TASKTITLE +
+												'" data-start="'+ data['tasks'][i].TASKSTARTDATE +
+												'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
 												'<i class="fa fa-users"></i> Delegate</button></td>';
 								}
 								else
@@ -440,7 +476,8 @@
 									'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
 									'data-target="#modal-done" data-id="' + data['tasks'][i].TASKID +
 									'" data-title="' + data['tasks'][i].TASKTITLE + '"' +
-									'data-delay="' + isDelayed + '">' +
+									'data-delay="' + isDelayed + '" data-start="'+ data['tasks'][i].TASKSTARTDATE +
+									'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
 									'<i class="fa fa-check"></i> Done</button></td>';
 								}
 								else

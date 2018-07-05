@@ -153,6 +153,17 @@ public function addProject($data)
     return $query->result_array();
   }
 
+  public function getAllUsersByDepartment($filter)
+  {
+    $condition = $filter;
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE
   public function getAllOngoingProjects()
   {
@@ -370,10 +381,7 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
   // TODO: edit condition
-=======
->>>>>>> c84fea32b00ace9561cebf930acfbb7344be52fb
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;

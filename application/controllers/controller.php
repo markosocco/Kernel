@@ -192,15 +192,38 @@ class controller extends CI_Controller
 
 				$updateTasks = $this->model->updateTaskDone($id, $data);
 			}
+			$data['departments'] = $this->model->getAllDepartments();
 
-			$this->load->view("myTasks");
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '2':
+					$filter = "usertype_USERTYPEID = '3'";
+					break;
+
+				case '3':
+					$filter = "departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+
+				case '4':
+					$filter = "users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+					break;
+
+				case '2':
+					$filter = "usertype_USERTYPEID = '3'";
+					break;
+
+				default: $filter = ""; break;
+			}
+
+			$data['deptEmployees'] = $this->model->getAllUsersByDepartment($filter);
+			$this->load->view("myTasks", $data);
 		}
 	}
 
 	public function doneTask()
 	{
-
 		$data['users'] = $this->model->getAllUsers();
+		$data['departments'] = $this->model->getAllDepartments();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
 		echo json_encode($data);
