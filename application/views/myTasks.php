@@ -37,7 +37,9 @@
 											<th>Start Date</th>
 											<th>Target End Date</th>
 											<th>Period <small>(Day/s)</small></th>
-											<th></th>
+											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
+												<th></th>
+											<?php endif;?>
 											<th></th>
 											<th></th>
 										</tr>
@@ -168,7 +170,7 @@
 															<tr>
 																<td><div class="radio">
 							                    <label>
-																		<input type="radio" name="" id="" value="">
+																		<input class = "radioEmp" type="radio" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
 							                    </label>
 							                  </div></td>
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -340,6 +342,8 @@
 		<script>
 			$("#myTasks").addClass("active");
 			$('.select2').select2();
+			$("#responsible").addClass("active");
+
 
 			$(function ()
 			{
@@ -409,11 +413,16 @@
 				 // $(".responsibleDiv").hide();
 			 });
 
-			 $("body").on("click", function(){ // REMOVE SELECTED DEPARTMENT IN DROPDOWN
+			 $("body").on("click", function(){ // REMOVE ALL SELECTED IN DELEGATE MODAL
 				 if($("#modal-delegate").css("display") == 'none')
 				 {
 					 $("#depts").val("");
+					 $(".radioEmp").prop("checked", false);
 				 }
+			 });
+
+			 $("body").on('click','.radioEmp',function(){
+				 // var btn = $(".radioEmp").prop("checked");
 			 });
 
 		 });
@@ -431,10 +440,8 @@
 					 success:function(data)
 					 {
 						 var table;
-						 console.log(data);
 						 for(i=0; i<data['tasks'].length; i++)
  						 {
- 							 // console.log(data['tasks'][i].currentDate);
  						 	var taskDuration = parseInt(data['tasks'][i].taskDuration);
 							var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
 							var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
@@ -455,14 +462,12 @@
 												'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
 												'<i class="fa fa-users"></i> Delegate</button></td>';
 								}
-								else
+								else if (data['users'][0].userType != '5')
 									table+= '<td></td>';
 
 								// RFC & DONE BUTTON
 								if(data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE) //SHOW BUTTON IF ONOGING TASK
 								{
-									// console.log(data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE);
-
 									// RFC
 									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
@@ -470,7 +475,6 @@
 									' RFC</button></td>';
 
 									var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
-									console.log(isDelayed);
 									// DONE
 									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
