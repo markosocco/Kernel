@@ -52,13 +52,13 @@ class model extends CI_Model
   }
 
 // SAVE NEW PROJECT TO DB; RETURNS PROJECT
-public function addProject($data)
+  public function addProject($data)
   {
     $result = $this->db->insert('projects', $data);
 
     if ($result)
     {
-      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND '". $data['PROJECTENDDATE'] ."'";
+      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
       $this->db->select('*');
       $this->db->from('projects');
       $this->db->where($condition);
@@ -381,7 +381,10 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
+<<<<<<< HEAD
   // TODO: edit condition
+=======
+>>>>>>> 9496b63b75fc2390257abf738c1b2b49e2251d99
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
@@ -440,6 +443,14 @@ public function addProject($data)
     $this->db->order_by('TIMESTAMP','DESC');
 
     return $this->db->get()->result_array();
+  }
+
+  public function updateTaskStatus($currentDate){
+    $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Ongoing';";
+    $this->db->set('TASKSTATUS', 'Ongoing');
+    $this->db->set('TASKACTUALSTARTDATE', $currentDate);
+    $this->db->where($condition);
+    $this->db->update('tasks');
   }
 }
 ?>
