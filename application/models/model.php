@@ -442,7 +442,8 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function updateTaskStatus($currentDate){
+  public function updateTaskStatus($currentDate)
+  {
     $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Planned';";
     $this->db->set('TASKSTATUS', 'Ongoing');
     $this->db->set('TASKACTUALSTARTDATE', $currentDate);
@@ -450,8 +451,8 @@ class model extends CI_Model
     $this->db->update('tasks');
   }
 
-  public function getDelayedTasksPerUser(){
-
+  public function getDelayedTasksPerUser()
+  {
     $condition = "tasks.TASKENDDATE <= CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*');
     $this->db->from('tasks');
@@ -461,7 +462,20 @@ class model extends CI_Model
     $this->db->order_by('tasks.TASKENDDATE','ASC');
 
     return $this->db->get()->result_array();
+  }
 
+  public function getTasks3DaysBeforeDeadline()
+  {
+    $condition = "TASKSTATUS = 'Ongoing' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 3
+    AND DATEDIFF(TASKENDDATE, CURDATE()) >= 0 AND raci.users_USERID = " . $_SESSION['USERID'];
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condition);
+    $this->db->order_by('tasks.TASKENDDATE','ASC');
+
+    return $this->db->get()->result_array();
   }
 }
 ?>

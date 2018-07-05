@@ -135,6 +135,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksPerUser();
+			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
 			$this->load->view("dashboard", $data);
 		}
 	}

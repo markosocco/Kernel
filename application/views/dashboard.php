@@ -27,6 +27,14 @@
 								echo "<td>" . $row['TASKENDDATE'] . "</td>";
 							echo "</tr>";
 						}
+
+						foreach ($tasks3DaysBeforeDeadline as $data) {
+							echo "<tr>";
+								echo "<td>" . $data['PROJECTTITLE'] . "</td>";
+								echo "<td>" . $data['TASKTITLE'] . "</td>";
+								echo "<td>" . $data['TASKENDDATE'] . "</td>";
+							echo "</tr>";
+						}
 					?>
 				</tbody>
 			</table>
