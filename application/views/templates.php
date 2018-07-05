@@ -12,12 +12,8 @@
 			<section class="content-header">
 				<h1>
 					Templates
-<<<<<<< HEAD
 					<small>What are the projects I can replicate?</small>
-=======
-					<!-- <small>What are my past projects?</small> -->
-					<small>What are the sample project models?</small>
->>>>>>> c84fea32b00ace9561cebf930acfbb7344be52fb
+					<!-- <small>What are the sample project models?</small> -->
 				</h1>
 			</section>
 
