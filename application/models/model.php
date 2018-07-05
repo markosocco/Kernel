@@ -52,13 +52,13 @@ class model extends CI_Model
   }
 
 // SAVE NEW PROJECT TO DB; RETURNS PROJECT
-public function addProject($data)
+  public function addProject($data)
   {
     $result = $this->db->insert('projects', $data);
 
     if ($result)
     {
-      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."'AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
+      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
       $this->db->select('*');
       $this->db->from('projects');
       $this->db->where($condition);
