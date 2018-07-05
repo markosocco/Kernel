@@ -370,11 +370,7 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-=======
   // TODO: edit condition
-
->>>>>>> ef6172f8af9f6e0716cf0a8c73eec0e00ac36d33
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
