@@ -431,11 +431,25 @@ public function addProject($data)
   }
 
   public function updateTaskStatus($currentDate){
-    $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Ongoing';";
+    $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Planned';";
     $this->db->set('TASKSTATUS', 'Ongoing');
     $this->db->set('TASKACTUALSTARTDATE', $currentDate);
     $this->db->where($condition);
     $this->db->update('tasks');
+  }
+
+  public function getDelayedTasksPerUser(){
+
+    $condition = "tasks.TASKENDDATE <= CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condition);
+    $this->db->order_by('tasks.TASKENDDATE','ASC');
+
+    return $this->db->get()->result_array();
+
   }
 }
 ?>

@@ -134,7 +134,8 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("dashboard");
+			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksPerUser();
+			$this->load->view("dashboard", $data);
 		}
 	}
 
