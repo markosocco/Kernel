@@ -52,13 +52,13 @@ class model extends CI_Model
   }
 
 // SAVE NEW PROJECT TO DB; RETURNS PROJECT
-public function addProject($data)
+  public function addProject($data)
   {
     $result = $this->db->insert('projects', $data);
 
     if ($result)
     {
-      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."'AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
+      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
       $this->db->select('*');
       $this->db->from('projects');
       $this->db->where($condition);
@@ -146,8 +146,19 @@ public function addProject($data)
 
   public function getAllUsers()
   {
+    $this->db->select('*, ' . $_SESSION['usertype_USERTYPEID'] . ' as "userType"');
+    $this->db->from('users');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getAllUsersByDepartment($filter)
+  {
+    $condition = $filter;
     $this->db->select('*');
     $this->db->from('users');
+    $this->db->where($condition);
     $query = $this->db->get();
 
     return $query->result_array();
@@ -370,6 +381,7 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
+  // TODO: edit condition
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
