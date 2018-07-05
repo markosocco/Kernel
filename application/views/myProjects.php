@@ -201,7 +201,7 @@
 			$("#listView").hide();
 			$("#toggleGrid").hide();
 			$("#myProjects").addClass("active");
-			$("#projects").addClass("active");
+			// $("#projects").addClass("active");
 
 
 			// IF USING GET METHOD FOR PROJECT ID
