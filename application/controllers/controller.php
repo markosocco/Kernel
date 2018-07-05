@@ -535,29 +535,20 @@ class controller extends CI_Controller
 
 						// ENTER INTO RACI
 						$result = $this->model->addToRaci($data);
-
-						if($result)
-						{
-							// GO TO NEXT STEP
-							$data['project'] = $this->model->getProjectByID($id);
-							$data['tasks'] = $this->model->getAllProjectTasks($id);
-							$data['users'] = $this->model->getAllUsers();
-							$data['departments'] = $this->model->getAllDepartments();
-							$data['dateDiff'] = $this->model->getDateDiff($data['project']);
-
-							$this->load->view('arrangeTasks', $data);
-						}
-
-						else
-						{
-							//TODO Add alert
-							echo "fail";
-						}
 					}
 				}
 
 				$x++;
 			}
+
+			$data['project'] = $this->model->getProjectByID($id);
+			$data['tasks'] = $this->model->getAllProjectTasks($id);
+			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+			$data['users'] = $this->model->getAllUsers();
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['dateDiff'] = $this->model->getDateDiff($data['project']);
+
+			$this->load->view('arrangeTasks', $data);
 		}
 
 		// SAVES DATA FROM ARRAY VIA INDEX AND PLUGS INTO DB
