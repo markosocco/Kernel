@@ -1,7 +1,7 @@
 <html>
 	<head>
-		<title>Kernel - Reports</title>
-		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/reportsStyle.css")?>">
+		<title>Kernel - Project Logs</title>
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectLogsStyle.css")?>"> -->
 	</head>
 	<body>
 
@@ -11,8 +11,8 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					Reports
-					<small>What do I show the boss</small>
+					Project title - Project Logs
+					<small>What is happeing to this project?</small>
 				</h1>
 			</section>
 
@@ -20,21 +20,20 @@
 			<section class="content container-fluid">
 				<div class="box">
 					<div class="box-header">
-						<h3 class="box-title">Generate Reports</h3>
+						<!-- <h3 class="box-title">Generate Reports</h3> -->
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-						<table id="documentList" class="table table-bordered table-hover">
+						<table id="logsList" class="table table-bordered table-hover">
 							<tbody>
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
-								<tr>
-									<td>HOW DOES THIS SHIT WORK</td>
-									<td align="center"><button type="button" class="btn btn-success"><i class="fa fa-print"></i> Generate Report</button></td>
-								</tr>
-
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
-								<td>HOW DO WE PRINT REPORTS PER PROJECT</td>
-								<td align="center"><button type="button" class="btn btn-success"><i class="fa fa-print"></i> Generate Report</button></td>
+								<?php
+									foreach ($projectLog as $row) {
+										echo "<tr>";
+											echo "<td>" . $row['TIMESTAMP'] . "</td>";
+											echo "<td>" . $row['LOGDETAILS'] . "</td>";
+										echo "</tr>";
+									}
+								?>
 							</tbody>
 						</table>
 					</div>
@@ -51,7 +50,7 @@
 		</div> <!--.wrapper closing div-->
 
 		<script>
-		$("#reports").addClass("active");
+		$("#myProjects").addClass("active");
 		</script>
 
 	</body>

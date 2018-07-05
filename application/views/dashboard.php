@@ -11,7 +11,6 @@
 			<section class="content-header">
 				<h1>
 					WELCOME, <b><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></b>
-					<small>(If you put content, the sidebar starts to work everywhere!)</small>
 				</h1>
 			</section>
 

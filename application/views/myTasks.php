@@ -37,41 +37,13 @@
 											<th>Start Date</th>
 											<th>Target End Date</th>
 											<th>Period <small>(Day/s)</small></th>
-											<th>Status</th>
 											<th></th>
 											<th></th>
 											<th></th>
 										</tr>
 										</thead>
-										<tbody>
-											<?php foreach($tasks as $row):?>
-											<tr>
-												<?php // to fix date format
-												$taskstartdate = date_create($row['TASKSTARTDATE']);
-												$taskenddate = date_create($row['TASKENDDATE']);
-												?>
+										<tbody id="taskTable">
 
-												<td><?php echo $row['TASKTITLE'];?></td>
-												<td><?php echo $row['PROJECTTITLE'];?></td>
-												<td><?php echo date_format($taskstartdate, "M d, Y");?></td>
-												<td><?php echo date_format($taskenddate, "M d, Y");?></td>
-												<td align = "center"><?php echo $row['taskDuration']+1;?></td>
-												<td><?php echo $row['TASKSTATUS'];?></td>
-												<?php if($_SESSION['usertype_USERTYPEID'] != '5' && $row['users_USERID'] == $_SESSION['USERID']):?>
-													<td align="center"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-delegate"><i class="fa fa-users"></i> Delegate</button></td>
-												<?php else:?>
-													<td></td>
-												<?php endif;?>
-												<?php if($row['CURDATE()'] >= $row['TASKSTARTDATE']):?> <!-- Show buttons if ongoing task -->
-												<td align="center"><button type="button" class="btn btn-warning btn-sm rfcBtn" data-toggle="modal" data-target="#modal-request"><i class="fa fa-exclamation"></i> RFC</button></td>
-												<td align="center"><button type="button" class="btn btn-success btn-sm doneBtn" data-toggle="modal" data-target="#modal-done"
-													data-id="<?php echo $row['TASKID'];?>" data-title="<?php echo $row['TASKTITLE'];?>" data-delay="<?php echo $row['CURDATE()'] >= $row['TASKENDDATE'];?>"><i class="fa fa-check"></i> Done</button></td>
-												<?php else:?>
-													<td></td>
-													<td></td>
-												<?php endif;?>
-											</tr>
-										<?php endforeach;?>
 										</tbody>
 									</table>
 								</div>
@@ -338,8 +310,8 @@
 		              </div>
 		              <div class="modal-body">
 										<h3 id ="delayed" style="color:red">Task is Delayed</h3>
-										<h4 id ="early">Are you sure that this task is done?</h4>
-										<form id = "doneForm" action="doneTask" method="POST">
+										<h4 id ="early">Are you sure this task is done?</h4>
+										<form id = "doneForm" action="loadTasks()" method="POST">
 											<div class="form-group">
 												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 											</div>
@@ -413,10 +385,75 @@
 				 $("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 			 });
 
-
 		 });
 
 		 $(function () {
+
+			 loadTasks();
+
+			 function loadTasks(){
+
+				 $.ajax({
+					 type:"POST",
+					 url: "<?php echo base_url("index.php/controller/doneTask"); ?>",
+					 dataType: 'json',
+					 success:function(data)
+					 {
+						 var html;
+						 console.log(data);
+						 for(i=0; i<data['tasks'].length; i++)
+ 						 {
+ 							 // console.log(data['tasks'][i].currentDate);
+ 						 	var taskDuration = parseInt(data['tasks'][i].taskDuration)+1;
+ 							 html += "<tr>" +
+ 							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+ 														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
+ 														"<td>" + data['tasks'][i].TASKSTARTDATE+"</td>"+
+ 														"<td>" + data['tasks'][i].TASKENDDATE+"</td>"+
+ 														"<td>" + taskDuration+"</td>";
+
+								// DELEGATE BUTTON
+ 								if(data['tasks'][i].users_USERID == '4' && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
+								{
+									html+='<td align="center"><button type="button" class="btn btn-primary btn-sm"' +
+												'data-toggle="modal" data-target="#modal-delegate">' +
+												'<i class="fa fa-users"></i> Delegate</button></td>';
+								}
+								else
+									html+= '<td></td>';
+
+								// RFC & DONE BUTTON
+								if(data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE) //SHOW BUTTON IF ONOGING TASK
+								{
+									// console.log(data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE);
+
+									// RFC
+									html+= '<td align="center"><button type="button"' +
+									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
+									'data-target="#modal-request"><i class="fa fa-exclamation"></i>' +
+									' RFC</button></td>';
+
+									// DONE
+									html+= '<td align="center"><button type="button"' +
+									'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+									'data-target="#modal-done" data-id="' + data['tasks'][i].TASKID +
+									'" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+									'data-delay="' + data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE + '">' +
+									'<i class="fa fa-check"></i> Done</button></td>';
+								}
+								else
+									html+= '<td></td>' + '<td></td>';
+					 		}
+							$('#taskTable').html(html);
+						},
+						error:function()
+						{
+							alert("Sorry. I'm trying AJAX. -Andre'")
+						}
+				 });
+			 }
+
+
 			 $('#taskList').DataTable({
 				 'paging'      : false,
 				 'lengthChange': false,
@@ -425,9 +462,7 @@
 				 'info'        : false,
 				 'autoWidth'   : false
 			 });
-		 });
 
-		 $(function () {
 			 $('#employeeList').DataTable({
 				 'paging'      : false,
 				 'lengthChange': false,
@@ -437,7 +472,8 @@
 				 'autoWidth'   : false
 			 });
 			 $('#projectList').DataTable().columns(-1).order('asc').draw();
-		 })
+		 });
+
 		</script>
 	</body>
 </html>

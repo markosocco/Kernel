@@ -12,26 +12,39 @@
 			<section class="content-header">
 				<h1>
 					Templates
-					<small>What are my past projects</small>
+					<!-- <small>What are my past projects?</small> -->
+					<small>What are the sample project models?</small>
 				</h1>
 			</section>
 
 			<!-- Main content -->
 			<section class="content container-fluid">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<table id="templateList" class="table table-bordered table-hover">
+							<thead>
+							<tr>
+								<th>Project Title</th>
+								<!-- IS THIS NEEDED?? -->
+								<th>Project Owner</th>
+								<th>Start Date</th>
+								<th>Target End Date</th>
+								<th>Actual End Date</th>
+								<th>Templated On</th>
+								<th>Templated By</th>
+							</tr>
+							</thead>
+							<tbody>
 
-				<!-- IF ARCHIVES IS EMPTY -->
-				<!-- <?php if(!$templates):?>
-					<h1>You do not have any project templates</h1>
-					<p>(How are we templating? I don't understand the table and columns)</p>
-
-					<?endif;?> -->
-
-					<!-- IF ARCHIVES IS NOT EMPTY -->
-					<?php //foreach ($templates as $row):?>
-
-						<!-- ./col -->
-					<?php //endforeach;?>
-
+							</tbody>
+						</table>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
 			</section>
 
 		</div>
@@ -43,6 +56,17 @@
 
 		<script>
 		$("#templates").addClass("active");
+
+		$(function () {
+			$('#templateList').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false
+			});
+		});
 		</script>
 
 	</body>

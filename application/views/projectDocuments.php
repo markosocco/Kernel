@@ -123,18 +123,47 @@
 		                <h4 class="modal-title">Upload a Document</h4>
 		              </div>
 		              <div class="modal-body">
+										<p><b>Upload this document for</b></p>
+										<div class="row">
+											<div class="col-lg-6">
+												<div class="input-group">
+														<span class="input-group-addon">
+															<input type="radio" name="sendTo">
+														</span>
+													<input type="text" class="form-control" placeholder="All" disabled readonly>
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+											<div class="col-lg-6">
+												<div class="input-group">
+														<span class="input-group-addon">
+															<input type="radio" name="sendTo">
+														</span>
+													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+														<?php foreach ($departments as $row): ?>
 
-											<div class="form-group">
-			                  <label for="uploadDoc">Select a file to upload</label>
-			                  <input type="file" id="uploadDoc" name="docu">
+															<option>
+																<?php echo $row['DEPARTMENTNAME']; ?>
+															</option>
 
-			                  <!-- <p class="help-block"></p> -->
-			                </div>
-											<div class="form-group">
-			                  <label>Remarks</label>
-			                  <input type="text" class="form-control" placeholder="Ex. Approved, Final">
-			                </div>
-
+														<?php endforeach; ?>
+													</select>
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+										</div>
+										<!-- /.row -->
+										<br>
+										<div class="form-group">
+		                  <label for="uploadDoc">Select a file to upload</label>
+		                  <input type="file" id="uploadDoc" name="docu">
+		                </div>
+										<div class="form-group">
+		                  <label>Remarks</label>
+		                  <input type="text" class="form-control" placeholder="Ex. Approved, Final">
+		                </div>
 		              </div>
 		              <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -153,6 +182,8 @@
 		</div>
 		<script>
 			$("#myProjects").addClass("active");
+			$('.select2').select2()
+
 		</script>
 	</body>
 </html>

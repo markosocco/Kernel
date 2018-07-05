@@ -12,7 +12,7 @@
 			<section class="content-header">
 				<h1>
 					Documents
-					<small>What documents do I have</small>
+					<small>What documents do I have?</small>
 				</h1>
 			</section>
 
@@ -32,7 +32,7 @@
 									<th>Project</th>
 									<th>Uploaded By</th>
 									<th>Department</th>
-									<th>Uploaded On</th>
+									<th>Upload Date</th>
 									<th align="center"></th>
 								</tr>
 							</thead>
@@ -47,7 +47,7 @@
 									<td>Manuel Cabacaba</td>
 									<td>MIS</td>
 									<td>March 36, 2120</td>
-									<td align="center"><button type="button" class="btn btn-success"><i class="fa fa-download"></i> Download</button></td>
+									<td align="center"><button type="button" class="btn btn-success downloadBtn"><i class="fa fa-download"></i> Download</button></td>
 								</tr>
 
 								<!-- SAMPLE DATA. PLEASE DELETE  -->
@@ -58,7 +58,7 @@
 									<td>Manuel Cabacaba</td>
 									<td>MIS</td>
 									<td>March 39, 2120</td>
-									<td align="center"><button type="button" class="btn btn-success"><i class="fa fa-download"></i> Download</button></td>
+									<td align="center"><button type="button" class="btn btn-success downloadBtn"><i class="fa fa-download"></i> Download</button></td>
 								</tr>
 							</tbody>
 						</table>
@@ -78,6 +78,13 @@
 
 		<script>
 		$("#documents").addClass("active");
+
+		$(document).ready(function() {
+			$(".downloadBtn").click(function(){
+				alert("Place download function here!");
+			});
+		});
+
 		$(function () {
 	    $('#documentList').DataTable({
 	      'paging'      : false,
@@ -86,7 +93,7 @@
 	      'ordering'    : true,
 	      'info'        : false,
 	      'autoWidth'   : false
-	    })
+	    });
 	  })
 		</script>
 

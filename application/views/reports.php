@@ -12,7 +12,7 @@
 			<section class="content-header">
 				<h1>
 					Reports
-					<small>What do I show the boss</small>
+					<small>What do I show the boss?</small>
 				</h1>
 			</section>
 
@@ -24,17 +24,17 @@
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-						<table id="documentList" class="table table-bordered table-hover">
+						<table id="reportList" class="table table-bordered table-hover">
 							<tbody>
 								<!-- SAMPLE DATA. PLEASE DELETE  -->
 								<tr>
 									<td>HOW DOES THIS SHIT WORK</td>
-									<td align="center"><button type="button" class="btn btn-success"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
 								</tr>
 
 								<!-- SAMPLE DATA. PLEASE DELETE  -->
 								<td>HOW DO WE PRINT REPORTS PER PROJECT</td>
-								<td align="center"><button type="button" class="btn btn-success"><i class="fa fa-print"></i> Generate Report</button></td>
+								<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
 							</tbody>
 						</table>
 					</div>
@@ -52,6 +52,12 @@
 
 		<script>
 		$("#reports").addClass("active");
+
+		$(document).ready(function() {
+			$(".generateBtn").click(function(){
+				alert("Place download function here!");
+			});
+		});
 		</script>
 
 	</body>
