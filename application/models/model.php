@@ -52,7 +52,7 @@ class model extends CI_Model
   }
 
 // SAVE NEW PROJECT TO DB; RETURNS PROJECT
-public function addProject($data)
+  public function addProject($data)
   {
     $result = $this->db->insert('projects', $data);
 
@@ -148,6 +148,17 @@ public function addProject($data)
   {
     $this->db->select('*');
     $this->db->from('users');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getAllUsersByDepartment($filter)
+  {
+    $condition = $filter;
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
     $query = $this->db->get();
 
     return $query->result_array();
@@ -370,6 +381,10 @@ public function addProject($data)
   }
 
   // GET DATA FOR THE GANTT CHART
+<<<<<<< HEAD
+  // TODO: edit condition
+=======
+>>>>>>> 9496b63b75fc2390257abf738c1b2b49e2251d99
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
