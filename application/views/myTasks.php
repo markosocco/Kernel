@@ -311,7 +311,7 @@
 		              <div class="modal-body">
 										<h3 id ="delayed" style="color:red">Task is Delayed</h3>
 										<h4 id ="early">Are you sure this task is done?</h4>
-										<form id = "doneForm" action="loadTasks()" method="POST">
+										<form id = "doneForm" action="myTasks" method="POST">
 											<div class="form-group">
 												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 											</div>
@@ -355,14 +355,14 @@
 		 $(document).ready(function() {
 
 			 // MARK TASK AS DONE
-			 $(".doneBtn").click(function(){
+			 $("body").on('click','.doneBtn',function(){
 				 $("#remarks").val("");
 				 var $id = $(this).attr('data-id');
 				 var $title = $(this).attr('data-title');
 				 $("#doneTitle").html($title);
 				 $("#doneConfirm").attr("data-id", $id); //pass data id to confirm button
 				 var isDelayed = $(this).attr('data-delay'); // 1 = delayed
-				 if(isDelayed != "1")
+				 if(isDelayed == 'false')
 				 {
 					 $("#delayed").hide();
 					 $("#early").show();
@@ -379,7 +379,7 @@
 				 $("#doneModal").modal("show");
 			 });
 
-			 $("#doneConfirm").click(function(){
+			 $("body").on('click','#doneConfirm',function(){
 				 var $id = $("#doneConfirm").attr('data-id');
 				 $("#doneForm").attr("name", "formSubmit");
 				 $("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
@@ -399,13 +399,13 @@
 					 dataType: 'json',
 					 success:function(data)
 					 {
-						 var html;
+						 var table;
 						 console.log(data);
 						 for(i=0; i<data['tasks'].length; i++)
  						 {
  							 // console.log(data['tasks'][i].currentDate);
  						 	var taskDuration = parseInt(data['tasks'][i].taskDuration)+1;
- 							 html += "<tr>" +
+ 							 table += "<tr>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
  														"<td>" + data['tasks'][i].TASKSTARTDATE+"</td>"+
@@ -415,12 +415,12 @@
 								// DELEGATE BUTTON
  								if(data['tasks'][i].users_USERID == '4' && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
 								{
-									html+='<td align="center"><button type="button" class="btn btn-primary btn-sm"' +
+									table+='<td align="center"><button type="button" class="btn btn-primary btn-sm"' +
 												'data-toggle="modal" data-target="#modal-delegate">' +
 												'<i class="fa fa-users"></i> Delegate</button></td>';
 								}
 								else
-									html+= '<td></td>';
+									table+= '<td></td>';
 
 								// RFC & DONE BUTTON
 								if(data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE) //SHOW BUTTON IF ONOGING TASK
@@ -428,27 +428,29 @@
 									// console.log(data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE);
 
 									// RFC
-									html+= '<td align="center"><button type="button"' +
+									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
 									'data-target="#modal-request"><i class="fa fa-exclamation"></i>' +
 									' RFC</button></td>';
 
+									var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
+									console.log(isDelayed);
 									// DONE
-									html+= '<td align="center"><button type="button"' +
+									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
 									'data-target="#modal-done" data-id="' + data['tasks'][i].TASKID +
 									'" data-title="' + data['tasks'][i].TASKTITLE + '"' +
-									'data-delay="' + data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE + '">' +
+									'data-delay="' + isDelayed + '">' +
 									'<i class="fa fa-check"></i> Done</button></td>';
 								}
 								else
-									html+= '<td></td>' + '<td></td>';
+									table+= '<td></td>' + '<td></td>';
 					 		}
-							$('#taskTable').html(html);
+							$('#taskTable').html(table);
 						},
 						error:function()
 						{
-							alert("Sorry. I'm trying AJAX. -Andre'")
+							alert("Sorry. I'm trying AJAX")
 						}
 				 });
 			 }

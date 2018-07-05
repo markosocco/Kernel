@@ -429,5 +429,13 @@ public function addProject($data)
 
     return $this->db->get()->result_array();
   }
+
+  public function updateTaskStatus($currentDate){
+    $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Ongoing';";
+    $this->db->set('TASKSTATUS', 'Ongoing');
+    $this->db->set('TASKACTUALSTARTDATE', $currentDate);
+    $this->db->where($condition);
+    $this->db->update('tasks');
+  }
 }
 ?>

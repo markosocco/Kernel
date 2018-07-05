@@ -9,7 +9,10 @@
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
-					<h1><?php echo $projectProfile['PROJECTTITLE']; ?></h1>
+					<h1>
+						<?php echo $projectProfile['PROJECTTITLE']; ?>
+							<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
+					</h1>
 
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
@@ -49,9 +52,14 @@
 
 						<a name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
 
-						<a name="PROJECTID_logs" class="btn btn-success btn-xs" id="projectLog"><i class="fa fa-folder"></i> View Logs</a>
+						<a name="PROJECTID_logs" class="btn btn-success btn-xs" id="projectLog"><i class="fa fa-flag"></i> View Logs</a>
 
-						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-edit"></i> Edit Project</a>
+						<a name="" class="btn btn-default btn-xs" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
+
+						<a name="" class="btn btn-default btn-xs" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+
+						<a name="" class="btn btn-danger btn-xs" id="deleteProject"><i class="fa fa-remove"></i> Delete Project</a>
+
 					</div>
 					<div style="position: relative" class="gantt" id="GanttChartDIV"></div>
 
