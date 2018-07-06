@@ -14,6 +14,31 @@
 				</h1>
 			</section>
 
+			<table id="logsList" class="table table-bordered table-hover">
+				<tbody>
+					<th>Project Title</th>
+					<th>Task</th>
+					<th>Task End Date</th>
+					<?php
+						foreach ($delayedTaskPerUser as $row) {
+							echo "<tr>";
+								echo "<td>" . $row['PROJECTTITLE'] . "</td>";
+								echo "<td>" . $row['TASKTITLE'] . "</td>";
+								echo "<td>" . $row['TASKENDDATE'] . "</td>";
+							echo "</tr>";
+						}
+
+						foreach ($tasks3DaysBeforeDeadline as $data) {
+							echo "<tr>";
+								echo "<td>" . $data['PROJECTTITLE'] . "</td>";
+								echo "<td>" . $data['TASKTITLE'] . "</td>";
+								echo "<td>" . $data['TASKENDDATE'] . "</td>";
+							echo "</tr>";
+						}
+					?>
+				</tbody>
+			</table>
+
 		</div>
 
 		<?php require("footer.php"); ?>
