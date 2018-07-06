@@ -381,10 +381,7 @@ class model extends CI_Model
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
   // TODO: edit condition
-=======
->>>>>>> 9496b63b75fc2390257abf738c1b2b49e2251d99
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
