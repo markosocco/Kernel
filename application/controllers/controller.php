@@ -134,7 +134,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("dashboard");
+			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksPerUser();
+			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
+			$this->load->view("dashboard", $data);
 		}
 	}
 
@@ -212,11 +214,9 @@ class controller extends CI_Controller
 					$filter = "users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
 					break;
 
-				case '2':
-					$filter = "usertype_USERTYPEID = '3'";
+				default:
+					$filter = "departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 					break;
-
-				default: $filter = ""; break;
 			}
 
 			$data['deptEmployees'] = $this->model->getAllUsersByDepartment($filter);
