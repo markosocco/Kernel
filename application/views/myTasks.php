@@ -37,9 +37,9 @@
 											<th>Start Date</th>
 											<th>Target End Date</th>
 											<th>Period <small>(Day/s)</small></th>
-											<th></th>
-											<th></th>
-											<th></th>
+											<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+											<th><i class="fa fa-warning" style="margin-left:50%"></i></th>
+											<th><i class="fa fa-check" style="margin-left:50%"></i></th>
 										</tr>
 										</thead>
 										<tbody id="taskTable">
@@ -441,9 +441,9 @@
  							 table += "<tr>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
- 														"<td>" + taskStart +"</td>"+
- 														"<td>" + taskEnd +"</td>"+
- 														"<td>" + taskDuration+"</td>";
+ 														"<td align='center'>" + taskStart +"</td>"+
+ 														"<td align='center'>" + taskEnd +"</td>"+
+ 														"<td align='center'>" + taskDuration+"</td>";
 
 								// DELEGATE BUTTON
  								if(data['tasks'][i].users_USERID == '4' && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
@@ -466,7 +466,7 @@
 									// RFC
 									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
-									'data-target="#modal-request"><i class="fa fa-exclamation"></i>' +
+									'data-target="#modal-request"><i class="fa fa-warning"></i>' +
 									' RFC</button></td>';
 
 									var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;

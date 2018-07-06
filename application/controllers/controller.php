@@ -787,7 +787,7 @@ class controller extends CI_Controller
 
 			// $this->load->view("dashboard", $data);
 			// redirect('controller/projectGantt');
-			$this->load->view("projectGantt", $data);
+			$this->load->view("scheduleTasks", $data);
 	}
 
 	public function uploadDocument()

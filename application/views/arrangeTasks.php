@@ -1,7 +1,6 @@
 <html>
 	<head>
-		<title>Kernel - Add Sub Activity</title>
-
+		<title>Kernel - Add Sub Activities</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
@@ -157,8 +156,8 @@
 
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success">Previous: Main Activities</button>
-									<button type="submit" class="btn btn-success pull-right" id="ganttChart">Next: Generate Gantt chart</button>
+									<button type="button" class="btn btn-success">Previous: Add Main Activities</button>
+									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks">Next: Add Tasks</button>
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button> -->
 								</div>
 								</form>
