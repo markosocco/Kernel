@@ -69,6 +69,9 @@ class controller extends CI_Controller
 				$sessionData = $this->model->getUserData($data);
 				$this->session->set_userdata($sessionData);
 
+				// $notificationsData = $this->model->getAllNotificationsByUser();
+				// $this->session->set_userdata('notificationsData', $notificationsData);
+
 				$currentDate = date('Y-m-d');
 
 				$this->model->updateTaskStatus($currentDate);
@@ -134,7 +137,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksPerUser();
+			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
 			$this->load->view("dashboard", $data);
 		}
@@ -311,7 +314,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("documents");
+
+			$data['documents'] = $this->model->getAllDocuments();
+			$this->load->view("documents", $data);
 		}
 	}
 
@@ -463,9 +468,10 @@ class controller extends CI_Controller
 			$this->session->set_flashdata('projectID', $id);
 			// $id = $this->input->get("id");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
+			// WHAT IS HAPPENING :(( HAHAHAHAH
+			$data['documents'] = $this->model->getAllDocumentsByProject($id);
 
 			$this->load->view("projectDocuments", $data);
-			// echo $id;
 		}
 	}
 
@@ -825,8 +831,6 @@ class controller extends CI_Controller
 			$user = $_SESSION['USERID'];
 			$fileName = $this->upload->data('file_name');
 			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
-
-			// echo $id;
 
 			$uploadData = array(
 				'DOCUMENTSTATUS' => 'Uploaded',

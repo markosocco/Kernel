@@ -14,6 +14,7 @@
 				</h1>
 			</section>
 
+			<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
 			<table id="logsList" class="table table-bordered table-hover">
 				<tbody>
 					<th>Project Title</th>
@@ -41,7 +42,7 @@
 					?>
 				</tbody>
 			</table>
-
+		<?php endif;?>
 		</div>
 
 		<?php require("footer.php"); ?>
