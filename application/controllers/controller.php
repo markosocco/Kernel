@@ -134,7 +134,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("dashboard");
+			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksPerUser();
+			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
+			$this->load->view("dashboard", $data);
 		}
 	}
 
@@ -785,7 +787,7 @@ class controller extends CI_Controller
 
 			// $this->load->view("dashboard", $data);
 			// redirect('controller/projectGantt');
-			$this->load->view("projectGantt", $data);
+			$this->load->view("scheduleTasks", $data);
 	}
 
 	public function uploadDocument()

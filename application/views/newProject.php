@@ -69,7 +69,7 @@
 
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-forward"></i> Next: Add tasks</button>
+                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-forward"></i> Next: Add Main Activities</button>
               </div>
             </form>
           </div>

@@ -99,7 +99,7 @@
 		            <!-- /.box-body -->
 								<div class="box-footer">
 									<button type="button" class="btn btn-success">Previous: Project details</button>
-									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Arrange tasks</button>
+									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Add Sub Activities</button>
 									<button type="button" class="btn btn-primary pull-right" style="margin-right: 15%"><i class="fa fa-file-excel-o"></i> Import Spreadsheet File</button>
 									<button type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-window-maximize"></i> Use a Template</button>
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button> -->

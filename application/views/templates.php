@@ -13,10 +13,6 @@
 				<h1>
 					Templates
 					<small>What are the projects I can replicate?</small>
-<<<<<<< HEAD
-=======
-					<!-- <small>What are the sample project models?</small> -->
->>>>>>> 9496b63b75fc2390257abf738c1b2b49e2251d99
 				</h1>
 			</section>
 
