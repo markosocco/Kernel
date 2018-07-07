@@ -37,17 +37,11 @@
 											<th>Start Date</th>
 											<th>Target End Date</th>
 											<th>Period <small>(Day/s)</small></th>
-<<<<<<< HEAD
-											<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
+												<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+											<?php endif;?>
 											<th><i class="fa fa-warning" style="margin-left:50%"></i></th>
 											<th><i class="fa fa-check" style="margin-left:50%"></i></th>
-=======
-											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-												<th></th>
-											<?php endif;?>
-											<th></th>
-											<th></th>
->>>>>>> 03e403603e1b4e9ee586662c6ec883c59555c9aa
 										</tr>
 										</thead>
 										<tbody id="taskTable">
@@ -428,7 +422,7 @@
 			 });
 
 			 $("body").on('click','.radioEmp',function(){
-8			 });
+			 });
 
 		 });
 
