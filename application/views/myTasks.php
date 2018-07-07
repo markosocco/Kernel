@@ -130,17 +130,17 @@
 											<div class="box-header" style="display:inline-block">
 												<h3 class="box-title">
 													<div class="btn-group">
-														<button type="button" class="btn btn-default btn-sm" id="responsible">Responsible</button>
-														<button type="button" class="btn btn-default btn-sm" id="accountable">Accountable</button>
-														<button type="button" class="btn btn-default btn-sm" id="consulted">Consulted</button>
-														<button type="button" class="btn btn-default btn-sm" id="informed">Informed</button>
+														<button type="button" class="btn btn-default btn-sm raciBtn" id="responsible">Responsible</button>
+														<button type="button" class="btn btn-default btn-sm raciBtn" id="accountable">Accountable</button>
+														<button type="button" class="btn btn-default btn-sm raciBtn" id="consulted">Consulted</button>
+														<button type="button" class="btn btn-default btn-sm raciBtn" id="informed">Informed</button>
 													</div>
 
 												</h3>
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body">
-												<div class="form-group responsibleDiv">
+												<div class="form-group" id = "responsibleDiv">
 
 													<select id = "depts" class="form-control" name = "department[]" align="center" required>
 													<option disabled selected value> -- Select Department -- </option>
@@ -153,9 +153,8 @@
 
 													<?php endforeach; ?>
 													</select>
-												</div>
 
-												<table id="teamList" class="table table-bordered table-hover">
+												<table id="responsibleList" class="table table-bordered table-hover">
 													<thead>
 													<tr>
 														<th></th>
@@ -182,6 +181,48 @@
 													</tbody>
 												</table>
 											</div>
+
+											<div class="form-group" id = "accountableDiv">
+
+												<select id = "depts" class="form-control" name = "department[]" align="center" required>
+												<option disabled selected value> -- Select Department -- </option>
+
+												<?php foreach ($departments as $row): ?>
+
+													<option>
+														<?php echo $row['DEPARTMENTNAME']; ?>
+													</option>
+
+												<?php endforeach; ?>
+												</select>
+
+											<table id="accountableList" class="table table-bordered table-hover">
+												<thead>
+												<tr>
+													<th></th>
+													<th>Name</th>
+													<th align="center">No. of Projects</th>
+													<th align="center">Progress</th>
+													<th></th>
+												</tr>
+												</thead>
+												<tbody>
+													<?php foreach($wholeDept as $employee):?>
+														<tr>
+															<td><div class="radio">
+																<label>
+																	<input class = "radioEmp" type="radio" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																</label>
+															</div></td>
+															<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
+															<td align="center">N</td>
+															<td align="center">N%</td>
+															<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+														</tr>
+													<?php endforeach;?>
+												</tbody>
+											</table>
+										</div>
 											<!-- /.box-body -->
 										</div>
 
@@ -422,6 +463,30 @@
 			 });
 
 			 $("body").on('click','.radioEmp',function(){
+			 });
+
+			 $("#responsible").on("click", function(){
+				 $(".raciBtn").removeClass('active');
+				 $(this).addClass("active");
+
+			 });
+
+			 $("#accountable").on("click", function(){
+				 $(".raciBtn").removeClass('active');
+				 $(this).addClass("active");
+				 $("#responsibleDiv").hide();
+			 });
+
+			 $("#consulted").on("click", function(){
+				 $(".raciBtn").removeClass('active');
+				 $(this).addClass("active");
+
+			 });
+
+			 $("#informed").on("click", function(){
+				 $(".raciBtn").removeClass('active');
+				 $(this).addClass("active");
+
 			 });
 
 		 });
