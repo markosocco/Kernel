@@ -19,12 +19,14 @@
 					<th>Project Title</th>
 					<th>Task</th>
 					<th>Task End Date</th>
+					<th>Status</th>
 					<?php
 						foreach ($delayedTaskPerUser as $row) {
-							echo "<tr>";
+							echo "<tr style='color:red'>";
 								echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 								echo "<td>" . $row['TASKTITLE'] . "</td>";
 								echo "<td>" . $row['TASKENDDATE'] . "</td>";
+								echo "<td> DELAYED </td>";
 							echo "</tr>";
 						}
 
@@ -33,6 +35,7 @@
 								echo "<td>" . $data['PROJECTTITLE'] . "</td>";
 								echo "<td>" . $data['TASKTITLE'] . "</td>";
 								echo "<td>" . $data['TASKENDDATE'] . "</td>";
+								echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
 							echo "</tr>";
 						}
 					?>

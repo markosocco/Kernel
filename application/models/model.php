@@ -381,10 +381,6 @@ class model extends CI_Model
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-=======
-  // TODO: edit condition
->>>>>>> 03e403603e1b4e9ee586662c6ec883c59555c9aa
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
@@ -456,7 +452,7 @@ class model extends CI_Model
 
   public function getDelayedTasksPerUser()
   {
-    $condition = "tasks.TASKENDDATE <= CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];
+    $condition = "tasks.TASKENDDATE < CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -471,7 +467,7 @@ class model extends CI_Model
   {
     $condition = "TASKSTATUS = 'Ongoing' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 3
     AND DATEDIFF(TASKENDDATE, CURDATE()) >= 0 AND raci.users_USERID = " . $_SESSION['USERID'];
-    $this->db->select('*');
+    $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS TASKDATEDIFF');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
