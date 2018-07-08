@@ -356,7 +356,7 @@ class controller extends CI_Controller
 			$data = array(
 				'REQUESTTYPE' => $this->input->post("rfcType"),
 				'tasks_TASKID' => $this->input->post("task_ID"),
-				'REQUESTDETAILS' => $this->input->post("reason"),
+				'REASON' => $this->input->post("reason"),
 				'REQUESTSTATUS' => "Pending",
 				'users_REQUESTEDBY' => $_SESSION['USERID'],
 				'REQUESTEDDATE' => date('Y-m-d')
@@ -367,12 +367,12 @@ class controller extends CI_Controller
 			$data = array(
 				'REQUESTTYPE' => $this->input->post("rfcType"),
 				'tasks_TASKID' => $this->input->post("task_ID"),
-				'REQUESTDETAILS' => $this->input->post("reason"),
+				'REASON' => $this->input->post("reason"),
 				'REQUESTSTATUS' => "Pending",
 				'users_REQUESTEDBY' => $_SESSION['USERID'],
 				'REQUESTEDDATE' => date('Y-m-d'),
-				'REQUESTSTARTDATE' => $this->input->post("startDate"),
-				'REQUESTENDDATE' => $this->input->post("endDate"),
+				'NEWSTARTDATE' => $this->input->post("startDate"),
+				'NEWENDDATE' => $this->input->post("endDate"),
 			);
 		}
 		$this->model->addRFC($data);
