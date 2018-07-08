@@ -38,33 +38,38 @@
 									<label>Project Details</label>
 									<textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
                 </div>
-								<div class="form-group">
-	                <label>Start Date</label>
 
-	                <div class="input-group date">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-calendar"></i>
-	                  </div>
-	                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
-	                </div>
-	                <!-- /.input group -->
-	              </div>
-	              <!-- /.form group -->
-	              <div class="form-group">
-	                <label>Target End Date</label>
+								<div class="row">
+					        <div class="col-md-4">
+										<div class="form-group">
+			                <label>Start Date</label>
+			                <div class="input-group date">
+			                  <div class="input-group-addon">
+			                    <i class="fa fa-calendar"></i>
+			                  </div>
+			                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
+			                </div>
+			              </div>
+									</div>
 
-	                <div class="input-group date">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-calendar"></i>
-	                  </div>
-	                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
-	                </div>
-	                <!-- /.input group -->
-	              </div>
+									<div class="col-md-4">
+			              <div class="form-group">
+			                <label>Target End Date</label>
+			                <div class="input-group date">
+			                  <div class="input-group-addon">
+			                    <i class="fa fa-calendar"></i>
+			                  </div>
+			                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
+			                </div>
+			              </div>
+									</div>
 
-								<div class="form-group">
-									<label for="projectperiod">Project Period</label>
-									<input type="text" class="form-control" id="projectPeriod" name="projectTitle" placeholder="" disabled>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="projectperiod">Project Period</label>
+											<input type="text" class="form-control" id="projectPeriod" name="projectTitle" placeholder="" disabled>
+										</div>
+									</div>
 								</div>
 
 

@@ -405,7 +405,6 @@
 		  </div>
 			<?php require("footer.php"); ?>
 
-
 		</div>
 		<!-- ./wrapper -->
 
