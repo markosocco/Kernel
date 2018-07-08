@@ -61,10 +61,10 @@
 		                <h4 class="modal-title">Request for Change</h4>
 		              </div>
 		              <div class="modal-body">
-		                <form>
+		                <form id = "requestForm" action = "submitRFC" method = "POST">
 											<div class="form-group">
 			                  <label>Request Type</label>
-			                  <select class="form-control" id="rfcType">
+			                  <select class="form-control" id="rfcType" name="rfcType">
 													<option disabled selected value> -- Select Request Type -- </option>
 			                    <option value="1">Change Task Performer</option>
 			                    <option value="0">Change Task Dates</option>
@@ -75,25 +75,25 @@
 											<!-- DISPLAY IF CHANGE TASK DATE OPTION -->
 											<div id ="newDateDiv">
 											<div class="form-group">
-				                <label>New Start Date</label>
+				                <label class ="start">New Start Date</label>
 
-				                <div class="input-group date">
+				                <div class="input-group date start">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-calendar"></i>
 				                  </div>
-				                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
+				                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" >
 				                </div>
 				                <!-- /.input group -->
 				              </div>
 				              <!-- /.form group -->
 				              <div class="form-group">
-				                <label>New Target End Date</label>
+				                <label class="end">New Target End Date</label>
 
-				                <div class="input-group date">
+				                <div class="input-group date end">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-calendar"></i>
 				                  </div>
-				                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
+				                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" >
 				                </div>
 				                <!-- /.input group -->
 				              </div>
@@ -102,15 +102,15 @@
 											<!-- DISPLAY ON BOTH OPTIONS -->
 											<div class="form-group">
 			                  <label>Reason</label>
-			                  <textarea id="rfcReason" class="form-control" placeholder="State your reason here" required></textarea>
+			                  <textarea id="rfcReason" class="form-control" name = "reason" placeholder="State your reason here" required></textarea>
 			                </div>
-										</form>
 									</div>
 
 		              <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-		                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Submit Request</button>
+		                <button type="submit" class="btn btn-success" id="rfcSubmit" data-date=""><i class="fa fa-check"></i> Submit Request</button>
 		              </div>
+								</form>
 								</div>
 		            </div>
 		            <!-- /.modal-content -->
@@ -475,6 +475,7 @@
  	     $('#endDate').datepicker({
 				 format: 'yyyy-mm-dd',
  	       autoclose: true,
+				 startDate: new Date(),
 				 orientation: 'bottom'
  	     })
 		 });
@@ -542,6 +543,8 @@
 					 $("#rfcType").val("");
 					 $("#rfcReason").val("");
 					 $("#rfcForm").hide();
+					 $("#startDate").val("");
+					 $("#endDate").val("");
 				 }
 			 });
 
@@ -590,13 +593,43 @@
 					 $("#rfcForm").show();
 					 $("#newDateDiv").hide();
 					 $("#rfcReason").show();
+					 $("#startDate").attr("required", false);
+					 $("#endDate").attr("required", false);
 				 }
 				 else // if Change Task Dates is selected
 				 {
 					 $("#rfcForm").show();
 					 $("#newDateDiv").show();
 					 $("#rfcReason").show();
+
+					 if($("#rfcSubmit").attr('data-date') == 'true') // IF TASK IS ONGOING
+					 {
+						 $(".start").hide();
+						 $("#endDate").attr("required", true);
+					 }
+					 else
+					 {
+						 $(".start").show();
+						 $(".end").show();
+						 $("#startDate").attr("required", true);
+						 $("#endDate").attr("required", true);
+					 }
 				 }
+			 });
+
+			 $("body").on('click','.rfcBtn',function()
+			 {
+				 var $id = $(this).attr('data-id');
+				 var $date = $(this).attr('data-date');
+				 $("#rfcSubmit").attr("data-id", $id); //pass data id to confirm button
+				 $("#rfcSubmit").attr("data-date", $date); //pass data date boolean to confirm button
+			 });
+
+			 $("#rfcSubmit").click(function()
+			 {
+				 var $id = $(this).attr('data-id');
+				 $("#requestForm").attr("name", "formSubmit");
+				 $("#requestForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 			 });
 
 		 });
@@ -649,12 +682,15 @@
 									table+= '<td></td>';
 
 								// RFC & DONE BUTTON
-								if(data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE) //SHOW BUTTON IF ONOGING TASK
+								if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONOGING PROJECT
 								{
+									var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING
+
 									// RFC
 									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
-									'data-target="#modal-request"><i class="fa fa-warning"></i>' +
+									'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
+									'" data-date="' + newDate + '"><i class="fa fa-warning"></i>' +
 									' RFC</button></td>';
 
 									if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment

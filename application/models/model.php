@@ -370,6 +370,12 @@ class model extends CI_Model
     $this->db->update('raci', $data);
   }
 
+  public function addRFC($data)
+  {
+    $this->db->insert('changerequests', $data);
+    return true;
+  }
+
   public function getProjectLogs($id)
   {
     $condition = "projects_PROJECTID = " . $id;
