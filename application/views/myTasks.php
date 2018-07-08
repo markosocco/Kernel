@@ -21,39 +21,34 @@
 
 				<!-- Main content -->
 				<section class="content container-fluid">
-					<!-- <div id="filterButtons">
-						<h5>Arrange by</h5>
-					</div> -->
-							<div class="box">
-								<div class="box-header">
-								</div>
-								<!-- /.box-header -->
-								<div class="box-body">
-									<table id="taskList" class="table table-bordered table-hover">
-										<thead>
-										<tr>
-											<th>Task</th>
-											<th>Project</th>
-											<th>Start Date</th>
-											<th>Target End Date</th>
-											<th>Period <small>(Day/s)</small></th>
-											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-												<th><i class="fa fa-users" style="margin-left:50%"></i></th>
-											<?php endif;?>
-											<th><i class="fa fa-warning" style="margin-left:50%"></i></th>
-											<th><i class="fa fa-check" style="margin-left:50%"></i></th>
-										</tr>
-										</thead>
-										<tbody id="taskTable">
+					<div class="box">
+						<div class="box-header">
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<table id="taskList" class="table table-bordered table-hover">
+								<thead>
+								<tr>
+									<th>Task</th>
+									<th>Project</th>
+									<th>Start Date</th>
+									<th>Target End Date</th>
+									<th>Period <small>(Day/s)</small></th>
+									<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
+										<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+									<?php endif;?>
+									<th><i class="fa fa-warning" style="margin-left:50%"></i></th>
+									<th><i class="fa fa-check" style="margin-left:50%"></i></th>
+								</tr>
+								</thead>
+								<tbody id="taskTable">
 
-										</tbody>
-									</table>
-								</div>
-								<!-- /.box-body -->
-							</div>
-							<!-- /.box -->
-
-		        </div>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
 
 						<!-- RFC MODAL -->
 						<div class="modal fade" id="modal-request" tabindex="-1">
@@ -66,15 +61,16 @@
 		                <form>
 											<div class="form-group">
 			                  <label>Request Type</label>
-			                  <select class="form-control">
+			                  <select class="form-control" id="rfcType">
 													<option disabled selected value> -- Select Request Type -- </option>
-			                    <option>Change Task Performer</option>
-			                    <option>Change Task Dates</option>
+			                    <option value="1">Change Task Performer</option>
+			                    <option value="0">Change Task Dates</option>
 			                  </select>
 			                </div>
 
+									<div id="rfcForm">
 											<!-- DISPLAY IF CHANGE TASK DATE OPTION -->
-											<!-- IF()...AJAX? -->
+											<div id ="newDateDiv">
 											<div class="form-group">
 				                <label>New Start Date</label>
 
@@ -98,18 +94,21 @@
 				                </div>
 				                <!-- /.input group -->
 				              </div>
+										</div>
 
 											<!-- DISPLAY ON BOTH OPTIONS -->
-											<div class="form-group">
+											<div class="form-group" id="rfcReason">
 			                  <label>Reason</label>
-			                  <textarea class="form-control" placeholder="State your reason here"></textarea>
+			                  <textarea class="form-control" placeholder="State your reason here" required></textarea>
 			                </div>
 										</form>
-		              </div>
+									</div>
+
 		              <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
 		                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Submit Request</button>
 		              </div>
+								</div>
 		            </div>
 		            <!-- /.modal-content -->
 		          </div>
@@ -125,6 +124,7 @@
 										<h2 class="modal-title taskTitle">Task Name</h2>
 										<h4 class="taskDates">Start Date - End Date (Days)</h4>
 									</div>
+
 									<div class="modal-body">
 										<div class="box">
 											<div class="box-header" style="display:inline-block">
@@ -135,13 +135,14 @@
 														<button type="button" class="btn btn-default btn-sm raciBtn" id="consulted">Consulted</button>
 														<button type="button" class="btn btn-default btn-sm raciBtn" id="informed">Informed</button>
 													</div>
-
 												</h3>
 											</div>
 											<!-- /.box-header -->
-											<div class="box-body">
-												<div class="form-group raciDiv" id = "responsibleDiv">
 
+											<div class="box-body">
+
+												<!-- RESPONSIBLE DIV -->
+												<div class="form-group raciDiv" id = "responsibleDiv">
 												<table id="responsibleList" class="table table-bordered table-hover">
 													<thead>
 													<tr>
@@ -170,13 +171,13 @@
 												</table>
 											</div>
 
+											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
-
 												<table id="accountableList1" class="table table-bordered table-hover">
 													<thead>
 													<tr>
 														<th></th>
-														<th>Department</th>
+														<th>Department Name</th>
 													</tr>
 													</thead>
 													<tbody>
@@ -221,13 +222,13 @@
 											</table>
 										</div>
 
+										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
-
 											<table id="consultedList1" class="table table-bordered table-hover">
 												<thead>
 												<tr>
 													<th></th>
-													<th>Department</th>
+													<th>Department Name</th>
 												</tr>
 												</thead>
 												<tbody>
@@ -272,13 +273,13 @@
 										</table>
 									</div>
 
+									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
-
 									<table id="informedList1" class="table table-bordered table-hover">
 										<thead>
 										<tr>
 											<th></th>
-											<th>Department</th>
+											<th>Department Name</th>
 										</tr>
 										</thead>
 										<tbody>
@@ -322,22 +323,20 @@
 										</tbody>
 									</table>
 								</div>
-
 											<!-- /.box-body -->
 										</div>
-
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
 										<button type="button" class="btn btn-success" id="confirmDelegateBtn" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
 									</div>
 								</div>
+							</div>
 								<!-- /.modal-content -->
 							</div>
 							<!-- /.modal-dialog -->
 						</div>
 						<!-- /.modal -->
-
 
 						<!-- CONFIRM MODAL -->
 						<div class="modal fade" id="modal-delegateConfirm">
@@ -406,8 +405,6 @@
 											<!-- /.box-body -->
 										</div>
 										<!-- /.box -->
-
-
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-right" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -441,23 +438,25 @@
 				              </div>
 										</form>
 		              </div>
-
 		            </div>
 		            <!-- /.modal-content -->
 		          </div>
 		          <!-- /.modal-dialog -->
 		        </div>
 		        <!-- /.modal -->
+
 				</section>
+			</div>
 				<?php require("footer.php"); ?>
-					</div>
 		</div>
+
 		<script>
 			$("#myTasks").addClass("active");
 			$('.select2').select2();
 			$("#responsible").addClass("active");
 			$(".raciDiv").hide();
 			$("#responsibleDiv").show();
+			$("#rfcForm").hide();
 
 			$(function ()
 			{
@@ -503,7 +502,6 @@
 					 $("#remarks").attr("required", true);
 					 $("#remarks").attr("placeholder", "Why were you not able to accomplish the task before the target date?");
 				 }
-				 // $("#doneModal").modal("show");
 			 });
 
 			 $("body").on('click','#doneConfirm',function(){
@@ -523,14 +521,9 @@
 				 $(".taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 			 });
 
-			 $("#depts").change(function(){
-				 // $(".responsibleDiv").hide();
-			 });
-
 			 $("body").on("click", function(){ // REMOVE ALL SELECTED IN DELEGATE MODAL
 				 if($("#modal-delegate").css("display") == 'none')
 				 {
-					 $("#depts").val("");
 					 $(".radioEmp").prop("checked", false);
 					 $(".raciBtn").removeClass('active');
 					 $("#responsible").addClass("active");
@@ -548,7 +541,6 @@
 				 $(this).addClass("active");
 				 $(".raciDiv").hide();
 				 $("#responsibleDiv").show();
-
 			 });
 
 			 $("#accountable").on("click", function(){
@@ -563,8 +555,6 @@
 				 $(this).addClass("active");
 				 $(".raciDiv").hide();
 				 $("#consultedDiv").show();
-
-
 			 });
 
 			 $("#informed").on("click", function(){
@@ -575,6 +565,22 @@
 			 });
 
 			 $("#confirmDelegateBtn").on("click", function(){
+				 //INSERT AJAX
+			 });
+
+			 $("body").on('change','#rfcType',function(){
+				 if($(this).val() == "1") //if Change Task Performer is selected
+				 {
+					 $("#rfcForm").show();
+					 $("#newDateDiv").hide();
+					 $("#rfcReason").show();
+				 }
+				 else // if Change Task Dates is selected
+				 {
+					 $("#rfcForm").show();
+					 $("#newDateDiv").show();
+					 $("#rfcReason").show();
+				 }
 			 });
 
 		 });
