@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - Add Sub Activities</title>
-		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectTaskStyle.css")?>"> -->
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/addSubsStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -77,7 +77,7 @@
 
 										<tr>
 											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-											<td><?php echo $value['TASKTITLE']; ?></td>
+											<td><b><?php echo $value['TASKTITLE']; ?></b></td>
 											<td>
 												<?php
 
@@ -237,18 +237,6 @@
 						});
 				});
 		 });
-
-		 // var el = document.getElementById('table');
-		 // var dragger = tableDragger(el, {
-		 //   mode: 'row',
-		 //   dragHandler: '.handle',
-		 //   onlyBody: true,
-		 //   animation: 300
-		 // });
-		 // dragger.on('drop',function(from, to){
-		 //   console.log(from);
-		 //   console.log(to);
-		 // });
 		</script>
 
 	</body>
