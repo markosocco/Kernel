@@ -140,19 +140,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body">
-												<div class="form-group" id = "responsibleDiv">
-
-													<select id = "depts" class="form-control" name = "department[]" align="center" required>
-													<option disabled selected value> -- Select Department -- </option>
-
-													<?php foreach ($departments as $row): ?>
-
-														<option>
-															<?php echo $row['DEPARTMENTNAME']; ?>
-														</option>
-
-													<?php endforeach; ?>
-													</select>
+												<div class="form-group raciDiv" id = "responsibleDiv">
 
 												<table id="responsibleList" class="table table-bordered table-hover">
 													<thead>
@@ -182,21 +170,30 @@
 												</table>
 											</div>
 
-											<div class="form-group" id = "accountableDiv">
+											<div class="form-group raciDiv" id = "accountableDiv">
 
-												<select id = "depts" class="form-control" name = "department[]" align="center" required>
-												<option disabled selected value> -- Select Department -- </option>
+												<table id="accountableList1" class="table table-bordered table-hover">
+													<thead>
+													<tr>
+														<th></th>
+														<th>Department</th>
+													</tr>
+													</thead>
+													<tbody>
+														<?php foreach($departments as $dept):?>
+															<tr>
+																<td><div class="radio">
+																	<label>
+																		<input class = "checkDept" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																	</label>
+																</div></td>
+																<td><?php echo $dept['DEPARTMENTNAME'];?></td>
+															</tr>
+														<?php endforeach;?>
+													</tbody>
+												</table>
 
-												<?php foreach ($departments as $row): ?>
-
-													<option>
-														<?php echo $row['DEPARTMENTNAME']; ?>
-													</option>
-
-												<?php endforeach; ?>
-												</select>
-
-											<table id="accountableList" class="table table-bordered table-hover">
+											<table id="accountableList2" class="table table-bordered table-hover">
 												<thead>
 												<tr>
 													<th></th>
@@ -211,7 +208,7 @@
 														<tr>
 															<td><div class="radio">
 																<label>
-																	<input class = "radioEmp" type="radio" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																	<input class = "checkEmp" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
 																</label>
 															</div></td>
 															<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -223,13 +220,116 @@
 												</tbody>
 											</table>
 										</div>
+
+										<div class="form-group raciDiv" id = "consultedDiv">
+
+											<table id="consultedList1" class="table table-bordered table-hover">
+												<thead>
+												<tr>
+													<th></th>
+													<th>Department</th>
+												</tr>
+												</thead>
+												<tbody>
+													<?php foreach($departments as $dept):?>
+														<tr>
+															<td><div class="radio">
+																<label>
+																	<input class = "checkDept" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																</label>
+															</div></td>
+															<td><?php echo $dept['DEPARTMENTNAME'];?></td>
+														</tr>
+													<?php endforeach;?>
+												</tbody>
+											</table>
+
+										<table id="consultedList2" class="table table-bordered table-hover">
+											<thead>
+											<tr>
+												<th></th>
+												<th>Name</th>
+												<th align="center">No. of Projects</th>
+												<th align="center">Progress</th>
+												<th></th>
+											</tr>
+											</thead>
+											<tbody>
+												<?php foreach($wholeDept as $employee):?>
+													<tr>
+														<td><div class="radio">
+															<label>
+																<input class = "checkEmp" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+															</label>
+														</div></td>
+														<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
+														<td align="center">N</td>
+														<td align="center">N%</td>
+														<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+													</tr>
+												<?php endforeach;?>
+											</tbody>
+										</table>
+									</div>
+
+									<div class="form-group raciDiv" id = "informedDiv">
+
+									<table id="informedList1" class="table table-bordered table-hover">
+										<thead>
+										<tr>
+											<th></th>
+											<th>Department</th>
+										</tr>
+										</thead>
+										<tbody>
+											<?php foreach($departments as $dept):?>
+												<tr>
+													<td><div class="radio">
+														<label>
+															<input class = "checkDept" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+														</label>
+													</div></td>
+													<td><?php echo $dept['DEPARTMENTNAME'];?></td>
+												</tr>
+											<?php endforeach;?>
+										</tbody>
+									</table>
+
+									<table id="informedList2" class="table table-bordered table-hover">
+										<thead>
+										<tr>
+											<th></th>
+											<th>Name</th>
+											<th align="center">No. of Projects</th>
+											<th align="center">Progress</th>
+											<th></th>
+										</tr>
+										</thead>
+										<tbody>
+											<?php foreach($wholeDept as $employee):?>
+												<tr>
+													<td><div class="radio">
+														<label>
+															<input class = "checkEmp" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+														</label>
+													</div></td>
+													<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
+													<td align="center">N</td>
+													<td align="center">N%</td>
+													<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+												</tr>
+											<?php endforeach;?>
+										</tbody>
+									</table>
+								</div>
+
 											<!-- /.box-body -->
 										</div>
 
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
+										<button type="button" class="btn btn-success" id="confirmDelegateBtn" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
 									</div>
 								</div>
 								<!-- /.modal-content -->
@@ -244,7 +344,7 @@
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h4 class="modal-title">Confirmation</h4>
+										<h4 class="modal-title">Delegate Task</h4>
 									</div>
 									<div class="modal-body">
 										<p>Are you sure you want to delegate this task?</p>
@@ -276,34 +376,6 @@
 											<!-- /.box-header -->
 											<div class="box-body table-responsive no-padding">
 												<table class="table table-hover">
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
 													<tr>
 														<td>Poop today</td>
 														<td>80%</td>
@@ -349,7 +421,7 @@
 						<!-- /.modal -->
 
 						<!-- DONE MODAL -->
-						<div id = "doneModal" class="modal fade" id="modal-done" tabindex="-1">
+						<div class="modal fade" id="modal-done" tabindex="-1">
 		          <div class="modal-dialog">
 		            <div class="modal-content">
 		              <div class="modal-header">
@@ -384,7 +456,8 @@
 			$("#myTasks").addClass("active");
 			$('.select2').select2();
 			$("#responsible").addClass("active");
-
+			$(".raciDiv").hide();
+			$("#responsibleDiv").show();
 
 			$(function ()
 			{
@@ -430,7 +503,7 @@
 					 $("#remarks").attr("required", true);
 					 $("#remarks").attr("placeholder", "Why were you not able to accomplish the task before the target date?");
 				 }
-				 $("#doneModal").modal("show");
+				 // $("#doneModal").modal("show");
 			 });
 
 			 $("body").on('click','#doneConfirm',function(){
@@ -459,34 +532,49 @@
 				 {
 					 $("#depts").val("");
 					 $(".radioEmp").prop("checked", false);
+					 $(".raciBtn").removeClass('active');
+					 $("#responsible").addClass("active");
+					 $(".raciDiv").hide();
+					 $("#responsibleDiv").show();
 				 }
 			 });
 
 			 $("body").on('click','.radioEmp',function(){
+
 			 });
 
 			 $("#responsible").on("click", function(){
 				 $(".raciBtn").removeClass('active');
 				 $(this).addClass("active");
+				 $(".raciDiv").hide();
+				 $("#responsibleDiv").show();
 
 			 });
 
 			 $("#accountable").on("click", function(){
 				 $(".raciBtn").removeClass('active');
 				 $(this).addClass("active");
-				 $("#responsibleDiv").hide();
+				 $(".raciDiv").hide();
+				 $("#accountableDiv").show();
 			 });
 
 			 $("#consulted").on("click", function(){
 				 $(".raciBtn").removeClass('active');
 				 $(this).addClass("active");
+				 $(".raciDiv").hide();
+				 $("#consultedDiv").show();
+
 
 			 });
 
 			 $("#informed").on("click", function(){
 				 $(".raciBtn").removeClass('active');
 				 $(this).addClass("active");
+				 $(".raciDiv").hide();
+				 $("#informedDiv").show();
+			 });
 
+			 $("#confirmDelegateBtn").on("click", function(){
 			 });
 
 		 });
