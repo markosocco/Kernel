@@ -37,29 +37,48 @@
 								</tr>
 							</thead>
 							<tbody>
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
 
-								<!-- ARRANGE DOCUMENTS BY UPLOADED ON. MOST RECENT ON TOP -->
-								<tr>
-									<td>1</td>
-									<td>CapEx as of March 34, 2120.ppt</td>
-									<td>New York City</td>
-									<td>Manuel Cabacaba</td>
-									<td>MIS</td>
-									<td>March 36, 2120</td>
-									<td align="center"><button type="button" class="btn btn-success downloadBtn"><i class="fa fa-download"></i> Download</button></td>
-								</tr>
+								<?php
+									foreach ($documents as $row) {
 
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
-								<tr>
-									<td>2</td>
-									<td>CapEx as of March 37, 2120.ppt</td>
-									<td>SM Southmall</td>
-									<td>Manuel Cabacaba</td>
-									<td>MIS</td>
-									<td>March 39, 2120</td>
-									<td align="center"><button type="button" class="btn btn-success downloadBtn"><i class="fa fa-download"></i> Download</button></td>
-								</tr>
+										$dateUploaded = $row['UPLOADEDDATE'];
+										$MonthNum = substr($dateUploaded, 5, 2);
+										$Day = substr($dateUploaded, 8, 2);
+										$Year = substr($dateUploaded, 0, 4);
+										$Month = "";
+
+										switch (intval($MonthNum))
+										{
+											case 1: $Month = 'Jan'; break;
+											case 2: $Month = 'Feb'; break;
+											case 3: $Month = 'Mar'; break;
+											case 4: $Month = 'Apr'; break;
+											case 5: $Month = 'May'; break;
+											case 6: $Month = 'Jun'; break;
+											case 7: $Month = 'Jul'; break;
+											case 8: $Month = 'Aug'; break;
+											case 9: $Month = 'Sep'; break;
+											case 10: $Month = 'Oct'; break;
+											case 11: $Month = 'Nov'; break;
+											case 12: $Month = 'Dec'; break;
+										}
+
+										$formattedDate = $Month . " " . $Day . ", " . $Year;
+
+										echo "<tr>";
+											echo "<td></td>";
+											echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+											echo "<td>" . $row['PROJECTTITLE'] . "</td>";
+											echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+											echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+											echo "<td>" . $formattedDate . "</td>";
+											echo "<td align='center'><button type='button' class='btn btn-success'>
+											<i class='fa fa-download'></i> Download</button></td>";
+
+										echo "</tr>";
+									}
+								?>
+
 							</tbody>
 						</table>
 					</div>

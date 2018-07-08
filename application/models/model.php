@@ -381,10 +381,6 @@ class model extends CI_Model
   }
 
   // GET DATA FOR THE GANTT CHART
-<<<<<<< HEAD
-=======
-  // TODO: edit condition
->>>>>>> 03e403603e1b4e9ee586662c6ec883c59555c9aa
   public function getAllProjectTasks($id)
   {
     $condition = "projects.PROJECTID = " . $id;
@@ -420,6 +416,29 @@ class model extends CI_Model
     return true;
   }
 
+  public function getAllDocuments()
+  {
+    $this->db->select('*');
+    $this->db->from('documents');
+    $this->db->join('projects', 'documents.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'documents.users_UPLOADEDBY = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllDocumentsByProject($id)
+  {
+    $condition = "documents.projects_PROJECTID = " . $id;
+    $this->db->select('*');
+    $this->db->from('documents');
+    $this->db->join('projects', 'documents.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'documents.users_UPLOADEDBY = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+
+    return $this->db->get()->result_array();
+  }
+
   public function insertParentTask($data, $id)
   {
     // $parent = $data['tasks_TASKPARENT'];
@@ -445,6 +464,8 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+
+
   public function updateTaskStatus($currentDate)
   {
     $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Planned';";
@@ -454,9 +475,9 @@ class model extends CI_Model
     $this->db->update('tasks');
   }
 
-  public function getDelayedTasksPerUser()
+  public function getDelayedTasksByUser()
   {
-    $condition = "tasks.TASKENDDATE <= CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];
+    $condition = "tasks.TASKENDDATE < CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -471,7 +492,30 @@ class model extends CI_Model
   {
     $condition = "TASKSTATUS = 'Ongoing' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 3
     AND DATEDIFF(TASKENDDATE, CURDATE()) >= 0 AND raci.users_USERID = " . $_SESSION['USERID'];
+    $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS TASKDATEDIFF');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condition);
+    $this->db->order_by('tasks.TASKENDDATE','ASC');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllNotificationsByUser()
+  {
+    $condition = "status = 'Unread' AND users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*');
+    $this->db->from('notifications');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getTasksWithTomorrowDeadline()
+  {
+    $condition = "TASKSTATUS != 'Complete' AND DATEDIFF(TASKENDDATE, CURDATE()) = 1";
+    $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS TASKDATEDIFF');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
