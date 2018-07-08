@@ -349,6 +349,36 @@ class controller extends CI_Controller
 		$this->myTasks();
 	}
 
+	public function submitRFC()
+	{
+		if($this->input->post("rfcType") == '1')
+		{
+			$data = array(
+				'REQUESTTYPE' => $this->input->post("rfcType"),
+				'tasks_TASKID' => $this->input->post("task_ID"),
+				'REASON' => $this->input->post("reason"),
+				'REQUESTSTATUS' => "Pending",
+				'users_REQUESTEDBY' => $_SESSION['USERID'],
+				'REQUESTEDDATE' => date('Y-m-d')
+			);
+		}
+		else
+		{
+			$data = array(
+				'REQUESTTYPE' => $this->input->post("rfcType"),
+				'tasks_TASKID' => $this->input->post("task_ID"),
+				'REASON' => $this->input->post("reason"),
+				'REQUESTSTATUS' => "Pending",
+				'users_REQUESTEDBY' => $_SESSION['USERID'],
+				'REQUESTEDDATE' => date('Y-m-d'),
+				'NEWSTARTDATE' => $this->input->post("startDate"),
+				'NEWENDDATE' => $this->input->post("endDate"),
+			);
+		}
+		$this->model->addRFC($data);
+		$this->myTasks();
+	}
+
 	public function templates()
 	{
 		if (!isset($_SESSION['EMAIL']))
