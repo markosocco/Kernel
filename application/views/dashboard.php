@@ -14,7 +14,10 @@
 				</h1>
 			</section>
 
-			<button type="button" class="btn btn-primary"><i class="fa fa-download"></i> Test Alert</button>
+			<button id="success" type="button" class="btn btn-success">Test Success</button>
+			<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
+			<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
+			<button id="info" type="button" class="btn btn-info">Test Info</button>
 
 			<!--  -->
 			<div class="col-md-4">
@@ -92,6 +95,21 @@
 
 	<script>
 		$("#dashboard").addClass("active");
+
+		var try = $.notify({
+			// options
+			icon: 'glyphicon glyphicon-star',
+			message: 'Hello World'
+			},{
+			// settings
+			type: 'danger'
+		});
+
+		$(document).ready(function(){
+    $('#trigger').click(function(){
+        $(try).show()
+    	})
+		});
 	</script>
 
 	</body>
