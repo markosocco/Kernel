@@ -99,18 +99,7 @@ class model extends CI_Model
   public function updateTaskDone($id, $data)
   {
     $this->db->where('TASKID', $id);
-
     $result = $this->db->update('tasks', $data);
-
-    if ($result)
-    {
-      return true;
-    }
-
-    else
-    {
-      return false;
-    }
   }
 
   // GETS PROJECT BY ID; RETURNS PROJECT
@@ -236,76 +225,18 @@ class model extends CI_Model
       return $query->result_array();
     }
 
-    // GET ALL TEMPLATES
-      public function getAllTemplates()
-      {
-        $this->db->select('*');
-        $this->db->from('templates');
-        $query = $this->db->get();
-
-        return $query->result_array();
-      }
-
-// CONVERTS MM/DD/YYYY TO YYYY-MM-DD
-  public function convertDateFormat1($oldDate)
-  {
-    $date = str_replace("/", "-", $oldDate);
-    $month = substr($date, 0, 2);
-    $day = substr($date, 3, 2);
-    $year = substr($date, 6, 4);
-    $newDate = $year . "-" . $month . "-" . $day;
-
-    return $newDate;
-  }
-
-  // CONVERTS YYYY-MM-DD TO MM/DD/YYYY
-    public function convertDateFormat2($oldDate)
+  // GET ALL TEMPLATES
+    public function getAllTemplates()
     {
-      $date = str_replace("-", "/", $oldDate);
-      $day = substr($date, 8, 2);
-      $month = substr($date, 5, 2);
-      $year = substr($date, 0, 4);
-      $newDate = $month . "/" . $day . "/" . $year;
+      $this->db->select('*');
+      $this->db->from('templates');
+      $query = $this->db->get();
 
-      return $newDate;
+      return $query->result_array();
     }
-
-// COMPUTE FOR NUMBER OF DAYS, GIVEN A DATE PERIOD
-  public function getDateDiff($data)
-  {
-    // $startDate = $data['PROJECTSTARTDATE'];
-    // $endDate = $data['PROJECTENDDATE'];
-
-    if (isset($data['PROJECTTITLE']))
-    {
-      $sDate = $this->convertDateFormat1($data['PROJECTSTARTDATE']);
-      $eDate = $this->convertDateFormat1($data['PROJECTENDDATE']);
-    }
-
-    else
-    {
-      $sDate = $this->convertDateFormat1($data['sDate']);;
-      $eDate = $this->convertDateFormat1($data['eDate']);;
-    }
-
-    $sql = "SELECT DATEDIFF('" . $eDate . "', '" . $sDate . "') as datediff";
-
-		$data = $this->db->query($sql);
-
-    return $data->row('datediff');
-  }
 
   public function getAllTasksByUser($id)
   {
-    // $condition = "tasks.users_USERID = " . $id . " && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
-    // $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) as "taskDuration"');
-    // $this->db->from('projects');
-    // $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-    // $this->db->where($condition);
-    //
-    // return $this->db->get()->result_array();
-
-
     $condition = "raci.users_USERID = '" . $id . "' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete'";
     $this->db->select('*, CURDATE() as "currentDate", (DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1) as "taskDuration"');
     $this->db->from('tasks');
@@ -316,18 +247,6 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
-
-
-    // $condition = "raci.users_USERID = " . $id;
-    // $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
-    // $this->db->from('tasks');
-    // $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
-    // $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
-    // $this->db->join('users', 'raci.users_USERID = users.USERID');
-    // $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
-    // $this->db->where($condition);
-    // return $this->db->get()->result_array();
-
   }
 
 // GET PRE-REQUISITE ID
@@ -343,15 +262,6 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-
-//   public function getAllDepartments($data)
-//   {
-//     $this->db->select('*');
-//     $this->db->from('departments');
-//     $query = $this->db->get();
-//
-//     return $query->result_array();
-//   }
 
 // RETURNS ARRAY OF DEPARTMENTS
   public function getAllDepartments()
@@ -453,6 +363,19 @@ class model extends CI_Model
     return true;
   }
 
+  public function updateResponsible($taskID, $data)
+  {
+    $condition = "tasks_TASKID = '$taskID' && ROLE = '1'";
+    $this->db->where($condition);
+    $this->db->update('raci', $data);
+  }
+
+  public function addRFC($data)
+  {
+    $this->db->insert('changerequests', $data);
+    return true;
+  }
+
   public function getProjectLogs($id)
   {
     $condition = "projects_PROJECTID = " . $id;
@@ -463,8 +386,6 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-
-
 
   public function updateTaskStatus($currentDate)
   {

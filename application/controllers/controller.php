@@ -199,18 +199,6 @@ class controller extends CI_Controller
 
 		else
 		{
-			if ($this->input->post('task_ID'))
-			{
-				$id = $this->input->post("task_ID");
-				$remarks = $this->input->post('remarks');
-
-				$data = array(
-							'TASKSTATUS' => 'Complete',
-							'TASKREMARKS' => $remarks
-				);
-
-				$updateTasks = $this->model->updateTaskDone($id, $data);
-			}
 			$data['departments'] = $this->model->getAllDepartments();
 
 			switch($_SESSION['usertype_USERTYPEID'])
@@ -232,6 +220,7 @@ class controller extends CI_Controller
 					break;
 			}
 
+			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByDepartment($filter);
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment("departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
 			$this->load->view("myTasks", $data);
@@ -240,13 +229,154 @@ class controller extends CI_Controller
 
 	public function doneTask()
 	{
+		if ($this->input->post('task_ID'))
+		{
+			$id = $this->input->post("task_ID");
+			$remarks = $this->input->post('remarks');
+
+			$data = array(
+						'TASKSTATUS' => 'Complete',
+						'TASKREMARKS' => $remarks,
+						'TASKACTUALENDDATE' => date('Y-m-d')
+			);
+
+			$updateTasks = $this->model->updateTaskDone($id, $data);
+		}
+		$this->myTasks();
+	}
+
+	public function loadTasks()
+	{
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
 		echo json_encode($data);
+	}
 
-		// $this->load->view("myTasks", $data);
+	public function delegateTask()
+	{
+		$taskID = $this->input->post("task_ID");
+
+		// SAVE/UPDATE RESPONSIBLE
+		$responsibleEmp = $this->input->post('responsibleEmp');
+		$responsibleData = array(
+			'users_USERID' => $responsibleEmp,
+		);
+		$result = $this->model->updateResponsible($taskID, $responsibleData);
+
+		// SAVE ACCOUNTABLE
+		if($this->input->post("accountableDept[]"))
+		{
+			foreach($this->input->post("accountableDept[]") as $deptID)
+			{
+				$accountableData = array(
+					'ROLE' => '2',
+					'users_USERID' => $deptID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($accountableData);
+			}
+		}
+
+		if ($this->input->post("accountableEmp[]"))
+		{
+			foreach($this->input->post("accountableEmp[]") as $empID)
+			{
+				$accountableData = array(
+					'ROLE' => '2',
+					'users_USERID' => $empID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($accountableData);
+			}
+		}
+
+		// SAVE CONSULTED
+		if($this->input->post("consultedDept[]"))
+		{
+			foreach($this->input->post("consultedDept[]") as $deptID)
+			{
+				$consultedData = array(
+					'ROLE' => '3',
+					'users_USERID' => $deptID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($consultedData);
+			}
+		}
+
+		if($this->input->post("consultedEmp[]"))
+		{
+			foreach($this->input->post("consultedEmp[]") as $empID)
+			{
+				$consultedData = array(
+					'ROLE' => '3',
+					'users_USERID' => $empID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($consultedData);
+			}
+		}
+
+		// SAVE INFORMED
+		if($this->input->post("informedDept[]"))
+		{
+			foreach($this->input->post("informedDept[]") as $deptID)
+			{
+				$informedData = array(
+					'ROLE' => '4',
+					'users_USERID' => $deptID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($informedData);
+			}
+		}
+
+		if($this->input->post("informedEmp[]"))
+		{
+			foreach($this->input->post("informedEmp[]") as $empID)
+			{
+				$informedData = array(
+					'ROLE' => '4',
+					'users_USERID' => $empID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($informedData);
+			}
+		}
+
+		$this->myTasks();
+	}
+
+	public function submitRFC()
+	{
+		if($this->input->post("rfcType") == '1')
+		{
+			$data = array(
+				'REQUESTTYPE' => $this->input->post("rfcType"),
+				'tasks_TASKID' => $this->input->post("task_ID"),
+				'REASON' => $this->input->post("reason"),
+				'REQUESTSTATUS' => "Pending",
+				'users_REQUESTEDBY' => $_SESSION['USERID'],
+				'REQUESTEDDATE' => date('Y-m-d')
+			);
+		}
+		else
+		{
+			$data = array(
+				'REQUESTTYPE' => $this->input->post("rfcType"),
+				'tasks_TASKID' => $this->input->post("task_ID"),
+				'REASON' => $this->input->post("reason"),
+				'REQUESTSTATUS' => "Pending",
+				'users_REQUESTEDBY' => $_SESSION['USERID'],
+				'REQUESTEDDATE' => date('Y-m-d'),
+				'NEWSTARTDATE' => $this->input->post("startDate"),
+				'NEWENDDATE' => $this->input->post("endDate"),
+			);
+		}
+		$this->model->addRFC($data);
+		$this->myTasks();
 	}
 
 	public function templates()

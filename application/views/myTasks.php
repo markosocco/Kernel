@@ -29,6 +29,7 @@
 							<table id="taskList" class="table table-bordered table-hover">
 								<thead>
 								<tr>
+									<th>Role*</th>
 									<th>Task</th>
 									<th>Project</th>
 									<th>Start Date</th>
@@ -45,6 +46,8 @@
 
 								</tbody>
 							</table>
+
+							<h5>*Legend: R - Responsible; A - Accountable; C - Consulted; I - Informed</h5>
 						</div>
 						<!-- /.box-body -->
 					</div>
@@ -58,10 +61,10 @@
 		                <h4 class="modal-title">Request for Change</h4>
 		              </div>
 		              <div class="modal-body">
-		                <form>
+		                <form id = "requestForm" action = "submitRFC" method = "POST">
 											<div class="form-group">
 			                  <label>Request Type</label>
-			                  <select class="form-control" id="rfcType">
+			                  <select class="form-control" id="rfcType" name="rfcType">
 													<option disabled selected value> -- Select Request Type -- </option>
 			                    <option value="1">Change Task Performer</option>
 			                    <option value="0">Change Task Dates</option>
@@ -72,42 +75,42 @@
 											<!-- DISPLAY IF CHANGE TASK DATE OPTION -->
 											<div id ="newDateDiv">
 											<div class="form-group">
-				                <label>New Start Date</label>
+				                <label class ="start">New Start Date</label>
 
-				                <div class="input-group date">
+				                <div class="input-group date start">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-calendar"></i>
 				                  </div>
-				                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
+				                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" >
 				                </div>
 				                <!-- /.input group -->
 				              </div>
 				              <!-- /.form group -->
 				              <div class="form-group">
-				                <label>New Target End Date</label>
+				                <label class="end">New Target End Date</label>
 
-				                <div class="input-group date">
+				                <div class="input-group date end">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-calendar"></i>
 				                  </div>
-				                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
+				                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" >
 				                </div>
 				                <!-- /.input group -->
 				              </div>
 										</div>
 
 											<!-- DISPLAY ON BOTH OPTIONS -->
-											<div class="form-group" id="rfcReason">
+											<div class="form-group">
 			                  <label>Reason</label>
-			                  <textarea class="form-control" placeholder="State your reason here" required></textarea>
+			                  <textarea id="rfcReason" class="form-control" name = "reason" placeholder="State your reason here" required></textarea>
 			                </div>
-										</form>
 									</div>
 
 		              <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-		                <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Submit Request</button>
+		                <button type="submit" class="btn btn-success" id="rfcSubmit" data-date=""><i class="fa fa-check"></i> Submit Request</button>
 		              </div>
+								</form>
 								</div>
 		            </div>
 		            <!-- /.modal-content -->
@@ -140,6 +143,7 @@
 											<!-- /.box-header -->
 
 											<div class="box-body">
+												<form id="raciForm" action="delegateTask" method="POST">
 
 												<!-- RESPONSIBLE DIV -->
 												<div class="form-group raciDiv" id = "responsibleDiv">
@@ -158,7 +162,7 @@
 															<tr>
 																<td><div class="radio">
 							                    <label>
-																		<input class = "radioEmp" type="radio" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																		<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $employee['USERID'];?>" required>
 							                    </label>
 							                  </div></td>
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -183,9 +187,9 @@
 													<tbody>
 														<?php foreach($departments as $dept):?>
 															<tr>
-																<td><div class="radio">
+																<td><div class="checkbox">
 																	<label>
-																		<input class = "checkDept" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																		<input class = "checkDept" type="checkbox" name="accountableDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
 																	</label>
 																</div></td>
 																<td><?php echo $dept['DEPARTMENTNAME'];?></td>
@@ -207,9 +211,9 @@
 												<tbody>
 													<?php foreach($wholeDept as $employee):?>
 														<tr>
-															<td><div class="radio">
+															<td><div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																	<input class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>">
 																</label>
 															</div></td>
 															<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -234,9 +238,9 @@
 												<tbody>
 													<?php foreach($departments as $dept):?>
 														<tr>
-															<td><div class="radio">
+															<td><div class="checkbox">
 																<label>
-																	<input class = "checkDept" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																	<input class = "checkDept" type="checkbox" name="consultedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
 																</label>
 															</div></td>
 															<td><?php echo $dept['DEPARTMENTNAME'];?></td>
@@ -258,9 +262,9 @@
 											<tbody>
 												<?php foreach($wholeDept as $employee):?>
 													<tr>
-														<td><div class="radio">
+														<td><div class="checkbox">
 															<label>
-																<input class = "checkEmp" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+																<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>">
 															</label>
 														</div></td>
 														<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -285,9 +289,9 @@
 										<tbody>
 											<?php foreach($departments as $dept):?>
 												<tr>
-													<td><div class="radio">
+													<td><div class="checkbox">
 														<label>
-															<input class = "checkDept" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+															<input class = "checkDept" type="checkbox" name="informedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
 														</label>
 													</div></td>
 													<td><?php echo $dept['DEPARTMENTNAME'];?></td>
@@ -309,9 +313,9 @@
 										<tbody>
 											<?php foreach($wholeDept as $employee):?>
 												<tr>
-													<td><div class="radio">
+													<td><div class="checkbox">
 														<label>
-															<input class = "checkEmp" type="checkbox" name="deptEmployees[]" value="<?php echo $employee['USERID'];?>">
+															<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>">
 														</label>
 													</div></td>
 													<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -328,8 +332,9 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button type="button" class="btn btn-success" id="confirmDelegateBtn" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
+										<button type="submit" class="btn btn-success" id="confirmDelegateBtn" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
 									</div>
+								</form>
 								</div>
 							</div>
 								<!-- /.modal-content -->
@@ -350,7 +355,7 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button>
+										<button type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
 									</div>
 								</div>
 								<!-- /.modal-content -->
@@ -428,7 +433,7 @@
 		              <div class="modal-body">
 										<h3 id ="delayed" style="color:red">Task is Delayed</h3>
 										<h4 id ="early">Are you sure this task is done?</h4>
-										<form id = "doneForm" action="myTasks" method="POST">
+										<form id = "doneForm" action="doneTask" method="POST">
 											<div class="form-group">
 												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 											</div>
@@ -470,6 +475,7 @@
  	     $('#endDate').datepicker({
 				 format: 'yyyy-mm-dd',
  	       autoclose: true,
+				 startDate: new Date(),
 				 orientation: 'bottom'
  	     })
 		 });
@@ -525,15 +531,21 @@
 				 if($("#modal-delegate").css("display") == 'none')
 				 {
 					 $(".radioEmp").prop("checked", false);
+					 $(".checkEmp").prop("checked", false);
+					 $(".checkDept").prop("checked", false);
 					 $(".raciBtn").removeClass('active');
 					 $("#responsible").addClass("active");
 					 $(".raciDiv").hide();
 					 $("#responsibleDiv").show();
 				 }
-			 });
-
-			 $("body").on('click','.radioEmp',function(){
-
+				 if($("#modal-request").css("display") == 'none')
+				 {
+					 $("#rfcType").val("");
+					 $("#rfcReason").val("");
+					 $("#rfcForm").hide();
+					 $("#startDate").val("");
+					 $("#endDate").val("");
+				 }
 			 });
 
 			 $("#responsible").on("click", function(){
@@ -564,8 +576,15 @@
 				 $("#informedDiv").show();
 			 });
 
+			 $("body").on('click','.delegateBtn',function(){
+				 var $id = $(this).attr('data-id');
+				 $("#confirmDelegateBtn").attr("data-id", $id); //pass data id to confirm button
+			 });
+
 			 $("#confirmDelegateBtn").on("click", function(){
-				 //INSERT AJAX
+				 var $id = $(this).attr('data-id');
+				 $("#raciForm").attr("name", "formSubmit");
+				 $("#raciForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 			 });
 
 			 $("body").on('change','#rfcType',function(){
@@ -574,13 +593,43 @@
 					 $("#rfcForm").show();
 					 $("#newDateDiv").hide();
 					 $("#rfcReason").show();
+					 $("#startDate").attr("required", false);
+					 $("#endDate").attr("required", false);
 				 }
 				 else // if Change Task Dates is selected
 				 {
 					 $("#rfcForm").show();
 					 $("#newDateDiv").show();
 					 $("#rfcReason").show();
+
+					 if($("#rfcSubmit").attr('data-date') == 'true') // IF TASK IS ONGOING
+					 {
+						 $(".start").hide();
+						 $("#endDate").attr("required", true);
+					 }
+					 else
+					 {
+						 $(".start").show();
+						 $(".end").show();
+						 $("#startDate").attr("required", true);
+						 $("#endDate").attr("required", true);
+					 }
 				 }
+			 });
+
+			 $("body").on('click','.rfcBtn',function()
+			 {
+				 var $id = $(this).attr('data-id');
+				 var $date = $(this).attr('data-date');
+				 $("#rfcSubmit").attr("data-id", $id); //pass data id to confirm button
+				 $("#rfcSubmit").attr("data-date", $date); //pass data date boolean to confirm button
+			 });
+
+			 $("#rfcSubmit").click(function()
+			 {
+				 var $id = $(this).attr('data-id');
+				 $("#requestForm").attr("name", "formSubmit");
+				 $("#requestForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 			 });
 
 		 });
@@ -593,17 +642,26 @@
 
 				 $.ajax({
 					 type:"POST",
-					 url: "<?php echo base_url("index.php/controller/doneTask"); ?>",
+					 url: "<?php echo base_url("index.php/controller/loadTasks"); ?>",
 					 dataType: 'json',
 					 success:function(data)
 					 {
 						 var table;
+						 var role;
 						 for(i=0; i<data['tasks'].length; i++)
  						 {
  						 	var taskDuration = parseInt(data['tasks'][i].taskDuration);
 							var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
 							var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+							switch(data['tasks'][i].ROLE)
+							{
+								case "1": role = "R"; break;
+								case "2": role = "A"; break;
+								case "3": role = "C"; break;
+								case "4": role = "I"; break;
+							}
  							 table += "<tr>" +
+							 							"<td>" + role + "</td>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
  														"<td align='center'>" + taskStart +"</td>"+
@@ -611,7 +669,7 @@
  														"<td align='center'>" + taskDuration+"</td>";
 
 								// DELEGATE BUTTON
- 								if(data['tasks'][i].users_USERID == '4' && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
+ 								if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
 								{
 									table+='<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
 												'data-toggle="modal" data-target="#modal-delegate" data-id="' +
@@ -624,32 +682,38 @@
 									table+= '<td></td>';
 
 								// RFC & DONE BUTTON
-								if(data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE) //SHOW BUTTON IF ONOGING TASK
+								if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONOGING PROJECT
 								{
+									var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING
+
 									// RFC
 									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
-									'data-target="#modal-request"><i class="fa fa-warning"></i>' +
+									'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
+									'" data-date="' + newDate + '"><i class="fa fa-warning"></i>' +
 									' RFC</button></td>';
 
-									var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
-									// DONE
-									table+= '<td align="center"><button type="button"' +
-									'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
-									'data-target="#modal-done" data-id="' + data['tasks'][i].TASKID +
-									'" data-title="' + data['tasks'][i].TASKTITLE + '"' +
-									'data-delay="' + isDelayed + '" data-start="'+ data['tasks'][i].TASKSTARTDATE +
-									'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
-									'<i class="fa fa-check"></i> Done</button></td>';
+									if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
+									{
+										var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
+										// DONE
+										table+= '<td align="center"><button type="button"' +
+										'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+										'data-target="#modal-done" data-id="' + data['tasks'][i].TASKID +
+										'" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+										'data-delay="' + isDelayed + '" data-start="'+ data['tasks'][i].TASKSTARTDATE +
+										'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
+										'<i class="fa fa-check"></i> Done</button></td>';
+									}
+									else
+									{
+											table+= "<td></td>";
+									}
 								}
 								else
 									table+= '<td></td>' + '<td></td>';
 					 		}
 							$('#taskTable').html(table);
-						},
-						error:function()
-						{
-							alert("Sorry. I'm trying AJAX")
 						}
 				 });
 			 }

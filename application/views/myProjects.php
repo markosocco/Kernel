@@ -64,6 +64,7 @@
 							</div>
 							<!-- ./col -->
 
+
 							<?php foreach ($ongoingProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
@@ -85,6 +86,8 @@
 								</div>
 								<!-- ./col -->
 							<?php endforeach;?>
+
+							<hr>
 
 							<?php foreach ($plannedProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
