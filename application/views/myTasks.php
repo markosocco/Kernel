@@ -169,7 +169,7 @@
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
 																<td align="center"><?php echo $employee['projectCount'];?></td>
 																<td align="center">N%</td>
-																<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $employee['projectCount'];?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 															</tr>
 														<?php endforeach;?>
 													</tbody>
@@ -370,8 +370,8 @@
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h2 class="modal-title">Task Name here</h2>
-										<h4>Start Date - End Date (Days)</h4>
+										<h2 class="modal-title" id ="workloadEmployee">Employee Name</h2>
+										<h4 id = "workloadProjects">Total Number of Projects: </h4>
 									</div>
 									<div class="modal-body">
 										<div class="box">
@@ -586,6 +586,11 @@
 				 var $id = $(this).attr('data-id');
 				 $("#raciForm").attr("name", "formSubmit");
 				 $("#raciForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+			 });
+
+			 $(".moreInfo").click(function(){
+				 $("#workloadEmployee").html($(this).attr('data-name'));
+				 $("#workloadProjects").html("Total Number of Projects: " + $(this).attr('data-projectCount'));
 			 });
 
 			 $("body").on('change','#rfcType',function(){
