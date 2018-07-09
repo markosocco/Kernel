@@ -733,68 +733,6 @@ class controller extends CI_Controller
 				// echo "-------------------------------------<br>";
 			}
 
-			// // SET PARENT TASK
-			$allTasks = $this->model->getAllProjectTasks($id);
-
-			foreach ($allTasks as $row)
-			{
-				$currentTask = $this->model->getTaskByID($row['TASKID']);
-				$isCurrent = false;
-
-				if ($row['CATEGORY'] == 2)
-				{
-					foreach ($allTasks as $row_2)
-					{
-						if ($row_2['TASKID'] == $currentTask['TASKID'])
-						{
-							$isCurrent = true;
-							// echo $row_2['TASKID'] . ": this is the current task <br>";
-						}
-
-						else
-						{
-							if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
-							{
-								$parent = $row_2['TASKID'];
-							}
-						}
-
-						// echo $row_2['TASKID'] . "<br>";
-					}
-
-					$data = array (
-						'tasks_TASKPARENT' => $parent
-					);
-
-					$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
-				}
-
-				if ($row['CATEGORY'] == 3)
-				{
-					foreach ($allTasks as $row_2)
-					{
-						if ($row_2['TASKID'] == $currentTask['TASKID'])
-						{
-							$isCurrent = true;
-						}
-
-						else
-						{
-							if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
-							{
-								$parent = $row_2['TASKID'];
-							}
-						}
-					}
-
-					$data = array (
-						'tasks_TASKPARENT' => $parent
-					);
-
-					$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
-				}
-			}
-
 			// GANTT CODE
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);

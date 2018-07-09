@@ -76,7 +76,7 @@
 
 
 										<tr>
-											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>" data-num=<?php echo $value['TASKID']; ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 											<td><?php echo $value['TASKTITLE']; ?></td>
 											<td>
 												<?php
@@ -143,9 +143,6 @@
 												</div></td>
 												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
 										</tr>
-
-
-
 
 									</tbody>
 								</table>
