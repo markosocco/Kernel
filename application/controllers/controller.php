@@ -204,25 +204,25 @@ class controller extends CI_Controller
 			switch($_SESSION['usertype_USERTYPEID'])
 			{
 				case '2':
-					$filter = "usertype_USERTYPEID = '3'";
+					$filter = "users.usertype_USERTYPEID = '3'";
 					break;
 
 				case '3':
-					$filter = "departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 					break;
 
 				case '4':
-					$filter = "users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+					$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
 					break;
 
 				default:
-					$filter = "departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 					break;
 			}
 
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByDepartment($filter);
-			$data['wholeDept'] = $this->model->getAllUsersByDepartment("departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
+			$data['wholeDept'] = $this->model->getAllUsersByDepartment("users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
 			$this->load->view("myTasks", $data);
 		}
 	}
@@ -355,7 +355,7 @@ class controller extends CI_Controller
 		{
 			$data = array(
 				'REQUESTTYPE' => $this->input->post("rfcType"),
-				'tasks_TASKID' => $this->input->post("task_ID"),
+				'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
 				'REASON' => $this->input->post("reason"),
 				'REQUESTSTATUS' => "Pending",
 				'users_REQUESTEDBY' => $_SESSION['USERID'],
@@ -366,7 +366,7 @@ class controller extends CI_Controller
 		{
 			$data = array(
 				'REQUESTTYPE' => $this->input->post("rfcType"),
-				'tasks_TASKID' => $this->input->post("task_ID"),
+				'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
 				'REASON' => $this->input->post("reason"),
 				'REQUESTSTATUS' => "Pending",
 				'users_REQUESTEDBY' => $_SESSION['USERID'],
