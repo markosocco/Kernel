@@ -24,6 +24,12 @@
 
 				<!-- Main content -->
 				<section class="content container-fluid" style="padding-top:30px">
+
+					<div id = "toggleView" class="pull-right">
+						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i></a>
+						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+					</div>
+
 					<div id="gridView">
 
 						<div class="btn-group"> <!-- SORT/LEGEND -->
@@ -39,10 +45,10 @@
 
 						<!-- LIST AND GRID TOGGLE -->
 						<!-- <div id = "toggleView" class="pull-right" style="margin-top:10px"> -->
-						<div id = "toggleView" class="pull-right">
-							<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+						<!-- <div id = "toggleView" class="pull-right">
+							<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i></a>
 							<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
-						</div>
+						</div> -->
 
 						<br><br>
 
@@ -87,8 +93,6 @@
 								<!-- ./col -->
 							<?php endforeach;?>
 
-							<hr>
-
 							<?php foreach ($plannedProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
@@ -118,6 +122,7 @@
 
 						<!-- LIST VIEW -->
 
+						<br><br>
 						<div id="listView">
 							<div class="box">
 								<div class="box-header" style="display:inline-block">
