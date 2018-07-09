@@ -58,12 +58,17 @@ class model extends CI_Model
 
     if ($result)
     {
-      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
+      // $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
+      // $this->db->select('*');
+      // $this->db->from('projects');
+      // $this->db->where($condition);
+
       $this->db->select('*');
       $this->db->from('projects');
-      $this->db->where($condition);
-      $query = $this->db->get();
+      $this->db->order_by('PROJECTID', 'DESC');
+      $this->db->limit(1);
 
+      $query = $this->db->get();
       return $query->row_array();
     }
 
@@ -142,15 +147,29 @@ class model extends CI_Model
     return $query->result_array();
   }
 
+  // public function getAllUsersByDepartment($filter)
+  // {
+  //   $condition = $filter;
+  //   $this->db->select('*');
+  //   $this->db->from('users');
+  //   $this->db->where($condition);
+  //   $query = $this->db->get();
+  //
+  //   return $query->result_array();
+  // }
+
   public function getAllUsersByDepartment($filter)
   {
-    $condition = $filter;
-    $this->db->select('*');
-    $this->db->from('users');
-    $this->db->where($condition);
-    $query = $this->db->get();
+    $condition = "projects.PROJECTSTATUS != 'Complete'";
+    $this->db->select('users.*, count(distinct projects.PROJECTID) AS "projectCount"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition . " && " . $filter);
+    $this->db->group_by('users.USERID');
 
-    return $query->result_array();
+    return $this->db->get()->result_array();
   }
 
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE

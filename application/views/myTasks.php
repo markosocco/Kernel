@@ -58,7 +58,8 @@
 		          <div class="modal-dialog">
 		            <div class="modal-content">
 		              <div class="modal-header">
-		                <h4 class="modal-title">Request for Change</h4>
+		                <h2 class="modal-title" id = "rfcTitle">Request for Change</h2>
+										<h4 class="taskDates" id="rfcDates">Start Date - End Date (Days)</h4>
 		              </div>
 		              <div class="modal-body">
 		                <form id = "requestForm" action = "submitRFC" method = "POST">
@@ -67,7 +68,7 @@
 			                  <select class="form-control" id="rfcType" name="rfcType">
 													<option disabled selected value> -- Select Request Type -- </option>
 			                    <option value="1">Change Task Performer</option>
-			                    <option value="0">Change Task Dates</option>
+			                    <option value="2">Change Task Dates</option>
 			                  </select>
 			                </div>
 
@@ -166,9 +167,9 @@
 							                    </label>
 							                  </div></td>
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-																<td align="center">N</td>
+																<td align="center"><?php echo $employee['projectCount'];?></td>
 																<td align="center">N%</td>
-																<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $employee['projectCount'];?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 															</tr>
 														<?php endforeach;?>
 													</tbody>
@@ -217,7 +218,7 @@
 																</label>
 															</div></td>
 															<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-															<td align="center">N</td>
+															<td align="center"><?php echo $employee['projectCount'];?></td>
 															<td align="center">N%</td>
 															<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
@@ -268,7 +269,7 @@
 															</label>
 														</div></td>
 														<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-														<td align="center">N</td>
+														<td align="center"><?php echo $employee['projectCount'];?></td>
 														<td align="center">N%</td>
 														<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
@@ -319,7 +320,7 @@
 														</label>
 													</div></td>
 													<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-													<td align="center">N</td>
+													<td align="center"><?php echo $employee['projectCount'];?></td>
 													<td align="center">N%</td>
 													<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
@@ -369,8 +370,8 @@
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h2 class="modal-title">Task Name here</h2>
-										<h4>Start Date - End Date (Days)</h4>
+										<h2 class="modal-title" id ="workloadEmployee">Employee Name</h2>
+										<h4 id = "workloadProjects">Total Number of Projects: </h4>
 									</div>
 									<div class="modal-body">
 										<div class="box">
@@ -587,6 +588,11 @@
 				 $("#raciForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 			 });
 
+			 $(".moreInfo").click(function(){
+				 $("#workloadEmployee").html($(this).attr('data-name'));
+				 $("#workloadProjects").html("Total Number of Projects: " + $(this).attr('data-projectCount'));
+			 });
+
 			 $("body").on('change','#rfcType',function(){
 				 if($(this).val() == "1") //if Change Task Performer is selected
 				 {
@@ -611,7 +617,6 @@
 					 {
 						 $(".start").show();
 						 $(".end").show();
-						 $("#startDate").attr("required", true);
 						 $("#endDate").attr("required", true);
 					 }
 				 }
@@ -621,8 +626,14 @@
 			 {
 				 var $id = $(this).attr('data-id');
 				 var $date = $(this).attr('data-date');
+				 var $title = $(this).attr('data-title');
+				 var $start = new Date($(this).attr('data-start'));
+				 var $end = new Date($(this).attr('data-end'));
+				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 				 $("#rfcSubmit").attr("data-id", $id); //pass data id to confirm button
 				 $("#rfcSubmit").attr("data-date", $date); //pass data date boolean to confirm button
+				 $("#rfcTitle").html($title);
+				 $("#rfcDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 			 });
 
 			 $("#rfcSubmit").click(function()
@@ -690,7 +701,9 @@
 									table+= '<td align="center"><button type="button"' +
 									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
 									'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
-									'" data-date="' + newDate + '"><i class="fa fa-warning"></i>' +
+									'" data-date="' + newDate + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+									' data-start="'+ data['tasks'][i].TASKSTARTDATE +
+									'" data-end="'+ data['tasks'][i].TASKENDDATE +'"><i class="fa fa-warning"></i>' +
 									' RFC</button></td>';
 
 									if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
@@ -717,8 +730,6 @@
 						}
 				 });
 			 }
-
-
 			 $('#taskList').DataTable({
 				 'paging'      : false,
 				 'lengthChange': false,
