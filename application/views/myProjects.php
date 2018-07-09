@@ -22,14 +22,16 @@
 
 				</section>
 
-				<!-- LIST AND GRID TOGGLE -->
-				<div id = "toggleView" class="pull-right">
-					<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
-					<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
-				</div>
+
 
 				<!-- Main content -->
 				<section class="content container-fluid" style="padding-top:30px">
+
+					<!-- LIST AND GRID TOGGLE -->
+					<div id = "toggleView" class="pull-right">
+						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+					</div>
 
 					<div id="gridView">
 
@@ -87,8 +89,6 @@
 								<!-- ./col -->
 							<?php endforeach;?>
 
-							<hr>
-
 							<?php foreach ($plannedProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
@@ -118,6 +118,7 @@
 
 						<!-- LIST VIEW -->
 
+						<br><br>
 						<div id="listView">
 							<div class="box">
 								<div class="box-header" style="display:inline-block">

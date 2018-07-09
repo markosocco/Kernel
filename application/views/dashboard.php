@@ -17,7 +17,7 @@
 			<button type="button" class="btn btn-primary"><i class="fa fa-download"></i> Test Alert</button>
 
 			<!--  -->
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<div class="box box-default">
 					<div class="box-header with-border">
 						<i class="fa fa-warning"></i>
