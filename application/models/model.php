@@ -58,12 +58,17 @@ class model extends CI_Model
 
     if ($result)
     {
-      $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
+      // $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
+      // $this->db->select('*');
+      // $this->db->from('projects');
+      // $this->db->where($condition);
+
       $this->db->select('*');
       $this->db->from('projects');
-      $this->db->where($condition);
-      $query = $this->db->get();
+      $this->db->order_by('PROJECTID', 'DESC');
+      $this->db->limit(1);
 
+      $query = $this->db->get();
       return $query->row_array();
     }
 
