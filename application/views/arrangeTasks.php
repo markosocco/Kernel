@@ -76,13 +76,8 @@
 
 
 										<tr>
-<<<<<<< HEAD
 											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>" data-num=<?php echo $value['TASKID']; ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 											<td><?php echo $value['TASKTITLE']; ?></td>
-=======
-											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-											<td><b><?php echo $value['TASKTITLE']; ?></b></td>
->>>>>>> 856725b42a69774e211b71afd191c410d227657e
 											<td>
 												<?php
 

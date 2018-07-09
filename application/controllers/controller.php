@@ -532,9 +532,14 @@ class controller extends CI_Controller
 				'users_USERID' => $_SESSION['USERID']
 		);
 
+		$sDate = date_create($startDate);
+		$eDate = date_create($this->input->post('endDate'));
+		$diff = date_diff($eDate, $sDate);
+		$dateDiff = $diff->format('%d');
+
 		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
 		$data['project'] = $this->model->addProject($data);
-		$data['dateDiff'] = $this->model->getDateDiff($data);
+		$data['dateDiff'] =$dateDiff;
 		$data['departments'] = $this->model->getAllDepartments();
 
 		if ($data)
@@ -720,7 +725,13 @@ class controller extends CI_Controller
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['users'] = $this->model->getAllUsers();
 			$data['departments'] = $this->model->getAllDepartments();
-			$data['dateDiff'] = $this->model->getDateDiff($data['project']);
+
+			$sDate = date_create($data['project']['PROJECTSTARTDATE']);
+			$eDate = date_create($data['project']['PROJECTENDDATE']);
+			$diff = date_diff($eDate, $sDate);
+			$dateDiff = $diff->format('%d');
+
+			$data['dateDiff'] = $dateDiff;
 
 			$this->load->view('arrangeTasks', $data);
 		}
@@ -841,12 +852,9 @@ class controller extends CI_Controller
 						'eDate' => $endDates[$key]
 				);
 
-				$period = $this->model->getDateDiff($dates);
-
 				$data = array(
 						'TASKSTARTDATE' => $startDates[$key],
-						'TASKENDDATE' => $endDates[$key],
-						'PERIOD' => $period
+						'TASKENDDATE' => $endDates[$key]
 				);
 
 				// $dependencies = $this->input->post('dependencies_' . $tasks[$key]);
