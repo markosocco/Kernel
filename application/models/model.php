@@ -603,29 +603,8 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-
-<<<<<<< HEAD
-    // public function getMainActivities($id)
-    // {
-    //   $condtition = "projects_PROJECTID =" . $id . " AND CATEGORY = 1";
-    //   $this->db->select('*');
-    //   $this->db->from('tasks');
-    //   $this->db->where($condition);
-    //
-    //   return $this->db->get()->result_array();
-    // }
-
-    public function getMainActivities($id)
-    {
-      $condition = "projects_PROJECTID = '" . $id . "' && CATEGORY = 1";
-      $this->db->select('*');
-      $this->db->from('tasks');
-      $this->db->where($condition);
-
-      return $this->db->get()->result_array();
-    }
-=======
-  public function getOngoingProjectProgress(){
+    
+    public function getOngoingProjectProgress(){
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
     $this->db->from('tasks');
@@ -636,6 +615,5 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
->>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
 }
 ?>

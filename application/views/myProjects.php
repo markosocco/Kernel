@@ -223,20 +223,6 @@
 												$delayedEnd = date_create($value['PROJECTENDDATE']);
 												?>
 
-<<<<<<< HEAD
-										<tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
-
-											<form action = 'projectGantt' method="POST">
-											</form>
-											<td class="bg-green"></td>
-											<td><?php echo $row['PROJECTTITLE']; ?></td>
-											<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
-											<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-											<td>80%</td>
-											<td><?php echo $row['PROJECTSTATUS']; ?></td>
-										</tr>
-									<?php endforeach;?>
-=======
 											<tr class="btn-success project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 												<form action = 'projectGantt' method="POST">
@@ -269,7 +255,6 @@
 												<td><?php echo $value['PROJECTSTATUS']; ?></td>
 											</tr>
 										<?php endforeach;?>
->>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
 
 
 										<?php foreach ($plannedProjects as $row):?>
