@@ -167,9 +167,19 @@
 							                    </label>
 							                  </div></td>
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-																<td align="center"><?php echo $employee['projectCount'];?></td>
+																<?php foreach($projectCount as $count): ;?>
+																	<?php $hasProjects = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<td align="center"><?php echo $count['projectCount'];?></td>
+																		<?php $hasProjects = true;?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if (!$hasProjects):?>
+																	<td align="center">0</td>
+																<?php endif;?>
 																<td align="center">N%</td>
-																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $employee['projectCount'];?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = ""><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 															</tr>
 														<?php endforeach;?>
 													</tbody>
@@ -218,8 +228,17 @@
 																</label>
 															</div></td>
 															<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-															<td align="center"><?php echo $employee['projectCount'];?></td>
-															<td align="center">N%</td>
+															<?php foreach($projectCount as $count): ;?>
+																<?php $hasProjects = false;?>
+																<?php if ($count['USERID'] == $employee['USERID']):?>
+																	<td align="center"><?php echo $count['projectCount'];?></td>
+																	<?php $hasProjects = true;?>
+																	<?php break;?>
+																<?php endif;?>
+															<?php endforeach;?>
+															<?php if (!$hasProjects):?>
+																<td align="center">0</td>
+															<?php endif;?>															<td align="center">N%</td>
 															<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
 													<?php endforeach;?>
@@ -269,8 +288,17 @@
 															</label>
 														</div></td>
 														<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-														<td align="center"><?php echo $employee['projectCount'];?></td>
-														<td align="center">N%</td>
+														<?php foreach($projectCount as $count): ;?>
+															<?php $hasProjects = false;?>
+															<?php if ($count['USERID'] == $employee['USERID']):?>
+																<td align="center"><?php echo $count['projectCount'];?></td>
+																<?php $hasProjects = true;?>
+																<?php break;?>
+															<?php endif;?>
+														<?php endforeach;?>
+														<?php if (!$hasProjects):?>
+															<td align="center">0</td>
+														<?php endif;?>														<td align="center">N%</td>
 														<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
 												<?php endforeach;?>
@@ -320,8 +348,17 @@
 														</label>
 													</div></td>
 													<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-													<td align="center"><?php echo $employee['projectCount'];?></td>
-													<td align="center">N%</td>
+													<?php foreach($projectCount as $count): ;?>
+														<?php $hasProjects = false;?>
+														<?php if ($count['USERID'] == $employee['USERID']):?>
+															<td align="center"><?php echo $count['projectCount'];?></td>
+															<?php $hasProjects = true;?>
+															<?php break;?>
+														<?php endif;?>
+													<?php endforeach;?>
+													<?php if (!$hasProjects):?>
+														<td align="center">0</td>
+													<?php endif;?>													<td align="center">N%</td>
 													<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
 											<?php endforeach;?>
