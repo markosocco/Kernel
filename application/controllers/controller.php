@@ -605,7 +605,8 @@ class controller extends CI_Controller
 			// $id = $this->input->get("id");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			// WHAT IS HAPPENING :(( HAHAHAHAH
-			$data['documents'] = $this->model->getAllDocumentsByProject($id);
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
 
 			$this->load->view("projectDocuments", $data);
 		}
