@@ -199,54 +199,184 @@ class controller extends CI_Controller
 
 		else
 		{
-			if ($this->input->post('task_ID'))
-			{
-				$id = $this->input->post("task_ID");
-				$remarks = $this->input->post('remarks');
-
-				$data = array(
-							'TASKSTATUS' => 'Complete',
-							'TASKREMARKS' => $remarks
-				);
-
-				$updateTasks = $this->model->updateTaskDone($id, $data);
-			}
 			$data['departments'] = $this->model->getAllDepartments();
 
 			switch($_SESSION['usertype_USERTYPEID'])
 			{
 				case '2':
-					$filter = "usertype_USERTYPEID = '3'";
+					$filter = "users.usertype_USERTYPEID = '3'";
 					break;
 
 				case '3':
-					$filter = "departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 					break;
 
 				case '4':
-					$filter = "users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+					$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
 					break;
 
 				default:
-					$filter = "departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 					break;
 			}
 
+			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByDepartment($filter);
-			$data['wholeDept'] = $this->model->getAllUsersByDepartment("departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
+			$data['wholeDept'] = $this->model->getAllUsersByDepartment("users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
 			$this->load->view("myTasks", $data);
 		}
 	}
 
 	public function doneTask()
 	{
+		if ($this->input->post('task_ID'))
+		{
+			$id = $this->input->post("task_ID");
+			$remarks = $this->input->post('remarks');
+
+			$data = array(
+						'TASKSTATUS' => 'Complete',
+						'TASKREMARKS' => $remarks,
+						'TASKACTUALENDDATE' => date('Y-m-d')
+			);
+
+			$updateTasks = $this->model->updateTaskDone($id, $data);
+		}
+		$this->myTasks();
+	}
+
+	public function loadTasks()
+	{
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
 		echo json_encode($data);
+	}
 
-		// $this->load->view("myTasks", $data);
+	public function delegateTask()
+	{
+		$taskID = $this->input->post("task_ID");
+
+		// SAVE/UPDATE RESPONSIBLE
+		$responsibleEmp = $this->input->post('responsibleEmp');
+		$responsibleData = array(
+			'users_USERID' => $responsibleEmp,
+		);
+		$result = $this->model->updateResponsible($taskID, $responsibleData);
+
+		// SAVE ACCOUNTABLE
+		if($this->input->post("accountableDept[]"))
+		{
+			foreach($this->input->post("accountableDept[]") as $deptID)
+			{
+				$accountableData = array(
+					'ROLE' => '2',
+					'users_USERID' => $deptID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($accountableData);
+			}
+		}
+
+		if ($this->input->post("accountableEmp[]"))
+		{
+			foreach($this->input->post("accountableEmp[]") as $empID)
+			{
+				$accountableData = array(
+					'ROLE' => '2',
+					'users_USERID' => $empID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($accountableData);
+			}
+		}
+
+		// SAVE CONSULTED
+		if($this->input->post("consultedDept[]"))
+		{
+			foreach($this->input->post("consultedDept[]") as $deptID)
+			{
+				$consultedData = array(
+					'ROLE' => '3',
+					'users_USERID' => $deptID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($consultedData);
+			}
+		}
+
+		if($this->input->post("consultedEmp[]"))
+		{
+			foreach($this->input->post("consultedEmp[]") as $empID)
+			{
+				$consultedData = array(
+					'ROLE' => '3',
+					'users_USERID' => $empID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($consultedData);
+			}
+		}
+
+		// SAVE INFORMED
+		if($this->input->post("informedDept[]"))
+		{
+			foreach($this->input->post("informedDept[]") as $deptID)
+			{
+				$informedData = array(
+					'ROLE' => '4',
+					'users_USERID' => $deptID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($informedData);
+			}
+		}
+
+		if($this->input->post("informedEmp[]"))
+		{
+			foreach($this->input->post("informedEmp[]") as $empID)
+			{
+				$informedData = array(
+					'ROLE' => '4',
+					'users_USERID' => $empID,
+					'tasks_TASKID' =>	$taskID
+				);
+				$this->model->addToRaci($informedData);
+			}
+		}
+
+		$this->myTasks();
+	}
+
+	public function submitRFC()
+	{
+		if($this->input->post("rfcType") == '1')
+		{
+			$data = array(
+				'REQUESTTYPE' => $this->input->post("rfcType"),
+				'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
+				'REASON' => $this->input->post("reason"),
+				'REQUESTSTATUS' => "Pending",
+				'users_REQUESTEDBY' => $_SESSION['USERID'],
+				'REQUESTEDDATE' => date('Y-m-d')
+			);
+		}
+		else
+		{
+			$data = array(
+				'REQUESTTYPE' => $this->input->post("rfcType"),
+				'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
+				'REASON' => $this->input->post("reason"),
+				'REQUESTSTATUS' => "Pending",
+				'users_REQUESTEDBY' => $_SESSION['USERID'],
+				'REQUESTEDDATE' => date('Y-m-d'),
+				'NEWSTARTDATE' => $this->input->post("startDate"),
+				'NEWENDDATE' => $this->input->post("endDate"),
+			);
+		}
+		$this->model->addRFC($data);
+		$this->myTasks();
 	}
 
 	public function templates()
@@ -402,9 +532,14 @@ class controller extends CI_Controller
 				'users_USERID' => $_SESSION['USERID']
 		);
 
+		$sDate = date_create($startDate);
+		$eDate = date_create($this->input->post('endDate'));
+		$diff = date_diff($eDate, $sDate);
+		$dateDiff = $diff->format('%d');
+
 		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
 		$data['project'] = $this->model->addProject($data);
-		$data['dateDiff'] = $this->model->getDateDiff($data);
+		$data['dateDiff'] =$dateDiff;
 		$data['departments'] = $this->model->getAllDepartments();
 
 		if ($data)
@@ -478,6 +613,7 @@ class controller extends CI_Controller
 
 	/******************** MY PROJECTS START ********************/
 
+	// ADDS MAIN ACTIVITIES TO PROJECT
 	public function addTasksToProject()
 	{
 		// GET PROJECT ID
@@ -591,7 +727,13 @@ class controller extends CI_Controller
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['users'] = $this->model->getAllUsers();
 			$data['departments'] = $this->model->getAllDepartments();
-			$data['dateDiff'] = $this->model->getDateDiff($data['project']);
+
+			$sDate = date_create($data['project']['PROJECTSTARTDATE']);
+			$eDate = date_create($data['project']['PROJECTENDDATE']);
+			$diff = date_diff($eDate, $sDate);
+			$dateDiff = $diff->format('%d');
+
+			$data['dateDiff'] = $dateDiff;
 
 			$this->load->view('arrangeTasks', $data);
 		}
@@ -697,103 +839,116 @@ class controller extends CI_Controller
 		//
 		// $this->load->view('arrangeTasks', $data);
 
+		// ADDS SUB ACTIVITIES TO MAIN ACTIVITIES OF PROJECT
 		public function arrangeTasks()
 		{
 			$id = $this->input->post('project_ID');
 
-			$tasks = $this->input->post('task_ID');
+			$parent = $this->input->post('mainActivity_ID');
+			$title = $this->input->post('title');
 			$startDates = $this->input->post('taskStartDate');
 			$endDates = $this->input->post('taskEndDate');
 
-			foreach ($tasks as $key => $value)
+			$departments = $this->model->getAllDepartments();
+
+			foreach($departments as $row)
 			{
-				$dates = array(
-						'sDate' => $startDates[$key],
-						'eDate' => $endDates[$key]
-				);
-
-				$period = $this->model->getDateDiff($dates);
-
-				$data = array(
-						'TASKSTARTDATE' => $startDates[$key],
-						'TASKENDDATE' => $endDates[$key],
-						'PERIOD' => $period
-				);
-
-				// $dependencies = $this->input->post('dependencies_' . $tasks[$key]);
-				//
-				// echo $tasks[$key] . ": " . $dependencies . "<br>";
-
-				// foreach ($dependencies as $row)
-				// {
-				// 	echo $tasks['TASKID'] . ": " . $row . "<br>";
-				// }
-
-				$arrangeTasks = $this->model->arrangeTasks($data, $tasks[$key]);
-
-				// echo "-------------------------------------<br>";
+				switch ($row['DEPARTMENTNAME'])
+				{
+					case 'Executive':
+						$execHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Marketing':
+						$mktHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Finance':
+						$finHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Procurement':
+						$proHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'HR':
+						$hrHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'MIS':
+						$misHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Store Operations':
+						$opsHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Facilities Administration':
+						$fadHead = $row['users_DEPARTMENTHEAD'];
+						break;
+				}
 			}
 
-			// // SET PARENT TASK
-			$allTasks = $this->model->getAllProjectTasks($id);
+			$x = 0;
 
-			foreach ($allTasks as $row)
+			foreach ($parent as $key => $value)
 			{
-				$currentTask = $this->model->getTaskByID($row['TASKID']);
-				$isCurrent = false;
+				$department = $this->input->post('department_' . $x);
 
-				if ($row['CATEGORY'] == 2)
+				$data = array(
+						'TASKTITLE' => $title[$key],
+						'TASKSTARTDATE' => $startDates[$key],
+						'TASKENDDATE' => $endDates[$key],
+						'TASKSTATUS' => 'Planning',
+						'CATEGORY' => '2',
+						'projects_PROJECTID' => $id,
+						'tasks_TASKPARENT' => $value
+				);
+
+				$addedTask = $this->model->addTasksToProject($data);
+
+				if (!$addedTask)
 				{
-					foreach ($allTasks as $row_2)
-					{
-						if ($row_2['TASKID'] == $currentTask['TASKID'])
-						{
-							$isCurrent = true;
-							// echo $row_2['TASKID'] . ": this is the current task <br>";
-						}
-
-						else
-						{
-							if ($row_2['CATEGORY'] == 1 && $isCurrent == false)
-							{
-								$parent = $row_2['TASKID'];
-							}
-						}
-
-						// echo $row_2['TASKID'] . "<br>";
-					}
-
-					$data = array (
-						'tasks_TASKPARENT' => $parent
-					);
-
-					$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
+					echo "false";
 				}
 
-				if ($row['CATEGORY'] == 3)
+				else
 				{
-					foreach ($allTasks as $row_2)
+					foreach($department as $a)
 					{
-						if ($row_2['TASKID'] == $currentTask['TASKID'])
+						switch ($a)
 						{
-							$isCurrent = true;
+							case 'Executive':
+								$deptHead = $execHead;
+								break;
+							case 'Marketing':
+								$deptHead = $mktHead;
+								break;
+							case 'Finance':
+								$deptHead = $finHead;
+								break;
+							case 'Procurement':
+								$deptHead = $proHead;
+								break;
+							case 'HR':
+								$deptHead = $hrHead;
+								break;
+							case 'MIS':
+								$deptHead = $misHead;
+								break;
+							case 'Store Operations':
+								$deptHead = $opsHead;
+								break;
+							case 'Facilities Administration':
+								$deptHead = $fadHead;
+								break;
 						}
 
-						else
-						{
-							if ($row_2['CATEGORY'] == 2 && $isCurrent == false)
-							{
-								$parent = $row_2['TASKID'];
-							}
-						}
+						$data = array(
+								'ROLE' => '1',
+								'users_USERID' => $deptHead,
+								'tasks_TASKID' => $addedTask['TASKID']
+						);
+
+						// ENTER INTO RACI
+						$result = $this->model->addToRaci($data);
 					}
-
-					$data = array (
-						'tasks_TASKPARENT' => $parent
-					);
-
-					$insertParentTask = $this->model->insertParentTask($data, $currentTask['TASKID']);
 				}
+
+				$x++;
 			}
 
 			// GANTT CODE

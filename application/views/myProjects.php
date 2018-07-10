@@ -22,8 +22,17 @@
 
 				</section>
 
+
+
 				<!-- Main content -->
 				<section class="content container-fluid" style="padding-top:30px">
+
+					<!-- LIST AND GRID TOGGLE -->
+					<div id = "toggleView" class="pull-right">
+						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+					</div>
+
 					<div id="gridView">
 
 						<div class="btn-group"> <!-- SORT/LEGEND -->
@@ -35,13 +44,6 @@
 							<button type="button" class="btn btn-danger">Delayed</button>
 							<button type="button" class="btn btn-default">Parked</button>
 
-						</div>
-
-						<!-- LIST AND GRID TOGGLE -->
-						<!-- <div id = "toggleView" class="pull-right" style="margin-top:10px"> -->
-						<div id = "toggleView" class="pull-right">
-							<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
-							<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
 						</div>
 
 						<br><br>
@@ -63,6 +65,7 @@
 							</a>
 							</div>
 							<!-- ./col -->
+
 
 							<?php foreach ($ongoingProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
@@ -115,6 +118,7 @@
 
 						<!-- LIST VIEW -->
 
+						<br><br>
 						<div id="listView">
 							<div class="box">
 								<div class="box-header" style="display:inline-block">
@@ -202,15 +206,6 @@
 			$("#toggleGrid").hide();
 			$("#myProjects").addClass("active");
 			// $("#projects").addClass("active");
-
-
-			// IF USING GET METHOD FOR PROJECT ID
-			// $("a.project").click(function() //redirect to individual project profile
-      // {
-			//	var $id = $(this).attr('data-id');
-
-      //   // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
-      // });
 
 			// IF USING POST METHOD FOR PROJECT ID
 			$(document).on("click", ".project", function() {

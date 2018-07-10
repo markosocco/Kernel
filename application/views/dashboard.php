@@ -14,6 +14,50 @@
 				</h1>
 			</section>
 
+			<button id="success" type="button" class="btn btn-success">Test Success</button>
+			<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
+			<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
+			<button id="info" type="button" class="btn btn-info">Test Info</button>
+
+			<!--  -->
+			<div class="col-md-4">
+				<div class="box box-default">
+					<div class="box-header with-border">
+						<i class="fa fa-warning"></i>
+
+						<h3 class="box-title">Alerts</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<div class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-ban"></i> Alert!</h4>
+							Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my entire
+							soul, like these sweet mornings of spring which I enjoy with my whole heart.
+						</div>
+						<div class="alert alert-info alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-info"></i> Alert!</h4>
+							Info alert preview. This alert is dismissable.
+						</div>
+						<div class="alert alert-warning alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-warning"></i> Alert!</h4>
+							Warning alert preview. This alert is dismissable.
+						</div>
+						<div class="alert alert-success alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-check"></i> Alert!</h4>
+							Success alert preview. This alert is dismissable.
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+
+			<!--  -->
+
 			<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
 			<table id="logsList" class="table table-bordered table-hover">
 				<tbody>
@@ -51,6 +95,21 @@
 
 	<script>
 		$("#dashboard").addClass("active");
+
+		var try = $.notify({
+			// options
+			icon: 'glyphicon glyphicon-star',
+			message: 'Hello World'
+			},{
+			// settings
+			type: 'danger'
+		});
+
+		$(document).ready(function(){
+    $('#trigger').click(function(){
+        $(try).show()
+    	})
+		});
 	</script>
 
 	</body>
