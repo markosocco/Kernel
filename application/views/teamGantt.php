@@ -14,6 +14,10 @@
 
 				<!-- Main content -->
 				<section class="content container-fluid">
+					<div style="margin-bottom:10px">
+						<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
+						<a href="<?php echo base_url("index.php/controller/myTeam"); ?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to My Team</a>
+					</div>
 					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
 					<div>
 

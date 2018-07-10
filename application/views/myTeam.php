@@ -2,7 +2,7 @@
 	<head>
 		<title>Kernel - My Team</title>
 
-		<!-- <link rel = "stylesheet" href = "<?php //echo base_url("/assets/css/myTeamStyle.css")?>"> -->
+		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTeamStyle.css")?>">
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -23,7 +23,12 @@
 				</section>
 
 				<!-- Main content -->
-				<section class="content container-fluid" style="padding-top:30px">
+				<section class="content container-fluid" style="padding-top:20px">
+					<div id = "toggleView" class="pull-right">
+						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
+						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+					</div>
+
 					<div id="gridView">
 
 						<div class="btn-group"> <!-- SORT/LEGEND -->
@@ -39,10 +44,6 @@
 
 						<!-- LIST AND GRID TOGGLE -->
 						<!-- <div id = "toggleView" class="pull-right" style="margin-top:10px"> -->
-						<div id = "toggleView" class="pull-right">
-							<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
-							<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
-						</div>
 
 						<br><br>
 
@@ -98,6 +99,7 @@
 					</div>
 
 						<!-- LIST VIEW -->
+						<br><br>
 
 						<div id="listView">
 							<div class="box">
@@ -113,6 +115,7 @@
 									<table id="projectList" class="table table-bordered table-hover">
 										<thead>
 										<tr>
+											<th width="1%"></th>
 											<th>Project Title</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
@@ -130,11 +133,11 @@
 											$ongoingEnd = date_create($row['PROJECTENDDATE']);
 											?>
 
-										<tr class="btn-success project" data-id = "<?php echo $row['PROJECTID']; ?>">
+										<tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
 											<form action = 'projectGantt' method="POST">
 											</form>
-
+											<td class="bg-green"></td>
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
 											<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
 											<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
@@ -151,11 +154,11 @@
 											$plannedEnd = date_create($row['PROJECTENDDATE']);
 											?>
 
-										<tr class="btn-warning project" data-id = "<?php echo $row['PROJECTID']; ?>">
+										<tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
 											<form action = 'projectGantt' method="POST">
 											</form>
-
+											<td class="bg-red"></td>
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
 											<td><?php echo date_format($plannedStart, "M d, Y");?></td>
 											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>

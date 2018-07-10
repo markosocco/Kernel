@@ -189,7 +189,7 @@
 											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
 
-												<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+												<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
 													<?php foreach ($departments as $row): ?>
 
 														<option>
@@ -238,7 +238,7 @@
 
 										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
-											<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+											<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
 												<?php foreach ($departments as $row): ?>
 
 													<option>
@@ -286,7 +286,7 @@
 
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
-										<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+										<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
 											<?php foreach ($departments as $row): ?>
 
 												<option>

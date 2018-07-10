@@ -10,85 +10,50 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					WELCOME, <b><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></b>
+					Welcome, <b><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?>!</b>
 				</h1>
 			</section>
 
-			<button id="success" type="button" class="btn btn-success">Test Success</button>
-			<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
-			<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
-			<button id="info" type="button" class="btn btn-info">Test Info</button>
+			<section class="content container-fluid">
+				<button id="success" type="button" class="btn btn-success">Test Success</button>
+				<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
+				<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
+				<button id="info" type="button" class="btn btn-info">Test Info</button>
 
-			<!--  -->
-			<div class="col-md-4">
-				<div class="box box-default">
-					<div class="box-header with-border">
-						<i class="fa fa-warning"></i>
+				<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
+				<div>
+				<table id="logsList" class="table table-bordered table-hover">
+					<tbody>
+						<th>Project Title</th>
+						<th>Task</th>
+						<th>Task End Date</th>
+						<th>Status</th>
+						<?php
+							foreach ($delayedTaskPerUser as $row) {
+								echo "<tr style='color:red'>";
+									echo "<td>" . $row['PROJECTTITLE'] . "</td>";
+									echo "<td>" . $row['TASKTITLE'] . "</td>";
+									echo "<td>" . $row['TASKENDDATE'] . "</td>";
+									echo "<td> DELAYED </td>";
+								echo "</tr>";
+							}
 
-						<h3 class="box-title">Alerts</h3>
-					</div>
-					<!-- /.box-header -->
-					<div class="box-body">
-						<div class="alert alert-danger alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-							<h4><i class="icon fa fa-ban"></i> Alert!</h4>
-							Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my entire
-							soul, like these sweet mornings of spring which I enjoy with my whole heart.
-						</div>
-						<div class="alert alert-info alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-							<h4><i class="icon fa fa-info"></i> Alert!</h4>
-							Info alert preview. This alert is dismissable.
-						</div>
-						<div class="alert alert-warning alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-							<h4><i class="icon fa fa-warning"></i> Alert!</h4>
-							Warning alert preview. This alert is dismissable.
-						</div>
-						<div class="alert alert-success alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-							<h4><i class="icon fa fa-check"></i> Alert!</h4>
-							Success alert preview. This alert is dismissable.
-						</div>
-					</div>
-					<!-- /.box-body -->
-				</div>
-				<!-- /.box -->
+							foreach ($tasks3DaysBeforeDeadline as $data) {
+								echo "<tr>";
+									echo "<td>" . $data['PROJECTTITLE'] . "</td>";
+									echo "<td>" . $data['TASKTITLE'] . "</td>";
+									echo "<td>" . $data['TASKENDDATE'] . "</td>";
+									echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
+								echo "</tr>";
+							}
+						?>
+					</tbody>
+				</table>
 			</div>
+			<?php endif;?>
 
-			<!--  -->
-
-			<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
-			<div>
-			<table id="logsList" class="table table-bordered table-hover">
-				<tbody>
-					<th>Project Title</th>
-					<th>Task</th>
-					<th>Task End Date</th>
-					<th>Status</th>
-					<?php
-						foreach ($delayedTaskPerUser as $row) {
-							echo "<tr style='color:red'>";
-								echo "<td>" . $row['PROJECTTITLE'] . "</td>";
-								echo "<td>" . $row['TASKTITLE'] . "</td>";
-								echo "<td>" . $row['TASKENDDATE'] . "</td>";
-								echo "<td> DELAYED </td>";
-							echo "</tr>";
-						}
-
-						foreach ($tasks3DaysBeforeDeadline as $data) {
-							echo "<tr>";
-								echo "<td>" . $data['PROJECTTITLE'] . "</td>";
-								echo "<td>" . $data['TASKTITLE'] . "</td>";
-								echo "<td>" . $data['TASKENDDATE'] . "</td>";
-								echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
-							echo "</tr>";
-						}
-					?>
-				</tbody>
-			</table>
-		</div>
-		<?php endif;?>
+		</section>
+			</div>
 
 		<?php require("footer.php"); ?>
 
@@ -97,19 +62,115 @@
 	<script>
 		$("#dashboard").addClass("active");
 
-		var try = $.notify({
-			// options
-			icon: 'glyphicon glyphicon-star',
-			message: 'Hello World'
-			},{
-			// settings
-			type: 'danger'
-		});
+		$(document).ready(function()
+		{
+			$("#success").click(function(){
+				$.notify({
+		      // options
+		      icon: 'fa fa-check',
+		      message: ' Hello Success World'
+		      },{
+		      // settings
+		      type: 'success',
+		      offset: 60,
+		      delay: 5000,
+		      placement: {
+		        from: "top",
+		        align: "center"
+		      },
+		      animate: {
+		        enter: 'animated fadeInDownBig',
+		        exit: 'animated fadeOutUpBig'
+		      },
+		      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+		        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+		        '<span data-notify="icon"></span>' +
+		        '<span data-notify="title">{1}</span>' +
+		        '<span data-notify="message">{2}</span>' +
+		      '</div>'
+		      });
+				});
 
-		$(document).ready(function(){
-    $('#trigger').click(function(){
-        $(try).show()
-    	})
+				$("#danger").click(function(){
+					$.notify({
+			      // options
+			      icon: 'fa fa-ban',
+			      message: ' Hello Danger World'
+			      },{
+			      // settings
+			      type: 'danger',
+			      offset: 60,
+			      delay: 5000,
+			      placement: {
+			        from: "top",
+			        align: "center"
+			      },
+			      animate: {
+			        enter: 'animated fadeInDownBig',
+			        exit: 'animated fadeOutUpBig'
+			      },
+			      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+			        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+			        '<span data-notify="icon"></span>' +
+			        '<span data-notify="title">{1}</span>' +
+			        '<span data-notify="message">{2}</span>' +
+			      '</div>'
+			      });
+					});
+
+					$("#warning").click(function(){
+						$.notify({
+				      // options
+				      icon: 'fa fa-warning',
+				      message: ' Hello Warning World'
+				      },{
+				      // settings
+				      type: 'warning',
+				      offset: 60,
+				      delay: 5000,
+				      placement: {
+				        from: "top",
+				        align: "center"
+				      },
+				      animate: {
+				        enter: 'animated fadeInDownBig',
+				        exit: 'animated fadeOutUpBig'
+				      },
+				      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+				        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				        '<span data-notify="icon"></span>' +
+				        '<span data-notify="title">{1}</span>' +
+				        '<span data-notify="message">{2}</span>' +
+				      '</div>'
+				      });
+						});
+
+						$("#info").click(function(){
+							$.notify({
+					      // options
+					      icon: 'fa fa-info',
+					      message: ' Hello Info World'
+					      },{
+					      // settings
+					      type: 'info',
+					      offset: 60,
+					      delay: 5000,
+					      placement: {
+					        from: "top",
+					        align: "center"
+					      },
+					      animate: {
+					        enter: 'animated fadeInDownBig',
+					        exit: 'animated fadeOutUpBig'
+					      },
+					      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+					        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+					        '<span data-notify="icon"></span>' +
+					        '<span data-notify="title">{1}</span>' +
+					        '<span data-notify="message">{2}</span>' +
+					      '</div>'
+					      });
+							});
 		});
 	</script>
 
