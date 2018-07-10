@@ -172,6 +172,20 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getTaskCount($filter)
+  {
+    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1'";
+    $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition . " && " . $filter);
+    $this->db->group_by('users.USERID');
+
+    return $this->db->get()->result_array();
+  }
+
   public function getWorkloadProjects($userID)
   {
     $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && raci.ROLE = '1'";

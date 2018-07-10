@@ -154,7 +154,7 @@
 														<th></th>
 														<th>Name</th>
 														<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
-														<th align="center">Progress</th>
+														<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
 														<th></th>
 													</tr>
 													</thead>
@@ -179,7 +179,20 @@
 																	<?php $hasProjects = 0;?>
 																	<td align="center">0</td>
 																<?php endif;?>
-																<td align="center">N%</td>
+
+																<?php foreach($taskCount as $count): ;?>
+																	<?php $hasTasks = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<td align="center"><?php echo $count['taskCount'];?></td>
+																		<?php $hasTasks = $count['taskCount'];?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if ($hasTasks <= '0'):?>
+																	<?php $hasTasks = 0;?>
+																	<td align="center">0</td>
+																<?php endif;?>
+
 																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 															</tr>
 														<?php endforeach;?>
@@ -231,8 +244,21 @@
 																<?php $hasProjects = 0;?>
 																<td align="center">0</td>
 															<?php endif;?>
-															<td align="center">N%</td>
-															<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+
+															<?php foreach($taskCount as $count): ;?>
+																<?php $hasTasks = false;?>
+																<?php if ($count['USERID'] == $employee['USERID']):?>
+																	<td align="center"><?php echo $count['taskCount'];?></td>
+																	<?php $hasTasks = $count['taskCount'];?>
+																	<?php break;?>
+																<?php endif;?>
+															<?php endforeach;?>
+															<?php if ($hasTasks <= '0'):?>
+																<?php $hasTasks = 0;?>
+																<td align="center">0</td>
+															<?php endif;?>															<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+																<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+																	<i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
 													<?php endforeach;?>
 												</tbody>
@@ -281,8 +307,21 @@
 															<?php $hasProjects = 0;?>
 															<td align="center">0</td>
 														<?php endif;?>
-														<td align="center">N%</td>
-														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+
+														<?php foreach($taskCount as $count): ;?>
+															<?php $hasTasks = false;?>
+															<?php if ($count['USERID'] == $employee['USERID']):?>
+																<td align="center"><?php echo $count['taskCount'];?></td>
+																<?php $hasTasks = $count['taskCount'];?>
+																<?php break;?>
+															<?php endif;?>
+														<?php endforeach;?>
+														<?php if ($hasTasks <= '0'):?>
+															<?php $hasTasks = 0;?>
+															<td align="center">0</td>
+														<?php endif;?>														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+															<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+																<i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
 												<?php endforeach;?>
 											</tbody>
@@ -331,8 +370,21 @@
 														<?php $hasProjects = 0;?>
 														<td align="center">0</td>
 													<?php endif;?>
-													<td align="center">N%</td>
-													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+													
+													<?php foreach($taskCount as $count): ;?>
+														<?php $hasTasks = false;?>
+														<?php if ($count['USERID'] == $employee['USERID']):?>
+															<td align="center"><?php echo $count['taskCount'];?></td>
+															<?php $hasTasks = $count['taskCount'];?>
+															<?php break;?>
+														<?php endif;?>
+													<?php endforeach;?>
+													<?php if ($hasTasks <= '0'):?>
+														<?php $hasTasks = 0;?>
+														<td align="center">0</td>
+													<?php endif;?>													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+														<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+															<i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
 											<?php endforeach;?>
 										</tbody>
@@ -507,7 +559,7 @@
 				 {
 					 $(".radioEmp").prop("checked", false);
 					 $(".checkEmp").prop("checked", false);
-					 $(".checkDept").prop("checked", false);
+					 $(".select2").val(null).trigger("change");
 					 $(".raciBtn").removeClass('active');
 					 $("#responsible").addClass("active");
 					 $(".raciDiv").hide();
