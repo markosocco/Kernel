@@ -190,7 +190,11 @@
 											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
 
+<<<<<<< HEAD
+												<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
+=======
 												<select class="form-control select2" multiple="multiple" name = "accountableDept[]" data-placeholder="Select Departments" style="width:100%">
+>>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
 													<?php foreach ($departments as $row): ?>
 
 														<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
@@ -241,7 +245,11 @@
 
 										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
+<<<<<<< HEAD
+											<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
+=======
 											<select class="form-control select2" multiple="multiple" name = "consultedDept[]" data-placeholder="Select Departments" style="width:100%">
+>>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
 												<?php foreach ($departments as $row): ?>
 
 													<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
@@ -291,7 +299,11 @@
 
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
+<<<<<<< HEAD
+										<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
+=======
 										<select class="form-control select2" multiple="multiple" name = "informedDept[]" data-placeholder="Select Departments" style="width:100%">
+>>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
 											<?php foreach ($departments as $row): ?>
 
 												<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">

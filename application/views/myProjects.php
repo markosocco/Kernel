@@ -2,7 +2,7 @@
 	<head>
 		<title>Kernel - My Projects</title>
 
-		<!-- <link rel = "stylesheet" href = "<?php //echo base_url("/assets/css/myProjectsStyle.css")?>"> -->
+		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myProjectsStyle.css")?>">
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -21,11 +21,8 @@
 					</ol>
 
 				</section>
-
-
-
 				<!-- Main content -->
-				<section class="content container-fluid" style="padding-top:30px">
+				<section class="content container-fluid" style="padding-top:20px">
 
 					<!-- LIST AND GRID TOGGLE -->
 					<div id = "toggleView" class="pull-right">
@@ -208,6 +205,7 @@
 									<table id="projectList" class="table table-bordered table-hover">
 										<thead>
 										<tr>
+											<th width="1%"></th>
 											<th>Project Title</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
@@ -225,6 +223,20 @@
 												$delayedEnd = date_create($value['PROJECTENDDATE']);
 												?>
 
+<<<<<<< HEAD
+										<tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
+
+											<form action = 'projectGantt' method="POST">
+											</form>
+											<td class="bg-green"></td>
+											<td><?php echo $row['PROJECTTITLE']; ?></td>
+											<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+											<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+											<td>80%</td>
+											<td><?php echo $row['PROJECTSTATUS']; ?></td>
+										</tr>
+									<?php endforeach;?>
+=======
 											<tr class="btn-success project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 												<form action = 'projectGantt' method="POST">
@@ -257,6 +269,7 @@
 												<td><?php echo $value['PROJECTSTATUS']; ?></td>
 											</tr>
 										<?php endforeach;?>
+>>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
 
 
 										<?php foreach ($plannedProjects as $row):?>
@@ -266,11 +279,11 @@
 											$plannedEnd = date_create($row['PROJECTENDDATE']);
 											?>
 
-										<tr class="btn-warning project" data-id = "<?php echo $row['PROJECTID']; ?>">
+										<tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
 											<form action = 'projectGantt' method="POST">
 											</form>
-
+											<td class="bg-yellow"></td>
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
 											<td><?php echo date_format($plannedStart, "M d, Y");?></td>
 											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
