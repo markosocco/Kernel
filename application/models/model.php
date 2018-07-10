@@ -147,18 +147,18 @@ class model extends CI_Model
     return $query->result_array();
   }
 
-  // public function getAllUsersByDepartment($filter)
-  // {
-  //   $condition = $filter;
-  //   $this->db->select('*');
-  //   $this->db->from('users');
-  //   $this->db->where($condition);
-  //   $query = $this->db->get();
-  //
-  //   return $query->result_array();
-  // }
-
   public function getAllUsersByDepartment($filter)
+  {
+    $condition = $filter;
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getProjectCount($filter)
   {
     $condition = "projects.PROJECTSTATUS != 'Complete'";
     $this->db->select('users.*, count(distinct projects.PROJECTID) AS "projectCount"');
