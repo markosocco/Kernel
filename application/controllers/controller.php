@@ -488,7 +488,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("teamGantt");
+			$id = $this->input->post("project_ID");
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+			$data['ganttData'] = $this->model->getAllProjectTasks($id);
+			$data['dependencies'] = $this->model->getDependecies();
+			$data['users'] = $this->model->getAllUsers();
+
+			$departmentID = $_SESSION['departments_DEPARTMENTID'];
+
+			$data['ganttData'] = $this->model->getAllProjectTasksByDepartment($id, $departmentID);
+			$this->load->view("teamGantt", $data);
 		}
 	}
 
