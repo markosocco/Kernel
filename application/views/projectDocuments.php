@@ -67,7 +67,7 @@
 		            <!-- /.box-header -->
 		            <div class="box-body table-responsive no-padding">
 
-									<?php if($documents != NULL):?>
+									<?php if($documentsByProject != NULL):?>
 		              <table class="table table-hover">
 		                <tr>
 		                  <th>#</th>
@@ -80,7 +80,7 @@
 		                </tr>
 
 										<?php
-											foreach ($documents as $row) {
+											foreach ($documentsByProject as $row) {
 
 												$dateUploaded = $row['UPLOADEDDATE'];
 												$MonthNum = substr($dateUploaded, 5, 2);
@@ -116,7 +116,6 @@
 													echo "<td>" . $row['REMARKS'] . "</td>";
 													echo "<td align='center'><button type='button' class='btn btn-success'>
 													<i class='fa fa-download'></i> Download</button></td>";
-
 												echo "</tr>";
 											}
 										?>
@@ -161,10 +160,10 @@
 															<input type="radio" name="sendTo">
 														</span>
 													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
-														<?php foreach ($departments as $row): ?>
+														<?php foreach ($departments as $data): ?>
 
 															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
+																<?php echo $data['DEPARTMENTNAME']; ?>
 															</option>
 
 														<?php endforeach; ?>

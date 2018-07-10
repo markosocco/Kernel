@@ -429,6 +429,7 @@ class model extends CI_Model
 
   public function getAllDocumentsByProject($id)
   {
+    echo "console.log(".$id.");";
     $condition = "documents.projects_PROJECTID = " . $id;
     $this->db->select('*');
     $this->db->from('documents');
@@ -463,8 +464,6 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-
-
 
   public function updateTaskStatus($currentDate)
   {
