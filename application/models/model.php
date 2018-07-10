@@ -367,6 +367,19 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllProjectTasksByDepartment($projectID, $departmentID)
+  {
+    $condition = "projects_PROJECTID = " . $projectID . " AND departments_DEPARTMENTID = " . $departmentID;
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   public function uploadDocument($data)
   {
     $this->db->insert('documents', $data);
@@ -386,20 +399,19 @@ class model extends CI_Model
 
   public function getAllDocumentsByProject($id)
   {
-    echo "console.log(".$id.");";
     $condition = "documents.projects_PROJECTID = " . $id;
     $this->db->select('*');
     $this->db->from('documents');
     $this->db->join('projects', 'documents.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'documents.users_UPLOADEDBY = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
 
     return $this->db->get()->result_array();
   }
 
   public function insertParentTask($data, $id)
   {
-    // $parent = $data['tasks_TASKPARENT'];
 
     $this->db->where('TASKID', $id);
     $this->db->update('tasks', $data);

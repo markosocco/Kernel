@@ -98,19 +98,17 @@
 
 		    foreach($ganttData as $row)
 		    {
-		// CHANGING OF DEPARTMENT NAME
-		      if($row['DEPARTMENTNAME'] == "Facilities Administration")
-		      {
-		        $departmentName = 'FAD';
-		      } else {
-		        $departmentName = $row['DEPARTMENTNAME'];
-		      }
 
-		        $parent = 1;
-		        $hasChildren = false;
-		        $completion = 100;
-		        $MAcounter = 0;
-						$group = 0;
+		// FOR RESOURCE PERSON
+		      $firstName = $row['FIRSTNAME'];
+					$lastName = $row['LASTNAME'];
+					$name = $firstName . " " . $lastName;
+
+	        $parent = 1;
+	        $hasChildren = false;
+	        $completion = 100;
+	        $MAcounter = 0;
+					$group = 0;
 
 		// FOR GROUPING
 					$currentTask = $row['TASKID'];
@@ -146,7 +144,7 @@
 
 							echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
 				      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-				      "'gtaskBlue', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+				      "'gtaskBlue', '', 0, '" . $name . "', " . $complete . ", " . $group . ", " .
 							$parent . ", 1, '". $dependency."SS', '', '', g));";
 						}
 					}
@@ -154,7 +152,7 @@
 
 		      echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
 		      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-		      "'gtaskBlue', '', 0, '" . $departmentName . "', " . $complete . ", " . $group . ", " .
+		      "'gtaskBlue', '', 0, '" . $name . "', " . $complete . ", " . $group . ", " .
 					$parent . ", 1, '". $dependency."', '', '', g));";
 
 		    }

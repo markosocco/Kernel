@@ -163,6 +163,11 @@ class controller extends CI_Controller
 				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
 			}
 
+			$id = $this->input->post("project_ID");
+
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+			$data['projectTasks'] = $this->model->getAllProjectTasks($id);
+
 			$this->load->view("myProjects", $data);
 		}
 	}
@@ -507,7 +512,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("teamGantt");
+			$id = $this->input->post("project_ID");
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+			$data['ganttData'] = $this->model->getAllProjectTasks($id);
+			$data['dependencies'] = $this->model->getDependecies();
+			$data['users'] = $this->model->getAllUsers();
+
+			$departmentID = $_SESSION['departments_DEPARTMENTID'];
+
+			$data['ganttData'] = $this->model->getAllProjectTasksByDepartment($id, $departmentID);
+			$this->load->view("teamGantt", $data);
 		}
 	}
 
@@ -601,7 +615,6 @@ class controller extends CI_Controller
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
-			// $data['preReq'] = $this->model->getPreReqID();
 			$data['dependencies'] = $this->model->getDependecies();
 			$data['users'] = $this->model->getAllUsers();
 
