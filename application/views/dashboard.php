@@ -59,6 +59,7 @@
 			<!--  -->
 
 			<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
+			<div>
 			<table id="logsList" class="table table-bordered table-hover">
 				<tbody>
 					<th>Project Title</th>
@@ -86,8 +87,8 @@
 					?>
 				</tbody>
 			</table>
-		<?php endif;?>
 		</div>
+		<?php endif;?>
 
 		<?php require("footer.php"); ?>
 

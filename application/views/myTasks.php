@@ -167,9 +167,19 @@
 							                    </label>
 							                  </div></td>
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-																<td align="center"><?php echo $employee['projectCount'];?></td>
+																<?php foreach($projectCount as $count): ;?>
+																	<?php $hasProjects = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<td align="center"><?php echo $count['projectCount'];?></td>
+																		<?php $hasProjects = true;?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if (!$hasProjects):?>
+																	<td align="center">0</td>
+																<?php endif;?>
 																<td align="center">N%</td>
-																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $employee['projectCount'];?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = ""><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 															</tr>
 														<?php endforeach;?>
 													</tbody>
@@ -178,26 +188,16 @@
 
 											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
-												<table id="accountableList1" class="table table-bordered table-hover">
-													<thead>
-													<tr>
-														<th></th>
-														<th>Department Name</th>
-													</tr>
-													</thead>
-													<tbody>
-														<?php foreach($departments as $dept):?>
-															<tr>
-																<td><div class="checkbox">
-																	<label>
-																		<input class = "checkDept" type="checkbox" name="accountableDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-																	</label>
-																</div></td>
-																<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-															</tr>
-														<?php endforeach;?>
-													</tbody>
-												</table>
+
+												<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+													<?php foreach ($departments as $row): ?>
+
+														<option>
+															<?php echo $row['DEPARTMENTNAME']; ?>
+														</option>
+
+													<?php endforeach; ?>
+				                </select>
 
 											<table id="accountableList2" class="table table-bordered table-hover">
 												<thead>
@@ -218,8 +218,17 @@
 																</label>
 															</div></td>
 															<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-															<td align="center"><?php echo $employee['projectCount'];?></td>
-															<td align="center">N%</td>
+															<?php foreach($projectCount as $count): ;?>
+																<?php $hasProjects = false;?>
+																<?php if ($count['USERID'] == $employee['USERID']):?>
+																	<td align="center"><?php echo $count['projectCount'];?></td>
+																	<?php $hasProjects = true;?>
+																	<?php break;?>
+																<?php endif;?>
+															<?php endforeach;?>
+															<?php if (!$hasProjects):?>
+																<td align="center">0</td>
+															<?php endif;?>															<td align="center">N%</td>
 															<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
 													<?php endforeach;?>
@@ -229,27 +238,15 @@
 
 										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
-											<table id="consultedList1" class="table table-bordered table-hover">
-												<thead>
-												<tr>
-													<th></th>
-													<th>Department Name</th>
-												</tr>
-												</thead>
-												<tbody>
-													<?php foreach($departments as $dept):?>
-														<tr>
-															<td><div class="checkbox">
-																<label>
-																	<input class = "checkDept" type="checkbox" name="consultedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-																</label>
-															</div></td>
-															<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-														</tr>
-													<?php endforeach;?>
-												</tbody>
-											</table>
+											<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+												<?php foreach ($departments as $row): ?>
 
+													<option>
+														<?php echo $row['DEPARTMENTNAME']; ?>
+													</option>
+
+												<?php endforeach; ?>
+											</select>
 										<table id="consultedList2" class="table table-bordered table-hover">
 											<thead>
 											<tr>
@@ -269,8 +266,17 @@
 															</label>
 														</div></td>
 														<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-														<td align="center"><?php echo $employee['projectCount'];?></td>
-														<td align="center">N%</td>
+														<?php foreach($projectCount as $count): ;?>
+															<?php $hasProjects = false;?>
+															<?php if ($count['USERID'] == $employee['USERID']):?>
+																<td align="center"><?php echo $count['projectCount'];?></td>
+																<?php $hasProjects = true;?>
+																<?php break;?>
+															<?php endif;?>
+														<?php endforeach;?>
+														<?php if (!$hasProjects):?>
+															<td align="center">0</td>
+														<?php endif;?>														<td align="center">N%</td>
 														<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
 												<?php endforeach;?>
@@ -280,27 +286,15 @@
 
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
-									<table id="informedList1" class="table table-bordered table-hover">
-										<thead>
-										<tr>
-											<th></th>
-											<th>Department Name</th>
-										</tr>
-										</thead>
-										<tbody>
-											<?php foreach($departments as $dept):?>
-												<tr>
-													<td><div class="checkbox">
-														<label>
-															<input class = "checkDept" type="checkbox" name="informedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-														</label>
-													</div></td>
-													<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-												</tr>
-											<?php endforeach;?>
-										</tbody>
-									</table>
+										<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+											<?php foreach ($departments as $row): ?>
 
+												<option>
+													<?php echo $row['DEPARTMENTNAME']; ?>
+												</option>
+
+											<?php endforeach; ?>
+										</select>
 									<table id="informedList2" class="table table-bordered table-hover">
 										<thead>
 										<tr>
@@ -320,8 +314,17 @@
 														</label>
 													</div></td>
 													<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-													<td align="center"><?php echo $employee['projectCount'];?></td>
-													<td align="center">N%</td>
+													<?php foreach($projectCount as $count): ;?>
+														<?php $hasProjects = false;?>
+														<?php if ($count['USERID'] == $employee['USERID']):?>
+															<td align="center"><?php echo $count['projectCount'];?></td>
+															<?php $hasProjects = true;?>
+															<?php break;?>
+														<?php endif;?>
+													<?php endforeach;?>
+													<?php if (!$hasProjects):?>
+														<td align="center">0</td>
+													<?php endif;?>													<td align="center">N%</td>
 													<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
 											<?php endforeach;?>
@@ -459,6 +462,7 @@
 		<script>
 			$("#myTasks").addClass("active");
 			$('.select2').select2();
+			$('.select2').select2()
 			$("#responsible").addClass("active");
 			$(".raciDiv").hide();
 			$("#responsibleDiv").show();
@@ -672,7 +676,7 @@
 								case "4": role = "I"; break;
 							}
  							 table += "<tr>" +
-							 							"<td>" + role + "</td>" +
+							 							"<td align='center'>" + role + "</td>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
  														"<td align='center'>" + taskStart +"</td>"+
