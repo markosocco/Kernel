@@ -389,6 +389,24 @@ class controller extends CI_Controller
 		$this->myTasks();
 	}
 
+	public function getUserWorkloadProjects()
+	{
+		$userID = $this->input->post('userID');
+		$data['workloadProjects'] = $this->model->getWorkloadProjects($userID);
+
+		echo json_encode($data);
+	}
+
+	public function getUserWorkloadTasks()
+	{
+		$userID = $this->input->post('userID');
+		$projectID = $this->input->post('projectID');
+		$data['workloadTasks'] = $this->model->getWorkloadTasks($userID, $projectID);
+
+		echo json_encode($data);
+	}
+
+
 	public function templates()
 	{
 		if (!isset($_SESSION['EMAIL']))
