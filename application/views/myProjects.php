@@ -73,6 +73,8 @@
 									<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
 									<div class="small-box bg-green">
 										<div class="inner">
+
+<!-- put project progress here -->
 											<h2>82%</h2>
 
 											<form action = 'projectGantt'  method="POST">
