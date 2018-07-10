@@ -151,10 +151,10 @@
 					}
 
 		// FOR COMPLETION
-					if($row['TASKSTATUS'] == 'Pending'){
-						$complete = 0;
-					} else {
+					if($row['TASKSTATUS'] == 'Complete'){
 						$complete = 100;
+					} else {
+						$complete = 0;
 					}
 
 		// TODO: CHECK FOR PREREQ

@@ -10,6 +10,10 @@
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
+				<div style="margin-bottom:10px">
+					<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
+					<a href="#" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to Project</a>
+				</div>
 				<h1>
 					Project title - Project Logs
 					<small>What is happeing to this project?</small>

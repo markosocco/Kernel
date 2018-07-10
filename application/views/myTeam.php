@@ -56,7 +56,7 @@
 										<div class="inner">
 											<h2>82%</h2>
 
-											<form action = 'projectGantt'  method="POST">
+											<form action = 'teamGantt'  method="POST">
 											</form>
 
 											<p><b><?php echo $row['PROJECTTITLE']; ?></b><br><i><?php echo $row['datediff'] +1;?> day/s remaining</i></p>
@@ -78,7 +78,7 @@
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-											<form action = 'projectGantt' method="POST">
+											<form action = 'teamGantt' method="POST">
 											</form>
 
 											<?php //Compute for days remaining
@@ -132,7 +132,7 @@
 
 										<tr class="btn-success project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-											<form action = 'projectGantt' method="POST">
+											<form action = 'teamGantt' method="POST">
 											</form>
 
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
@@ -153,7 +153,7 @@
 
 										<tr class="btn-warning project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-											<form action = 'projectGantt' method="POST">
+											<form action = 'teamGantt' method="POST">
 											</form>
 
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
@@ -192,7 +192,7 @@
       // {
 			//	var $id = $(this).attr('data-id');
 
-      //   // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
+      //   // window.location.replace("<?php echo base_url("index.php/controller/teamGantt/?id="); ?>" + $id);
       // });
 
 			// IF USING POST METHOD FOR PROJECT ID

@@ -153,7 +153,7 @@
 													<tr>
 														<th></th>
 														<th>Name</th>
-														<th align="center">No. of Projects</th>
+														<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
 														<th align="center">Progress</th>
 														<th></th>
 													</tr>
@@ -167,9 +167,20 @@
 							                    </label>
 							                  </div></td>
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-																<td align="center"><?php echo $employee['projectCount'];?></td>
+																<?php foreach($projectCount as $count): ;?>
+																	<?php $hasProjects = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<td align="center"><?php echo $count['projectCount'];?></td>
+																		<?php $hasProjects = $count['projectCount'];?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if ($hasProjects <= '0'):?>
+																	<?php $hasProjects = 0;?>
+																	<td align="center">0</td>
+																<?php endif;?>
 																<td align="center">N%</td>
-																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $employee['projectCount'];?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 															</tr>
 														<?php endforeach;?>
 													</tbody>
@@ -178,26 +189,16 @@
 
 											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
-												<table id="accountableList1" class="table table-bordered table-hover">
-													<thead>
-													<tr>
-														<th></th>
-														<th>Department Name</th>
-													</tr>
-													</thead>
-													<tbody>
-														<?php foreach($departments as $dept):?>
-															<tr>
-																<td><div class="checkbox">
-																	<label>
-																		<input class = "checkDept" type="checkbox" name="accountableDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-																	</label>
-																</div></td>
-																<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-															</tr>
-														<?php endforeach;?>
-													</tbody>
-												</table>
+
+												<select class="form-control select2" multiple="multiple" name = "accountableDept[]" data-placeholder="Select Departments" style="width:100%">
+													<?php foreach ($departments as $row): ?>
+
+														<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
+															<?php echo $row['DEPARTMENTNAME']; ?>
+														</option>
+
+													<?php endforeach; ?>
+				                </select>
 
 											<table id="accountableList2" class="table table-bordered table-hover">
 												<thead>
@@ -218,9 +219,20 @@
 																</label>
 															</div></td>
 															<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-															<td align="center"><?php echo $employee['projectCount'];?></td>
+															<?php foreach($projectCount as $count): ;?>
+																<?php $hasProjects = false;?>
+																<?php if ($count['USERID'] == $employee['USERID']):?>
+																	<td align="center"><?php echo $count['projectCount'];?></td>
+																	<?php $hasProjects = $count['projectCount'];?>
+																	<?php break;?>
+																<?php endif;?>
+															<?php endforeach;?>
+															<?php if ($hasProjects <= '0'):?>
+																<?php $hasProjects = 0;?>
+																<td align="center">0</td>
+															<?php endif;?>
 															<td align="center">N%</td>
-															<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+															<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
 													<?php endforeach;?>
 												</tbody>
@@ -229,27 +241,15 @@
 
 										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
-											<table id="consultedList1" class="table table-bordered table-hover">
-												<thead>
-												<tr>
-													<th></th>
-													<th>Department Name</th>
-												</tr>
-												</thead>
-												<tbody>
-													<?php foreach($departments as $dept):?>
-														<tr>
-															<td><div class="checkbox">
-																<label>
-																	<input class = "checkDept" type="checkbox" name="consultedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-																</label>
-															</div></td>
-															<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-														</tr>
-													<?php endforeach;?>
-												</tbody>
-											</table>
+											<select class="form-control select2" multiple="multiple" name = "consultedDept[]" data-placeholder="Select Departments" style="width:100%">
+												<?php foreach ($departments as $row): ?>
 
+													<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
+														<?php echo $row['DEPARTMENTNAME']; ?>
+													</option>
+
+												<?php endforeach; ?>
+											</select>
 										<table id="consultedList2" class="table table-bordered table-hover">
 											<thead>
 											<tr>
@@ -269,9 +269,20 @@
 															</label>
 														</div></td>
 														<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-														<td align="center"><?php echo $employee['projectCount'];?></td>
+														<?php foreach($projectCount as $count): ;?>
+															<?php $hasProjects = false;?>
+															<?php if ($count['USERID'] == $employee['USERID']):?>
+																<td align="center"><?php echo $count['projectCount'];?></td>
+																<?php $hasProjects = $count['projectCount'];?>
+																<?php break;?>
+															<?php endif;?>
+														<?php endforeach;?>
+														<?php if ($hasProjects <= '0'):?>
+															<?php $hasProjects = 0;?>
+															<td align="center">0</td>
+														<?php endif;?>
 														<td align="center">N%</td>
-														<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
 												<?php endforeach;?>
 											</tbody>
@@ -280,27 +291,15 @@
 
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
-									<table id="informedList1" class="table table-bordered table-hover">
-										<thead>
-										<tr>
-											<th></th>
-											<th>Department Name</th>
-										</tr>
-										</thead>
-										<tbody>
-											<?php foreach($departments as $dept):?>
-												<tr>
-													<td><div class="checkbox">
-														<label>
-															<input class = "checkDept" type="checkbox" name="informedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-														</label>
-													</div></td>
-													<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-												</tr>
-											<?php endforeach;?>
-										</tbody>
-									</table>
+										<select class="form-control select2" multiple="multiple" name = "informedDept[]" data-placeholder="Select Departments" style="width:100%">
+											<?php foreach ($departments as $row): ?>
 
+												<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
+													<?php echo $row['DEPARTMENTNAME']; ?>
+												</option>
+
+											<?php endforeach; ?>
+										</select>
 									<table id="informedList2" class="table table-bordered table-hover">
 										<thead>
 										<tr>
@@ -320,9 +319,20 @@
 														</label>
 													</div></td>
 													<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-													<td align="center"><?php echo $employee['projectCount'];?></td>
+													<?php foreach($projectCount as $count): ;?>
+														<?php $hasProjects = false;?>
+														<?php if ($count['USERID'] == $employee['USERID']):?>
+															<td align="center"><?php echo $count['projectCount'];?></td>
+															<?php $hasProjects = $count['projectCount'];?>
+															<?php break;?>
+														<?php endif;?>
+													<?php endforeach;?>
+													<?php if ($hasProjects <= '0'):?>
+														<?php $hasProjects = 0;?>
+														<td align="center">0</td>
+													<?php endif;?>
 													<td align="center">N%</td>
-													<td class="btn moreInfo"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
 											<?php endforeach;?>
 										</tbody>
@@ -371,50 +381,13 @@
 								<div class="modal-content">
 									<div class="modal-header">
 										<h2 class="modal-title" id ="workloadEmployee">Employee Name</h2>
-										<h4 id = "workloadProjects">Total Number of Projects: </h4>
+										<h4 id = "workloadProjects">Total Number of Project/s: </h4>
 									</div>
-									<div class="modal-body">
-										<div class="box">
-											<div class="box-header">
-												<h3 class="box-title">Project Title 1 Tasks</h3>
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body table-responsive no-padding">
-												<table class="table table-hover">
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-													<tr>
-														<td>Poop today</td>
-														<td>80%</td>
-													</tr>
-												</table>
-											</div>
-											<!-- /.box-body -->
-										</div>
-										<!-- /.box -->
+									<div class="modal-body" id = "workloadDiv">
 
-										<div class="box">
-											<div class="box-header">
-												<h3 class="box-title">Project Title 2 Tasks</h3>
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body table-responsive no-padding">
-												<table class="table table-hover">
-													<tr>
-														<td>Poop tomorrow</td>
-														<td>0%</td>
-													</tr>
-												</table>
-											</div>
-											<!-- /.box-body -->
-										</div>
-										<!-- /.box -->
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-right" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<!-- <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Confirm</button> -->
 									</div>
 								</div>
 								<!-- /.modal-content -->
@@ -459,6 +432,7 @@
 		<script>
 			$("#myTasks").addClass("active");
 			$('.select2').select2();
+			$('.select2').select2()
 			$("#responsible").addClass("active");
 			$(".raciDiv").hide();
 			$("#responsibleDiv").show();
@@ -589,8 +563,85 @@
 			 });
 
 			 $(".moreInfo").click(function(){
+
+				 function loadWorkloadTasks($projectID)
+				 {
+				 	$.ajax({
+				 		type:"POST",
+				 		url: "<?php echo base_url("index.php/controller/getUserWorkloadTasks"); ?>",
+				 		data: {userID: $id, projectID: $projectID},
+				 		dataType: 'json',
+				 		success:function(data)
+				 		{
+				 			for(t=0; t<data['workloadTasks'].length; t++)
+				 			{
+								var taskStart = moment(data['workloadTasks'][t].TASKSTARTDATE).format('MMM DD, YYYY');
+								var taskEnd = moment(data['workloadTasks'][t].TASKENDDATE).format('MMM DD, YYYY');
+
+				 				$("#project_" + $projectID).append("<tr>" +
+				 								 "<td>" + data['workloadTasks'][t].TASKTITLE + "</td>" +
+				 								 "<td>" + taskStart + "</td>" +
+				 								 "<td>" + taskEnd + "</td>" +
+				 								 "<td>" + data['workloadTasks'][t].TASKSTATUS + "</td>" +
+				 								 "</tr>");
+				 			}
+				 		},
+				 		error:function()
+				 		{
+				 			alert("Failed to retrieve user data.");
+				 		}
+				 	});
+				 }
+
+				 var $id = $(this).attr('data-id');
+				 var $projectCount = $(this).attr('data-projectCount');
 				 $("#workloadEmployee").html($(this).attr('data-name'));
-				 $("#workloadProjects").html("Total Number of Projects: " + $(this).attr('data-projectCount'));
+				 $("#workloadProjects").html("Total Number of Project/s: " + $projectCount);
+				 $('#workloadDiv').html("");
+				 var info;
+
+				 if($projectCount > 0)
+				 {
+					 // GET PROJECTS OF USER
+					 $.ajax({
+						 type:"POST",
+						 url: "<?php echo base_url("index.php/controller/getUserWorkloadProjects"); ?>",
+						 data: {userID: $id},
+						 dataType: 'json',
+						 success:function(data)
+						 {
+							 $('#workloadDiv').html("");
+							 for(p=0; p<data['workloadProjects'].length; p++)
+							 {
+								 var $projectID = data['workloadProjects'][p].PROJECTID;
+								 $('#workloadDiv').append("<div class = 'box'>" +
+								 					"<div class = 'box-header'>" +
+														"<h3 class = 'box-title'> " + data['workloadProjects'][p].PROJECTTITLE + "</h3>" +
+													"</div>" +
+													"<div class = 'box-body table-responsive no-padding'>" +
+														"<table class='table table-hover' id='project_" + $projectID + "'>" +
+															"<th>Task Name</th>" +
+															"<th>Start Date</th>" +
+															"<th>End Date</th>" +
+															"<th>Status</th>");
+
+									loadWorkloadTasks($projectID);
+
+									$('#workloadDiv').append("</table>" +
+																						"</div>" +
+																					"</div>");
+							 }
+						 },
+						 error:function()
+						 {
+							 alert("Failed to retrieve user data.");
+						 }
+					 });
+				 }
+				 else
+				 {
+					 $('#workloadDiv').html("<h4 class = 'box-title' style='text-align:center'> No projects to show</h4>");
+				 }
 			 });
 
 			 $("body").on('change','#rfcType',function(){
@@ -672,7 +723,7 @@
 								case "4": role = "I"; break;
 							}
  							 table += "<tr>" +
-							 							"<td>" + role + "</td>" +
+							 							"<td align='center'>" + role + "</td>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
  														"<td align='center'>" + taskStart +"</td>"+
