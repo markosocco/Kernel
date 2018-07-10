@@ -156,17 +156,21 @@ class controller extends CI_Controller
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
 				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
+				$data['parkedProjects'] = $this->model->getAllParkedProjects();
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
+
 			}
 			else
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
 				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
+				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
+				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 			}
 
-			$id = $this->input->post("project_ID");
-
-			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['projectTasks'] = $this->model->getAllProjectTasks($id);
+			$data['projectProgress'] = $this->model->getOngoingProjectProgress();
 
 			$this->load->view("myProjects", $data);
 		}
