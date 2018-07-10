@@ -738,107 +738,6 @@ class controller extends CI_Controller
 			$this->load->view('arrangeTasks', $data);
 		}
 
-		// SAVES DATA FROM ARRAY VIA INDEX AND PLUGS INTO DB
-		// foreach ($title as $key => $value)
-		// {
-		// 	// switch ($category[$key])
-		// 	// {
-		// 	// 	case 'Main Activity':
-		// 	// 		$cat = 1;
-		// 	// 		break;
-		// 	// 	case 'Sub Activity':
-		// 	// 		$cat = 2;
-		// 	// 		break;
-		// 	// 	case 'Task':
-		// 	// 		$cat = 3;
-		// 	// 		break;
-		// 	// }
-		//
-		// 	// ASSIGN DEPARTMENT HEAD PER VARIABLE
-		// 	foreach ($departments as $row)
-		// 	{
-		// 		switch ($row['DEPARTMENTNAME'])
-		// 		{
-		// 			case 'Executive':
-		// 				$execHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 			case 'Marketing':
-		// 				$mktHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 			case 'Finance':
-		// 				$finHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 			case 'Procurement':
-		// 				$proHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 			case 'HR':
-		// 				$hrHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 			case 'MIS':
-		// 				$misHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 			case 'Store Operations':
-		// 				$opsHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 			case 'Facilities Administration':
-		// 				$fadHead = $row['users_DEPARTMENTHEAD'];
-		// 				break;
-		// 		}
-		// 	}
-		//
-		// 	switch ($department[$key])
-		// 	{
-		// 		case 'Executive':
-		// 			$deptHead = $execHead;
-		// 			break;
-		// 		case 'Marketing':
-		// 			$deptHead = $mktHead;
-		// 			break;
-		// 		case 'Finance':
-		// 			$deptHead = $finHead;
-		// 			break;
-		// 		case 'Procurement':
-		// 			$deptHead = $proHead;
-		// 			break;
-		// 		case 'HR':
-		// 			$deptHead = $hrHead;
-		// 			break;
-		// 		case 'MIS':
-		// 			$deptHead = $misHead;
-		// 			break;
-		// 		case 'Store Operations':
-		// 			$deptHead = $opsHead;
-		// 			break;
-		// 		case 'Facilities Administration':
-		// 			$deptHead = $fadHead;
-		// 			break;
-		// 	}
-		//
-		// 	$data = array(
-		// 			'TASKTITLE' => $title[$key],
-		// 			'TASKSTATUS' => 'Pending',
-		// 			'CATEGORY' => 'Main Activity',
-		// 			'projects_PROJECTID' => $id,
-		// 			'users_USERID' => $deptHead
-		// 	);
-		//
-		// 	$addTasks = $this->model->addTasksToProject($data);
-		//
-		// 	if (!$addTasks)
-		// 	{
-		// 		// TODO PUT ALERT
-		// 		redirect('controller/contact');
-		// 	}
-		// }
-		//
-		// $data['project'] = $this->model->getProjectByID($id);
-		// $data['tasks'] = $this->model->getAllProjectTasks($id);
-		// $data['users'] = $this->model->getAllUsers();
-		// $data['departments'] = $this->model->getAllDepartments();
-		// $data['dateDiff'] = $this->model->getDateDiff($data['project']);
-		//
-		// $this->load->view('arrangeTasks', $data);
-
 		// ADDS SUB ACTIVITIES TO MAIN ACTIVITIES OF PROJECT
 		public function arrangeTasks()
 		{
@@ -883,11 +782,11 @@ class controller extends CI_Controller
 			}
 
 			$x = 0;
+			$table = 0;
+			// $num = 0;
 
 			foreach ($parent as $key => $value)
 			{
-				$department = $this->input->post('department_' . $x);
-
 				$data = array(
 						'TASKTITLE' => $title[$key],
 						'TASKSTARTDATE' => $startDates[$key],
@@ -907,49 +806,83 @@ class controller extends CI_Controller
 
 				else
 				{
-					foreach($department as $a)
+					//SHIT WORKS HERE
+
+					foreach ($parent as $row)
 					{
-						switch ($a)
+						//WORKS HERE
+
+						$num = 0;
+						foreach ($title as $t)
 						{
-							case 'Executive':
-								$deptHead = $execHead;
-								break;
-							case 'Marketing':
-								$deptHead = $mktHead;
-								break;
-							case 'Finance':
-								$deptHead = $finHead;
-								break;
-							case 'Procurement':
-								$deptHead = $proHead;
-								break;
-							case 'HR':
-								$deptHead = $hrHead;
-								break;
-							case 'MIS':
-								$deptHead = $misHead;
-								break;
-							case 'Store Operations':
-								$deptHead = $opsHead;
-								break;
-							case 'Facilities Administration':
-								$deptHead = $fadHead;
-								break;
+							// WORKS HERE
+							$department = $this->input->post('table_' . $table . '_department' . $num);
+
+				      if (isset($department))
+				      {
+
+				        foreach ($department as $d)
+				        {
+									echo $addedTask['TASKID'] . "<BR>";
+									
+				          // echo $d . " " . $table . $num . "<br>";
+									// echo "table_" . $table . "_department" . $num . "<br>";
+
+									switch ($d)
+								  {
+								    case 'Executive':
+								      $deptHead = $execHead;
+								      break;
+								    case 'Marketing':
+								      $deptHead = $mktHead;
+								      break;
+								    case 'Finance':
+								      $deptHead = $finHead;
+								      break;
+								    case 'Procurement':
+								      $deptHead = $proHead;
+								      break;
+								    case 'HR':
+								      $deptHead = $hrHead;
+								      break;
+								    case 'MIS':
+								      $deptHead = $misHead;
+								      break;
+								    case 'Store Operations':
+								      $deptHead = $opsHead;
+								      break;
+								    case 'Facilities Administration':
+								      $deptHead = $fadHead;
+								      break;
+								  }
+
+								  $data = array(
+								      'ROLE' => '1',
+								      'users_USERID' => $deptHead,
+								      'tasks_TASKID' => $addedTask['TASKID']
+								  );
+
+									// echo $addedTask['TASKID'] . "<br>";
+								  // ENTER INTO RACI
+								  $result = $this->model->addToRaci($data);
+				        }
+								// echo $num;
+							}
+							// echo "num: " . $num;
+							$num++;
 						}
-
-						$data = array(
-								'ROLE' => '1',
-								'users_USERID' => $deptHead,
-								'tasks_TASKID' => $addedTask['TASKID']
-						);
-
-						// ENTER INTO RACI
-						$result = $this->model->addToRaci($data);
+						// echo "table: " . $table;
+						$table++;
+						// echo "<br>";
 					}
 				}
 
 				$x++;
+				echo $addedTask['TASKID'] . "<BR>";
+
 			}
+
+
 
 			// GANTT CODE
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -960,7 +893,7 @@ class controller extends CI_Controller
 
 			// $this->load->view("dashboard", $data);
 			// redirect('controller/projectGantt');
-			$this->load->view("scheduleTasks", $data);
+			// $this->load->view("scheduleTasks", $data);
 	}
 
 	public function uploadDocument()

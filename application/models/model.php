@@ -465,5 +465,25 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+    // public function getMainActivities($id)
+    // {
+    //   $condtition = "projects_PROJECTID =" . $id . " AND CATEGORY = 1";
+    //   $this->db->select('*');
+    //   $this->db->from('tasks');
+    //   $this->db->where($condition);
+    //
+    //   return $this->db->get()->result_array();
+    // }
+
+    public function getMainActivities($id)
+    {
+      $condition = "projects_PROJECTID = '" . $id . "' && CATEGORY = 1";
+      $this->db->select('*');
+      $this->db->from('tasks');
+      $this->db->where($condition);
+
+      return $this->db->get()->result_array();
+    }
 }
 ?>
