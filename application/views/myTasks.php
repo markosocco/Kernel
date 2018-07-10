@@ -188,26 +188,16 @@
 
 											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
-												<table id="accountableList1" class="table table-bordered table-hover">
-													<thead>
-													<tr>
-														<th></th>
-														<th>Department Name</th>
-													</tr>
-													</thead>
-													<tbody>
-														<?php foreach($departments as $dept):?>
-															<tr>
-																<td><div class="checkbox">
-																	<label>
-																		<input class = "checkDept" type="checkbox" name="accountableDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-																	</label>
-																</div></td>
-																<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-															</tr>
-														<?php endforeach;?>
-													</tbody>
-												</table>
+
+												<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+													<?php foreach ($departments as $row): ?>
+
+														<option>
+															<?php echo $row['DEPARTMENTNAME']; ?>
+														</option>
+
+													<?php endforeach; ?>
+				                </select>
 
 											<table id="accountableList2" class="table table-bordered table-hover">
 												<thead>
@@ -248,27 +238,15 @@
 
 										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
-											<table id="consultedList1" class="table table-bordered table-hover">
-												<thead>
-												<tr>
-													<th></th>
-													<th>Department Name</th>
-												</tr>
-												</thead>
-												<tbody>
-													<?php foreach($departments as $dept):?>
-														<tr>
-															<td><div class="checkbox">
-																<label>
-																	<input class = "checkDept" type="checkbox" name="consultedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-																</label>
-															</div></td>
-															<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-														</tr>
-													<?php endforeach;?>
-												</tbody>
-											</table>
+											<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+												<?php foreach ($departments as $row): ?>
 
+													<option>
+														<?php echo $row['DEPARTMENTNAME']; ?>
+													</option>
+
+												<?php endforeach; ?>
+											</select>
 										<table id="consultedList2" class="table table-bordered table-hover">
 											<thead>
 											<tr>
@@ -308,27 +286,15 @@
 
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
-									<table id="informedList1" class="table table-bordered table-hover">
-										<thead>
-										<tr>
-											<th></th>
-											<th>Department Name</th>
-										</tr>
-										</thead>
-										<tbody>
-											<?php foreach($departments as $dept):?>
-												<tr>
-													<td><div class="checkbox">
-														<label>
-															<input class = "checkDept" type="checkbox" name="informedDept[]" value="<?php echo $dept['users_DEPARTMENTHEAD'];?>">
-														</label>
-													</div></td>
-													<td><?php echo $dept['DEPARTMENTNAME'];?></td>
-												</tr>
-											<?php endforeach;?>
-										</tbody>
-									</table>
+										<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+											<?php foreach ($departments as $row): ?>
 
+												<option>
+													<?php echo $row['DEPARTMENTNAME']; ?>
+												</option>
+
+											<?php endforeach; ?>
+										</select>
 									<table id="informedList2" class="table table-bordered table-hover">
 										<thead>
 										<tr>
@@ -496,6 +462,7 @@
 		<script>
 			$("#myTasks").addClass("active");
 			$('.select2').select2();
+			$('.select2').select2()
 			$("#responsible").addClass("active");
 			$(".raciDiv").hide();
 			$("#responsibleDiv").show();
@@ -709,7 +676,7 @@
 								case "4": role = "I"; break;
 							}
  							 table += "<tr>" +
-							 							"<td>" + role + "</td>" +
+							 							"<td align='center'>" + role + "</td>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
  														"<td align='center'>" + taskStart +"</td>"+
