@@ -862,18 +862,19 @@ class controller extends CI_Controller
 						$num = 0;
 						foreach ($title as $t)
 						{
+							// echo $t . "<br>";
 							// WORKS HERE
 							$department = $this->input->post('table_' . $table . '_department' . $num);
 
 				      if (isset($department))
 				      {
 
+
 				        foreach ($department as $d)
 				        {
-									echo $addedTask['TASKID'] . "<BR>";
-
 				          // echo $d . " " . $table . $num . "<br>";
 									// echo "table_" . $table . "_department" . $num . "<br>";
+									echo "table_" . $table . "_department" . $num . " -- " . $addedTask['TASKID'] . "<BR>";
 
 									switch ($d)
 								  {

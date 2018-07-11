@@ -2,12 +2,14 @@
 	<head>
 		<title>Kernel - Log In</title>
 		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/loginStyle.css")?>">
+		<!-- Bootstrap Notify -->
+		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
 	</head>
 	<body>
 
 		<div id = mainContainer>
 
-			<img id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>">
+			<img class="animated zoomIn" id = "logo"  src = "<?php echo base_url("/assets/media/tei.png")?>">
 			<h1>KERNEL:<br>
 			PROJECT MANAGEMENT</h1>
 

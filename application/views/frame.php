@@ -23,7 +23,7 @@
   <!-- fullCalendar -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/fullcalendar/dist/fullcalendar.min.css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
-  <!-- Bootstrap Notify -->
+  <!-- Animate -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
 
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
