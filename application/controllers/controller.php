@@ -160,6 +160,10 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 
+				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
+
 			}
 			else
 			{
@@ -168,9 +172,15 @@ class controller extends CI_Controller
 				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
+
+				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByUser();
+				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByUser();
+				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByUser();
 			}
 
-			$data['projectProgress'] = $this->model->getOngoingProjectProgress();
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
 
 			$this->load->view("myProjects", $data);
 		}
