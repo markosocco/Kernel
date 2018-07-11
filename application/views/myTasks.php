@@ -202,7 +202,7 @@
 
 											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
-
+												<label>Select Department/s: (optional)</label>
 												<select class="form-control select2" multiple="multiple" name = "accountableDept[]" data-placeholder="Select Departments" style="width:100%">
 
 													<?php foreach ($departments as $row): ?>
@@ -219,8 +219,8 @@
 												<tr>
 													<th></th>
 													<th>Name</th>
-													<th align="center">No. of Projects</th>
-													<th align="center">Progress</th>
+													<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
+													<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
 													<th></th>
 												</tr>
 												</thead>
@@ -257,7 +257,8 @@
 															<?php if ($hasTasks <= '0'):?>
 																<?php $hasTasks = 0;?>
 																<td align="center">0</td>
-															<?php endif;?>															<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+															<?php endif;?>
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
 																<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
 																	<i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
@@ -269,6 +270,7 @@
 										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
 
+											<label>Select Department/s: (optional)</label>
 											<select class="form-control select2" multiple="multiple" name = "consultedDept[]" data-placeholder="Select Departments" style="width:100%">
 
 												<?php foreach ($departments as $row): ?>
@@ -284,8 +286,8 @@
 											<tr>
 												<th></th>
 												<th>Name</th>
-												<th align="center">No. of Projects</th>
-												<th align="center">Progress</th>
+												<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
+												<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
 												<th></th>
 											</tr>
 											</thead>
@@ -322,7 +324,8 @@
 														<?php if ($hasTasks <= '0'):?>
 															<?php $hasTasks = 0;?>
 															<td align="center">0</td>
-														<?php endif;?>														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+														<?php endif;?>
+														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
 															<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
 																<i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
@@ -333,6 +336,7 @@
 
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
+										<label>Select Department/s: (optional)</label>
 										<select class="form-control select2" multiple="multiple" name = "informedDept[]" data-placeholder="Select Departments" style="width:100%">
 
 											<?php foreach ($departments as $row): ?>
@@ -348,8 +352,8 @@
 										<tr>
 											<th></th>
 											<th>Name</th>
-											<th align="center">No. of Projects</th>
-											<th align="center">Progress</th>
+											<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
+											<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
 											<th></th>
 										</tr>
 										</thead>
@@ -386,7 +390,8 @@
 													<?php if ($hasTasks <= '0'):?>
 														<?php $hasTasks = 0;?>
 														<td align="center">0</td>
-													<?php endif;?>													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+													<?php endif;?>
+													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
 														<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
 															<i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
