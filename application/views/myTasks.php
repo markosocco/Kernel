@@ -386,7 +386,8 @@
 													<?php if ($hasTasks <= '0'):?>
 														<?php $hasTasks = 0;?>
 														<td align="center">0</td>
-													<?php endif;?>													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+													<?php endif;?>
+													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
 														<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
 															<i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
