@@ -71,7 +71,7 @@
 									<div class="small-box bg-red">
 										<div class="inner">
 
-											<h2><?php echo $projectProgress[$key]['projectProgress']; ?>%</h2>
+											<h2><?php echo $delayedProjectProgress[$key]['projectProgress']; ?>%</h2>
 
 											<form action = 'projectGantt'  method="POST">
 											</form>
@@ -96,7 +96,7 @@
 									<div class="small-box bg-green">
 										<div class="inner">
 
-											<h2><?php echo $projectProgress[$key]['projectProgress']; ?>%</h2>
+											<h2><?php echo $ongoingProjectProgress[$key]['projectProgress']; ?>%</h2>
 
 											<form action = 'projectGantt'  method="POST">
 											</form>
@@ -145,7 +145,7 @@
 									<div class="small-box btn-default">
 										<div class="inner">
 
-											<h2><?php echo $projectProgress[$key]['projectProgress']; ?>%</h2>
+											<h2><?php echo $parkedProjectProgress[$key]['projectProgress']; ?>%</h2>
 
 											<form action = 'projectGantt' method="POST">
 											</form>
@@ -161,23 +161,24 @@
 								<!-- ./col -->
 							<?php endforeach;?>
 
-							<?php foreach ($draftedProjects as $key=> $value):?>
-
+							<?php foreach ($draftedProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
-									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+									<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
 									<div class="small-box btn.bg-white">
 										<div class="inner">
-
-											<h2><?php echo $projectProgress[$key]['projectProgress']; ?>%</h2>
+											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
 											<form action = 'projectGantt' method="POST">
 											</form>
 
-											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Draft</i></p>
+											<?php //Compute for days remaining
+											$startdate = date_create($row['PROJECTSTARTDATE']);
+											?>
+											<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Draft</i></p>
 										</div>
 										<div class="icon">
-											<i class="ion ion-beaker"></i>
+											<i class="ion ion-clock"></i>
 										</div>
 									</div>
 								</a>
@@ -223,15 +224,16 @@
 												$delayedEnd = date_create($value['PROJECTENDDATE']);
 												?>
 
-											<tr class="btn-success project" data-id = "<?php echo $value['PROJECTID']; ?>">
+											<tr data-id = "<?php echo $value['PROJECTID']; ?>">
 
 												<form action = 'projectGantt' method="POST">
 												</form>
 
+												<td class="bg-red"></td>
 												<td><?php echo $value['PROJECTTITLE']; ?></td>
 												<td><?php echo date_format($delayedStart, "M d, Y");?></td>
 												<td><?php echo date_format($delayedEnd, "M d, Y");?></td>
-												<td><?php echo $projectProgress[$key]['projectProgress']; ?>%</td>
+												<td><?php echo $delayedProjectProgress[$key]['projectProgress']; ?>%</td>
 												<td><?php echo "Delayed"; ?></td>
 											</tr>
 										<?php endforeach;?>
@@ -243,15 +245,16 @@
 												$ongoingEnd = date_create($value['PROJECTENDDATE']);
 												?>
 
-											<tr class="btn-success project" data-id = "<?php echo $value['PROJECTID']; ?>">
+											<tr data-id = "<?php echo $value['PROJECTID']; ?>">
 
 												<form action = 'projectGantt' method="POST">
 												</form>
 
+												<td class="bg-green"></td>
 												<td><?php echo $value['PROJECTTITLE']; ?></td>
 												<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
 												<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-												<td><?php echo $projectProgress[$key]['projectProgress']; ?>%</td>
+												<td><?php echo $ongoingProjectProgress[$key]['projectProgress']; ?>%</td>
 												<td><?php echo $value['PROJECTSTATUS']; ?></td>
 											</tr>
 										<?php endforeach;?>
@@ -268,11 +271,12 @@
 
 											<form action = 'projectGantt' method="POST">
 											</form>
+
 											<td class="bg-yellow"></td>
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
 											<td><?php echo date_format($plannedStart, "M d, Y");?></td>
 											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-											<td>0%</td>
+											<td></td>
 											<td><?php echo $row['PROJECTSTATUS']; ?></td>
 										</tr>
 									<?php endforeach;?>
@@ -284,15 +288,16 @@
 										$parkedEnd = date_create($value['PROJECTENDDATE']);
 										?>
 
-									<tr class="btn-success project" data-id = "<?php echo $value['PROJECTID']; ?>">
+									<tr data-id = "<?php echo $value['PROJECTID']; ?>">
 
 										<form action = 'projectGantt' method="POST">
 										</form>
 
+										<td class="bg-blue"></td>
 										<td><?php echo $value['PROJECTTITLE']; ?></td>
 										<td><?php echo date_format($parkedStart, "M d, Y");?></td>
 										<td><?php echo date_format($parkedEnd, "M d, Y");?></td>
-										<td><?php echo $projectProgress[$key]['projectProgress']; ?>%</td>
+										<td><?php echo $parkedProjectProgress[$key]['projectProgress']; ?>%</td>
 										<td><?php echo "Parked"; ?></td>
 									</tr>
 								<?php endforeach;?>
@@ -304,16 +309,17 @@
 									$draftedEnd = date_create($value['PROJECTENDDATE']);
 									?>
 
-								<tr class="btn-success project" data-id = "<?php echo $value['PROJECTID']; ?>">
+								<tr data-id = "<?php echo $value['PROJECTID']; ?>">
 
 									<form action = 'projectGantt' method="POST">
 									</form>
 
+									<td class="bg-blue"></td>
 									<td><?php echo $value['PROJECTTITLE']; ?></td>
 									<td><?php echo date_format($draftedStart, "M d, Y");?></td>
 									<td><?php echo date_format($draftedEnd, "M d, Y");?></td>
-									<td><?php echo $projectProgress[$key]['projectProgress']; ?>%</td>
-									<td><?php echo "Drafted"; ?></td>
+									<td></td>
+									<td><?php echo "Draft"; ?></td>
 								</tr>
 							<?php endforeach;?>
 

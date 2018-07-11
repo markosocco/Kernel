@@ -282,7 +282,7 @@ class model extends CI_Model
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
   public function getAllOngoingProjectsByUser($userID)
   {
-    $condition = "raci.users_USERID = '$userID' && projects.PROJECTSTARTDATE < CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS != 'Complete'";
+    $condition = "raci.users_USERID = '$userID' && projects.PROJECTSTARTDATE < CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing'";
     $this->db->select('projects.*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -299,7 +299,7 @@ class model extends CI_Model
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
   public function getAllPlannedProjectsByUser($userID)
   {
-    $condition = "raci.users_USERID = '$userID' && projects.PROJECTSTARTDATE > CURDATE() && projects.PROJECTSTATUS != 'Complete'";
+    $condition = "raci.users_USERID = '$userID' && projects.PROJECTSTARTDATE > CURDATE() && projects.PROJECTSTATUS = 'Planning'";
     $this->db->select('projects.*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -322,6 +322,7 @@ class model extends CI_Model
       $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
       $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
       $this->db->where($condition);
+      $this->db->group_by('projects.PROJECTID');
       $this->db->order_by('projects.PROJECTENDDATE');
       $query = $this->db->get();
 
@@ -337,6 +338,7 @@ class model extends CI_Model
       $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
       $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
       $this->db->where($condition);
+      $this->db->group_by('projects.PROJECTID');
       $this->db->order_by('projects.PROJECTENDDATE');
       $query = $this->db->get();
 
@@ -352,6 +354,7 @@ class model extends CI_Model
       $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
       $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
       $this->db->where($condition);
+      $this->db->group_by('projects.PROJECTID');
       $this->db->order_by('projects.PROJECTENDDATE');
       $query = $this->db->get();
 
@@ -359,26 +362,26 @@ class model extends CI_Model
     }
 
   // GET ALL PROJECT ARCHIVES
-    public function getAllProjectArchives()
-    {
-      $condition = "PROJECTSTATUS = 'Complete'";
-      $this->db->select('*');
-      $this->db->from('projects');
-      $this->db->where($condition);
-      $query = $this->db->get();
+  public function getAllProjectArchives()
+  {
+    $condition = "PROJECTSTATUS = 'Complete'";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $query = $this->db->get();
 
-      return $query->result_array();
-    }
+    return $query->result_array();
+  }
 
   // GET ALL TEMPLATES
-    public function getAllTemplates()
-    {
-      $this->db->select('*');
-      $this->db->from('templates');
-      $query = $this->db->get();
+  public function getAllTemplates()
+  {
+    $this->db->select('*');
+    $this->db->from('templates');
+    $query = $this->db->get();
 
-      return $query->result_array();
-    }
+    return $query->result_array();
+  }
 
   public function getAllTasksByUser($id)
   {
@@ -395,7 +398,6 @@ class model extends CI_Model
   }
 
 // GET PRE-REQUISITE ID
-// TODO: edit condition
   public function getDependecies()
   {
     $condition = "projects.PROJECTID = 1";
@@ -465,6 +467,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+// FOR TEAM GANTT CHART
   public function getAllProjectTasksByDepartment($projectID, $departmentID)
   {
     $condition = "projects_PROJECTID = " . $projectID . " AND departments_DEPARTMENTID = " . $departmentID;
@@ -547,7 +550,7 @@ class model extends CI_Model
 
   public function updateTaskStatus($currentDate)
   {
-    $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Planned';";
+    $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Planning';";
     $this->db->set('TASKSTATUS', 'Ongoing');
     $this->db->set('TASKACTUALSTARTDATE', $currentDate);
     $this->db->where($condition);
@@ -603,17 +606,57 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-    
-    public function getOngoingProjectProgress(){
+
+  public function getOngoingProjectProgress()
+  {
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
-    $this->db->where('CATEGORY = 3 AND projects.PROJECTSTATUS = "Ongoing"');
+    $this->db->where('CATEGORY = 3 AND projects.PROJECTSTATUS = "Ongoing" AND !(projectenddate < CURDATE())');
     $this->db->group_by('projects_PROJECTID');
     $this->db->order_by('PROJECTENDDATE');
 
     return $this->db->get()->result_array();
   }
+
+
+  // $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && raci.ROLE = '1'";
+  // $this->db->select('projects.*');
+  // $this->db->from('projects');
+  // $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+  // $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+  // $this->db->join('users', 'raci.users_USERID = users.USERID');
+  // $this->db->group_by('projects.PROJECTID');
+  // $this->db->where($condition);
+  //
+  // return $this->db->get()->result_array();
+
+  public function getDelayedProjectProgress()
+  {
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where('CATEGORY = 3 AND projects.PROJECTSTATUS = "Ongoing" AND projectenddate < CURDATE()');
+    $this->db->group_by('tasks.projects_PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getParkedProjectProgress()
+  {
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where('CATEGORY = 3 AND projects.PROJECTSTATUS = "Parked" AND !(projectenddate < CURDATE())');
+    $this->db->group_by('tasks.projects_PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+
+    return $this->db->get()->result_array();
+  }
+
 }
 ?>
