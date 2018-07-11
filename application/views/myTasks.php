@@ -154,7 +154,7 @@
 														<th></th>
 														<th>Name</th>
 														<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
-														<th align="center">Progress</th>
+														<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
 														<th></th>
 													</tr>
 													</thead>
@@ -179,7 +179,20 @@
 																	<?php $hasProjects = 0;?>
 																	<td align="center">0</td>
 																<?php endif;?>
-																<td align="center">N%</td>
+
+																<?php foreach($taskCount as $count): ;?>
+																	<?php $hasTasks = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<td align="center"><?php echo $count['taskCount'];?></td>
+																		<?php $hasTasks = $count['taskCount'];?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if ($hasTasks <= '0'):?>
+																	<?php $hasTasks = 0;?>
+																	<td align="center">0</td>
+																<?php endif;?>
+
 																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
 															</tr>
 														<?php endforeach;?>
@@ -190,11 +203,8 @@
 											<!-- ACCOUNTABLE DIV -->
 											<div class="form-group raciDiv" id = "accountableDiv">
 
-<<<<<<< HEAD
-												<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
-=======
 												<select class="form-control select2" multiple="multiple" name = "accountableDept[]" data-placeholder="Select Departments" style="width:100%">
->>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
+
 													<?php foreach ($departments as $row): ?>
 
 														<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
@@ -235,8 +245,21 @@
 																<?php $hasProjects = 0;?>
 																<td align="center">0</td>
 															<?php endif;?>
-															<td align="center">N%</td>
-															<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+
+															<?php foreach($taskCount as $count): ;?>
+																<?php $hasTasks = false;?>
+																<?php if ($count['USERID'] == $employee['USERID']):?>
+																	<td align="center"><?php echo $count['taskCount'];?></td>
+																	<?php $hasTasks = $count['taskCount'];?>
+																	<?php break;?>
+																<?php endif;?>
+															<?php endforeach;?>
+															<?php if ($hasTasks <= '0'):?>
+																<?php $hasTasks = 0;?>
+																<td align="center">0</td>
+															<?php endif;?>															<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+																<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+																	<i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
 													<?php endforeach;?>
 												</tbody>
@@ -245,11 +268,9 @@
 
 										<!-- CONSULTED DIV -->
 										<div class="form-group raciDiv" id = "consultedDiv">
-<<<<<<< HEAD
-											<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
-=======
+
 											<select class="form-control select2" multiple="multiple" name = "consultedDept[]" data-placeholder="Select Departments" style="width:100%">
->>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
+
 												<?php foreach ($departments as $row): ?>
 
 													<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
@@ -289,8 +310,21 @@
 															<?php $hasProjects = 0;?>
 															<td align="center">0</td>
 														<?php endif;?>
-														<td align="center">N%</td>
-														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+
+														<?php foreach($taskCount as $count): ;?>
+															<?php $hasTasks = false;?>
+															<?php if ($count['USERID'] == $employee['USERID']):?>
+																<td align="center"><?php echo $count['taskCount'];?></td>
+																<?php $hasTasks = $count['taskCount'];?>
+																<?php break;?>
+															<?php endif;?>
+														<?php endforeach;?>
+														<?php if ($hasTasks <= '0'):?>
+															<?php $hasTasks = 0;?>
+															<td align="center">0</td>
+														<?php endif;?>														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+															<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+																<i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
 												<?php endforeach;?>
 											</tbody>
@@ -299,11 +333,8 @@
 
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
-<<<<<<< HEAD
-										<select class="form-control select2" multiple="multiple" data-placeholder="Select Departments" style="width:100%">
-=======
 										<select class="form-control select2" multiple="multiple" name = "informedDept[]" data-placeholder="Select Departments" style="width:100%">
->>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
+
 											<?php foreach ($departments as $row): ?>
 
 												<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
@@ -343,8 +374,21 @@
 														<?php $hasProjects = 0;?>
 														<td align="center">0</td>
 													<?php endif;?>
-													<td align="center">N%</td>
-													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+
+													<?php foreach($taskCount as $count): ;?>
+														<?php $hasTasks = false;?>
+														<?php if ($count['USERID'] == $employee['USERID']):?>
+															<td align="center"><?php echo $count['taskCount'];?></td>
+															<?php $hasTasks = $count['taskCount'];?>
+															<?php break;?>
+														<?php endif;?>
+													<?php endforeach;?>
+													<?php if ($hasTasks <= '0'):?>
+														<?php $hasTasks = 0;?>
+														<td align="center">0</td>
+													<?php endif;?>													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+														<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+															<i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
 											<?php endforeach;?>
 										</tbody>
@@ -519,7 +563,7 @@
 				 {
 					 $(".radioEmp").prop("checked", false);
 					 $(".checkEmp").prop("checked", false);
-					 $(".checkDept").prop("checked", false);
+					 $(".select2").val(null).trigger("change");
 					 $(".raciBtn").removeClass('active');
 					 $("#responsible").addClass("active");
 					 $(".raciDiv").hide();

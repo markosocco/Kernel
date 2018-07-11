@@ -172,6 +172,20 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getTaskCount($filter)
+  {
+    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1'";
+    $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition . " && " . $filter);
+    $this->db->group_by('users.USERID');
+
+    return $this->db->get()->result_array();
+  }
+
   public function getWorkloadProjects($userID)
   {
     $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && raci.ROLE = '1'";
@@ -589,29 +603,8 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-
-<<<<<<< HEAD
-    // public function getMainActivities($id)
-    // {
-    //   $condtition = "projects_PROJECTID =" . $id . " AND CATEGORY = 1";
-    //   $this->db->select('*');
-    //   $this->db->from('tasks');
-    //   $this->db->where($condition);
-    //
-    //   return $this->db->get()->result_array();
-    // }
-
-    public function getMainActivities($id)
-    {
-      $condition = "projects_PROJECTID = '" . $id . "' && CATEGORY = 1";
-      $this->db->select('*');
-      $this->db->from('tasks');
-      $this->db->where($condition);
-
-      return $this->db->get()->result_array();
-    }
-=======
-  public function getOngoingProjectProgress(){
+    
+    public function getOngoingProjectProgress(){
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
     $this->db->from('tasks');
@@ -622,6 +615,5 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
->>>>>>> 5f2ab2f53e05d16ef5f5a2bc9cfd63e30f37edb7
 }
 ?>
