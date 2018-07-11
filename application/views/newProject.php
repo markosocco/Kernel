@@ -110,8 +110,13 @@
 				var diff = new Date($("#endDate").datepicker("getDate") - $("#startDate").datepicker("getDate"));
 				var period = (diff/1000/60/60/24)+1;
 				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
-					$("#projectPeriod").attr("placeholder", period + " day/s");
-			 	else
+				{
+					if(period > 1)
+						$("#projectPeriod").attr("placeholder", period + " days");
+					else
+						$("#projectPeriod").attr("placeholder", period + " day");
+				}
+				else
 					$("#projectPeriod").attr("placeholder", "");
 			 });
 
@@ -124,7 +129,12 @@
 				var diff = new Date($("#endDate").datepicker("getDate") - $("#startDate").datepicker("getDate"));
 				var period = (diff/1000/60/60/24)+1;
 				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
-				 	$("#projectPeriod").attr("placeholder", period + " day/s");
+				{
+					if(period > 1)
+						$("#projectPeriod").attr("placeholder", period + " days");
+					else
+						$("#projectPeriod").attr("placeholder", period + " day");
+				}
 				else
 					$("#projectPeriod").attr("placeholder", "");
 			 });

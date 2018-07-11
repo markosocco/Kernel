@@ -12,16 +12,19 @@
 		      <h1>
 		        <?php echo $project['PROJECTTITLE'] ?>
 
-						<?php if ($dateDiff <= 1):
-							$diff = $dateDiff + 1;?>
-							<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " day remaining"?></small>
-							<?php endif; ?>
+						<?php
+						$startdate = date_create($project['PROJECTSTARTDATE']);
+						$enddate = date_create($project['PROJECTENDDATE']);
+						?>
 
-						<?php if ($dateDiff > 1):
-							$diff = $dateDiff + 1;
-							?>
-						<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " days remaining"?></small>
-						<?php endif; ?>
+						<?php $diff = $dateDiff + 1;?>
+						<small><?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y"). "\t(" . $diff;?>
+						<?php if ($dateDiff < 1):?>
+							day remaining)</small>
+						<?php else:?>
+							days remaining)</small>
+						<?php endif;?>
+
 		      </h1>
 		      <ol class="breadcrumb">
 		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
@@ -50,7 +53,7 @@
 		            <!-- /.box-header -->
 								<form id='arrangeTasks' name = 'arrangeTasks' action = '<?php echo base_url('index.php/controller/arrangeTasks');?>' method="POST">
 
-									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>" id="projectDate" data-startDate="<?php echo $project['PROJECTSTARTDATE'];?>" data-endDate="<?php echo $project['PROJECTENDDATE'];?>">
 
 								<?php foreach ($groupedTasks as $key=>$value): ?>
 
@@ -73,8 +76,6 @@
 									<?php endif; ?>
 
 									<tbody>
-
-
 
 										<tr>
 											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>" data-num=<?php echo $value['TASKID']; ?> counter="1"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
@@ -133,7 +134,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-calendar"></i>
 				                  </div>
-				                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
+				                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
 				                </div>
 				                <!-- /.input group -->
 				              </div></td>
@@ -142,7 +143,7 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
+					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
 					                </div>
 												</div></td>
 												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
@@ -189,7 +190,23 @@
 			 var mainAct = $(this).attr('data-num');
 			 var counter = parseInt($(this).attr('counter'));
 
-				 $('#table_' + currTable).append("<tr id='table_" + currTable + "_Row_" + (i + 1) +"'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" + mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td><select class='form-control select2' multiple='multiple' name = 'table_" + currTable + "_department" + counter + "[]' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" + "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' required></div></div></td> <td class='btn'><a class='btn delButton' data-id = " + currTable +" counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
+				 $('#table_' + currTable).append("<tr id='table_" +
+				 						currTable + "_Row_" + (i + 1) +
+										"'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
+										mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>" +
+										"<td><select class='form-control select2' multiple='multiple' name = 'table_" + currTable +
+										"_department" + counter + "[]' data-placeholder='Select Departments'> " +
+										"<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
+										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
+										"name='taskStartDate[]' id='start_" + mainAct + "-" + counter +"' data-mainAct = '" + mainAct + "' data-num='" + counter +
+										"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
+										"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
+										"name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
+										"' required></div></div></td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
+										" counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
+
+					$("#end_" + mainAct + "-" + counter).prop('disabled', true);
 
 				 var newCount = counter + 1;
 				 $(this).attr('counter', newCount);
@@ -220,21 +237,40 @@
 		  $(function ()
 			{
 				//Initialize Select2 Elements
-		    $('.select2').select2()
+		    $('.select2').select2();
+				$(".taskEndDate").prop('disabled', true);
 
 				//Date picker
 				$('body').on('focus',".taskStartDate", function(){
 				    $(this).datepicker({
 							format: 'yyyy-mm-dd',
 		  	       autoclose: true,
+							 startDate: $("#projectDate").attr('data-startDate'),
+							 endDate: $("#projectDate").attr('data-endDate'),
 							 orientation: 'bottom'
 						});
 				});
 
+				$("body").on("change", ".taskStartDate", function(e) {
+					var mainAct = $(this).attr('data-mainAct');
+					var counter = $(this).attr('data-num');
+					var newDate = $(this).val();
+
+ 				$("#end_" + mainAct + "-" + counter).prop('disabled', false);
+ 				// $("#end_" + mainAct + "-" + counter).datepicker('setStartDate', newDate);
+				// $("#end_" + mainAct + "-" + counter).data('datepicker').setStartDate(newDate);
+				if(new Date($("#end_" + mainAct + "-" + counter).val()) < newDate) //Removes Target Date Input if new Start Date comes after it
+					$("#end_" + mainAct + "-" + counter).val("");
+ 			 });
+
 				$('body').on('focus',".taskEndDate", function(){
+					var mainAct = $(this).attr('data-mainAct');
+					var counter = $(this).attr('data-num');
 						$(this).datepicker({
 							format: 'yyyy-mm-dd',
 							 autoclose: true,
+							 startDate: "2018-07-25",
+							 endDate: $("#projectDate").attr('data-endDate'),
 							 orientation: 'bottom'
 						});
 				});
