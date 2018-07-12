@@ -28,7 +28,7 @@
 				<!-- Main row -->
 				<div class="row">
 					<!-- Left col -->
-					<div class="col-md-10">
+					<div class="col-md-12">
 						<div class="box box-info">
 							<div class="box-header with-border">
 								<h3 class="box-title">WHAT TABLE IS THIS</h3>
@@ -48,7 +48,7 @@
 											foreach ($delayedTaskPerUser as $row)
 											{
 												echo "<tr style='color:red'>";
-													echo "<td>" . $row['PROJECTTITLE'] . "</td>";
+													echo "<td class='projectLink'>" . $row['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $row['TASKTITLE'] . "</td>";
 													echo "<td>" . $row['TASKENDDATE'] . "</td>";
 													echo "<td> DELAYED </td>";
@@ -57,7 +57,7 @@
 											foreach ($tasks3DaysBeforeDeadline as $data)
 											{
 												echo "<tr>";
-													echo "<td>" . $data['PROJECTTITLE'] . "</td>";
+													echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $data['TASKTITLE'] . "</td>";
 													echo "<td>" . $data['TASKENDDATE'] . "</td>";
 													echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
@@ -81,7 +81,7 @@
 			<!-- Main row -->
 			<div class="row">
 				<!-- Left col -->
-				<div class="col-md-8">
+				<div class="col-md-12">
 					<div class="box box-info">
 						<div class="box-header with-border">
 							<h3 class="box-title">Request Approval</h3>
