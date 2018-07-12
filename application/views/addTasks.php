@@ -104,7 +104,7 @@
 												</div>
 											</td>
 											<td class='btn'>
-												<a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
+												<a id = "del0" class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
 											</td>
 										<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 		                </tr>
@@ -200,10 +200,10 @@
 				 var counter = parseInt($(this).attr('data-counter'));
 
 				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td> " +
-				 " <td width = '40%'> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = 'department_[]' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+				 " <td width = '40%'> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = 'department_" + counter + "[]' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 				 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' id='start-" + i + "' data-mainAct='"+ i +"' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
-				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' id='end-" + i + "' data-mainAct='" + i + "' required></div></div></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' id='end-" + i + "' data-mainAct='" + i + "' required></div></div></td> <td class='btn'><a id='del" + counter + "' class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 				 // counter++;
 
@@ -223,8 +223,8 @@
 				$(document).on("click", "a.delButton", function() {
 						if (x > 2)
 						{
-							x = x -1;
 							var j = $(this).attr('data-id');
+							console.log("this is j = " + j);
 
 							var counter = $("a.addButton").attr('data-counter');
 
@@ -232,22 +232,30 @@
 
 							counter--;
 							$("a.addButton").attr('data-counter', counter);
-							console.log(counter);
+
+							// for (var a = j; a <= counter; a++)
+							// {
+							// 	$("#row" + (j + 1)).attr('data-id', (a-1));
+							// 	$("#select" + a).attr('name', 'department_' + (counter - 1) + '[]');
+							// }
+							//
+							// console.log(x);
+
 							// console.log("after removing: " + x);
 						}
 					});
 
-					$(document).on("click", "#arrangeTask", function() {
-
-	 				 var counter = $("a.addButton").attr('data-counter');
-
-					 for (var a = 1; a <= counter; a++)
-					 {
-						 $("#select" + a).attr('name', 'department_' + a);
-					 }
-
-					 // console.log(counter);
-	 				});
+					// $(document).on("click", "#arrangeTask", function() {
+					//
+	 				//  var counter = $("a.addButton").attr('data-counter');
+					//
+					//  for (var a = 1; a <= counter; a++)
+					//  {
+					// 	 $("#select" + a).attr('name', 'department_' + a);
+					//  }
+					//
+					//  // console.log(counter);
+	 				// });
         });
 
 				// var el = document.getElementById('table');

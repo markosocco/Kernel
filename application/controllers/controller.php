@@ -678,6 +678,7 @@ class controller extends CI_Controller
 	/******************** MY PROJECTS START ********************/
 
 	// ADDS MAIN ACTIVITIES TO PROJECT
+	// TODO: Thes2 - fix deleting and adding of rows
 	public function addTasksToProject()
 	{
 		// GET PROJECT ID
@@ -783,8 +784,7 @@ class controller extends CI_Controller
 						);
 
 						// ENTER INTO RACI
-						echo $a . "<br>";
-						// $result = $this->model->addToRaci($data);
+						$result = $this->model->addToRaci($data);
 					}
 				}
 
@@ -852,8 +852,6 @@ class controller extends CI_Controller
 				echo $row['DEPARTMENTNAME'] . " -- " . $row['users_DEPARTMENTHEAD'] . "<br>";
 			}
 
-
-
 			$x = 0;
 
 			foreach ($title as $key=> $row)
@@ -911,14 +909,14 @@ class controller extends CI_Controller
 
 							echo $a . " -- ". $deptHead . "<br>";
 
-							// $data = array(
-							// 		'ROLE' => '1',
-							// 		'users_USERID' => $deptHead,
-							// 		'tasks_TASKID' => $addedTask['TASKID']
-							// );
-							//
-							// // ENTER INTO RACI
-							// $result = $this->model->addToRaci($data);
+							$data = array(
+									'ROLE' => '1',
+									'users_USERID' => $deptHead,
+									'tasks_TASKID' => $addedTask['TASKID']
+							);
+
+							// ENTER INTO RACI
+							$result = $this->model->addToRaci($data);
 						}
 					}
 
