@@ -23,8 +23,6 @@
 					</div>
 					<!-- /.box-header -->
 
-					<?php echo $error; ?>
-
 					<div class="box-body">
 						<table id="templateList" class="table table-bordered table-hover">
 							<thead>
