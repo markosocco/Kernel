@@ -271,6 +271,8 @@ class controller extends CI_Controller
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+		$data['mainActivity'] = $this->model->getAllMainActivitiesByUser($_SESSION['USERID']);
+		$data['subActivity'] = $this->model->getAllSubActivitiesByUser($_SESSION['USERID']);
 
 		echo json_encode($data);
 	}
@@ -279,6 +281,7 @@ class controller extends CI_Controller
 	{
 		$taskID = $this->input->post("task_ID");
 		$data['dependencies'] = $this->model->getDependenciesByTaskID($taskID);
+		$data['taskID'] = $this->model->getTaskByID($taskID);
 		echo json_encode($data);
 	}
 
