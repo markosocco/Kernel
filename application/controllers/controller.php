@@ -160,10 +160,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 
-				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
-				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
-
 			}
 			else
 			{
@@ -173,9 +169,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 
-				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByUser();
-				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByUser();
-				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByUser();
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
@@ -199,12 +192,24 @@ class controller extends CI_Controller
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
 				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
+				$data['parkedProjects'] = $this->model->getAllParkedProjects();
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 			}
 			else
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
 				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
+				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
+				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
+
 			}
+
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+
 			$this->load->view("myTeam", $data);
 		}
 	}
