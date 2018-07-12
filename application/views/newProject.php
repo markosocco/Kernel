@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-									<textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
+									<textarea class="form-control" rows="3" placeholder="Enter project details..." name="projectDetails" required></textarea>
                 </div>
 
 								<div class="row">

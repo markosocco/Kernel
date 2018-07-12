@@ -256,8 +256,6 @@
 					var counter = $(this).attr('data-num');
 					var newDate = $(this).val();
 
-					alert('set End Date to: ' + newDate);
-
  				$("#end_" + mainAct + "-" + counter).prop('disabled', false);
 				if(new Date($("#end_" + mainAct + "-" + counter).val()) < newDate) //Removes Target Date Input if new Start Date comes after it
 					$("#end_" + mainAct + "-" + counter).val("");
