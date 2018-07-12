@@ -36,11 +36,11 @@
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-									<textarea class="form-control" rows="3" placeholder="Enter project details..." name="projectDetails" required></textarea>
+									<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
                 </div>
 
 								<div class="row">
-					        <div class="col-md-4">
+					        <div class="col-md-3">
 										<div class="form-group">
 			                <label>Start Date</label>
 			                <div class="input-group date">
@@ -52,7 +52,7 @@
 			              </div>
 									</div>
 
-									<div class="col-md-4">
+									<div class="col-md-3">
 			              <div class="form-group">
 			                <label>Target End Date</label>
 			                <div class="input-group date">
@@ -64,7 +64,7 @@
 			              </div>
 									</div>
 
-									<div class="col-md-4">
+									<div class="col-md-2">
 										<div class="form-group">
 											<label for="projectperiod">Project Period</label>
 											<input type="text" class="form-control" id="projectPeriod" name="projectTitle" placeholder="" disabled>

@@ -33,7 +33,7 @@
 							<table id="activityList" class="table table-bordered table-hover">
 								<thead>
 									<tr>
-										<th></th>
+										<th>R</th>
 										<th>Activity Type</th>
 										<th>Activity Title</th>
 										<th>Project</th>
@@ -62,7 +62,7 @@
 						</div>
 					</div>
 
-					<div class="box">
+					<div class="box" id="taskBox">
 						<div class="box-header">
 							<h3 class="box-title text-blue">Tasks</h3>
 						</div>
@@ -572,11 +572,7 @@
 				 var $end = new Date($(this).attr('data-end'));
 				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 				 $("#doneTitle").html($title);
-				 $("#doneDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
-				 if($diff <= '1')
-				  $("#doneDates").append(" day)");
-				 else
-				  $("#doneDates").append(" days)");
+				 $("#doneDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 				 $("#doneConfirm").attr("data-id", $id); //pass data id to confirm button
 				 var isDelayed = $(this).attr('data-delay'); // 1 = delayed
 				 if(isDelayed == 'false')
@@ -609,14 +605,10 @@
 				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 
 				 $(".taskTitle").html($title);
-				 $(".taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
-				 if($diff <= '1')
-				  $(".taskDates").append(" day)");
-				 else
-				  $(".taskDates").append(" days)");
+				 $(".taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 			 });
 
-			 $("body").on("click", function(){ // REMOVE ALL SELECTED IN DELEGATE MODAL & RFC
+			 $("body").on("click", function(){ // REMOVE ALL SELECTED IN DELEGATE MODAL
 				 if($("#modal-delegate").css("display") == 'none')
 				 {
 					 $(".radioEmp").prop("checked", false);
@@ -798,11 +790,7 @@
 				 $("#rfcSubmit").attr("data-id", $id); //pass data id to confirm button
 				 $("#rfcSubmit").attr("data-date", $date); //pass data date boolean to confirm button
 				 $("#rfcTitle").html($title);
-				 $("#rfcDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
-				 if($diff <= '1')
-				 	$("#rfcDates").append(" day)");
-				else
-					$("#rfcDates").append(" days)");
+				 $("#rfcDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 			 });
 
 			 $("#rfcSubmit").click(function()
@@ -826,88 +814,159 @@
 					 dataType: 'json',
 					 success:function(data)
 					 {
+<<<<<<< HEAD
+						 var table;
+						 var role;
+						 for(i=0; i<data['tasks'].length; i++)
+ 						 {
+ 						 	var taskDuration = parseInt(data['tasks'][i].taskDuration);
+							var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+							var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+=======
 						 if(data['mainActivity'].length > 0 && data['subActivity'].length > 0)
 						 {
 							 $('#activityTable').html("");
-							 var role;
-
-							 // MAIN ACTIVITY TABLE
-							 for (var m = 0; m < data['mainActivity'].length; m++)
+							 if(data['mainActivity'].length > 0)
 							 {
-								 var taskID = data['mainActivity'][m].TASKID;
-								 var taskDuration = parseInt(data['mainActivity'][m].taskDuration);
-								 var taskStart = moment(data['mainActivity'][m].TASKSTARTDATE).format('MMM DD, YYYY');
-								 var taskEnd = moment(data['mainActivity'][m].TASKENDDATE).format('MMM DD, YYYY');
-								 switch(data['mainActivity'][m].ROLE)
-	 							{
-	 								case "1": role = "R"; break;
-	 								case "2": role = "A"; break;
-	 								case "3": role = "C"; break;
-	 								case "4": role = "I"; break;
-	 							}
+								 var role;
 
+								 // MAIN ACTIVITY TABLE
+								 for (var m = 0; m < data['mainActivity'].length; m++)
+								 {
+									 var taskID = data['mainActivity'][m].TASKID;
+									 var taskDuration = parseInt(data['mainActivity'][m].taskDuration);
+									 var taskStart = moment(data['mainActivity'][m].TASKSTARTDATE).format('MMM DD, YYYY');
+									 var taskEnd = moment(data['mainActivity'][m].TASKENDDATE).format('MMM DD, YYYY');
+									 switch(data['mainActivity'][m].ROLE)
+		 							{
+		 								case "1": role = "R"; break;
+		 								case "2": role = "A"; break;
+		 								case "3": role = "C"; break;
+		 								case "4": role = "I"; break;
+		 							}
 
-	 							 $('#activityTable').append(
-									 						"<tr id='" + taskID + "-" + role + "'>" +
-															"<td>" + role + "</td>" +
-								 							"<td align='center'>Main</td>" +
-	 							 							"<td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
-	 														"<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
-	 														"<td align='center'>" + taskStart +"</td>"+
-	 														"<td align='center'>" + taskEnd +"</td>"+
-	 														"<td align='center'>" + taskDuration+"</td>");
+		 							 $('#activityTable').append(
+										 						"<tr id='" + taskID + "-" + role + "'>" +
+																"<td>" + role + "</td>" +
+									 							"<td align='center'>Main</td>" +
+		 							 							"<td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
+		 														"<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
+		 														"<td align='center'>" + taskStart +"</td>"+
+		 														"<td align='center'>" + taskEnd +"</td>"+
+		 														"<td align='center'>" + taskDuration+"</td>");
 
-									// DELEGATE BUTTON
-	 								if(data['mainActivity'][m].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['mainActivity'][m].ROLE == '1') //SHOW BUTTON for assignment
-									{
-										$('#' + taskID + "-" + role).append(
-													'<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
-													'data-toggle="modal" data-target="#modal-delegate" data-id="' +
-													taskID + '" data-title="' + data['mainActivity'][m].TASKTITLE +
-													'" data-start="'+ data['mainActivity'][m].TASKSTARTDATE +
-													'" data-end="'+ data['mainActivity'][m].TASKENDDATE +'">' +
-													'<i class="fa fa-users"></i> Delegate</button></td></tr>');
-									}
-									else
-										$('#' + taskID + "-" + role).append("<td></td></tr>");
+										// DELEGATE BUTTON
+		 								if(data['mainActivity'][m].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['mainActivity'][m].ROLE == '1') //SHOW BUTTON for assignment
+										{
+											$('#' + taskID + "-" + role).append(
+														'<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+														'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+														taskID + '" data-title="' + data['mainActivity'][m].TASKTITLE +
+														'" data-start="'+ data['mainActivity'][m].TASKSTARTDATE +
+														'" data-end="'+ data['mainActivity'][m].TASKENDDATE +'">' +
+														'<i class="fa fa-users"></i> Delegate</button></td></tr>');
+										}
+										else
+											$('#' + taskID + "-" + role).append("<td></td></tr>");
+								 }
 							 }
-
-							 // SUB ACTIVITY TABLE
-							 for (var s = 0; s < data['subActivity'].length; s++)
+							 if(data['subActivity'].length > 0)
 							 {
-								 var taskID = data['subActivity'][s].TASKID;
-								 var taskDuration = parseInt(data['subActivity'][s].taskDuration);
-								 var taskStart = moment(data['subActivity'][s].TASKSTARTDATE).format('MMM DD, YYYY');
-								 var taskEnd = moment(data['subActivity'][s].TASKENDDATE).format('MMM DD, YYYY');
-								 switch(data['subActivity'][s].ROLE)
+								 // SUB ACTIVITY TABLE
+								 for (var s = 0; s < data['subActivity'].length; s++)
+								 {
+									 var taskID = data['subActivity'][s].TASKID;
+									 var taskDuration = parseInt(data['subActivity'][s].taskDuration);
+									 var taskStart = moment(data['subActivity'][s].TASKSTARTDATE).format('MMM DD, YYYY');
+									 var taskEnd = moment(data['subActivity'][s].TASKENDDATE).format('MMM DD, YYYY');
+									 switch(data['subActivity'][s].ROLE)
+									{
+										case "1": role = "R"; break;
+										case "2": role = "A"; break;
+										case "3": role = "C"; break;
+										case "4": role = "I"; break;
+									}
+
+		 							 $('#activityTable').append(
+										 						"<tr id='" + taskID + "-" + role + "'>" +
+																"<td>" + role + "</td>" +
+									 							"<td align='center'>Sub</td>" +
+		 							 							"<td>" + data['subActivity'][s].TASKTITLE +"</td>"+
+		 														"<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
+		 														"<td align='center'>" + taskStart +"</td>"+
+		 														"<td align='center'>" + taskEnd +"</td>"+
+		 														"<td align='center'>" + taskDuration+"</td>");
+
+										// DELEGATE BUTTON
+		 								if(data['subActivity'][s].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['subActivity'][s].ROLE == '1') //SHOW BUTTON for assignment
+										{
+											$('#' + taskID + "-" + role).append(
+														'<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+														'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+														taskID + '" data-title="' + data['subActivity'][s].TASKTITLE +
+														'" data-start="'+ data['subActivity'][s].TASKSTARTDATE +
+														'" data-end="'+ data['subActivity'][s].TASKENDDATE +'">' +
+														'<i class="fa fa-users"></i> Delegate</button></td></tr>');
+										}
+										else
+											$('#' + taskID + "-" + role).append("<td></td></tr>");
+								 }
+							 }
+						 }
+						 else
+						 {
+							 $("#activityBox").hide(); //hide box if no main or sub activity is found
+						 }
+
+						 if(data['tasks'].length > 0)
+						 {
+							 // TASK TABLE
+							 var table;
+							 var role;
+							 $('#taskTable').html("");
+							 for(i=0; i<data['tasks'].length; i++)
+	 						 {
+								 var taskDuration = parseInt(data['tasks'][i].taskDuration);
+								 var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+								 var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+
+								switch(data['tasks'][i].ROLE)
 								{
 									case "1": role = "R"; break;
 									case "2": role = "A"; break;
 									case "3": role = "C"; break;
 									case "4": role = "I"; break;
 								}
-
-	 							 $('#activityTable').append(
-									 						"<tr id='" + taskID + "-" + role + "'>" +
-															"<td>" + role + "</td>" +
-								 							"<td align='center'>Sub</td>" +
-	 							 							"<td>" + data['subActivity'][s].TASKTITLE +"</td>"+
-	 														"<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
+	 							 $('#taskTable').append(
+									 						"<tr id='" + data['tasks'][i].TASKID + "'>" +
+								 							"<td align='center'>" + role + "</td>" +
+	 							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+	 														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 	 														"<td align='center'>" + taskStart +"</td>"+
 	 														"<td align='center'>" + taskEnd +"</td>"+
 	 														"<td align='center'>" + taskDuration+"</td>");
 
+									var startDate = data['tasks'][i].TASKSTARTDATE;
+									var endDate = data['tasks'][i].TASKENDDATE;
+
 									// DELEGATE BUTTON
-	 								if(data['subActivity'][s].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['subActivity'][s].ROLE == '1') //SHOW BUTTON for assignment
+	 								if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
 									{
-										$('#' + taskID + "-" + role).append(
+										$('#' +data['tasks'][i].TASKID).append(
 													'<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
 													'data-toggle="modal" data-target="#modal-delegate" data-id="' +
-													taskID + '" data-title="' + data['subActivity'][s].TASKTITLE +
-													'" data-start="'+ data['subActivity'][s].TASKSTARTDATE +
-													'" data-end="'+ data['subActivity'][s].TASKENDDATE +'">' +
-													'<i class="fa fa-users"></i> Delegate</button></td></tr>');
+													data['tasks'][i].TASKID + '" data-title="' + data['tasks'][i].TASKTITLE +
+													'" data-start="'+ startDate +
+													'" data-end="'+ endDate +'">' +
+													'<i class="fa fa-users"></i> Delegate</button></td>');
 									}
+<<<<<<< HEAD
+									else if (data['users'][0].userType != '5')
+										$('#' + data['tasks'][i].TASKID).append('<td></td>');
+
+									// RFC & DONE BUTTON
+									if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONGOING PROJECT
+=======
 									else
 										$('#' + taskID + "-" + role).append("<td></td></tr>");
 							 }
@@ -927,6 +986,7 @@
 							 var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
 							 var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
 
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
 							switch(data['tasks'][i].ROLE)
 							{
 								case "1": role = "R"; break;
@@ -934,8 +994,12 @@
 								case "3": role = "C"; break;
 								case "4": role = "I"; break;
 							}
+<<<<<<< HEAD
+ 							 table += "<tr>" +
+=======
  							 $('#taskTable').append(
 								 						"<tr id='" + data['tasks'][i].TASKID + "'>" +
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
 							 							"<td align='center'>" + role + "</td>" +
  							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
  														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
@@ -943,9 +1007,12 @@
  														"<td align='center'>" + taskEnd +"</td>"+
  														"<td align='center'>" + taskDuration+"</td>");
 
+<<<<<<< HEAD
+=======
 								var startDate = data['tasks'][i].TASKSTARTDATE;
 								var endDate = data['tasks'][i].TASKENDDATE;
 
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
 								// DELEGATE BUTTON
  								if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
 								{
@@ -953,19 +1020,54 @@
 												'<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
 												'data-toggle="modal" data-target="#modal-delegate" data-id="' +
 												data['tasks'][i].TASKID + '" data-title="' + data['tasks'][i].TASKTITLE +
+<<<<<<< HEAD
+												'" data-start="'+ data['tasks'][i].TASKSTARTDATE +
+												'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
+												'<i class="fa fa-users"></i> Delegate</button></td>';
+=======
 												'" data-start="'+ startDate +
 												'" data-end="'+ endDate +'">' +
 												'<i class="fa fa-users"></i> Delegate</button></td>');
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
 								}
 								else if (data['users'][0].userType != '5')
 									$('#' + data['tasks'][i].TASKID).append('<td></td>');
 
 								// RFC & DONE BUTTON
-								if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONGOING PROJECT
+								if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONOGING PROJECT
 								{
-									var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING TASK
+									var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING
 
 									// RFC
+<<<<<<< HEAD
+									table+= '<td align="center"><button type="button"' +
+									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
+									'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
+									'" data-date="' + newDate + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+									' data-start="'+ data['tasks'][i].TASKSTARTDATE +
+									'" data-end="'+ data['tasks'][i].TASKENDDATE +'"><i class="fa fa-warning"></i>' +
+									' RFC</button></td>';
+
+									if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
+									{
+										var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
+										// DONE
+										table+= '<td align="center"><button type="button"' +
+										'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+										'data-target="#modal-done" data-id="' + data['tasks'][i].TASKID +
+										'" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+										'data-delay="' + isDelayed + '" data-start="'+ data['tasks'][i].TASKSTARTDATE +
+										'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
+										'<i class="fa fa-check"></i> Done</button></td>';
+									}
+									else
+									{
+											table+= "<td></td>";
+									}
+								}
+								else
+									table+= '<td></td>' + '<td></td>';
+=======
 									$('#' + data['tasks'][i].TASKID).append(
 	 									'<td align="center"><button type="button"' +
 										'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
@@ -976,77 +1078,112 @@
 										' RFC</button></td>');
 
 									if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1' && data['tasks'][i].CATEGORY == '3') //SHOW BUTTON for assignment
+>>>>>>> 2d50805fa86be4eeefaf2ab8a9357663802e40ce
 									{
-										var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
-										// DONE
+										var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING TASK
 
-										var taskID = data['tasks'][i].TASKID;
-										var taskTitle = data['tasks'][i].TASKTITLE;
-										var index = i;
+										// RFC
+										$('#' + data['tasks'][i].TASKID).append(
+		 									'<td align="center"><button type="button"' +
+											'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
+											'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
+											'" data-date="' + newDate + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+											' data-start="'+ startDate +
+											'" data-end="'+ endDate +'"><i class="fa fa-warning"></i>' +
+											' RFC</button></td>');
 
-										$.ajax({
-					 					 type:"POST",
-					 					 url: "<?php echo base_url("index.php/controller/getDependenciesByTaskID"); ?>",
-										 data: {task_ID: taskID},
-					 					 dataType: 'json',
-					 					 success:function(dependencyData)
-					 					 {
-											 var taskID = dependencyData['taskID'].TASKID;
-											 var taskTitle = dependencyData['taskID'].TASKTITLE;
-											 var startDate = moment(dependencyData['taskID'].TASKSTARTDATE).format('MMM DD, YYYY');
-											 var endDate = moment(dependencyData['taskID'].TASKENDDATE).format('MMM DD, YYYY');
-											 var isDelayed = dependencyData['taskID'].currentDate > dependencyData['taskID'].TASKENDDATE;
+										if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1' && data['tasks'][i].CATEGORY == '3') //SHOW BUTTON for assignment
+										{
+											var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
+											// DONE
 
-											 if(dependencyData['dependencies'].length > 0)
-											 {
-												 for (var d = 0; d < dependencyData['dependencies'].length; d++)
+											var taskID = data['tasks'][i].TASKID;
+											var taskTitle = data['tasks'][i].TASKTITLE;
+											var index = i;
+
+											$.ajax({
+						 					 type:"POST",
+						 					 url: "<?php echo base_url("index.php/controller/getDependenciesByTaskID"); ?>",
+											 data: {task_ID: taskID},
+						 					 dataType: 'json',
+						 					 success:function(dependencyData)
+						 					 {
+												 var taskID = dependencyData['taskID'].TASKID;
+												 var taskTitle = dependencyData['taskID'].TASKTITLE;
+												 var startDate = moment(dependencyData['taskID'].TASKSTARTDATE).format('MMM DD, YYYY');
+												 var endDate = moment(dependencyData['taskID'].TASKENDDATE).format('MMM DD, YYYY');
+												 var isDelayed = dependencyData['taskID'].currentDate > dependencyData['taskID'].TASKENDDATE;
+
+												 if(dependencyData['dependencies'].length > 0)
 												 {
-													 var isComplete = 'true';
-													 if(dependencyData['dependencies'][d].TASKSTATUS == 'Ongoing') // if there is a pre-requisite task that is ongoing
+													 for (var d = 0; d < dependencyData['dependencies'].length; d++)
 													 {
-														 isComplete = 'false';
+														 var isComplete = 'true';
+														 if(dependencyData['dependencies'][d].TASKSTATUS == 'Ongoing') // if there is a pre-requisite task that is ongoing
+														 {
+															 isComplete = 'false';
+														 }
 													 }
+													 if(isComplete == 'true') // if all pre-requisite tasks are complete, task can be marked done
+													 {
+														 $('#' + dependencyData['taskID'].TASKID).append(
+			 													'<td align="center"><button type="button"' +
+																'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+																'data-target="#modal-done" data-id="' + taskID +
+																'" data-title="' + taskTitle + '"' +
+																'data-delay="' + isDelayed + '" data-start="'+ startDate +
+																'" data-end="'+ endDate +'">' +
+																'<i class="fa fa-check"></i> Done</button></td></tr>');
+													 }
+													 else
+													 $('#' + dependencyData['taskID'].TASKID).append("<td></td>");
 												 }
-												 if(isComplete == 'true') // if all pre-requisite tasks are complete, task can be marked done
+												 else
 												 {
 													 $('#' + dependencyData['taskID'].TASKID).append(
-		 													'<td align="center"><button type="button"' +
+			 												'<td align="center"><button type="button"' +
 															'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
 															'data-target="#modal-done" data-id="' + taskID +
 															'" data-title="' + taskTitle + '"' +
 															'data-delay="' + isDelayed + '" data-start="'+ startDate +
 															'" data-end="'+ endDate +'">' +
-															'<i class="fa fa-check"></i> Done</button></td></tr>');
+															'<i class="fa fa-check"></i> Done</button></td>');
 												 }
-												 else
-												 $('#' + dependencyData['taskID'].TASKID).append("<td></td>");
-											 }
-											 else
+											 },
+											 error:function()
 											 {
-												 $('#' + dependencyData['taskID'].TASKID).append(
-		 												'<td align="center"><button type="button"' +
-														'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
-														'data-target="#modal-done" data-id="' + taskID +
-														'" data-title="' + taskTitle + '"' +
-														'data-delay="' + isDelayed + '" data-start="'+ startDate +
-														'" data-end="'+ endDate +'">' +
-														'<i class="fa fa-check"></i> Done</button></td>');
+												 alert("There was a problem in retrieving the task dependencies");
 											 }
-										 },
-										 error:function()
-										 {
-											 alert("There was a problem in retrieving the task dependencies");
-										 }
-									 });
+										 });
+										}
+										else
+										{
+											$('#' + data['tasks'][i].TASKID).append("<td></td>"); // NO DONE BUTTON IF ROLE IS NOT RESPONSIBLE
+										}
 									}
 									else
+<<<<<<< HEAD
+									$('#' + data['tasks'][i].TASKID).append('<td></td>' + '<td></td>'); // NO DONE & RFC BUTTON (Project is not ongoing)
+						 		}
+						 }
+						 else
+						 {
+							 $("#taskBox").hide(); //hide box if no main or sub activity is found
+						 }
+						},
+						error:function(XMLHTTPREQUEST)
+						{
+							alert("There was a problem in retrieving tasks");
+=======
 									{
 										$('#' + data['tasks'][i].TASKID).append("<td></td>"); // NO DONE BUTTON IF ROLE IS NOT RESPONSIBLE
 									}
 								}
 								else
 								$('#' + data['tasks'][i].TASKID).append('<td></td>' + '<td></td>'); // NO DONE & RFC BUTTON (Project is not ongoing)
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
 					 		}
+>>>>>>> 2d50805fa86be4eeefaf2ab8a9357663802e40ce
 						}
 				 });
 			 }
@@ -1079,6 +1216,12 @@
 			 });
 			 $('#projectList').DataTable().columns(-1).order('asc').draw();
 		 });
+
+		 $("#inputID").submit(function(e){
+			  e.preventDefault();
+
+				successAlert();
+			});
 
 		</script>
 	</body>

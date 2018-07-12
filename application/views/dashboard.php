@@ -23,6 +23,64 @@
 				</div>
 				<br>
 
+				<div class="row">
+	        <div class="col-md-3 col-sm-6 col-xs-12">
+	          <div class="info-box">
+	            <span class="info-box-icon bg-blue" style="padding-top:20px;"><i class="fa fa-check"></i></span>
+
+	            <div class="info-box-content">
+	              <span class="info-box-text">My Completeness</span>
+	              <span class="info-box-number">10.99%</span>
+	            </div>
+	            <!-- /.info-box-content -->
+	          </div>
+	          <!-- /.info-box -->
+	        </div>
+	        <!-- /.col -->
+	        <div class="col-md-3 col-sm-6 col-xs-12">
+	          <div class="info-box">
+	            <span class="info-box-icon bg-blue" style="padding-top:20px;"><i class="fa fa-clock-o"></i></span>
+
+	            <div class="info-box-content">
+	              <span class="info-box-text">My Timeliness</span>
+	              <span class="info-box-number">99%</span>
+	            </div>
+
+	            <!-- /.info-box-content -->
+	          </div>
+	          <!-- /.info-box -->
+	        </div>
+	        <!-- /.col -->
+					<div class="col-md-3 col-sm-6 col-xs-12">
+						<div class="info-box">
+							<span class="info-box-icon bg-light-blue" style="padding-top:20px;"><i class="fa fa-check"></i></span>
+
+							<div class="info-box-content">
+								<span class="info-box-text">DeptName<br>Completeness</span>
+								<span class="info-box-number">10.99%</span>
+							</div>
+							<!-- /.info-box-content -->
+						</div>
+						<!-- /.info-box -->
+					</div>
+					<!-- /.col -->
+					<div class="col-md-3 col-sm-6 col-xs-12">
+						<div class="info-box">
+							<span class="info-box-icon bg-light-blue" style="padding-top:20px;"><i class="fa fa-clock-o"></i></span>
+
+							<div class="info-box-content">
+								<span class="info-box-text">DeptName<br>Timeliness</span>
+								<span class="info-box-number">99%</span>
+							</div>
+
+							<!-- /.info-box-content -->
+						</div>
+						<!-- /.info-box -->
+					</div>
+					<!-- /.col -->
+
+				</div>
+
 				<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
 				<!-- TASK TABLE -->
 				<!-- Main row -->
@@ -31,7 +89,7 @@
 					<div class="col-md-12">
 						<div class="box box-info">
 							<div class="box-header with-border">
-								<h3 class="box-title">WHAT TABLE IS THIS</h3>
+								<h3 class="box-title">Deadlines</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -182,112 +240,20 @@
 		$(document).ready(function()
 		{
 			$("#success").click(function(){
-				$.notify({
-		      // options
-		      icon: 'fa fa-check',
-		      message: ' Hello Success World'
-		      },{
-		      // settings
-		      type: 'success',
-		      offset: 60,
-		      delay: 5000,
-		      placement: {
-		        from: "top",
-		        align: "center"
-		      },
-		      animate: {
-		        enter: 'animated fadeInDownBig',
-		        exit: 'animated fadeOutUpBig'
-		      },
-		      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-		        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-		        '<span data-notify="icon"></span>' +
-		        '<span data-notify="title">{1}</span>' +
-		        '<span data-notify="message">{2}</span>' +
-		      '</div>'
-		      });
-				});
+				successAlert();
+			});
 
-				$("#danger").click(function(){
-					$.notify({
-			      // options
-			      icon: 'fa fa-ban',
-			      message: ' Hello Danger World'
-			      },{
-			      // settings
-			      type: 'danger',
-			      offset: 60,
-			      delay: 5000,
-			      placement: {
-			        from: "top",
-			        align: "center"
-			      },
-			      animate: {
-			        enter: 'animated fadeInDownBig',
-			        exit: 'animated fadeOutUpBig'
-			      },
-			      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-			        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-			        '<span data-notify="icon"></span>' +
-			        '<span data-notify="title">{1}</span>' +
-			        '<span data-notify="message">{2}</span>' +
-			      '</div>'
-			      });
-					});
+			$("#danger").click(function(){
+				dangerAlert();
+			});
 
-					$("#warning").click(function(){
-						$.notify({
-				      // options
-				      icon: 'fa fa-warning',
-				      message: ' Hello Warning World'
-				      },{
-				      // settings
-				      type: 'warning',
-				      offset: 60,
-				      delay: 5000,
-				      placement: {
-				        from: "top",
-				        align: "center"
-				      },
-				      animate: {
-				        enter: 'animated fadeInDownBig',
-				        exit: 'animated fadeOutUpBig'
-				      },
-				      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-				        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-				        '<span data-notify="icon"></span>' +
-				        '<span data-notify="title">{1}</span>' +
-				        '<span data-notify="message">{2}</span>' +
-				      '</div>'
-				      });
-						});
+			$("#warning").click(function(){
+				warningAlert();
+			});
 
-						$("#info").click(function(){
-							$.notify({
-					      // options
-					      icon: 'fa fa-info',
-					      message: ' Hello Info World'
-					      },{
-					      // settings
-					      type: 'info',
-					      offset: 60,
-					      delay: 5000,
-					      placement: {
-					        from: "top",
-					        align: "center"
-					      },
-					      animate: {
-					        enter: 'animated fadeInDownBig',
-					        exit: 'animated fadeOutUpBig'
-					      },
-					      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-					        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-					        '<span data-notify="icon"></span>' +
-					        '<span data-notify="title">{1}</span>' +
-					        '<span data-notify="message">{2}</span>' +
-					      '</div>'
-					      });
-							});
+			$("#info").click(function(){
+				infoAlert();
+			});
 		});
 	</script>
 
