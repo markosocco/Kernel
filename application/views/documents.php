@@ -20,14 +20,13 @@
 			<section class="content container-fluid">
 				<div class="box">
 					<div class="box-header">
-						<h3 class="box-title">All documents of all projects</h3>
+						<!-- <h3 class="box-title">All documents of all projects</h3> -->
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
 						<table id="documentList" class="table table-bordered table-hover">
 							<thead>
 								<tr>
-									<th>#</th>
 									<th>Document Name</th>
 									<th>Project</th>
 									<th>Uploaded By</th>
@@ -66,7 +65,6 @@
 										$formattedDate = $Month . " " . $Day . ", " . $Year;
 
 										echo "<tr>";
-											echo "<td></td>";
 											echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
 											echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 											echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";

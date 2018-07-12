@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/font-awesome/css/font-awesome.min.css">
@@ -259,6 +260,11 @@ desired effect
 <script src="<?php echo base_url()."assets/"; ?>bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
 <!-- Bootstrap Notify -->
 <script src="<?php echo base_url()."assets/"; ?>bootstrap-notify-3.1.3/dist/bootstrap-notify.min.js"></script>
+<!-- Slimscroll -->
+<script src="<?php echo base_url()."assets/"; ?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="<?php echo base_url()."assets/"; ?>bower_components/fastclick/lib/fastclick.js"></script>
+
 <!-- Bootstrap 4.1.1 -->
 <!-- <script src="<?php echo base_url()."assets/"; ?>bower_components/bootstrap-4.1.1/dist/js/bootstrap.min.js"></script> -->
 
@@ -266,40 +272,117 @@ desired effect
      Both of these plugins are recommended to enhance the
      user experience. -->
 <script>
-  $(document).ready(function()
-  {
-    $.notifyDefaults({
-      // options
-      // icon: 'fa fa-ban',
-      // icon: 'fa fa-info',
-      // icon: 'fa fa-warning',
-      // icon: 'fa fa-check',
-      message: ' Hello Danger World'
-      },{
-      // settings
-      type: 'success',
-      offset: 60,
-      delay: 5000,
-      placement: {
-        from: "top",
-        align: "center"
-      },
-      animate: {
-        enter: 'animated fadeInDownBig',
-        exit: 'animated fadeOutUpBig'
-      },
-      template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-        '<span data-notify="icon"></span>' +
-        '<span data-notify="title">{1}</span>' +
-        '<span data-notify="message">{2}</span>' +
-        // '<div class="progress" data-notify="progressbar">' +
-        // 	'<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-        // '</div>' +
-        // '<a href="{3}" target="{4}" data-notify="url"></a>' +
-      '</div>'
-      });
-    });
+    function successAlert ()
+    {
+      $.notify({
+        // options
+        icon: 'fa fa-check',
+        message: ' Hello Success World'
+        },{
+        // settings
+        type: 'success',
+        offset: 60,
+        delay: 5000,
+        placement: {
+          from: "top",
+          align: "center"
+        },
+        animate: {
+          enter: 'animated fadeInDownBig',
+          exit: 'animated fadeOutUpBig'
+        },
+        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+          '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+          '<span data-notify="icon"></span>' +
+          '<span data-notify="title">{1}</span>' +
+          '<span data-notify="message">{2}</span>' +
+        '</div>'
+        });
+    }
+
+    function dangerAlert ()
+    {
+      $.notify({
+        // options
+        icon: 'fa fa-ban',
+        message: ' Hello Danger World'
+        },{
+        // settings
+        type: 'danger',
+        offset: 60,
+        delay: 5000,
+        placement: {
+          from: "top",
+          align: "center"
+        },
+        animate: {
+          enter: 'animated fadeInDownBig',
+          exit: 'animated fadeOutUpBig'
+        },
+        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+          '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+          '<span data-notify="icon"></span>' +
+          '<span data-notify="title">{1}</span>' +
+          '<span data-notify="message">{2}</span>' +
+        '</div>'
+        });
+    }
+
+    function warningAlert ()
+    {
+      $.notify({
+        // options
+        icon: 'fa fa-warning',
+        message: ' Hello Warning World'
+        },{
+        // settings
+        type: 'warning',
+        offset: 60,
+        delay: 5000,
+        placement: {
+          from: "top",
+          align: "center"
+        },
+        animate: {
+          enter: 'animated fadeInDownBig',
+          exit: 'animated fadeOutUpBig'
+        },
+        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+          '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+          '<span data-notify="icon"></span>' +
+          '<span data-notify="title">{1}</span>' +
+          '<span data-notify="message">{2}</span>' +
+        '</div>'
+        });
+    }
+
+    function infoAlert ()
+    {
+      $.notify({
+        // options
+        icon: 'fa fa-info',
+        message: ' Hello Info World'
+        },{
+        // settings
+        type: 'info',
+        offset: 60,
+        delay: 5000,
+        placement: {
+          from: "top",
+          align: "center"
+        },
+        animate: {
+          enter: 'animated fadeInDownBig',
+          exit: 'animated fadeOutUpBig'
+        },
+        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+          '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+          '<span data-notify="icon"></span>' +
+          '<span data-notify="title">{1}</span>' +
+          '<span data-notify="message">{2}</span>' +
+        '</div>'
+        });
+      }
 </script>
 
 </body>

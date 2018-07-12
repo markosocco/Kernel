@@ -31,7 +31,7 @@ body
   letter-spacing: 2px;
   margin-top: 15px;
   margin-bottom: 0;
-  color: #cccccc;
+  color: #808080;
   font-weight: bold;
 }
 
@@ -58,11 +58,11 @@ input[type = "text"], input[type = "password"]
   padding-left: 5px;
   background: transparent;
   border-style: solid;
-  border-color: #cccccc;
+  border-color: #808080;
   border-width: thin;
   border-radius: 3px;
   font-size: 1em;
-  color: white;
+  color: #808080;
   font-family: 'Source Sans Pro', sans-serif;
 }
 
@@ -92,7 +92,8 @@ input[type = "submit"]
 
 input[type = "text"]:focus, input[type = "password"]:focus
 {
-  border-color: white;
+  border-color: black;
+  color: black;
 }
 
 /* input[type = "submit"]:hover
@@ -102,19 +103,19 @@ input[type = "text"]:focus, input[type = "password"]:focus
 
 #mainContainer p
 {
-  color: #999999;
+  color: #808080;
 }
 
 #mainContainer a
 {
   /* font-size: .8em; */
   text-decoration: none;
-  color: #999999;
+  color: #808080;
 }
 
 #resetPass:hover
 {
-  color: white;
+  color: black;
 }
 
 footer p
@@ -127,17 +128,17 @@ footer p
   margin-top: 0;
   font-size: .75em;
   left: 0;
-  color: #cccccc;
+  color: #808080;
 }
 
 footer a
 {
   text-decoration: none;
-  color: #cccccc;
+  color: #808080;
 }
 
 footer a:hover
 {
-  color: white;
+  color: black;
   text-decoration: none;
 }

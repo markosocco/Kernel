@@ -9,15 +9,15 @@
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
+					<div style="margin-bottom:10px">
+						<a href="<?php echo base_url("index.php/controller/myTeam"); ?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to My Team</a>
+					</div>
 					<h1><?php echo $projectProfile['PROJECTTITLE']; ?></h1>
-        </h2>Department Name Here</h2>
+        	</h2>Department Name Here</h2>
+				</section>
 
 				<!-- Main content -->
 				<section class="content container-fluid">
-					<div style="margin-bottom:10px">
-						<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
-						<a href="<?php echo base_url("index.php/controller/myTeam"); ?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to My Team</a>
-					</div>
 					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
 					<div>
 
@@ -57,7 +57,7 @@
 			<?php require("footer.php"); ?>
 		</div>
 		<script>
-			$("#myProjects").addClass("active");
+			$("#myTeam").addClass("active");
 
 			// $("#projectDocu").click(function()
 			// {

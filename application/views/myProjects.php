@@ -52,12 +52,15 @@
 								<div class="small-box bg-blue">
 									<div class="inner">
 										<h2>Create</h2>
-
 										<p>New<br>Project</p>
 									</div>
-									<div class="icon">
-										<i class="ion ion-plus-round"></i>
+									<div class="icon" style="margin-top:25px;">
+										<i class="ion ion-plus"></i>
 									</div>
+
+									<!-- <div class="progress">
+										<div class="progress-bar" style="width: 70%"></div>
+									</div> -->
 								</div>
 							</a>
 							</div>
@@ -87,15 +90,14 @@
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?> day/s delayed</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-beaker"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-alert-circled"></i>
 										</div>
 									</div>
 								</a>
 								</div>
 								<!-- ./col -->
 							<?php endforeach;?>
-
 
 							<?php foreach ($ongoingProjects as $key=> $value):?>
 
@@ -121,8 +123,8 @@
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?> day/s remaining</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-beaker"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-clipboard"></i>
 										</div>
 									</div>
 								</a>
@@ -146,8 +148,8 @@
 											?>
 											<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $row['datediff'] +1;?> day/s</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-clock"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-lightbulb"></i>
 										</div>
 									</div>
 								</a>
@@ -179,8 +181,8 @@
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-beaker"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-clock"></i>
 										</div>
 									</div>
 								</a>
@@ -204,7 +206,7 @@
 											?>
 											<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Draft</i></p>
 										</div>
-										<div class="icon">
+										<div class="icon" style="margin-top:25px;">
 											<i class="ion ion-clock"></i>
 										</div>
 									</div>
@@ -216,6 +218,7 @@
 						</div>
 					</div>
 
+
 						<!-- LIST VIEW -->
 
 						<br><br>
@@ -224,7 +227,7 @@
 								<div class="box-header" style="display:inline-block">
 									<h3 class="box-title">
 										<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
-											<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i> Create Project</button>
+											<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Create Project</button>
 										</a>
 									</h3>
 								</div>
@@ -429,8 +432,8 @@
 		    $('#projectList').DataTable({
 		      'paging'      : false,
 		      'lengthChange': false,
-		      'searching'   : true,
-		      'ordering'    : true,
+		      'searching'   : false,
+		      'ordering'    : false,
 		      'info'        : false,
 		      'autoWidth'   : false
 		    });
