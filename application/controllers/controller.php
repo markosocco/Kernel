@@ -869,29 +869,26 @@ class controller extends CI_Controller
 					{
 						if ($t == $addedTask['TASKTITLE'])
 						{
-							echo $addedTask['TASKID'] . "<br>";
-							// foreach ($parent as $p)
-							// {
-							// 	$num = 0;
-							//
-							// 	foreach ($title as $t2)
-							// 	{
-							// 		$department = $this->input->post('table_' . $table . '_department' . $num);
-							//
-							// 		if (isset($department))
-							// 		{
-							// 			if ($value == $addedTask['tasks_TASKPARENT'])
-							// 			{
-							// 				echo $value . " -- " . $addedTask['tasks_TASKPARENT'] . "<BR>";
-							// 				echo "table_" . $table . "_department" . $num . " -- " . $addedTask['TASKID'] . " -- " . $addedTask['tasks_TASKPARENT'] . "<BR>";
-							// 			}
-							// 		}
-							//
-							// 		$num++;
-							// 	}
-							//
-							// 	$table++;
-							// }
+							// echo $addedTask['TASKID'] . " -- " . $value.  "<br>";
+							foreach ($parent as $p)
+							{
+								$num = 0;
+
+								foreach ($title as $t2)
+								{
+									$department = $this->input->post('table_' . $table . '_department' . $num);
+
+									if (isset($department))
+									{
+											// echo $value . " -- " . $addedTask['tasks_TASKPARENT'] . "<BR>";
+											echo "table_" . $table . "_department" . $num . " -- " . $addedTask['TASKID'] . " -- " . $value . "<BR>";
+
+									}
+									$num++;
+								}
+
+								$table++;
+							}
 						}
 						// if ($t == $value)
 						// {
