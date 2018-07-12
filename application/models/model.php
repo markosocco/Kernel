@@ -607,6 +607,10 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 49fdbbdb32450715f64c38e50005e25bc3fff7c4
   public function getOngoingProjectProgress()
   {
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
@@ -616,6 +620,7 @@ class model extends CI_Model
     $this->db->where('CATEGORY = 3 AND projects.PROJECTSTATUS = "Ongoing" AND !(projectenddate < CURDATE())');
     $this->db->group_by('projects_PROJECTID');
     $this->db->order_by('PROJECTENDDATE');
+    $this->db->limit('');
 
     return $this->db->get()->result_array();
   }
