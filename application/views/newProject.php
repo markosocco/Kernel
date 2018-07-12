@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-									<textarea class="form-control" rows="3" placeholder="Enter project detals..." name="projectDetails" required></textarea>
+									<textarea class="form-control" rows="3" placeholder="Enter project details..." name="projectDetails" required></textarea>
                 </div>
 
 								<div class="row">
@@ -110,8 +110,13 @@
 				var diff = new Date($("#endDate").datepicker("getDate") - $("#startDate").datepicker("getDate"));
 				var period = (diff/1000/60/60/24)+1;
 				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
-					$("#projectPeriod").attr("placeholder", period + " day/s");
-			 	else
+				{
+					if(period > 1)
+						$("#projectPeriod").attr("placeholder", period + " days");
+					else
+						$("#projectPeriod").attr("placeholder", period + " day");
+				}
+				else
 					$("#projectPeriod").attr("placeholder", "");
 			 });
 
@@ -124,7 +129,12 @@
 				var diff = new Date($("#endDate").datepicker("getDate") - $("#startDate").datepicker("getDate"));
 				var period = (diff/1000/60/60/24)+1;
 				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
-				 	$("#projectPeriod").attr("placeholder", period + " day/s");
+				{
+					if(period > 1)
+						$("#projectPeriod").attr("placeholder", period + " days");
+					else
+						$("#projectPeriod").attr("placeholder", period + " day");
+				}
 				else
 					$("#projectPeriod").attr("placeholder", "");
 			 });

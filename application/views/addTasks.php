@@ -12,16 +12,19 @@
 		      <h1>
 		        <?php echo $project['PROJECTTITLE'] ?>
 
-						<?php if ($dateDiff <= 1):
-							$diff = $dateDiff + 1;?>
-							<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " day remaining"?></small>
-							<?php endif; ?>
+						<?php
+						$startdate = date_create($project['PROJECTSTARTDATE']);
+						$enddate = date_create($project['PROJECTENDDATE']);
+						?>
 
-						<?php if ($dateDiff > 1):
-							$diff = $dateDiff + 1;
-							?>
-						<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " days remaining"?></small>
-						<?php endif; ?>
+						<?php $diff = $dateDiff + 1;?>
+						<small><?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y"). "\t(" . $diff;?>
+						<?php if ($dateDiff < 1):?>
+							day remaining)</small>
+						<?php else:?>
+							days remaining)</small>
+						<?php endif;?>
+
 		      </h1>
 		      <ol class="breadcrumb">
 		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>

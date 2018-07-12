@@ -15,3 +15,4 @@ application/config/database.php
 =======
 application/config/database.php
 >>>>>>> 66630dabfbf1bebad0d8a14428612fe5d0e19ebc
+application/models/model.php

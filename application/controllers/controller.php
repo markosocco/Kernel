@@ -160,6 +160,10 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 
+				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
+
 			}
 			else
 			{
@@ -168,9 +172,15 @@ class controller extends CI_Controller
 				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
+
+				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByUser();
+				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByUser();
+				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByUser();
 			}
 
-			$data['projectProgress'] = $this->model->getOngoingProjectProgress();
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
 
 			$this->load->view("myProjects", $data);
 		}
@@ -843,81 +853,48 @@ class controller extends CI_Controller
 
 				else
 				{
-					//SHIT WORKS HERE
+					// echo $addedTask['TASKID'] . "<br>";
 
-					foreach ($parent as $row)
+					$table = 0;
+					$num = 0;
+
+					foreach ($title as $key=> $t)
 					{
-						//WORKS HERE
-
-						$num = 0;
-						foreach ($title as $t)
+						if ($t == $addedTask['TASKTITLE'])
 						{
-							// echo $t . "<br>";
-							// WORKS HERE
-							$department = $this->input->post('table_' . $table . '_department' . $num);
-
-				      if (isset($department))
-				      {
-
-
-				        foreach ($department as $d)
-				        {
-				          // echo $d . " " . $table . $num . "<br>";
-									// echo "table_" . $table . "_department" . $num . "<br>";
-									echo "table_" . $table . "_department" . $num . " -- " . $addedTask['TASKID'] . "<BR>";
-
-									switch ($d)
-								  {
-								    case 'Executive':
-								      $deptHead = $execHead;
-								      break;
-								    case 'Marketing':
-								      $deptHead = $mktHead;
-								      break;
-								    case 'Finance':
-								      $deptHead = $finHead;
-								      break;
-								    case 'Procurement':
-								      $deptHead = $proHead;
-								      break;
-								    case 'HR':
-								      $deptHead = $hrHead;
-								      break;
-								    case 'MIS':
-								      $deptHead = $misHead;
-								      break;
-								    case 'Store Operations':
-								      $deptHead = $opsHead;
-								      break;
-								    case 'Facilities Administration':
-								      $deptHead = $fadHead;
-								      break;
-								  }
-
-								  $data = array(
-								      'ROLE' => '1',
-								      'users_USERID' => $deptHead,
-								      'tasks_TASKID' => $addedTask['TASKID']
-								  );
-
-									// echo $addedTask['TASKID'] . "<br>";
-								  // ENTER INTO RACI
-								  $result = $this->model->addToRaci($data);
-				        }
-								// echo $num;
-							}
-							// echo "num: " . $num;
-							$num++;
+							echo $addedTask['TASKID'] . "<br>";
+							// foreach ($parent as $p)
+							// {
+							// 	$num = 0;
+							//
+							// 	foreach ($title as $t2)
+							// 	{
+							// 		$department = $this->input->post('table_' . $table . '_department' . $num);
+							//
+							// 		if (isset($department))
+							// 		{
+							// 			if ($value == $addedTask['tasks_TASKPARENT'])
+							// 			{
+							// 				echo $value . " -- " . $addedTask['tasks_TASKPARENT'] . "<BR>";
+							// 				echo "table_" . $table . "_department" . $num . " -- " . $addedTask['TASKID'] . " -- " . $addedTask['tasks_TASKPARENT'] . "<BR>";
+							// 			}
+							// 		}
+							//
+							// 		$num++;
+							// 	}
+							//
+							// 	$table++;
+							// }
 						}
-						// echo "table: " . $table;
-						$table++;
-						// echo "<br>";
+						// if ($t == $value)
+						// {
+						// 	echo "hello<br>";
+						// }
 					}
 				}
 
 				$x++;
-				echo $addedTask['TASKID'] . "<BR>";
-
+				echo "-------------------------<br>";
 			}
 
 
