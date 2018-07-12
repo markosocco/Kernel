@@ -1,3 +1,5 @@
+<!-- $this->output->enable_profile(TRUE); -->
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -160,10 +162,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 
-				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
-				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
-
 			}
 			else
 			{
@@ -173,9 +171,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 
-				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByUser();
-				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByUser();
-				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByUser();
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
@@ -199,12 +194,24 @@ class controller extends CI_Controller
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
 				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
+				$data['parkedProjects'] = $this->model->getAllParkedProjects();
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 			}
 			else
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
 				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
+				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
+				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
+
 			}
+
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+
 			$this->load->view("myTeam", $data);
 		}
 	}
@@ -658,11 +665,11 @@ class controller extends CI_Controller
 		{
 			$id = $this->input->post("project_ID");
 			$this->session->set_flashdata('projectID', $id);
-			// $id = $this->input->get("id");
+
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			// WHAT IS HAPPENING :(( HAHAHAHAH
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+			// $error = 'hello';
 
 			$this->load->view("projectDocuments", $data);
 		}
@@ -839,72 +846,74 @@ class controller extends CI_Controller
 			}
 
 			$x = 0;
-			$table = 0;
-			// $num = 0;
 
-			foreach ($parent as $key => $value)
+			$x = 0;
+
+			foreach ($title as $row)
 			{
-				$data = array(
-						'TASKTITLE' => $title[$key],
-						'TASKSTARTDATE' => $startDates[$key],
-						'TASKENDDATE' => $endDates[$key],
-						'TASKSTATUS' => 'Planning',
-						'CATEGORY' => '2',
-						'projects_PROJECTID' => $id,
-						'tasks_TASKPARENT' => $value
-				);
+				$department = $this->input->post('department_' . $x);
 
-				$addedTask = $this->model->addTasksToProject($data);
+					$data = array(
+							'TASKTITLE' => $row,
+							'TASKSTATUS' => 'Planning',
+							'CATEGORY' => '1',
+							'projects_PROJECTID' => $id
+					);
 
-				if (!$addedTask)
-				{
-					echo "false";
-				}
+					$addedTask = $this->model->addTasksToProject($data);
 
-				else
-				{
-					// echo $addedTask['TASKID'] . "<br>";
-
-					$table = 0;
-					$num = 0;
-
-					foreach ($title as $key=> $t)
+					if (!$addedTask)
 					{
-						if ($t == $addedTask['TASKTITLE'])
-						{
-							// echo $addedTask['TASKID'] . " -- " . $value.  "<br>";
-							foreach ($parent as $p)
-							{
-								$num = 0;
-
-								foreach ($title as $t2)
-								{
-									$department = $this->input->post('table_' . $table . '_department' . $num);
-
-									if (isset($department))
-									{
-											// echo $value . " -- " . $addedTask['tasks_TASKPARENT'] . "<BR>";
-											echo "table_" . $table . "_department" . $num . " -- " . $addedTask['TASKID'] . " -- " . $value . "<BR>";
-
-									}
-									$num++;
-								}
-
-								$table++;
-							}
-						}
-						// if ($t == $value)
-						// {
-						// 	echo "hello<br>";
-						// }
+						echo "false";
 					}
+
+					else
+					{
+						foreach($department as $a)
+						{
+							switch ($a)
+							{
+								case 'Executive':
+									$deptHead = $execHead;
+									break;
+								case 'Marketing':
+									$deptHead = $mktHead;
+									break;
+								case 'Finance':
+									$deptHead = $finHead;
+									break;
+								case 'Procurement':
+									$deptHead = $proHead;
+									break;
+								case 'HR':
+									$deptHead = $hrHead;
+									break;
+								case 'MIS':
+									$deptHead = $misHead;
+									break;
+								case 'Store Operations':
+									$deptHead = $opsHead;
+									break;
+								case 'Facilities Administration':
+									$deptHead = $fadHead;
+									break;
+							}
+
+							$data = array(
+									'ROLE' => '1',
+									'users_USERID' => $deptHead,
+									'tasks_TASKID' => $addedTask['TASKID']
+							);
+
+							// ENTER INTO RACI
+							$result = $this->model->addToRaci($data);
+						}
+					}
+
+					$x++;
 				}
 
-				$x++;
-				echo "-------------------------<br>";
-			}
-
-
+			$this->output->enable_profiler(TRUE);
 
 			// GANTT CODE
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -915,29 +924,30 @@ class controller extends CI_Controller
 
 			// $this->load->view("dashboard", $data);
 			// redirect('controller/projectGantt');
-			// $this->load->view("scheduleTasks", $data);
+			$this->load->view("scheduleTasks", $data);
 	}
 
 	public function uploadDocument()
 	{
 		$config['upload_path']          = './assets/uploads';
-		$config['allowed_types'] 				= '*';
+		$config['allowed_types']        = 'gif|jpg|png';
+		$config['max_size']							= '10000000';
 
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 
-		if (!$this->upload->do_upload('docu'))
+		if (!$this->upload->do_upload('document'))
 		{
-			$this->load->view('dashboard');
+			echo "<script>alert('did not upload');</script>";
+			$error = array('error' => $this->upload->display_errors());
+      $this->load->view('templates', $error);
 		}
 
 		else
 		{
-			// GET PROJECT ID
-			// Hi nami this should work
-			$id = $this->input->get("id");
-			// $id = $this->input->post("projectID");
-			$data['projectProfile'] = $this->model->getProjectByID($id);
+			//GET PROJECT ID
+			$id = $this->input->post("project_ID");
+			$projectID = $this->model->getProjectByID($id);
 
 			$user = $_SESSION['USERID'];
 			$fileName = $this->upload->data('file_name');
@@ -954,15 +964,14 @@ class controller extends CI_Controller
 
 			$result = $this->model->uploadDocument($uploadData);
 
-			// $data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-			// $data['plannedProjects'] = $this->model->getAllPlannedProjects();
-
-			$id = $this->input->post("project_ID");
+			// $id = $this->input->post("project_ID");
 			$this->session->set_flashdata('projectID', $id);
-			// $id = $this->input->get("id");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
 
 			$this->load->view("projectDocuments", $data);
+			// echo "<script>alert('uploaded');</script>";
 		}
 	}
 

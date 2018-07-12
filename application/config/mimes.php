@@ -179,5 +179,12 @@ return array(
 	'odt'	=>	'application/vnd.oasis.opendocument.text',
 	'odm'	=>	'application/vnd.oasis.opendocument.text-master',
 	'ott'	=>	'application/vnd.oasis.opendocument.text-template',
-	'oth'	=>	'application/vnd.oasis.opendocument.text-web'
+	'oth'	=>	'application/vnd.oasis.opendocument.text-web',
+	'doc'    =>    'application/msword',
+	'docx'    =>    'application/msword',
+	'word'    =>    array('application/msword', 'application/octet-stream'),
+	'xl'    =>    'application/excel',
+	'xls'    =>    'application/excel',
+	'xlsx'    =>    'application/excel',
+	'excell'=>    array('application/msexcell', 'application/octet-stream'),
 );

@@ -106,16 +106,18 @@
 
 												$formattedDate = $Month . " " . $Day . ", " . $Year;
 
+												echo "<form class = 'documentDownload' action = 'downloadDocument'  method='POST'>
+												</form>";
+
 												echo "<tr>";
 													echo "<td></td>";
 													echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
-													// echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 													echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
 													echo "<td>" . $formattedDate . "</td>";
 													echo "<td>" . $row['REMARKS'] . "</td>";
-													echo "<td align='center'><button type='button' class='btn btn-success'>
-													<i class='fa fa-download'></i> Download</button></td>";
+													echo "<td align='center'><button type='button' class='btn btn-success dlButton'
+													data-link= '". $row['DOCUMENTLINK'] ."'><i class='fa fa-download'></i><a href = '". $row['DOCUMENTLINK']."' download> Download</a></button></td>";
 												echo "</tr>";
 											}
 										?>
@@ -131,9 +133,15 @@
 						<!-- <?php $this->session->set_flashdata('projectID', $projectProfile['PROJECTID']); ?> -->
 
 						<!-- <?php echo "Session: " . $_SESSION['projectID']; ?> -->
-						<?php echo form_open_multipart('controller/uploadDocument/?id=' . $projectProfile['PROJECTID']);?>
 
 						<!-- <input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>"> -->
+						<!-- <?php echo $errors; ?> -->
+
+						<!-- <?php echo "hello ---- " . $projectProfile['PROJECTID']; ?> -->
+
+						<?php echo form_open_multipart('controller/uploadDocument');?>
+
+							<input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>">
 
 						<div class="modal fade" id="modal-upload" tabindex="-1">
 		          <div class="modal-dialog">
@@ -177,7 +185,7 @@
 										<br>
 										<div class="form-group">
 		                  <label for="uploadDoc">Select a file to upload</label>
-		                  <input type="file" id="uploadDoc" name="docu">
+		                  <input type="file" id="upload" name="document">
 		                </div>
 										<div class="form-group">
 		                  <label>Remarks</label>
