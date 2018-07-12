@@ -62,7 +62,7 @@
 										<h4 class="taskDates" id="rfcDates">Start Date - End Date (Days)</h4>
 		              </div>
 		              <div class="modal-body">
-		                <form id = "requestForm" action = "submitRFC" method = "POST">
+		                <form id = "requestForm" action = "submitRFC" method = "POST" style="margin-bottom:0;">
 											<div class="form-group">
 			                  <label>Request Type</label>
 			                  <select class="form-control" id="rfcType" name="rfcType">
@@ -473,7 +473,7 @@
 		              <div class="modal-body">
 										<h3 id ="delayed" style="color:red; margin-top:0">Task is Delayed</h3>
 										<h4 id ="early" style="margin-top:0">Are you sure this task is done?</h4>
-										<form id = "doneForm" action="doneTask" method="POST">
+										<form id = "doneForm" action="doneTask" method="POST" style="margin-bottom:0;">
 											<div class="form-group">
 												<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 											</div>
