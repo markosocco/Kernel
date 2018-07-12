@@ -131,9 +131,15 @@
 						<!-- <?php $this->session->set_flashdata('projectID', $projectProfile['PROJECTID']); ?> -->
 
 						<!-- <?php echo "Session: " . $_SESSION['projectID']; ?> -->
-						<?php echo form_open_multipart('controller/uploadDocument/?id=' . $projectProfile['PROJECTID']);?>
 
 						<!-- <input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>"> -->
+						<!-- <?php echo $errors; ?> -->
+
+						<!-- <?php echo "hello ---- " . $projectProfile['PROJECTID']; ?> -->
+
+						<?php echo form_open_multipart('controller/uploadDocument');?>
+
+							<input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>">
 
 						<div class="modal fade" id="modal-upload" tabindex="-1">
 		          <div class="modal-dialog">
@@ -177,7 +183,7 @@
 										<br>
 										<div class="form-group">
 		                  <label for="uploadDoc">Select a file to upload</label>
-		                  <input type="file" id="uploadDoc" name="docu">
+		                  <input type="file" id="upload" name="document">
 		                </div>
 										<div class="form-group">
 		                  <label>Remarks</label>
