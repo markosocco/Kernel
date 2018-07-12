@@ -60,6 +60,8 @@
 		                <tr>
 											<th>Main Activity Title</th>
 											<th>Department</th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
 											<th></th>
 		                </tr>
 
@@ -79,6 +81,27 @@
 
 													<?php endforeach; ?>
 				                </select>
+											</td>
+											<td>
+												<div class="form-group">
+					                <div class="input-group date">
+					                  <div class="input-group-addon">
+					                    <i class="fa fa-calendar"></i>
+					                  </div>
+					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+					                </div>
+					                <!-- /.input group -->
+					              </div>
+											</td>
+											<td>
+												<div class="form-group">
+					                <div class="input-group date">
+					                  <div class="input-group-addon">
+					                    <i class="fa fa-calendar"></i>
+					                  </div>
+					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+					                </div>
+												</div>
 											</td>
 											<td class='btn'>
 												<a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
