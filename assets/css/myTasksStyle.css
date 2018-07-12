@@ -1,4 +1,4 @@
-.example-modal .modal
+.modal
 {
   position: relative;
   top: auto;
@@ -9,7 +9,7 @@
   z-index: 1;
 }
 
-.example-modal .modal
+.modal
 {
   background: transparent !important;
 }

@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - Dashboard</title>
-		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/dashboardStyle.css")?>"> -->
+		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/dashboardStyle.css")?>">
 	</head>
 	<body>
 		<?php require("frame.php"); ?>
@@ -51,6 +51,98 @@
 				</table>
 			</div>
 			<?php endif;?>
+
+			<!-- APPROVAL TABLE -->
+			<!-- Main row -->
+			<div class="row">
+				<!-- Left col -->
+				<div class="col-md-8">
+					<div class="box box-info">
+						<div class="box-header with-border">
+							<h3 class="box-title">Request Approval</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<div class="table-responsive">
+								<table class="table table-hover no-margin" id="requestApproval">
+									<thead>
+									<tr>
+										<th>User</th>
+										<th>Request Type</th>
+										<th>Project</th>
+										<th>Request Date</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr data-id="" data-toggle="modal" data-target="#modal-requestDetails">
+										<td>firstName lastName</td>
+										<td>Change Performer</td>
+										<td>SM Southmall - Store Opening
+										<td>June 45, 2018</td>
+									</tr>
+									<tr data-id="" data-toggle="modal" data-target="#modal-requestDetails">
+										<td>firstName lastName</td>
+										<td>Change Date</td>
+										<td>SM Southmall - Store Opening
+										<td>June 45, 2018</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.table-responsive -->
+						</div>
+						<!-- /.box-body -->
+						<!-- /.box-footer -->
+					</div>
+					<!-- /.box -->
+
+					<!-- MODALS -->
+					<!-- REQUEST APPROVAL MODAL -->
+					<div class="modal fade" id="modal-requestDetails" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span></button>
+									<h2 class="modal-title" id = "doneTitle">Task Finished</h2>
+									<h4>Start Date - End Date (Days)</h4>
+								</div>
+								<div class="modal-body">
+									<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
+										<!-- IF TYPE = PERFORMER -->
+										<label>Reason</label>
+										<p id="performerReason">Wrong tagged employee. Get it right bitch</p>
+										<div class="form-group">
+											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+										</div>
+										<!-- IF TYPE = DATE -->
+										<label>Reason</label>
+										<p id="dateReason"> Need more time. Get it right bitch</p>
+										<label>Dates</label>
+										<p>Original Start Date to Requested Start Date</p>
+										<p>Original End Date to Requested End Date</p>
+										<div class="form-group">
+											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+										</div>
+										<div class="modal-footer">
+											<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id=""><i class="fa fa-thumbs-down"></i> Deny Request</button>
+											<button id = "approveRequest" type="submit" class="btn btn-success" data-id=""><i class="fa fa-thumbs-up"></i> Approve Request</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+					<!-- MODALS END -->
+
+				</div>
+			</div>
+
+			<!-- END APPROVAL TABLE -->
 
 		</section>
 			</div>
