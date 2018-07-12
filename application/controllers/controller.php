@@ -280,6 +280,13 @@ class controller extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function getDependenciesByTaskID()
+	{
+		$taskID = $this->input->post("task_ID");
+		$data['dependencies'] = $this->model->getDependenciesByTaskID($taskID);
+		echo json_encode($data);
+	}
+
 	public function delegateTask()
 	{
 		$taskID = $this->input->post("task_ID");
@@ -535,7 +542,7 @@ class controller extends CI_Controller
 			$id = $this->input->post("project_ID");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
-			$data['dependencies'] = $this->model->getDependecies();
+			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 
 			$departmentID = $_SESSION['departments_DEPARTMENTID'];
@@ -635,7 +642,7 @@ class controller extends CI_Controller
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
-			$data['dependencies'] = $this->model->getDependecies();
+			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 
 			$this->load->view("projectGantt", $data);
@@ -905,7 +912,7 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// $data['preReq'] = $this->model->getPreReqID();
-			$data['dependencies'] = $this->model->getDependecies();
+			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 
 			// $this->load->view("dashboard", $data);
@@ -968,7 +975,7 @@ class controller extends CI_Controller
 		$filter = "tasks.TASKSTARTDATE"; // default
 		$data['ganttData'] = $this->model->getAllProjectTasks(1, $filter);
 		// $data['preReq'] = $this->model->getPreReqID();
-		$data['dependencies'] = $this->model->getDependecies();
+		$data['dependencies'] = $this->model->getDependencies();
 
 		$this->load->view("gantt2", $data);
 	}
