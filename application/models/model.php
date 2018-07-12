@@ -607,10 +607,6 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 49fdbbdb32450715f64c38e50005e25bc3fff7c4
   public function getOngoingProjectProgress()
   {
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
@@ -624,18 +620,6 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-
-
-  // $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && raci.ROLE = '1'";
-  // $this->db->select('projects.*');
-  // $this->db->from('projects');
-  // $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
-  // $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-  // $this->db->join('users', 'raci.users_USERID = users.USERID');
-  // $this->db->group_by('projects.PROJECTID');
-  // $this->db->where($condition);
-  //
-  // return $this->db->get()->result_array();
 
   public function getDelayedProjectProgress()
   {
