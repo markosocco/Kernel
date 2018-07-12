@@ -22,6 +22,7 @@
 					<div class="box-header">
 					</div>
 					<!-- /.box-header -->
+
 					<div class="box-body">
 						<table id="templateList" class="table table-bordered table-hover">
 							<thead>
