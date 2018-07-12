@@ -15,41 +15,66 @@
 			</section>
 
 			<section class="content container-fluid">
-				<button id="success" type="button" class="btn btn-success">Test Success</button>
-				<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
-				<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
-				<button id="info" type="button" class="btn btn-info">Test Info</button>
+				<div>
+					<button id="success" type="button" class="btn btn-success">Test Success</button>
+					<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
+					<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
+					<button id="info" type="button" class="btn btn-info">Test Info</button>
+				</div>
+				<br>
 
 				<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
-				<div>
-				<table id="logsList" class="table table-bordered table-hover">
-					<tbody>
-						<th>Project Title</th>
-						<th>Task</th>
-						<th>Task End Date</th>
-						<th>Status</th>
-						<?php
-							foreach ($delayedTaskPerUser as $row) {
-								echo "<tr style='color:red'>";
-									echo "<td>" . $row['PROJECTTITLE'] . "</td>";
-									echo "<td>" . $row['TASKTITLE'] . "</td>";
-									echo "<td>" . $row['TASKENDDATE'] . "</td>";
-									echo "<td> DELAYED </td>";
-								echo "</tr>";
-							}
-
-							foreach ($tasks3DaysBeforeDeadline as $data) {
-								echo "<tr>";
-									echo "<td>" . $data['PROJECTTITLE'] . "</td>";
-									echo "<td>" . $data['TASKTITLE'] . "</td>";
-									echo "<td>" . $data['TASKENDDATE'] . "</td>";
-									echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
-								echo "</tr>";
-							}
-						?>
-					</tbody>
-				</table>
-			</div>
+				<!-- TASK TABLE -->
+				<!-- Main row -->
+				<div class="row">
+					<!-- Left col -->
+					<div class="col-md-10">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">WHAT TABLE IS THIS</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div class="table-responsive">
+									<table class="table table-hover no-margin" id="logsList">
+										<thead>
+											<th>Project</th>
+											<th>Task</th>
+											<th>Task End Date</th>
+											<th>Status</th>
+										</thead>
+										<tbody>
+										<?php
+											foreach ($delayedTaskPerUser as $row)
+											{
+												echo "<tr style='color:red'>";
+													echo "<td>" . $row['PROJECTTITLE'] . "</td>";
+													echo "<td>" . $row['TASKTITLE'] . "</td>";
+													echo "<td>" . $row['TASKENDDATE'] . "</td>";
+													echo "<td> DELAYED </td>";
+												echo "</tr>";
+											}
+											foreach ($tasks3DaysBeforeDeadline as $data)
+											{
+												echo "<tr>";
+													echo "<td>" . $data['PROJECTTITLE'] . "</td>";
+													echo "<td>" . $data['TASKTITLE'] . "</td>";
+													echo "<td>" . $data['TASKENDDATE'] . "</td>";
+													echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
+												echo "</tr>";
+											}
+										?>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+							<!-- /.box-body -->
+							<!-- /.box-footer -->
+						</div>
+						<!-- /.box -->
+					</div>
+				</div>
 			<?php endif;?>
 
 			<!-- APPROVAL TABLE -->
@@ -95,54 +120,54 @@
 						<!-- /.box-footer -->
 					</div>
 					<!-- /.box -->
-
-					<!-- MODALS -->
-					<!-- REQUEST APPROVAL MODAL -->
-					<div class="modal fade" id="modal-requestDetails" tabindex="-1">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span></button>
-									<h2 class="modal-title" id = "doneTitle">Task Finished</h2>
-									<h4>Start Date - End Date (Days)</h4>
-								</div>
-								<div class="modal-body">
-									<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
-										<!-- IF TYPE = PERFORMER -->
-										<label>Reason</label>
-										<p id="performerReason">Wrong tagged employee. Get it right bitch</p>
-										<div class="form-group">
-											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
-										</div>
-										<!-- IF TYPE = DATE -->
-										<label>Reason</label>
-										<p id="dateReason"> Need more time. Get it right bitch</p>
-										<label>Dates</label>
-										<p>Original Start Date to Requested Start Date</p>
-										<p>Original End Date to Requested End Date</p>
-										<div class="form-group">
-											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
-										</div>
-										<div class="modal-footer">
-											<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id=""><i class="fa fa-thumbs-down"></i> Deny Request</button>
-											<button id = "approveRequest" type="submit" class="btn btn-success" data-id=""><i class="fa fa-thumbs-up"></i> Approve Request</button>
-										</div>
-									</form>
-								</div>
-							</div>
-							<!-- /.modal-content -->
-						</div>
-						<!-- /.modal-dialog -->
-					</div>
-					<!-- /.modal -->
-
-					<!-- MODALS END -->
-
 				</div>
 			</div>
 
 			<!-- END APPROVAL TABLE -->
+
+			<!-- MODALS -->
+			<!-- REQUEST APPROVAL MODAL -->
+			<div class="modal fade" id="modal-requestDetails" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span></button>
+							<h2 class="modal-title" id = "doneTitle">Task Finished</h2>
+							<h4>Start Date - End Date (Days)</h4>
+						</div>
+						<div class="modal-body">
+							<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
+								<!-- IF TYPE = PERFORMER -->
+								<label>Reason</label>
+								<p id="performerReason">Wrong tagged employee. Get it right bitch</p>
+								<div class="form-group">
+									<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+								</div>
+								<!-- IF TYPE = DATE -->
+								<label>Reason</label>
+								<p id="dateReason"> Need more time. Get it right bitch</p>
+								<label>Dates</label>
+								<p>Original Start Date to Requested Start Date</p>
+								<p>Original End Date to Requested End Date</p>
+								<div class="form-group">
+									<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+								</div>
+								<div class="modal-footer">
+									<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id=""><i class="fa fa-thumbs-down"></i> Deny Request</button>
+									<button id = "approveRequest" type="submit" class="btn btn-success" data-id=""><i class="fa fa-thumbs-up"></i> Approve Request</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
+
+			<!-- MODALS END -->
+
 
 		</section>
 			</div>
