@@ -79,3 +79,10 @@ input:checked + .slider:before {
 {
   padding: 2px;
 }
+
+
+!important
+#requestForm, #rfcForm, #doneForm, #raciForm
+{
+  margin-bottom: 0;
+}
