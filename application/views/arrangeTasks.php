@@ -247,7 +247,7 @@
 		  	       autoclose: true,
 							 startDate: $("#projectDate").attr('data-startDate'),
 							 endDate: $("#projectDate").attr('data-endDate'),
-							 orientation: 'bottom'
+							 orientation: 'top'
 						});
 				});
 
@@ -256,9 +256,9 @@
 					var counter = $(this).attr('data-num');
 					var newDate = $(this).val();
 
+					alert('set End Date to: ' + newDate);
+
  				$("#end_" + mainAct + "-" + counter).prop('disabled', false);
- 				// $("#end_" + mainAct + "-" + counter).datepicker('setStartDate', newDate);
-				// $("#end_" + mainAct + "-" + counter).data('datepicker').setStartDate(newDate);
 				if(new Date($("#end_" + mainAct + "-" + counter).val()) < newDate) //Removes Target Date Input if new Start Date comes after it
 					$("#end_" + mainAct + "-" + counter).val("");
  			 });
@@ -269,9 +269,9 @@
 						$(this).datepicker({
 							format: 'yyyy-mm-dd',
 							 autoclose: true,
-							 startDate: "2018-07-25",
+							 startDate: $("#start_" + mainAct + "-" + counter).val(),
 							 endDate: $("#projectDate").attr('data-endDate'),
-							 orientation: 'bottom'
+							 orientation: 'top'
 						});
 				});
 		 });
