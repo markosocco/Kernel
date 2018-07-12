@@ -572,11 +572,7 @@
 				 var $end = new Date($(this).attr('data-end'));
 				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 				 $("#doneTitle").html($title);
-				 $("#doneDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
-				 if($diff <= '1')
-				  $("#doneDates").append(" day)");
-				 else
-				  $("#doneDates").append(" days)");
+				 $("#doneDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 				 $("#doneConfirm").attr("data-id", $id); //pass data id to confirm button
 				 var isDelayed = $(this).attr('data-delay'); // 1 = delayed
 				 if(isDelayed == 'false')
@@ -609,14 +605,10 @@
 				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 
 				 $(".taskTitle").html($title);
-				 $(".taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
-				 if($diff <= '1')
-				  $(".taskDates").append(" day)");
-				 else
-				  $(".taskDates").append(" days)");
+				 $(".taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 			 });
 
-			 $("body").on("click", function(){ // REMOVE ALL SELECTED IN DELEGATE MODAL & RFC
+			 $("body").on("click", function(){ // REMOVE ALL SELECTED IN DELEGATE MODAL
 				 if($("#modal-delegate").css("display") == 'none')
 				 {
 					 $(".radioEmp").prop("checked", false);
@@ -798,11 +790,7 @@
 				 $("#rfcSubmit").attr("data-id", $id); //pass data id to confirm button
 				 $("#rfcSubmit").attr("data-date", $date); //pass data date boolean to confirm button
 				 $("#rfcTitle").html($title);
-				 $("#rfcDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
-				 if($diff <= '1')
-				 	$("#rfcDates").append(" day)");
-				else
-					$("#rfcDates").append(" days)");
+				 $("#rfcDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff +" day/s)");
 			 });
 
 			 $("#rfcSubmit").click(function()
@@ -826,6 +814,15 @@
 					 dataType: 'json',
 					 success:function(data)
 					 {
+<<<<<<< HEAD
+						 var table;
+						 var role;
+						 for(i=0; i<data['tasks'].length; i++)
+ 						 {
+ 						 	var taskDuration = parseInt(data['tasks'][i].taskDuration);
+							var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+							var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+=======
 						 if(data['mainActivity'].length > 0 && data['subActivity'].length > 0)
 						 {
 							 $('#activityTable').html("");
@@ -963,11 +960,125 @@
 													'" data-end="'+ endDate +'">' +
 													'<i class="fa fa-users"></i> Delegate</button></td>');
 									}
+<<<<<<< HEAD
 									else if (data['users'][0].userType != '5')
 										$('#' + data['tasks'][i].TASKID).append('<td></td>');
 
 									// RFC & DONE BUTTON
 									if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONGOING PROJECT
+=======
+									else
+										$('#' + taskID + "-" + role).append("<td></td></tr>");
+							 }
+						 }
+						 else
+						 {
+							 $("#activityBox").hide(); //hide box if no main or sub activity is found
+						 }
+
+						 // TASK TABLE
+						 var table;
+						 var role;
+						 $('#taskTable').html("");
+						 for(i=0; i<data['tasks'].length; i++)
+ 						 {
+							 var taskDuration = parseInt(data['tasks'][i].taskDuration);
+							 var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+							 var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
+							switch(data['tasks'][i].ROLE)
+							{
+								case "1": role = "R"; break;
+								case "2": role = "A"; break;
+								case "3": role = "C"; break;
+								case "4": role = "I"; break;
+							}
+<<<<<<< HEAD
+ 							 table += "<tr>" +
+=======
+ 							 $('#taskTable').append(
+								 						"<tr id='" + data['tasks'][i].TASKID + "'>" +
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
+							 							"<td align='center'>" + role + "</td>" +
+ 							 							"<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+ 														"<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
+ 														"<td align='center'>" + taskStart +"</td>"+
+ 														"<td align='center'>" + taskEnd +"</td>"+
+ 														"<td align='center'>" + taskDuration+"</td>");
+
+<<<<<<< HEAD
+=======
+								var startDate = data['tasks'][i].TASKSTARTDATE;
+								var endDate = data['tasks'][i].TASKENDDATE;
+
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
+								// DELEGATE BUTTON
+ 								if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
+								{
+									$('#' +data['tasks'][i].TASKID).append(
+												'<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+												'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+												data['tasks'][i].TASKID + '" data-title="' + data['tasks'][i].TASKTITLE +
+<<<<<<< HEAD
+												'" data-start="'+ data['tasks'][i].TASKSTARTDATE +
+												'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
+												'<i class="fa fa-users"></i> Delegate</button></td>';
+=======
+												'" data-start="'+ startDate +
+												'" data-end="'+ endDate +'">' +
+												'<i class="fa fa-users"></i> Delegate</button></td>');
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
+								}
+								else if (data['users'][0].userType != '5')
+									$('#' + data['tasks'][i].TASKID).append('<td></td>');
+
+								// RFC & DONE BUTTON
+								if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONOGING PROJECT
+								{
+									var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING
+
+									// RFC
+<<<<<<< HEAD
+									table+= '<td align="center"><button type="button"' +
+									'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
+									'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
+									'" data-date="' + newDate + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+									' data-start="'+ data['tasks'][i].TASKSTARTDATE +
+									'" data-end="'+ data['tasks'][i].TASKENDDATE +'"><i class="fa fa-warning"></i>' +
+									' RFC</button></td>';
+
+									if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1') //SHOW BUTTON for assignment
+									{
+										var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
+										// DONE
+										table+= '<td align="center"><button type="button"' +
+										'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+										'data-target="#modal-done" data-id="' + data['tasks'][i].TASKID +
+										'" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+										'data-delay="' + isDelayed + '" data-start="'+ data['tasks'][i].TASKSTARTDATE +
+										'" data-end="'+ data['tasks'][i].TASKENDDATE +'">' +
+										'<i class="fa fa-check"></i> Done</button></td>';
+									}
+									else
+									{
+											table+= "<td></td>";
+									}
+								}
+								else
+									table+= '<td></td>' + '<td></td>';
+=======
+									$('#' + data['tasks'][i].TASKID).append(
+	 									'<td align="center"><button type="button"' +
+										'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
+										'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
+										'" data-date="' + newDate + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+										' data-start="'+ startDate +
+										'" data-end="'+ endDate +'"><i class="fa fa-warning"></i>' +
+										' RFC</button></td>');
+
+									if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1' && data['tasks'][i].CATEGORY == '3') //SHOW BUTTON for assignment
+>>>>>>> 2d50805fa86be4eeefaf2ab8a9357663802e40ce
 									{
 										var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING TASK
 
@@ -1051,6 +1162,7 @@
 										}
 									}
 									else
+<<<<<<< HEAD
 									$('#' + data['tasks'][i].TASKID).append('<td></td>' + '<td></td>'); // NO DONE & RFC BUTTON (Project is not ongoing)
 						 		}
 						 }
@@ -1062,6 +1174,16 @@
 						error:function(XMLHTTPREQUEST)
 						{
 							alert("There was a problem in retrieving tasks");
+=======
+									{
+										$('#' + data['tasks'][i].TASKID).append("<td></td>"); // NO DONE BUTTON IF ROLE IS NOT RESPONSIBLE
+									}
+								}
+								else
+								$('#' + data['tasks'][i].TASKID).append('<td></td>' + '<td></td>'); // NO DONE & RFC BUTTON (Project is not ongoing)
+>>>>>>> 773bfca483a0d8a1bb2f0715e128e0f8a5ed19f7
+					 		}
+>>>>>>> 2d50805fa86be4eeefaf2ab8a9357663802e40ce
 						}
 				 });
 			 }
@@ -1094,6 +1216,12 @@
 			 });
 			 $('#projectList').DataTable().columns(-1).order('asc').draw();
 		 });
+
+		 $("#inputID").submit(function(e){
+			  e.preventDefault();
+
+				successAlert();
+			});
 
 		</script>
 	</body>

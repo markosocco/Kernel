@@ -72,7 +72,7 @@
 			                	</div>
 											</td>
 											<td width="40%">
-				                <select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
+				                <select id ="select0" class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
 													<?php foreach ($departments as $row): ?>
 
 														<option>
@@ -88,7 +88,7 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-0" data-mainAct="0" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" required>
 					                </div>
 					                <!-- /.input group -->
 					              </div>
@@ -99,7 +99,7 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-0" data-mainAct="0" required>
 					                </div>
 												</div>
 											</td>
@@ -115,7 +115,7 @@
 
 										<tfoot>
 											<tr align="center">
-												<td class="btn" id="addRow" colSpan="3"><a class="btn addButton"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
+												<td class="btn" id="addRow" colSpan="3"><a class="btn addButton"  data-counter = "1"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
 											</tr>
 										</tfoot>
 
@@ -151,6 +151,7 @@
 
 		<script>
 			$("#myProjects").addClass("active");
+			$(".taskEndDate").prop('disabled', true);
 
 		  $(function ()
 			{
@@ -158,13 +159,35 @@
 		    $('.select2').select2()
 
 				//Date picker
- 	     $('#taskStartDate').datepicker({
- 	       autoclose: true
- 	     })
 
- 	     $('#taskEndDate').datepicker({
- 	       autoclose: true
- 	     })
+			 $('body').on('focus',".taskStartDate", function(){
+					 $(this).datepicker({
+						 autoclose: true,
+						 format: 'yyyy-mm-dd',
+						 startDate: $("#start-0").attr('data-start'),
+						 endDate: $("#start-0").attr('data-end')
+					 });
+			 });
+
+			 $("body").on("change", ".taskStartDate", function(e) {
+				 var mainAct = $(this).attr('data-mainAct');
+
+			 $("#end-" + mainAct).prop('disabled', false);
+			 if(new Date($("#end-" + mainAct).val()) < $(this).val()) //Removes Target Date Input if new Start Date comes after it
+				 $("#end-" + mainAct).val("");
+			});
+
+			 $('body').on('focus',".taskEndDate", function(){
+				 var mainAct = $(this).attr('data-mainAct');
+				 var counter = $(this).attr('data-num');
+					 $(this).datepicker({
+						 // var mainAct = $(this).attr('data-mainAct');
+		 	       autoclose: true,
+						 format: 'yyyy-mm-dd',
+						 // startDate: $("#start-" + $(this).attr('data-mainAct')).val(),
+						 endDate: $("#start-0").attr('data-end')
+					 });
+			 });
 		 });
 
 		 $(document).ready(function() {
@@ -174,10 +197,22 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>  <td width = '40%'> <select class='form-control select2' multiple='multiple' name = 'department_" + i + "[]' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" + "</select></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+				 var counter = parseInt($(this).attr('data-counter'));
+
+				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td> " +
+				 " <td width = '40%'> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = 'department_[]' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+				 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
+				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' id='start-" + i + "' data-mainAct='"+ i +"' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
+				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' id='end-" + i + "' data-mainAct='" + i + "' required></div></div></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+
+				 // counter++;
 
 				 	$('.select2').select2();
+					$("#end-" + i).prop('disabled', true);
 
+					counter++;
+					$("a.addButton").attr('data-counter', counter);
+					console.log(counter);
 					 // $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
@@ -191,10 +226,28 @@
 							x = x -1;
 							var j = $(this).attr('data-id');
 
+							var counter = $("a.addButton").attr('data-counter');
+
 							$('#row' + j).remove();
-							console.log("after removing: " + x);
+
+							counter--;
+							$("a.addButton").attr('data-counter', counter);
+							console.log(counter);
+							// console.log("after removing: " + x);
 						}
 					});
+
+					$(document).on("click", "#arrangeTask", function() {
+
+	 				 var counter = $("a.addButton").attr('data-counter');
+
+					 for (var a = 1; a <= counter; a++)
+					 {
+						 $("#select" + a).attr('name', 'department_' + a);
+					 }
+
+					 // console.log(counter);
+	 				});
         });
 
 				// var el = document.getElementById('table');

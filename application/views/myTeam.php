@@ -106,8 +106,8 @@
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?> day/s remaining</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-beaker"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-clipboard"></i>
 										</div>
 									</div>
 								</a>
@@ -131,8 +131,8 @@
 											?>
 											<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $row['datediff'] +1;?> day/s</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-clock"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-lightbulb"></i>
 										</div>
 									</div>
 								</a>

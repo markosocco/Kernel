@@ -685,6 +685,8 @@ class controller extends CI_Controller
 
 		// GET ARRAY OF INPUTS FROM VIEW
 		$title = $this->input->post('title');
+		$startDates = $this->input->post('taskStartDate');
+		$endDates = $this->input->post('taskEndDate');
 
 		// GET ALL DEPTS TO ASSIGN DEPT HEAD TO TASK
 		$departments = $this->model->getAllDepartments();
@@ -722,12 +724,14 @@ class controller extends CI_Controller
 
 		$x = 0;
 
-		foreach ($title as $row)
+		foreach ($title as $key => $row)
 		{
 			$department = $this->input->post('department_' . $x);
 
 				$data = array(
 						'TASKTITLE' => $row,
+						'TASKSTARTDATE' => $startDates[$key],
+						'TASKENDDATE' => $endDates[$key],
 						'TASKSTATUS' => 'Planning',
 						'CATEGORY' => '1',
 						'projects_PROJECTID' => $id
@@ -779,7 +783,8 @@ class controller extends CI_Controller
 						);
 
 						// ENTER INTO RACI
-						$result = $this->model->addToRaci($data);
+						echo $a . "<br>";
+						// $result = $this->model->addToRaci($data);
 					}
 				}
 
@@ -843,21 +848,26 @@ class controller extends CI_Controller
 						$fadHead = $row['users_DEPARTMENTHEAD'];
 						break;
 				}
+
+				echo $row['DEPARTMENTNAME'] . " -- " . $row['users_DEPARTMENTHEAD'] . "<br>";
 			}
 
-			$x = 0;
+
 
 			$x = 0;
 
-			foreach ($title as $row)
+			foreach ($title as $key=> $row)
 			{
 				$department = $this->input->post('department_' . $x);
 
 					$data = array(
 							'TASKTITLE' => $row,
+							'TASKSTARTDATE' => $startDates[$key],
+							'TASKENDDATE' => $endDates[$key],
 							'TASKSTATUS' => 'Planning',
-							'CATEGORY' => '1',
-							'projects_PROJECTID' => $id
+							'CATEGORY' => '2',
+							'projects_PROJECTID' => $id,
+							'tasks_TASKPARENT' => $parent[$key]
 					);
 
 					$addedTask = $this->model->addTasksToProject($data);
@@ -899,14 +909,16 @@ class controller extends CI_Controller
 									break;
 							}
 
-							$data = array(
-									'ROLE' => '1',
-									'users_USERID' => $deptHead,
-									'tasks_TASKID' => $addedTask['TASKID']
-							);
+							echo $a . " -- ". $deptHead . "<br>";
 
-							// ENTER INTO RACI
-							$result = $this->model->addToRaci($data);
+							// $data = array(
+							// 		'ROLE' => '1',
+							// 		'users_USERID' => $deptHead,
+							// 		'tasks_TASKID' => $addedTask['TASKID']
+							// );
+							//
+							// // ENTER INTO RACI
+							// $result = $this->model->addToRaci($data);
 						}
 					}
 
@@ -916,15 +928,28 @@ class controller extends CI_Controller
 			$this->output->enable_profiler(TRUE);
 
 			// GANTT CODE
-			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasks($id);
-			// $data['preReq'] = $this->model->getPreReqID();
-			$data['dependencies'] = $this->model->getDependencies();
+			// $data['projectProfile'] = $this->model->getProjectByID($id);
+			// $data['ganttData'] = $this->model->getAllProjectTasks($id);
+			// // $data['preReq'] = $this->model->getPreReqID();
+			// $data['dependencies'] = $this->model->getDependencies();
+			// $data['users'] = $this->model->getAllUsers();
+
+			$data['project'] = $this->model->getProjectByID($id);
+			$data['tasks'] = $this->model->getAllProjectTasks($id);
+			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['users'] = $this->model->getAllUsers();
+			$data['departments'] = $this->model->getAllDepartments();
+
+			$sDate = date_create($data['project']['PROJECTSTARTDATE']);
+			$eDate = date_create($data['project']['PROJECTENDDATE']);
+			$diff = date_diff($eDate, $sDate);
+			$dateDiff = $diff->format('%d');
+
+			$data['dateDiff'] = $dateDiff;
 
 			// $this->load->view("dashboard", $data);
 			// redirect('controller/projectGantt');
-			$this->load->view("scheduleTasks", $data);
+			// $this->load->view("scheduleTasks", $data);
 	}
 
 	public function uploadDocument()
