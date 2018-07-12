@@ -1,4 +1,5 @@
-#requestApproval td:hover
+#requestApproval td:hover,
+#logsList .projectLink:hover
 {
   cursor: pointer;
 }
