@@ -843,72 +843,74 @@ class controller extends CI_Controller
 			}
 
 			$x = 0;
-			$table = 0;
-			// $num = 0;
 
-			foreach ($parent as $key => $value)
+			$x = 0;
+
+			foreach ($title as $row)
 			{
-				$data = array(
-						'TASKTITLE' => $title[$key],
-						'TASKSTARTDATE' => $startDates[$key],
-						'TASKENDDATE' => $endDates[$key],
-						'TASKSTATUS' => 'Planning',
-						'CATEGORY' => '2',
-						'projects_PROJECTID' => $id,
-						'tasks_TASKPARENT' => $value
-				);
+				$department = $this->input->post('department_' . $x);
 
-				$addedTask = $this->model->addTasksToProject($data);
+					$data = array(
+							'TASKTITLE' => $row,
+							'TASKSTATUS' => 'Planning',
+							'CATEGORY' => '1',
+							'projects_PROJECTID' => $id
+					);
 
-				if (!$addedTask)
-				{
-					echo "false";
-				}
+					$addedTask = $this->model->addTasksToProject($data);
 
-				else
-				{
-					// echo $addedTask['TASKID'] . "<br>";
-
-					$table = 0;
-					$num = 0;
-
-					foreach ($title as $key=> $t)
+					if (!$addedTask)
 					{
-						if ($t == $addedTask['TASKTITLE'])
-						{
-							// echo $addedTask['TASKID'] . " -- " . $value.  "<br>";
-							foreach ($parent as $p)
-							{
-								$num = 0;
-
-								foreach ($title as $t2)
-								{
-									$department = $this->input->post('table_' . $table . '_department' . $num);
-
-									if (isset($department))
-									{
-											// echo $value . " -- " . $addedTask['tasks_TASKPARENT'] . "<BR>";
-											echo "table_" . $table . "_department" . $num . " -- " . $addedTask['TASKID'] . " -- " . $value . "<BR>";
-
-									}
-									$num++;
-								}
-
-								$table++;
-							}
-						}
-						// if ($t == $value)
-						// {
-						// 	echo "hello<br>";
-						// }
+						echo "false";
 					}
+
+					else
+					{
+						foreach($department as $a)
+						{
+							switch ($a)
+							{
+								case 'Executive':
+									$deptHead = $execHead;
+									break;
+								case 'Marketing':
+									$deptHead = $mktHead;
+									break;
+								case 'Finance':
+									$deptHead = $finHead;
+									break;
+								case 'Procurement':
+									$deptHead = $proHead;
+									break;
+								case 'HR':
+									$deptHead = $hrHead;
+									break;
+								case 'MIS':
+									$deptHead = $misHead;
+									break;
+								case 'Store Operations':
+									$deptHead = $opsHead;
+									break;
+								case 'Facilities Administration':
+									$deptHead = $fadHead;
+									break;
+							}
+
+							$data = array(
+									'ROLE' => '1',
+									'users_USERID' => $deptHead,
+									'tasks_TASKID' => $addedTask['TASKID']
+							);
+
+							// ENTER INTO RACI
+							$result = $this->model->addToRaci($data);
+						}
+					}
+
+					$x++;
 				}
 
-				$x++;
-				echo "-------------------------<br>";
-			}
-
-
+			$this->output->enable_profiler(TRUE);
 
 			// GANTT CODE
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -919,7 +921,7 @@ class controller extends CI_Controller
 
 			// $this->load->view("dashboard", $data);
 			// redirect('controller/projectGantt');
-			// $this->load->view("scheduleTasks", $data);
+			$this->load->view("scheduleTasks", $data);
 	}
 
 	public function uploadDocument()
