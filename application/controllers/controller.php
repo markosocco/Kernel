@@ -160,10 +160,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 
-				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
-				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
-
 			}
 			else
 			{
@@ -173,9 +169,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 
-				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByUser();
-				// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByUser();
-				// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByUser();
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
@@ -199,12 +192,24 @@ class controller extends CI_Controller
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
 				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
+				$data['parkedProjects'] = $this->model->getAllParkedProjects();
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 			}
 			else
 			{
 				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
 				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
+				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
+				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
+
 			}
+
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+
 			$this->load->view("myTeam", $data);
 		}
 	}
@@ -272,6 +277,13 @@ class controller extends CI_Controller
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
+		echo json_encode($data);
+	}
+
+	public function getDependenciesByTaskID()
+	{
+		$taskID = $this->input->post("task_ID");
+		$data['dependencies'] = $this->model->getDependenciesByTaskID($taskID);
 		echo json_encode($data);
 	}
 
@@ -530,7 +542,7 @@ class controller extends CI_Controller
 			$id = $this->input->post("project_ID");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
-			$data['dependencies'] = $this->model->getDependecies();
+			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 
 			$departmentID = $_SESSION['departments_DEPARTMENTID'];
@@ -630,7 +642,7 @@ class controller extends CI_Controller
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
-			$data['dependencies'] = $this->model->getDependecies();
+			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 
 			$this->load->view("projectGantt", $data);
@@ -902,7 +914,7 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			// $data['preReq'] = $this->model->getPreReqID();
-			$data['dependencies'] = $this->model->getDependecies();
+			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 
 			// $this->load->view("dashboard", $data);
@@ -965,7 +977,7 @@ class controller extends CI_Controller
 		$filter = "tasks.TASKSTARTDATE"; // default
 		$data['ganttData'] = $this->model->getAllProjectTasks(1, $filter);
 		// $data['preReq'] = $this->model->getPreReqID();
-		$data['dependencies'] = $this->model->getDependecies();
+		$data['dependencies'] = $this->model->getDependencies();
 
 		$this->load->view("gantt2", $data);
 	}

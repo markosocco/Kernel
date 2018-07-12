@@ -71,7 +71,16 @@
 									<div class="small-box bg-red">
 										<div class="inner">
 
-											<h2><?php echo $delayedProjectProgress[$key]['projectProgress']; ?>%</h2>
+											<h2>
+												<?php
+													foreach ($delayedProjectProgress as $row)
+													{
+														if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+														{
+															echo $row['projectProgress'];
+														}
+													}
+												?>%</h2>
 
 											<form action = 'projectGantt'  method="POST">
 											</form>
@@ -96,7 +105,16 @@
 									<div class="small-box bg-green">
 										<div class="inner">
 
-											<h2><?php echo $ongoingProjectProgress[$key]['projectProgress']; ?>%</h2>
+											<h2>
+												<?php
+													foreach ($ongoingProjectProgress as $row)
+													{
+														if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+														{
+															echo $row['projectProgress'];
+														}
+													}
+												?>%</h2>
 
 											<form action = 'projectGantt'  method="POST">
 											</form>
@@ -145,7 +163,16 @@
 									<div class="small-box btn-default">
 										<div class="inner">
 
-											<h2><?php echo $parkedProjectProgress[$key]['projectProgress']; ?>%</h2>
+											<h2>
+												<?php
+													foreach ($parkedProjectProgress as $row)
+													{
+														if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+														{
+															echo $row['projectProgress'];
+														}
+													}
+												?>%</h2>
 
 											<form action = 'projectGantt' method="POST">
 											</form>
@@ -233,7 +260,16 @@
 												<td><?php echo $value['PROJECTTITLE']; ?></td>
 												<td><?php echo date_format($delayedStart, "M d, Y");?></td>
 												<td><?php echo date_format($delayedEnd, "M d, Y");?></td>
-												<td><?php echo $delayedProjectProgress[$key]['projectProgress']; ?>%</td>
+												<td>
+													<?php
+														foreach ($delayedProjectProgress as $row)
+														{
+															if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+															{
+																echo $row['projectProgress'];
+															}
+														}
+													?>%</td>
 												<td><?php echo "Delayed"; ?></td>
 											</tr>
 										<?php endforeach;?>
@@ -254,8 +290,17 @@
 												<td><?php echo $value['PROJECTTITLE']; ?></td>
 												<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
 												<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-												<td><?php echo $ongoingProjectProgress[$key]['projectProgress']; ?>%</td>
-												<td><?php echo $value['PROJECTSTATUS']; ?></td>
+												<td>
+													<?php
+														foreach ($ongoingProjectProgress as $row)
+														{
+															if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+															{
+																echo $row['projectProgress'];
+															}
+														}
+													?>%</td>
+													<td><?php echo $value['PROJECTSTATUS']; ?></td>
 											</tr>
 										<?php endforeach;?>
 
@@ -276,7 +321,7 @@
 											<td><?php echo $row['PROJECTTITLE']; ?></td>
 											<td><?php echo date_format($plannedStart, "M d, Y");?></td>
 											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-											<td></td>
+											<td>0.00%</td>
 											<td><?php echo $row['PROJECTSTATUS']; ?></td>
 										</tr>
 									<?php endforeach;?>
@@ -297,8 +342,17 @@
 										<td><?php echo $value['PROJECTTITLE']; ?></td>
 										<td><?php echo date_format($parkedStart, "M d, Y");?></td>
 										<td><?php echo date_format($parkedEnd, "M d, Y");?></td>
-										<td><?php echo $parkedProjectProgress[$key]['projectProgress']; ?>%</td>
-										<td><?php echo "Parked"; ?></td>
+										<td>
+											<?php
+												foreach ($parkedProjectProgress as $row)
+												{
+													if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+													{
+														echo $row['projectProgress'];
+													}
+												}
+											?>%</td>
+											<td><?php echo "Parked"; ?></td>
 									</tr>
 								<?php endforeach;?>
 
@@ -318,7 +372,7 @@
 									<td><?php echo $value['PROJECTTITLE']; ?></td>
 									<td><?php echo date_format($draftedStart, "M d, Y");?></td>
 									<td><?php echo date_format($draftedEnd, "M d, Y");?></td>
-									<td></td>
+									<td>0.00%</td>
 									<td><?php echo "Draft"; ?></td>
 								</tr>
 							<?php endforeach;?>
