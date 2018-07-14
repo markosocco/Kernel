@@ -106,9 +106,6 @@
 
 												$formattedDate = $Month . " " . $Day . ", " . $Year;
 
-												echo "<form class = 'documentDownload' action = 'downloadDocument'  method='POST'>
-												</form>";
-
 												echo "<tr>";
 													echo "<td></td>";
 													echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
@@ -116,8 +113,9 @@
 													echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
 													echo "<td>" . $formattedDate . "</td>";
 													echo "<td>" . $row['REMARKS'] . "</td>";
-													echo "<td align='center'><button type='button' class='btn btn-success dlButton'
-													data-link= '". $row['DOCUMENTLINK'] ."'><i class='fa fa-download'></i><a href = '". $row['DOCUMENTLINK']."' download> Download</a></button></td>";
+													echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
+													<button type='button' class='btn btn-success'>
+													<i class='fa fa-download'></i>Download</button></a></td>";
 												echo "</tr>";
 											}
 										?>
@@ -157,7 +155,7 @@
 														<span class="input-group-addon">
 															<input type="radio" name="sendTo">
 														</span>
-													<input type="text" class="form-control" placeholder="All" disabled readonly>
+													<input type="text" class="form-control" placeholder="All" value="all" disabled readonly>
 												</div>
 												<!-- /input-group -->
 											</div>
