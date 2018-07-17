@@ -78,6 +78,7 @@ $db['default'] = array(
 	'hostname' => '127.0.0.1',
 	'username' => 'root',
 	'password' => '123hello',
+	// wala lang
 	'database' => 'Kernel',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

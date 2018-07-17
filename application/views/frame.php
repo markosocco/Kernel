@@ -309,11 +309,11 @@ desired effect
         },{
         // settings
         type: 'danger',
-        offset: 60,
+        offset: 20,
         delay: 5000,
         placement: {
-          from: "top",
-          align: "center"
+          from: "bottom",
+          align: "right"
         },
         animate: {
           enter: 'animated fadeInDownBig',
