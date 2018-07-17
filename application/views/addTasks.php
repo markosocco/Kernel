@@ -199,9 +199,9 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
-				 var str = new String("department[\'dept\'][]");
+				 // var str = new String("department[\'dept\'][]");
 
-				 console.log("hello "+ str);
+				 // console.log("hello "+ str);
 				 var counter = parseInt($(this).attr('data-counter'));
 
 				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' ></div></td> " +

@@ -298,7 +298,7 @@ desired effect
           '<span data-notify="message">{2}</span>' +
         '</div>'
         });
-    }
+    };
 
     function dangerAlert ()
     {
@@ -326,7 +326,7 @@ desired effect
           '<span data-notify="message">{2}</span>' +
         '</div>'
         });
-    }
+    };
 
     function warningAlert ()
     {
@@ -354,7 +354,7 @@ desired effect
           '<span data-notify="message">{2}</span>' +
         '</div>'
         });
-    }
+    };
 
     function infoAlert ()
     {
@@ -382,7 +382,7 @@ desired effect
           '<span data-notify="message">{2}</span>' +
         '</div>'
         });
-      }
+      };
 </script>
 
 </body>

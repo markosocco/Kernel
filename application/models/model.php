@@ -538,6 +538,36 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllMainActivitiesByID($id)
+  {
+    $condition = "projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 1";
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllSubActivitiesByID($id)
+  {
+    $condition = "projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 2";
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+
+    return $this->db->get()->result_array();
+  }
+
 // FOR TEAM GANTT CHART
   public function getAllProjectTasksByDepartment($projectID, $departmentID)
   {

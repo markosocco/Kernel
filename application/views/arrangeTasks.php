@@ -78,7 +78,7 @@
 									<tbody>
 
 										<tr>
-											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>" data-num=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 											<td><?php echo $value['TASKTITLE']; ?></td>
 											<td>
 												<?php
@@ -106,8 +106,8 @@
 													}
 												?>
 											</td>
-											<td></td>
-											<td></td>
+											<td><?php echo $value['TASKSTARTDATE']; ?></td>
+											<td><?php echo $value['TASKENDDATE']; ?></td>
 											<td></td>
 										</tr>
 										<tr>
@@ -117,11 +117,10 @@
 												<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
 												<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-												<input type="hidden" name="row[]" value="0">
+												<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 											</div></td>
 											<td width="40%">
-												<!-- <select class="form-control select2" multiple="multiple" name = "table_<?php echo $key; ?>_department0[]" data-placeholder="Select Departments"> -->
-												<select class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
+												<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
 													<?php foreach ($departments as $row): ?>
 
 														<option>
@@ -182,18 +181,14 @@
 
 		$(document).ready(function() {
 
-		 var i = 0;
+		 var i = 2;
 		 var x = 2;
 
 		 $(document).on("click", "a.addButton", function() {
 
 			 var currTable = $(this).attr('data-id');
-			 var t = $(this).attr('data-table');
-			 var mainAct = $(this).attr('data-num');
+			 var mainAct = $(this).attr('data-mainAct');
 			 var counter = parseInt($(this).attr('data-sum'));
-			 var tot = $(this).attr('data-sum');
-
-			 console.log(tot);
 
 				 $('#table_' + currTable).append("<tr id='table_" +
 				 						currTable + "_Row_" + (i + 1) +
@@ -213,9 +208,8 @@
 					$("#end_" + mainAct + "-" + counter).prop('disabled', true);
 
 				 var newCount = counter + 1;
-				 tot++;
+				 // tot++;
 				 $("a.addButton").attr('counter', newCount);
-				 $("a.addButton").attr('data-sum', tot);
 
 				  $('.select2').select2();
 					$("#select" + i).attr("name", "department[" + i + "][]");
