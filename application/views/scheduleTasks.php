@@ -52,7 +52,7 @@
 
 								<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
-								<?php foreach ($groupedTasks as $key=>$value): ?>
+								<?php foreach ($mainActivity as $key=>$value): ?>
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table_<?php echo $key;?>">
 
@@ -74,316 +74,115 @@
 										<tbody>
 											<tr>
 												<td></td>
-												<td><b>Main 1</b></td>
-												<td>Finance</td>
-												<td></td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-												<td><i>Sub 1</i></td>
-				                <td>HR</td>
-												<td>Start</td>
-												<td>End</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td></td>
+												<td><b><?php echo $value['TASKTITLE']; ?></b></td>
 												<td>
-													<div class="form-group">
-														<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-													</div>
-												</td>
-												<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-												<td width="40%">
-													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
-														<?php foreach ($departments as $row): ?>
+													<?php
+														foreach ($tasks as $row)
+														{
+															if($value['TASKTITLE'] == $row['TASKTITLE'])
+															{
+																$depts = array();
 
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
+																foreach ($departments as $row2)
+																{
+																	if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																	{
+																		$depts[] = $row2['DEPARTMENTNAME'];
+																	}
+																}
 
-														<?php endforeach; ?>
-					                </select>
+																//TODO: Fix implode shit
+																foreach ($depts as $x)
+																{
+																	echo $x . ", ";
+																}
+															}
+														}
+													?>
 												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
-						                </div>
-						              </div>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
-						                </div>
-													</div>
-												</td>
-												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
-											</tr>
-											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-												<td><i>Sub 2</i></td>
-				                <td>MIS</td>
-												<td>Start</td>
-												<td>End</td>
+												<td><?php echo $value['TASKSTARTDATE']; ?></td>
+												<td><?php echo $value['TASKENDDATE']; ?></td>
 												<td></td>
 											</tr>
-											<tr>
-												<td></td>
-												<td>
-													<div class="form-group">
-														<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-													</div>
-												</td>
-												<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-												<td width="40%">
-													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
-														<?php foreach ($departments as $row): ?>
 
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
+											<?php foreach ($subActivity as $sKey => $sValue): ?>
+													<?php if ($sValue['tasks_TASKPARENT'] == $value['TASKID']): ?>
+														<tr>
+															<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+															<td><i><?php echo $sValue['TASKTITLE']; ?></i></td>
+															<td>
+																<?php
+																	foreach ($tasks as $row)
+																	{
+																		if($sValue['TASKTITLE'] == $row['TASKTITLE'])
+																		{
+																			$depts = array();
 
-														<?php endforeach; ?>
-					                </select>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
-						                </div>
-						              </div>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
-						                </div>
-													</div>
-												</td>
-												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
-											</tr>
-											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-												<td><i>Sub 3</i></td>
-				                <td>Marketing</td>
-												<td>Start</td>
-												<td>End</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td>
-													<div class="form-group">
-														<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-													</div>
-												</td>
-												<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-												<td width="40%">
-													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
-														<?php foreach ($departments as $row): ?>
+																			foreach ($departments as $row2)
+																			{
+																				if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																				{
+																					$depts[] = $row2['DEPARTMENTNAME'];
+																				}
+																			}
 
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
+																			//TODO: Fix implode shit
+																			foreach ($depts as $x)
+																			{
+																				echo $x . ", ";
+																			}
+																		}
+																	}
+																?>
+															</td>
+															<td><?php echo $sValue['TASKSTARTDATE']; ?></td>
+															<td><?php echo $sValue['TASKENDDATE']; ?></td>
+															<td></td>
+														</tr>
+														<tr>
+															<td></td>
+															<td>
+																<div class="form-group">
+																	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+																	<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+																</div>
+															</td>
+															<!-- CHANGE TO NORMAL SELECT. 1:1 -->
+															<td width="40%">
+																<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																	<?php foreach ($departments as $row): ?>
 
-														<?php endforeach; ?>
-					                </select>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
-						                </div>
-						              </div>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
-						                </div>
-													</div>
-												</td>
-												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
-											</tr>
-											<!-- DUMMY DATA HERE -->
-											<tr>
-												<td></td>
-												<td><b>Main 2</b></td>
-												<td>Finance</td>
-												<td></td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-												<td><i>Sub 1</i></td>
-				                <td>History</td>
-												<td>Start</td>
-												<td>End</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td>
-													<div class="form-group">
-														<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-													</div>
-												</td>
-												<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-												<td width="40%">
-													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
-														<?php foreach ($departments as $row): ?>
+																		<option>
+																			<?php echo $row['DEPARTMENTNAME']; ?>
+																		</option>
 
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
-
-														<?php endforeach; ?>
-					                </select>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
-						                </div>
-						              </div>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
-						                </div>
-													</div>
-												</td>
-												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
-											</tr>
-											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-												<td><i>Sub 2</i></td>
-				                <td>Theology</td>
-												<td>Start</td>
-												<td>End</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td>
-													<div class="form-group">
-														<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-													</div>
-												</td>
-												<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-												<td width="40%">
-													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
-														<?php foreach ($departments as $row): ?>
-
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
-
-														<?php endforeach; ?>
-					                </select>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
-						                </div>
-						              </div>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
-						                </div>
-													</div>
-												</td>
-												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
-											</tr>
-											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-table="table_<?php echo $key;?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-												<td><i>Sub 3</i></td>
-				                <td>Math</td>
-												<td>Start</td>
-												<td>End</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td>
-													<div class="form-group">
-														<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-													</div>
-												</td>
-												<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-												<td width="40%">
-													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
-														<?php foreach ($departments as $row): ?>
-
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
-
-														<?php endforeach; ?>
-					                </select>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
-						                </div>
-						              </div>
-												</td>
-												<td>
-													<div class="form-group">
-						                <div class="input-group date">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-calendar"></i>
-						                  </div>
-						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
-						                </div>
-													</div>
-												</td>
-												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
-											</tr>
-											<!-- DUMMY DATA END -->
+																	<?php endforeach; ?>
+																</select>
+															</td>
+															<td>
+																<div class="form-group">
+																	<div class="input-group date">
+																		<div class="input-group-addon">
+																			<i class="fa fa-calendar"></i>
+																		</div>
+																		<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" required>
+																	</div>
+																</div>
+															</td>
+															<td>
+																<div class="form-group">
+																	<div class="input-group date">
+																		<div class="input-group-addon">
+																			<i class="fa fa-calendar"></i>
+																		</div>
+																		<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" required>
+																	</div>
+																</div>
+															</td>
+															<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
+														</tr>
+												<?php endif; ?>
+											<?php endforeach; ?>
 										</tbody>
 									</table>
 		            </div>

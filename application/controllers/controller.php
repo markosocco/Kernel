@@ -733,7 +733,7 @@ class controller extends CI_Controller
           'TASKSTARTDATE' => $startDates[$key],
           'TASKENDDATE' => $endDates[$key],
           'TASKSTATUS' => 'Planning',
-          'CATEGORY' => '2',
+          'CATEGORY' => '1',
           'projects_PROJECTID' => $id
       );
 
@@ -743,7 +743,7 @@ class controller extends CI_Controller
 		// TESTING
 		foreach ($addedTask as $aKey=> $a)
 		{
-				echo " -- " . $a . " -- <br>";
+				// echo " -- " . $a . " -- <br>";
 			foreach ($rowNum as $rKey => $row)
 			{
 				// echo $aKey . " == " . $rKey . "<br>";
@@ -879,12 +879,15 @@ class controller extends CI_Controller
 	          'tasks_TASKPARENT' => $parent[$key]
 	      );
 
+				// SAVES ALL ADDED TASKS INTO AN ARRAY
 	      $addedTask[] = $this->model->addTasksToProject($data);
 		   }
 
+			// GETS DEPARTMENT ARRAY FOR RACI
 			foreach ($addedTask as $aKey=> $a)
 	 		{
 	 			// echo " -- " . $a . " -- " . $parent[$aKey] . "<br>";
+				// rowNum SAVES THE ORDER OF HOW THE DEPARTMENT ARRAY MUST LOOK LIKE
 	 			foreach ($rowNum as $rKey => $row)
 	 			{
 					// echo $row . "<br>";
@@ -958,6 +961,8 @@ class controller extends CI_Controller
 		  $data['project'] = $this->model->getProjectByID($id);
 		  $data['tasks'] = $this->model->getAllProjectTasks($id);
 		  $data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 		  $data['users'] = $this->model->getAllUsers();
 		  $data['departments'] = $this->model->getAllDepartments();
 

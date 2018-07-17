@@ -106,8 +106,8 @@
 													}
 												?>
 											</td>
-											<td></td>
-											<td></td>
+											<td><?php echo $value['TASKSTARTDATE']; ?></td>
+											<td><?php echo $value['TASKENDDATE']; ?></td>
 											<td></td>
 										</tr>
 										<tr>
@@ -120,7 +120,6 @@
 												<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 											</div></td>
 											<td width="40%">
-												<!-- <select class="form-control select2" multiple="multiple" name = "table_<?php echo $key; ?>_department0[]" data-placeholder="Select Departments"> -->
 												<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
 													<?php foreach ($departments as $row): ?>
 
