@@ -117,10 +117,11 @@
 												<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
 												<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+												<input type="hidden" name="row[]" value="0">
 											</div></td>
 											<td width="40%">
 												<!-- <select class="form-control select2" multiple="multiple" name = "table_<?php echo $key; ?>_department0[]" data-placeholder="Select Departments"> -->
-												<select class="form-control select2" multiple="multiple" name = "department_<?php echo $key; ?>[]" data-placeholder="Select Departments">
+												<select class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
 													<?php foreach ($departments as $row): ?>
 
 														<option>
@@ -197,8 +198,8 @@
 				 $('#table_' + currTable).append("<tr id='table_" +
 				 						currTable + "_Row_" + (i + 1) +
 										"'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
-										mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td>" +
-										"<td><select class='form-control select2' multiple='multiple' name = 'department_" + tot + "[]' data-placeholder='Select Departments'> " +
+										mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
+										"<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
 										"<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
@@ -217,6 +218,7 @@
 				 $("a.addButton").attr('data-sum', tot);
 
 				  $('.select2').select2();
+					$("#select" + i).attr("name", "department[" + i + "][]");
 
 				 i++;
 				 x++;
@@ -228,8 +230,8 @@
 						var tableNum = $(this).attr('data-id');
 						var rowNum = $(this).attr('data-table');
 
-						console.log(tableNum);
-						console.log(rowNum);
+						// console.log(tableNum);
+						// console.log(rowNum);
 						// x = x -1;
 						// var j = $(this).attr('data-id');
 						// var k = $(this).attr('data-table');

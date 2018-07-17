@@ -91,7 +91,7 @@ class model extends CI_Model
       $this->db->limit(1);
       $query = $this->db->get();
 
-      return $query->row_array();
+      return $query->row('TASKID');
     }
 
     else

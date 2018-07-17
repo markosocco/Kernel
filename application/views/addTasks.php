@@ -69,10 +69,12 @@
 		                  <td>
 												<div class="form-group">
 			                  	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+													<input type="hidden" name="row[]" value="0">
 			                	</div>
 											</td>
 											<td width="40%">
-				                <select id ="select0" class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments">
+				                <select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
+
 													<?php foreach ($departments as $row): ?>
 
 														<option>
@@ -197,10 +199,13 @@
 
 			 $(document).on("click", "a.addButton", function() {
 
+				 var str = new String("department[\'dept\'][]");
+
+				 console.log("hello "+ str);
 				 var counter = parseInt($(this).attr('data-counter'));
 
-				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required></div></td> " +
-				 " <td width = '40%'> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = 'department_" + counter + "[]' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' ></div></td> " +
+				 " <td width = '40%'> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 				 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' id='start-" + i + "' data-mainAct='"+ i +"' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' id='end-" + i + "' data-mainAct='" + i + "' required></div></div></td> <td class='btn'><a id='del" + counter + "' class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
@@ -209,6 +214,7 @@
 
 				 	$('.select2').select2();
 					$("#end-" + i).prop('disabled', true);
+					$("#select" + i).attr("name", "department[" + i + "][]");
 
 					counter++;
 					$("a.addButton").attr('data-counter', counter);
@@ -240,7 +246,7 @@
 							// }
 							//
 							// console.log(x);
-
+							//
 							// console.log("after removing: " + x);
 						}
 					});
