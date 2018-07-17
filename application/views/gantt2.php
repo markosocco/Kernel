@@ -66,19 +66,6 @@
           <?php
 
           foreach ($ganttData as $key => $value) {
-            foreach($responsible as $responsible) {
-
-            }
-            // <h2>
-            //   <?php
-            //     foreach ($ongoingProjectProgress as $row)
-            //     {
-            //       if ($value['PROJECTID'] == $row['projects_PROJECTID'])
-            //       {
-            //         echo $row['projectProgress'];
-            //       }
-            //     }
-            //   ?>%</h2>
 
         // START: Formatting of TARGET START date
             $startDate = $value['TASKSTARTDATE'];
@@ -430,6 +417,7 @@
         //       }
         //     },";
         // }
+
     </script>
   </body>
 </html>
