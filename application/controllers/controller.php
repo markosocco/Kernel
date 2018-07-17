@@ -160,7 +160,7 @@ class controller extends CI_Controller
 				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
 				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
-				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects($_SESSION['USERID']);
 
 			}
 			else
@@ -667,9 +667,8 @@ class controller extends CI_Controller
 			$this->session->set_flashdata('projectID', $id);
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['departments'] = $this->model->getAllDepartments();
+			$data['departments'] = $this->model->getAllDepartmentsByProject($id);
 			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
-			// $error = 'hello';
 
 			$this->load->view("projectDocuments", $data);
 		}
@@ -1004,7 +1003,7 @@ class controller extends CI_Controller
 	public function uploadDocument()
 	{
 		$config['upload_path']          = './assets/uploads';
-		$config['allowed_types']        = 'gif|jpg|png';
+		$config['allowed_types']        = '*';
 		$config['max_size']							= '10000000';
 
 		$this->load->library('upload', $config);
@@ -1033,19 +1032,45 @@ class controller extends CI_Controller
 				'DOCUMENTLINK' => $src,
 				'users_UPLOADEDBY' => $user,
 				'UPLOADEDDATE' => date('Y-m-d'),
-				'projects_PROJECTID' => $id
+				'projects_PROJECTID' => $id,
+				'REMARKS' => $this->input->post('remarks')
 			);
 
-			$result = $this->model->uploadDocument($uploadData);
+			$documentID = $this->model->uploadDocument($uploadData);
 
-			// $id = $this->input->post("project_ID");
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+			$details = $userName . " uploaded " . $fileName;
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $id
+			);
+			$this->model->addToProjectLogs($logData);
+
+			$option = $this->input->post('sendTo');
+
+			if($option != 'All')
+			{
+				foreach($this->input->post("departments") as $departments){
+					foreach($this->model->getAllDepartmentsByProjectByDepartment($id, $departments) as $userID){
+
+						$acknowledgementData = array (
+							'documents_DOCUMENTID' => $documentID,
+							'users_ACKNOWLEDGEDBY' => $userID['users_USERID']
+						);
+
+						$this->model->addToDocumentAcknowledgement($acknowledgementData);
+					}
+				}
+			}
+
 			$this->session->set_flashdata('projectID', $id);
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
 
 			$this->load->view("projectDocuments", $data);
-			// echo "<script>alert('uploaded');</script>";
 		}
 	}
 

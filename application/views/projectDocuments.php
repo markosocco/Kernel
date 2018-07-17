@@ -106,9 +106,6 @@
 
 												$formattedDate = $Month . " " . $Day . ", " . $Year;
 
-												echo "<form class = 'documentDownload' action = 'downloadDocument'  method='POST'>
-												</form>";
-
 												echo "<tr>";
 													echo "<td></td>";
 													echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
@@ -116,8 +113,9 @@
 													echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
 													echo "<td>" . $formattedDate . "</td>";
 													echo "<td>" . $row['REMARKS'] . "</td>";
-													echo "<td align='center'><button type='button' class='btn btn-success dlButton'
-													data-link= '". $row['DOCUMENTLINK'] ."'><i class='fa fa-download'></i><a href = '". $row['DOCUMENTLINK']."' download> Download</a></button></td>";
+													echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
+													<button type='button' class='btn btn-success'>
+													<i class='fa fa-download'></i>Download</button></a></td>";
 												echo "</tr>";
 											}
 										?>
@@ -155,7 +153,7 @@
 											<div class="col-lg-6">
 												<div class="input-group">
 														<span class="input-group-addon">
-															<input type="radio" name="sendTo">
+															<input type="radio" name="sendTo" value="all">
 														</span>
 													<input type="text" class="form-control" placeholder="All" disabled readonly>
 												</div>
@@ -165,12 +163,12 @@
 											<div class="col-lg-6">
 												<div class="input-group">
 														<span class="input-group-addon">
-															<input type="radio" name="sendTo">
+															<input type="radio" name="sendTo" value="multiple">
 														</span>
-													<select class="form-control select2" multiple="multiple" name = "department_0[]" data-placeholder="Select Departments" style="width:100%">
+													<select class="form-control select2" multiple="multiple" name = "departments[]" data-placeholder="Select Departments" style="width:100%">
 														<?php foreach ($departments as $data): ?>
 
-															<option>
+															<option name="sendTo" value="<?php echo $data['DEPARTMENTID']; ?>">
 																<?php echo $data['DEPARTMENTNAME']; ?>
 															</option>
 
@@ -189,7 +187,7 @@
 		                </div>
 										<div class="form-group">
 		                  <label>Remarks</label>
-		                  <input type="text" class="form-control" placeholder="Ex. Approved, Final">
+		                  <input type="text" class="form-control"  name="remarks" placeholder="Ex. Approved, Final">
 		                </div>
 		              </div>
 		              <div class="modal-footer">

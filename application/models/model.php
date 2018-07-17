@@ -269,7 +269,7 @@ class model extends CI_Model
 // GET ALL DRAFTED PROJECTS BASED ON PROJECTSTATUS
   public function getAllDraftedProjects()
   {
-    $condition = "PROJECTSTATUS = 'Drafted'";
+    $condition = "PROJECTSTATUS = 'Drafted' and users_USERID = " . $userID;
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
@@ -348,11 +348,9 @@ class model extends CI_Model
   // GET ALL DRAFTED PROJECTS BASED ON PROJECTSTATUS
     public function getAllDraftedProjectsByUser($userID)
     {
-      $condition = "PROJECTSTATUS = 'Drafted' && raci.users_USERID = " . $userID;
+      $condition = "PROJECTSTATUS = 'Drafted' && users_USERID = " . $userID;
       $this->db->select('*');
       $this->db->from('projects');
-      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
-      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
       $this->db->where($condition);
       $this->db->group_by('projects.PROJECTID');
       $this->db->order_by('projects.PROJECTENDDATE');
@@ -463,6 +461,34 @@ class model extends CI_Model
     return $query->result_array();
   }
 
+  public function getAllDepartmentsByProject($projectID)
+  {
+    $condition = "tasks.projects_PROJECTID = " . $projectID;
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('DEPARTMENTNAME');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllDepartmentsByProjectByDepartment($projectID, $departmentID)
+  {
+    $condition = "projects_PROJECTID = " . $projectID . " AND departments_DEPARTMENTID = " . $departmentID;
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('users_USERID');
+
+    return $this->db->get()->result_array();
+  }
+
   public function arrangeTasks($data, $id)
   {
     $condition = "TASKID = " . $id;
@@ -528,6 +554,15 @@ class model extends CI_Model
   public function uploadDocument($data)
   {
     $this->db->insert('documents', $data);
+    $id = $this->db->insert_id();
+
+    return $id;
+  }
+
+  public function addToDocumentAcknowledgement($data)
+  {
+    $this->db->insert('documentAcknowledgement', $data);
+
     return true;
   }
 
@@ -590,6 +625,12 @@ class model extends CI_Model
     $this->db->order_by('TIMESTAMP','DESC');
 
     return $this->db->get()->result_array();
+  }
+
+  public function addToProjectLogs($data)
+  {
+    $this->db->insert('logs', $data);
+    return true;
   }
 
   public function updateTaskStatus($currentDate)
