@@ -801,50 +801,6 @@ class controller extends CI_Controller
 			}
 		}
 
-		// THIS WORKS
-		// foreach ($department as $key=> $row)
-		// {
-		// 	foreach ($row as $value)
-		// 	{
-		// 		switch ($value)
-		// 		{
-		// 			case 'Executive':
-		// 				$deptHead = $execHead;
-		// 				break;
-		// 			case 'Marketing':
-		// 				$deptHead = $mktHead;
-		// 				break;
-		// 			case 'Finance':
-		// 				$deptHead = $finHead;
-		// 				break;
-		// 			case 'Procurement':
-		// 				$deptHead = $proHead;
-		// 				break;
-		// 			case 'HR':
-		// 				$deptHead = $hrHead;
-		// 				break;
-		// 			case 'MIS':
-		// 				$deptHead = $misHead;
-		// 				break;
-		// 			case 'Store Operations':
-		// 				$deptHead = $opsHead;
-		// 				break;
-		// 			case 'Facilities Administration':
-		// 				$deptHead = $fadHead;
-		// 				break;
-		// 		}
-		//
-		// 		$data = array(
-		// 				'ROLE' => '1',
-		// 				'users_USERID' => $deptHead,
-		// 				'tasks_TASKID' => $addedTask[$key]
-		// 		);
-		//
-		// 		// ENTER INTO RACI
-		// 		// $result = $this->model->addToRaci($data);
-		// 	}
-		// }
-
 			$data['project'] = $this->model->getProjectByID($id);
 			$data['tasks'] = $this->model->getAllProjectTasks($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
