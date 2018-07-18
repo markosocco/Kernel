@@ -767,10 +767,11 @@ class controller extends CI_Controller
 		// $data['users'] = $this->model->getAllUsers();
 
 		$data['project'] = $this->model->getProjectByID($id);
-		$data['tasks'] = $this->model->getAllProjectTasks($id);
+		$data['allTasks'] = $this->model->getAllProjectTasks($id);
 		$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 		$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 		$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
+		$data['tasks'] = $this->model->getAllTasksByID($id);
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 
@@ -783,7 +784,7 @@ class controller extends CI_Controller
 
 		// $this->load->view("dashboard", $data);
 		// redirect('controller/projectGantt');
-		$this->load->view("projectGantt", $data);
+		$this->load->view("addDependencies", $data);
 	}
 
 	public function projectGantt()
@@ -840,15 +841,11 @@ class controller extends CI_Controller
 
 	public function addDependencies()
 	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('contact');
-		}
+		$id = $this->input->post('project_ID');
+		$taskID = $this->input->post('taskID');
+		$dependencies = $this->input->post('dependencies');
 
-		else
-		{
-			$this->load->view("addDependencies");
-		}
+		
 	}
 
 	public function rfc()
