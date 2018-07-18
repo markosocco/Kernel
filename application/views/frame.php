@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
   <!-- Animate -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
+  <!-- Any Gantt -->
+  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>anyChart/css/anychart-ui.min.css" type="text/css"/>
 
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
@@ -264,6 +266,14 @@ desired effect
 <script src="<?php echo base_url()."assets/"; ?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo base_url()."assets/"; ?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Any Chart -->
+<script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-bundle.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-base.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-core.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-gantt.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-treemap.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-table.min.js" type="text/javascript"></script>
+
 
 <!-- Bootstrap 4.1.1 -->
 <!-- <script src="<?php echo base_url()."assets/"; ?>bower_components/bootstrap-4.1.1/dist/js/bootstrap.min.js"></script> -->
