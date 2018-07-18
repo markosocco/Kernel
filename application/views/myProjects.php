@@ -25,47 +25,59 @@
 				<section class="content container-fluid" style="padding-top:20px">
 
 					<!-- LIST AND GRID TOGGLE -->
-					<div id = "toggleView" class="pull-right">
+					<div id = "toggleDisplayView" class="pull-right">
 						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
 						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
 					</div>
 
-					<div id="gridView">
+					<!-- PROJECT AND TEAM TOGGLE -->
+					<div id = "toggleTypeView" class="pull-right">
+						<a href="#" id = "toggleProject" class="btn btn-default btn"><i class="fa fa-users"></i>
+						<a href="#" id = "toggleTeam" class="btn btn-default btn"><i class="fa fa-briefcase"></i></a>
+					</div>
 
-						<div class="btn-group"> <!-- SORT/LEGEND -->
+					<div id="projectView">
 
-							<button type="button" class="btn btn-primary">All</button>
-							<button type="button" class="btn btn.bg-white">Draft</button>
-							<button type="button" class="btn btn-warning">Planned</button>
-							<button type="button" class="btn btn-success">Ongoing</button>
-							<button type="button" class="btn btn-danger">Delayed</button>
-							<button type="button" class="btn btn-default">Parked</button>
+						<div id="projectGridView">
 
+							<div class="btn-group"> <!-- SORT/LEGEND -->
+
+								<button type="button" class="btn btn-primary">All</button>
+								<button type="button" class="btn btn.bg-white">Draft</button>
+								<button type="button" class="btn btn-warning">Planned</button>
+								<button type="button" class="btn btn-success">Ongoing</button>
+								<button type="button" class="btn btn-danger">Delayed</button>
+								<button type="button" class="btn btn-default">Parked</button>
+
+							</div>
+
+							<br><br>
+
+							<div class="row">
+								<div class="col-lg-3 col-xs-6">
+									<!-- small box -->
+									<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+									<div class="small-box bg-blue">
+										<div class="inner">
+											<h2>Create</h2>
+											<p>New<br>Project</p>
+										</div>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-plus"></i>
+										</div>
+
+										<!-- <div class="progress">
+											<div class="progress-bar" style="width: 70%"></div>
+										</div> -->
+									</div>
+								</a>
+								</div>
+								<!-- ./col -->
 						</div>
 
-						<br><br>
+						<hr style="height:1px; background-color:black">
 
 						<div class="row">
-							<div class="col-lg-3 col-xs-6">
-								<!-- small box -->
-								<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
-								<div class="small-box bg-blue">
-									<div class="inner">
-										<h2>Create</h2>
-										<p>New<br>Project</p>
-									</div>
-									<div class="icon" style="margin-top:25px;">
-										<i class="ion ion-plus"></i>
-									</div>
-
-									<!-- <div class="progress">
-										<div class="progress-bar" style="width: 70%"></div>
-									</div> -->
-								</div>
-							</a>
-							</div>
-							<!-- ./col -->
-
 							<?php foreach ($delayedProjects as $key=> $value):?>
 
 								<div class="col-lg-3 col-xs-6">
@@ -216,124 +228,154 @@
 							<?php endforeach;?>
 
 						</div>
-					</div>
+						</div>
 
 
-						<!-- LIST VIEW -->
+							<!-- LIST VIEW -->
 
-						<br><br>
-						<div id="listView">
-							<div class="box">
-								<div class="box-header" style="display:inline-block">
-									<h3 class="box-title">
-										<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
-											<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Create Project</button>
-										</a>
-									</h3>
-								</div>
-								<!-- /.box-header -->
-								<div class="box-body">
-									<table id="projectList" class="table table-bordered table-hover">
-										<thead>
-										<tr>
-											<th width="1%"></th>
-											<th>Project Title</th>
-											<th>Start Date</th>
-											<th>Target End Date</th>
-											<th>Progress</th>
-											<th>Status</th>
-										</tr>
-										</thead>
+							<br><br>
+							<div id="projectListView">
+								<div class="box">
+									<div class="box-header" style="display:inline-block">
+										<h3 class="box-title">
+											<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+												<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Create Project</button>
+											</a>
+										</h3>
+									</div>
+									<!-- /.box-header -->
+									<div class="box-body">
+										<table id="projectList" class="table table-bordered table-hover">
+											<thead>
+											<tr>
+												<th width="1%"></th>
+												<th>Project Title</th>
+												<th>Start Date</th>
+												<th>Target End Date</th>
+												<th>Progress</th>
+												<th>Status</th>
+											</tr>
+											</thead>
 
-										<tbody>
+											<tbody>
 
-											<?php foreach ($delayedProjects as $key=> $value):?>
+												<?php foreach ($delayedProjects as $key=> $value):?>
+
+													<?php // to fix date format
+													$delayedStart = date_create($value['PROJECTSTARTDATE']);
+													$delayedEnd = date_create($value['PROJECTENDDATE']);
+													?>
+
+												<tr data-id = "<?php echo $value['PROJECTID']; ?>">
+
+													<form action = 'projectGantt' method="POST">
+													</form>
+
+													<td class="bg-red"></td>
+													<td><?php echo $value['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($delayedStart, "M d, Y");?></td>
+													<td><?php echo date_format($delayedEnd, "M d, Y");?></td>
+													<td>
+														<?php
+															foreach ($delayedProjectProgress as $row)
+															{
+																if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+																{
+																	echo $row['projectProgress'];
+																}
+															}
+														?>%</td>
+													<td><?php echo "Delayed"; ?></td>
+												</tr>
+											<?php endforeach;?>
+
+												<?php foreach ($ongoingProjects as $key=> $value):?>
+
+													<?php // to fix date format
+													$ongoingStart = date_create($value['PROJECTSTARTDATE']);
+													$ongoingEnd = date_create($value['PROJECTENDDATE']);
+													?>
+
+												<tr data-id = "<?php echo $value['PROJECTID']; ?>">
+
+													<form action = 'projectGantt' method="POST">
+													</form>
+
+													<td class="bg-green"></td>
+													<td><?php echo $value['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+													<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+													<td>
+														<?php
+															foreach ($ongoingProjectProgress as $row)
+															{
+																if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+																{
+																	echo $row['projectProgress'];
+																}
+															}
+														?>%</td>
+														<td><?php echo $value['PROJECTSTATUS']; ?></td>
+												</tr>
+											<?php endforeach;?>
+
+
+											<?php foreach ($plannedProjects as $row):?>
 
 												<?php // to fix date format
-												$delayedStart = date_create($value['PROJECTSTARTDATE']);
-												$delayedEnd = date_create($value['PROJECTENDDATE']);
+												$plannedStart = date_create($row['PROJECTSTARTDATE']);
+												$plannedEnd = date_create($row['PROJECTENDDATE']);
 												?>
 
-											<tr data-id = "<?php echo $value['PROJECTID']; ?>">
+											<tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
 												<form action = 'projectGantt' method="POST">
 												</form>
 
-												<td class="bg-red"></td>
-												<td><?php echo $value['PROJECTTITLE']; ?></td>
-												<td><?php echo date_format($delayedStart, "M d, Y");?></td>
-												<td><?php echo date_format($delayedEnd, "M d, Y");?></td>
-												<td>
-													<?php
-														foreach ($delayedProjectProgress as $row)
-														{
-															if ($value['PROJECTID'] == $row['projects_PROJECTID'])
-															{
-																echo $row['projectProgress'];
-															}
-														}
-													?>%</td>
-												<td><?php echo "Delayed"; ?></td>
+												<td class="bg-yellow"></td>
+												<td><?php echo $row['PROJECTTITLE']; ?></td>
+												<td><?php echo date_format($plannedStart, "M d, Y");?></td>
+												<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
+												<td>0.00%</td>
+												<td><?php echo $row['PROJECTSTATUS']; ?></td>
 											</tr>
 										<?php endforeach;?>
 
-											<?php foreach ($ongoingProjects as $key=> $value):?>
-
-												<?php // to fix date format
-												$ongoingStart = date_create($value['PROJECTSTARTDATE']);
-												$ongoingEnd = date_create($value['PROJECTENDDATE']);
-												?>
-
-											<tr data-id = "<?php echo $value['PROJECTID']; ?>">
-
-												<form action = 'projectGantt' method="POST">
-												</form>
-
-												<td class="bg-green"></td>
-												<td><?php echo $value['PROJECTTITLE']; ?></td>
-												<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
-												<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-												<td>
-													<?php
-														foreach ($ongoingProjectProgress as $row)
-														{
-															if ($value['PROJECTID'] == $row['projects_PROJECTID'])
-															{
-																echo $row['projectProgress'];
-															}
-														}
-													?>%</td>
-													<td><?php echo $value['PROJECTSTATUS']; ?></td>
-											</tr>
-										<?php endforeach;?>
-
-
-										<?php foreach ($plannedProjects as $row):?>
+										<?php foreach ($parkedProjects as $key=> $value):?>
 
 											<?php // to fix date format
-											$plannedStart = date_create($row['PROJECTSTARTDATE']);
-											$plannedEnd = date_create($row['PROJECTENDDATE']);
+											$parkedStart = date_create($value['PROJECTSTARTDATE']);
+											$parkedEnd = date_create($value['PROJECTENDDATE']);
 											?>
 
-										<tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
+										<tr data-id = "<?php echo $value['PROJECTID']; ?>">
 
 											<form action = 'projectGantt' method="POST">
 											</form>
 
-											<td class="bg-yellow"></td>
-											<td><?php echo $row['PROJECTTITLE']; ?></td>
-											<td><?php echo date_format($plannedStart, "M d, Y");?></td>
-											<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-											<td>0.00%</td>
-											<td><?php echo $row['PROJECTSTATUS']; ?></td>
+											<td class="bg-blue"></td>
+											<td><?php echo $value['PROJECTTITLE']; ?></td>
+											<td><?php echo date_format($parkedStart, "M d, Y");?></td>
+											<td><?php echo date_format($parkedEnd, "M d, Y");?></td>
+											<td>
+												<?php
+													foreach ($parkedProjectProgress as $row)
+													{
+														if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+														{
+															echo $row['projectProgress'];
+														}
+													}
+												?>%</td>
+												<td><?php echo "Parked"; ?></td>
 										</tr>
 									<?php endforeach;?>
 
-									<?php foreach ($parkedProjects as $key=> $value):?>
+									<?php foreach ($draftedProjects as $key=> $value):?>
 
 										<?php // to fix date format
-										$parkedStart = date_create($value['PROJECTSTARTDATE']);
-										$parkedEnd = date_create($value['PROJECTENDDATE']);
+										$draftedStart = date_create($value['PROJECTSTARTDATE']);
+										$draftedEnd = date_create($value['PROJECTENDDATE']);
 										?>
 
 									<tr data-id = "<?php echo $value['PROJECTID']; ?>">
@@ -343,54 +385,31 @@
 
 										<td class="bg-blue"></td>
 										<td><?php echo $value['PROJECTTITLE']; ?></td>
-										<td><?php echo date_format($parkedStart, "M d, Y");?></td>
-										<td><?php echo date_format($parkedEnd, "M d, Y");?></td>
-										<td>
-											<?php
-												foreach ($parkedProjectProgress as $row)
-												{
-													if ($value['PROJECTID'] == $row['projects_PROJECTID'])
-													{
-														echo $row['projectProgress'];
-													}
-												}
-											?>%</td>
-											<td><?php echo "Parked"; ?></td>
+										<td><?php echo date_format($draftedStart, "M d, Y");?></td>
+										<td><?php echo date_format($draftedEnd, "M d, Y");?></td>
+										<td>0.00%</td>
+										<td><?php echo "Draft"; ?></td>
 									</tr>
 								<?php endforeach;?>
 
-								<?php foreach ($draftedProjects as $key=> $value):?>
-
-									<?php // to fix date format
-									$draftedStart = date_create($value['PROJECTSTARTDATE']);
-									$draftedEnd = date_create($value['PROJECTENDDATE']);
-									?>
-
-								<tr data-id = "<?php echo $value['PROJECTID']; ?>">
-
-									<form action = 'projectGantt' method="POST">
-									</form>
-
-									<td class="bg-blue"></td>
-									<td><?php echo $value['PROJECTTITLE']; ?></td>
-									<td><?php echo date_format($draftedStart, "M d, Y");?></td>
-									<td><?php echo date_format($draftedEnd, "M d, Y");?></td>
-									<td>0.00%</td>
-									<td><?php echo "Draft"; ?></td>
-								</tr>
-							<?php endforeach;?>
-
-										</tbody>
-									</table>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.box-body -->
 								</div>
-								<!-- /.box-body -->
 							</div>
-						</div>
 
-					</section>
+					<!-- /.content -->
+
+					</div>
+					<!-- END PROJECT VIEW -->
+
+					<div id="teamView">
+
+					</div>
+					<!-- END TEAM VIEW -->
+				</section>
 				</div>
-
-				<!-- /.content -->
 
 			<?php require("footer.php"); ?>
 
@@ -398,8 +417,11 @@
 		<!-- ./wrapper -->
 
 		<script>
-			$("#listView").hide();
+			$("#projectListView").hide();
 			$("#toggleGrid").hide();
+			$("#toggleProject").hide();
+			$("#teamGridView").hide();
+			$("#teamListView").hide();
 			$("#myProjects").addClass("active");
 			// $("#projects").addClass("active");
 
@@ -411,18 +433,18 @@
 				$("form").submit();
 				});
 
-			$("#toggleView").click(function(){
-				if($("#gridView").css("display") == "block")
+			$("#toggleDisplayView").click(function(){
+				if($("#projectGridView").css("display") == "block")
 				{
-					$("#gridView").hide();
-					$("#listView").show();
+					$("#projectGridView").hide();
+					$("#projectListView").show();
 					$("#toggleGrid").show();
 					$("#toggleList").hide();
 				}
 				else
 				{
-					$("#listView").hide();
-					$("#gridView").show();
+					$("#projectListView").hide();
+					$("#projectGridView").show();
 					$("#toggleGrid").hide();
 					$("#toggleList").show();
 				}

@@ -26,9 +26,8 @@
 					<div class="box-body">
 						<table id="reportList" class="table table-bordered table-hover">
 							<tbody>
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
 								<tr>
-									<td>HOW DOES THIS SHIT WORK</td>
+									<td>Projects Per Department</td>
 									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
 								</tr>
 
