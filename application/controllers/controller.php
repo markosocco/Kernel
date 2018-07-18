@@ -646,7 +646,7 @@ class controller extends CI_Controller
 			$id = $this->input->post("project_ID");
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasks($id);
+			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
@@ -654,9 +654,9 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			// foreach ($data['responsible'] as $key => $value) {
-			// 	echo $value['tasks_TASKID'] . "<br>";
-			// 	// code...
+			// foreach ($data['ganttData'] as $key => $value) {
+			// 	echo $value['tasks_TASKID'] . " parent is ";
+			// 	echo $value['tasks_TASKPARENT'] . "<br>";
 			// }
 
 			$this->load->view("projectGantt", $data);
