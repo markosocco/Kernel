@@ -237,8 +237,6 @@ desired effect
 <!-- REQUIRED JS SCRIPTS -->
 
 
-<!-- Ajax -->
-<script rel="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <!-- jQuery 3 -->
 <script src="<?php echo base_url()."assets/"; ?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
