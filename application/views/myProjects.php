@@ -438,6 +438,8 @@
 				{
 					$("#projectGridView").hide();
 					$("#projectListView").show();
+					$("#teamGridView").hide();
+					$("#teamListView").show();
 					$("#toggleGrid").show();
 					$("#toggleList").hide();
 				}
@@ -445,6 +447,29 @@
 				{
 					$("#projectListView").hide();
 					$("#projectGridView").show();
+					$("#teamGridView").show();
+					$("#teamListView").hide();
+					$("#toggleGrid").hide();
+					$("#toggleList").show();
+				}
+			});
+
+			$("#toggleTypeView").click(function(){
+				if($("#teamGridView").css("display") == "block")
+				{
+					$("#projectGridView").hide();
+					$("#projectListView").show();
+					$("#teamGridView").hide();
+					$("#teamListView").show();
+					$("#toggleGrid").show();
+					$("#toggleList").hide();
+				}
+				else
+				{
+					$("#projectListView").hide();
+					$("#projectGridView").show();
+					$("#teamGridView").show();
+					$("#teamListView").hide();
 					$("#toggleGrid").hide();
 					$("#toggleList").show();
 				}
