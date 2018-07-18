@@ -686,6 +686,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function addDependencies()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("addDependencies");
+		}
+	}
+
 	/******************** MY PROJECTS START ********************/
 
 	// ADDS MAIN ACTIVITIES TO PROJECT
