@@ -78,6 +78,30 @@
 						<hr style="height:1px; background-color:black">
 
 						<div class="row">
+							<?php foreach ($completedProjects as $key=> $value):?>
+
+								<div class="col-lg-3 col-xs-6">
+									<!-- small box -->
+									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+									<div class="small-box bg-blue">
+										<div class="inner">
+
+											<h2>100%</h2>
+
+											<form action = 'projectGantt'  method="POST">
+											</form>
+
+											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?> day/s</i></p>
+										</div>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-alert-circled"></i>
+										</div>
+									</div>
+								</a>
+								</div>
+								<!-- ./col -->
+							<?php endforeach;?>
+
 							<?php foreach ($delayedProjects as $key=> $value):?>
 
 								<div class="col-lg-3 col-xs-6">
@@ -259,6 +283,27 @@
 
 											<tbody>
 
+												<?php foreach ($completedProjects as $key=> $value):?>
+
+													<?php // to fix date format
+													$completedStart = date_create($value['PROJECTSTARTDATE']);
+													$completedEnd = date_create($value['PROJECTENDDATE']);
+													?>
+
+												<tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+													<form action = 'projectGantt' method="POST">
+													</form>
+
+													<td class="bg-blue"></td>
+													<td><?php echo $value['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($completedStart, "M d, Y");?></td>
+													<td><?php echo date_format($completedEnd, "M d, Y");?></td>
+													<td>100%</td>
+													<td>Complete</td>
+												</tr>
+											<?php endforeach;?>
+
 												<?php foreach ($delayedProjects as $key=> $value):?>
 
 													<?php // to fix date format
@@ -266,7 +311,7 @@
 													$delayedEnd = date_create($value['PROJECTENDDATE']);
 													?>
 
-												<tr data-id = "<?php echo $value['PROJECTID']; ?>">
+												<tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 													<form action = 'projectGantt' method="POST">
 													</form>
@@ -296,7 +341,7 @@
 													$ongoingEnd = date_create($value['PROJECTENDDATE']);
 													?>
 
-												<tr data-id = "<?php echo $value['PROJECTID']; ?>">
+												<tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 													<form action = 'projectGantt' method="POST">
 													</form>
@@ -348,7 +393,7 @@
 											$parkedEnd = date_create($value['PROJECTENDDATE']);
 											?>
 
-										<tr data-id = "<?php echo $value['PROJECTID']; ?>">
+										<tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 											<form action = 'projectGantt' method="POST">
 											</form>
@@ -378,7 +423,7 @@
 										$draftedEnd = date_create($value['PROJECTENDDATE']);
 										?>
 
-									<tr data-id = "<?php echo $value['PROJECTID']; ?>">
+									<tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 										<form action = 'projectGantt' method="POST">
 										</form>
@@ -438,6 +483,8 @@
 				{
 					$("#projectGridView").hide();
 					$("#projectListView").show();
+					$("#teamGridView").hide();
+					$("#teamListView").show();
 					$("#toggleGrid").show();
 					$("#toggleList").hide();
 				}
@@ -445,6 +492,29 @@
 				{
 					$("#projectListView").hide();
 					$("#projectGridView").show();
+					$("#teamGridView").show();
+					$("#teamListView").hide();
+					$("#toggleGrid").hide();
+					$("#toggleList").show();
+				}
+			});
+
+			$("#toggleTypeView").click(function(){
+				if($("#teamGridView").css("display") == "block")
+				{
+					$("#projectGridView").hide();
+					$("#projectListView").show();
+					$("#teamGridView").hide();
+					$("#teamListView").show();
+					$("#toggleGrid").show();
+					$("#toggleList").hide();
+				}
+				else
+				{
+					$("#projectListView").hide();
+					$("#projectGridView").show();
+					$("#teamGridView").show();
+					$("#teamListView").hide();
 					$("#toggleGrid").hide();
 					$("#toggleList").show();
 				}

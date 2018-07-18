@@ -73,8 +73,8 @@
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?> day/s delayed</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-beaker"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-alert-circled"></i>
 										</div>
 									</div>
 								</a>
@@ -164,8 +164,8 @@
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
 										</div>
-										<div class="icon">
-											<i class="ion ion-beaker"></i>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-clock"></i>
 										</div>
 									</div>
 								</a>
@@ -189,7 +189,7 @@
 											?>
 											<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Draft</i></p>
 										</div>
-										<div class="icon">
+										<div class="icon" style="margin-top:25px;">
 											<i class="ion ion-clock"></i>
 										</div>
 									</div>
