@@ -78,8 +78,92 @@
 						<!-- /.info-box -->
 					</div>
 					<!-- /.col -->
+				</div>
+
+				<!-- MANAGE TABLE -->
+				<!-- Main row -->
+				<div class="row">
+					<!-- Left col -->
+					<div class="col-md-6">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">Project Weekly Progress</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div class="table-responsive">
+									<table class="table table-hover no-margin" id="projWeeklyProgress">
+										<thead>
+										<tr>
+											<th>Project</th>
+											<th class="text-center">Launch Date</th>
+											<th class="text-center">Last Week's Progress</th>
+											<th class="text-center">This Week's Progress</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+											<td>Store Opening - SM Southmall</td>
+											<td align="center">Dec 73, 2080</td>
+											<td align="center">80.79%</td>
+											<td align="center">90.80%</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+							<!-- /.box-body -->
+							<!-- /.box-footer -->
+						</div>
+						<!-- /.box -->
+					</div>
+
+					<!-- Right col -->
+					<div class="col-md-6">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">SOMETHING</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div class="table-responsive">
+									<table class="table table-hover no-margin" id="projWeeklyProgress">
+										<thead>
+										<tr>
+											<th>Project</th>
+											<th class="text-center">Launch Date</th>
+											<th class="text-center">Last Week's Progress</th>
+											<th class="text-center">This Week's Progress</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+											<td>Store Opening - SM Southmall</td>
+											<td align="center">Dec 73, 2080</td>
+											<td align="center">80.79%</td>
+											<td align="center">90.80%</td>
+										</tr>
+										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+											<td>Store Opening - SM Southmall</td>
+											<td align="center">Dec 73, 2080</td>
+											<td align="center">80.79%</td>
+											<td align="center">90.80%</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+							<!-- /.box-body -->
+							<!-- /.box-footer -->
+						</div>
+						<!-- /.box -->
+					</div>
 
 				</div>
+
+				<!-- END MANAGE TABLE -->
 
 				<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
 				<!-- TASK TABLE -->
