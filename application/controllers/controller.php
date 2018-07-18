@@ -252,6 +252,12 @@ class controller extends CI_Controller
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment("users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
+
+			$data['users'] = $this->model->getAllUsers();
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByUser($_SESSION['USERID']);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByUser($_SESSION['USERID']);
+
 			$this->load->view("myTasks", $data);
 		}
 	}
@@ -290,6 +296,7 @@ class controller extends CI_Controller
 		$taskID = $this->input->post("task_ID");
 		$data['dependencies'] = $this->model->getDependenciesByTaskID($taskID);
 		$data['taskID'] = $this->model->getTaskByID($taskID);
+
 		echo json_encode($data);
 	}
 

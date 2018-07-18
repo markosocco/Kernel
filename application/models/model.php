@@ -567,7 +567,7 @@ class model extends CI_Model
 
   public function getAllMainActivitiesByID($id)
   {
-    $condition = "projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 1";
+    $condition = "projects.PROJECTID = " . $id . " AND tasks.CATEGORY = '1'";
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
     $this->db->from('tasks');
     $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
