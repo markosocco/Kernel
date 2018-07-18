@@ -77,6 +77,7 @@
 											<th>Uploaded On</th>
 		                  <th>Remarks</th>
 											<th align="center"></th>
+											<th align="center"></th>
 		                </tr>
 
 										<?php
@@ -95,7 +96,11 @@
 																echo "<td>" . $row['REMARKS'] . "</td>";
 																echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
 																<button type='button' class='btn btn-success'>
-																<i class='fa fa-download'></i>Download</button></a></td>";
+																<i class='fa fa-download'></i> Download</button></a></td>";
+																echo "<td align='center'>
+																<button type='button' class='btn btn-success'>
+																<i class='fa fa-download'></i> ACKNOWLEDGE</button></a></td>";
+
 															echo "</tr>";
 														}
 													}
@@ -109,7 +114,10 @@
 														echo "<td>" . $row['REMARKS'] . "</td>";
 														echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
 														<button type='button' class='btn btn-success'>
-														<i class='fa fa-download'></i>Download</button></a></td>";
+														<i class='fa fa-download'></i> Download</button></a></td>";
+														echo "<td align='center'>
+														<button type='button' class='btn btn-success'>
+														<i class='fa fa-download'></i> ACKNOWLEDGE</button></a></td>";
 													echo "</tr>";
 												}
 											}
@@ -136,7 +144,7 @@
 
 							<input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>">
 
-						<div class="modal fade" id="modal-upload" tabindex="-1">
+						<div class="modal fade" id="modal-upload">
 		          <div class="modal-dialog">
 		            <div class="modal-content">
 		              <div class="modal-header">
@@ -146,30 +154,27 @@
 										<p><b>Upload this document for</b></p>
 										<div class="row">
 											<div class="col-lg-6">
-												<div class="input-group">
-														<span class="input-group-addon">
-															<input type="radio" name="sendTo" value="all">
-														</span>
-													<input type="text" class="form-control" placeholder="All" disabled readonly>
-												</div>
-												<!-- /input-group -->
+												<select id ="" class="form-control select2" multiple="multiple" name = "" data-placeholder="Select Departments" style="width:100%">
+
+													<option>All</option>
+													<?php foreach ($departments as $row): ?>
+
+														<option>
+															<?php echo $row['DEPARTMENTNAME']; ?>
+														</option>
+
+													<?php endforeach; ?>
+												</select>
 											</div>
 											<!-- /.col-lg-6 -->
 											<div class="col-lg-6">
-												<div class="input-group">
-														<span class="input-group-addon">
-															<input type="radio" name="sendTo" value="multiple">
-														</span>
-													<select class="form-control select2" multiple="multiple" name = "departments[]" data-placeholder="Select Departments" style="width:100%">
-														<?php foreach ($departments as $data): ?>
+												<!-- <div class="input-group"> -->
+													<select id ="" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments" style="width:100%">
 
-															<option name="sendTo" value="<?php echo $data['DEPARTMENTID']; ?>">
-																<?php echo $data['DEPARTMENTNAME']; ?>
-															</option>
+														<option disabled>Select specific person/s</option>
 
-														<?php endforeach; ?>
 													</select>
-												</div>
+												<!-- </div> -->
 												<!-- /input-group -->
 											</div>
 											<!-- /.col-lg-6 -->
@@ -202,8 +207,7 @@
 		</div>
 		<script>
 			$("#myProjects").addClass("active");
-			$('.select2').select2()
-
+			$('.select2').select2();
 		</script>
 	</body>
 </html>

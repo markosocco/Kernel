@@ -77,6 +77,7 @@ class controller extends CI_Controller
 				$currentDate = date('Y-m-d');
 
 				$this->model->updateTaskStatus($currentDate);
+				$this->model->updateProjectStatus($currentDate);
 
 				redirect('controller/dashboard');
 
@@ -160,8 +161,8 @@ class controller extends CI_Controller
 				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
 				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
-				$data['draftedProjects'] = $this->model->getAllDraftedProjects($_SESSION['USERID']);
-
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
+				$data['completedProjects'] = $this->model->getAllCompletedProjects();
 			}
 			else
 			{
@@ -170,7 +171,7 @@ class controller extends CI_Controller
 				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
-
+				$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
@@ -653,7 +654,7 @@ class controller extends CI_Controller
 			$id = $this->input->post("project_ID");
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['ganttData'] = $this->model->getAllProjectTasks($id);
+			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
 			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
@@ -661,13 +662,13 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			// foreach ($data['responsible'] as $key => $value) {
-			// 	echo $value['tasks_TASKID'] . "<br>";
-			// 	// code...
+			// foreach ($data['ganttData'] as $key => $value) {
+			// 	echo $value['tasks_TASKID'] . " parent is ";
+			// 	echo $value['tasks_TASKPARENT'] . "<br>";
 			// }
 
-			// $this->load->view("projectGantt", $data);
-			$this->load->view("gantt2", $data);
+			$this->load->view("projectGantt", $data);
+			// $this->load->view("gantt2", $data);
 
 		}
 	}
@@ -690,6 +691,19 @@ class controller extends CI_Controller
 			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
 
 			$this->load->view("projectDocuments", $data);
+		}
+	}
+
+	public function addDependencies()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("addDependencies");
 		}
 	}
 
