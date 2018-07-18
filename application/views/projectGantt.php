@@ -66,7 +66,7 @@
 
 					</div>
 					<br>
-					<div id="container" style="width: auto; height: auto;"></div>
+					<div id="container" style="height: auto;"></div>
 
 					<!-- </section> -->
 				</section>

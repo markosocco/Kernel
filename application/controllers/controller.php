@@ -707,6 +707,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function rfc()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("rfc");
+		}
+	}
+
 	/******************** MY PROJECTS START ********************/
 
 	// ADDS MAIN ACTIVITIES TO PROJECT
