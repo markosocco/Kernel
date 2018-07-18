@@ -118,7 +118,7 @@
                           'name': '" . $value['TASKTITLE'] . "',
                           'actualStart': '" . $formatted_startDate . "',
                           'actualEnd': '" . $formatted_endDate . "',
-                          'responsible': '" . $formatted_actualStartDate . "',
+                          'responsible': 'hello',
                           'accountable': '',
                           'consulted': '',
                           'informed': '',
@@ -138,8 +138,8 @@
                           'name': '" . $value['TASKTITLE'] . "',
                           'actualStart': '" . $formatted_startDate . "',
                           'actualEnd': '" . $formatted_endDate . "',
-                          'responsible': '" . $formatted_actualStartDate . "',
-                          'accountable': '',
+                          'responsible': '" . $responsible[$key]['users_USERID'] ."',
+                          'accountable': '" . "',
                           'consulted': '',
                           'informed': '',
                           'period': '" . $value['taskDuration'] . "',
@@ -160,7 +160,7 @@
                         'name': '" . $value['TASKTITLE'] . "',
                         'actualStart': '" . $formatted_startDate . "',
                         'actualEnd': '" . $formatted_endDate . "',
-                        'responsible': '" . $formatted_actualStartDate . "',
+                        'responsible': '" . "',
                         'accountable': '" . $formatted_actualEndDate . "',
                         'consulted': '',
                         'informed': '',
@@ -205,7 +205,7 @@
                           'name': '" . $value['TASKTITLE'] . "',
                           'actualStart': '" . $formatted_startDate . "',
                           'actualEnd': '" . $formatted_endDate . "',
-                          'responsible': '" . $formatted_actualStartDate . "',
+                          'responsible': '" . "',
                           'accountable': '',
                           'consulted': '',
                           'informed': '',
@@ -225,7 +225,7 @@
                           'name': '" . $value['TASKTITLE'] . "',
                           'actualStart': '" . $formatted_startDate . "',
                           'actualEnd': '" . $formatted_endDate . "',
-                          'responsible': '" . $formatted_actualStartDate . "',
+                          'responsible': '" . "',
                           'accountable': '',
                           'consulted': '',
                           'informed': '',
@@ -247,8 +247,8 @@
                         'name': '" . $value['TASKTITLE'] . "',
                         'actualStart': '" . $formatted_startDate . "',
                         'actualEnd': '" . $formatted_endDate . "',
-                        'responsible': '" . $formatted_actualStartDate . "',
-                        'accountable': '" . $formatted_actualEndDate . "',
+                        'responsible': '" . "',
+                        'accountable': '" . "',
                         'consulted': '',
                         'informed': '',
                         'period': '" . $value['taskDuration'] . "',
@@ -286,6 +286,7 @@
         columnStartDate.width(100);
 
         var columnEndDate = dataGrid.column(3);
+
         columnEndDate.title("Target End Date");
         columnEndDate.setColumnFormat("actualEnd", "dateCommonLog");
         columnEndDate.width(100);

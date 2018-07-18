@@ -608,14 +608,24 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getAllDocumentsByProject($id)
+  public function getAllDocumentsByProject($projectID)
   {
-    $condition = "documents.projects_PROJECTID = " . $id;
+    $condition = "documents.projects_PROJECTID = " . $projectID;
     $this->db->select('*');
     $this->db->from('documents');
     $this->db->join('projects', 'documents.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'documents.users_UPLOADEDBY = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getDocumentAcknowledgement($userID)
+  {
+    $condition = "users_ACKNOWLEDGEDBY = " . $userID;
+    $this->db->select('*');
+    $this->db->from('documentAcknowledgement');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
