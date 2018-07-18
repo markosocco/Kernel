@@ -660,8 +660,8 @@ class controller extends CI_Controller
 			// 	echo $value['tasks_TASKPARENT'] . "<br>";
 			// }
 
-			// $this->load->view("projectGantt", $data);
-			$this->load->view("gantt2", $data);
+			$this->load->view("projectGantt", $data);
+			// $this->load->view("gantt2", $data);
 
 		}
 	}
@@ -684,6 +684,19 @@ class controller extends CI_Controller
 			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
 
 			$this->load->view("projectDocuments", $data);
+		}
+	}
+
+	public function addDependencies()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("addDependencies");
 		}
 	}
 
