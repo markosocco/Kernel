@@ -649,8 +649,14 @@ class controller extends CI_Controller
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
+			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+			$data['accountable'] = $this->model->getAllAccountableByProject($id);
+			$data['consulted'] = $this->model->getAllConsultedByProject($id);
+			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			$this->load->view("projectGantt", $data);
+			// $this->load->view("projectGantt", $data);
+			$this->load->view("gantt2", $data);
+
 		}
 	}
 
@@ -1058,7 +1064,6 @@ class controller extends CI_Controller
 
 		$filter = "tasks.TASKSTARTDATE"; // default
 		$data['ganttData'] = $this->model->getAllProjectTasks(1, $filter);
-		// $data['preReq'] = $this->model->getPreReqID();
 		$data['dependencies'] = $this->model->getDependencies();
 
 		$this->load->view("gantt2", $data);

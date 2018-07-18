@@ -3,16 +3,23 @@
   <head>
 
     <title>Gantt # 2</title>
-    <h1>https://docs.anychart.com/Quick_Start/Quick_Start</h1>
+    <!-- <h1>https://docs.anychart.com/Quick_Start/Quick_Start</h1> -->
+    <!-- <link href="<?php echo base_url()."assets/"; ?>css/jsgantt.css" rel="stylesheet" type="text/css"/> -->
+
+    <link href="<?php echo base_url()."assets/"; ?>anyChart/css/anychart-ui.min.css" rel="stylesheet" type="text/css"/>
+
+    <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-bundle.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-base.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-core.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-gantt.min.js" type="text/javascript"></script>
+
+    <!-- <script src="https://cdn.anychart.com/releases/8.2.1/js/anychart-core.min.js" type="text/javascript"></script>
+    <script src="https://cdn.anychart.com/releases/8.2.1/js/anychart-gantt.min.js" type="text/javascript"></script> -->
 
   </head>
 
   <body>
     <div id="container"></div>
-
-    <script src="https://cdn.anychart.com/releases/8.2.1/js/anychart-core.min.js" type="text/javascript"></script>
-    <script src="https://cdn.anychart.com/releases/8.2.1/js/anychart-gantt.min.js" type="text/javascript"></script>
-
     <script>
 
       anychart.onDocumentReady(function (){
@@ -55,215 +62,209 @@
           //        }
           // }
 
-          var rawData = [
-            <?php
+        var rawData = [
+          <?php
 
-            foreach ($ganttData as $row) {
+          foreach ($ganttData as $key => $value) {
 
-              $startDate = $row['TASKSTARTDATE'];
-              $startMonthNum = substr($startDate, 5, 2);
-              $startDay = substr($startDate, 8, 2);
-              $startYear = substr($startDate, 0, 4);
-              $startMonth = "";
+        // START: Formatting of TARGET START date
+            $startDate = $value['TASKSTARTDATE'];
+            $formatted_startDate = date('M d, Y', strtotime($startDate));
+            // END: Formatting of TARGET START date
 
-              switch (intval($startMonthNum))
-              {
-                case 1: $startMonth = 'Jan'; break;
-                case 2: $startMonth = 'Feb'; break;
-                case 3: $startMonth = 'Mar'; break;
-                case 4: $startMonth = 'Apr'; break;
-                case 5: $startMonth = 'May'; break;
-                case 6: $startMonth = 'Jun'; break;
-                case 7: $startMonth = 'Jul'; break;
-                case 8: $startMonth = 'Aug'; break;
-                case 9: $startMonth = 'Sep'; break;
-                case 10: $startMonth = 'Oct'; break;
-                case 11: $startMonth = 'Nov'; break;
-                case 12: $startMonth = 'Dec'; break;
-              }
+        // START: Formatting of TARGET END date
+            $endDate = $value['TASKENDDATE'];
+            $formatted_endDate = date('M d, Y', strtotime($endDate));
+            // END: Formatting of TARGET END date
 
-              $formattedStartDate = $startMonth . " " . $startDay . ", " . $startYear;
+        // START: Formatting of ACTUAL START date
+            $actualStartDate = $value['TASKACTUALSTARTDATE'];
+            $formatted_actualStartDate = date('M d, Y', strtotime($actualStartDate));
+            // END: Formatting of ACTUAL START date
 
-              $endDate = $row['TASKENDDATE'];
-              $endMonthNum = substr($endDate, 5, 2);
-              $endDay = substr($endDate, 8, 2);
-              $endYear = substr($endDate, 0, 4);
-              $endMonth = "";
+        // START: Formatting of ACTUAL END date
+            $actualEndDate = $value['TASKACTUALENDDATE'];
+            $formatted_actualEndDate = date('M d, Y', strtotime($actualEndDate));
+            // END: Formatting of ACTUAL END date
 
-              switch (intval($endMonthNum))
-              {
-                case 1: $endMonth = 'Jan'; break;
-                case 2: $endMonth = 'Feb'; break;
-                case 3: $endMonth = 'Mar'; break;
-                case 4: $endMonth = 'Apr'; break;
-                case 5: $endMonth = 'May'; break;
-                case 6: $endMonth = 'Jun'; break;
-                case 7: $endMonth = 'Jul'; break;
-                case 8: $endMonth = 'Aug'; break;
-                case 9: $endMonth = 'Sep'; break;
-                case 10: $endMonth = 'Oct'; break;
-                case 11: $endMonth = 'Nov'; break;
-                case 12: $endMonth = 'Dec'; break;
-              }
+        // START: Completed task - ProgressValue = 100%
+            if($value['TASKSTATUS'] == 'Complete'){
 
-              $formattedEndDate = $endMonth . " " . $endDay . ", " . $endYear;
+              // START: Planning - no baseline since task have not yet started
+                  if($value['TASKACTUALSTARTDATE'] == NULL){
+                    echo "
+                      {
+                        'id': " . $value['TASKID'] . ",
+                        'name': '" . $value['TASKTITLE'] . "',
+                        'actualStart': '" . $formatted_startDate . "',
+                        'actualEnd': '" . $formatted_endDate . "',
+                        'responsible': '',
+                        'accountable': '',
+                        'consulted': '',
+                        'informed': '',
+                        'period': '" . $value['taskDuration'] . "',
+                        'progressValue': '100%'
+                      },";
+                  }
+                  // END: Planning - no baseline since task have not yet started
 
-              $actualStartDate = $row['TASKACTUALSTARTDATE'];
-              $actualStartMonthNum = substr($startDate, 5, 2);
-              $actualStartDay = substr($startDate, 8, 2);
-              $actualStartYear = substr($startDate, 0, 4);
-              $actualStartMonth = "";
+              // START: Ongoing tasks - baselineEnd is the date today
+                  else if($value['TASKACTUALENDDATE'] == NULL){
+                  // START: Ongoing tasks - delayed // TODO:  FIX
+                    if($formatted_endDate < date('M d, Y')){
+                      echo "
+                        {
+                          'id': " . $value['TASKID'] . ",
+                          'name': '" . $value['TASKTITLE'] . "',
+                          'actualStart': '" . $formatted_startDate . "',
+                          'actualEnd': '" . $formatted_endDate . "',
+                          'responsible': '" . $formatted_actualStartDate . "',
+                          'accountable': '',
+                          'consulted': '',
+                          'informed': '',
+                          'period': '" . $value['taskDuration'] . "',
+                          'baselineStart': '" . $formatted_actualStartDate . "',
+                          'baselineEnd': '" . date('M d, Y') . "',
+                          'progressValue': '100%'
+                        },";
+                    }
+                    // END: Ongoing tasks - delayed
 
-              switch (intval($actualStartMonthNum))
-              {
-                case 1: $actualStartMonth = 'Jan'; break;
-                case 2: $actualStartMonth = 'Feb'; break;
-                case 3: $actualStartMonth = 'Mar'; break;
-                case 4: $actualStartMonth = 'Apr'; break;
-                case 5: $actualStartMonth = 'May'; break;
-                case 6: $actualStartMonth = 'Jun'; break;
-                case 7: $actualStartMonth = 'Jul'; break;
-                case 8: $actualStartMonth = 'Aug'; break;
-                case 9: $actualStartMonth = 'Sep'; break;
-                case 10: $actualStartMonth = 'Oct'; break;
-                case 11: $actualStartMonth = 'Nov'; break;
-                case 12: $actualStartMonth = 'Dec'; break;
-              }
+                  // START: Ongoing tasks - but not delayed // TODO:  FIX
+                    else if ($formatted_endDate >= date('M d, Y')){
+                      echo "
+                        {
+                          'id': " . $value['TASKID'] . ",
+                          'name': '" . $value['TASKTITLE'] . "',
+                          'actualStart': '" . $formatted_startDate . "',
+                          'actualEnd': '" . $formatted_endDate . "',
+                          'responsible': '" . $formatted_actualStartDate . "',
+                          'accountable': '',
+                          'consulted': '',
+                          'informed': '',
+                          'period': '" . $value['taskDuration'] . "',
+                          'baselineStart': '" . $formatted_actualStartDate . "',
+                          'baselineEnd': '" . date('M d, Y') . "',
+                          'progressValue': '100%'
+                        },";
+                    }
+                    // END: Ongoing tasks - but not delayed
+                  }
+                  // END: Ongoing tasks - baselineEnd is the date today
 
-              $formattedActualStartDate = $actualStartMonth . " " . $actualStartDay . ", " . $actualStartYear;
-
-              $actualEndDate = $row['TASKACTUALENDDATE'];
-              $actualEndMonthNum = substr($endDate, 5, 2);
-              $actualEndDay = substr($endDate, 8, 2);
-              $actualEndYear = substr($endDate, 0, 4);
-              $actualEndMonth = "";
-
-              switch (intval($actualEndMonthNum))
-              {
-                case 1: $actualEndMonth = 'Jan'; break;
-                case 2: $actualEndMonth = 'Feb'; break;
-                case 3: $actualEndMonth = 'Mar'; break;
-                case 4: $actualEndMonth = 'Apr'; break;
-                case 5: $actualEndMonth = 'May'; break;
-                case 6: $actualEndMonth = 'Jun'; break;
-                case 7: $actualEndMonth = 'Jul'; break;
-                case 8: $actualEndMonth = 'Aug'; break;
-                case 9: $actualEndMonth = 'Sep'; break;
-                case 10: $actualEndMonth = 'Oct'; break;
-                case 11: $actualEndMonth = 'Nov'; break;
-                case 12: $actualEndMonth = 'Dec'; break;
-              }
-
-              $formattedActualEndDate = $actualEndMonth . " " . $actualEndDay . ", " . $actualEndYear;
-
-              echo "console.log('before' + ".$formattedActualEndDate.");";
-
-
-
-              // if(date('Y-m-d') < $row['TASKSTARTDATE'] and $row['TASKSTATUS'] != 'Complete'){
-              //   echo "
-              //   {
-              //       'id':" . $row['TASKID'] . ",
-              //       'name': '" . $row['TASKTITLE'] . "',
-              //       'actualStart': '" . $formattedStartDate . "',
-              //       'actualEnd': '" . $formattedEndDate . "',
-              //       'actual':
-              //       {
-              //         'fill':
-              //         {
-              //           'keys': ['grey'],
-              //         },
-              //       },
-              //       'baselineStart': '" . $formattedActualStartDate . "',
-              //       'baselineEnd': '" . $formattedActualEndDate . "',
-              //       'period': '" . $row['taskDuration'] . "',
-              //   },
-              //   ";
-              // }
-
-              // if(date('Y-m-d') < $row['TASKSTARTDATE'] and $row['TASKSTATUS'] != 'Complete'){
-              //   echo "
-              //   {
-              //       'id':" . $row['TASKID'] . ",
-              //       'name': '" . $row['TASKTITLE'] . "',
-              //       'actualStart': '" . $formattedStartDate . "',
-              //       'actualEnd': '" . $formattedEndDate . "',
-              //       'actual':
-              //       {
-              //         'fill':
-              //         {
-              //           'keys': ['grey'],
-              //         },
-              //       },
-              //       'baselineStart': '" . $formattedActualStartDate . "',
-              //       'baselineEnd': '" . $formattedActualEndDate . "',
-              //       'period': '" . $row['taskDuration'] . "',
-              //   },
-              //   ";
-              // }
-              //
-              // if(date('Y-m-d') > $row['TASKENDDATE'] and $row['TASKSTATUS'] != 'Complete'){
-              //   echo "
-              //   {
-              //       'id':" . $row['TASKID'] . ",
-              //       'name': '" . $row['TASKTITLE'] . "',
-              //       'actualStart': '" . $formattedStartDate . "',
-              //       'actualEnd': '" . $formattedEndDate . "',
-              //       'actual':
-              //       {
-              //         'fill':
-              //         {
-              //           'keys': ['red'],
-              //         },
-              //       },
-              //       'baselineStart': '" . $formattedActualStartDate . "',
-              //       'baselineEnd': '" . $formattedActualEndDate . "',
-              //       'period': '" . $row['taskDuration'] . "',
-              //   },
-              //   ";
-              // }
-
-              echo "
-                {
-                    'id':" . $row['TASKID'] . ",
-                    'name': '" . $row['TASKTITLE'] . "',
-                    'actualStart': '" . $formattedStartDate . "',
-                    'actualEnd': '" . $formattedEndDate . "',
-                    'department': '" . $formattedActualStartDate . "',
-                    'responsible': '" . $formattedActualEndDate . "',
-                    'period': '" . $row['taskDuration'] . "'
-                },";
-
-                echo "console.log('after' + ".$formattedActualEndDate.");";
-
-                // if(date('Y-m-d') < $row['TASKSTARTDATE'] and $row['TASKSTATUS'] != 'Complete'){
-                //   echo "
-                //     {
-                //       'actual': {
-                //         'fill': {
-                //           'keys': ['grey'],
-                //         }
-                //       }
-                //     },";
-                // }
-                //
-                // if(date('Y-m-d') < $row['TASKSTARTDATE'] and $row['TASKSTATUS'] = 'Complete'){
-                //   echo "
-                //     {
-                //       'actual': {
-                //         'fill': {
-                //           'keys': ['green'],
-                //         }
-                //       }
-                //     },";
-                // }
-
-
+              // START: Completed tasks - baselineStart and baselineEnd are present
+                  else{
+                    echo "
+                      {
+                        'id': " . $value['TASKID'] . ",
+                        'name': '" . $value['TASKTITLE'] . "',
+                        'actualStart': '" . $formatted_startDate . "',
+                        'actualEnd': '" . $formatted_endDate . "',
+                        'responsible': '" . $formatted_actualStartDate . "',
+                        'accountable': '" . $formatted_actualEndDate . "',
+                        'consulted': '',
+                        'informed': '',
+                        'period': '" . $value['taskDuration'] . "',
+                        'baselineStart': '" . $formatted_actualStartDate . "',
+                        'baselineEnd': '" . $formatted_actualEndDate . "',
+                        'progressValue': '100%'
+                      },";
+                    }
+                    // END: Completed tasks - baselineStart and baselineEnd are present
             }
-            ?>
-          ];
+            // END: Completed task - ProgressValue = 100%
 
+        // START: ProgressValue = 0%
+            else{
 
+              // START: Planning - no baseline since task have not yet started
+                  if($value['TASKACTUALSTARTDATE'] == NULL){
+                    echo "
+                      {
+                        'id': " . $value['TASKID'] . ",
+                        'name': '" . $value['TASKTITLE'] . "',
+                        'actualStart': '" . $formatted_startDate . "',
+                        'actualEnd': '" . $formatted_endDate . "',
+                        'responsible': '',
+                        'accountable': '',
+                        'consulted': '',
+                        'informed': '',
+                        'period': '" . $value['taskDuration'] . "',
+                        'progressValue': '0%'
+                      },";
+                  }
+                  // END: Planning - no baseline since task have not yet started
+
+              // START: Ongoing tasks - baselineEnd is the date today
+                  else if($value['TASKACTUALENDDATE'] == NULL){
+                  // START: Ongoing tasks - delayed // TODO:  FIX
+                    if($formatted_endDate < date('M d, Y')){
+                      echo "
+                        {
+                          'id': " . $value['TASKID'] . ",
+                          'name': '" . $value['TASKTITLE'] . "',
+                          'actualStart': '" . $formatted_startDate . "',
+                          'actualEnd': '" . $formatted_endDate . "',
+                          'responsible': '" . $formatted_actualStartDate . "',
+                          'accountable': '',
+                          'consulted': '',
+                          'informed': '',
+                          'period': '" . $value['taskDuration'] . "',
+                          'baselineStart': '" . $formatted_actualStartDate . "',
+                          'baselineEnd': '" . date('M d, Y') . "',
+                          'progressValue': '0%'
+                        },";
+                    }
+                    // END: Ongoing tasks - delayed
+
+                  // START: Ongoing tasks - but not delayed // TODO:  FIX
+                    else if ($formatted_endDate >= date('M d, Y')){
+                      echo "
+                        {
+                          'id': " . $value['TASKID'] . ",
+                          'name': '" . $value['TASKTITLE'] . "',
+                          'actualStart': '" . $formatted_startDate . "',
+                          'actualEnd': '" . $formatted_endDate . "',
+                          'responsible': '" . $formatted_actualStartDate . "',
+                          'accountable': '',
+                          'consulted': '',
+                          'informed': '',
+                          'period': '" . $value['taskDuration'] . "',
+                          'baselineStart': '" . $formatted_actualStartDate . "',
+                          'baselineEnd': '" . date('M d, Y') . "',
+                          'progressValue': '0%'
+                        },";
+                    }
+                    // END: Ongoing tasks - but not delayed
+                  }
+                  // END: Ongoing tasks - baselineEnd is the date today
+
+              // START: Completed tasks - baselineStart and baselineEnd are present
+                  else{
+                    echo "
+                      {
+                        'id': " . $value['TASKID'] . ",
+                        'name': '" . $value['TASKTITLE'] . "',
+                        'actualStart': '" . $formatted_startDate . "',
+                        'actualEnd': '" . $formatted_endDate . "',
+                        'responsible': '" . $formatted_actualStartDate . "',
+                        'accountable': '" . $formatted_actualEndDate . "',
+                        'consulted': '',
+                        'informed': '',
+                        'period': '" . $value['taskDuration'] . "',
+                        'baselineStart': '" . $formatted_actualStartDate . "',
+                        'baselineEnd': '" . $formatted_actualEndDate . "',
+                        'progressValue': '0%'
+                      },";
+                    }
+                    // END: Completed tasks - baselineStart and baselineEnd are present
+            }
+            // END: ProgressValue = 0%
+
+          }
+          // END: Foreach
+          ?>
+        ];
 
         // data tree settings
         var treeData = anychart.data.tree(rawData, "as-tree");
@@ -275,17 +276,17 @@
 
         // create custom column
         var columnTitle = dataGrid.column(1);
-        columnTitle.title("Task Title");
+        columnTitle.title("Task Name");
         columnTitle.setColumnFormat("name", "text");
         columnTitle.width(300);
 
         var columnStartDate = dataGrid.column(2);
-        columnStartDate.title("Start Date");
+        columnStartDate.title("Target Start Date");
         columnStartDate.setColumnFormat("actualStart", "dateCommonLog");
         columnStartDate.width(100);
 
         var columnEndDate = dataGrid.column(3);
-        columnEndDate.title("End Date");
+        columnEndDate.title("Target End Date");
         columnEndDate.setColumnFormat("actualEnd", "dateCommonLog");
         columnEndDate.width(100);
 
@@ -294,22 +295,17 @@
         columnPeriod.setColumnFormat("period", "text");
         columnPeriod.width(80);
 
-        var columnDepartment = dataGrid.column(5);
-        columnDepartment.title("Department");
-        columnDepartment.setColumnFormat("department", "text");
-        columnDepartment.width(100);
-
-        var columnResponsible = dataGrid.column(6);
+        var columnResponsible = dataGrid.column(5);
         columnResponsible.title("Responsible");
         columnResponsible.setColumnFormat("responsible", "text");
         columnResponsible.width(100);
 
-        var columnAccountable = dataGrid.column(7);
+        var columnAccountable = dataGrid.column(6);
         columnAccountable.title("Accountable");
         columnAccountable.setColumnFormat("accountable", "text");
         columnAccountable.width(100);
 
-        var columnConsulted = dataGrid.column(8);
+        var columnConsulted = dataGrid.column(7);
         columnConsulted.title("Consulted");
         columnConsulted.setColumnFormat("consulted", "text");
         columnConsulted.width(100);
@@ -326,8 +322,102 @@
 
       });
 
+// OTHER CONDITIONS
+      // if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){
+      //   echo "
+      //   {
+      //       'id':" . $value['TASKID'] . ",
+      //       'name': '" . $value['TASKTITLE'] . "',
+      //       'actualStart': '" . $formattedStartDate . "',
+      //       'actualEnd': '" . $formattedEndDate . "',
+      //       'actual':
+      //       {
+      //         'fill':
+      //         {
+      //           'keys': ['grey'],
+      //         },
+      //       },
+      //       'baselineStart': '" . $value['TASKACTUALSTARTDATE'] . "',
+      //       'baselineEnd': '" . $value['TASKACTUALENDDATE'] . "',
+      //       'period': '" . $value['taskDuration'] . "',
+      //   },
+      //   ";
+      // }
+
+      // if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){
+      //   echo "
+      //   {
+      //       'id':" . $value['TASKID'] . ",
+      //       'name': '" . $value['TASKTITLE'] . "',
+      //       'actualStart': '" . $formattedStartDate . "',
+      //       'actualEnd': '" . $formattedEndDate . "',
+      //       'actual':
+      //       {
+      //         'fill':
+      //         {
+      //           'keys': ['grey'],
+      //         },
+      //       },
+      //       'baselineStart': '" . $formattedActualStartDate . "',
+      //       'baselineEnd': '" . $formattedActualEndDate . "',
+      //       'period': '" . $value['taskDuration'] . "',
+      //   },
+      //   ";
+      // }
+      //
+      // if(date('Y-m-d') > $value['TASKENDDATE'] and $value['TASKSTATUS'] != 'Complete'){
+      //   echo "
+      //   {
+      //       'id':" . $value['TASKID'] . ",
+      //       'name': '" . $value['TASKTITLE'] . "',
+      //       'actualStart': '" . $formattedStartDate . "',
+      //       'actualEnd': '" . $formattedEndDate . "',
+      //       'actual':
+      //       {
+      //         'fill':
+      //         {
+      //           'keys': ['red'],
+      //         },
+      //       },
+      //       'baselineStart': '" . $formattedActualStartDate . "',
+      //       'baselineEnd': '" . $formattedActualEndDate . "',
+      //       'period': '" . $value['taskDuration'] . "',
+      //   },
+      //   ";
+      // }
+
+      // echo "
+      //   {
+      //       'name': '" . $value['TASKTITLE'] . "',
+      //       'actualStart': '" . $formatted_startDate . "',
+      //       'actualEnd': '" . $formatted_endDate . "',
+      //       'department': '" . $formatted_actualStartDate  . "',
+      //       'responsible': '" . $formatted_actualEndDate . "',
+      //       'period': '" . $value['taskDuration'] . "'
+      //   },";
+
+        // if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){
+        //   echo "
+        //     {
+        //       'actual': {
+        //         'fill': {
+        //           'keys': ['grey'],
+        //         }
+        //       }
+        //     },";
+        // }
+        //
+        // if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] = 'Complete'){
+        //   echo "
+        //     {
+        //       'actual': {
+        //         'fill': {
+        //           'keys': ['green'],
+        //         }
+        //       }
+        //     },";
+        // }
+
     </script>
-
   </body>
-
 </html>
