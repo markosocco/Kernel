@@ -649,8 +649,19 @@ class controller extends CI_Controller
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
 			$data['dependencies'] = $this->model->getDependencies();
 			$data['users'] = $this->model->getAllUsers();
+			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+			$data['accountable'] = $this->model->getAllAccountableByProject($id);
+			$data['consulted'] = $this->model->getAllConsultedByProject($id);
+			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			$this->load->view("projectGantt", $data);
+			// foreach ($data['responsible'] as $key => $value) {
+			// 	echo $value['tasks_TASKID'] . "<br>";
+			// 	// code...
+			// }
+
+			// $this->load->view("projectGantt", $data);
+			$this->load->view("gantt2", $data);
+
 		}
 	}
 
@@ -669,6 +680,7 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['departments'] = $this->model->getAllDepartmentsByProject($id);
 			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
 
 			$this->load->view("projectDocuments", $data);
 		}
@@ -990,8 +1002,6 @@ class controller extends CI_Controller
 		if (!$this->upload->do_upload('document'))
 		{
 			echo "<script>alert('did not upload');</script>";
-			$error = array('error' => $this->upload->display_errors());
-      $this->load->view('templates', $error);
 		}
 
 		else
@@ -1004,17 +1014,45 @@ class controller extends CI_Controller
 			$fileName = $this->upload->data('file_name');
 			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
 
-			$uploadData = array(
-				'DOCUMENTSTATUS' => 'Uploaded',
-				'DOCUMENTNAME' => $fileName,
-				'DOCUMENTLINK' => $src,
-				'users_UPLOADEDBY' => $user,
-				'UPLOADEDDATE' => date('Y-m-d'),
-				'projects_PROJECTID' => $id,
-				'REMARKS' => $this->input->post('remarks')
-			);
+			$option = $this->input->post('sendTo');
+
+			if($option == 'All'){
+				$uploadData = array(
+					'DOCUMENTSTATUS' => 'Uploaded',
+					'DOCUMENTNAME' => $fileName,
+					'DOCUMENTLINK' => $src,
+					'users_UPLOADEDBY' => $user,
+					'UPLOADEDDATE' => date('Y-m-d'),
+					'projects_PROJECTID' => $id,
+					'REMARKS' => $this->input->post('remarks')
+				);
+			} else {
+				$uploadData = array(
+					'DOCUMENTSTATUS' => 'For Acknowledgement',
+					'DOCUMENTNAME' => $fileName,
+					'DOCUMENTLINK' => $src,
+					'users_UPLOADEDBY' => $user,
+					'UPLOADEDDATE' => date('Y-m-d'),
+					'projects_PROJECTID' => $id,
+					'REMARKS' => $this->input->post('remarks')
+				);
+			}
 
 			$documentID = $this->model->uploadDocument($uploadData);
+
+			if($option != 'All')
+			{
+				foreach($this->input->post("departments") as $departments){
+					foreach($this->model->getAllDepartmentsByProjectByDepartment($id, $departments) as $userID){
+						$acknowledgementData = array (
+							'documents_DOCUMENTID' => $documentID,
+							'users_ACKNOWLEDGEDBY' => $userID['users_USERID']
+						);
+
+						$this->model->addToDocumentAcknowledgement($acknowledgementData);
+					}
+				}
+			}
 
 			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
 			$details = $userName . " uploaded " . $fileName;
@@ -1026,27 +1064,11 @@ class controller extends CI_Controller
 			);
 			$this->model->addToProjectLogs($logData);
 
-			$option = $this->input->post('sendTo');
-
-			if($option != 'All')
-			{
-				foreach($this->input->post("departments") as $departments){
-					foreach($this->model->getAllDepartmentsByProjectByDepartment($id, $departments) as $userID){
-
-						$acknowledgementData = array (
-							'documents_DOCUMENTID' => $documentID,
-							'users_ACKNOWLEDGEDBY' => $userID['users_USERID']
-						);
-
-						$this->model->addToDocumentAcknowledgement($acknowledgementData);
-					}
-				}
-			}
-
 			$this->session->set_flashdata('projectID', $id);
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
 
 			$this->load->view("projectDocuments", $data);
 		}
@@ -1058,7 +1080,6 @@ class controller extends CI_Controller
 
 		$filter = "tasks.TASKSTARTDATE"; // default
 		$data['ganttData'] = $this->model->getAllProjectTasks(1, $filter);
-		// $data['preReq'] = $this->model->getPreReqID();
 		$data['dependencies'] = $this->model->getDependencies();
 
 		$this->load->view("gantt2", $data);

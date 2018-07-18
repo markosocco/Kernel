@@ -80,43 +80,38 @@
 		                </tr>
 
 										<?php
+
 											foreach ($documentsByProject as $row) {
-
-												$dateUploaded = $row['UPLOADEDDATE'];
-												$MonthNum = substr($dateUploaded, 5, 2);
-												$Day = substr($dateUploaded, 8, 2);
-												$Year = substr($dateUploaded, 0, 4);
-												$Month = "";
-
-												switch (intval($MonthNum))
-												{
-													case 1: $Month = 'Jan'; break;
-													case 2: $Month = 'Feb'; break;
-													case 3: $Month = 'Mar'; break;
-													case 4: $Month = 'Apr'; break;
-													case 5: $Month = 'May'; break;
-													case 6: $Month = 'Jun'; break;
-													case 7: $Month = 'Jul'; break;
-													case 8: $Month = 'Aug'; break;
-													case 9: $Month = 'Sep'; break;
-													case 10: $Month = 'Oct'; break;
-													case 11: $Month = 'Nov'; break;
-													case 12: $Month = 'Dec'; break;
+												if($row['DOCUMENTSTATUS'] == 'For Acknowledgement'){
+													// echo "<script>alert('".$row['DOCUMENTID']." for Acknowledgement');</script>";
+													foreach($documentAcknowledgement as $data){
+														if($row['DOCUMENTID'] == $data['documents_DOCUMENTID']){
+															echo "<tr>";
+																echo "<td></td>";
+																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+																echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+																echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+																echo "<td>" . date('M d, Y', strtotime($row['UPLOADEDDATE'])) . "</td>";
+																echo "<td>" . $row['REMARKS'] . "</td>";
+																echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
+																<button type='button' class='btn btn-success'>
+																<i class='fa fa-download'></i>Download</button></a></td>";
+															echo "</tr>";
+														}
+													}
+												} else {
+													echo "<tr>";
+														echo "<td></td>";
+														echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+														echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+														echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+														echo "<td>" . date('M d, Y', strtotime($row['UPLOADEDDATE'])) . "</td>";
+														echo "<td>" . $row['REMARKS'] . "</td>";
+														echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
+														<button type='button' class='btn btn-success'>
+														<i class='fa fa-download'></i>Download</button></a></td>";
+													echo "</tr>";
 												}
-
-												$formattedDate = $Month . " " . $Day . ", " . $Year;
-
-												echo "<tr>";
-													echo "<td></td>";
-													echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
-													echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
-													echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
-													echo "<td>" . $formattedDate . "</td>";
-													echo "<td>" . $row['REMARKS'] . "</td>";
-													echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
-													<button type='button' class='btn btn-success'>
-													<i class='fa fa-download'></i>Download</button></a></td>";
-												echo "</tr>";
 											}
 										?>
 		              </table>

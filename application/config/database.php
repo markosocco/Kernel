@@ -77,7 +77,11 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '127.0.0.1',
 	'username' => 'root',
+<<<<<<< HEAD
 	'password' => '',
+=======
+	'password' => '123hello',
+>>>>>>> 5ac70d8dcac2f0adda62ec7d5ff96aff9a3bf364
 	'database' => 'Kernel',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

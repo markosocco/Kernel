@@ -24,12 +24,12 @@
 
 				<!-- Main content -->
 				<section class="content container-fluid" style="padding-top:20px">
-					<div id = "toggleView" class="pull-right">
+					<div id = "toggleTypeView" class="pull-right">
 						<a href="#" id = "toggleList" class="btn btn-default btn"><i class="fa fa-th-list"></i>
 						<a href="#" id = "toggleGrid" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
 					</div>
 
-					<div id="gridView">
+					<div id="teamGridView">
 
 						<div class="btn-group"> <!-- SORT/LEGEND -->
 
@@ -43,7 +43,7 @@
 						</div>
 
 						<!-- LIST AND GRID TOGGLE -->
-						<!-- <div id = "toggleView" class="pull-right" style="margin-top:10px"> -->
+						<!-- <div id = "toggleTypeView" class="pull-right" style="margin-top:10px"> -->
 
 						<br><br>
 
@@ -204,7 +204,7 @@
 						<!-- LIST VIEW -->
 						<br><br>
 
-						<div id="listView">
+						<div id="teamListView">
 							<div class="box">
 								<div class="box-header" style="display:inline-block">
 									<h3 class="box-title">
@@ -380,7 +380,7 @@
 		<!-- ./wrapper -->
 
 		<script>
-			$("#listView").hide();
+			$("#teamListView").hide();
 			$("#toggleGrid").hide();
 			$("#myTeam").addClass("active");
 
@@ -401,18 +401,18 @@
 				$("form").submit();
 				});
 
-			$("#toggleView").click(function(){
-				if($("#gridView").css("display") == "block")
+			$("#toggleTypeView").click(function(){
+				if($("#teamGridView").css("display") == "block")
 				{
-					$("#gridView").hide();
-					$("#listView").show();
+					$("#teamGridView").hide();
+					$("#teamListView").show();
 					$("#toggleGrid").show();
 					$("#toggleList").hide();
 				}
 				else
 				{
-					$("#listView").hide();
-					$("#gridView").show();
+					$("#teamListView").hide();
+					$("#teamGridView").show();
 					$("#toggleGrid").hide();
 					$("#toggleList").show();
 				}

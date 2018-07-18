@@ -518,6 +518,7 @@ class model extends CI_Model
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
 
     return $this->db->get()->result_array();
   }
@@ -607,14 +608,24 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getAllDocumentsByProject($id)
+  public function getAllDocumentsByProject($projectID)
   {
-    $condition = "documents.projects_PROJECTID = " . $id;
+    $condition = "documents.projects_PROJECTID = " . $projectID;
     $this->db->select('*');
     $this->db->from('documents');
     $this->db->join('projects', 'documents.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'documents.users_UPLOADEDBY = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getDocumentAcknowledgement($userID)
+  {
+    $condition = "users_ACKNOWLEDGEDBY = " . $userID;
+    $this->db->select('*');
+    $this->db->from('documentAcknowledgement');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
@@ -638,6 +649,54 @@ class model extends CI_Model
     $condition = "tasks_TASKID = '$taskID' && ROLE = '1'";
     $this->db->where($condition);
     $this->db->update('raci', $data);
+  }
+
+  public function getAllResponsibleByProject($projectID)
+  {
+    $condition = "tasks.projects_PROJECTID = '$projectID' && ROLE = '1'";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAlLAccountableByProject($projectID)
+  {
+    $condition = "tasks.projects_PROJECTID = '$projectID' && ROLE = '2'";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllConsultedByProject($projectID)
+  {
+    $condition = "tasks.projects_PROJECTID = '$projectID' && ROLE = '3'";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllInformedByProject($projectID)
+  {
+    $condition = "tasks.projects_PROJECTID = '$projectID' && ROLE = '4'";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
   }
 
   public function addRFC($data)
