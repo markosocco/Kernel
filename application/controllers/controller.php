@@ -77,6 +77,7 @@ class controller extends CI_Controller
 				$currentDate = date('Y-m-d');
 
 				$this->model->updateTaskStatus($currentDate);
+				$this->model->updateProjectStatus($currentDate);
 
 				redirect('controller/dashboard');
 
@@ -160,8 +161,8 @@ class controller extends CI_Controller
 				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
 				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
-				$data['draftedProjects'] = $this->model->getAllDraftedProjects($_SESSION['USERID']);
-
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
+				$data['completedProjects'] = $this->model->getAllCompletedProjects();
 			}
 			else
 			{
@@ -170,7 +171,7 @@ class controller extends CI_Controller
 				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
-
+				$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();

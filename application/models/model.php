@@ -269,11 +269,24 @@ class model extends CI_Model
 // GET ALL DRAFTED PROJECTS BASED ON PROJECTSTATUS
   public function getAllDraftedProjects()
   {
-    $condition = "PROJECTSTATUS = 'Drafted' and users_USERID = " . $userID;
+    $condition = "PROJECTSTATUS = 'Drafted'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->where($condition);
     $this->db->order_by('PROJECTENDDATE');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+// GET ALL PLANNED PROJECTS BASED ON PROJECTSTARTDATE
+  public function getAllCompletedProjects()
+  {
+    $condition = "PROJECTSTATUS = 'Complete'";
+    $this->db->select('*, ((7-datediff(PROJECTACTUALENDDATE, curdate()))-1) as "datediff"');
+    $this->db->from('PROJECTS');
+    $this->db->where($condition);
+    $this->db->order_by('PROJECTSTARTDATE');
     $query = $this->db->get();
 
     return $query->result_array();
@@ -313,51 +326,65 @@ class model extends CI_Model
     return $query->result_array();
   }
 
-  // GET ALL DELAYED PROJECTS BASED ON PROJECTENDDATE OF LOGGED END USER
-    public function getAllDelayedProjectsByUser($userID)
-    {
-      $condition = "PROJECTENDDATE < CURDATE() && PROJECTSTATUS = 'Ongoing' && raci.users_USERID = " . $userID;
-      $this->db->select('*, ABS(DATEDIFF(PROJECTENDDATE, CURDATE())) AS "datediff"');
-      $this->db->from('PROJECTS');
-      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
-      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-      $this->db->where($condition);
-      $this->db->group_by('projects.PROJECTID');
-      $this->db->order_by('projects.PROJECTENDDATE');
-      $query = $this->db->get();
+// GET ALL DELAYED PROJECTS BASED ON PROJECTENDDATE OF LOGGED END USER
+  public function getAllDelayedProjectsByUser($userID)
+  {
+    $condition = "PROJECTENDDATE < CURDATE() && PROJECTSTATUS = 'Ongoing' && raci.users_USERID = " . $userID;
+    $this->db->select('*, ABS(DATEDIFF(PROJECTENDDATE, CURDATE())) AS "datediff"');
+    $this->db->from('PROJECTS');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+    $query = $this->db->get();
 
-      return $query->result_array();
-    }
+    return $query->result_array();
+  }
 
-  // GET ALL PARKED PROJECTS BASED ON PROJECTSTATUS
-    public function getAllParkedProjectsByUser($userID)
-    {
-      $condition = "PROJECTSTATUS = 'Parked' && raci.users_USERID = " . $userID;
-      $this->db->select('*');
-      $this->db->from('projects');
-      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
-      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-      $this->db->where($condition);
-      $this->db->group_by('projects.PROJECTID');
-      $this->db->order_by('projects.PROJECTENDDATE');
-      $query = $this->db->get();
+// GET ALL PARKED PROJECTS BASED ON PROJECTSTATUS
+  public function getAllParkedProjectsByUser($userID)
+  {
+    $condition = "PROJECTSTATUS = 'Parked' && raci.users_USERID = " . $userID;
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+    $query = $this->db->get();
 
-      return $query->result_array();
-    }
+    return $query->result_array();
+  }
 
-  // GET ALL DRAFTED PROJECTS BASED ON PROJECTSTATUS
-    public function getAllDraftedProjectsByUser($userID)
-    {
-      $condition = "PROJECTSTATUS = 'Drafted' && users_USERID = " . $userID;
-      $this->db->select('*');
-      $this->db->from('projects');
-      $this->db->where($condition);
-      $this->db->group_by('projects.PROJECTID');
-      $this->db->order_by('projects.PROJECTENDDATE');
-      $query = $this->db->get();
+// GET ALL DRAFTED PROJECTS BASED ON PROJECTSTATUS
+  public function getAllDraftedProjectsByUser($userID)
+  {
+    $condition = "PROJECTSTATUS = 'Drafted' && users_USERID = " . $userID;
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+    $query = $this->db->get();
 
-      return $query->result_array();
-    }
+    return $query->result_array();
+  }
+
+// GET ALL PLANNED PROJECTS BASED ON PROJECTSTARTDATE
+  public function getAllCompletedProjectsByUser($userID)
+  {
+    $condition = "PROJECTSTATUS = 'Complete' && users_USERID = " . $userID;
+    $this->db->select('*, ((7-datediff(PROJECTACTUALENDDATE, curdate()))-1) as "datediff"');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
 
   // GET ALL PROJECT ARCHIVES
   public function getAllProjectArchives()
@@ -729,6 +756,15 @@ class model extends CI_Model
     $this->db->set('TASKACTUALSTARTDATE', $currentDate);
     $this->db->where($condition);
     $this->db->update('tasks');
+  }
+
+  public function updateProjectStatus($currentDate)
+  {
+    $condition = "PROJECTSTARTDATE = CURDATE() AND PROJECTSTATUS = 'Planning';";
+    $this->db->set('PROJECTSTATUS', 'Ongoing');
+    $this->db->set('PROJECTACTUALSTARTDATE', $currentDate);
+    $this->db->where($condition);
+    $this->db->update('projects');
   }
 
   public function getDelayedTasksByUser()
