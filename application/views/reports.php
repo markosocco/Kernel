@@ -30,10 +30,10 @@
 									<td>Projects Per Department</td>
 									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
 								</tr>
-
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
-								<td>HOW DO WE PRINT REPORTS PER PROJECT</td>
-								<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								<tr>
+									<td>Ongoing Projects</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
