@@ -631,15 +631,159 @@ class controller extends CI_Controller
 // DELETE THIS MAYBE??
 	public function scheduleTasks()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		$id = $this->input->post('project_ID');
+
+		$parent = $this->input->post('subActivity_ID');
+		$title = $this->input->post('title');
+		$startDates = $this->input->post('taskStartDate');
+		$endDates = $this->input->post('taskEndDate');
+		$department = $this->input->post("department");
+		$rowNum = $this->input->post('row');
+
+		$addedTask = array();
+
+		$departments = $this->model->getAllDepartments();
+
+		foreach($departments as $row)
 		{
-			$this->load->view('contact');
+			switch ($row['DEPARTMENTNAME'])
+			{
+				case 'Executive':
+					$execHead = $row['users_DEPARTMENTHEAD'];
+					break;
+				case 'Marketing':
+					$mktHead = $row['users_DEPARTMENTHEAD'];
+					break;
+				case 'Finance':
+					$finHead = $row['users_DEPARTMENTHEAD'];
+					break;
+				case 'Procurement':
+					$proHead = $row['users_DEPARTMENTHEAD'];
+					break;
+				case 'HR':
+					$hrHead = $row['users_DEPARTMENTHEAD'];
+					break;
+				case 'MIS':
+					$misHead = $row['users_DEPARTMENTHEAD'];
+					break;
+				case 'Store Operations':
+					$opsHead = $row['users_DEPARTMENTHEAD'];
+					break;
+				case 'Facilities Administration':
+					$fadHead = $row['users_DEPARTMENTHEAD'];
+					break;
+			}
 		}
 
-		else
+		foreach ($title as $key=> $row)
 		{
-			$this->load->view("scheduleTasks");
+			$data = array(
+					'TASKTITLE' => $row,
+					'TASKSTARTDATE' => $startDates[$key],
+					'TASKENDDATE' => $endDates[$key],
+					'TASKSTATUS' => 'Planning',
+					'CATEGORY' => '3',
+					'projects_PROJECTID' => $id,
+					'tasks_TASKPARENT' => $parent[$key]
+			);
+
+			// SAVES ALL ADDED TASKS INTO AN ARRAY
+			$addedTask[] = $this->model->addTasksToProject($data);
+		 }
+
+		// GETS DEPARTMENT ARRAY FOR RACI
+		foreach ($addedTask as $aKey=> $a)
+		{
+			// echo " -- " . $a . " -- " . "<br>";
+			// rowNum SAVES THE ORDER OF HOW THE DEPARTMENT ARRAY MUST LOOK LIKE
+			foreach ($rowNum as $rKey => $row)
+			{
+				// echo $row . "<br>";
+				// echo $aKey . " == " . $rKey . "<br>";
+				if ($aKey == $rKey)
+				{
+					// echo $aKey . " == " . $rKey . "<br>";
+					foreach ($department as $dKey => $d)
+					{
+						// echo $row . " == " . $dKey . "<br>";
+						if ($row == $dKey)
+						{
+							// echo $row . " == " . $dKey . "<br>";
+							foreach ($d as $value)
+							{
+								switch ($value)
+								{
+									case 'Executive':
+										$deptHead = $execHead;
+										break;
+									case 'Marketing':
+										$deptHead = $mktHead;
+										break;
+									case 'Finance':
+										$deptHead = $finHead;
+										break;
+									case 'Procurement':
+										$deptHead = $proHead;
+										break;
+									case 'HR':
+										$deptHead = $hrHead;
+										break;
+									case 'MIS':
+										$deptHead = $misHead;
+										break;
+									case 'Store Operations':
+										$deptHead = $opsHead;
+										break;
+									case 'Facilities Administration':
+										$deptHead = $fadHead;
+										break;
+								}
+
+								// echo $value . ", ";
+
+								$data = array(
+										'ROLE' => '1',
+										'users_USERID' => $deptHead,
+										'tasks_TASKID' => $a
+								);
+
+								// ENTER INTO RACI
+								$result = $this->model->addToRaci($data);
+							}
+							// echo "<br>";
+						}
+					}
+				}
+			}
 		}
+
+		// $this->output->enable_profiler(TRUE);
+
+		// GANTT CODE
+		// $data['projectProfile'] = $this->model->getProjectByID($id);
+		// $data['ganttData'] = $this->model->getAllProjectTasks($id);
+		// // $data['preReq'] = $this->model->getPreReqID();
+		// $data['dependencies'] = $this->model->getDependencies();
+		// $data['users'] = $this->model->getAllUsers();
+
+		$data['project'] = $this->model->getProjectByID($id);
+		$data['tasks'] = $this->model->getAllProjectTasks($id);
+		$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+		$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
+		$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
+		$data['users'] = $this->model->getAllUsers();
+		$data['departments'] = $this->model->getAllDepartments();
+
+		$sDate = date_create($data['project']['PROJECTSTARTDATE']);
+		$eDate = date_create($data['project']['PROJECTENDDATE']);
+		$diff = date_diff($eDate, $sDate);
+		$dateDiff = $diff->format('%d');
+
+		$data['dateDiff'] = $dateDiff;
+
+		// $this->load->view("dashboard", $data);
+		// redirect('controller/projectGantt');
+		$this->load->view("projectGantt", $data);
 	}
 
 	public function projectGantt()

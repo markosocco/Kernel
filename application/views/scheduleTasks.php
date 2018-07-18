@@ -52,8 +52,13 @@
 
 								<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
+								<?php $c = 0; ?>
+
 								<?php foreach ($mainActivity as $key=>$value): ?>
-		            <div class="box-body table-responsive no-padding">
+
+									<!-- MAIN ACT TABLE START -->
+
+								<div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table_<?php echo $key;?>">
 
 										<?php if($key == 0): ?>
@@ -104,11 +109,20 @@
 												<td><?php echo $value['TASKENDDATE']; ?></td>
 												<td></td>
 											</tr>
+										</tbody>
+										</table>
+
+										<!-- MAIN ACTIVITY TABLE END  -->
 
 											<?php foreach ($subActivity as $sKey => $sValue): ?>
+
+												<!-- SUB ACT TABLE START -->
+
 													<?php if ($sValue['tasks_TASKPARENT'] == $value['TASKID']): ?>
+														<table id = "ma<?php echo $key; ?>_s<?php echo $sKey; ?>">
+														<tbody>
 														<tr>
-															<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+															<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 															<td><i><?php echo $sValue['TASKTITLE']; ?></i></td>
 															<td>
 																<?php
@@ -143,13 +157,16 @@
 															<td></td>
 															<td>
 																<div class="form-group">
+
+																	<input type="hidden" name="subActivity_ID[]" value="<?php echo $sValue['TASKID']; ?>">
+
 																	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-																	<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+																	<input type="hidden" name="row[]" value="<?php echo $c; ?>">
 																</div>
 															</td>
 															<!-- CHANGE TO NORMAL SELECT. 1:1 -->
 															<td width="40%">
-																<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																<select id ="select<?php echo $c; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																	<?php foreach ($departments as $row): ?>
 
 																		<option>
@@ -181,11 +198,16 @@
 															</td>
 															<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
 														</tr>
+													</tbody>
+												</table>
+
+												<?php $c++; ?>
+
 												<?php endif; ?>
 											<?php endforeach; ?>
-										</tbody>
-									</table>
 		            </div>
+
+								<!-- SUB ACT TABLE END -->
 								<?php endforeach; ?>
 
 		            <!-- /.box-body -->
@@ -210,6 +232,60 @@
 		<script type='text/javascript'>
 
 		$("#myProjects").addClass("active");
+
+		$(document).ready(function() {
+
+		 var i = <?php echo (count($subActivity)); ?>;
+		 var x = 2;
+
+		 $(document).on("click", "a.addButton", function() {
+
+			 var mTable = $(this).attr('data-mTable');
+			 var sTable = $(this).attr('data-sTable');
+			 var tot = $(this).attr('data-subTot');
+			 var subAct = $(this).attr('data-subAct');
+			 var counter = parseInt($(this).attr('data-sum'));
+
+				 $('#ma' + mTable + '_s' + sTable).append("<tr id='ma" +
+				 						mTable + "_s" + (i) +
+										"'><td></td><td><div class ='form-group'> <input type='hidden' name='subActivity_ID[]' value='" +
+										subAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
+										"<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
+										"<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
+										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
+										"name='taskStartDate[]' id='start_" + subAct + "-" + counter +"' data-subAct = '" + subAct + "' data-num='" + counter +
+										"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
+										"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
+										"name='taskEndDate[]' id='end_" + subAct + "-" + counter + "' data-mainAct = '" + subAct + "' data-num='" + counter +
+										"' required></div></div></td> <td class='btn'><a class='btn delButton' data-mTable = " + mTable +
+										" counter = " + x + " data-sTable = " + (i) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
+
+					// $("#end_" + subAct + "-" + counter).prop('disabled', true);
+
+				 var newCount = counter + 1;
+				 var newTot = tot + 1;
+
+				 $("a.addButton").attr('counter', newCount);
+				 $("a.addButton").attr('data-subTot', newTot);
+
+				  $('.select2').select2();
+					$("#select" + i).attr("name", "department[" + i + "][]");
+
+				 i++;
+				 x++;
+			});
+
+			$(document).on("click", "a.delButton", function() {
+					if (x > 2)
+					{
+						var mTable = $(this).attr('data-mTable');
+						var sTable = $(this).attr('data-sTable');
+
+						$('#ma' + mTable + '_s' + sTable).remove();
+					}
+				});
+			 });
 
 	  $(function ()
 		{
