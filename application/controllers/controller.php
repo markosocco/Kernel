@@ -659,8 +659,8 @@ class controller extends CI_Controller
 			// 	// code...
 			// }
 
-			// $this->load->view("projectGantt", $data);
-			$this->load->view("gantt2", $data);
+			$this->load->view("projectGantt", $data);
+			// $this->load->view("gantt2", $data);
 
 		}
 	}
