@@ -920,5 +920,10 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function addToDependencies($data)
+  {
+    $this->db->insert('dependencies', $data);
+    return true;
+  }
 }
 ?>

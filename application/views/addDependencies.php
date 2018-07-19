@@ -189,7 +189,7 @@
 																			<input type="hidden" name="taskID[]" value="<?php echo $tValue['TASKID']; ?>">
 																			<select class="form-control select2" multiple="multiple" name = "dependencies[<?php echo $c; ?>][]" data-placeholder="Select Task">
 																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>
-																							<option>
+																							<option value ='<?php echo $gValue['TASKID']; ?>'>
 																								<?php echo $gValue['TASKTITLE']; ?>
 																							</option>
 																					<?php endforeach; ?>
