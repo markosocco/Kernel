@@ -798,12 +798,21 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post("project_ID");
-			$flash =$this->input->post("flash");
+			$archives =$this->input->post("archives");
+			$rfc =$this->input->post("rfc");
 
-			if (isset($flash))
+			// ARCHIVES
+			if (isset($archives))
 			{
-				$flash = $this->input->post("flash");
-				$this->session->set_flashdata('flash', $flash);
+				$archives = $this->input->post("archives");
+				$this->session->set_flashdata('archives', $archives);
+			}
+
+			// RFC
+			elseif (isset($rfc))
+			{
+				$rfc = $this->input->post("rfc");
+				$this->session->set_flashdata('rfc', $rfc);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
