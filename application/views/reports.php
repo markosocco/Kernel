@@ -20,7 +20,6 @@
 			<section class="content container-fluid">
 				<div class="box">
 					<div class="box-header">
-						<h3 class="box-title">Generate Reports</h3>
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
@@ -28,12 +27,44 @@
 							<tbody>
 								<tr>
 									<td>Projects Per Department</td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/documents"); ?>" target="_blank" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</a></td>
+								</tr>
+								<tr>
+									<td>Ongoing Projects</td>
 									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
 								</tr>
-
-								<!-- SAMPLE DATA. PLEASE DELETE  -->
-								<td>HOW DO WE PRINT REPORTS PER PROJECT</td>
-								<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								<tr>
+									<td>Planned Projects</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
+								<tr>
+									<td>Parked Projects</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
+								<tr>
+									<td>Project Performance</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
+								<tr>
+									<td>Employee Performance per Project</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
+								<tr>
+									<td>Project Performance of a User</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
+								<tr>
+									<td>Departmetal Performance per Department</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
+								<tr>
+									<td>Departmetal Performance per Project</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
+								<tr>
+									<td>Change Requests</td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -52,11 +83,11 @@
 		<script>
 		$("#reports").addClass("active");
 
-		$(document).ready(function() {
-			$(".generateBtn").click(function(){
-				alert("Place download function here!");
-			});
-		});
+		// $(document).ready(function() {
+		// 	$(".generateBtn").click(function(){
+		// 		alert("Place download function here!");
+		// 	});
+		// });
 		</script>
 
 	</body>

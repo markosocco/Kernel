@@ -93,15 +93,16 @@
 															{
 																if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																{
-																	$depts[] = $row2['DEPARTMENTNAME'];
+																	// $depts[] = $row2['DEPARTMENTNAME'];
+																	echo $row2['DEPARTMENTNAME'] . ", ";
 																}
 															}
 
 															//TODO: Fix implode shit
-															foreach ($depts as $x)
-															{
-																echo $x . ", ";
-															}
+															// foreach ($depts as $x)
+															// {
+															// 	echo $x . ", ";
+															// }
 														}
 													}
 												?>
@@ -181,7 +182,8 @@
 
 		$(document).ready(function() {
 
-		 var i = 2;
+			var i = <?php echo (count($groupedTasks)); ?>;
+		 // var i = 2;
 		 var x = 2;
 
 		 $(document).on("click", "a.addButton", function() {
