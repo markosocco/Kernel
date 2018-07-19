@@ -66,7 +66,7 @@
 																data-toggle="modal" data-target="#modal-delegate" data-id="
 																<?php echo $mainAct['TASKID'];?>" data-title=" <?php echo $mainAct['TASKTITLE'];?>"
 																data-start="<?php echo $mainAct['TASKSTARTDATE'];?>"
-																data-end="<?php echo $mainAct['TASKENDDATE'];?>"
+																data-end="<?php echo $mainAct['TASKENDDATE'];?>">
 																<i class="fa fa-users"></i> Delegate</button>
 											</td>
 										</tr>
@@ -119,7 +119,7 @@
 																data-toggle="modal" data-target="#modal-delegate" data-id="
 																<?php echo $subAct['TASKID'];?>" data-title=" <?php echo $subAct['TASKTITLE'];?>"
 																data-start="<?php echo $subAct['TASKSTARTDATE'];?>"
-																data-end="<?php echo $subAct['TASKENDDATE'];?>"
+																data-end="<?php echo $subAct['TASKENDDATE'];?>">
 																<i class="fa fa-users"></i> Delegate
 												</button>
 											</td>
@@ -215,7 +215,7 @@
 															data-target="#modal-done" data-id="<?php echo $task['TASKID'];?>"
 															data-title="<?php echo $task['TASKTITLE'];?>"
 															data-delay="<?php echo $isDelayed;?>" data-start="<?php echo $task['TASKSTARTDATE'];?>"
-															data-end="<?php echo $task['TASKENDDATE'];?>"
+															data-end="<?php echo $task['TASKENDDATE'];?>">
 															<i class="fa fa-check"></i> Done
 													</button>
 												</td>
@@ -309,6 +309,7 @@
 									</div>
 
 									<div class="modal-body">
+										<div id="raciDelegate">
 										<div class="box">
 											<div class="box-header" style="display:inline-block">
 												<h3 class="box-title">
@@ -372,7 +373,11 @@
 																	<td align="center">0</td>
 																<?php endif;?>
 
-																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo"><i class="fa fa-info-circle"></i> More Info</a></td>
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
+																	data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
+																	data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal">
+																	<i class="fa fa-info-circle"></i> More Info</a>
+																</td>
 															</tr>
 														<?php endforeach;?>
 													</tbody>
@@ -439,7 +444,7 @@
 																<td align="center">0</td>
 															<?php endif;?>
 																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
-																<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+																<a class="btn moreBtn" data-toggle="modal">
 																	<i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
 													<?php endforeach;?>
@@ -508,7 +513,7 @@
 															<td align="center">0</td>
 														<?php endif;?>
 														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
-															<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+															<a class="btn moreBtn" data-toggle="modal">
 																<i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
 												<?php endforeach;?>
@@ -576,23 +581,44 @@
 														<td align="center">0</td>
 													<?php endif;?>
 													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
-														<a class="btn moreBtn" data-toggle="modal" data-target="#modal-moreInfo">
+														<a class="btn moreBtn" data-toggle="modal">
 															<i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
 											<?php endforeach;?>
 										</tbody>
 									</table>
 								</div>
+
 											<!-- /.box-body -->
 										</div>
 									</div>
+
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
 										<button type="submit" class="btn btn-success" id="confirmDelegateBtn" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
 									</div>
 								</form>
 								</div>
+
+								<div id="workloadAssessment">
+
+									<div class="modal-header">
+										<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
+										<h4 id = "workloadProjects">Total Number of Project/s: </h4>
+									</div>
+									<div class="modal-body" id = "workloadDiv">
+
+								<!-- PUT WORKLOAD LOOPS HERE -->
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i> Back</button>
+									</div>
+
+								</div>
+
 							</div>
+						</div>
 								<!-- /.modal-content -->
 							</div>
 							<!-- /.modal-dialog -->
@@ -612,27 +638,6 @@
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
 										<button type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
-									</div>
-								</div>
-								<!-- /.modal-content -->
-							</div>
-							<!-- /.modal-dialog -->
-						</div>
-						<!-- /.modal -->
-
-						<!-- WORKLOAD ASSESSMENT MODAL -->
-						<div class="modal fade" id="modal-moreInfo">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h2 class="modal-title" id ="workloadEmployee">Employee Name</h2>
-										<h4 id = "workloadProjects">Total Number of Project/s: </h4>
-									</div>
-									<div class="modal-body" id = "workloadDiv">
-
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-right" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
 									</div>
 								</div>
 								<!-- /.modal-content -->
@@ -678,10 +683,6 @@
 
 			$("#myTasks").addClass("active");
 			$('.select2').select2();
-			$("#responsible").addClass("active");
-			$(".raciDiv").hide();
-			$("#responsibleDiv").show();
-			$("#rfcForm").hide();
 
 			$(function ()
 			{
@@ -748,6 +749,8 @@
 						$("#responsible").addClass("active");
 						$(".raciDiv").hide();
 						$("#responsibleDiv").show();
+						$("#raciDelegate").show();
+						$("#workloadAssessment").hide();
 					}
 					if($("#modal-request").css("display") == 'none')
 					{
@@ -760,6 +763,10 @@
 				});
 
 				// DELEGATE SCRIPT
+
+				$("#responsible").addClass("active");
+				$(".raciDiv").hide();
+				$("#responsibleDiv").show();
 
 				$("body").on('click','.delegateBtn',function(){
 					 var $id = $(this).attr('data-id');
@@ -816,7 +823,27 @@
 					$("#informedDiv").show();
 				});
 
+				// WORKLOAD ASSESSMENT
+
+				$("#workloadAssessment").hide();
+
+				$(".moreInfo").click(function(){
+
+					$("#raciDelegate").hide();
+					$("#workloadAssessment").show();
+
+				});
+
+				$("#backWorkload").click(function(){
+
+					$("#raciDelegate").show();
+					$("#workloadAssessment").hide();
+
+				});
+
 				// RFC SCRIPT
+
+				$("#rfcForm").hide();
 
 				$("body").on('click','.rfcBtn',function()
 				 {
@@ -911,11 +938,7 @@
 					$("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 				});
 
-
-
 			});
-
-
 		</script>
 
 	</body>

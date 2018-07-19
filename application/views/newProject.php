@@ -67,7 +67,7 @@
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="projectperiod">Project Period</label>
-											<input type="text" class="form-control" id="projectPeriod" name="projectTitle" placeholder="" disabled>
+											<input type="text" class="form-control" id="projectPeriod" value="" readonly>
 										</div>
 									</div>
 								</div>
@@ -112,12 +112,12 @@
 				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
 				{
 					if(period > 1)
-						$("#projectPeriod").attr("placeholder", period + " days");
+						$("#projectPeriod").attr("value", period + " days");
 					else
-						$("#projectPeriod").attr("placeholder", period + " day");
+						$("#projectPeriod").attr("value", period + " day");
 				}
 				else
-					$("#projectPeriod").attr("placeholder", "");
+					$("#projectPeriod").attr("value", "");
 			 });
 
  	     $('#endDate').datepicker({
@@ -131,12 +131,12 @@
 				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
 				{
 					if(period > 1)
-						$("#projectPeriod").attr("placeholder", period + " days");
+						$("#projectPeriod").attr("value", period + " days");
 					else
-						$("#projectPeriod").attr("placeholder", period + " day");
+						$("#projectPeriod").attr("value", period + " day");
 				}
 				else
-					$("#projectPeriod").attr("placeholder", "");
+					$("#projectPeriod").attr("value", "");
 			 });
 		 });
 

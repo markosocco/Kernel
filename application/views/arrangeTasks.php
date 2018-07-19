@@ -79,8 +79,8 @@
 
 										<tr>
 											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-											<td><?php echo $value['TASKTITLE']; ?></td>
-											<td>
+											<td><b><?php echo $value['TASKTITLE']; ?></b></td>
+											<td><b>
 												<?php
 
 													foreach ($tasks as $row)
@@ -93,21 +93,22 @@
 															{
 																if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																{
-																	$depts[] = $row2['DEPARTMENTNAME'];
+																	// $depts[] = $row2['DEPARTMENTNAME'];
+																	echo $row2['DEPARTMENTNAME'] . ", ";
 																}
 															}
 
 															//TODO: Fix implode shit
-															foreach ($depts as $x)
-															{
-																echo $x . ", ";
-															}
+															// foreach ($depts as $x)
+															// {
+															// 	echo $x . ", ";
+															// }
 														}
 													}
 												?>
-											</td>
-											<td><?php echo $value['TASKSTARTDATE']; ?></td>
-											<td><?php echo $value['TASKENDDATE']; ?></td>
+											</b></td>
+											<td><b><?php echo $value['TASKSTARTDATE']; ?></b></td>
+											<td><b><?php echo $value['TASKENDDATE']; ?></b></td>
 											<td></td>
 										</tr>
 										<tr>
@@ -181,7 +182,8 @@
 
 		$(document).ready(function() {
 
-		 var i = 2;
+			var i = <?php echo (count($groupedTasks)); ?>;
+		 // var i = 2;
 		 var x = 2;
 
 		 $(document).on("click", "a.addButton", function() {

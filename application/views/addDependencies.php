@@ -51,9 +51,11 @@
 		              </div>
 		            </div>
 		            <!-- /.box-header -->
-								<form id='addDependencies' name = 'addDependencies' action = '' method="POST">
+								<form id='addDependencies' name = 'addDependencies' action = 'addDependencies' method="POST">
 
                   <input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+
+									<?php $c = 0; ?>
 
   								<?php foreach ($mainActivity as $key=>$value): ?>
   		            <div class="box-body table-responsive no-padding">
@@ -78,7 +80,7 @@
   												<td><b><?php echo $value['TASKTITLE']; ?></b></td>
   												<td>
   													<?php
-  														foreach ($tasks as $row)
+  														foreach ($allTasks as $row)
   														{
   															if($value['TASKTITLE'] == $row['TASKTITLE'])
   															{
@@ -112,7 +114,7 @@
   															<td><i><?php echo $sValue['TASKTITLE']; ?></i></td>
   															<td>
   																<?php
-  																	foreach ($tasks as $row)
+  																	foreach ($allTasks as $row)
   																	{
   																		if($sValue['TASKTITLE'] == $row['TASKTITLE'])
   																		{
@@ -139,28 +141,66 @@
   															<td><?php echo $sValue['TASKENDDATE']; ?></td>
   															<td></td>
   														</tr>
-  														<tr>
-  															<td>
-                                  <!-- TASK NAME @TASK LEVEL -->
-                                </td>
-  															<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-  															<td width="40%">
-  																<!-- DEPARTMENT @TASK LEVEL -->
-  															</td>
-  															<td>
-                                  <!-- START DATE @TASK LEVEL -->
-  															</td>
-  															<td>
-                                  <!-- END DATE @TASK LEVEL -->
-  															</td>
-                                <!-- DEPENDENCY INPUT -->
-                                <td width="50%">
-                                  <select id ="" class="form-control select2" multiple="multiple" name = "" data-placeholder="Select Task">
 
-                                  </select>
-                                </td>
+															<?php foreach ($tasks as $tKey => $tValue): ?>
+																<?php if($tValue['tasks_TASKPARENT'] == $sValue['TASKID']): ?>
+																	<tr>
+																		<td>
+																			<!-- TASK NAME @TASK LEVEL -->
+																			<?php echo $tValue['TASKTITLE']; ?>
+																		</td>
+																		<!-- CHANGE TO NORMAL SELECT. 1:1 -->
+																		<td width="40%">
+																			<!-- DEPARTMENT @TASK LEVEL -->
+																			<?php
+		  																	foreach ($allTasks as $row)
+		  																	{
+		  																		if($tValue['TASKTITLE'] == $row['TASKTITLE'])
+		  																		{
+		  																			$depts = array();
 
-  														</tr>
+		  																			foreach ($departments as $row2)
+		  																			{
+		  																				if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+		  																				{
+		  																					$depts[] = $row2['DEPARTMENTNAME'];
+		  																				}
+		  																			}
+
+		  																			//TODO: Fix implode shit
+		  																			foreach ($depts as $x)
+		  																			{
+		  																				echo $x . ", ";
+		  																			}
+		  																		}
+		  																	}
+		  																?>
+																		</td>
+																		<td>
+																			<!-- START DATE @TASK LEVEL -->
+																			<?php echo $tValue['TASKSTARTDATE']; ?>
+																		</td>
+																		<td>
+																			<!-- END DATE @TASK LEVEL -->
+																			<?php echo $tValue['TASKENDDATE']; ?>
+																		</td>
+																		<!-- DEPENDENCY INPUT -->
+																		<td width="50%">
+																			<input type="hidden" name="taskID[]" value="<?php echo $tValue['TASKID']; ?>">
+																			<select class="form-control select2" multiple="multiple" name = "dependencies[<?php echo $c; ?>][]" data-placeholder="Select Task">
+																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>
+																							<option value ='<?php echo $gValue['TASKID']; ?>'>
+																								<?php echo $gValue['TASKTITLE']; ?>
+																							</option>
+																					<?php endforeach; ?>
+																			</select>
+																		</td>
+
+																	</tr>
+																	<?php $c++; ?>
+															<?php endif; ?>
+														<?php endforeach; ?>
+
   												<?php endif; ?>
   											<?php endforeach; ?>
   										</tbody>

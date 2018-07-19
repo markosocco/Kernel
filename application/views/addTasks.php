@@ -58,10 +58,11 @@
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
-											<th>Main Activity Title</th>
-											<th>Department</th>
-											<th>Start Date</th>
-											<th>Target End Date</th>
+											<th width="30%">Main Activity Title</th>
+											<th width="30%">Department</th>
+											<th width="15%">Start Date</th>
+											<th width="15%">Target End Date</th>
+											<th width="10%">Period</th>
 											<th></th>
 		                </tr>
 
@@ -72,7 +73,7 @@
 													<input type="hidden" name="row[]" value="0">
 			                	</div>
 											</td>
-											<td width="40%">
+											<td>
 				                <select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
 
 													<?php foreach ($departments as $row): ?>
@@ -105,6 +106,11 @@
 					                </div>
 												</div>
 											</td>
+											<td>
+												<div class="form-group">
+			                  	<input type="text" class="form-control" value="1k days" readonly>
+			                	</div>
+											</td>
 											<td class='btn'>
 												<a id = "del0" class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
 											</td>
@@ -117,7 +123,7 @@
 
 										<tfoot>
 											<tr align="center">
-												<td class="btn" id="addRow" colSpan="3"><a class="btn addButton"  data-counter = "1"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
+												<td class="btn" id="addRow" colSpan="6"><a class="btn addButton"  data-counter = "1"><i class="glyphicon glyphicon-plus-sign"></i> Add more main activities</a></td>
 											</tr>
 										</tfoot>
 
@@ -128,8 +134,8 @@
 								<div class="box-footer">
 									<button type="button" class="btn btn-success">Previous: Project details</button>
 									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>>Next: Add Sub Activities</button>
-									<button type="button" class="btn btn-primary pull-right" style="margin-right: 15%"><i class="fa fa-file-excel-o"></i> Import Spreadsheet File</button>
-									<button type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-window-maximize"></i> Use a Template</button>
+									<button type="button" class="btn btn-primary pull-right" style="margin-right: 25%"><i class="fa fa-file-excel-o"></i> Import Spreadsheet File</button>
+									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-window-maximize"></i> Use a Template</button> -->
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button> -->
 								</div>
 								</form>
