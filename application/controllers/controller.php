@@ -798,6 +798,13 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post("project_ID");
+			$flash =$this->input->post("flash");
+
+			if (isset($flash))
+			{
+				$flash = $this->input->post("flash");
+				$this->session->set_flashdata('flash', $flash);
+			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
@@ -912,7 +919,8 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("rfc");
+			$data['changeRequests'] = $this->model->getAllChangeRequests();
+			$this->load->view("rfc", $data);
 		}
 	}
 

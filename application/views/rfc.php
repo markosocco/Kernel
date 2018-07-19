@@ -27,15 +27,34 @@
 						<table id="rfcList" class="table table-bordered table-hover">
 							<thead>
 							<tr>
+								<th>Request Type</th>
+								<th>Date Requested</th>
 								<th>Task Name</th>
+								<th>Task Start Date</th>
+								<th>Task Target End Date</th>
 								<th>Project</th>
-								<th>Start Date</th>
-								<th>Target End Date</th>
-								<th>Templated On</th>
-								<th>Templated By</th>
 							</tr>
 							</thead>
 							<tbody>
+								<?php foreach($changeRequests as $changeRequest):
+									$dateRequested = date_create($changeRequest['REQUESTEDDATE']);
+									$startDate = date_create($changeRequest['TASKSTARTDATE']);
+									$endDate = date_create($changeRequest['TASKENDDATE']);
+									if($changeRequest['REQUESTTYPE'] == 1)
+										$type = "Change Performer";
+									else
+										$type = "Change Date/s";
+
+								?>
+									<tr>
+										<td><?php echo $type;?></td>
+										<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
+										<td><?php echo $changeRequest['TASKTITLE'];?></td>
+										<td><?php echo date_format($startDate, "M d, Y"); ?></td>
+										<td><?php echo date_format($endDate, "M d, Y"); ?></td>
+										<td><?php echo $changeRequest['PROJECTTITLE'];?></td>
+									</tr>
+								<?php endforeach;?>
 
 							</tbody>
 						</table>
