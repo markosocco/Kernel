@@ -38,13 +38,13 @@
 		            <div class="box-header">
 		              <h3 class="box-title">Enter tasks for this project</h3>
 		              <div class="box-tools">
-		                <div class="input-group input-group-sm" style="width: 150px;">
+		                <!-- <div class="input-group input-group-sm" style="width: 150px;">
 		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
 		                  <div class="input-group-btn">
 		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
 		                  </div>
-		                </div>
+		                </div> -->
 		              </div>
 		            </div>
 		            <!-- /.box-header -->
@@ -65,12 +65,12 @@
 
 										<thead>
 			                <tr>
-												<th></th>
-												<th>Task Title</th>
-												<th>Department</th>
-												<th>Start Date</th>
-												<th>Target End Date</th>
-												<th></th>
+												<th width="65px"></th>
+												<th width="30%">Task Title</th>
+												<th width="30%">Department</th>
+												<th width="15%">Start Date</th>
+												<th width="15%">Target End Date</th>
+												<th width="65px"></th>
 			                </tr>
 										</thead>
 
@@ -80,7 +80,7 @@
 											<tr>
 												<td></td>
 												<td><b><?php echo $value['TASKTITLE']; ?></b></td>
-												<td>
+												<td><b>
 													<?php
 														foreach ($tasks as $row)
 														{
@@ -104,9 +104,9 @@
 															}
 														}
 													?>
-												</td>
-												<td><?php echo $value['TASKSTARTDATE']; ?></td>
-												<td><?php echo $value['TASKENDDATE']; ?></td>
+												</b></td>
+												<td><b><?php echo $value['TASKSTARTDATE']; ?></b></td>
+												<td><b><?php echo $value['TASKENDDATE']; ?></b></td>
 												<td></td>
 											</tr>
 										</tbody>
@@ -119,12 +119,22 @@
 												<!-- SUB ACT TABLE START -->
 
 													<?php if ($sValue['tasks_TASKPARENT'] == $value['TASKID']): ?>
-														<table id = "ma<?php echo $key; ?>_s<?php echo $sKey; ?>">
+														<table class="table table-hover" id = "ma<?php echo $key; ?>_s<?php echo $sKey; ?>">
+															<thead>
+																<tr>
+																	<th width=""></th>
+																	<th width="30%"></th>
+																	<th width="30%"></th>
+																	<th width="15%"></th>
+																	<th width="15%"></th>
+																	<th width=""></th>
+																</tr>
+															</thead>
 														<tbody>
 														<tr>
 															<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 															<td><i><?php echo $sValue['TASKTITLE']; ?></i></td>
-															<td>
+															<td><i>
 																<?php
 																	foreach ($tasks as $row)
 																	{
@@ -148,9 +158,9 @@
 																		}
 																	}
 																?>
-															</td>
-															<td><?php echo $sValue['TASKSTARTDATE']; ?></td>
-															<td><?php echo $sValue['TASKENDDATE']; ?></td>
+															</i></td>
+															<td><i><?php echo $sValue['TASKSTARTDATE']; ?></i></td>
+															<td><i><?php echo $sValue['TASKENDDATE']; ?></i></td>
 															<td></td>
 														</tr>
 														<tr>
@@ -165,7 +175,7 @@
 																</div>
 															</td>
 															<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-															<td width="40%">
+															<td style="padding-bottom:15px;">
 																<select id ="select<?php echo $c; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																	<?php foreach ($departments as $row): ?>
 
