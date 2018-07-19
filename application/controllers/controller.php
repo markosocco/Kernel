@@ -845,7 +845,60 @@ class controller extends CI_Controller
 		$taskID = $this->input->post('taskID');
 		$dependencies = $this->input->post('dependencies');
 
-		
+		$allTasks = $this->model->getAllProjectTasksGroupByTaskID($id);
+
+		foreach ($allTasks as $key => $value)
+		{
+			if ($value['CATEGORY'] == '3')
+			{
+				// echo " -- " . $value['TASKID'] . " -- <br>";
+				foreach ($taskID as $tKey => $tValue)
+				{
+					if ($value['TASKID'] == $tValue)
+					{
+						// echo $value['TASKID'] . " == " . $tValue . "<br>";
+
+						foreach ($dependencies as $dKey => $dValue)
+						{
+							if ($tKey == $dKey)
+							{
+								// echo $tKey . " == " . $dKey . "<br>";
+								foreach ($dValue as $d)
+								{
+									$data = array(
+										'PRETASKID' => $d,
+										'tasks_POSTTASKID' => $value['TASKID']
+									);
+
+									// echo $d . ", ";
+
+									// ENTER DEPENDENCIES TO DB
+									$result = $this->model->addToDependencies($data);
+								}
+							}
+						}
+						// echo "<br>";
+					}
+				}
+			}
+		}
+
+		$data['projectProfile'] = $this->model->getProjectByID($id);
+		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+		$data['dependencies'] = $this->model->getDependencies();
+		$data['users'] = $this->model->getAllUsers();
+		$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+		$data['accountable'] = $this->model->getAllAccountableByProject($id);
+		$data['consulted'] = $this->model->getAllConsultedByProject($id);
+		$data['informed'] = $this->model->getAllInformedByProject($id);
+
+		// foreach ($data['ganttData'] as $key => $value) {
+		// 	echo $value['tasks_TASKID'] . " parent is ";
+		// 	echo $value['tasks_TASKPARENT'] . "<br>";
+		// }
+
+		$this->load->view("projectGantt", $data);
+		// $this->load->view("gantt2", $data);
 	}
 
 	public function rfc()
@@ -864,7 +917,6 @@ class controller extends CI_Controller
 	/******************** MY PROJECTS START ********************/
 
 	// ADDS MAIN ACTIVITIES TO PROJECT
-	// TODO: Thes2 - fix deleting and adding of rows OR hide delete button if not last row
 	public function addTasksToProject()
 	{
 		// GET PROJECT ID
