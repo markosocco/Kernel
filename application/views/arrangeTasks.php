@@ -185,8 +185,8 @@
 
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success">Previous: Add Main Activities</button>
-									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks">Next: Add Tasks</button>
+									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Previous: Add Main Activities</button>
+									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Next: Add Tasks</button>
 									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button>
 								</div>
 								</form>

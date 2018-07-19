@@ -141,7 +141,7 @@
 														<tbody>
 														<tr>
 															<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-															<td><i><?php echo $sValue['TASKTITLE']; ?></i></td>
+															<td style="padding-left:20px;"><i><?php echo $sValue['TASKTITLE']; ?></i></td>
 															<td><i>
 																<?php
 																	foreach ($tasks as $row)
@@ -238,8 +238,8 @@
 
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success">Previous: Add Sub Activities</button>
-									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks">Generate Gantt Chart</button>
+									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Previous: Add Sub Activities</button>
+									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Next: Add Dependencies</button>
 									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button>
 								</div>
 								</form>

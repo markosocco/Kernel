@@ -210,8 +210,8 @@
 
   		            <!-- /.box-body -->
   								<div class="box-footer">
-  									<button type="button" class="btn btn-success">Previous: Add Tasks</button>
-  									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks">Generate Gantt Chart</button>
+  									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Previous: Add Tasks</button>
+  									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Generate Gantt Chart</button>
   									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button> -->
   								</div>
   								</form>

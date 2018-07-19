@@ -69,6 +69,22 @@
 						</div>
 					</div>
 					<!-- RFC GANTT END -->
+
+					<div class="pull-right" style="text-align:center;">
+						<div class="progress" data-percentage="20">
+                <span class="progress-left">
+                    <span class="progress-bar"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar"></span>
+                </span>
+                <div class="progress-value">
+                    <div>
+                        20%<br>
+                        <span>Completed</span>
+                    </div>
+					</div>
+
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
 							<?php if ($projectProfile['PROJECTSTATUS'] != 'Complete'): ?>
@@ -80,6 +96,7 @@
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 						<li class="active"><?php echo $projectProfile['PROJECTTITLE']; ?></li>
 					</ol>
+
 				</section>
 
 				<!-- Main content -->
