@@ -113,8 +113,8 @@
 													$dDiff = intval($diff->format('%d'));
 												?>
 
-												<td><b><?php echo date_format($startdate, "F d, Y"); ?></b></td>
-												<td><b><?php echo date_format($enddate, "F d, Y"); ?></b></td>
+												<td><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
+												<td><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
 												<td></td>
 											</tr>
 										</tbody>
@@ -175,8 +175,8 @@
 																$dDiff = intval($diff->format('%d'));
 															?>
 
-															<td><i><?php echo date_format($sdate, "F d, Y"); ?></i></td>
-															<td><i><?php echo date_format($edate, "F d, Y"); ?></i></td>
+															<td><i><?php echo date_format($sdate, "M d, Y"); ?></i></td>
+															<td><i><?php echo date_format($edate, "M d, Y"); ?></i></td>
 															<td></td>
 														</tr>
 														<tr>

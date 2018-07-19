@@ -10,10 +10,11 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					<div style="margin-bottom:10px">
-						<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
 
-						<?php if(isset($_SESSION['flash'])): ?>
+						<?php if(isset($_SESSION['archives'])): ?>
 								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Archives</a>
+						<?php elseif(isset($_SESSION['rfc'])): ?>
+								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
@@ -87,7 +88,7 @@
 
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
-							<?php if ($projectProfile['PROJECTSTATUS'] != 'Complete'): ?>
+							<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
 								<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
 							<?php endif; ?>
 					</h1>
@@ -134,12 +135,13 @@
 						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog"><i class="fa fa-flag"></i> View Logs</a>
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
-							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 
 							<form action = 'archiveProject' method="POST">
 							</form>
 
 								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
+						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived'): ?>
+							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 						<?php else: ?>
 								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
 						<?php endif; ?>

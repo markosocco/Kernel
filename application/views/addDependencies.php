@@ -77,8 +77,8 @@
 
   										<tbody>
   											<tr>
-  												<td><b><?php echo $value['TASKTITLE']; ?></b></td>
-  												<td><b>
+  												<td width="25%"><b><?php echo $value['TASKTITLE']; ?></b></td>
+  												<td width="25%"><b>
   													<?php
   														foreach ($allTasks as $row)
   														{
@@ -103,9 +103,17 @@
   														}
   													?>
   												</b></td>
-  												<td><b><?php echo $value['TASKSTARTDATE']; ?></b></td>
-  												<td align="center"><b><?php echo $value['TASKENDDATE']; ?></b></td>
-  												<td></td>
+
+													<?php
+														$startdate = date_create($value['TASKSTARTDATE']);
+														$enddate = date_create($value['TASKENDDATE']);
+														$diff = date_diff($enddate, $startdate);
+														$dDiff = intval($diff->format('%d'));
+													?>
+
+  												<td width="10%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
+  												<td width="10%" align="center"><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
+  												<td width="30%"></td>
   											</tr>
 
   											<?php foreach ($subActivity as $sKey => $sValue): ?>
@@ -137,8 +145,16 @@
   																	}
   																?>
   															</i></td>
-  															<td><i><?php echo $sValue['TASKSTARTDATE']; ?></i></td>
-  															<td align="center"><i><?php echo $sValue['TASKENDDATE']; ?></i></td>
+
+																<?php
+																	$startdate = date_create($sValue['TASKSTARTDATE']);
+																	$enddate = date_create($sValue['TASKENDDATE']);
+																	$diff = date_diff($enddate, $startdate);
+																	$dDiff = intval($diff->format('%d'));
+																?>
+
+  															<td><i><?php echo date_format($startdate, "M d, Y"); ?></i></td>
+  															<td align="center"><i><?php echo date_format($enddate, "M d, Y"); ?></i></td>
   															<td></td>
   														</tr>
 
@@ -176,22 +192,32 @@
 		  																	}
 		  																?>
 																		</td>
+
+																		<?php
+																			$startdate = date_create($tValue['TASKSTARTDATE']);
+																			$enddate = date_create($tValue['TASKENDDATE']);
+																			$diff = date_diff($enddate, $startdate);
+																			$dDiff = intval($diff->format('%d'));
+																		?>
+
 																		<td>
 																			<!-- START DATE @TASK LEVEL -->
-																			<?php echo $tValue['TASKSTARTDATE']; ?>
+																			<?php echo date_format($startdate, "M d, Y"); ?>
 																		</td>
 																		<td align="center">
 																			<!-- END DATE @TASK LEVEL -->
-																			<?php echo $tValue['TASKENDDATE']; ?>
+																			<?php echo date_format($enddate, "M d, Y"); ?>
 																		</td>
 																		<!-- DEPENDENCY INPUT -->
 																		<td>
 																			<input type="hidden" name="taskID[]" value="<?php echo $tValue['TASKID']; ?>">
 																			<select class="form-control select2" multiple="multiple" name = "dependencies[<?php echo $c; ?>][]" data-placeholder="Select Task">
 																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>
+																						<?php if($gValue['CATEGORY'] == '3'): ?>
 																							<option value ='<?php echo $gValue['TASKID']; ?>'>
 																								<?php echo $gValue['TASKTITLE']; ?>
 																							</option>
+																						<?php endif; ?>
 																					<?php endforeach; ?>
 																			</select>
 																		</td>

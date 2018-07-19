@@ -116,8 +116,8 @@
 												$dDiff = intval($diff->format('%d'));
 											?>
 
-											<td width="15%"><b><?php echo date_format($startdate, "F d, Y"); ?></b></td>
-											<td width="15%"><b><?php echo date_format($enddate, "F d, Y") ?></b></td>
+											<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
+											<td width="15%"><b><?php echo date_format($enddate, "M d, Y") ?></b></td>
 											<td width="10%">
 												<div class="form-group">
 													<b>

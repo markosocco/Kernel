@@ -29,6 +29,7 @@
 							<tr>
 								<th>Request Type</th>
 								<th>Date Requested</th>
+								<th>Requester</th>
 								<th>Task Name</th>
 								<th>Task Start Date</th>
 								<th>Task Target End Date</th>
@@ -44,11 +45,16 @@
 										$type = "Change Performer";
 									else
 										$type = "Change Date/s";
-
 								?>
-									<tr>
+									<tr class="request" data-id = "<?php echo $changeRequest['PROJECTID']; ?>">
+
+										<form action = 'projectGantt' method="POST">
+											<input type ='hidden' name='rfc' value='0'>
+										</form>
+
 										<td><?php echo $type;?></td>
 										<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
+										<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
 										<td><?php echo $changeRequest['TASKTITLE'];?></td>
 										<td><?php echo date_format($startDate, "M d, Y"); ?></td>
 										<td><?php echo date_format($endDate, "M d, Y"); ?></td>
@@ -73,6 +79,13 @@
 
 		<script>
 		$("#rfc").addClass("active");
+
+		$(document).on("click", ".request", function() {
+			var $id = $(this).attr('data-id');
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+			});
 
 		$(function () {
 			$('#rfcList').DataTable({

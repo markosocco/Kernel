@@ -276,6 +276,40 @@ class controller extends CI_Controller
 			);
 
 			$updateTasks = $this->model->updateTaskDone($id, $data);
+
+			// Check and Complete Main and Sub Activities
+			$parentID = $this->model->getParentTask($id);
+			$completeTasks = $this->model->checkTasksStatus($parentID['tasks_TASKPARENT']);
+			if($completeTasks == 0)
+			{
+				$subData = array(
+							'TASKSTATUS' => 'Complete',
+							'TASKACTUALENDDATE' => date('Y-m-d')
+				);
+				$this->model->updateTaskDone($parentID['tasks_TASKPARENT'], $subData); // Complete Sub Activity
+
+				$mainID = $this->model->getParentTask($parentID['tasks_TASKPARENT']);
+				$completeSubs = $this->model->checkTasksStatus($mainID['tasks_TASKPARENT']);
+				if($completeSubs == 0)
+				{
+					$mainData = array(
+								'TASKSTATUS' => 'Complete',
+								'TASKACTUALENDDATE' => date('Y-m-d')
+					);
+					$this->model->updateTaskDone($mainID['tasks_TASKPARENT'], $mainData); // Complete Main Activity
+
+					// Check and Complete a Project
+					$completeProject = $this->model->checkProjectStatus($mainID['projects_PROJECTID']);
+					if($completeProject == 0)
+					{
+						$projectData = array(
+									'PROJECTSTATUS' => 'Complete',
+									'PROJECTACTUALENDDATE' => date('Y-m-d')
+						);
+						$this->model->completeProject($mainID['projects_PROJECTID'], $projectData); // Complete Project
+					}
+				}
+			}
 		}
 		$this->myTasks();
 	}
@@ -798,12 +832,21 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post("project_ID");
-			$flash =$this->input->post("flash");
+			$archives =$this->input->post("archives");
+			$rfc =$this->input->post("rfc");
 
-			if (isset($flash))
+			// ARCHIVES
+			if (isset($archives))
 			{
-				$flash = $this->input->post("flash");
-				$this->session->set_flashdata('flash', $flash);
+				$archives = $this->input->post("archives");
+				$this->session->set_flashdata('archives', $archives);
+			}
+
+			// RFC
+			elseif (isset($rfc))
+			{
+				$rfc = $this->input->post("rfc");
+				$this->session->set_flashdata('rfc', $rfc);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -1236,7 +1279,7 @@ class controller extends CI_Controller
 			);
 
 			// TODO NAMI: LOGS
-			$result = $this->model->archiveProject($id, $status);
+			$result = $this->model->archiveProject($id, $data);
 
 			if ($result)
 			{
