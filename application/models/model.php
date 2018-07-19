@@ -329,11 +329,7 @@ class model extends CI_Model
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
   public function getAllOngoingProjectsByUser($userID)
   {
-<<<<<<< HEAD
     $condition = "raci.users_USERID = '$userID' && projects.PROJECTSTARTDATE <= CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing'";
-=======
-    $condition = "raci.users_USERID = '$userID' && projects.PROJECTSTARTDATE < CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing' || projects.users_USERID = " . $_SESSION['USERID'];
->>>>>>> 62b6dcfe2084adafedae8cb6450bb751b9ef37b0
     $this->db->select('projects.*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
