@@ -1226,15 +1226,35 @@ class controller extends CI_Controller
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 
-		// $option = $this->input->post('departments[]');
+		//GET PROJECT ID
+		$id = $this->input->post("project_ID");
+		$projectID = $this->model->getProjectByID($id);
 
-			foreach($this->input->post("departments[]") as $departments){
-				echo "dept name - " . $departments . "<br>";
+		foreach($this->input->post("departments[]") as $departmentID){
+			foreach($this->input->post("users[]") as $userID){
+				if($)
 			}
 
+		}
+
+		// foreach($this->input->post("departments[]") as $departmentID){
+		// 	echo "dept id - " . $departments . "<br>";
 		//
-		// echo 'hello';
-		// echo $option;
+		// 	foreach($this->model->getAllUserstsByProjectByDepartment($id, $departments) as $usersByDepartment){
+		// 		echo "dept users - " . $usersByDepartment['USERID'] . "<br>";
+		//
+		// 		// foreach ($this->input->post("users[]") as $users) {
+		// 		// 	// echo " user id - " . $users . "<br>";
+		// 		// 	if($usersByDepartment['USERID'] == $users){
+		// 		// 		echo "same <br>";
+		// 		// 	} else {
+		// 		// 		echo $users . "<br>";
+		// 		// 	}
+		// 		// }
+		// 	}
+		// }
+
+
 
 		// if (!$this->upload->do_upload('document'))
 		// {
