@@ -845,9 +845,6 @@ class controller extends CI_Controller
 		$taskID = $this->input->post('taskID');
 		$dependencies = $this->input->post('dependencies');
 
-<<<<<<< HEAD
-
-=======
 		$allTasks = $this->model->getAllProjectTasksGroupByTaskID($id);
 
 		foreach ($allTasks as $key => $value)
@@ -902,7 +899,6 @@ class controller extends CI_Controller
 
 		$this->load->view("projectGantt", $data);
 		// $this->load->view("gantt2", $data);
->>>>>>> 2aa617e273737e97242364a7bc697136c22b7e65
 	}
 
 	public function rfc()
