@@ -23,31 +23,50 @@
 					<!-- RFC GANTT START -->
 					<div id="rfcGantt">
 						<div class="row">
-							<div class="">
-								<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
-									<!-- IF TYPE = PERFORMER -->
-									<label>Reason</label>
-									<p id="performerReason">Wrong tagged employee. Get it right bitch</p>
-									<div class="form-group">
-										<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+								<div class="col-md-6">
+									<div class="box box-danger">
+										<div class="box-header with-border">
+											<h3 class="box-title">Request Approval</h3>
+										</div>
+										<!-- /.box-header -->
+										<div class="box-body">
+											<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
+												<!-- IF TYPE = PERFORMER -->
+												<label>Reason</label>
+												<p id="performerReason">Wrong tagged employee. Get it right!</p>
+												<div class="form-group">
+													<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+												</div>
+												<!-- IF TYPE = DATE -->
+												<label>Reason</label>
+												<p id="dateReason"> Need more time. Get it right!</p>
+												<label>Dates</label>
+												<p>Original Start Date to Requested Start Date</p>
+												<p>Original End Date to Requested End Date</p>
+										</div>
+										<!-- /.box-body -->
+										<!-- /.box-footer -->
 									</div>
-									<!-- IF TYPE = DATE -->
-									<label>Reason</label>
-									<p id="dateReason"> Need more time. Get it right bitch</p>
-									<label>Dates</label>
-									<p>Original Start Date to Requested Start Date</p>
-									<p>Original End Date to Requested End Date</p>
-									<div class="form-group">
-										<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
-									</div>
-									<div class="modal-footer">
-										<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id=""><i class="fa fa-thumbs-down"></i> Deny Request</button>
-										<button id = "approveRequest" type="submit" class="btn btn-success" data-id=""><i class="fa fa-thumbs-up"></i> Approve Request</button>
-									</div>
+									<!-- /.box -->
 								</div>
-							</div>
-						</form>
 
+								<div class="col-md-6">
+									<div class="box box-danger">
+										<!-- /.box-header -->
+										<div class="box-body">
+											<div class="form-group">
+												<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
+											</div>
+											<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id="" style="display:block"><i class="fa fa-thumbs-down"></i> Deny Request</button>
+											<button id = "approveRequest" type="submit" class="btn btn-success pull-right" data-id="" style="display:block;"><i class="fa fa-thumbs-up"></i> Approve Request</button>
+											</form>
+										</div>
+										<!-- /.box-body -->
+										<!-- /.box-footer -->
+									</div>
+									<!-- /.box -->
+								</div>
+						</div>
 					</div>
 					<!-- RFC GANTT END -->
 					<h1>
