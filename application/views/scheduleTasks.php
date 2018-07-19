@@ -307,7 +307,7 @@
 			    $(this).datepicker({
 						format: 'yyyy-mm-dd',
 	  	       autoclose: true,
-						 orientation: 'bottom'
+						 orientation: 'auto'
 					});
 			});
 
@@ -315,7 +315,7 @@
 					$(this).datepicker({
 						format: 'yyyy-mm-dd',
 						 autoclose: true,
-						 orientation: 'bottom'
+						 orientation: 'auto'
 					});
 			});
 		 });
