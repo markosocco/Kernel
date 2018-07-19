@@ -147,6 +147,17 @@ class model extends CI_Model
     return $query->result_array();
   }
 
+  public function getAllUsersByUserType($filter)
+  {
+    $condition = $filter;
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
   public function getAllUsersByDepartment($filter)
   {
     $condition = $filter;
@@ -488,6 +499,7 @@ class model extends CI_Model
     return $query->result_array();
   }
 
+// GETS ALL DEPARTMENTS INVOLVED IN A PROJECT
   public function getAllDepartmentsByProject($projectID)
   {
     $condition = "tasks.projects_PROJECTID = " . $projectID;
@@ -502,10 +514,26 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getAllDepartmentsByProjectByDepartment($projectID, $departmentID)
+// GETS ALL THE USERS OF A DEPARTMENT THAT ARE INVOLVED IN A PROJECT
+  public function getAllUserstsByProjectByDepartment($projectID, $departmentID)
   {
     $condition = "projects_PROJECTID = " . $projectID . " AND departments_DEPARTMENTID = " . $departmentID;
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('users_USERID');
+
+    return $this->db->get()->result_array();
+  }
+
+// GETS ALL USERS INVOLVED IN A PROJECT
+  public function getAllUsersByProject($projectID)
+  {
+    $condition = "tasks.projects_PROJECTID = " . $projectID;
+    $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('users', 'raci.users_USERID = users.USERID');

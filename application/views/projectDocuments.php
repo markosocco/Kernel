@@ -154,12 +154,13 @@
 										<p><b>Upload this document for</b></p>
 										<div class="row">
 											<div class="col-lg-6">
-												<select id ="" class="form-control select2" multiple="multiple" name = "" data-placeholder="Select Departments" style="width:100%">
+												<p>Departments</p>
+												<select id ="" class="form-control select2 departments" multiple="multiple" name = "departments[]" data-placeholder="Select Departments" style="width:100%">
 
-													<option class="sendAllDepartment" name="sendTo" value="all">All</option>
+													<option value="all">All</option>
 													<?php foreach ($departments as $row): ?>
 
-														<option class="sendAllDepartment" name="sendTo" value="<?php echo $row['DEPARTMENTNAME']?>">
+														<option value="<?php echo $row['DEPARTMENTID']?>">
 															<?php echo $row['DEPARTMENTNAME']; ?>
 														</option>
 
@@ -169,9 +170,18 @@
 											<!-- /.col-lg-6 -->
 											<div class="col-lg-6">
 												<!-- <div class="input-group"> -->
-													<select id ="" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments" style="width:100%">
+												<p>Users</p>
+													<select id ="" class="form-control select2 users" multiple="multiple" name = "users[]" data-placeholder="Select Departments" style="width:100%">
 
-														<option disabled>Select specific person/s</option>
+														<option value="all">All</option hidden>
+														<?php foreach ($users as $row): ?>
+
+															<option value="<?php echo $row['USERID']?>">
+																<?php echo $row['FIRSTNAME'] . " " . $row['LASTNAME']; ?>
+															</option>
+
+														<?php endforeach; ?>
+
 
 													</select>
 												<!-- </div> -->
@@ -208,6 +218,22 @@
 		<script>
 			$("#myProjects").addClass("active");
 			$('.select2').select2();
+
+		// START: document ready
+			$(document).ready(function(){
+
+			// START: on click departments
+				$('.departments').on("click", function(){
+					alert('clicked');
+
+				});
+				// END: on click departments
+
+			});
+			// END: document ready
+
+
+
 		</script>
 	</body>
 </html>
