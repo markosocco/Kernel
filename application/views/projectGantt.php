@@ -72,7 +72,7 @@
 					<!-- RFC GANTT END -->
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
-							<?php if ($projectProfile['PROJECTSTATUS'] != 'Complete'): ?>
+							<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
 								<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
 							<?php endif; ?>
 					</h1>
@@ -118,12 +118,13 @@
 						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog"><i class="fa fa-flag"></i> View Logs</a>
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
-							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 
 							<form action = 'archiveProject' method="POST">
 							</form>
 
 								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
+						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived'): ?>
+							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 						<?php else: ?>
 								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
 						<?php endif; ?>
