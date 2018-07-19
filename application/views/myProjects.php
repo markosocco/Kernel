@@ -42,12 +42,12 @@
 
 							<div class="btn-group"> <!-- SORT/LEGEND -->
 
-								<button type="button" class="btn btn-primary">All</button>
-								<button type="button" class="btn btn.bg-white">Draft</button>
+								<button type="button" class="btn btn-default">All</button>
+								<button type="button" class="btn bg-silver">Draft</button>
+								<button type="button" class="btn btn-info">Parked</button>
 								<button type="button" class="btn btn-warning">Planned</button>
 								<button type="button" class="btn btn-success">Ongoing</button>
 								<button type="button" class="btn btn-danger">Delayed</button>
-								<button type="button" class="btn btn-default">Parked</button>
 
 							</div>
 
@@ -73,6 +73,46 @@
 								</a>
 								</div>
 								<!-- ./col -->
+
+								<div class="col-lg-3 col-xs-6">
+									<!-- small box -->
+									<a class = "project" data-id = "">
+									<div class="small-box bg-white">
+										<div class="inner">
+
+											<h2>Project Title Here</h2>
+
+											<form action = 'projectGantt'  method="POST">
+											</form>
+
+											<p></p>
+										</div>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-browsers"></i>
+										</div>
+									</div>
+								</a>
+								</div>
+
+								<div class="col-lg-3 col-xs-6">
+									<!-- small box -->
+									<a class = "project" data-id = "">
+									<div class="small-box bg-black">
+										<div class="inner">
+
+											<h2>Project Title Here</h2>
+
+											<form action = 'projectGantt'  method="POST">
+											</form>
+
+											<p></p>
+										</div>
+										<div class="icon" style="margin-top:25px;">
+											<i class="ion ion-browsers"></i>
+										</div>
+									</div>
+								</a>
+								</div>
 						</div>
 
 						<hr style="height:1px; background-color:black">
@@ -83,7 +123,7 @@
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
 									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
-									<div class="small-box bg-blue">
+									<div class="small-box bg-teal">
 										<div class="inner">
 
 											<h2>100%</h2>
@@ -94,7 +134,7 @@
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?> day/s</i></p>
 										</div>
 										<div class="icon" style="margin-top:25px;">
-											<i class="ion ion-alert-circled"></i>
+											<i class="ion ion-checkmark"></i>
 										</div>
 									</div>
 								</a>
@@ -198,7 +238,7 @@
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
 									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
-									<div class="small-box btn-default">
+									<div class="small-box btn-info">
 										<div class="inner">
 
 											<h2>
@@ -230,7 +270,7 @@
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
 									<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
-									<div class="small-box btn.bg-white">
+										<div class="small-box bg-gray">
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
@@ -398,7 +438,7 @@
 											<form action = 'projectGantt' method="POST">
 											</form>
 
-											<td class="bg-blue"></td>
+											<td class="bg-aqua"></td>
 											<td><?php echo $value['PROJECTTITLE']; ?></td>
 											<td><?php echo date_format($parkedStart, "M d, Y");?></td>
 											<td><?php echo date_format($parkedEnd, "M d, Y");?></td>
@@ -428,7 +468,7 @@
 										<form action = 'projectGantt' method="POST">
 										</form>
 
-										<td class="bg-blue"></td>
+										<td class="bg-silver"></td>
 										<td><?php echo $value['PROJECTTITLE']; ?></td>
 										<td><?php echo date_format($draftedStart, "M d, Y");?></td>
 										<td><?php echo date_format($draftedEnd, "M d, Y");?></td>
