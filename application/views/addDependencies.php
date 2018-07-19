@@ -65,11 +65,11 @@
 
   										<thead>
   			                <tr>
-  												<th>Task Title</th>
-  												<th>Department</th>
-  												<th>Start Date</th>
-  												<th>Target End Date</th>
-  												<th>Dependency</th>
+  												<th width="25%">Task Title</th>
+  												<th width="25%">Department</th>
+  												<th width="10%">Start Date</th>
+  												<th width="10%" class="text-center">Target End Date</th>
+  												<th width="30%">Dependency</th>
   			                </tr>
   										</thead>
 
@@ -78,7 +78,7 @@
   										<tbody>
   											<tr>
   												<td><b><?php echo $value['TASKTITLE']; ?></b></td>
-  												<td>
+  												<td><b>
   													<?php
   														foreach ($allTasks as $row)
   														{
@@ -102,17 +102,17 @@
   															}
   														}
   													?>
-  												</td>
-  												<td><?php echo $value['TASKSTARTDATE']; ?></td>
-  												<td><?php echo $value['TASKENDDATE']; ?></td>
+  												</b></td>
+  												<td><b><?php echo $value['TASKSTARTDATE']; ?></b></td>
+  												<td align="center"><b><?php echo $value['TASKENDDATE']; ?></b></td>
   												<td></td>
   											</tr>
 
   											<?php foreach ($subActivity as $sKey => $sValue): ?>
   													<?php if ($sValue['tasks_TASKPARENT'] == $value['TASKID']): ?>
   														<tr>
-  															<td><i><?php echo $sValue['TASKTITLE']; ?></i></td>
-  															<td>
+  															<td style="padding-left:20px;"><i><?php echo $sValue['TASKTITLE']; ?></i></td>
+  															<td><i>
   																<?php
   																	foreach ($allTasks as $row)
   																	{
@@ -136,21 +136,21 @@
   																		}
   																	}
   																?>
-  															</td>
-  															<td><?php echo $sValue['TASKSTARTDATE']; ?></td>
-  															<td><?php echo $sValue['TASKENDDATE']; ?></td>
+  															</i></td>
+  															<td><i><?php echo $sValue['TASKSTARTDATE']; ?></i></td>
+  															<td align="center"><i><?php echo $sValue['TASKENDDATE']; ?></i></td>
   															<td></td>
   														</tr>
 
 															<?php foreach ($tasks as $tKey => $tValue): ?>
 																<?php if($tValue['tasks_TASKPARENT'] == $sValue['TASKID']): ?>
 																	<tr>
-																		<td>
+																		<td style="padding-left:40px;">
 																			<!-- TASK NAME @TASK LEVEL -->
 																			<?php echo $tValue['TASKTITLE']; ?>
 																		</td>
 																		<!-- CHANGE TO NORMAL SELECT. 1:1 -->
-																		<td width="40%">
+																		<td>
 																			<!-- DEPARTMENT @TASK LEVEL -->
 																			<?php
 		  																	foreach ($allTasks as $row)
@@ -180,12 +180,12 @@
 																			<!-- START DATE @TASK LEVEL -->
 																			<?php echo $tValue['TASKSTARTDATE']; ?>
 																		</td>
-																		<td>
+																		<td align="center">
 																			<!-- END DATE @TASK LEVEL -->
 																			<?php echo $tValue['TASKENDDATE']; ?>
 																		</td>
 																		<!-- DEPENDENCY INPUT -->
-																		<td width="50%">
+																		<td>
 																			<input type="hidden" name="taskID[]" value="<?php echo $tValue['TASKID']; ?>">
 																			<select class="form-control select2" multiple="multiple" name = "dependencies[<?php echo $c; ?>][]" data-placeholder="Select Task">
 																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>

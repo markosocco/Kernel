@@ -152,15 +152,15 @@ class model extends CI_Model
     $condition = $filter;
     $this->db->select('*');
     $this->db->from('users');
-    $this->db->where($condition);
+    $this->db->where($condition . "&& users.USERID !='" . $_SESSION['USERID'] . "'");
     $query = $this->db->get();
 
     return $query->result_array();
   }
 
-  public function getAllUsersByDepartment($filter)
+  public function getAllUsersByDepartment($deptID)
   {
-    $condition = $filter;
+    $condition = "users.departments_DEPARTMENTID = '$deptID'";
     $this->db->select('*');
     $this->db->from('users');
     $this->db->where($condition);
@@ -171,7 +171,7 @@ class model extends CI_Model
 
   public function getProjectCount($filter)
   {
-    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1'";
+    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && tasks.CATEGORY = '3'";
     $this->db->select('users.*, count(distinct projects.PROJECTID) AS "projectCount"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -185,7 +185,7 @@ class model extends CI_Model
 
   public function getTaskCount($filter)
   {
-    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1'";
+    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && tasks.CATEGORY = '3'";
     $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -557,6 +557,16 @@ class model extends CI_Model
     $this->db->select('*, CURDATE() as "currentDate"');
     $this->db->from('tasks');
     $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->row_array();
+  }
+
+  public function getUserByID($id)
+  {
+    $condition = "USERID = " . $id;
+    $this->db->select('*, CURDATE() as "currentDate"');
+    $this->db->from('users');
     $this->db->where($condition);
 
     return $this->db->get()->row_array();
