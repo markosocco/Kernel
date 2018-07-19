@@ -247,8 +247,8 @@ class controller extends CI_Controller
 			}
 
 			$data['departments'] = $this->model->getAllDepartments();
-			$data['deptEmployees'] = $this->model->getAllUsersByDepartment($filter);
-			$data['wholeDept'] = $this->model->getAllUsersByDepartment("users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
+			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+			$data['wholeDept'] = $this->model->getAllUsersByUserType("users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
 
@@ -833,6 +833,7 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartmentsByProject($id);
 			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
 			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+			$data['users'] = $this->model->getAllUsersByProject($id);
 
 			$this->load->view("projectDocuments", $data);
 		}
@@ -844,7 +845,64 @@ class controller extends CI_Controller
 		$taskID = $this->input->post('taskID');
 		$dependencies = $this->input->post('dependencies');
 
+<<<<<<< HEAD
 
+=======
+		$allTasks = $this->model->getAllProjectTasksGroupByTaskID($id);
+
+		foreach ($allTasks as $key => $value)
+		{
+			if ($value['CATEGORY'] == '3')
+			{
+				// echo " -- " . $value['TASKID'] . " -- <br>";
+				foreach ($taskID as $tKey => $tValue)
+				{
+					if ($value['TASKID'] == $tValue)
+					{
+						// echo $value['TASKID'] . " == " . $tValue . "<br>";
+
+						foreach ($dependencies as $dKey => $dValue)
+						{
+							if ($tKey == $dKey)
+							{
+								// echo $tKey . " == " . $dKey . "<br>";
+								foreach ($dValue as $d)
+								{
+									$data = array(
+										'PRETASKID' => $d,
+										'tasks_POSTTASKID' => $value['TASKID']
+									);
+
+									// echo $d . ", ";
+
+									// ENTER DEPENDENCIES TO DB
+									$result = $this->model->addToDependencies($data);
+								}
+							}
+						}
+						// echo "<br>";
+					}
+				}
+			}
+		}
+
+		$data['projectProfile'] = $this->model->getProjectByID($id);
+		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+		$data['dependencies'] = $this->model->getDependencies();
+		$data['users'] = $this->model->getAllUsers();
+		$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+		$data['accountable'] = $this->model->getAllAccountableByProject($id);
+		$data['consulted'] = $this->model->getAllConsultedByProject($id);
+		$data['informed'] = $this->model->getAllInformedByProject($id);
+
+		// foreach ($data['ganttData'] as $key => $value) {
+		// 	echo $value['tasks_TASKID'] . " parent is ";
+		// 	echo $value['tasks_TASKPARENT'] . "<br>";
+		// }
+
+		$this->load->view("projectGantt", $data);
+		// $this->load->view("gantt2", $data);
+>>>>>>> 2aa617e273737e97242364a7bc697136c22b7e65
 	}
 
 	public function rfc()
@@ -863,7 +921,6 @@ class controller extends CI_Controller
 	/******************** MY PROJECTS START ********************/
 
 	// ADDS MAIN ACTIVITIES TO PROJECT
-	// TODO: Thes2 - fix deleting and adding of rows OR hide delete button if not last row
 	public function addTasksToProject()
 	{
 		// GET PROJECT ID
@@ -1173,79 +1230,89 @@ class controller extends CI_Controller
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 
-		if (!$this->upload->do_upload('document'))
-		{
-			echo "<script>alert('did not upload');</script>";
-		}
+		// $option = $this->input->post('departments[]');
 
-		else
-		{
-			//GET PROJECT ID
-			$id = $this->input->post("project_ID");
-			$projectID = $this->model->getProjectByID($id);
-
-			$user = $_SESSION['USERID'];
-			$fileName = $this->upload->data('file_name');
-			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
-
-			$option = $this->input->post('sendTo');
-
-			if($option == 'All'){
-				$uploadData = array(
-					'DOCUMENTSTATUS' => 'Uploaded',
-					'DOCUMENTNAME' => $fileName,
-					'DOCUMENTLINK' => $src,
-					'users_UPLOADEDBY' => $user,
-					'UPLOADEDDATE' => date('Y-m-d'),
-					'projects_PROJECTID' => $id,
-					'REMARKS' => $this->input->post('remarks')
-				);
-			} else {
-				$uploadData = array(
-					'DOCUMENTSTATUS' => 'For Acknowledgement',
-					'DOCUMENTNAME' => $fileName,
-					'DOCUMENTLINK' => $src,
-					'users_UPLOADEDBY' => $user,
-					'UPLOADEDDATE' => date('Y-m-d'),
-					'projects_PROJECTID' => $id,
-					'REMARKS' => $this->input->post('remarks')
-				);
+			foreach($this->input->post("departments[]") as $departments){
+				echo "dept name - " . $departments . "<br>";
 			}
 
-			$documentID = $this->model->uploadDocument($uploadData);
+		//
+		// echo 'hello';
+		// echo $option;
 
-			if($option != 'All')
-			{
-				foreach($this->input->post("departments") as $departments){
-					foreach($this->model->getAllDepartmentsByProjectByDepartment($id, $departments) as $userID){
-						$acknowledgementData = array (
-							'documents_DOCUMENTID' => $documentID,
-							'users_ACKNOWLEDGEDBY' => $userID['users_USERID']
-						);
+		// if (!$this->upload->do_upload('document'))
+		// {
+		// 	echo "<script>alert('did not upload');</script>";
+		// }
+		//
+		// else
+		// {
+		// 	//GET PROJECT ID
+		// 	$id = $this->input->post("project_ID");
+		// 	$projectID = $this->model->getProjectByID($id);
+		//
+		// 	$user = $_SESSION['USERID'];
+		// 	$fileName = $this->upload->data('file_name');
+		// 	$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
+		//
+		// 	$option = $this->input->post('sendTo');
 
-						$this->model->addToDocumentAcknowledgement($acknowledgementData);
-					}
-				}
-			}
+			// if($option == 'All'){
+			// 	$uploadData = array(
+			// 		'DOCUMENTSTATUS' => 'Uploaded',
+			// 		'DOCUMENTNAME' => $fileName,
+			// 		'DOCUMENTLINK' => $src,
+			// 		'users_UPLOADEDBY' => $user,
+			// 		'UPLOADEDDATE' => date('Y-m-d'),
+			// 		'projects_PROJECTID' => $id,
+			// 		'REMARKS' => $this->input->post('remarks')
+			// 	);
+			// } else {
+			// 	$uploadData = array(
+			// 		'DOCUMENTSTATUS' => 'For Acknowledgement',
+			// 		'DOCUMENTNAME' => $fileName,
+			// 		'DOCUMENTLINK' => $src,
+			// 		'users_UPLOADEDBY' => $user,
+			// 		'UPLOADEDDATE' => date('Y-m-d'),
+			// 		'projects_PROJECTID' => $id,
+			// 		'REMARKS' => $this->input->post('remarks')
+			// 	);
+			// }
 
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-			$details = $userName . " uploaded " . $fileName;
+			// $documentID = $this->model->uploadDocument($uploadData);
 
-			$logData = array (
-				'LOGDETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $id
-			);
-			$this->model->addToProjectLogs($logData);
-
-			$this->session->set_flashdata('projectID', $id);
-			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['departments'] = $this->model->getAllDepartments();
-			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
-			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
-
-			$this->load->view("projectDocuments", $data);
-		}
+			// if($option != 'All')
+			// {
+			// 	foreach($this->input->post("departments") as $departments){
+			// 		foreach($this->model->getAllUserstsByProjectByDepartment($id, $departments) as $userID){
+			// 			$acknowledgementData = array (
+			// 				'documents_DOCUMENTID' => $documentID,
+			// 				'users_ACKNOWLEDGEDBY' => $userID['users_USERID']
+			// 			);
+			//
+			// 			$this->model->addToDocumentAcknowledgement($acknowledgementData);
+			// 		}
+			// 	}
+			// }
+			//
+			// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+			// $details = $userName . " uploaded " . $fileName;
+			//
+			// $logData = array (
+			// 	'LOGDETAILS' => $details,
+			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+			// 	'projects_PROJECTID' => $id
+			// );
+			// $this->model->addToProjectLogs($logData);
+			//
+			// $this->session->set_flashdata('projectID', $id);
+			// $data['projectProfile'] = $this->model->getProjectByID($id);
+			// $data['departments'] = $this->model->getAllDepartments();
+			// $data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+			// $data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+			//
+			// $this->load->view("projectDocuments", $data);
+		// }
 	}
 
 	/******************** MY PROJECTS END ********************/
