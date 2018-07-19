@@ -529,7 +529,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-// GETS ALL THE USERS OF A DEPARTMENT THAT ARE INVOLVED IN A PROJECT
+// GETS ALL THE USERS OF A DEPARTMENT THAT ARE INVOLVED IN A PROJECT EXCEPT THE SESSION USER
   public function getAllUserstsByProjectByDepartment($projectID, $departmentID)
   {
     $condition = "projects_PROJECTID = " . $projectID . " AND departments_DEPARTMENTID = " . $departmentID;
@@ -715,6 +715,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+// RETURNS ALL
   public function getDocumentAcknowledgement($userID)
   {
     $condition = "users_ACKNOWLEDGEDBY = " . $userID;
@@ -723,6 +724,16 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+  }
+
+  public function getDocumentAcknowledgementID($userID, $documentID)
+  {
+    $condition = "users_ACKNOWLEDGEDBY = " . $userID . " AND documents_DOCUMENTID = " . $documentID;
+    $this->db->select('*');
+    $this->db->from('documentAcknowledgement');
+    $this->db->where($condition);
+
+    return $this->db->get()->row_array();
   }
 
   public function insertParentTask($data, $id)

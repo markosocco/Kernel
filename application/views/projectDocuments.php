@@ -67,7 +67,9 @@
 		            <!-- /.box-header -->
 		            <div class="box-body table-responsive no-padding">
 
-									<?php if($documentsByProject != NULL):?>
+									<?php if($documentsByProject == NULL):
+										echo "There are no documents uploaded.";
+									else: ?>
 		              <table class="table table-hover">
 		                <tr>
 		                  <th>#</th>
@@ -86,7 +88,7 @@
 												if($row['DOCUMENTSTATUS'] == 'For Acknowledgement'){
 													// echo "<script>alert('".$row['DOCUMENTID']." for Acknowledgement');</script>";
 													foreach($documentAcknowledgement as $data){
-														if($row['DOCUMENTID'] == $data['documents_DOCUMENTID']){
+														if($row['DOCUMENTID'] == $data['documents_DOCUMENTID'] || $row['users_UPLOADEDBY'] == $_SESSION['USERID']){
 															echo "<tr>";
 																echo "<td></td>";
 																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
@@ -97,9 +99,12 @@
 																echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
 																<button type='button' class='btn btn-success'>
 																<i class='fa fa-download'></i> Download</button></a></td>";
-																echo "<td align='center'>
-																<button type='button' class='btn btn-success'>
-																<i class='fa fa-download'></i> ACKNOWLEDGE</button></a></td>";
+	
+																if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
+																	echo "<td align='center'>
+																	<button type='button' class='btn btn-success'>
+																	<i class='fa fa-download'></i> ACKNOWLEDGE</button></a></td>";
+																}
 
 															echo "</tr>";
 														}
@@ -115,9 +120,6 @@
 														echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
 														<button type='button' class='btn btn-success'>
 														<i class='fa fa-download'></i> Download</button></a></td>";
-														echo "<td align='center'>
-														<button type='button' class='btn btn-success'>
-														<i class='fa fa-download'></i> ACKNOWLEDGE</button></a></td>";
 													echo "</tr>";
 												}
 											}
