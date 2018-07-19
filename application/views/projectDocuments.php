@@ -156,10 +156,10 @@
 											<div class="col-lg-6">
 												<select id ="" class="form-control select2" multiple="multiple" name = "" data-placeholder="Select Departments" style="width:100%">
 
-													<option>All</option>
+													<option class="sendAllDepartment" name="sendTo" value="all">All</option>
 													<?php foreach ($departments as $row): ?>
 
-														<option>
+														<option class="sendAllDepartment" name="sendTo" value="<?php echo $row['DEPARTMENTNAME']?>">
 															<?php echo $row['DEPARTMENTNAME']; ?>
 														</option>
 
