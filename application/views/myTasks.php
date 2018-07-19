@@ -542,11 +542,12 @@
 
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button type="submit" class="btn btn-success" id="confirmDelegateBtn" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
+										<button type="button" class="btn btn-success delegate" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
 									</div>
 								</form>
 								</div>
 
+								<!-- WORKLOAD ASSESSMENT -->
 								<div id="workloadAssessment">
 
 									<div class="modal-header">
@@ -562,6 +563,17 @@
 
 								</div>
 
+								<!-- CONFIRM DELEGATE -->
+								<div id="delegateConfirm">
+									<div class="modal-body">
+										<h4>Are you sure you want to delegate this task?</h4>
+									</div>
+									<div class="modal-footer">
+										<button id="backConfirm" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
+										<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+									</div>
+								</div>
+
 							</div>
 						</div>
 								<!-- /.modal-content -->
@@ -571,7 +583,7 @@
 						<!-- /.modal -->
 
 						<!-- CONFIRM MODAL -->
-						<div class="modal fade" id="modal-delegateConfirm">
+						<!-- <div class="modal fade" id="modal-delegateConfirm">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -585,10 +597,10 @@
 										<button type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
 									</div>
 								</div>
-								<!-- /.modal-content -->
+								<!-- /.modal-content
 							</div>
-							<!-- /.modal-dialog -->
-						</div>
+							<!-- /.modal-dialog
+						</div> -->
 						<!-- /.modal -->
 
 						<!-- DONE MODAL -->
@@ -777,7 +789,8 @@
 								var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
 								var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
 								$('#taskTable').append(
-														 "<tr id='" + data['tasks'][i].TASKID + "'>" +														 "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+														 "<tr id='" + data['tasks'][i].TASKID + "'>" +
+														 "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
 														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
@@ -918,6 +931,8 @@
 				$("#responsible").addClass("active");
 				$(".raciDiv").hide();
 				$("#responsibleDiv").show();
+				$("#delegateConfirm").hide();
+
 
 				$("body").on('click','.delegateBtn',function(){
 					 var $id = $(this).attr('data-id');
@@ -932,19 +947,26 @@
 					 	$(".taskDates").append(" days)");
 					 else
 					 	$(".taskDates").append(" day)");
-
+						$("#confirmDelegateBtn").attr("data-id", $id); //pass data id to confirm button
 				 });
 
-				 $("body").on('click','.delegateBtn',function(){
-					 var $id = $(this).attr('data-id');
-					 $("#confirmDelegateBtn").attr("data-id", $id); //pass data id to confirm button
+				 $("body").on('click','.delegate',function(){
+					 $("#raciDelegate").hide();
+					 $("#delegateConfirm").show();
 				 });
 
 				 $("#confirmDelegateBtn").on("click", function(){
 					 var $id = $(this).attr('data-id');
 					 $("#raciForm").attr("name", "formSubmit");
 					 $("#raciForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+					 $("#raciForm").submit();
 				 });
+
+ 				$("#backConfirm").click(function()
+				{
+ 					$("#raciDelegate").show();
+ 					$("#delegateConfirm").hide();
+ 				});
 
 				$("#responsible").on("click", function(){
 					$(".raciBtn").removeClass('active');

@@ -962,7 +962,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['changeRequests'] = $this->model->getAllChangeRequests();
+			$userID = $_SESSION['USERID'];
+			$deptID = $_SESSION['departments_DEPARTMENTID'];
+			if($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
+				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || $userID = projects.users_USERID";
+			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
+				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || $userID = projects.users_USERID";
+			elseif($_SESSION['usertype_USERTYPEID'] == '5')
+				$filter = "$userID = projects.users_USERID";
+
+			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
 			$this->load->view("rfc", $data);
 		}
 	}
