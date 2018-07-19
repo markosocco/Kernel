@@ -400,9 +400,10 @@ class model extends CI_Model
   // GET ALL PROJECT ARCHIVES
   public function getAllProjectArchives()
   {
-    $condition = "PROJECTSTATUS = 'Complete'";
+    $condition = "PROJECTSTATUS = 'Archived'";
     $this->db->select('*');
     $this->db->from('projects');
+    $this->db->join('users', 'projects.users_USERID = users.USERID');
     $this->db->where($condition);
     $query = $this->db->get();
 

@@ -11,7 +11,14 @@
 				<section class="content-header">
 					<div style="margin-bottom:10px">
 						<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
-						<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
+
+						<?php if(isset($_SESSION['flash'])): ?>
+								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Archives</a>
+						<?php else: ?>
+								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
+						<?php endif; ?>
+
+						<!-- <a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a> -->
 					</div>
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
