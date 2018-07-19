@@ -1,7 +1,5 @@
 
 <?php
-
-date_default_timezone_set('Asia/Manila');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class controller extends CI_Controller
@@ -250,7 +248,7 @@ class controller extends CI_Controller
 
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
-			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			$data['wholeDept'] = $this->model->getAllUsersByUserType("users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
 
@@ -277,20 +275,6 @@ class controller extends CI_Controller
 			);
 
 			$updateTasks = $this->model->updateTaskDone($id, $data);
-
-			$task = $this->model->getTaskByID($id);
-			$taskTitle = $task['TASKTITLE'];
-			$projectID = $task['projects_PROJECTID'];
-
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-			$details = $userName . " has completed " . $taskTitle;
-
-			$logData = array (
-				'LOGDETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $projectID
-			);
-			$this->model->addToProjectLogs($logData);
 		}
 		$this->myTasks();
 	}
@@ -326,24 +310,6 @@ class controller extends CI_Controller
 		);
 		$result = $this->model->updateResponsible($taskID, $responsibleData);
 
-		// LOGS
-		$task = $this->model->getTaskByID($taskID);
-		$taskTitle = $task['TASKTITLE'];
-		$projectID = $task['projects_PROJECTID'];
-
-		$assignedUser = $this->model->getUserByID($responsibleEmp);
-		$assignedUserName = $assignedUser['FIRSTNAME'] . " " . $assignedUser['LASTNAME'];
-
-		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-		$details = $userName . " has marked " . $assignedUserName . " as responsible for " . $taskTitle;
-
-		$logData = array (
-			'LOGDETAILS' => $details,
-			'TIMESTAMP' => date('Y-m-d H:i:s'),
-			'projects_PROJECTID' => $projectID
-		);
-		$this->model->addToProjectLogs($logData);
-
 		// SAVE ACCOUNTABLE
 		if($this->input->post("accountableDept[]"))
 		{
@@ -355,24 +321,6 @@ class controller extends CI_Controller
 					'tasks_TASKID' =>	$taskID
 				);
 				$this->model->addToRaci($accountableData);
-
-				// LOGS
-				$task = $this->model->getTaskByID($taskID);
-				$taskTitle = $task['TASKTITLE'];
-				$projectID = $task['projects_PROJECTID'];
-
-				$assignedUser = $this->model->getUserByID($deptID);
-				$assignedUserName = $assignedUser['FIRSTNAME'] . " " . $assignedUser['LASTNAME'];
-
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has marked " . $assignedUserName . " as accountable for " . $taskTitle;
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-				$this->model->addToProjectLogs($logData);
 			}
 		}
 
@@ -386,24 +334,6 @@ class controller extends CI_Controller
 					'tasks_TASKID' =>	$taskID
 				);
 				$this->model->addToRaci($accountableData);
-
-				// LOGS
-				$task = $this->model->getTaskByID($taskID);
-				$taskTitle = $task['TASKTITLE'];
-				$projectID = $task['projects_PROJECTID'];
-
-				$assignedUser = $this->model->getUserByID($empID);
-				$assignedUserName = $assignedUser['FIRSTNAME'] . " " . $assignedUser['LASTNAME'];
-
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has marked " . $assignedUserName . " as accountable for " . $taskTitle;
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-				$this->model->addToProjectLogs($logData);
 			}
 		}
 
@@ -418,24 +348,6 @@ class controller extends CI_Controller
 					'tasks_TASKID' =>	$taskID
 				);
 				$this->model->addToRaci($consultedData);
-
-				// LOGS
-				$task = $this->model->getTaskByID($taskID);
-				$taskTitle = $task['TASKTITLE'];
-				$projectID = $task['projects_PROJECTID'];
-
-				$assignedUser = $this->model->getUserByID($deptID);
-				$assignedUserName = $assignedUser['FIRSTNAME'] . " " . $assignedUser['LASTNAME'];
-
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has marked " . $assignedUserName . " as consulted for " . $taskTitle;
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-				$this->model->addToProjectLogs($logData);
 			}
 		}
 
@@ -449,24 +361,6 @@ class controller extends CI_Controller
 					'tasks_TASKID' =>	$taskID
 				);
 				$this->model->addToRaci($consultedData);
-
-				// LOGS
-				$task = $this->model->getTaskByID($taskID);
-				$taskTitle = $task['TASKTITLE'];
-				$projectID = $task['projects_PROJECTID'];
-
-				$assignedUser = $this->model->getUserByID($empID);
-				$assignedUserName = $assignedUser['FIRSTNAME'] . " " . $assignedUser['LASTNAME'];
-
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has marked " . $assignedUserName . " as consulted for " . $taskTitle;
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-				$this->model->addToProjectLogs($logData);
 			}
 		}
 
@@ -481,24 +375,6 @@ class controller extends CI_Controller
 					'tasks_TASKID' =>	$taskID
 				);
 				$this->model->addToRaci($informedData);
-
-				// LOGS
-				$task = $this->model->getTaskByID($taskID);
-				$taskTitle = $task['TASKTITLE'];
-				$projectID = $task['projects_PROJECTID'];
-
-				$assignedUser = $this->model->getUserByID($deptID);
-				$assignedUserName = $assignedUser['FIRSTNAME'] . " " . $assignedUser['LASTNAME'];
-
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has marked " . $assignedUserName . " as informed for " . $taskTitle;
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-				$this->model->addToProjectLogs($logData);
 			}
 		}
 
@@ -512,24 +388,6 @@ class controller extends CI_Controller
 					'tasks_TASKID' =>	$taskID
 				);
 				$this->model->addToRaci($informedData);
-
-				// LOGS
-				$task = $this->model->getTaskByID($taskID);
-				$taskTitle = $task['TASKTITLE'];
-				$projectID = $task['projects_PROJECTID'];
-
-				$assignedUser = $this->model->getUserByID($empID);
-				$assignedUserName = $assignedUser['FIRSTNAME'] . " " . $assignedUser['LASTNAME'];
-
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has marked " . $assignedUserName . " as informed for " . $taskTitle;
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-				$this->model->addToProjectLogs($logData);
 			}
 		}
 
@@ -1373,29 +1231,21 @@ class controller extends CI_Controller
 		$projectID = $this->model->getProjectByID($id);
 
 		foreach($this->input->post("departments[]") as $departmentID){
-			foreach($this->input->post("users[]") as $userID){
-				if($)
+			echo "dept id - " . $departments . "<br>";
+
+			foreach($this->model->getAllUserstsByProjectByDepartment($id, $departments) as $usersByDepartment){
+				echo "dept users - " . $usersByDepartment['USERID'] . "<br>";
+
+				foreach ($this->input->post("users[]") as $users) {
+					echo " user id - " . $users . "<br>";
+					if($usersByDepartment['USERID'] == $users){
+						echo "same <br>";
+					} else {
+						echo $users . "<br>";
+					}
+				}
 			}
-
 		}
-
-		// foreach($this->input->post("departments[]") as $departmentID){
-		// 	echo "dept id - " . $departments . "<br>";
-		//
-		// 	foreach($this->model->getAllUserstsByProjectByDepartment($id, $departments) as $usersByDepartment){
-		// 		echo "dept users - " . $usersByDepartment['USERID'] . "<br>";
-		//
-		// 		// foreach ($this->input->post("users[]") as $users) {
-		// 		// 	// echo " user id - " . $users . "<br>";
-		// 		// 	if($usersByDepartment['USERID'] == $users){
-		// 		// 		echo "same <br>";
-		// 		// 	} else {
-		// 		// 		echo $users . "<br>";
-		// 		// 	}
-		// 		// }
-		// 	}
-		// }
-
 
 
 		// if (!$this->upload->do_upload('document'))
