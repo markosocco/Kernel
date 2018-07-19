@@ -2,17 +2,11 @@
 	<head>
 		<title>Kernel - Add Main Activities</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/addMainsStyle.css")?>"> -->
-		<style>
-	    .container
-			{
-				position:relative;
-			}
-	  </style>
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
 
-			<div class="content-wrapper container" style="position:relative;">
+			<div class="content-wrapper">
 		    <!-- Content Header (Page header) -->
 		    <section class="content-header">
 		      <h1>

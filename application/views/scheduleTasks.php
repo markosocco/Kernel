@@ -105,8 +105,16 @@
 														}
 													?>
 												</b></td>
-												<td><b><?php echo $value['TASKSTARTDATE']; ?></b></td>
-												<td><b><?php echo $value['TASKENDDATE']; ?></b></td>
+
+												<?php
+													$startdate = date_create($value['TASKSTARTDATE']);
+													$enddate = date_create($value['TASKENDDATE']);
+													$diff = date_diff($enddate, $startdate);
+													$dDiff = intval($diff->format('%d'));
+												?>
+
+												<td><b><?php echo date_format($startdate, "F d, Y"); ?></b></td>
+												<td><b><?php echo date_format($enddate, "F d, Y"); ?></b></td>
 												<td></td>
 											</tr>
 										</tbody>
@@ -159,8 +167,16 @@
 																	}
 																?>
 															</i></td>
-															<td><i><?php echo $sValue['TASKSTARTDATE']; ?></i></td>
-															<td><i><?php echo $sValue['TASKENDDATE']; ?></i></td>
+
+															<?php
+																$sdate = date_create($sValue['TASKSTARTDATE']);
+																$edate = date_create($sValue['TASKENDDATE']);
+																$diff = date_diff($enddate, $startdate);
+																$dDiff = intval($diff->format('%d'));
+															?>
+
+															<td><i><?php echo date_format($sdate, "F d, Y"); ?></i></td>
+															<td><i><?php echo date_format($edate, "F d, Y"); ?></i></td>
 															<td></td>
 														</tr>
 														<tr>
@@ -224,7 +240,7 @@
 								<div class="box-footer">
 									<button type="button" class="btn btn-success">Previous: Add Sub Activities</button>
 									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks">Generate Gantt Chart</button>
-									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button> -->
+									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button>
 								</div>
 								</form>
 		          </div>
