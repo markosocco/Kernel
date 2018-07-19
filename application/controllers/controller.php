@@ -1245,7 +1245,7 @@ class controller extends CI_Controller
 			);
 
 			// TODO NAMI: LOGS
-			$result = $this->model->archiveProject($id, $status);
+			$result = $this->model->archiveProject($id, $data);
 
 			if ($result)
 			{
