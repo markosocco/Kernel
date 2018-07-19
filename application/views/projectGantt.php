@@ -64,6 +64,8 @@
 
 						<a name="" class="btn btn-danger btn" id="deleteProject"><i class="fa fa-remove"></i> Delete Project</a>
 
+						<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
+
 					</div>
 					<br>
 					<div id="container" style="height: 600px;"></div>
