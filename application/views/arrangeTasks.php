@@ -2,12 +2,6 @@
 	<head>
 		<title>Kernel - Add Sub Activities</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/addSubsStyle.css")?>"> -->
-		<style>
-			.datepicker
-			{
-				z-index: 9999 !important;
-			}
-		</style>
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -122,8 +116,8 @@
 												$dDiff = intval($diff->format('%d'));
 											?>
 
-											<td width="15%"><b><?php echo date_format($startdate, "F d, Y"); ?></b></td>
-											<td width="15%"><b><?php echo date_format($enddate, "F d, Y") ?></b></td>
+											<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
+											<td width="15%"><b><?php echo date_format($enddate, "M d, Y") ?></b></td>
 											<td width="10%">
 												<div class="form-group">
 													<b>
@@ -191,8 +185,8 @@
 
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success">Previous: Add Main Activities</button>
-									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks">Next: Add Tasks</button>
+									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Previous: Add Main Activities</button>
+									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Next: Add Tasks</button>
 									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button>
 								</div>
 								</form>
@@ -269,7 +263,10 @@
 					}
 				});
 
-				$(document).on("click", "#skipStep", function() {
+				$(document).on("click", "#skipStep", function()
+				{
+							$("form").attr('action', 'projectGantt');
+							$("form").submit();
 							console.log("hello");
 					});
 

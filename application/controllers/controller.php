@@ -276,6 +276,40 @@ class controller extends CI_Controller
 			);
 
 			$updateTasks = $this->model->updateTaskDone($id, $data);
+
+			// Check and Complete Main and Sub Activities
+			$parentID = $this->model->getParentTask($id);
+			$completeTasks = $this->model->checkTasksStatus($parentID['tasks_TASKPARENT']);
+			if($completeTasks == 0)
+			{
+				$subData = array(
+							'TASKSTATUS' => 'Complete',
+							'TASKACTUALENDDATE' => date('Y-m-d')
+				);
+				$this->model->updateTaskDone($parentID['tasks_TASKPARENT'], $subData); // Complete Sub Activity
+
+				$mainID = $this->model->getParentTask($parentID['tasks_TASKPARENT']);
+				$completeSubs = $this->model->checkTasksStatus($mainID['tasks_TASKPARENT']);
+				if($completeSubs == 0)
+				{
+					$mainData = array(
+								'TASKSTATUS' => 'Complete',
+								'TASKACTUALENDDATE' => date('Y-m-d')
+					);
+					$this->model->updateTaskDone($mainID['tasks_TASKPARENT'], $mainData); // Complete Main Activity
+
+					// Check and Complete a Project
+					$completeProject = $this->model->checkProjectStatus($mainID['projects_PROJECTID']);
+					if($completeProject == 0)
+					{
+						$projectData = array(
+									'PROJECTSTATUS' => 'Complete',
+									'PROJECTACTUALENDDATE' => date('Y-m-d')
+						);
+						$this->model->completeProject($mainID['projects_PROJECTID'], $projectData); // Complete Project
+					}
+				}
+			}
 		}
 		$this->myTasks();
 	}
@@ -798,6 +832,22 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post("project_ID");
+			$archives =$this->input->post("archives");
+			$rfc =$this->input->post("rfc");
+
+			// ARCHIVES
+			if (isset($archives))
+			{
+				$archives = $this->input->post("archives");
+				$this->session->set_flashdata('archives', $archives);
+			}
+
+			// RFC
+			elseif (isset($rfc))
+			{
+				$rfc = $this->input->post("rfc");
+				$this->session->set_flashdata('rfc', $rfc);
+			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
@@ -912,7 +962,17 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("rfc");
+			$userID = $_SESSION['USERID'];
+			$deptID = $_SESSION['departments_DEPARTMENTID'];
+			if($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
+				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || $userID = projects.users_USERID";
+			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
+				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || $userID = projects.users_USERID";
+			elseif($_SESSION['usertype_USERTYPEID'] == '5')
+				$filter = "$userID = projects.users_USERID";
+
+			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
+			$this->load->view("rfc", $data);
 		}
 	}
 
@@ -1217,6 +1277,25 @@ class controller extends CI_Controller
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');
 		  $this->load->view("scheduleTasks", $data);
+		}
+
+		public function archiveProject()
+		{
+			$id = $this->input->post("project_ID");
+
+			$data = array(
+				'PROJECTSTATUS' => 'Archived'
+			);
+
+			// TODO NAMI: LOGS
+			$result = $this->model->archiveProject($id, $data);
+
+			if ($result)
+			{
+				$data['archives'] = $this->model->getAllProjectArchives();
+
+				$this->load->view("archives", $data);
+			}
 		}
 
 	public function uploadDocument()

@@ -12,7 +12,7 @@
 			<section class="content-header">
 				<h1>
 					Project Archives
-					<small>What are the projects I have done?</small>
+					<small>What are the projects we have done?</small>
 				</h1>
 			</section>
 
@@ -27,7 +27,6 @@
 							<thead>
 							<tr>
 								<th>Project Title</th>
-								<!-- IS THIS NEEDED?? -->
 								<th>Project Owner</th>
 								<th>Start Date</th>
 								<th>Target End Date</th>
@@ -36,6 +35,20 @@
 							</thead>
 							<tbody>
 
+								<?php foreach ($archives as $a): ?>
+									<tr class="project" data-id = "<?php echo $a['PROJECTID']; ?>">
+
+										<form action = 'projectGantt' method="POST">
+												<input type ='hidden' name='archives' value='0'>
+										</form>
+
+										<td><?php echo $a['PROJECTTITLE']; ?></td>
+										<td><?php echo $a['FIRSTNAME'] . " " . $a['LASTNAME']; ?></td>
+										<td><?php echo $a['PROJECTSTARTDATE']; ?></td>
+										<td><?php echo $a['PROJECTENDDATE']; ?></td>
+										<td><?php echo $a['PROJECTACTUALENDDATE']; ?></td>
+									</tr>
+								<?php endforeach; ?>
 							</tbody>
 						</table>
 					</div>
@@ -53,6 +66,17 @@
 		</div> <!--.wrapper closing div-->
 
 		<script>
+
+		// IF USING POST METHOD FOR PROJECT ID
+		$(document).on("click", ".project", function() {
+			var $id = $(this).attr('data-id');
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+
+			// console.log("hello " + $id);
+			});
+
 		$("#projectArchives").addClass("active");
 		$(function () {
 			$('#archiveList').DataTable({

@@ -77,15 +77,15 @@
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
 									<a class = "project" data-id = "">
-									<div class="small-box bg-white">
+									<div class="small-box bg-orange">
 										<div class="inner">
 
-											<h2>Project Title Here</h2>
+											<h2>Project Title</h2>
 
 											<form action = 'projectGantt'  method="POST">
 											</form>
 
-											<p></p>
+											<p>Completed<br>March 21, 1996</p>
 										</div>
 										<div class="icon" style="margin-top:25px;">
 											<i class="ion ion-browsers"></i>
@@ -108,7 +108,7 @@
 											<p></p>
 										</div>
 										<div class="icon" style="margin-top:25px;">
-											<i class="ion ion-browsers"></i>
+											<i class="ion ion-plus"></i>
 										</div>
 									</div>
 								</a>
@@ -270,7 +270,7 @@
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
 									<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
-										<div class="small-box bg-gray">
+										<div class="small-box bg-green">
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
@@ -303,7 +303,7 @@
 									<div class="box-header" style="display:inline-block">
 										<h3 class="box-title">
 											<a href="<?php echo base_url("index.php/controller/newProject"); ?>">
-												<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Create Project</button>
+												<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Create Project</button>
 											</a>
 										</h3>
 									</div>

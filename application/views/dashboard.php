@@ -87,7 +87,7 @@
 					<div class="col-md-6">
 						<div class="box box-info">
 							<div class="box-header with-border">
-								<h3 class="box-title">Project Weekly Progress</h3>
+								<h3 class="box-title">Projects I'm Working On</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -96,9 +96,9 @@
 										<thead>
 										<tr>
 											<th>Project</th>
-											<th class="text-center">Launch Date</th>
-											<th class="text-center">Last Week's Progress</th>
-											<th class="text-center">This Week's Progress</th>
+											<th class="text-center">Target End Date</th>
+											<th class="text-center">Progress</th>
+											<th class="text-center">Until End</th>
 										</tr>
 										</thead>
 										<tbody>
@@ -106,7 +106,13 @@
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
 											<td align="center">80.79%</td>
-											<td align="center">90.80%</td>
+											<td align="center">45 days</td>
+										</tr>
+										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+											<td>Store Opening - SM Southmall</td>
+											<td align="center">Dec 73, 2080</td>
+											<td align="center">80.79%</td>
+											<td align="center">69 days</td>
 										</tr>
 										</tbody>
 									</table>
@@ -123,7 +129,7 @@
 					<div class="col-md-6">
 						<div class="box box-info">
 							<div class="box-header with-border">
-								<h3 class="box-title">SOMETHING</h3>
+								<h3 class="box-title">Projects I Need To Edit</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -132,23 +138,20 @@
 										<thead>
 										<tr>
 											<th>Project</th>
-											<th class="text-center">Launch Date</th>
-											<th class="text-center">Last Week's Progress</th>
-											<th class="text-center">This Week's Progress</th>
+											<th class="text-center">Start Date</th>
+											<th class="text-center">Until Launch</th>
 										</tr>
 										</thead>
 										<tbody>
 										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
-											<td align="center">80.79%</td>
-											<td align="center">90.80%</td>
+											<td align="center">3 days</td>
 										</tr>
 										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
-											<td align="center">80.79%</td>
-											<td align="center">90.80%</td>
+											<td align="center">75 days</td>
 										</tr>
 										</tbody>
 									</table>
@@ -165,12 +168,12 @@
 
 				<!-- END MANAGE TABLE -->
 
-				<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
 				<!-- TASK TABLE -->
 				<!-- Main row -->
 				<div class="row">
 					<!-- Left col -->
-					<div class="col-md-12">
+					<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
+					<div class="col-md-6">
 						<div class="box box-info">
 							<div class="box-header with-border">
 								<h3 class="box-title">Deadlines</h3>
@@ -216,8 +219,44 @@
 						</div>
 						<!-- /.box -->
 					</div>
+					<?php endif;?>
+
+					<div class="col-md-6">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">Project Weekly Progress</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div class="table-responsive">
+									<table class="table table-hover no-margin" id="projWeeklyProgress">
+										<thead>
+										<tr>
+											<th>Project</th>
+											<th class="text-center">Launch Date</th>
+											<th class="text-center">Last Week's Progress</th>
+											<th class="text-center">This Week's Progress</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+											<td>Store Opening - SM Southmall</td>
+											<td align="center">Dec 73, 2080</td>
+											<td align="center">80.79%</td>
+											<td align="center">90.80%</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+							<!-- /.box-body -->
+							<!-- /.box-footer -->
+						</div>
+						<!-- /.box -->
+					</div>
+
 				</div>
-			<?php endif;?>
 
 			<!-- APPROVAL TABLE -->
 			<!-- Main row -->
@@ -263,6 +302,9 @@
 					</div>
 					<!-- /.box -->
 				</div>
+			</div>
+
+			<div class="row">
 			</div>
 
 			<!-- END APPROVAL TABLE -->

@@ -28,6 +28,8 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
   <!-- Any Gantt -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>anyChart/css/anychart-ui.min.css" type="text/css"/>
+  <!-- Progress Circle -->
+  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>css-percentage-circle-master/css/circle.css" type="text/css"/>
   <!-- Frame Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/frameStyle.css")?>">
 
@@ -132,7 +134,8 @@ desired effect
 
                 <p>
                   <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?>
-                  <small><?php echo $_SESSION['POSITION']; ?></small>
+                  <small>
+                    <?php echo $_SESSION['POSITION']; ?></small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -267,6 +270,8 @@ desired effect
 <script src="<?php echo base_url()."assets/"; ?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo base_url()."assets/"; ?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- jQuery Knob -->
+<script src="<?php echo base_url()."assets/"; ?>bower_components/jquery-knob/js/jquery.knob.js"></script>
 <!-- Any Chart -->
 <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-bundle.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-base.min.js" type="text/javascript"></script>
