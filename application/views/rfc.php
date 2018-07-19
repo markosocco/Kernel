@@ -48,7 +48,9 @@
 								?>
 									<tr class="request" data-id = "<?php echo $changeRequest['PROJECTID']; ?>">
 
-										<form action = 'projectGantt' method="POST"></form>
+										<form action = 'projectGantt' method="POST">
+											<input type ='hidden' name='rfc' value='0'>
+										</form>
 
 										<td><?php echo $type;?></td>
 										<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>

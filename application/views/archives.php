@@ -39,7 +39,7 @@
 									<tr class="project" data-id = "<?php echo $a['PROJECTID']; ?>">
 
 										<form action = 'projectGantt' method="POST">
-												<input type ='hidden' name='flash' value='0'>
+												<input type ='hidden' name='archives' value='0'>
 										</form>
 
 										<td><?php echo $a['PROJECTTITLE']; ?></td>

@@ -10,10 +10,11 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					<div style="margin-bottom:10px">
-						<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
 
-						<?php if(isset($_SESSION['flash'])): ?>
+						<?php if(isset($_SESSION['archives'])): ?>
 								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Archives</a>
+						<?php elseif(isset($_SESSION['rfc'])): ?>
+								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
