@@ -20,6 +20,36 @@
 
 						<!-- <a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a> -->
 					</div>
+					<!-- RFC GANTT START -->
+					<div id="rfcGantt">
+						<div class="row">
+							<div class="">
+								<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
+									<!-- IF TYPE = PERFORMER -->
+									<label>Reason</label>
+									<p id="performerReason">Wrong tagged employee. Get it right bitch</p>
+									<div class="form-group">
+										<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+									</div>
+									<!-- IF TYPE = DATE -->
+									<label>Reason</label>
+									<p id="dateReason"> Need more time. Get it right bitch</p>
+									<label>Dates</label>
+									<p>Original Start Date to Requested Start Date</p>
+									<p>Original End Date to Requested End Date</p>
+									<div class="form-group">
+										<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+									</div>
+									<div class="modal-footer">
+										<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id=""><i class="fa fa-thumbs-down"></i> Deny Request</button>
+										<button id = "approveRequest" type="submit" class="btn btn-success" data-id=""><i class="fa fa-thumbs-up"></i> Approve Request</button>
+									</div>
+								</div>
+							</div>
+						</form>
+
+					</div>
+					<!-- RFC GANTT END -->
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
 							<?php if ($projectProfile['PROJECTSTATUS'] != 'Complete'): ?>
@@ -69,6 +99,10 @@
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
 							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
+
+							<form action = 'archiveProject' method="POST">
+							</form>
+
 								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
 						<?php else: ?>
 								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
@@ -84,6 +118,14 @@
 			<?php require("footer.php"); ?>
 		</div>
 		<script>
+
+		$(document).on("click", "#archiveProject", function() {
+			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+			});
+
 			$("#myProjects").addClass("active");
 
 			// $("#projectDocu").click(function()
