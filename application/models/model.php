@@ -113,7 +113,9 @@ class model extends CI_Model
     $condition = "PROJECTID =" . $data;
     $this->db->select('*, DATEDIFF(PROJECTENDDATE, PROJECTSTARTDATE) +1 as "duration",
     DATEDIFF(PROJECTENDDATE, CURDATE())+1 as "remaining",
-    DATEDIFF(PROJECTSTARTDATE, CURDATE()) as "launching"');
+    DATEDIFF(PROJECTSTARTDATE, CURDATE())+1 as "launching",
+    DATEDIFF(PROJECTACTUALENDDATE, PROJECTSTARTDATE)+1 as "actualDuration",
+    DATEDIFF(CURDATE(), PROJECTENDDATE) as "delayed"');
     $this->db->from('projects');
     $this->db->where($condition);
     $query = $this->db->get();
@@ -140,10 +142,13 @@ class model extends CI_Model
 
   public function getAllChangeRequests()
   {
+    $condition = "REQUESTSTATUS = 'Pending'";
     $this->db->select('*');
     $this->db->from('changerequests');
     $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
+    $this->db->where($condition);
     $query = $this->db->get();
 
     return $query->result_array();

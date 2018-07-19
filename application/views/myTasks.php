@@ -22,6 +22,10 @@
 				<!-- Main content -->
 				<section class="content container-fluid">
 
+					<?php if($mainActivity == null && $subActivity == null && $tasks == null && $ACItasks == null):?>
+						<h3 class="box-title" style="text-align:center">You have no tasks</h3>
+					<?php endif;?>
+
 					<!-- MAIN ACTIVITY TABLE -->
 
 					<?php if($mainActivity != null):?> <!-- Show only if there are main activities assigned -->
