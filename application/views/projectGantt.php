@@ -22,7 +22,9 @@
 					</div>
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
-							<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
+							<?php if ($projectProfile['PROJECTSTATUS'] != 'Complete'): ?>
+								<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
+							<?php endif; ?>
 					</h1>
 
 					<ol class="breadcrumb">
@@ -65,13 +67,12 @@
 
 						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog"><i class="fa fa-flag"></i> View Logs</a>
 
-						<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
-
-						<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
-
-						<a name="" class="btn btn-danger btn" id="deleteProject"><i class="fa fa-remove"></i> Delete Project</a>
-
-						<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
+						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
+							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
+								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
+						<?php else: ?>
+								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+						<?php endif; ?>
 
 					</div>
 					<br>
