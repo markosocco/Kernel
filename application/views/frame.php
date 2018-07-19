@@ -132,7 +132,8 @@ desired effect
 
                 <p>
                   <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?>
-                  <small><?php echo $_SESSION['POSITION']; ?></small>
+                  <small>
+                    <?php echo $_SESSION['POSITION']; ?></small>
                 </p>
               </li>
               <!-- Menu Body -->

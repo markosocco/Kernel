@@ -995,5 +995,11 @@ class model extends CI_Model
     $this->db->insert('dependencies', $data);
     return true;
   }
+
+  public function archiveProject($id, $data)
+  {
+    $this->db->where('PROJECTID', $id);
+    $result = $this->db->update('projects', $data);
+  }
 }
 ?>

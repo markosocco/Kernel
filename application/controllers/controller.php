@@ -1227,6 +1227,25 @@ class controller extends CI_Controller
 		  $this->load->view("scheduleTasks", $data);
 		}
 
+		public function archiveProject()
+		{
+			$id = $this->input->post("project_ID");
+
+			$data = array(
+				'PROJECTSTATUS' => 'Archived'
+			);
+
+			// TODO NAMI: LOGS
+			$result = $this->model->archiveProject($id, $status);
+
+			if ($result)
+			{
+				$data['archives'] = $this->model->getAllProjectArchives();
+
+				$this->load->view("archives", $data);
+			}
+		}
+
 	public function uploadDocument()
 	{
 		$config['upload_path']          = './assets/uploads';

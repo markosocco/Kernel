@@ -2,12 +2,6 @@
 	<head>
 		<title>Kernel - Add Sub Activities</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/addSubsStyle.css")?>"> -->
-		<style>
-			.datepicker
-			{
-				z-index: 9999 !important;
-			}
-		</style>
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>

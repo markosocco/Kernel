@@ -20,9 +20,60 @@
 
 						<!-- <a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a> -->
 					</div>
+					<!-- RFC GANTT START -->
+					<div id="rfcGantt">
+						<div class="row">
+								<div class="col-md-6">
+									<div class="box box-danger">
+										<div class="box-header with-border">
+											<h3 class="box-title">Request Approval</h3>
+										</div>
+										<!-- /.box-header -->
+										<div class="box-body">
+											<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
+												<!-- IF TYPE = PERFORMER -->
+												<label>Reason</label>
+												<p id="performerReason">Wrong tagged employee. Get it right!</p>
+												<div class="form-group">
+													<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
+												</div>
+												<!-- IF TYPE = DATE -->
+												<label>Reason</label>
+												<p id="dateReason"> Need more time. Get it right!</p>
+												<label>Dates</label>
+												<p>Original Start Date to Requested Start Date</p>
+												<p>Original End Date to Requested End Date</p>
+										</div>
+										<!-- /.box-body -->
+										<!-- /.box-footer -->
+									</div>
+									<!-- /.box -->
+								</div>
+
+								<div class="col-md-6">
+									<div class="box box-danger">
+										<!-- /.box-header -->
+										<div class="box-body">
+											<div class="form-group">
+												<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
+											</div>
+											<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id="" style="display:block"><i class="fa fa-thumbs-down"></i> Deny Request</button>
+											<button id = "approveRequest" type="submit" class="btn btn-success pull-right" data-id="" style="display:block;"><i class="fa fa-thumbs-up"></i> Approve Request</button>
+											</form>
+										</div>
+										<!-- /.box-body -->
+										<!-- /.box-footer -->
+									</div>
+									<!-- /.box -->
+								</div>
+						</div>
+					</div>
+					<!-- RFC GANTT END -->
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
-							<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
+							<?php if ($projectProfile['PROJECTSTATUS'] != 'Complete'): ?>
+								<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
+							<?php endif; ?>
 					</h1>
 
 					<ol class="breadcrumb">
@@ -65,11 +116,16 @@
 
 						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog"><i class="fa fa-flag"></i> View Logs</a>
 
-						<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
+						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
+							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 
-						<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+							<form action = 'archiveProject' method="POST">
+							</form>
 
-						<a name="" class="btn btn-danger btn" id="deleteProject"><i class="fa fa-remove"></i> Delete Project</a>
+								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
+						<?php else: ?>
+								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+						<?php endif; ?>
 
 					</div>
 					<br>
@@ -81,6 +137,14 @@
 			<?php require("footer.php"); ?>
 		</div>
 		<script>
+
+		$(document).on("click", "#archiveProject", function() {
+			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+			});
+
 			$("#myProjects").addClass("active");
 
 			// $("#projectDocu").click(function()
