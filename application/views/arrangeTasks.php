@@ -269,7 +269,10 @@
 					}
 				});
 
-				$(document).on("click", "#skipStep", function() {
+				$(document).on("click", "#skipStep", function()
+				{
+							$("form").attr('action', 'projectGantt');
+							$("form").submit();
 							console.log("hello");
 					});
 
