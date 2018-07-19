@@ -1,4 +1,3 @@
-<!-- $this->output->enable_profile(TRUE); -->
 
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -845,7 +844,7 @@ class controller extends CI_Controller
 		$taskID = $this->input->post('taskID');
 		$dependencies = $this->input->post('dependencies');
 
-		
+
 	}
 
 	public function rfc()

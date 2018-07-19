@@ -375,7 +375,9 @@
 
 																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
 																	data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
-																	data-projectCount = "<?php echo $hasProjects;?>"><a class="btn moreBtn" data-toggle="modal">
+																	data-projectCount = "<?php echo $hasProjects;?>"
+																	data-taskCount = "<?php echo $hasTasks;?>">
+																	<a class="btn moreBtn" data-toggle="modal">
 																	<i class="fa fa-info-circle"></i> More Info</a>
 																</td>
 															</tr>
@@ -443,7 +445,10 @@
 																<?php $hasTasks = 0;?>
 																<td align="center">0</td>
 															<?php endif;?>
-																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+																<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
+																	data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
+																	data-projectCount = "<?php echo $hasProjects;?>"
+																	data-taskCount = "<?php echo $hasTasks;?>">
 																<a class="btn moreBtn" data-toggle="modal">
 																	<i class="fa fa-info-circle"></i> More Info</a></td>
 														</tr>
@@ -512,7 +517,10 @@
 															<?php $hasTasks = 0;?>
 															<td align="center">0</td>
 														<?php endif;?>
-														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
+															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
+															data-projectCount = "<?php echo $hasProjects;?>"
+															data-taskCount = "<?php echo $hasTasks;?>">
 															<a class="btn moreBtn" data-toggle="modal">
 																<i class="fa fa-info-circle"></i> More Info</a></td>
 													</tr>
@@ -580,7 +588,10 @@
 														<?php $hasTasks = 0;?>
 														<td align="center">0</td>
 													<?php endif;?>
-													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>" data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>" data-projectCount = "<?php echo $hasProjects;?>">
+													<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
+														data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
+														data-projectCount = "<?php echo $hasProjects;?>"
+														data-taskCount = "<?php echo $hasTasks;?>">
 														<a class="btn moreBtn" data-toggle="modal">
 															<i class="fa fa-info-circle"></i> More Info</a></td>
 												</tr>
@@ -604,7 +615,8 @@
 
 									<div class="modal-header">
 										<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
-										<h4 id = "workloadProjects">Total Number of Project/s: </h4>
+										<h4 id = "workloadProjects">Total Number of Projects: </h4>
+										<h4 id = "workloadTasks">Total Number of Tasks: </h4>
 									</div>
 									<div class="modal-body" id = "workloadDiv">
 
@@ -679,6 +691,8 @@
 				<?php require("footer.php"); ?>
 		</div>
 
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+
 		<script>
 
 			$("#myTasks").addClass("active");
@@ -690,6 +704,7 @@
  	     $('#startDate').datepicker({
 				 format: 'yyyy-mm-dd',
  	       autoclose: true,
+				 startDate: new Date(),
 				 orientation: 'bottom'
  	     });
 
@@ -823,14 +838,91 @@
 					$("#informedDiv").show();
 				});
 
-				// WORKLOAD ASSESSMENT
+				// WORKLOAD ASSESSMENT SCRIPT
 
 				$("#workloadAssessment").hide();
 
 				$(".moreInfo").click(function(){
 
+					function loadWorkloadTasks($projectID)
+	 				{
+	 					$.ajax({
+	 				 		type:"POST",
+	 				 		url: "<?php echo base_url("index.php/controller/getUserWorkloadTasks"); ?>",
+	 				 		data: {userID: $id, projectID: $projectID},
+	 				 		dataType: 'json',
+	 				 		success:function(data)
+	 				 		{
+	 				 			for(t=0; t<data['workloadTasks'].length; t++)
+	 				 			{
+	 								var taskStart = moment(data['workloadTasks'][t].TASKSTARTDATE).format('MMM DD, YYYY');
+	 								var taskEnd = moment(data['workloadTasks'][t].TASKENDDATE).format('MMM DD, YYYY');
+
+	 				 				$("#project_" + $projectID).append("<tr>" +
+	 				 								 "<td>" + data['workloadTasks'][t].TASKTITLE + "</td>" +
+	 				 								 "<td>" + taskStart + "</td>" +
+	 				 								 "<td>" + taskEnd + "</td>" +
+	 				 								 "<td>" + data['workloadTasks'][t].TASKSTATUS + "</td>" +
+	 				 								 "</tr>");
+	 				 			}
+	 				 		},
+	 				 		error:function()
+	 				 		{
+	 				 			alert("Failed to retrieve user data.");
+	 				 		}
+	 				 	});
+	 				 }
+
 					$("#raciDelegate").hide();
+					var $id = $(this).attr('data-id');
+ 				 	var $projectCount = $(this).attr('data-projectCount');
+					var $taskCount = $(this).attr('data-taskCount');
+	 				$("#workloadEmployee").html($(this).attr('data-name'));
+	 				$("#workloadProjects").html("Total Number of Projects: " + $projectCount);
+					$("#workloadTasks").html("Total Number of Tasks: " + $taskCount);
+	 				$('#workloadDiv').html("");
 					$("#workloadAssessment").show();
+
+					$.ajax({
+						type:"POST",
+						url: "<?php echo base_url("index.php/controller/getUserWorkloadProjects"); ?>",
+						data: {userID: $id},
+						dataType: 'json',
+						success:function(data)
+						{
+							$('#workloadDiv').html("");
+							for(p=0; p<data['workloadProjects'].length; p++)
+							{
+								var $projectID = data['workloadProjects'][p].PROJECTID;
+								$('#workloadDiv').append("<div class = 'box'>" +
+												 "<div class = 'box-header'>" +
+													 "<h3 class = 'box-title text-blue'> " + data['workloadProjects'][p].PROJECTTITLE + "</h3>" +
+												 "</div>" +
+												 "<div class = 'box-body table-responsive no-padding'>" +
+													 "<table class='table table-hover' id='project_" + $projectID + "'>" +
+														 "<th>Task Name</th>" +
+														 "<th>Start Date</th>" +
+														 "<th>End Date</th>" +
+														 "<th>Status</th>");
+
+								 loadWorkloadTasks($projectID);
+
+								 $('#workloadDiv').append("</table>" +
+																					 "</div>" +
+																				 "</div>");
+							}
+						},
+						error:function()
+						{
+							alert("Failed to retrieve user data.");
+						}
+						// error:function(jqXHR, textStatus, errorThrown)
+						// {
+						// 	alert(textStatus + " & " + errorThrown);
+						// 	alert(XMLHTTPRequest.responseText);
+						// 	alert('got none');
+						// }
+					});
 
 				});
 
@@ -938,8 +1030,11 @@
 					$("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 				});
 
+
+
+
+
 			});
 		</script>
-
 	</body>
 </html>

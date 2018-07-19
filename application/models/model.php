@@ -188,7 +188,7 @@ class model extends CI_Model
 
   public function getWorkloadProjects($userID)
   {
-    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && raci.ROLE = '1'";
+    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && raci.ROLE = '1' && tasks.CATEGORY = '3'";
     $this->db->select('projects.*');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -202,7 +202,7 @@ class model extends CI_Model
 
   public function getWorkloadTasks($userID, $projectID)
   {
-    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && projects.PROJECTID = '$projectID' && raci.ROLE = '1'";
+    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && projects.PROJECTID = '$projectID' && raci.ROLE = '1' && tasks.CATEGORY = '3'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
