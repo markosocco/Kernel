@@ -510,7 +510,7 @@ class model extends CI_Model
     $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
-    $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.tasks_POSTTASKID');
+    $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.PRETASKID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
@@ -995,6 +995,8 @@ class model extends CI_Model
   {
     $this->db->where('PROJECTID', $id);
     $result = $this->db->update('projects', $data);
+
+    return true;
   }
 }
 ?>
