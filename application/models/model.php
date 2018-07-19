@@ -138,6 +138,17 @@ class model extends CI_Model
   //   return $data->result_array();
   // }
 
+  public function getAllChangeRequests()
+  {
+    $this->db->select('*');
+    $this->db->from('changerequests');
+    $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
   public function getAllUsers()
   {
     $this->db->select('*, ' . $_SESSION['usertype_USERTYPEID'] . ' as "userType"');

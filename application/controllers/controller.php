@@ -912,7 +912,8 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("rfc");
+			$data['changeRequests'] = $this->model->getAllChangeRequests();
+			$this->load->view("rfc", $data);
 		}
 	}
 
