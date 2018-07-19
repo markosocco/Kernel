@@ -254,6 +254,7 @@ class controller extends CI_Controller
 
 			$data['users'] = $this->model->getAllUsers();
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+			$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID']);
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByUser($_SESSION['USERID']);
 			$data['subActivity'] = $this->model->getAllSubActivitiesByUser($_SESSION['USERID']);
 
@@ -284,6 +285,7 @@ class controller extends CI_Controller
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+		$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID']);
 		$data['mainActivity'] = $this->model->getAllMainActivitiesByUser($_SESSION['USERID']);
 		$data['subActivity'] = $this->model->getAllSubActivitiesByUser($_SESSION['USERID']);
 
@@ -1226,15 +1228,27 @@ class controller extends CI_Controller
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 
-		// $option = $this->input->post('departments[]');
+		//GET PROJECT ID
+		$id = $this->input->post("project_ID");
+		$projectID = $this->model->getProjectByID($id);
 
-			foreach($this->input->post("departments[]") as $departments){
-				echo "dept name - " . $departments . "<br>";
+		foreach($this->input->post("departments[]") as $departmentID){
+			echo "dept id - " . $departments . "<br>";
+
+			foreach($this->model->getAllUserstsByProjectByDepartment($id, $departments) as $usersByDepartment){
+				echo "dept users - " . $usersByDepartment['USERID'] . "<br>";
+
+				foreach ($this->input->post("users[]") as $users) {
+					echo " user id - " . $users . "<br>";
+					if($usersByDepartment['USERID'] == $users){
+						echo "same <br>";
+					} else {
+						echo $users . "<br>";
+					}
+				}
 			}
+		}
 
-		//
-		// echo 'hello';
-		// echo $option;
 
 		// if (!$this->upload->do_upload('document'))
 		// {

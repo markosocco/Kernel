@@ -99,7 +99,8 @@
  	    $('#startDate').datepicker({
 				 format: 'yyyy-mm-dd',
 				 startDate: currDate,
- 	       autoclose: true
+ 	       autoclose: true,
+				 orientation: 'auto'
  	     });
 
 			 $("#startDate").on("change", function() {
@@ -122,7 +123,8 @@
 
  	     $('#endDate').datepicker({
 				 format: 'yyyy-mm-dd',
- 	       autoclose: true
+ 	       autoclose: true,
+				 orientation: 'auto'
  	     });
 
 			 $("#endDate").on("change", function() {

@@ -2,6 +2,12 @@
 	<head>
 		<title>Kernel - Add Sub Activities</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/addSubsStyle.css")?>"> -->
+		<style>
+			.datepicker
+			{
+				z-index: 9999 !important;
+			}
+		</style>
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -64,12 +70,13 @@
 
 											<thead>
 			                <tr>
-												<td></td>
-												<th>Task Title</th>
-												<th>Department</th>
-												<th>Start Date</th>
-												<th>Target End Date</th>
 												<th></th>
+												<th width="27.5%">Task Name</th>
+												<th width="27.5%">Department</th>
+												<th width="15%">Start Date</th>
+												<th width="15%">Target End Date</th>
+												<th width="10%">Period</th>
+												<th width="5%"></th>
 			                </tr>
 										</thead>
 
@@ -79,8 +86,8 @@
 
 										<tr>
 											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-											<td><b><?php echo $value['TASKTITLE']; ?></b></td>
-											<td><b>
+											<td width="27.5%"><b><?php echo $value['TASKTITLE']; ?></b></td>
+											<td width="27.5%"><b>
 												<?php
 
 													foreach ($tasks as $row)
@@ -107,9 +114,29 @@
 													}
 												?>
 											</b></td>
-											<td><b><?php echo $value['TASKSTARTDATE']; ?></b></td>
-											<td><b><?php echo $value['TASKENDDATE']; ?></b></td>
-											<td></td>
+
+											<?php
+												$startdate = date_create($value['TASKSTARTDATE']);
+												$enddate = date_create($value['TASKENDDATE']);
+												$diff = date_diff($enddate, $startdate);
+												$dDiff = intval($diff->format('%d'));
+											?>
+
+											<td width="15%"><b><?php echo date_format($startdate, "F d, Y"); ?></b></td>
+											<td width="15%"><b><?php echo date_format($enddate, "F d, Y") ?></b></td>
+											<td width="10%">
+												<div class="form-group">
+													<b>
+														<?php
+															if (($dDiff + 1) <= 1)
+																echo ($dDiff + 1) . " day";
+															else
+																echo ($dDiff + 1) . " days";
+														?>
+													</b>
+												</div>
+											</td>
+											<td width="5%"></td>
 										</tr>
 										<tr>
 											<td></td>
@@ -120,7 +147,7 @@
 												<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
 												<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 											</div></td>
-											<td width="40%">
+											<td>
 												<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
 													<?php foreach ($departments as $row): ?>
 
@@ -148,7 +175,13 @@
 					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
 					                </div>
 												</div></td>
-												<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
+												<td>
+													<div class="form-group">
+														<input id = "projectPeriod0" type="text" class="form-control" value="" readonly>
+													</div>
+												</td>
+												<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
+												<td></td>
 										</tr>
 
 									</tbody>
@@ -160,7 +193,7 @@
 								<div class="box-footer">
 									<button type="button" class="btn btn-success">Previous: Add Main Activities</button>
 									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks">Next: Add Tasks</button>
-									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button> -->
+									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button>
 								</div>
 								</form>
 		          </div>
@@ -204,7 +237,7 @@
 										"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
 										"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
 										"name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
-										"' required></div></div></td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
+										"' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod" + i + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
 										" counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
 
 					$("#end_" + mainAct + "-" + counter).prop('disabled', true);
@@ -235,6 +268,11 @@
 						$('#table_' + tableNum + '_Row_' + rowNum).remove();
 					}
 				});
+
+				$(document).on("click", "#skipStep", function() {
+							console.log("hello");
+					});
+
 			 });
 
 		  $(function ()
@@ -250,7 +288,7 @@
 		  	       autoclose: true,
 							 startDate: $("#projectDate").attr('data-startDate'),
 							 endDate: $("#projectDate").attr('data-endDate'),
-							 orientation: 'top'
+							 orientation: 'auto'
 						});
 				});
 
@@ -272,7 +310,7 @@
 							 autoclose: true,
 							 startDate: $("#start_" + mainAct + "-" + counter).val(),
 							 endDate: $("#projectDate").attr('data-endDate'),
-							 orientation: 'top'
+							 orientation: 'auto'
 						});
 				});
 		 });

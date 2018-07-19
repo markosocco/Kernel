@@ -58,7 +58,7 @@
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
-											<th width="30%">Main Activity Title</th>
+											<th width="30%">Main Activity Name</th>
 											<th width="30%">Department</th>
 											<th width="15%">Start Date</th>
 											<th width="15%">Target End Date</th>
@@ -108,7 +108,7 @@
 											</td>
 											<td>
 												<div class="form-group">
-			                  	<input type="text" class="form-control" value="1k days" readonly>
+			                  	<input id = "projectPeriod0" type="text" class="form-control" value="" readonly>
 			                	</div>
 											</td>
 											<td class='btn'>
@@ -158,6 +158,9 @@
 		<!-- REQUIRED JS SCRIPTS -->
 
 		<script>
+
+			$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+
 			$("#myProjects").addClass("active");
 			$(".taskEndDate").prop('disabled', true);
 
@@ -171,9 +174,10 @@
 			 $('body').on('focus',".taskStartDate", function(){
 					 $(this).datepicker({
 						 autoclose: true,
+						 orientation: 'auto',
 						 format: 'yyyy-mm-dd',
-						 startDate: $("#start-0").attr('data-start'),
-						 endDate: $("#start-0").attr('data-end')
+						 startDate: $("#start-0").attr('data-start'), // start date of project
+						 endDate: $("#start-0").attr('data-end') // end date of project
 					 });
 			 });
 
@@ -181,20 +185,50 @@
 				 var mainAct = $(this).attr('data-mainAct');
 
 			 $("#end-" + mainAct).prop('disabled', false);
+			 // $('#end-' + mainAct).data('datepicker').setStartDate(new Date($("#start-" + mainAct).val()));
+			 $("#end-" + mainAct).startDate = "2018-07-30";
 			 if(new Date($("#end-" + mainAct).val()) < $(this).val()) //Removes Target Date Input if new Start Date comes after it
 				 $("#end-" + mainAct).val("");
+
+				var diff = new Date($("#end-"+mainAct).datepicker("getDate") - $("#start-" + mainAct).datepicker("getDate"));
+ 				var period = (diff/1000/60/60/24)+1;
+				if ( $("#start-" + mainAct).val() != "" &&  $("#end-" + mainAct).val() != "" && period >=1)
+ 				{
+					if(period > 1)
+						$("#projectPeriod" + mainAct).attr("value", period + " days");
+					else
+						$("#projectPeriod" + mainAct).attr("value", period + " day");
+ 				}
+ 				else
+ 					$("#projectPeriod").attr("value", "");
 			});
 
 			 $('body').on('focus',".taskEndDate", function(){
 				 var mainAct = $(this).attr('data-mainAct');
 				 var counter = $(this).attr('data-num');
+
 					 $(this).datepicker({
-						 // var mainAct = $(this).attr('data-mainAct');
 		 	       autoclose: true,
+						 orientation: 'auto',
 						 format: 'yyyy-mm-dd',
-						 // startDate: $("#start-" + $(this).attr('data-mainAct')).val(),
-						 endDate: $("#start-0").attr('data-end')
+						 startDate: $("#start-"+mainAct).val(),
+						 endDate: $("#start-0").attr('data-end') // end date of project
 					 });
+			 });
+
+			 $("body").on("change", ".taskEndDate", function() {
+				var mainAct = $(this).attr('data-mainAct');
+				var diff = new Date($("#end-"+mainAct).datepicker("getDate") - $("#start-" + mainAct).datepicker("getDate"));
+				var period = (diff/1000/60/60/24)+1;
+				if ( $("#start-" + mainAct).val() != "" &&  $("#end-" + mainAct).val() != "" && period >=1)
+				{
+					if(period > 1)
+						$("#projectPeriod" + mainAct).attr("value", period + " days");
+					else
+						$("#projectPeriod" + mainAct).attr("value", period + " day");
+				}
+				else
+					$("#projectPeriod" + mainAct).attr("value", "");
 			 });
 		 });
 
@@ -211,10 +245,10 @@
 				 var counter = parseInt($(this).attr('data-counter'));
 
 				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' ></div></td> " +
-				 " <td width = '40%'> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+				 " <td> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 				 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' id='start-" + i + "' data-mainAct='"+ i +"' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
-				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' id='end-" + i + "' data-mainAct='" + i + "' required></div></div></td> <td class='btn'><a id='del" + counter + "' class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
+				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskEndDate' name='taskEndDate[]' id='end-" + i + "' data-mainAct='" + i + "' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod" + i + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a id='del" + counter + "' class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 				 // counter++;
 
