@@ -130,15 +130,7 @@
 		          <!-- /.box -->
 		        </div>
 
-						<!-- SET FLASHDATA -->
-						<!-- <?php $this->session->set_flashdata('projectID', $projectProfile['PROJECTID']); ?> -->
 
-						<!-- <?php echo "Session: " . $_SESSION['projectID']; ?> -->
-
-						<!-- <input type="hidden" name="project_ID" value= "<?php echo $projectProfile['PROJECTID']; ?>"> -->
-						<!-- <?php echo $errors; ?> -->
-
-						<!-- <?php echo "hello ---- " . $projectProfile['PROJECTID']; ?> -->
 
 						<?php echo form_open_multipart('controller/uploadDocument');?>
 
@@ -155,7 +147,7 @@
 										<div class="row">
 											<div class="col-lg-6">
 												<p>Departments</p>
-												<select id ="" class="form-control select2 departments" multiple="multiple" name = "departments[]" data-placeholder="Select Departments" style="width:100%">
+												<select id ="departments" class="form-control select2 departments" multiple="multiple" name = "departments[]" data-placeholder="Select Departments" style="width:100%">
 
 													<option value="all">All</option>
 													<?php foreach ($departments as $row): ?>
@@ -171,9 +163,8 @@
 											<div class="col-lg-6">
 												<!-- <div class="input-group"> -->
 												<p>Users</p>
-													<select id ="" class="form-control select2 users" multiple="multiple" name = "users[]" data-placeholder="Select Departments" style="width:100%">
+													<select id ="users" class="form-control select2 users" multiple="multiple" name = "users[]" data-placeholder="Select Departments" style="width:100%">
 
-														<option value="all">All</option hidden>
 														<?php foreach ($users as $row): ?>
 
 															<option value="<?php echo $row['USERID']?>">
@@ -218,22 +209,6 @@
 		<script>
 			$("#myProjects").addClass("active");
 			$('.select2').select2();
-
-		// START: document ready
-			$(document).ready(function(){
-
-			// START: on click departments
-				$('.departments').on("click", function(){
-					alert('clicked');
-
-				});
-				// END: on click departments
-
-			});
-			// END: document ready
-
-
-
 		</script>
 	</body>
 </html>

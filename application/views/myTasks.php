@@ -24,213 +24,145 @@
 
 					<!-- MAIN ACTIVITY TABLE -->
 
-					<div class="box" id="mainActivityBox">
-						<div class="box-header">
-							<h3 class="box-title text-blue">Main Activities</h3>
-						</div>
-						<!-- /.box-header -->
+					<?php if($mainActivity != null):?> <!-- Show only if there are main activities assigned -->
 
-						<div class="box-body">
-							<table id="mainActivityList" class="table table-bordered table-hover">
-								<thead>
-									<tr>
-										<th>Title</th>
-										<th>Project</th>
-										<th>Start Date</th>
-										<th>Target End Date</th>
-										<th>Period <small>(Day/s)</small></th>
-										<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-											<th><i class="fa fa-users" style="margin-left:50%"></i></th>
-										<?php endif;?>
-									</tr>
-								</thead>
+						<div class="box" id="mainActivityBox">
+							<div class="box-header">
+								<h3 class="box-title text-blue">Main Activities</h3>
+							</div>
+							<!-- /.box-header -->
 
-								<tbody id="mainActivityTable">
-
-									<?php foreach ($mainActivity as $mainAct):?>
-
-										<?php
-										$mainStart = date_create($mainAct['TASKSTARTDATE']);
-										$mainEnd = date_create($mainAct['TASKENDDATE']);
-										?>
-
+							<div class="box-body">
+								<table id="mainActivityList" class="table table-bordered table-hover">
+									<thead>
 										<tr>
-											<td><?php echo $mainAct['TASKTITLE'];?></td>
-											<td><?php echo $mainAct['PROJECTTITLE'];?></td>
-											<td><?php echo date_format($mainStart, "M d, Y");?></td>
-											<td><?php echo date_format($mainEnd, "M d, Y");?></td>
-											<td><?php echo $mainAct['taskDuration'];?></td>
-
-											<td align="center">
-												<button type="button" class="btn btn-primary btn-sm delegateBtn"
-																data-toggle="modal" data-target="#modal-delegate" data-id="
-																<?php echo $mainAct['TASKID'];?>" data-title=" <?php echo $mainAct['TASKTITLE'];?>"
-																data-start="<?php echo $mainAct['TASKSTARTDATE'];?>"
-																data-end="<?php echo $mainAct['TASKENDDATE'];?>">
-																<i class="fa fa-users"></i> Delegate</button>
-											</td>
+											<th>Title</th>
+											<th>Project</th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
+											<th>Period <small>(Day/s)</small></th>
+											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
+												<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+											<?php endif;?>
 										</tr>
-
-									<?php endforeach;?>
-								</tbody>
-							</table>
+									</thead>
+									<tbody id="mainActivityTable">
+									</tbody>
+								</table>
+							</div>
 						</div>
-					</div>
+					<?php endif;?>
 
 					<!-- SUB ACTIVITY TABLE -->
 
-					<div class="box" id="subActivityBox">
-						<div class="box-header">
-							<h3 class="box-title text-blue">Sub Activities</h3>
-						</div>
-						<!-- /.box-header -->
+					<?php if($subActivity != null):?> <!-- Show only if there are sub activities assigned -->
 
-						<div class="box-body">
-							<table id="subActivityList" class="table table-bordered table-hover">
-								<thead>
-									<tr>
-										<th>Title</th>
-										<th>Project</th>
-										<th>Start Date</th>
-										<th>Target End Date</th>
-										<th>Period <small>(Day/s)</small></th>
-										<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-											<th><i class="fa fa-users" style="margin-left:50%"></i></th>
-										<?php endif;?>
-									</tr>
-								</thead>
-
-								<tbody id="subActivityTable">
-									<?php foreach ($subActivity as $subAct):?>
-
-										<?php
-										$subStart = date_create($subAct['TASKSTARTDATE']);
-										$subEnd = date_create($subAct['TASKENDDATE']);
-										?>
-
+						<div class="box" id="subActivityBox">
+							<div class="box-header">
+								<h3 class="box-title text-blue">Sub Activities</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<table id="subActivityList" class="table table-bordered table-hover">
+									<thead>
 										<tr>
-											<td><?php echo $subAct['TASKTITLE'];?></td>
-											<td><?php echo $subAct['PROJECTTITLE'];?></td>
-											<td><?php echo date_format($subStart, "M d, Y");?></td>
-											<td><?php echo date_format($subEnd, "M d, Y");?></td>
-											<td><?php echo $subAct['taskDuration'];?></td>
-											<td align="center">
-												<button type="button" class="btn btn-primary btn-sm delegateBtn"
-																data-toggle="modal" data-target="#modal-delegate" data-id="
-																<?php echo $subAct['TASKID'];?>" data-title=" <?php echo $subAct['TASKTITLE'];?>"
-																data-start="<?php echo $subAct['TASKSTARTDATE'];?>"
-																data-end="<?php echo $subAct['TASKENDDATE'];?>">
-																<i class="fa fa-users"></i> Delegate
-												</button>
+											<th>Title</th>
+											<th>Project</th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
+											<th>Period <small>(Day/s)</small></th>
+											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
+												<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+											<?php endif;?>
+										</tr>
+									</thead>
+									<tbody id="subActivityTable">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					<?php endif;?>
+
+					<?php if($tasks != null):?> <!-- Show only if there are tasks assigned -->
+						<!-- TASK-R TABLE -->
+						<div class="box" id="taskBox">
+							<div class="box-header">
+								<h3 class="box-title text-blue">Tasks - Responsible</h3>
+							</div>
+							<!-- /.box-header -->
+
+							<div class="box-body">
+								<table id="taskList" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>Task</th>
+											<th>Project</th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
+											<th>Period <small>(Day/s)</small></th>
+											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
+												<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+											<?php endif;?>
+											<th><i class="fa fa-warning" style="margin-left:50%"></i></th>
+											<th><i class="fa fa-check" style="margin-left:50%"></i></th>
+										</tr>
+									</thead>
+									<tbody id="taskTable">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					<?php endif;?>
+
+					<?php if($ACItasks != null):?> <!-- Show only if there are aci tasks assigned -->
+						<!-- ACI TABLE -->
+						<div class="box" id="taskBox">
+							<div class="box-header">
+								<h3 class="box-title text-blue">Tasks - Accountable, Consulted, Informed</h3>
+							</div>
+							<!-- /.box-header -->
+
+							<div class="box-body">
+								<table id="aciList" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Task</th>
+											<th>Project</th>
+											<th>Start Date</th>
+											<th>Target End Date</th>
+											<th>Period <small>(Day/s)</small></th>
+											<th><i class="fa fa-briefcase" style="margin-left:50%"></i></th>
+										</tr>
+									</thead>
+									<tbody id="aciTable">
+										<?php foreach($ACItasks as $ACItask):?>
+											<?php switch($ACItask['ROLE'])
+												{
+													case 1: $role = 'R'; break;
+													case 2: $role = 'A'; break;
+													case 3: $role = 'C'; break;
+													case 4: $role = 'I'; break;
+													default: $role = 'A'; break;
+												}
+											;?>
+										<tr>
+											<td><?php echo $role;?></td>
+											<td><?php echo $ACItask['TASKTITLE'];?></td>
+											<td><?php echo $ACItask['PROJECTTITLE'];?></td>
+											<td><?php echo $ACItask['TASKSTARTDATE'];?></td>
+											<td><?php echo $ACItask['TASKENDDATE'];?></td>
+											<td><?php echo $ACItask['taskDuration'];?></td>
+											<td align="center"><button type="button" class="btn btn-primary btn-sm viewProjectBtn"
+												data-id="1"><i class="fa fa-briefcase"></i> View Project</button>
 											</td>
 										</tr>
-
 									<?php endforeach;?>
-								</tbody>
-							</table>
+									</tbody>
+								</table>
+							</div>
 						</div>
-					</div>
-
-					<!-- TASK TABLE -->
-
-					<div class="box" id="taskBox">
-						<div class="box-header">
-							<h3 class="box-title text-blue">Tasks</h3>
-						</div>
-						<!-- /.box-header -->
-
-						<div class="box-body">
-							<table id="taskList" class="table table-bordered table-hover">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Task</th>
-										<th>Project</th>
-										<th>Start Date</th>
-										<th>Target End Date</th>
-										<th>Period <small>(Day/s)</small></th>
-										<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-											<th><i class="fa fa-users" style="margin-left:50%"></i></th>
-										<?php endif;?>
-										<th><i class="fa fa-warning" style="margin-left:50%"></i></th>
-										<th><i class="fa fa-check" style="margin-left:50%"></i></th>
-									</tr>
-								</thead>
-								<tbody id="taskTable">
-									<?php foreach($tasks as $task):?>
-
-										<?php
-										$taskStart = date_create($task['TASKSTARTDATE']);
-										$taskEnd = date_create($task['TASKENDDATE']);
-										switch($task['ROLE'])
-										{
-											case "1": $role = "R"; break;
-											case "2": $role = "A"; break;
-											case "3": $role = "C"; break;
-											case "4": $role = "I"; break;
-										}
-										?>
-
-										<tr>
-											<td><?php echo $role?></td>
-											<td><?php echo $task['TASKTITLE'];?></td>
-											<td><?php echo $task['PROJECTTITLE'];?></td>
-											<td><?php echo date_format($taskStart, "M d, Y");?></td>
-											<td><?php echo date_format($taskEnd, "M d, Y");?></td>
-											<td><?php echo $task['taskDuration'];?></td>
-
-											<?php if($role == 'R'):?>
-												<td align="center">
-													<button type="button" class="btn btn-primary btn-sm delegateBtn"
-														data-toggle="modal" data-target="#modal-delegate"
-														data-id="<?php echo $task['TASKID'];?>"
-														data-title="<?php echo $task['TASKTITLE'];?>"
-														data-start="<?php echo $task['TASKSTARTDATE'];?>"
-														data-end="<?php echo $task['TASKENDDATE'];?>">
-														<i class="fa fa-users"></i> Delegate
-													</button>
-												</td>
-											<?php else:?>
-												<td></td>
-											<?php endif;?>
-
-											<?php if($task['currentDate'] >= $task['PROJECTSTARTDATE']):?>
-												<?php $newDate = $task['currentDate'] >= $task['TASKSTARTDATE'];?> <!-- CHECK IF ONGOING TASK -->
-												<td align="center">
-													<button type="button"
-														class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"
-														data-target="#modal-request" data-id="<?php echo $task['TASKID'];?>"
-														data-date="<?php echo $newDate;?>" data-title="<?php echo $task['TASKTITLE'];?>"
-														data-start="<?php echo $task['TASKSTARTDATE'];?>"
-														data-end="<?php echo $task['TASKENDDATE'];?>">
-														<i class="fa fa-warning"></i> RFC
-													</button>
-												</td>
-
-												<!-- INSERT AJAX TO CHECK FOR DEPENDENCIES -->
-												<?php $isDelayed = $task['currentDate'] >= $task['TASKENDDATE'];?>
-												<td align="center">
-													<button type="button"
-															class="btn btn-success btn-sm doneBtn" data-toggle="modal"
-															data-target="#modal-done" data-id="<?php echo $task['TASKID'];?>"
-															data-title="<?php echo $task['TASKTITLE'];?>"
-															data-delay="<?php echo $isDelayed;?>" data-start="<?php echo $task['TASKSTARTDATE'];?>"
-															data-end="<?php echo $task['TASKENDDATE'];?>">
-															<i class="fa fa-check"></i> Done
-													</button>
-												</td>
-
-											<?php else:?>
-												<td></td>
-												<td></td>
-											<?php endif;?>
-										</tr>
-
-									<?php endforeach;?>
-								</tbody>
-							</table>
-						</div>
-					</div>
+					<?php endif;?>
 
 						<!-- RFC MODAL -->
 						<div class="modal fade" id="modal-request" tabindex="-1">
@@ -532,7 +464,7 @@
 									<!-- INFORMED DIV -->
 									<div class="form-group raciDiv" id = "informedDiv">
 										<label>Select Department/s: (optional)</label>
-										<select class="form-control select2" multiple="multiple" name = "informedDept[]" data-placeholder="Select Departments" style="width:100%">
+										<select id="nami" class="form-control select2" multiple="multiple" name = "informedDept[]" data-placeholder="Select Departments" style="width:100%">
 
 											<?php foreach ($departments as $row): ?>
 
@@ -619,9 +551,6 @@
 										<h4 id = "workloadTasks">Total Number of Tasks: </h4>
 									</div>
 									<div class="modal-body" id = "workloadDiv">
-
-								<!-- PUT WORKLOAD LOOPS HERE -->
-
 									</div>
 									<div class="modal-footer">
 										<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i> Back</button>
@@ -690,8 +619,6 @@
 			</div>
 				<?php require("footer.php"); ?>
 		</div>
-
-		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 
 		<script>
 
@@ -774,6 +701,211 @@
 						$("#rfcForm").hide();
 						$("#startDate").val("");
 						$("#endDate").val("");
+					}
+				});
+
+				// AJAX LOAD TASKS
+
+				$.ajax({
+					type:"POST",
+					url: "<?php echo base_url("index.php/controller/loadTasks"); ?>",
+					dataType: 'json',
+					success:function(data)
+					{
+						// MAIN ACTIVITY TABLE
+						if(data['mainActivity'].length > 0)
+						{
+							$('#mainActivityTable').html("");
+							for (var m = 0; m < data['mainActivity'].length; m++)
+							{
+								var taskID = data['mainActivity'][m].TASKID;
+								var taskDuration = parseInt(data['mainActivity'][m].taskDuration);
+								var taskStart = moment(data['mainActivity'][m].TASKSTARTDATE).format('MMM DD, YYYY');
+								var taskEnd = moment(data['mainActivity'][m].TASKENDDATE).format('MMM DD, YYYY');
+								$('#mainActivityTable').append(
+														 "<tr><td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
+														 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
+														 "<td align='center'>" + taskStart +"</td>"+
+														 "<td align='center'>" + taskEnd +"</td>"+
+														 "<td align='center'>" + taskDuration+"</td>" +
+												 '<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+												 'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+												 taskID + '" data-title="' + data['mainActivity'][m].TASKTITLE +
+												 '" data-start="'+ data['mainActivity'][m].TASKSTARTDATE +
+												 '" data-end="'+ data['mainActivity'][m].TASKENDDATE +'">' +
+												 '<i class="fa fa-users"></i> Delegate</button></td></tr>');
+							} // end of main activity for loop
+						} // end of main activity if statement
+
+						// SUB ACTIVITY TABLE
+						if(data['subActivity'].length > 0)
+						{
+							$('#subActivityTable').html("");
+							for (var s = 0; s < data['subActivity'].length; s++)
+							{
+								var taskID = data['subActivity'][s].TASKID;
+								var taskDuration = parseInt(data['subActivity'][s].taskDuration);
+								var taskStart = moment(data['subActivity'][s].TASKSTARTDATE).format('MMM DD, YYYY');
+								var taskEnd = moment(data['subActivity'][s].TASKENDDATE).format('MMM DD, YYYY');
+
+								$('#subActivityTable').append(
+														 "<tr><td>" + data['subActivity'][s].TASKTITLE +"</td>"+
+														 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
+														 "<td align='center'>" + taskStart +"</td>"+
+														 "<td align='center'>" + taskEnd +"</td>"+
+														 "<td align='center'>" + taskDuration+"</td>" +
+														 "<td align='center'><button type='button' class='btn btn-primary btn-sm delegateBtn'" +
+														 "data-toggle='modal' data-target='#modal-delegate' data-id='" +
+														 taskID + "' data-title='" + data['subActivity'][s].TASKTITLE +
+														 "' data-start='"+ data['subActivity'][s].TASKSTARTDATE +
+														 "' data-end='"+ data['subActivity'][s].TASKENDDATE +"'>" +
+														 "<i class='fa fa-users'></i> Delegate</button></td></tr>");
+							} // end of sub activity for loop
+						}	// end of sub activity if statement
+
+						// TASKS TABLE
+						if(data['tasks'].length > 0)
+						{
+							$('#taskTable').html("");
+							for(i=0; i<data['tasks'].length; i++)
+							{
+								var taskDuration = parseInt(data['tasks'][i].taskDuration);
+								var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+								var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+								$('#taskTable').append(
+														 "<tr id='" + data['tasks'][i].TASKID + "'>" +														 "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
+														 "<td align='center'>" + taskStart +"</td>"+
+														 "<td align='center'>" + taskEnd +"</td>"+
+														 "<td align='center'>" + taskDuration+"</td>");
+
+								 var startDate = data['tasks'][i].TASKSTARTDATE;
+								 var endDate = data['tasks'][i].TASKENDDATE;
+
+								 // DELEGATE BUTTON
+								 if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1' && data['tasks'][i].usertype_USERTYPEID != '5') //SHOW BUTTON for assignment
+								 {
+									 $('#' +data['tasks'][i].TASKID).append(
+												 '<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+												 'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+												 data['tasks'][i].TASKID + '" data-title="' + data['tasks'][i].TASKTITLE +
+												 '" data-start="'+ startDate +
+												 '" data-end="'+ endDate +'">' +
+												 '<i class="fa fa-users"></i> Delegate</button></td>');
+								 }
+
+								 // RFC & DONE BUTTON
+								 if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONGOING PROJECT
+								 {
+									 var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING TASK
+	 									// RFC
+	 									$('#' + data['tasks'][i].TASKID).append(
+	 	 									'<td align="center"><button type="button"' +
+	 										'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
+	 										'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
+	 										'" data-date="' + newDate + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+	 										' data-start="'+ startDate +
+	 										'" data-end="'+ endDate +'"><i class="fa fa-warning"></i>' +
+	 										' RFC</button></td>');
+
+											// DONE
+											var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
+											var taskID = data['tasks'][i].TASKID;
+											var taskTitle = data['tasks'][i].TASKTITLE;
+											var index = i;
+
+											if(!newDate)
+											{
+												$('#' + taskID).append(
+													 '<td align="center"><button disabled type="button"' +
+													 'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+													 'data-target="#modal-done" data-id="' + taskID +
+													 '" data-title="' + taskTitle + '"' +
+													 'data-delay="' + isDelayed + '" data-start="'+ taskStart +
+													 '" data-end="'+ taskEnd +'">' +
+													 '<i class="fa fa-check"></i> Done</button></td></tr>');
+											}
+											else
+											{
+												// AJAX TO CHECK IF DEPENDENCIES ARE COMPLETE
+												$.ajax({
+							 					 type:"POST",
+							 					 url: "<?php echo base_url("index.php/controller/getDependenciesByTaskID"); ?>",
+												 data: {task_ID: taskID},
+							 					 dataType: 'json',
+							 					 success:function(dependencyData)
+							 					 {
+													 var taskID = dependencyData['taskID'].TASKID;
+													 var taskTitle = dependencyData['taskID'].TASKTITLE;
+													 var startDate = moment(dependencyData['taskID'].TASKSTARTDATE).format('MMM DD, YYYY');
+													 var endDate = moment(dependencyData['taskID'].TASKENDDATE).format('MMM DD, YYYY');
+													 var isDelayed = dependencyData['taskID'].currentDate > dependencyData['taskID'].TASKENDDATE;
+
+													 if(dependencyData['dependencies'].length > 0)
+													 {
+														 var isComplete = 'true';
+														 for (var d = 0; d < dependencyData['dependencies'].length; d++)
+														 {
+															 if(dependencyData['dependencies'][d].TASKSTATUS != 'Complete') // if there is a pre-requisite task that is ongoing
+															 {
+																 isComplete = 'false';
+															 }
+														 }
+
+														 if(isComplete == 'true' ) // if all pre-requisite tasks are complete, task can be marked done
+														 {
+															 $('#' + dependencyData['taskID'].TASKID).append(
+				 													'<td align="center"><button type="button"' +
+																	'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+																	'data-target="#modal-done" data-id="' + taskID +
+																	'" data-title="' + taskTitle + '"' +
+																	'data-delay="' + isDelayed + '" data-start="'+ startDate +
+																	'" data-end="'+ endDate +'">' +
+																	'<i class="fa fa-check"></i> Done</button></td></tr>');
+														 }
+														 else
+														 {
+															 $('#' + dependencyData['taskID'].TASKID).append(
+																'<td align="center"><button disabled type="button"' +
+															 	'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+															 	'data-target="#modal-done" data-id="' + taskID +
+															 	'" data-title="' + taskTitle + '"' +
+															 	'data-delay="' + isDelayed + '" data-start="'+ startDate +
+															 	'" data-end="'+ endDate +'">' +
+															 	'<i class="fa fa-check"></i> Done</button></td></tr>');
+														 }
+
+													 }
+													 else // if task has no prerequisites
+													 {
+														 $('#' + dependencyData['taskID'].TASKID).append(
+				 												'<td align="center"><button type="button"' +
+																'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+																'data-target="#modal-done" data-id="' + taskID +
+																'" data-title="' + taskTitle + '"' +
+																'data-delay="' + isDelayed + '" data-start="'+ startDate +
+																'" data-end="'+ endDate +'">' +
+																'<i class="fa fa-check"></i> Done</button></td>');
+													 }
+												 },
+												 error:function()
+												 {
+													 alert("There was a problem in checking the task dependencies");
+												 }
+											 }); // end of dependencies ajax
+											}
+								 } // end of if statment if ongoing
+								 else
+								 {
+									 $('#' + data['tasks'][i].TASKID).append('<td></td>' + '<td></td>'); // NO DONE & RFC BUTTON (Project is not ongoing)
+								 }
+
+							 } // end of tasks for loop
+						 }
+					},
+					error:function()
+					{
+						alert("There was a problem in retrieving the tasks");
 					}
 				});
 
@@ -916,12 +1048,6 @@
 						{
 							alert("Failed to retrieve user data.");
 						}
-						// error:function(jqXHR, textStatus, errorThrown)
-						// {
-						// 	alert(textStatus + " & " + errorThrown);
-						// 	alert(XMLHTTPRequest.responseText);
-						// 	alert('got none');
-						// }
 					});
 
 				});
@@ -977,7 +1103,7 @@
 						 $("#newDateDiv").show();
 						 $("#rfcReason").show();
 
-						 if($("#rfcSubmit").attr('data-date') == '1') // IF TASK IS ONGOING
+						 if($("#rfcSubmit").attr('data-date') == 'true') // IF TASK IS ONGOING
 						 {
 							 $(".start").hide();
 							 $("#endDate").attr("required", true);
@@ -1007,8 +1133,8 @@
 					else
 						$("#doneDates").append(" day)");
 					$("#doneConfirm").attr("data-id", $id); //pass data id to confirm button
-					var isDelayed = $(this).attr('data-delay'); // 1 = delayed
-					if(isDelayed == '0')
+					var isDelayed = $(this).attr('data-delay'); // true = delayed
+					if(isDelayed == 'false')
 					{
 						$("#delayed").hide();
 						$("#early").show();
@@ -1030,11 +1156,13 @@
 					$("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 				});
 
-
-
-
+				// ACI SCRIPT
+				$("body").on('click','.viewProjectBtn',function(){
+					alert("go");
+				});
 
 			});
 		</script>
+
 	</body>
 </html>
