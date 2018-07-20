@@ -474,6 +474,15 @@ class controller extends CI_Controller
 		$this->myTasks();
 	}
 
+	public function approveDenyRFC()
+	{
+		$requestID = $this->input->post('request_ID');
+		$remarks = $this->input->post('remarks');
+		$status = $this->input->post('status');
+
+		echo "Request ID: " . $requestID . "<br> Remarks: " . $remarks . "<br> Status: " . $status;
+	}
+
 	public function getUserWorkloadProjects()
 	{
 		$userID = $this->input->post('userID');

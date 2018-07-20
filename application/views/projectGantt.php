@@ -21,6 +21,9 @@
 
 						<!-- <a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a> -->
 					</div>
+
+				<?php if(isset($_SESSION['rfc'])): ?>
+
 					<!-- RFC GANTT START -->
 					<div id="rfcGantt">
 						<div class="row">
@@ -31,10 +34,12 @@
 										</div>
 										<!-- /.box-header -->
 										<div class="box-body">
-											<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
-												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
+											<form id = "approvalForm" action="approveDenyRFC" method="POST" style="margin-bottom:0;" data-id="<?php echo $changeRequest['REQUESTID'];?>">												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
 												$startDate = date_create($changeRequest['TASKSTARTDATE']);
-												$endDate = date_create($changeRequest['TASKENDDATE']);?>
+												$endDate = date_create($changeRequest['TASKENDDATE']);
+												$newStartDate = date_create($changeRequest['NEWSTARTDATE']);
+												$newEndDate = date_create($changeRequest['NEWENDDATE']);
+												?>
 												<?php if($changeRequest['REQUESTTYPE'] == 1)
 													$type = "Change Performer";
 												else
@@ -82,12 +87,28 @@
 														</td>
 													</tr>
 
+													<?php if($changeRequest['REQUESTTYPE'] == '2'):?>
+														<tr>
+															<td colspan='2'>
+																<label>Requested Start Date</label>
+																<?php if($changeRequest['NEWSTARTDATE'] != ""):?>
+																	<p><?php echo date_format($newStartDate, "F d, Y");?></p>
+																<?php else:?>
+																	<p>-</p>
+																<?php endif;?>
+															</td>
+															<td colspan='2'>
+																<label>Requested End Date</label>
+																<?php if($changeRequest['NEWENDDATE'] != ""):?>
+																	<p><?php echo date_format($newEndDate, "F d, Y");?></p>
+																<?php else:?>
+																	<p>-</p>
+																<?php endif;?>
+															</td>
+														</tr>
+													<?php endif;?>
 
 												</table>
-
-												<div class="form-group">
-													<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
-												</div>
 										</div>
 										<!-- /.box-body -->
 										<!-- /.box-footer -->
@@ -99,11 +120,11 @@
 									<div class="box box-danger">
 										<!-- /.box-header -->
 										<div class="box-body">
-											<div class="form-group">
-												<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
-											</div>
-											<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id="" style="display:block"><i class="fa fa-close"></i> Deny Request</button>
-											<button id = "approveRequest" type="submit" class="btn btn-success pull-right" data-id="" style="display:block;"><i class="fa fa-check"></i> Approve Request</button>
+												<div class="form-group">
+													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
+												</div>
+												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block"><i class="fa fa-close"></i> Deny Request</button>
+												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;"><i class="fa fa-check"></i> Approve Request</button>
 											</form>
 										</div>
 										<!-- /.box-body -->
@@ -115,6 +136,7 @@
 						<hr style="height:1px; background-color:black">
 					</div>
 					<!-- RFC GANTT END -->
+				<?php endif;?>
 
 					<!-- <div class="pull-right" style="text-align:center;">
 						<div class="progress" data-percentage="20">
@@ -214,8 +236,6 @@
 		</div>
 		<script>
 
-		$("#rfcGantt").hide();
-
 		$(document).on("click", "#archiveProject", function() {
 			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
 			$("form").attr("name", "formSubmit");
@@ -230,9 +250,21 @@
 			// 	("#gantt").submit();
       // });
 
-			<?php if(isset($_SESSION['rfc'])): ?>
-				$("#rfcGantt").show();
-			<?php endif;?>
+			$(document).on("click", "#denyRequest", function() {
+				var $request = $("#approvalForm").attr('data-id');
+				$("#approvalForm").attr("name", "formSubmit");
+				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='status' value= 'deny'>");
+				$("#approvalForm").submit();
+				});
+
+			$(document).on("click", "#approveRequest", function() {
+				var $request = $("#approvalForm").attr('data-id');
+				$("#approvalForm").attr("name", "formSubmit");
+				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='status' value= 'approve'>");
+				$("#approvalForm").submit();
+				});
 
 		</script>
 
