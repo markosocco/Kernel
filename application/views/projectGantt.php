@@ -113,13 +113,24 @@
 
 						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'];?> day/s)</h4>
 
-						<h4 style="color:red">
-							<?php if ($current >= $startdate):?>
-								<?php echo $projectProfile['remaining'];?> Day/s Remaining
-							<?php else:?>
-								<?php echo $projectProfile['launching'];?> Day/s Remaining before Project Launch
-							<?php endif;?>
-						</h4>
+						<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived'):?>
+							<?php $actualEnd = date_create($projectProfile['PROJECTACTUALENDDATE']);?>
+
+							<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?> (<?php echo $projectProfile['actualDuration'];?> day/s)</h4>
+
+						<?php else:?>
+
+							<h4 style="color:red">
+								<?php if ($current >= $startdate && $current <= $enddate):?>
+									<?php echo $projectProfile['remaining'];?> Day/s Remaining
+								<?php elseif ($current < $startdate):?>
+									Launch in <?php echo $projectProfile['launching'];?> Day/s
+								<?php elseif ($current >= $startdate && $current >= $enddate):?>
+									<?php echo $projectProfile['delayed'];?> Day/s Delayed
+								<?php endif;?>
+							</h4>
+
+						<?php endif;?>
 
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
@@ -157,6 +168,8 @@
 		</div>
 		<script>
 
+		$("#rfcGantt").hide();
+
 		$(document).on("click", "#archiveProject", function() {
 			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
 			$("form").attr("name", "formSubmit");
@@ -170,6 +183,10 @@
 			// {
 			// 	("#gantt").submit();
       // });
+
+			<?php if(isset($_SESSION['rfc'])): ?>
+				$("#rfcGantt").show();
+			<?php endif;?>
 
 		</script>
 
@@ -287,7 +304,7 @@
 									'progressValue': '0%'
 								},";
 						} else { // START: RACI IS NOT EMPTY
-							
+
 							//START: Completed task - ProgressValue = 100%
 								if($value['TASKSTATUS'] == 'Complete'){
 
