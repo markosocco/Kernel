@@ -87,6 +87,11 @@
 											foreach ($documentsByProject as $row) {
 												if($row['DOCUMENTSTATUS'] == 'For Acknowledgement'){
 													// echo "<script>alert('".$row['DOCUMENTID']." for Acknowledgement');</script>";
+													echo"
+													<form action='acknowledgeDocument' method='POST' id='acknowledgeDocu'>
+														<input type='hidden' name='documentID' value='" . $row['DOCUMENTID'] . "'>
+													</form>";
+
 													foreach($documentAcknowledgement as $data){
 														if($row['DOCUMENTID'] == $data['documents_DOCUMENTID'] || $row['users_UPLOADEDBY'] == $_SESSION['USERID']){
 															echo "<tr>";
@@ -99,13 +104,17 @@
 																echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
 																<button type='button' class='btn btn-success'>
 																<i class='fa fa-download'></i> Download</button></a></td>";
-	
-																if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
-																	echo "<td align='center'>
-																	<button type='button' class='btn btn-success'>
-																	<i class='fa fa-download'></i> ACKNOWLEDGE</button></a></td>";
-																}
 
+																if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
+																	if($data['ACKNOWLEDGEDDATE'] != ''){
+																		echo "<td align='center'>Acknowledged</td>";
+																	} else {
+																		echo "<td align='center'>
+																		<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton'>
+																		<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
+																	}
+
+																}
 															echo "</tr>";
 														}
 													}
@@ -211,6 +220,11 @@
 		<script>
 			$("#myProjects").addClass("active");
 			$('.select2').select2();
+
+			$("#acknowledgeButton").click(function(){
+				$("#acknowledgeDocu").submit();
+			});
+
 		</script>
 	</body>
 </html>

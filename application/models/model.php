@@ -747,6 +747,14 @@ class model extends CI_Model
     return true;
   }
 
+  public function updateDocumentAcknowledgement($documentID, $userID, $currentDate)
+  {
+    $condition = "documents_DOCUMENTID = " . $documentID . " AND users_ACKNOWLEDGEDBY = " . $userID;
+    $this->db->set('ACKNOWLEDGEDDATE', $currentDate);
+    $this->db->where($condition);
+    $this->db->update('documentAcknowledgement');
+  }
+
   public function getAllDocuments()
   {
     $this->db->select('*');
@@ -792,9 +800,21 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  public function getAllDocumentAcknowledgementByUser($userID)
+  {
+    $condition = "ACKNOWLEDGEDDATE = '' && users_ACKNOWLEDGEDBY = " . $userID;
+    $this->db->select('*');
+    $this->db->from('documentAcknowledgement');
+    $this->db->join('documents', 'documents_DOCUMENTID = DOCUMENTID');
+    $this->db->join('users', 'users_UPLOADEDBY = USERID');
+    $this->db->join('departments', 'departments_DEPARTMENTID = DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   public function insertParentTask($data, $id)
   {
-
     $this->db->where('TASKID', $id);
     $this->db->update('tasks', $data);
   }
@@ -936,6 +956,12 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+  }
+
+  public function addNotification($data)
+  {
+    $this->db->insert('logs', $data);
+    return true;
   }
 
   public function getTasksWithTomorrowDeadline()

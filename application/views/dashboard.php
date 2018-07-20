@@ -352,6 +352,57 @@
 
 			<!-- MODALS END -->
 
+			<!-- MARKO - Docu-->
+			<!-- Main row -->
+			<div class="row">
+				<!-- Left col -->
+				<div class="col-md-12">
+					<div class="box box-info">
+						<div class="box-header with-border">
+							<h3 class="box-title">Document Acknowledgement</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<div class="table-responsive">
+								<table class="table table-hover no-margin" id="requestApproval">
+									<thead>
+									<tr>
+										<th>Document Name</th>
+										<th>Uploaded By</th>
+										<th>Department</th>
+										<th align="center"></th>
+									</tr>
+									</thead>
+									<tbody>
+										<?php
+											foreach($toAcknowledgeDocuments as $row){
+												echo "<tr>";
+													echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+													echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+													echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+													echo "<td align='center'>
+													<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton'>
+													<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
+												echo "</tr>";
+											}
+										?>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.table-responsive -->
+						</div>
+						<!-- /.box-body -->
+						<!-- /.box-footer -->
+					</div>
+					<!-- /.box -->
+				</div>
+			</div>
+
+			<div class="row">
+			</div>
+
+			<!-- END APPROVAL TABLE -->
+
 
 		</section>
 			</div>

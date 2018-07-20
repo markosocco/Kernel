@@ -141,6 +141,8 @@ class controller extends CI_Controller
 		{
 			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
+			$data['toAcknowledgeDocuments'] = $this->model->getAllDocumentAcknowledgementByUser($_SESSION['USERID']);
+
 			$this->load->view("dashboard", $data);
 		}
 	}
@@ -858,11 +860,6 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			// foreach ($data['ganttData'] as $key => $value) {
-			// 	echo $value['tasks_TASKID'] . " parent is ";
-			// 	echo $value['tasks_TASKPARENT'] . "<br>";
-			// }
-
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
 
@@ -1322,7 +1319,6 @@ class controller extends CI_Controller
 		if(!$this->upload->do_upload('document'))
 		{
 			echo "<script>alert('did not upload');</script>";
-
 		}
 
 		else
@@ -1364,6 +1360,21 @@ class controller extends CI_Controller
 						// INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
 						$this->model->addToDocumentAcknowledgement($acknowledgementData);
 
+						// // START: Notification
+						// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+						// $projectTitle = $projectID['PROJECTTITLE'];
+						// $details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
+						//
+						// $notificationData = array(
+						// 	'users_USERID' => $userIDByDepartment['users_USERID'],
+						// 	'DETAILS' => $details,
+						// 	'TIMESTAMP' => date('Y-m-d'),
+						// 	'status' => 'Unread'
+						// );
+						//
+						// $this->model->addNotification($notificationData);
+						// // END: Notification
+
 					} // END: FOREACH - GETS ALL USERS OF A DEPARTMENT
 
 				} // END: FOREACH OF $departmentIDs
@@ -1380,6 +1391,20 @@ class controller extends CI_Controller
 				);
 
 				$this->model->uploadDocument($uploadData);
+
+				// // START: Notification
+				// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+				// $details = $userName . " has uploaded " . $fileName . " and needs your acknowledgement.";
+				// $notificationData = array(
+				// 	'users_USERID' => $userIDByDepartment['users_USERID'],
+				// 	'DETAILS' => $details,
+				// 	'TIMESTAMP' => date('Y-m-d'),
+				// 	'status' => 'Unread'
+				// );
+				//
+				// $this->model->addNotification($notificationData);
+				// // END: Notification
+
 			} // END: DOESN'T NEED ACKNOWLEDGMENT
 
 			// START: GET ALL USERS THAT WERE SELECTED
@@ -1399,10 +1424,10 @@ class controller extends CI_Controller
 						// INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
 						$this->model->addToDocumentAcknowledgement($acknowledgementData);
 					}
+					// END: NOT YET IN DOCUMENT ACKNOWLEDGMENT TABLE
 				}
 				// END: GET ALL USERS THAT WERE SELECTED
 			}
-
 
 			// START: LOG DETAILS
 			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
@@ -1425,6 +1450,41 @@ class controller extends CI_Controller
 		$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
 
 		$this->load->view("projectDocuments", $data);
+	}
+
+	public function acknowledgeDocument()
+	{
+		//GET DOCUMENT ID
+		$documentID = $this->input->post("documentID");
+
+		$currentDate = date('Y-m-d');
+
+		$this->model->updateDocumentAcknowledgement($documentID, $_SESSION['USERID'], $currentDate);
+
+		// // START: LOG DETAILS
+		// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		// $details = $userName . " has acknowledged " . $fileName;
+		//
+		// $logData = array (
+		// 	'LOGDETAILS' => $details,
+		// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+		// 	'projects_PROJECTID' => $id // how to get project ID if hindi naman sya napass? or pano magpass?
+		// );
+		//
+		// $this->model->addToProjectLogs($logData);
+		// // END: LOG DETAILS
+
+		//eto rin how to pass project id? :(
+
+		// $this->session->set_flashdata('projectID', $id);
+		// $data['projectProfile'] = $this->model->getProjectByID($id);
+		// $data['departments'] = $this->model->getAllDepartments();
+		// $data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+		// $data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+
+		$this->load->view("projectDocuments", $data);
+
+		// $documentID = $this->model->getProjectByID($id);
 	}
 
 	/******************** MY PROJECTS END ********************/
