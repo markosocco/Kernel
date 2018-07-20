@@ -30,9 +30,9 @@
 
 					<?php if($mainActivity != null):?> <!-- Show only if there are main activities assigned -->
 
-						<div class="box" id="mainActivityBox">
+						<div class="box box-info" id="mainActivityBox">
 							<div class="box-header">
-								<h3 class="box-title text-blue">Main Activities</h3>
+								<h3 class="box-title">Main Activities</h3>
 							</div>
 							<!-- /.box-header -->
 
@@ -61,9 +61,9 @@
 
 					<?php if($subActivity != null):?> <!-- Show only if there are sub activities assigned -->
 
-						<div class="box" id="subActivityBox">
+						<div class="box box-info" id="subActivityBox">
 							<div class="box-header">
-								<h3 class="box-title text-blue">Sub Activities</h3>
+								<h3 class="box-title">Sub Activities</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -89,9 +89,9 @@
 
 					<?php if($tasks != null):?> <!-- Show only if there are tasks assigned -->
 						<!-- TASK-R TABLE -->
-						<div class="box" id="taskBox">
+						<div class="box box-info" id="taskBox">
 							<div class="box-header">
-								<h3 class="box-title text-blue">Tasks - Responsible</h3>
+								<h3 class="box-title">Tasks - Responsible</h3>
 							</div>
 							<!-- /.box-header -->
 
@@ -120,9 +120,9 @@
 
 					<?php if($ACItasks != null):?> <!-- Show only if there are aci tasks assigned -->
 						<!-- ACI TABLE -->
-						<div class="box" id="taskBox">
+						<div class="box box-info" id="taskBox">
 							<div class="box-header">
-								<h3 class="box-title text-blue">Tasks - Accountable, Consulted, Informed</h3>
+								<h3 class="box-title">Tasks - Accountable, Consulted, Informed</h3>
 							</div>
 							<!-- /.box-header -->
 

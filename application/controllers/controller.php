@@ -143,6 +143,18 @@ class controller extends CI_Controller
 			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
 			$data['toAcknowledgeDocuments'] = $this->model->getAllDocumentAcknowledgementByUser($_SESSION['USERID']);
 
+			// RFC Approval Data
+			$userID = $_SESSION['USERID'];
+			$deptID = $_SESSION['departments_DEPARTMENTID'];
+			if($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
+				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || $userID = projects.users_USERID";
+			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
+				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || $userID = projects.users_USERID";
+			elseif($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
+				$filter = "$userID = projects.users_USERID";
+
+			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
+
 			$this->load->view("dashboard", $data);
 		}
 	}
@@ -576,6 +588,7 @@ class controller extends CI_Controller
 			$id = $this->input->post("projectID_logs");
 			$this->session->set_flashdata('projectIDlogs', $id);
 			$data['projectLog'] = $this->model->getProjectLogs($id);
+			$data['projectID'] = $id;
 			$this->load->view("projectLogs", $data);
 		}
 	}
@@ -848,7 +861,10 @@ class controller extends CI_Controller
 			elseif (isset($rfc))
 			{
 				$rfc = $this->input->post("rfc");
+				$requestID = $this->input->post("request_ID");
 				$this->session->set_flashdata('rfc', $rfc);
+
+				$data['changeRequest'] = $this->model->getChangeRequestbyID($requestID);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -965,7 +981,7 @@ class controller extends CI_Controller
 				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || $userID = projects.users_USERID";
 			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
 				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || $userID = projects.users_USERID";
-			elseif($_SESSION['usertype_USERTYPEID'] == '5')
+			elseif($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
 				$filter = "$userID = projects.users_USERID";
 
 			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);

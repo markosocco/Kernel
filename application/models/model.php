@@ -161,6 +161,20 @@ class model extends CI_Model
     return $query->result_array();
   }
 
+  public function getChangeRequestbyID($requestID)
+  {
+    $condition = "REQUESTID = '$requestID'";
+    $this->db->select('*');
+    $this->db->from('changerequests');
+    $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->row_array();
+  }
+
   public function getAllUsers()
   {
     $this->db->select('*, ' . $_SESSION['usertype_USERTYPEID'] . ' as "userType"');

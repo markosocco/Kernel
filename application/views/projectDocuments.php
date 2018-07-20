@@ -28,8 +28,10 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					<div style="margin-bottom:10px">
-						<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
-						<a href="#" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to Project</a>
+						<button id="backBtn" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Project</button>
+						<form id="backForm" action = 'projectGantt' method="POST" data-id="<?php echo $projectProfile['PROJECTID']; ?>">
+						</form>
+
 					</div>
 					<h1>
 						Documents
@@ -54,22 +56,24 @@
 		              <h3 class="box-title">
 										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Upload</button>
 									</h3>
-		              <div class="box-tools">
-		                <div class="input-group input-group-sm" style="width: 150px;">
-		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+									<?php if ($documentsByProject != null):?>
+			              <div class="box-tools">
+			                <div class="input-group input-group-sm" style="width: 150px;">
+			                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-		                  <div class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-		                  </div>
-		                </div>
-		              </div>
+			                  <div class="input-group-btn">
+			                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+			                  </div>
+			                </div>
+			              </div>
+									<?php endif;?>
 		            </div>
 		            <!-- /.box-header -->
-		            <div class="box-body table-responsive no-padding">
 
-									<?php if($documentsByProject == NULL):
-										echo "There are no documents uploaded.";
-									else: ?>
+		            <div class="box-body table-responsive no-padding">
+									<?php if($documentsByProject == NULL):?>
+										<h3 class="box-title" style="text-align:center">There are no documents uploaded</h3>
+									<?php else: ?>
 		              <table class="table table-hover">
 		                <tr>
 		                  <th>#</th>
@@ -220,6 +224,13 @@
 		<script>
 			$("#myProjects").addClass("active");
 			$('.select2').select2();
+
+			$(document).on("click", "#backBtn", function() {
+				var $project = $("#backForm").attr('data-id');
+				$("#backForm").attr("name", "formSubmit");
+				$("#backForm").append("<input type='hidden' name='project_ID' value= " + $project + ">");
+				$("#backForm").submit();
+				});
 
 			$(document).on("click", ".document", function() {
 				var $id = $(this).attr('data-id');

@@ -11,8 +11,9 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div style="margin-bottom:10px">
-					<!-- IDK HOW TO MAKE THIS WORK. RETURNS TO projectGantt -->
-					<a href="#" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to Project</a>
+					<button id="backBtn" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Project</button>
+					<form id="backForm" action = 'projectGantt' method="POST" data-id="<?php echo $projectID; ?>">
+					</form>
 				</div>
 				<h1>
 					Project title - Project Logs
@@ -22,6 +23,10 @@
 
 			<!-- Main content -->
 			<section class="content container-fluid">
+				<?php if($projectLog == null):?>
+					<h3 class="box-title" style="text-align:center">There are no project logs</h3>
+				<?php else:?>
+
 				<div class="box">
 					<div class="box-header">
 						<!-- <h3 class="box-title">Generate Reports</h3> -->
@@ -44,6 +49,7 @@
 					<!-- /.box-body -->
 				</div>
 				<!-- /.box -->
+			<?php endif;?>
 
 			</section>
 
@@ -55,6 +61,13 @@
 
 		<script>
 		$("#myProjects").addClass("active");
+
+		$(document).on("click", "#backBtn", function() {
+			var $project = $("#backForm").attr('data-id');
+			$("#backForm").attr("name", "formSubmit");
+			$("#backForm").append("<input type='hidden' name='project_ID' value= " + $project + ">");
+			$("#backForm").submit();
+			});
 		</script>
 
 	</body>

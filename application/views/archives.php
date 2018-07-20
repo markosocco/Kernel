@@ -18,6 +18,9 @@
 
 			<!-- Main content -->
 			<section class="content container-fluid">
+				<?php if($archives == null):?>
+					<h3 class="box-title" style="text-align:center">There are no project archives</h3>
+				<?php else:?>
 				<div class="box">
 					<div class="box-header">
 					</div>
@@ -55,6 +58,7 @@
 					<!-- /.box-body -->
 				</div>
 				<!-- /.box -->
+			<?php endif;?>
 
 			</section>
 

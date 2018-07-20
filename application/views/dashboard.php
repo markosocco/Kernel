@@ -258,150 +258,122 @@
 
 				</div>
 
-			<!-- APPROVAL TABLE -->
-			<!-- Main row -->
-			<div class="row">
-				<!-- Left col -->
-				<div class="col-md-12">
-					<div class="box box-info">
-						<div class="box-header with-border">
-							<h3 class="box-title">Request Approval</h3>
-						</div>
-						<!-- /.box-header -->
-						<div class="box-body">
-							<div class="table-responsive">
-								<table class="table table-hover no-margin" id="requestApproval">
-									<thead>
-									<tr>
-										<th>User</th>
-										<th>Request Type</th>
-										<th>Project</th>
-										<th>Request Date</th>
-									</tr>
-									</thead>
-									<tbody>
-									<tr data-id="" data-toggle="modal" data-target="#modal-requestDetails">
-										<td>firstName lastName</td>
-										<td>Change Performer</td>
-										<td>SM Southmall - Store Opening
-										<td>June 45, 2018</td>
-									</tr>
-									<tr data-id="" data-toggle="modal" data-target="#modal-requestDetails">
-										<td>firstName lastName</td>
-										<td>Change Date</td>
-										<td>SM Southmall - Store Opening
-										<td>June 45, 2018</td>
-									</tr>
-									</tbody>
-								</table>
+				<?php if($changeRequests != null):?>
+
+					<!-- APPROVAL TABLE -->
+					<!-- Main row -->
+					<div class="row">
+						<!-- Left col -->
+						<div class="col-md-12">
+							<div class="box box-info">
+								<div class="box-header with-border">
+									<h3 class="box-title">Change Request Approval</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<table class="table table-hover no-margin" id="requestApproval">
+											<thead>
+											<tr>
+												<th>Date Requested</th>
+												<th>Request Type</th>
+												<th>Requester</th>
+												<th>Project</th>
+												<th>Task</th>
+											</tr>
+											</thead>
+											<tbody>
+												<?php foreach($changeRequests as $changeRequest):
+													$dateRequested = date_create($changeRequest['REQUESTEDDATE']);
+													if($changeRequest['REQUESTTYPE'] == 1)
+														$type = "Change Performer";
+													else
+														$type = "Change Date/s";
+												?>
+													<tr class="request" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
+
+														<form action = 'projectGantt' method="POST">
+															<input type ='hidden' name='rfc' value='0'>
+														</form>
+
+														<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
+														<td><?php echo $type;?></td>
+														<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
+														<td><?php echo $changeRequest['PROJECTTITLE'];?></td>
+														<td><?php echo $changeRequest['TASKTITLE'];?></td>
+													</tr>
+												<?php endforeach;?>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.table-responsive -->
+								</div>
+								<!-- /.box-body -->
+								<!-- /.box-footer -->
 							</div>
-							<!-- /.table-responsive -->
-						</div>
-						<!-- /.box-body -->
-						<!-- /.box-footer -->
-					</div>
-					<!-- /.box -->
-				</div>
-			</div>
-
-			<div class="row">
-			</div>
-
-			<!-- END APPROVAL TABLE -->
-
-			<!-- MODALS -->
-			<!-- REQUEST APPROVAL MODAL -->
-			<div class="modal fade" id="modal-requestDetails" tabindex="-1">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span></button>
-							<h2 class="modal-title" id = "doneTitle">Task Finished</h2>
-							<h4>Start Date - End Date (Days)</h4>
-						</div>
-						<div class="modal-body">
-							<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
-								<!-- IF TYPE = PERFORMER -->
-								<label>Reason</label>
-								<p id="performerReason">Wrong tagged employee. Get it right bitch</p>
-								<div class="form-group">
-									<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
-								</div>
-								<!-- IF TYPE = DATE -->
-								<label>Reason</label>
-								<p id="dateReason"> Need more time. Get it right bitch</p>
-								<label>Dates</label>
-								<p>Original Start Date to Requested Start Date</p>
-								<p>Original End Date to Requested End Date</p>
-								<div class="form-group">
-									<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
-								</div>
-								<div class="modal-footer">
-									<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id=""><i class="fa fa-thumbs-down"></i> Deny Request</button>
-									<button id = "approveRequest" type="submit" class="btn btn-success" data-id=""><i class="fa fa-thumbs-up"></i> Approve Request</button>
-								</div>
-							</form>
+							<!-- /.box -->
 						</div>
 					</div>
-					<!-- /.modal-content -->
-				</div>
-				<!-- /.modal-dialog -->
-			</div>
-			<!-- /.modal -->
 
-			<!-- MODALS END -->
+					<div class="row">
+					</div>
 
-			<!-- MARKO - Docu-->
-			<!-- Main row -->
-			<div class="row">
-				<!-- Left col -->
-				<div class="col-md-12">
-					<div class="box box-info">
-						<div class="box-header with-border">
-							<h3 class="box-title">Document Acknowledgement</h3>
-						</div>
-						<!-- /.box-header -->
-						<div class="box-body">
-							<div class="table-responsive">
-								<table class="table table-hover no-margin" id="requestApproval">
-									<thead>
-									<tr>
-										<th>Document Name</th>
-										<th>Uploaded By</th>
-										<th>Department</th>
-										<th align="center"></th>
-									</tr>
-									</thead>
-									<tbody>
-										<?php
-											foreach($toAcknowledgeDocuments as $row){
-												echo "<tr>";
-													echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
-													echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
-													echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
-													echo "<td align='center'>
-													<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton'>
-													<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
-												echo "</tr>";
-											}
-										?>
-									</tbody>
-								</table>
+					<!-- END APPROVAL TABLE -->
+				<?php endif;?>
+
+
+				<?php if($toAcknowledgeDocuments != null):?>
+					<!-- MARKO - Docu-->
+					<!-- Main row -->
+					<div class="row">
+						<!-- Left col -->
+						<div class="col-md-12">
+							<div class="box box-info">
+								<div class="box-header with-border">
+									<h3 class="box-title">Document Acknowledgement</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<table class="table table-hover no-margin" id="requestApproval">
+											<thead>
+											<tr>
+												<th>Document Name</th>
+												<th>Uploaded By</th>
+												<th>Department</th>
+												<th align="center"></th>
+											</tr>
+											</thead>
+											<tbody>
+												<?php
+													foreach($toAcknowledgeDocuments as $row){
+														echo "<tr>";
+															echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+															echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+															echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+															echo "<td align='center'>
+															<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton'>
+															<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
+														echo "</tr>";
+													}
+												?>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.table-responsive -->
+								</div>
+								<!-- /.box-body -->
+								<!-- /.box-footer -->
 							</div>
-							<!-- /.table-responsive -->
+							<!-- /.box -->
 						</div>
-						<!-- /.box-body -->
-						<!-- /.box-footer -->
 					</div>
-					<!-- /.box -->
-				</div>
-			</div>
 
-			<div class="row">
-			</div>
+					<div class="row">
+					</div>
 
-			<!-- END APPROVAL TABLE -->
+					<!-- END DOCUMENTS TABLE -->
+				<?php endif;?>
 
 
 		</section>
@@ -413,6 +385,15 @@
 
 	<script>
 		$("#dashboard").addClass("active");
+
+		$(document).on("click", ".request", function() {
+			var $project = $(this).attr('data-project');
+			var $request = $(this).attr('data-request');
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $project + ">");
+			$("form").append("<input type='hidden' name='request_ID' value= " + $request + ">");
+			$("form").submit();
+			});
 
 		$(document).ready(function()
 		{

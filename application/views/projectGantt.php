@@ -26,24 +26,68 @@
 						<div class="row">
 								<div class="col-md-6">
 									<div class="box box-danger">
-										<div class="box-header with-border">
-											<h3 class="box-title">Request Approval</h3>
+										<div class="box-header">
+											<h3 class="box-title">Change Request Details</h3>
 										</div>
 										<!-- /.box-header -->
 										<div class="box-body">
 											<form id = "approvalForm" action="" method="POST" style="margin-bottom:0;">
-												<!-- IF TYPE = PERFORMER -->
-												<label>Reason</label>
-												<p id="performerReason">Wrong tagged employee. Get it right!</p>
+												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
+												$startDate = date_create($changeRequest['TASKSTARTDATE']);
+												$endDate = date_create($changeRequest['TASKENDDATE']);?>
+												<?php if($changeRequest['REQUESTTYPE'] == 1)
+													$type = "Change Performer";
+												else
+													$type = "Change Date/s";?>
+
+												<table class="table">
+													<tr>
+														<td>
+															<label>Date Requested</label>
+															<p><?php echo date_format($dateRequested, "F d, Y");?></p>
+														</td>
+														<td>
+															<label>Request Type</label>
+															<p><?php echo $type;?></p>
+														</td>
+														<td colspan='2'>
+															<label>Requester</label>
+															<p><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></p>
+														</td>
+													</tr>
+
+													<tr>
+														<td>
+															<label>Project</label>
+															<p><?php echo $changeRequest['PROJECTTITLE'];?></p>
+														</td>
+														<td>
+															<label>Task Name</label>
+															<p><?php echo $changeRequest['TASKTITLE'];?></p>
+														</td>
+														<td>
+															<label>Start Date</label>
+															<p><?php echo date_format($startDate, "F d, Y");?></p>
+														</td>
+														<td>
+															<label>End Date</label>
+															<p><?php echo date_format($endDate, "F d, Y");?></p>
+														</td>
+													</tr>
+
+													<tr>
+														<td colspan='4'>
+															<label>Reason</label>
+															<p><?php echo $changeRequest['REASON'];?></p>
+														</td>
+													</tr>
+
+
+												</table>
+
 												<div class="form-group">
 													<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks (Optional)"></textarea>
 												</div>
-												<!-- IF TYPE = DATE -->
-												<label>Reason</label>
-												<p id="dateReason"> Need more time. Get it right!</p>
-												<label>Dates</label>
-												<p>Original Start Date to Requested Start Date</p>
-												<p>Original End Date to Requested End Date</p>
 										</div>
 										<!-- /.box-body -->
 										<!-- /.box-footer -->
@@ -58,8 +102,8 @@
 											<div class="form-group">
 												<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
 											</div>
-											<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id="" style="display:block"><i class="fa fa-thumbs-down"></i> Deny Request</button>
-											<button id = "approveRequest" type="submit" class="btn btn-success pull-right" data-id="" style="display:block;"><i class="fa fa-thumbs-up"></i> Approve Request</button>
+											<button id = "denyRequest" type="submit" class="btn btn-danger pull-left" data-id="" style="display:block"><i class="fa fa-close"></i> Deny Request</button>
+											<button id = "approveRequest" type="submit" class="btn btn-success pull-right" data-id="" style="display:block;"><i class="fa fa-check"></i> Approve Request</button>
 											</form>
 										</div>
 										<!-- /.box-body -->
@@ -68,10 +112,11 @@
 									<!-- /.box -->
 								</div>
 						</div>
+						<hr style="height:1px; background-color:black">
 					</div>
 					<!-- RFC GANTT END -->
 
-					<div class="pull-right" style="text-align:center;">
+					<!-- <div class="pull-right" style="text-align:center;">
 						<div class="progress" data-percentage="20">
                 <span class="progress-left">
                     <span class="progress-bar"></span>
@@ -84,7 +129,8 @@
                         20%<br>
                         <span>Completed</span>
                     </div>
-					</div>
+								</div>
+					</div> -->
 
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
