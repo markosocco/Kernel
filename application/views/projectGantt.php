@@ -125,6 +125,7 @@
 												</div>
 												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block"><i class="fa fa-close"></i> Deny Request</button>
 												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;"><i class="fa fa-check"></i> Approve Request</button>
+												<button type="button" class="btn btn-success pull-right" style="margin-right: 15%"><i class="fa fa-check"></i> Delegate Task</button>
 											</form>
 										</div>
 										<!-- /.box-body -->
