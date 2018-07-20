@@ -902,6 +902,14 @@ class model extends CI_Model
     return true;
   }
 
+  public function updateRFC($requestID, $data)
+  {
+    $this->db->where('REQUESTID', $requestID);
+    $result = $this->db->update('changerequests', $data);
+
+    return true;
+  }
+
   public function getProjectLogs($id)
   {
     $condition = "projects_PROJECTID = " . $id;

@@ -262,7 +262,7 @@ class controller extends CI_Controller
 
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
-			$data['wholeDept'] = $this->model->getAllUsersByUserType("users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'");
+			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
 
@@ -480,7 +480,18 @@ class controller extends CI_Controller
 		$remarks = $this->input->post('remarks');
 		$status = $this->input->post('status');
 
-		echo "Request ID: " . $requestID . "<br> Remarks: " . $remarks . "<br> Status: " . $status;
+		$data = array(
+			'REQUESTSTATUS' => $status,
+			'REMARKS' => $remarks,
+			'users_APPROVEDBY' => $_SESSION['USERID'],
+			'APPROVEDDATE' => date('Y-m-d')
+		);
+
+		$this->model->updateRFC($requestID, $data);
+
+		$this->myProjects();
+
+		// echo "Request ID: " . $requestID . "<br> Remarks: " . $remarks . "<br> Status: " . $status;
 	}
 
 	public function getUserWorkloadProjects()
