@@ -88,8 +88,8 @@
 												if($row['DOCUMENTSTATUS'] == 'For Acknowledgement'){
 													// echo "<script>alert('".$row['DOCUMENTID']." for Acknowledgement');</script>";
 													echo"
-													<form action='acknowledgeDocument' method='POST' id='acknowledgeDocu'>
-														<input type='hidden' name='documentID' value='" . $row['DOCUMENTID'] . "'>
+													<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
+														<input type='hidden' name='project_ID' value='" . $projectProfile['PROJECTID'] . "'>
 													</form>";
 
 													foreach($documentAcknowledgement as $data){
@@ -110,7 +110,7 @@
 																		echo "<td align='center'>Acknowledged</td>";
 																	} else {
 																		echo "<td align='center'>
-																		<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton'>
+																		<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-id ='" . $row['DOCUMENTID'] . "'>
 																		<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
 																	}
 
@@ -221,9 +221,12 @@
 			$("#myProjects").addClass("active");
 			$('.select2').select2();
 
-			$("#acknowledgeButton").click(function(){
-				$("#acknowledgeDocu").submit();
-			});
+			$(document).on("click", ".document", function() {
+				var $id = $(this).attr('data-id');
+				$(".acknowledgeDocument").attr("name", "formSubmit");
+				$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
+				$(".acknowledgeDocument").submit();
+				});
 
 		</script>
 	</body>

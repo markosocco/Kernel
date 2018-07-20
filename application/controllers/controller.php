@@ -1456,10 +1456,13 @@ class controller extends CI_Controller
 	{
 		//GET DOCUMENT ID
 		$documentID = $this->input->post("documentID");
+		$id = $this->input->post("project_ID");
 
 		$currentDate = date('Y-m-d');
 
-		$this->model->updateDocumentAcknowledgement($documentID, $_SESSION['USERID'], $currentDate);
+		$result = $this->model->updateDocumentAcknowledgement($documentID, $_SESSION['USERID'], $currentDate);
+
+		// echo $id;
 
 		// // START: LOG DETAILS
 		// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
@@ -1482,7 +1485,22 @@ class controller extends CI_Controller
 		// $data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
 		// $data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
 
-		$this->load->view("projectDocuments", $data);
+		if ($result)
+		{
+			$this->session->set_flashdata('projectID', $id);
+
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+			$data['departments'] = $this->model->getAllDepartmentsByProject($id);
+			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+			$data['users'] = $this->model->getAllUsersByProject($id);
+
+			$this->load->view("projectDocuments", $data);
+		}
+
+		else {
+			echo "didnt work";
+		}
 
 		// $documentID = $this->model->getProjectByID($id);
 	}

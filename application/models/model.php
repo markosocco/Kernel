@@ -753,6 +753,8 @@ class model extends CI_Model
     $this->db->set('ACKNOWLEDGEDDATE', $currentDate);
     $this->db->where($condition);
     $this->db->update('documentAcknowledgement');
+
+    return true;
   }
 
   public function getAllDocuments()
