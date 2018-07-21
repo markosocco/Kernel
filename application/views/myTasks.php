@@ -46,7 +46,8 @@
 											<th>Target End Date</th>
 											<th>Period <small>(Day/s)</small></th>
 											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-												<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+												<th><i class="fa fa-edit" style="margin-left:50%"></i></th>
+												<!-- <th><i class="fa fa-users" style="margin-left:50%"></i></th> -->
 											<?php endif;?>
 										</tr>
 									</thead>
@@ -76,7 +77,8 @@
 											<th>Target End Date</th>
 											<th>Period <small>(Day/s)</small></th>
 											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-												<th><i class="fa fa-users" style="margin-left:50%"></i></th>
+												<!-- <th><i class="fa fa-users" style="margin-left:50%"></i></th> -->
+												<th><i class="fa fa-edit" style="margin-left:50%"></i></th>
 											<?php endif;?>
 										</tr>
 									</thead>
@@ -150,6 +152,10 @@
 													default: $role = 'A'; break;
 												}
 											;?>
+
+											<form class = "viewProject" action = 'projectGantt' method="POST" data-id="<?php echo $ACItask['PROJECTID'];?>">
+											</form>
+
 										<tr>
 											<td><?php echo $role;?></td>
 											<td><?php echo $ACItask['TASKTITLE'];?></td>
@@ -582,27 +588,6 @@
 						</div>
 						<!-- /.modal -->
 
-						<!-- CONFIRM MODAL -->
-						<!-- <div class="modal fade" id="modal-delegateConfirm">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h4 class="modal-title">Delegate Task</h4>
-									</div>
-									<div class="modal-body">
-										<p>Are you sure you want to delegate this task?</p>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
-									</div>
-								</div>
-								<!-- /.modal-content
-							</div>
-							<!-- /.modal-dialog
-						</div> -->
-						<!-- /.modal -->
-
 						<!-- DONE MODAL -->
 						<div class="modal fade" id="modal-done" tabindex="-1">
 		          <div class="modal-dialog">
@@ -738,18 +723,22 @@
 								var taskDuration = parseInt(data['mainActivity'][m].taskDuration);
 								var taskStart = moment(data['mainActivity'][m].TASKSTARTDATE).format('MMM DD, YYYY');
 								var taskEnd = moment(data['mainActivity'][m].TASKENDDATE).format('MMM DD, YYYY');
+								$('#mainActivityTable').append("<form class = 'editProject' action = 'projectGantt' method='POST' data-id = '" + data['mainActivity'][m].PROJECTID + "'></form>");
 								$('#mainActivityTable').append(
 														 "<tr><td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
 														 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
 														 "<td align='center'>" + taskDuration+"</td>" +
-												 '<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
-												 'data-toggle="modal" data-target="#modal-delegate" data-id="' +
-												 taskID + '" data-title="' + data['mainActivity'][m].TASKTITLE +
-												 '" data-start="'+ data['mainActivity'][m].TASKSTARTDATE +
-												 '" data-end="'+ data['mainActivity'][m].TASKENDDATE +'">' +
-												 '<i class="fa fa-users"></i> Delegate</button></td></tr>');
+														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
+			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
+			 											 '</td>');
+												 // '<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+												 // 'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+												 // taskID + '" data-title="' + data['mainActivity'][m].TASKTITLE +
+												 // '" data-start="'+ data['mainActivity'][m].TASKSTARTDATE +
+												 // '" data-end="'+ data['mainActivity'][m].TASKENDDATE +'">' +
+												 // '<i class="fa fa-users"></i> Delegate</button></td></tr>');
 							} // end of main activity for loop
 						} // end of main activity if statement
 
@@ -764,18 +753,22 @@
 								var taskStart = moment(data['subActivity'][s].TASKSTARTDATE).format('MMM DD, YYYY');
 								var taskEnd = moment(data['subActivity'][s].TASKENDDATE).format('MMM DD, YYYY');
 
+								$('#subActivityTable').append("<form class = 'editProject' action = 'projectGantt' method='POST' data-id = '" + data['subActivity'][s].PROJECTID + "'></form>");
 								$('#subActivityTable').append(
 														 "<tr><td>" + data['subActivity'][s].TASKTITLE +"</td>"+
 														 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
 														 "<td align='center'>" + taskDuration+"</td>" +
-														 "<td align='center'><button type='button' class='btn btn-primary btn-sm delegateBtn'" +
-														 "data-toggle='modal' data-target='#modal-delegate' data-id='" +
-														 taskID + "' data-title='" + data['subActivity'][s].TASKTITLE +
-														 "' data-start='"+ data['subActivity'][s].TASKSTARTDATE +
-														 "' data-end='"+ data['subActivity'][s].TASKENDDATE +"'>" +
-														 "<i class='fa fa-users'></i> Delegate</button></td></tr>");
+														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
+			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
+			 											 '</td>');
+														 // "<td align='center'><button type='button' class='btn btn-primary btn-sm delegateBtn'" +
+														 // "data-toggle='modal' data-target='#modal-delegate' data-id='" +
+														 // taskID + "' data-title='" + data['subActivity'][s].TASKTITLE +
+														 // "' data-start='"+ data['subActivity'][s].TASKSTARTDATE +
+														 // "' data-end='"+ data['subActivity'][s].TASKENDDATE +"'>" +
+														 // "<i class='fa fa-users'></i> Delegate</button></td></tr>");
 							} // end of sub activity for loop
 						}	// end of sub activity if statement
 
@@ -1184,7 +1177,14 @@
 
 				// ACI SCRIPT
 				$("body").on('click','.viewProjectBtn',function(){
-					alert("go");
+					var $id = $(this).attr('data-id');
+					$(".viewProject").attr("name", "formSubmit");
+					$(".viewProject").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+					$(".viewProject").submit();
+				});
+
+				$("body").on('click','.editProjectBtn',function(){
+					alert("edit");
 				});
 
 			});

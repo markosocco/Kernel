@@ -149,13 +149,12 @@ class model extends CI_Model
 
   public function getChangeRequestsbyUser($filter)
   {
-    $condition = "REQUESTSTATUS = 'Pending'";
     $this->db->select('*');
     $this->db->from('changerequests');
     $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
-    $this->db->where($condition . " && " . $filter);
+    $this->db->where($filter);
     $query = $this->db->get();
 
     return $query->result_array();
@@ -164,7 +163,7 @@ class model extends CI_Model
   public function getChangeRequestbyID($requestID)
   {
     $condition = "REQUESTID = '$requestID'";
-    $this->db->select('*');
+    $this->db->select('*, (DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1) as "taskDuration"');
     $this->db->from('changerequests');
     $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');

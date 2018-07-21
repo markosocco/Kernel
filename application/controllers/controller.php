@@ -477,6 +477,7 @@ class controller extends CI_Controller
 	public function approveDenyRFC()
 	{
 		$requestID = $this->input->post('request_ID');
+		$projectID = $this->input->post('project_ID');
 		$remarks = $this->input->post('remarks');
 		$status = $this->input->post('status');
 
@@ -489,9 +490,20 @@ class controller extends CI_Controller
 
 		$this->model->updateRFC($requestID, $data);
 
-		$this->myProjects();
 
-		// echo "Request ID: " . $requestID . "<br> Remarks: " . $remarks . "<br> Status: " . $status;
+		$data['projectProfile'] = $this->model->getProjectByID($projectID);
+		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+		$data['dependencies'] = $this->model->getDependencies();
+		$data['users'] = $this->model->getAllUsers();
+		$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
+		$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
+		$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
+		$data['informed'] = $this->model->getAllInformedByProject($projectID);
+
+		unset($_SESSION['rfc']);
+		$this->session->set_flashdata('changeRequest', 0);
+
+		$this->load->view("projectGantt", $data);
 	}
 
 	public function getUserWorkloadProjects()
@@ -885,6 +897,29 @@ class controller extends CI_Controller
 				$this->session->set_flashdata('rfc', $rfc);
 
 				$data['changeRequest'] = $this->model->getChangeRequestbyID($requestID);
+				switch($_SESSION['usertype_USERTYPEID'])
+				{
+					case '2':
+						$filter = "users.usertype_USERTYPEID = '3'";
+						break;
+
+					case '3':
+						$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+						break;
+
+					case '4':
+						$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+						break;
+
+					default:
+						$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+						break;
+				}
+				$data['departments'] = $this->model->getAllDepartments();
+				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+				$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+				$data['projectCount'] = $this->model->getProjectCount($filter);
+				$data['taskCount'] = $this->model->getTaskCount($filter);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -997,12 +1032,17 @@ class controller extends CI_Controller
 		{
 			$userID = $_SESSION['USERID'];
 			$deptID = $_SESSION['departments_DEPARTMENTID'];
-			if($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
-				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || $userID = projects.users_USERID";
-			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
-				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || $userID = projects.users_USERID";
-			elseif($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
-				$filter = "$userID = projects.users_USERID";
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '4': // if supervisor is logged in
+					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID' && REQUESTSTATUS = 'Pending')
+						|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '3': // if head is logged in
+					$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID' && REQUESTSTATUS = 'Pending')
+					|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '5': // if PO is logged in
+					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
+			}
 
 			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
 			$this->load->view("rfc", $data);
