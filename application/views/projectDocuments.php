@@ -21,7 +21,7 @@
 	    }
 	  </style>
 	</head>
-	<body class="hold-transition skin-red sidebar-mini">
+	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
 		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
