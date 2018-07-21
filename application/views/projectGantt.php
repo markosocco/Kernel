@@ -38,7 +38,8 @@
 										<div class="box-body">
 											<form id = "approvalForm" action="approveDenyRFC" method="POST" style="margin-bottom:0;"
 											data-request="<?php echo $changeRequest['REQUESTID'];?>"
-											data-project="<?php echo $changeRequest['PROJECTID'];?>">
+											data-project="<?php echo $changeRequest['PROJECTID'];?>"
+											data-task="<?php echo $changeRequest['TASKID'];?>">
 												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
 												$startDate = date_create($changeRequest['TASKSTARTDATE']);
 												$endDate = date_create($changeRequest['TASKENDDATE']);
@@ -130,7 +131,6 @@
 												</div>
 												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny"><i class="fa fa-close"></i> Deny Request</button>
 												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve"><i class="fa fa-check" ></i> Approve Request</button>
-											</form>
 										</div>
 										<!-- /.box-body -->
 										<!-- /.box-footer -->
@@ -228,7 +228,7 @@
 									<!-- /.box-header -->
 
 									<div class="box-body">
-										<form id="raciForm" action="delegateTask" method="POST">
+										<!-- <form id="raciForm" action="delegateTask" method="POST"> -->
 
 										<!-- RESPONSIBLE DIV -->
 										<div class="form-group raciDiv" id = "responsibleDiv">
@@ -665,26 +665,19 @@
 					$("#delegateConfirm").hide();
 					$("#approveConfirm").show();
 				}
-				if($("#raciDelegate").css("display") == 'none')
-				{
-					$(".radioEmp").prop("checked", false);
-					$(".checkEmp").prop("checked", false);
-					$(".select2").val(null).trigger("change");
-					$(".raciBtn").removeClass('active');
-					$("#responsible").addClass("active");
-					$(".raciDiv").hide();
-				}
 			});
 
 			$(document).on("click", "#confirmDelegateBtn", function() { // approve with delegate
 				var $request = $("#approvalForm").attr('data-request');
 				var $project = $("#approvalForm").attr('data-project');
+				var $task = $("#approvalForm").attr('data-task');
+
 				$("#approvalForm").attr("name", "formSubmit");
 				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
 				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
+				$("#approvalForm").append("<input type='hidden' name='task_ID' value= '" + $task + "'>");
 				$("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
 				$("#approvalForm").submit();
-				//save delegated task
 				});
 
 			$(document).on("click", "#confirmDenyBtn", function() { // deny
@@ -796,18 +789,21 @@
 
 				$("#approveConfirm").show();
 				$("#raciDelegate").hide();
-
+				$(".raciDiv").hide();
+				$("#responsibleDiv").show();
 			});
 
 			$("#backConfirmDelegate").click(function(){
+				$(".raciBtn").removeClass('active');
+				$("#responsible").addClass("active");
 				$("#responsibleDiv").show();
 				$("#raciDelegate").show();
 				$("#delegateConfirm").hide();
-
 			});
 
-
 			$("#delegateBtn").click(function(){
+				$(".raciBtn").removeClass('active');
+				$("#responsible").addClass("active");
 				$("#responsibleDiv").show();
 				$("#raciDelegate").show();
 				$("#approveConfirm").hide();
@@ -842,10 +838,6 @@
 			});
 
 			$("#delegateTask").on("click", function(){
-				// var $id = $(this).attr('data-id');
-				// $("#raciForm").attr("name", "formSubmit");
-				// $("#raciForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
-				// $("#raciForm").submit();
 				$("#delegateConfirm").show();
 				$("#raciDelegate").hide();
 			});
