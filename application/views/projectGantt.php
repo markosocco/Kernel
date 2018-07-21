@@ -676,37 +676,35 @@
 				}
 			});
 
-			$(document).on("click", "#confirmDelegateBtn", function() {
-				// var $request = $("#approvalForm").attr('data-request');
-				// var $project = $("#approvalForm").attr('data-project');
-				// $("#approvalForm").attr("name", "formSubmit");
-				// $("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
-				// $("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
-				// $("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
-				// $("#approvalForm").submit();
-				alert("approve form with delegate");
+			$(document).on("click", "#confirmDelegateBtn", function() { // approve with delegate
+				var $request = $("#approvalForm").attr('data-request');
+				var $project = $("#approvalForm").attr('data-project');
+				$("#approvalForm").attr("name", "formSubmit");
+				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
+				$("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
+				$("#approvalForm").submit();
+				//save delegated task
 				});
 
-			$(document).on("click", "#confirmDenyBtn", function() {
-				// var $request = $("#approvalForm").attr('data-request');
-				// var $project = $("#approvalForm").attr('data-project');
-				// $("#approvalForm").attr("name", "formSubmit");
-				// $("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
-				// $("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
-				// $("#approvalForm").append("<input type='hidden' name='status' value= 'Denied'>");
-				// $("#approvalForm").submit();
-				alert("deny form");
+			$(document).on("click", "#confirmDenyBtn", function() { // deny
+				var $request = $("#approvalForm").attr('data-request');
+				var $project = $("#approvalForm").attr('data-project');
+				$("#approvalForm").attr("name", "formSubmit");
+				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
+				$("#approvalForm").append("<input type='hidden' name='status' value= 'Denied'>");
+				$("#approvalForm").submit();
 				});
 
-			$(document).on("click", "#confirmApproveBtn", function() {
-				// var $request = $("#approvalForm").attr('data-request');
-				// var $project = $("#approvalForm").attr('data-project');
-				// $("#approvalForm").attr("name", "formSubmit");
-				// $("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
-				// $("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
-				// $("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
-				// $("#approvalForm").submit();
-				alert("approve form without delegate");
+			$(document).on("click", "#confirmApproveBtn", function() { // approve without delegate
+				var $request = $("#approvalForm").attr('data-request');
+				var $project = $("#approvalForm").attr('data-project');
+				$("#approvalForm").attr("name", "formSubmit");
+				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
+				$("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
+				$("#approvalForm").submit();
 				});
 
 			$(".moreInfo").click(function(){
