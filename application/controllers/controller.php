@@ -646,9 +646,9 @@ class controller extends CI_Controller
 			}
 
 		} // end if appoved change Performer
-		// else // if change dates
+		// else // if approved change dates
 		// {
-		//
+		//		$changeRequest = $this->model->getChangeRequestbyID($requestID);
 		// }
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
@@ -1042,6 +1042,8 @@ class controller extends CI_Controller
 			$id = $this->input->post("project_ID");
 			$archives =$this->input->post("archives");
 			$rfc =$this->input->post("rfc");
+			$mytasks =$this->input->post("mytasks");
+
 
 			// ARCHIVES
 			if (isset($archives))
@@ -1081,6 +1083,11 @@ class controller extends CI_Controller
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 				$data['projectCount'] = $this->model->getProjectCount($filter);
 				$data['taskCount'] = $this->model->getTaskCount($filter);
+			}
+			elseif (isset($mytasks))
+			{
+				$mytasks = $this->input->post("mytasks");
+				$this->session->set_flashdata('mytasks', $mytasks);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
