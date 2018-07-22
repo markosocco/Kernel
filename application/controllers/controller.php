@@ -382,7 +382,7 @@ class controller extends CI_Controller
 				'tasks_TASKID' => $taskID,
 				'STATUS' => 'Current'
 			);
-			$result = $this->model->addToRaci($taskID, $responsibleData);
+			$result = $this->model->addToRaci($responsibleData);
 		}
 
 		// SAVE ACCOUNTABLE
