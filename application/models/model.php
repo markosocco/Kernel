@@ -451,9 +451,10 @@ class model extends CI_Model
   {
     $this->db->select('*');
     $this->db->from('templates');
-    $query = $this->db->get();
+    $this->db->join('projects', 'templates.PROJECTSTATUS = projects.PROJECTID');
+    $this->db->join('users', 'projects.users_USERID = users.USERID');
 
-    return $query->result_array();
+    return $this->db->get()->result_array();
   }
 
   public function getAllTasksByUser($id)
@@ -1133,6 +1134,12 @@ class model extends CI_Model
     $this->db->where('PROJECTID', $id);
     $result = $this->db->update('projects', $data);
 
+    return true;
+  }
+
+  public function templateProject($data)
+  {
+    $this->db->insert('templates', $data);
     return true;
   }
 }

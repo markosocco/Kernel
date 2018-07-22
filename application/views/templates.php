@@ -31,17 +31,31 @@
 							<thead>
 							<tr>
 								<th>Project Title</th>
-								<!-- IS THIS NEEDED?? -->
 								<th>Project Owner</th>
-								<th>Start Date</th>
-								<th>Target End Date</th>
-								<th>Actual End Date</th>
-								<th>Templated On</th>
-								<th>Templated By</th>
+								<th>Period</th>
 							</tr>
 							</thead>
 							<tbody>
+								<?php foreach ($templates as $row): ?>
+									<td><?php echo $row['PROJECTTITLE']; ?></td>
+									<td><?php echo $row['FIRSTNAME'] . " " . $row['LASTNAME']; ?></td>
 
+									<?php
+										$startdate = date_create($row['PROJECTSTARTDATE']);
+										$enddate = date_create($row['PROJECTACTUALENDDATE']);
+										$temp = date_diff($enddate, $startdate);
+										$dFormat = $temp->format('%d');
+										$diff = (int)$dFormat + 1;
+									?>
+
+									<td>
+										<?php if($diff >= 1): ?>
+											<?php echo $diff . " day"; ?>
+										<?php else: ?>
+											<?php echo $diff . " days"; ?>
+									<?php endif; ?>
+									</td>
+							<?php endforeach; ?>
 							</tbody>
 						</table>
 					</div>

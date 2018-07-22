@@ -73,9 +73,6 @@ class controller extends CI_Controller
 				$notifications = $this->model->getAllNotificationsByUser($sessionData['USERID']);
 				$this->session->set_userdata('notifications', $notifications);
 
-				// $notificationsData = $this->model->getAllNotificationsByUser();
-				// $this->session->set_userdata('notificationsData', $notificationsData);
-
 				$currentDate = date('Y-m-d');
 
 				$this->model->updateTaskStatus($currentDate);
@@ -1608,27 +1605,28 @@ class controller extends CI_Controller
 
 			$project = $this->model->getProjectByID($id);
 
+			// templates.PROJECTID == TEMPLATEID
+			// templates.PROJECTSTATUS == projects.PROJECTID
+
 			$data = array(
-				'PROJECTID' => 'Archived',
-				'PROJECTTITLE' => 'Archived',
-				'PROJECTSTARTDATE' => 'Archived',
-				'PROJECTENDDATE' => 'Archived',
-				'PROJECTDESCRIPTION' => 'Archived',
-				'PROJECTSTATUS' => 'Archived',
-				'users_USERID' => 'Archived'
+				'PROJECTTITLE' => $project['PROJECTTITLE'] . " Template",
+				'PROJECTSTARTDATE' => $project['PROJECTSTARTDATE'],
+				'PROJECTENDDATE' => $project['PROJECTACTUALENDDATE'],
+				'PROJECTDESCRIPTION' => $project['PROJECTDESCRIPTION'],
+				'PROJECTSTATUS' => $id,
+				'users_USERID' => $_SESSION['USERID']
 			);
 
-			echo $id;
-
 			// TODO NAMI: LOGS
-			// $result = $this->model->archiveProject($id, $data);
+			$result = $this->model->templateProject($data);
+
 			//
-			// if ($result)
-			// {
-			// 	$data['archives'] = $this->model->getAllProjectArchives();
-			//
-			// 	$this->load->view("templates", $data);
-			// }
+			if ($result)
+			{
+				$data['templates'] = $this->model->getAllTemplates();
+
+				$this->load->view("templates", $data);
+			}
 		}
 
 	public function uploadDocument()
