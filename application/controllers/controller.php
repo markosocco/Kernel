@@ -508,6 +508,7 @@ class controller extends CI_Controller
 	public function approveDenyRFC()
 	{
 		$requestID = $this->input->post('request_ID');
+		$requestType = $this->input->post('request_type');
 		$projectID = $this->input->post('project_ID');
 		$remarks = $this->input->post('remarks');
 		$status = $this->input->post('status');
@@ -521,6 +522,134 @@ class controller extends CI_Controller
 
 		$this->model->updateRFC($requestID, $data);
 
+		if($remarks == 'Approved' && $requestType == '1') // if approved change performer
+		{
+			$taskID = $this->input->post("task_ID");
+
+			$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
+			$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
+			$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
+			$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
+
+			// SAVE/UPDATE RESPONSIBLE
+			if($this->input->post("responsibleEmp"))
+			{
+				$responsibleEmp = $this->input->post('responsibleEmp');
+				$responsibleData = array(
+					'ROLE' => '1',
+					'users_USERID' => $responsibleEmp,
+					'tasks_TASKID' => $taskID,
+					'STATUS' => 'Current'
+				);
+				$result = $this->model->addToRaci($responsibleData);
+			}
+
+			// SAVE ACCOUNTABLE
+			if($this->input->post("accountableDept[]"))
+			{
+				foreach($this->input->post("accountableDept[]") as $deptID)
+				{
+					$accountableData = array(
+						'ROLE' => '2',
+						'users_USERID' => $deptID,
+						'tasks_TASKID' =>	$taskID,
+						'STATUS' => 'Current'
+					);
+					$this->model->addToRaci($accountableData);
+				}
+			}
+
+			if ($this->input->post("accountableEmp[]"))
+			{
+				foreach($this->input->post("accountableEmp[]") as $empID)
+				{
+					$accountableData = array(
+						'ROLE' => '2',
+						'users_USERID' => $empID,
+						'tasks_TASKID' =>	$taskID,
+						'STATUS' => 'Current'
+					);
+					$this->model->addToRaci($accountableData);
+				}
+			}
+
+			// SAVE CONSULTED
+			if($this->input->post("consultedDept[]"))
+			{
+				foreach($this->input->post("consultedDept[]") as $deptID)
+				{
+					$consultedData = array(
+						'ROLE' => '3',
+						'users_USERID' => $deptID,
+						'tasks_TASKID' =>	$taskID,
+						'STATUS' => 'Current'
+					);
+					$this->model->addToRaci($consultedData);
+				}
+			}
+
+			if($this->input->post("consultedEmp[]"))
+			{
+				foreach($this->input->post("consultedEmp[]") as $empID)
+				{
+					$consultedData = array(
+						'ROLE' => '3',
+						'users_USERID' => $empID,
+						'tasks_TASKID' =>	$taskID,
+						'STATUS' => 'Current'
+					);
+					$this->model->addToRaci($consultedData);
+				}
+			}
+
+			// SAVE INFORMED
+			if($this->input->post("informedDept[]"))
+			{
+				foreach($this->input->post("informedDept[]") as $deptID)
+				{
+					$informedData = array(
+						'ROLE' => '4',
+						'users_USERID' => $deptID,
+						'tasks_TASKID' =>	$taskID,
+						'STATUS' => 'Current'
+					);
+					$this->model->addToRaci($informedData);
+				}
+			}
+
+			if($this->input->post("informedEmp[]"))
+			{
+				foreach($this->input->post("informedEmp[]") as $empID)
+				{
+					$informedData = array(
+						'ROLE' => '4',
+						'users_USERID' => $empID,
+						'tasks_TASKID' =>	$taskID,
+						'STATUS' => 'Current'
+					);
+					$this->model->addToRaci($informedData);
+				}
+			}
+
+			if(!$this->input->post("responsibleEmp") && !$this->input->post("accountableDept[]") &&
+					!$this->input->post("accountableEmp[]") && !$this->input->post("consultedDept[]") &&
+					!$this->input->post("consultedEmp[]") && !$this->input->post("informedDept[]") &&
+					!$this->input->post("informedEmp[]")) // return to approver in tasks
+			{
+				$responsibleData = array(
+					'ROLE' => '1',
+					'users_USERID' => $_SESSION['USERID'],
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
+				);
+				$result = $this->model->addToRaci($responsibleData);
+			}
+
+		} // end if appoved change Performer
+		// else // if change dates
+		// {
+		//
+		// }
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
 		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
@@ -534,126 +663,6 @@ class controller extends CI_Controller
 		unset($_SESSION['rfc']);
 		$this->session->set_flashdata('changeRequest', 0);
 
-		$taskID = $this->input->post("task_ID");
-
-		$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
-		$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
-		$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
-		$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
-
-		// SAVE/UPDATE RESPONSIBLE
-		if($this->input->post("responsibleEmp"))
-		{
-			$responsibleEmp = $this->input->post('responsibleEmp');
-			$responsibleData = array(
-				'ROLE' => '1',
-				'users_USERID' => $responsibleEmp,
-				'tasks_TASKID' => $taskID,
-				'STATUS' => 'Current'
-			);
-			$result = $this->model->addToRaci($responsibleData);
-		}
-
-		// SAVE ACCOUNTABLE
-		if($this->input->post("accountableDept[]"))
-		{
-			foreach($this->input->post("accountableDept[]") as $deptID)
-			{
-				$accountableData = array(
-					'ROLE' => '2',
-					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($accountableData);
-			}
-		}
-
-		if ($this->input->post("accountableEmp[]"))
-		{
-			foreach($this->input->post("accountableEmp[]") as $empID)
-			{
-				$accountableData = array(
-					'ROLE' => '2',
-					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($accountableData);
-			}
-		}
-
-		// SAVE CONSULTED
-		if($this->input->post("consultedDept[]"))
-		{
-			foreach($this->input->post("consultedDept[]") as $deptID)
-			{
-				$consultedData = array(
-					'ROLE' => '3',
-					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($consultedData);
-			}
-		}
-
-		if($this->input->post("consultedEmp[]"))
-		{
-			foreach($this->input->post("consultedEmp[]") as $empID)
-			{
-				$consultedData = array(
-					'ROLE' => '3',
-					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($consultedData);
-			}
-		}
-
-		// SAVE INFORMED
-		if($this->input->post("informedDept[]"))
-		{
-			foreach($this->input->post("informedDept[]") as $deptID)
-			{
-				$informedData = array(
-					'ROLE' => '4',
-					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($informedData);
-			}
-		}
-
-		if($this->input->post("informedEmp[]"))
-		{
-			foreach($this->input->post("informedEmp[]") as $empID)
-			{
-				$informedData = array(
-					'ROLE' => '4',
-					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($informedData);
-			}
-		}
-
-		if(!$this->input->post("responsibleEmp") && !$this->input->post("accountableDept[]") &&
-				!$this->input->post("accountableEmp[]") && !$this->input->post("consultedDept[]") &&
-				!$this->input->post("consultedEmp[]") && !$this->input->post("informedDept[]") &&
-				!$this->input->post("informedEmp[]")) // return to approver in tasks
-		{
-			$responsibleData = array(
-				'ROLE' => '1',
-				'users_USERID' => $_SESSION['USERID'],
-				'tasks_TASKID' =>	$taskID,
-				'STATUS' => 'Current'
-			);
-			$result = $this->model->addToRaci($responsibleData);
-		}
 		$this->load->view("projectGantt", $data);
 	}
 
