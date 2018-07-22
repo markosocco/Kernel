@@ -227,21 +227,11 @@ class controller extends CI_Controller
 				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
-
-				// $data['ongoingTeamProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
-				// $data['plannedTeamProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
-				// $data['delayedTeamProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
-				// $data['parkedTeamProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
-				// $data['draftedTeamProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-
-			// $data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			// $data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			// $data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
 			$this->load->view("myTeam", $data);
 		}
@@ -681,7 +671,7 @@ class controller extends CI_Controller
 
 			if(COUNT($postReqs) > 0) // if there are post requisite tasks
 			{
-				
+
 
 			}
 			else // if no post requisite tasks
@@ -712,7 +702,7 @@ class controller extends CI_Controller
 		$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
 		$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
 		$data['informed'] = $this->model->getAllInformedByProject($projectID);
-		$data['SAprogress'] = $this->model->getSubActivityProgress($projectID);
+		// $data['subActivityProgress'] = $this->model->getSubActivityProgress($projectID);
 
 		unset($_SESSION['rfc']);
 		$this->session->set_flashdata('changeRequest', 0);
@@ -1152,7 +1142,20 @@ class controller extends CI_Controller
 			$data['accountable'] = $this->model->getAllAccountableByProject($id);
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
-			$data['SAprogress'] = $this->model->getSubActivityProgress($id);
+			// $data['subActivityProgress'] = $this->model->getSubActivityProgress($id);
+
+			// if(	$data['subActivityProgress'] == NULL){
+			// 	echo "empty";
+			// }
+
+			// $this->output->enable_profile(TRUE);
+
+
+			// foreach ($data['subActivityProgress'] as $key => $value) {
+			// 	echo "progress - " . $value['SAProgress'];
+			// 	echo "parent - " . $value['tasks_TASKPARENT'];
+			// 	// code...
+			// }
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
