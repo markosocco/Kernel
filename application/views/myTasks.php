@@ -154,6 +154,7 @@
 											;?>
 
 											<form class = "viewProject" action = 'projectGantt' method="POST" data-id="<?php echo $ACItask['PROJECTID'];?>">
+												<input type ='hidden' name='mytasks' value='0'>
 											</form>
 
 										<tr>
@@ -1165,6 +1166,7 @@
 					var $id = $(this).attr('data-id');
 					$(".viewProject").attr("name", "formSubmit");
 					$(".viewProject").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+
 					$(".viewProject").submit();
 				});
 

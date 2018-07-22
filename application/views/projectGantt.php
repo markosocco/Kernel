@@ -17,6 +17,8 @@
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
 						<?php elseif(isset($_SESSION['changeRequest'])): ?>
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
+						<?php elseif(isset($_SESSION['mytasks'])): ?>
+								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Tasks</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
