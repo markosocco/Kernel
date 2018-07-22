@@ -531,11 +531,23 @@ class model extends CI_Model
 
   public function getDependenciesByTaskID($taskID)
   {
-    $condition = "dependencies.tasks_POSTTASKID = '$taskID'";
+    $condition = "raci.STATUS = 'Current' && dependencies.tasks_POSTTASKID = '$taskID'";
     $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.PRETASKID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getPostDependenciesByTaskID($taskID)
+  {
+    $condition = "raci.STATUS = 'Current' && dependencies.PRETASKID = '$taskID'";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.tasks_POSTTASKID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
@@ -638,7 +650,7 @@ class model extends CI_Model
   public function getTaskByID($id)
   {
     $condition = "TASKID = " . $id;
-    $this->db->select('*, CURDATE() as "currentDate"');
+    $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "taskDuration"');
     $this->db->from('tasks');
     $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->where($condition);
@@ -906,6 +918,14 @@ class model extends CI_Model
   {
     $this->db->where('REQUESTID', $requestID);
     $result = $this->db->update('changerequests', $data);
+
+    return true;
+  }
+
+  public function updateTaskDates($taskID, $data)
+  {
+    $this->db->where('TASKID', $taskID);
+    $result = $this->db->update('tasks', $data);
 
     return true;
   }

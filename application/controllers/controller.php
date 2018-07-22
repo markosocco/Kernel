@@ -304,6 +304,7 @@ class controller extends CI_Controller
 			);
 
 			$updateTasks = $this->model->updateTaskDone($id, $data);
+			//TODO: Nami Logs/Notif -> Task completed
 
 			// Check and Complete Main and Sub Activities
 			$parentID = $this->model->getParentTask($id);
@@ -315,6 +316,7 @@ class controller extends CI_Controller
 							'TASKACTUALENDDATE' => date('Y-m-d')
 				);
 				$this->model->updateTaskDone($parentID['tasks_TASKPARENT'], $subData); // Complete Sub Activity
+				//TODO: Nami Logs/Notif -> Sub Activity Completed
 
 				$mainID = $this->model->getParentTask($parentID['tasks_TASKPARENT']);
 				$completeSubs = $this->model->checkTasksStatus($mainID['tasks_TASKPARENT']);
@@ -325,6 +327,7 @@ class controller extends CI_Controller
 								'TASKACTUALENDDATE' => date('Y-m-d')
 					);
 					$this->model->updateTaskDone($mainID['tasks_TASKPARENT'], $mainData); // Complete Main Activity
+					//TODO: Nami Logs/Notif -> Main Activity Completed
 
 					// Check and Complete a Project
 					$completeProject = $this->model->checkProjectStatus($mainID['projects_PROJECTID']);
@@ -335,6 +338,7 @@ class controller extends CI_Controller
 									'PROJECTACTUALENDDATE' => date('Y-m-d')
 						);
 						$this->model->completeProject($mainID['projects_PROJECTID'], $projectData); // Complete Project
+						//TODO: Nami Logs/Notif -> Project Completed
 					}
 				}
 			}
@@ -383,6 +387,7 @@ class controller extends CI_Controller
 				'STATUS' => 'Current'
 			);
 			$result = $this->model->addToRaci($responsibleData);
+			//TODO: Nami Logs/Notif -> Task delegated to responsible user
 		}
 
 		// SAVE ACCOUNTABLE
@@ -397,6 +402,7 @@ class controller extends CI_Controller
 					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
+				//TODO: Nami Logs/Notif -> Task delegated to accountable users
 			}
 		}
 
@@ -411,6 +417,7 @@ class controller extends CI_Controller
 					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
+				//TODO: Nami Logs/Notif -> Task delegated to accountable users
 			}
 		}
 
@@ -426,6 +433,7 @@ class controller extends CI_Controller
 					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
+				//TODO: Nami Logs/Notif -> Task delegated to consulted users
 			}
 		}
 
@@ -440,6 +448,7 @@ class controller extends CI_Controller
 					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
+				//TODO: Nami Logs/Notif -> Task delegated to consulted users
 			}
 		}
 
@@ -455,6 +464,7 @@ class controller extends CI_Controller
 					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
+				//TODO: Nami Logs/Notif -> Task delegated to informed users
 			}
 		}
 
@@ -469,9 +479,10 @@ class controller extends CI_Controller
 					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
+				//TODO: Nami Logs/Notif -> Task delegated to informed users
 			}
 		}
-
+		//TODO: Nami Logs/Notif -> Task delegated
 		$this->myTasks();
 	}
 
@@ -502,6 +513,7 @@ class controller extends CI_Controller
 			);
 		}
 		$this->model->addRFC($data);
+		//TODO: Nami Logs/Notif -> RFC Submitted
 		$this->myTasks();
 	}
 
@@ -520,6 +532,7 @@ class controller extends CI_Controller
 			'APPROVEDDATE' => date('Y-m-d')
 		);
 
+		//TODO: Nami Logs/Notif -> RFC Approved/Denied
 		$this->model->updateRFC($requestID, $data);
 
 		if($remarks == 'Approved' && $requestType == '1') // if approved change performer
@@ -530,106 +543,6 @@ class controller extends CI_Controller
 			$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
 			$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
 			$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
-
-			// SAVE/UPDATE RESPONSIBLE
-			if($this->input->post("responsibleEmp"))
-			{
-				$responsibleEmp = $this->input->post('responsibleEmp');
-				$responsibleData = array(
-					'ROLE' => '1',
-					'users_USERID' => $responsibleEmp,
-					'tasks_TASKID' => $taskID,
-					'STATUS' => 'Current'
-				);
-				$result = $this->model->addToRaci($responsibleData);
-			}
-
-			// SAVE ACCOUNTABLE
-			if($this->input->post("accountableDept[]"))
-			{
-				foreach($this->input->post("accountableDept[]") as $deptID)
-				{
-					$accountableData = array(
-						'ROLE' => '2',
-						'users_USERID' => $deptID,
-						'tasks_TASKID' =>	$taskID,
-						'STATUS' => 'Current'
-					);
-					$this->model->addToRaci($accountableData);
-				}
-			}
-
-			if ($this->input->post("accountableEmp[]"))
-			{
-				foreach($this->input->post("accountableEmp[]") as $empID)
-				{
-					$accountableData = array(
-						'ROLE' => '2',
-						'users_USERID' => $empID,
-						'tasks_TASKID' =>	$taskID,
-						'STATUS' => 'Current'
-					);
-					$this->model->addToRaci($accountableData);
-				}
-			}
-
-			// SAVE CONSULTED
-			if($this->input->post("consultedDept[]"))
-			{
-				foreach($this->input->post("consultedDept[]") as $deptID)
-				{
-					$consultedData = array(
-						'ROLE' => '3',
-						'users_USERID' => $deptID,
-						'tasks_TASKID' =>	$taskID,
-						'STATUS' => 'Current'
-					);
-					$this->model->addToRaci($consultedData);
-				}
-			}
-
-			if($this->input->post("consultedEmp[]"))
-			{
-				foreach($this->input->post("consultedEmp[]") as $empID)
-				{
-					$consultedData = array(
-						'ROLE' => '3',
-						'users_USERID' => $empID,
-						'tasks_TASKID' =>	$taskID,
-						'STATUS' => 'Current'
-					);
-					$this->model->addToRaci($consultedData);
-				}
-			}
-
-			// SAVE INFORMED
-			if($this->input->post("informedDept[]"))
-			{
-				foreach($this->input->post("informedDept[]") as $deptID)
-				{
-					$informedData = array(
-						'ROLE' => '4',
-						'users_USERID' => $deptID,
-						'tasks_TASKID' =>	$taskID,
-						'STATUS' => 'Current'
-					);
-					$this->model->addToRaci($informedData);
-				}
-			}
-
-			if($this->input->post("informedEmp[]"))
-			{
-				foreach($this->input->post("informedEmp[]") as $empID)
-				{
-					$informedData = array(
-						'ROLE' => '4',
-						'users_USERID' => $empID,
-						'tasks_TASKID' =>	$taskID,
-						'STATUS' => 'Current'
-					);
-					$this->model->addToRaci($informedData);
-				}
-			}
 
 			if(!$this->input->post("responsibleEmp") && !$this->input->post("accountableDept[]") &&
 					!$this->input->post("accountableEmp[]") && !$this->input->post("consultedDept[]") &&
@@ -643,13 +556,150 @@ class controller extends CI_Controller
 					'STATUS' => 'Current'
 				);
 				$result = $this->model->addToRaci($responsibleData);
+				//TODO: Nami Logs/Notif -> Task Delegated to the approver (for delegation)
 			}
+			else
+			{
+				// SAVE/UPDATE RESPONSIBLE
+				if($this->input->post("responsibleEmp"))
+				{
+					$responsibleEmp = $this->input->post('responsibleEmp');
+					$responsibleData = array(
+						'ROLE' => '1',
+						'users_USERID' => $responsibleEmp,
+						'tasks_TASKID' => $taskID,
+						'STATUS' => 'Current'
+					);
+					$result = $this->model->addToRaci($responsibleData);
+					//TODO: Nami Logs/Notif -> Task delegated to responsible users
+				}
 
+				// SAVE ACCOUNTABLE
+				if($this->input->post("accountableDept[]"))
+				{
+					foreach($this->input->post("accountableDept[]") as $deptID)
+					{
+						$accountableData = array(
+							'ROLE' => '2',
+							'users_USERID' => $deptID,
+							'tasks_TASKID' =>	$taskID,
+							'STATUS' => 'Current'
+						);
+						$this->model->addToRaci($accountableData);
+						//TODO: Nami Logs/Notif -> Task delegated to accountable users
+					}
+				}
+
+				if ($this->input->post("accountableEmp[]"))
+				{
+					foreach($this->input->post("accountableEmp[]") as $empID)
+					{
+						$accountableData = array(
+							'ROLE' => '2',
+							'users_USERID' => $empID,
+							'tasks_TASKID' =>	$taskID,
+							'STATUS' => 'Current'
+						);
+						$this->model->addToRaci($accountableData);
+						//TODO: Nami Logs/Notif -> Task delegated to accountable users
+					}
+				}
+
+				// SAVE CONSULTED
+				if($this->input->post("consultedDept[]"))
+				{
+					foreach($this->input->post("consultedDept[]") as $deptID)
+					{
+						$consultedData = array(
+							'ROLE' => '3',
+							'users_USERID' => $deptID,
+							'tasks_TASKID' =>	$taskID,
+							'STATUS' => 'Current'
+						);
+						$this->model->addToRaci($consultedData);
+						//TODO: Nami Logs/Notif -> Task delegated to consulted users
+					}
+				}
+
+				if($this->input->post("consultedEmp[]"))
+				{
+					foreach($this->input->post("consultedEmp[]") as $empID)
+					{
+						$consultedData = array(
+							'ROLE' => '3',
+							'users_USERID' => $empID,
+							'tasks_TASKID' =>	$taskID,
+							'STATUS' => 'Current'
+						);
+						$this->model->addToRaci($consultedData);
+						//TODO: Nami Logs/Notif -> Task delegated to consulted users
+					}
+				}
+
+				// SAVE INFORMED
+				if($this->input->post("informedDept[]"))
+				{
+					foreach($this->input->post("informedDept[]") as $deptID)
+					{
+						$informedData = array(
+							'ROLE' => '4',
+							'users_USERID' => $deptID,
+							'tasks_TASKID' =>	$taskID,
+							'STATUS' => 'Current'
+						);
+						$this->model->addToRaci($informedData);
+						//TODO: Nami Logs/Notif -> Task delegated to informed users
+					}
+				}
+
+				if($this->input->post("informedEmp[]"))
+				{
+					foreach($this->input->post("informedEmp[]") as $empID)
+					{
+						$informedData = array(
+							'ROLE' => '4',
+							'users_USERID' => $empID,
+							'tasks_TASKID' =>	$taskID,
+							'STATUS' => 'Current'
+						);
+						$this->model->addToRaci($informedData);
+						//TODO: Nami Logs/Notif -> Task delegated to informed users
+					}
+				}
+				//TODO: Nami Logs/Notif -> Task delegated
+			}
 		} // end if appoved change Performer
-		// else // if approved change dates
-		// {
-		//		$changeRequest = $this->model->getChangeRequestbyID($requestID);
-		// }
+		else // if approved change dates
+		{
+			$taskID = $this->input->post("task_ID");
+			$changeRequest = $this->model->getChangeRequestbyID($requestID);
+			$task = $this->model->getTaskByID($taskID);
+			$postReqs = $this->model->getPostDependenciesByTaskID($taskID);
+
+			if(COUNT($postReqs) > 0) // if there are post requisite tasks
+			{
+				
+
+			}
+			else // if no post requisite tasks
+			{
+				if($changeRequest['NEWSTARTDATE'] <= 0) // if start date is not requested
+				{
+					$data = array(
+						'TASKADJUSTEDENDDATE' => $changeRequest["NEWENDDATE"]
+					);
+				}
+				else
+				{
+					$data = array(
+						'TASKADJUSTEDSTARTDATE' => $changeRequest["NEWSTARTDATE"],
+						'TASKADJUSTEDENDDATE' => $changeRequest["NEWENDDATE"]
+					);
+				}
+				$this->model->updateTaskDates($taskID, $data);
+			}
+			//TODO: Nami Logs/Notif -> Task Dates Adjusted
+		} // end if approved change dates
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
 		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
