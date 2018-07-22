@@ -32,11 +32,19 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
-									<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
+									<?php if (isset($_SESSION['templates'])): ?>
+										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" value ="<?php echo $project['PROJECTTITLE']; ?>" required>
+									<?php else: ?>
+										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
+									<?php endif; ?>
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-									<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
+									<?php if (isset($_SESSION['templates'])): ?>
+										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required><?php echo $project['PROJECTDESCRIPTION']; ?></textarea>
+									<?php else: ?>
+										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
+									<?php endif; ?>
                 </div>
 
 								<div class="row">
@@ -67,6 +75,9 @@
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="projectperiod">Project Period</label>
+
+											
+
 											<input type="text" class="form-control" id="projectPeriod" value="" readonly>
 										</div>
 									</div>

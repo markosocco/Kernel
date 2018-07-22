@@ -764,7 +764,27 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("newProject");
+			$id = $this->input->post("project_ID");
+
+			// TEMPLATES
+			if (isset($id))
+			{
+				$this->session->set_flashdata('templates', $id);
+
+				$data['project'] = $this->model->getProjectByID($id);
+				$data['allTasks'] = $this->model->getAllProjectTasks($id);
+				$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+				$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
+				$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
+				$data['tasks'] = $this->model->getAllTasksByID($id);
+
+				$this->load->view("newProject", $data);
+			}
+
+			else
+			{
+				$this->load->view("newProject");
+			}
 		}
 	}
 
@@ -1084,7 +1104,7 @@ class controller extends CI_Controller
 			$archives =$this->input->post("archives");
 			$rfc =$this->input->post("rfc");
 			$mytasks =$this->input->post("mytasks");
-
+			$templates =$this->input->post("templates");
 
 			// ARCHIVES
 			if (isset($archives))
@@ -1129,6 +1149,11 @@ class controller extends CI_Controller
 			{
 				$mytasks = $this->input->post("mytasks");
 				$this->session->set_flashdata('mytasks', $mytasks);
+			}
+			elseif (isset($templates))
+			{
+				$templates = $this->input->post("templates");
+				$this->session->set_flashdata('templates', $templates);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);

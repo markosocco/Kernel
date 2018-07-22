@@ -449,7 +449,7 @@ class model extends CI_Model
   // GET ALL TEMPLATES
   public function getAllTemplates()
   {
-    $this->db->select('*');
+    $this->db->select('templates.*, projects.PROJECTACTUALSTARTDATE, projects.PROJECTACTUALENDDATE, users.FIRSTNAME, users.LASTNAME');
     $this->db->from('templates');
     $this->db->join('projects', 'templates.PROJECTSTATUS = projects.PROJECTID');
     $this->db->join('users', 'projects.users_USERID = users.USERID');

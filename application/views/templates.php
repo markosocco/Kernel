@@ -37,6 +37,12 @@
 							</thead>
 							<tbody>
 								<?php foreach ($templates as $row): ?>
+									<tr class = 'template' data-id = "<?php echo $row['PROJECTSTATUS']; ?>">
+
+										<form action = 'projectGantt' method="POST">
+												<input type ='hidden' name='templates' value='0'>
+										</form>
+
 									<td><?php echo $row['PROJECTTITLE']; ?></td>
 									<td><?php echo $row['FIRSTNAME'] . " " . $row['LASTNAME']; ?></td>
 
@@ -55,6 +61,7 @@
 											<?php echo $diff . " days"; ?>
 									<?php endif; ?>
 									</td>
+								</tr>
 							<?php endforeach; ?>
 							</tbody>
 						</table>
@@ -74,6 +81,16 @@
 		</div> <!--.wrapper closing div-->
 
 		<script>
+
+		$(document).on("click", ".template", function() {
+			var $id = $(this).attr('data-id');
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+
+			// console.log("hello " + $id);
+			});
+
 		$("#templates").addClass("active");
 
 		$(function () {
