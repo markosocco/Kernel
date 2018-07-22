@@ -17,6 +17,8 @@
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
 						<?php elseif(isset($_SESSION['changeRequest'])): ?>
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
+						<?php elseif(isset($_SESSION['mytasks'])): ?>
+								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Tasks</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
@@ -39,7 +41,8 @@
 											<form id = "approvalForm" action="approveDenyRFC" method="POST" style="margin-bottom:0;"
 											data-request="<?php echo $changeRequest['REQUESTID'];?>"
 											data-project="<?php echo $changeRequest['PROJECTID'];?>"
-											data-task="<?php echo $changeRequest['TASKID'];?>">
+											data-task="<?php echo $changeRequest['TASKID'];?>"
+											data-type="<?php echo $changeRequest['REQUESTTYPE'];?>">
 												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
 												$startDate = date_create($changeRequest['TASKSTARTDATE']);
 												$endDate = date_create($changeRequest['TASKENDDATE']);
@@ -682,9 +685,11 @@
 				var $request = $("#approvalForm").attr('data-request');
 				var $project = $("#approvalForm").attr('data-project');
 				var $task = $("#approvalForm").attr('data-task');
+				var $type = $("#approvalForm").attr('data-type');
 
 				$("#approvalForm").attr("name", "formSubmit");
 				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='request_type' value= '" + $type + "'>");
 				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
 				$("#approvalForm").append("<input type='hidden' name='task_ID' value= '" + $task + "'>");
 				$("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
@@ -704,9 +709,13 @@
 			$(document).on("click", "#confirmApproveBtn", function() { // approve without delegate
 				var $request = $("#approvalForm").attr('data-request');
 				var $project = $("#approvalForm").attr('data-project');
+				var $task = $("#approvalForm").attr('data-task');
+				var $type = $("#approvalForm").attr('data-type');
 				$("#approvalForm").attr("name", "formSubmit");
 				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='request_type' value= '" + $type + "'>");
 				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
+				$("#approvalForm").append("<input type='hidden' name='task_ID' value= '" + $task + "'>");
 				$("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
 				$("#approvalForm").submit();
 				});
