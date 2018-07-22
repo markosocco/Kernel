@@ -1525,6 +1525,33 @@ class controller extends CI_Controller
 			}
 		}
 
+		public function templateProject()
+		{
+			$id = $this->input->post("project_ID");
+
+			$project = $this->model->getProjectByID($id);
+
+			$data = array(
+				'PROJECTID' => 'Archived',
+				'PROJECTTITLE' => 'Archived',
+				'PROJECTSTARTDATE' => 'Archived',
+				'PROJECTENDDATE' => 'Archived',
+				'PROJECTDESCRIPTION' => 'Archived',
+				'PROJECTSTATUS' => 'Archived',
+				'users_USERID' => 'Archived'
+			);
+
+			// TODO NAMI: LOGS
+			// $result = $this->model->archiveProject($id, $data);
+
+			if ($result)
+			{
+				$data['archives'] = $this->model->getAllProjectArchives();
+
+				$this->load->view("templates", $data);
+			}
+		}
+
 	public function uploadDocument()
 	{
 		$config['upload_path']          = './assets/uploads';

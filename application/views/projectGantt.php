@@ -619,7 +619,11 @@
 
 								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived'): ?>
-							<a name="" class="btn btn-default btn" id="makeTemplate"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
+
+							<form action = 'templateProject' method="POST">
+							</form>
+
+							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 						<?php else: ?>
 								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
 						<?php endif; ?>
@@ -641,6 +645,13 @@
 			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
 			$("form").submit();
 			});
+
+			$(document).on("click", "#templateProject", function() {
+				var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+				$("form").attr("name", "formSubmit");
+				$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+				$("form").submit();
+				});
 
 			$("#myProjects").addClass("active");
 
