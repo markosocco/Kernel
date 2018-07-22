@@ -793,13 +793,14 @@
 								 // RFC & DONE BUTTON
 								 if(data['tasks'][i].currentDate >= data['tasks'][i].PROJECTSTARTDATE) //SHOW BUTTON IF ONGOING PROJECT
 								 {
-									 var newDate = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING TASK
-	 									// RFC
+									 var ongoing = data['tasks'][i].currentDate >= data['tasks'][i].TASKSTARTDATE; //CHECK IF ONGOING TASK
+
+										// RFC
 	 									$('#' + data['tasks'][i].TASKID).append(
 	 	 									'<td align="center"><button type="button"' +
 	 										'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
 	 										'data-target="#modal-request" data-id="' + data['tasks'][i].TASKID +
-	 										'" data-date="' + newDate + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
+	 										'" data-date="' + ongoing + '" data-title="' + data['tasks'][i].TASKTITLE + '"' +
 	 										' data-start="'+ startDate +
 	 										'" data-end="'+ endDate +'"><i class="fa fa-warning"></i>' +
 	 										' RFC</button></td>');
@@ -808,9 +809,8 @@
 											var isDelayed = data['tasks'][i].currentDate >= data['tasks'][i].TASKENDDATE;
 											var taskID = data['tasks'][i].TASKID;
 											var taskTitle = data['tasks'][i].TASKTITLE;
-											var index = i;
 
-											if(!newDate)
+											if(!ongoing)
 											{
 												$('#' + taskID).append(
 													 '<td align="center"><button disabled type="button"' +
