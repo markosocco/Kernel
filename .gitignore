@@ -34,3 +34,8 @@ application/config/database.php
 application/controllers/controller.php
 application/config/database.php
 application/config/database.php
+application/views/gantt2.php
+application/config/database.php
+*.JPG
+*.pdf
+application/views/myProjects2.php
