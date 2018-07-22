@@ -723,7 +723,6 @@
 								var taskDuration = parseInt(data['mainActivity'][m].taskDuration);
 								var taskStart = moment(data['mainActivity'][m].TASKSTARTDATE).format('MMM DD, YYYY');
 								var taskEnd = moment(data['mainActivity'][m].TASKENDDATE).format('MMM DD, YYYY');
-								$('#mainActivityTable').append("<form class = 'editProject' action = 'projectGantt' method='POST' data-id = '" + data['mainActivity'][m].PROJECTID + "'></form>");
 								$('#mainActivityTable').append(
 														 "<tr><td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
 														 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
@@ -733,12 +732,6 @@
 														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
 			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
 			 											 '</td>');
-												 // '<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
-												 // 'data-toggle="modal" data-target="#modal-delegate" data-id="' +
-												 // taskID + '" data-title="' + data['mainActivity'][m].TASKTITLE +
-												 // '" data-start="'+ data['mainActivity'][m].TASKSTARTDATE +
-												 // '" data-end="'+ data['mainActivity'][m].TASKENDDATE +'">' +
-												 // '<i class="fa fa-users"></i> Delegate</button></td></tr>');
 							} // end of main activity for loop
 						} // end of main activity if statement
 
@@ -752,8 +745,6 @@
 								var taskDuration = parseInt(data['subActivity'][s].taskDuration);
 								var taskStart = moment(data['subActivity'][s].TASKSTARTDATE).format('MMM DD, YYYY');
 								var taskEnd = moment(data['subActivity'][s].TASKENDDATE).format('MMM DD, YYYY');
-
-								$('#subActivityTable').append("<form class = 'editProject' action = 'projectGantt' method='POST' data-id = '" + data['subActivity'][s].PROJECTID + "'></form>");
 								$('#subActivityTable').append(
 														 "<tr><td>" + data['subActivity'][s].TASKTITLE +"</td>"+
 														 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
@@ -763,12 +754,6 @@
 														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
 			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
 			 											 '</td>');
-														 // "<td align='center'><button type='button' class='btn btn-primary btn-sm delegateBtn'" +
-														 // "data-toggle='modal' data-target='#modal-delegate' data-id='" +
-														 // taskID + "' data-title='" + data['subActivity'][s].TASKTITLE +
-														 // "' data-start='"+ data['subActivity'][s].TASKSTARTDATE +
-														 // "' data-end='"+ data['subActivity'][s].TASKENDDATE +"'>" +
-														 // "<i class='fa fa-users'></i> Delegate</button></td></tr>");
 							} // end of sub activity for loop
 						}	// end of sub activity if statement
 

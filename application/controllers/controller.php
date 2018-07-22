@@ -353,12 +353,23 @@ class controller extends CI_Controller
 	{
 		$taskID = $this->input->post("task_ID");
 
-		// SAVE/UPDATE RESPONSIBLE
-		$responsibleEmp = $this->input->post('responsibleEmp');
-		$responsibleData = array(
-			'users_USERID' => $responsibleEmp,
-		);
-		$result = $this->model->updateResponsible($taskID, $responsibleData);
+		$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
+		$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
+		$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
+		$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
+
+		// SAVE RESPONSIBLE
+		if($this->input->post("responsibleEmp"))
+		{
+			$responsibleEmp = $this->input->post('responsibleEmp');
+			$responsibleData = array(
+				'ROLE' => '1',
+				'users_USERID' => $responsibleEmp,
+				'tasks_TASKID' => $taskID,
+				'STATUS' => 'Current'
+			);
+			$result = $this->model->addToRaci($taskID, $responsibleData);
+		}
 
 		// SAVE ACCOUNTABLE
 		if($this->input->post("accountableDept[]"))
@@ -368,7 +379,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -381,7 +393,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -395,7 +408,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -408,7 +422,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -422,7 +437,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -435,7 +451,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -505,14 +522,22 @@ class controller extends CI_Controller
 
 		$taskID = $this->input->post("task_ID");
 
+		$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
+		$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
+		$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
+		$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
+
 		// SAVE/UPDATE RESPONSIBLE
 		if($this->input->post("responsibleEmp"))
 		{
 			$responsibleEmp = $this->input->post('responsibleEmp');
 			$responsibleData = array(
+				'ROLE' => '1',
 				'users_USERID' => $responsibleEmp,
+				'tasks_TASKID' => $taskID,
+				'STATUS' => 'Current'
 			);
-			$result = $this->model->updateResponsible($taskID, $responsibleData);
+			$result = $this->model->addToRaci($responsibleData);
 		}
 
 		// SAVE ACCOUNTABLE
@@ -523,7 +548,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -536,7 +562,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -550,7 +577,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -563,7 +591,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -577,7 +606,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -590,7 +620,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -602,9 +633,12 @@ class controller extends CI_Controller
 				!$this->input->post("informedEmp[]")) // return to approver in tasks
 		{
 			$responsibleData = array(
-				'users_USERID' => $_SESSION['USERID']
+				'ROLE' => '1',
+				'users_USERID' => $_SESSION['USERID'],
+				'tasks_TASKID' =>	$taskID,
+				'STATUS' => 'Current'
 			);
-			$result = $this->model->updateResponsible($taskID, $responsibleData);
+			$result = $this->model->addToRaci($responsibleData);
 		}
 		$this->load->view("projectGantt", $data);
 	}
@@ -929,7 +963,8 @@ class controller extends CI_Controller
 								$data = array(
 										'ROLE' => '1',
 										'users_USERID' => $deptHead,
-										'tasks_TASKID' => $a
+										'tasks_TASKID' => $a,
+										'STATUS' => 'Current'
 								);
 
 								// ENTER INTO RACI
@@ -1267,7 +1302,8 @@ class controller extends CI_Controller
 								$data = array(
 										'ROLE' => '1',
 										'users_USERID' => $deptHead,
-										'tasks_TASKID' => $a
+										'tasks_TASKID' => $a,
+										'STATUS' => 'Current'
 								);
 
 								// ENTER INTO RACI
@@ -1413,7 +1449,8 @@ class controller extends CI_Controller
 	 								$data = array(
 	 										'ROLE' => '1',
 	 										'users_USERID' => $deptHead,
-	 										'tasks_TASKID' => $a
+	 										'tasks_TASKID' => $a,
+											'STATUS' => 'Current'
 	 								);
 
 	 								// ENTER INTO RACI
