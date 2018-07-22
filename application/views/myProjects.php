@@ -499,13 +499,13 @@
 
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
-									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 									<div class="small-box bg-teal">
 										<div class="inner">
 
 											<h2>100%</h2>
 
-											<form action = 'projectGantt'  method="POST">
+											<form action = 'teamGantt'  method="POST">
 											</form>
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?> day/s</i></p>
@@ -523,7 +523,7 @@
 
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
-									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 									<div class="small-box bg-red">
 										<div class="inner">
 
@@ -556,7 +556,7 @@
 
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
-									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 									<div class="small-box bg-green">
 										<div class="inner">
 
@@ -588,7 +588,7 @@
 							<?php foreach ($plannedProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
-									<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
+									<a class = "myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
 									<div class="small-box bg-yellow">
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -614,7 +614,7 @@
 
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
-									<a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 									<div class="small-box btn-default">
 										<div class="inner">
 
@@ -646,7 +646,7 @@
 							<?php foreach ($draftedProjects as $row):?>
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
-									<a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
+									<a class = "myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
 									<div class="small-box btn.bg-white">
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -703,9 +703,9 @@
                               $completedEnd = date_create($value['PROJECTENDDATE']);
                             ?>
 
-                          <tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
+                          <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                            <form action = 'projectGantt' method="POST">
+                            <form action = 'teamGantt' method="POST">
                             </form>
 
                             <td class="bg-blue"></td>
@@ -724,7 +724,7 @@
                             $delayedEnd = date_create($value['PROJECTENDDATE']);
                           ?>
 
-                        <tr data-id = "<?php echo $value['PROJECTID']; ?>">
+                        <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                           <form action = 'teamGantt' method="POST">
                           </form>
@@ -753,7 +753,7 @@
                           $ongoingEnd = date_create($value['PROJECTENDDATE']);
                         ?>
 
-                      <tr data-id = "<?php echo $value['PROJECTID']; ?>">
+                      <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                         <form action = 'teamGantt' method="POST">
                         </form>
@@ -782,7 +782,7 @@
                         $plannedEnd = date_create($row['PROJECTENDDATE']);
                       ?>
 
-                      <tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
+                      <tr class="myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
 
                         <form action = 'teamGantt' method="POST">
                         </form>
@@ -803,7 +803,7 @@
                         $parkedEnd = date_create($value['PROJECTENDDATE']);
                       ?>
 
-                      <tr data-id = "<?php echo $value['PROJECTID']; ?>">
+                      <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                         <form action = 'teamGantt' method="POST">
                         </form>
@@ -832,7 +832,7 @@
                         $draftedEnd = date_create($value['PROJECTENDDATE']);
                       ?>
 
-                      <tr data-id = "<?php echo $value['PROJECTID']; ?>">
+                      <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                         <form action = 'teamGantt' method="POST">
                         </form>
@@ -1000,6 +1000,13 @@
 
     // IF USING POST METHOD FOR PROJECT ID
     $(document).on("click", ".project", function() {
+      var $id = $(this).attr('data-id');
+      $("form").attr("name", "formSubmit");
+      $("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+      $("form").submit();
+    });
+
+    $(document).on("click", ".myTeam", function() {
       var $id = $(this).attr('data-id');
       $("form").attr("name", "formSubmit");
       $("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
