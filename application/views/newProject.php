@@ -29,6 +29,9 @@
             <!-- /.box-header -->
             <!-- form start -->
 						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
+
+							<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
+
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
@@ -76,9 +79,28 @@
 										<div class="form-group">
 											<label for="projectperiod">Project Period</label>
 
-											
+											<?php if (isset($_SESSION['templates'])): ?>
+												<?php
+													$startdate = date_create($project['PROJECTSTARTDATE']);
+													$enddate = date_create($project['PROJECTACTUALENDDATE']);
+													$temp = date_diff($enddate, $startdate);
+													$dFormat = $temp->format('%d');
+													$diff = (int)$dFormat + 1;
 
-											<input type="text" class="form-control" id="projectPeriod" value="" readonly>
+													if ($diff >= 1)
+													{
+														$period = $diff . " day";
+													}
+
+													else
+													{
+														$period = $diff . " days";
+													}
+												?>
+												<input type="text" class="form-control" id="projectPeriod" value="<?php echo $period; ?>" readonly>
+											<?php else: ?>
+												<input type="text" class="form-control" id="projectPeriod" value="" readonly>
+											<?php endif; ?>
 										</div>
 									</div>
 								</div>
@@ -94,7 +116,6 @@
 		    <!-- /.content -->
 		  </div>
 			<?php include_once("footer.php"); ?>
-
 
 		</div>
 		<!-- ./wrapper -->

@@ -1442,6 +1442,13 @@ class controller extends CI_Controller
 
 			$data['dateDiff'] = $dateDiff;
 
+			$templates = $this->input->post('templates');
+
+			if (isset($templates))
+			{
+				$this->session->set_flashdata('templates', $templates);
+			}
+
 			// $this->output->enable_profile(TRUE);
 			$this->load->view('arrangeTasks', $data);
 		}
