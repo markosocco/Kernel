@@ -130,12 +130,12 @@
 														<table class="table table-hover" id = "ma<?php echo $key; ?>_s<?php echo $sKey; ?>">
 															<thead>
 																<tr>
-																	<th width=""></th>
+																	<th width="5%"></th>
 																	<th width="30%"></th>
 																	<th width="30%"></th>
 																	<th width="15%"></th>
 																	<th width="15%"></th>
-																	<th width=""></th>
+																	<th width="5%"></th>
 																</tr>
 															</thead>
 														<tbody>
@@ -190,9 +190,9 @@
 																	<input type="hidden" name="row[]" value="<?php echo $c; ?>">
 																</div>
 															</td>
-															<!-- CHANGE TO NORMAL SELECT. 1:1 -->
 															<td style="padding-bottom:15px;">
-																<select id ="select<?php echo $c; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
+																<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
+																	<option></option>
 																	<?php foreach ($departments as $row): ?>
 
 																		<option>
@@ -222,7 +222,8 @@
 																	</div>
 																</div>
 															</td>
-															<td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td>
+															<td></td>
+															<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 														</tr>
 													</tbody>
 												</table>
@@ -238,9 +239,9 @@
 
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Previous: Add Sub Activities</button>
-									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Next: Add Dependencies</button>
-									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Skip This Step</button>
+									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Add Sub Activities</button>
+									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Add Dependencies</button>
+									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-fast-forward"></i> Skip This Step</button>
 								</div>
 								</form>
 		          </div>
@@ -276,8 +277,8 @@
 				 						mTable + "_s" + (i) +
 										"'><td></td><td><div class ='form-group'> <input type='hidden' name='subActivity_ID[]' value='" +
 										subAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
-										"<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
-										"<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+										"<td><select id = 'select" + i + "' class='form-control select2' name = '' data-placeholder='Select Departments'> " +
+										"<option></option> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
 										"name='taskStartDate[]' id='start_" + subAct + "-" + counter +"' data-subAct = '" + subAct + "' data-num='" + counter +

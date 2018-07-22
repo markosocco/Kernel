@@ -695,6 +695,7 @@ class model extends CI_Model
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
     $this->db->group_by('tasks.TASKID');
+    $this->db->group_by('tasks.TASKSTARTDATE');
 
     return $this->db->get()->result_array();
   }
@@ -1107,6 +1108,17 @@ class model extends CI_Model
     AND !(projectenddate < CURDATE()) AND users.departments_DEPARTMENTID = ' . $departmentID);
     $this->db->group_by('tasks.projects_PROJECTID');
     $this->db->order_by('projects.PROJECTENDDATE');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getSubActivityProgress($projectID)
+  {
+    $condition = "CATEGORY = 3 && projects_PROJECTID = " . $projectID;
+    $this->db->select('COUNT(TASKID), ROUND((100/COUNT(tasks_TASKPARENT) * COUNT(IF(taskstatus = "Complete", 1, NULL))), 2) AS "progress", tasks_TASKPARENT');
+    $this->db->from('tasks');
+    $this->db->where($condition);
+    $this->db->group_by('tasks_TASKPARENT');
 
     return $this->db->get()->result_array();
   }
