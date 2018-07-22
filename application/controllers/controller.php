@@ -185,11 +185,16 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 				$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
+
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
 			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
+
+			$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
 			$this->load->view("myProjects", $data);
 		}
@@ -220,11 +225,20 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 
+				// $data['ongoingTeamProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
+				// $data['plannedTeamProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+				// $data['delayedTeamProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
+				// $data['parkedTeamProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
+				// $data['draftedTeamProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+
+			// $data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			// $data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			// $data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
 			$this->load->view("myTeam", $data);
 		}
@@ -353,12 +367,23 @@ class controller extends CI_Controller
 	{
 		$taskID = $this->input->post("task_ID");
 
-		// SAVE/UPDATE RESPONSIBLE
-		$responsibleEmp = $this->input->post('responsibleEmp');
-		$responsibleData = array(
-			'users_USERID' => $responsibleEmp,
-		);
-		$result = $this->model->updateResponsible($taskID, $responsibleData);
+		$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
+		$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
+		$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
+		$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
+
+		// SAVE RESPONSIBLE
+		if($this->input->post("responsibleEmp"))
+		{
+			$responsibleEmp = $this->input->post('responsibleEmp');
+			$responsibleData = array(
+				'ROLE' => '1',
+				'users_USERID' => $responsibleEmp,
+				'tasks_TASKID' => $taskID,
+				'STATUS' => 'Current'
+			);
+			$result = $this->model->addToRaci($taskID, $responsibleData);
+		}
 
 		// SAVE ACCOUNTABLE
 		if($this->input->post("accountableDept[]"))
@@ -368,7 +393,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -381,7 +407,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -395,7 +422,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -408,7 +436,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -422,7 +451,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -435,7 +465,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -505,14 +536,22 @@ class controller extends CI_Controller
 
 		$taskID = $this->input->post("task_ID");
 
+		$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
+		$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
+		$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
+		$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
+
 		// SAVE/UPDATE RESPONSIBLE
 		if($this->input->post("responsibleEmp"))
 		{
 			$responsibleEmp = $this->input->post('responsibleEmp');
 			$responsibleData = array(
+				'ROLE' => '1',
 				'users_USERID' => $responsibleEmp,
+				'tasks_TASKID' => $taskID,
+				'STATUS' => 'Current'
 			);
-			$result = $this->model->updateResponsible($taskID, $responsibleData);
+			$result = $this->model->addToRaci($responsibleData);
 		}
 
 		// SAVE ACCOUNTABLE
@@ -523,7 +562,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -536,7 +576,8 @@ class controller extends CI_Controller
 				$accountableData = array(
 					'ROLE' => '2',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($accountableData);
 			}
@@ -550,7 +591,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -563,7 +605,8 @@ class controller extends CI_Controller
 				$consultedData = array(
 					'ROLE' => '3',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($consultedData);
 			}
@@ -577,7 +620,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -590,7 +634,8 @@ class controller extends CI_Controller
 				$informedData = array(
 					'ROLE' => '4',
 					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID
+					'tasks_TASKID' =>	$taskID,
+					'STATUS' => 'Current'
 				);
 				$this->model->addToRaci($informedData);
 			}
@@ -602,9 +647,12 @@ class controller extends CI_Controller
 				!$this->input->post("informedEmp[]")) // return to approver in tasks
 		{
 			$responsibleData = array(
-				'users_USERID' => $_SESSION['USERID']
+				'ROLE' => '1',
+				'users_USERID' => $_SESSION['USERID'],
+				'tasks_TASKID' =>	$taskID,
+				'STATUS' => 'Current'
 			);
-			$result = $this->model->updateResponsible($taskID, $responsibleData);
+			$result = $this->model->addToRaci($responsibleData);
 		}
 		$this->load->view("projectGantt", $data);
 	}
@@ -929,7 +977,8 @@ class controller extends CI_Controller
 								$data = array(
 										'ROLE' => '1',
 										'users_USERID' => $deptHead,
-										'tasks_TASKID' => $a
+										'tasks_TASKID' => $a,
+										'STATUS' => 'Current'
 								);
 
 								// ENTER INTO RACI
@@ -1267,7 +1316,8 @@ class controller extends CI_Controller
 								$data = array(
 										'ROLE' => '1',
 										'users_USERID' => $deptHead,
-										'tasks_TASKID' => $a
+										'tasks_TASKID' => $a,
+										'STATUS' => 'Current'
 								);
 
 								// ENTER INTO RACI
@@ -1413,7 +1463,8 @@ class controller extends CI_Controller
 	 								$data = array(
 	 										'ROLE' => '1',
 	 										'users_USERID' => $deptHead,
-	 										'tasks_TASKID' => $a
+	 										'tasks_TASKID' => $a,
+											'STATUS' => 'Current'
 	 								);
 
 	 								// ENTER INTO RACI
@@ -1662,13 +1713,11 @@ class controller extends CI_Controller
 	{
 		//GET DOCUMENT ID
 		$documentID = $this->input->post("documentID");
-		$id = $this->input->post("project_ID");
+		$projectID = $this->input->post("project_ID");
 
 		$currentDate = date('Y-m-d');
 
 		$result = $this->model->updateDocumentAcknowledgement($documentID, $_SESSION['USERID'], $currentDate);
-
-		// echo $id;
 
 		// // START: LOG DETAILS
 		// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
@@ -1677,19 +1726,11 @@ class controller extends CI_Controller
 		// $logData = array (
 		// 	'LOGDETAILS' => $details,
 		// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
-		// 	'projects_PROJECTID' => $id // how to get project ID if hindi naman sya napass? or pano magpass?
+		// 	'projects_PROJECTID' => $projectID
 		// );
 		//
 		// $this->model->addToProjectLogs($logData);
 		// // END: LOG DETAILS
-
-		//eto rin how to pass project id? :(
-
-		// $this->session->set_flashdata('projectID', $id);
-		// $data['projectProfile'] = $this->model->getProjectByID($id);
-		// $data['departments'] = $this->model->getAllDepartments();
-		// $data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
-		// $data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
 
 		if ($result)
 		{
@@ -1702,6 +1743,8 @@ class controller extends CI_Controller
 			$data['users'] = $this->model->getAllUsersByProject($id);
 
 			$this->load->view("projectDocuments", $data);
+
+			// redirect('controller/projectDocuments');
 		}
 
 		else {
