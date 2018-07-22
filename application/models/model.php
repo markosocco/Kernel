@@ -30,10 +30,9 @@ class model extends CI_Model
 // GET DATA OF USER, GIVEN THE EMAIL
   public function getUserData($data)
   {
-    $condition = "users.EMAIL =" . "'" . $data['email'] ."' AND notifications.STATUS = 'Unread'";
+    $condition = "users.EMAIL =" . "'" . $data['email'] . "'";
     $this->db->select('*');
     $this->db->from('users');
-    $this->db->join('notifications', 'users.USERID = notifications.users_USERID');
     $this->db->where($condition);
     $query = $this->db->get();
 
