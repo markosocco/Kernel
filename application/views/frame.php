@@ -105,11 +105,13 @@ desired effect
               <li>
                 <!-- Inner Menu: contains the notifications -->
                 <ul class="menu">
-                  <li><!-- start notification -->
-                    <a href="<?php echo base_url("index.php/controller/notifications"); ?>">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li>
+                  <?php foreach ($_SESSION['notifications'] as $row): ?>
+                    <li><!-- start notification -->
+                      <a href="<?php echo base_url("index.php/controller/notifications"); ?>">
+                        <i class="fa fa-users text-aqua"></i><?php echo $row['DETAILS']; ?>
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
                   <!-- end notification -->
                 </ul>
               </li>

@@ -70,6 +70,9 @@ class controller extends CI_Controller
 				$sessionData = $this->model->getUserData($data);
 				$this->session->set_userdata($sessionData);
 
+				$notifications = $this->model->getAllNotificationsByUser($sessionData['USERID']);
+				$this->session->set_userdata('notifications', $notifications);
+
 				// $notificationsData = $this->model->getAllNotificationsByUser();
 				// $this->session->set_userdata('notificationsData', $notificationsData);
 
@@ -1607,15 +1610,17 @@ class controller extends CI_Controller
 				'users_USERID' => 'Archived'
 			);
 
+			echo $id;
+
 			// TODO NAMI: LOGS
 			// $result = $this->model->archiveProject($id, $data);
-
-			if ($result)
-			{
-				$data['archives'] = $this->model->getAllProjectArchives();
-
-				$this->load->view("templates", $data);
-			}
+			//
+			// if ($result)
+			// {
+			// 	$data['archives'] = $this->model->getAllProjectArchives();
+			//
+			// 	$this->load->view("templates", $data);
+			// }
 		}
 
 	public function uploadDocument()
