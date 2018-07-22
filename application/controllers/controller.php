@@ -659,6 +659,7 @@ class controller extends CI_Controller
 		$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
 		$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
 		$data['informed'] = $this->model->getAllInformedByProject($projectID);
+		$data['SAprogress'] = $this->model->getSubActivityProgress($projectID);
 
 		unset($_SESSION['rfc']);
 		$this->session->set_flashdata('changeRequest', 0);
@@ -1098,6 +1099,7 @@ class controller extends CI_Controller
 			$data['accountable'] = $this->model->getAllAccountableByProject($id);
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
+			$data['SAprogress'] = $this->model->getSubActivityProgress($id);
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);

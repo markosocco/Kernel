@@ -962,6 +962,24 @@
 						$formatted_actualEndDate = date('M d, Y', strtotime($actualEndDate));
 						// END: Formatting of ACTUAL END date
 
+						if($value['CATEGORY'] == 3){
+							echo "
+								{
+									'id': " . $value['TASKID'] . ",
+									'name': '" . $value['TASKTITLE'] . "',
+									'actualStart': '" . $formatted_startDate . "',
+									'actualEnd': '" . $formatted_endDate . "',
+									'parent': '" . $value['tasks_TASKPARENT'] . "',
+									'accountable': '',
+									'consulted': '',
+									'informed': '',
+									'period': '" . $value['taskDuration'] . "',
+									'baselineStart': '" . $formatted_actualStartDate . "',
+									'baselineEnd': '" . $formatted_actualEndDate . "',
+									'responsible': '" . $SAprogress[$key]['SAprogress'] . "%'
+								},";
+						}
+
 				// RACI IS EMPTY
 						if($accountable == NULL || $consulted == NULL || $informed == NULL){
 							echo "
@@ -971,13 +989,18 @@
 									'actualStart': '" . $formatted_startDate . "',
 									'actualEnd': '" . $formatted_endDate . "',
 									'responsible': '',
-									'accounrable': '',
+									'accountable': '',
 									'consulted': '',
 									'informed': '',
 									'period': '" . $value['taskDuration'] . "',
 									'progressValue': '0%'
 								},";
 						} else { // START: RACI IS NOT EMPTY
+
+							// 'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
+							// 'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
+							// 'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
+							// 'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
 
 							//START: Completed task - ProgressValue = 100%
 								if($value['TASKSTATUS'] == 'Complete'){
@@ -991,10 +1014,7 @@
 						                'actualStart': '" . $formatted_startDate . "',
 						                'actualEnd': '" . $formatted_endDate . "',
 						                'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                'period': '" . $value['taskDuration'] . "',
 						                'progressValue': '100%'
 						              },";
@@ -1012,10 +1032,7 @@
 						                  'actualStart': '" . $formatted_startDate . "',
 						                  'actualEnd': '" . $formatted_endDate . "',
 						                  'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                  'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                  'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                  'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                  'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                  'period': '" . $value['taskDuration'] . "',
 						                  'baselineStart': '" . $formatted_actualStartDate . "',
 						                  'baselineEnd': '" . date('M d, Y') . "',
@@ -1033,10 +1050,7 @@
 						                  'actualStart': '" . $formatted_startDate . "',
 						                  'actualEnd': '" . $formatted_endDate . "',
 						                  'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                  'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                  'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                  'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                  'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                  'period': '" . $value['taskDuration'] . "',
 						                  'baselineStart': '" . $formatted_actualStartDate . "',
 						                  'baselineEnd': '" . date('M d, Y') . "',
@@ -1056,10 +1070,7 @@
 						                'actualStart': '" . $formatted_startDate . "',
 						                'actualEnd': '" . $formatted_endDate . "',
 						                'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                'period': '" . $value['taskDuration'] . "',
 						                'baselineStart': '" . $formatted_actualStartDate . "',
 						                'baselineEnd': '" . $formatted_actualEndDate . "',
@@ -1082,10 +1093,7 @@
 						                'actualStart': '" . $formatted_startDate . "',
 						                'actualEnd': '" . $formatted_endDate . "',
 						                'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                'period': '" . $value['taskDuration'] . "',
 						                'progressValue': '0%'
 						              },";
@@ -1103,10 +1111,7 @@
 						                  'actualStart': '" . $formatted_startDate . "',
 						                  'actualEnd': '" . $formatted_endDate . "',
 						                  'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                  'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                  'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                  'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                  'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                  'period': '" . $value['taskDuration'] . "',
 						                  'baselineStart': '" . $formatted_actualStartDate . "',
 						                  'baselineEnd': '" . date('M d, Y') . "',
@@ -1124,10 +1129,7 @@
 						                  'actualStart': '" . $formatted_startDate . "',
 						                  'actualEnd': '" . $formatted_endDate . "',
 						                  'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                  'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                  'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                  'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                  'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                  'period': '" . $value['taskDuration'] . "',
 						                  'baselineStart': '" . $formatted_actualStartDate . "',
 						                  'baselineEnd': '" . date('M d, Y') . "',
@@ -1147,14 +1149,11 @@
 						                'actualStart': '" . $formatted_startDate . "',
 						                'actualEnd': '" . $formatted_endDate . "',
 						                'parent': '" . $value['tasks_TASKPARENT'] . "',
-						                'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-						                'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-						                'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-						                'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+
 						                'period': '" . $value['taskDuration'] . "',
 						                'baselineStart': '" . $formatted_actualStartDate . "',
 						                'baselineEnd': '" . $formatted_actualEndDate . "',
-						                'progressValue': '0%'
+						                'progressValue': '" . $SAprogress[$key]['SAprogress'] . "%'
 						              },";
 						            }
 						            // END: Completed tasks - baselineStart and baselineEnd are present

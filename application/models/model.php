@@ -1090,6 +1090,14 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getSubActivityProgress($projectID)
+  {
+    $this->db->select('ROUND((100/COUNT(taskid) * COUNT(IF(taskstatus = "Complete", 1, NULL))), 2) AS "SAprogress", tasks_TASKPARENT');
+    $this->db->from('tasks');
+    $this->db->where('CATEGORY = 3 && projects_PROJECTID = ' . $projectID);
+    $this->db->group_by('tasks.tasks_TASKPARENT');
+  }
+
   public function addToDependencies($data)
   {
     $this->db->insert('dependencies', $data);
@@ -1103,5 +1111,6 @@ class model extends CI_Model
 
     return true;
   }
+
 }
 ?>
