@@ -146,12 +146,15 @@ class controller extends CI_Controller
 			// RFC Approval Data
 			$userID = $_SESSION['USERID'];
 			$deptID = $_SESSION['departments_DEPARTMENTID'];
-			if($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
-				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || $userID = projects.users_USERID";
+			if($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
+				$filter = "projects.users_USERID = '$userID'";
+			elseif($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
+				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || projects.users_USERID = '$userID'";
 			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
-				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || $userID = projects.users_USERID";
-			elseif($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
-				$filter = "$userID = projects.users_USERID";
+				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || projects.users_USERID = '$userID'";
+			else // if admin/executive is logged in
+				$filter = "REQUESTID = '0'";
+
 
 			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
 
