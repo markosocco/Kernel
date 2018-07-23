@@ -19,7 +19,7 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
 				<?php if($changeRequests != null):?>
-					<div class="box">
+					<div class="box box-danger">
 						<div class="box-header">
 						</div>
 						<!-- /.box-header -->

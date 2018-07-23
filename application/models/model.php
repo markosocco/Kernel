@@ -1188,5 +1188,18 @@ class model extends CI_Model
     $this->db->insert('templates', $data);
     return true;
   }
+
+  public function getRaci($id)
+  {
+    $condition = "projects.PROJECTID = " . $id . " AND raci.STATUS = 'Current'";
+    $this->db->select('raci.*, users.departments_DEPARTMENTID as uDept');
+    $this->db->from('raci');
+    $this->db->join('tasks', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', ' raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

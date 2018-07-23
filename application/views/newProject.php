@@ -21,9 +21,18 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<div class="container-fluid">
+					  <ul class="list-unstyled multi-steps">
+					    <li class="is-active">Project Details</li>
+					    <li>Add Main Activities</li>
+					    <li>Add Sub Activities</li>
+					    <li>Add Tasks</li>
+					    <li>Add Dependencies</li>
+					  </ul>
+					</div>
+					<br>
 
-
-					<div class="box box-primary">
+					<div class="box box-danger">
             <div class="box-header with-border">
               <h3 class="box-title">Input project details</h3>
             </div>

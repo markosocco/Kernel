@@ -21,7 +21,7 @@
 				<?php if($archives == null):?>
 					<h3 class="box-title" style="text-align:center">There are no project archives</h3>
 				<?php else:?>
-				<div class="box">
+				<div class="box box-danger">
 					<div class="box-header">
 					</div>
 					<!-- /.box-header -->

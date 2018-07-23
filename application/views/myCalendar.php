@@ -21,7 +21,7 @@
 			<section class="content container-fluid">
 				<div class="row">
 					<div style="padding:20px">
-						<div class="box box-primary">
+						<div class="box box-danger">
 							<div class="box-body no-padding">
 								<!-- THE CALENDAR -->
 								<div id="calendar"></div>

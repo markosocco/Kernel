@@ -32,9 +32,19 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<div class="container-fluid">
+					  <ul class="list-unstyled multi-steps">
+					    <li>Project Details</li>
+					    <li>Add Main Activities</li>
+					    <li>Add Sub Activities</li>
+					    <li class="is-active">Add Tasks</li>
+					    <li>Add Dependencies</li>
+					  </ul>
+					</div>
+					<br>
 					<div class="row">
 		        <div class="col-xs-12">
-		          <div class="box">
+		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">Enter tasks for this project</h3>
 		              <div class="box-tools">
@@ -192,8 +202,8 @@
 															</td>
 															<td style="padding-bottom:15px;">
 																<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
-																	<option></option>
 																	<?php foreach ($departments as $row): ?>
+																		<option></option>
 
 																		<option>
 																			<?php echo $row['DEPARTMENTNAME']; ?>
@@ -241,7 +251,7 @@
 								<div class="box-footer">
 									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Add Sub Activities</button>
 									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Add Dependencies</button>
-									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-fast-forward"></i> Skip This Step</button>
+									<!-- <button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-fast-forward"></i> Skip This Step</button> -->
 								</div>
 								</form>
 		          </div>

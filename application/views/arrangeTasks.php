@@ -35,18 +35,19 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
-					<div id="progressContainer">
-						<ul class="progressbar">
-		          <li>Project Details</li>
-		          <li class="active">Add Main Activities</li>
-		          <li>Add Sub Activities</li>
-		          <li>Add Tasks</li>
-							<li>Add Dependecies</li>
-		  			</ul>
+					<div class="container-fluid">
+					  <ul class="list-unstyled multi-steps">
+					    <li>Project Details</li>
+					    <li>Add Main Activities</li>
+					    <li class="is-active">Add Sub Activities</li>
+					    <li>Add Tasks</li>
+					    <li>Add Dependencies</li>
+					  </ul>
 					</div>
+					<br>
 					<div class="row">
 		        <div class="col-xs-12">
-		          <div class="box">
+		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">Enter sub activities for this project</h3>
 		              <div class="box-tools">
@@ -62,135 +63,140 @@
 		            <!-- /.box-header -->
 								<form id='arrangeTasks' name = 'arrangeTasks' action = '<?php echo base_url('index.php/controller/arrangeTasks');?>' method="POST">
 
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+
 									<input type="hidden" name="templates" value="0" id="projectDate" data-startDate="<?php echo $project['PROJECTSTARTDATE'];?>" data-endDate="<?php echo $project['PROJECTENDDATE'];?>">
 
-								<?php foreach ($groupedTasks as $key=>$value): ?>
+								<?php if (isset($_SESSION['templates'])): ?>
+								<?php else: ?>
+									<?php foreach ($groupedTasks as $key=>$value): ?>
 
-		            <div class="box-body table-responsive no-padding">
-		              <table class="table table-hover" id="table_<?php echo $key;?>">
+			            <div class="box-body table-responsive no-padding">
+			              <table class="table table-hover" id="table_<?php echo $key;?>">
 
-										<?php if($key == 0): ?>
+											<?php if($key == 0): ?>
 
-											<thead>
-			                <tr>
-												<th></th>
-												<th width="27.5%">Task Name</th>
-												<th width="27.5%">Department</th>
-												<th width="15%">Start Date</th>
-												<th width="15%">Target End Date</th>
-												<th width="10%">Period</th>
-												<th width="5%"></th>
-			                </tr>
-										</thead>
+												<thead>
+				                <tr>
+													<th></th>
+													<th width="27.5%">Task Name</th>
+													<th width="27.5%">Department</th>
+													<th width="15%">Start Date</th>
+													<th width="15%">Target End Date</th>
+													<th width="10%">Period</th>
+													<th width="5%"></th>
+				                </tr>
+											</thead>
 
-									<?php endif; ?>
+										<?php endif; ?>
 
-									<tbody>
+										<tbody>
 
-										<tr>
-											<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-											<td width="27.5%"><b><?php echo $value['TASKTITLE']; ?></b></td>
-											<td width="27.5%"><b>
-												<?php
+											<tr>
+												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+												<td width="27.5%"><b><?php echo $value['TASKTITLE']; ?></b></td>
+												<td width="27.5%"><b>
+													<?php
 
-													foreach ($tasks as $row)
-													{
-														if($value['TASKTITLE'] == $row['TASKTITLE'])
+														foreach ($tasks as $row)
 														{
-															$depts = array();
-
-															foreach ($departments as $row2)
+															if($value['TASKTITLE'] == $row['TASKTITLE'])
 															{
-																if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																$depts = array();
+
+																foreach ($departments as $row2)
 																{
-																	// $depts[] = $row2['DEPARTMENTNAME'];
-																	echo $row2['DEPARTMENTNAME'] . ", ";
+																	if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																	{
+																		// $depts[] = $row2['DEPARTMENTNAME'];
+																		echo $row2['DEPARTMENTNAME'] . ", ";
+																	}
 																}
+
+																//TODO: Fix implode shit
+																// foreach ($depts as $x)
+																// {
+																// 	echo $x . ", ";
+																// }
 															}
-
-															//TODO: Fix implode shit
-															// foreach ($depts as $x)
-															// {
-															// 	echo $x . ", ";
-															// }
 														}
-													}
+													?>
+												</b></td>
+
+												<?php
+													$startdate = date_create($value['TASKSTARTDATE']);
+													$enddate = date_create($value['TASKENDDATE']);
+													$diff = date_diff($enddate, $startdate);
+													$dDiff = intval($diff->format('%d'));
 												?>
-											</b></td>
 
-											<?php
-												$startdate = date_create($value['TASKSTARTDATE']);
-												$enddate = date_create($value['TASKENDDATE']);
-												$diff = date_diff($enddate, $startdate);
-												$dDiff = intval($diff->format('%d'));
-											?>
+												<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
+												<td width="15%"><b><?php echo date_format($enddate, "M d, Y") ?></b></td>
+												<td width="10%">
+													<div class="form-group">
+														<b>
+															<?php
+																if (($dDiff + 1) <= 1)
+																	echo ($dDiff + 1) . " day";
+																else
+																	echo ($dDiff + 1) . " days";
+															?>
+														</b>
+													</div>
+												</td>
+												<td width="5%"></td>
+											</tr>
+											<tr>
+												<td></td>
+				                <td><div class="form-group">
 
-											<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
-											<td width="15%"><b><?php echo date_format($enddate, "M d, Y") ?></b></td>
-											<td width="10%">
-												<div class="form-group">
-													<b>
-														<?php
-															if (($dDiff + 1) <= 1)
-																echo ($dDiff + 1) . " day";
-															else
-																echo ($dDiff + 1) . " days";
-														?>
-													</b>
-												</div>
-											</td>
-											<td width="5%"></td>
-										</tr>
-										<tr>
-											<td></td>
-			                <td><div class="form-group">
+													<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
-												<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
+													<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+													<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+												</div></td>
+												<td>
+													<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+														<?php foreach ($departments as $row): ?>
 
-												<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-												<input type="hidden" name="row[]" value="<?php echo $key; ?>">
-											</div></td>
-											<td>
-												<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
-													<?php foreach ($departments as $row): ?>
+															<option>
+																<?php echo $row['DEPARTMENTNAME']; ?>
+															</option>
 
-														<option>
-															<?php echo $row['DEPARTMENTNAME']; ?>
-														</option>
-
-													<?php endforeach; ?>
-				                </select>
-											</td>
-											<td><div class="form-group">
-				                <div class="input-group date">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-calendar"></i>
-				                  </div>
-				                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
-				                </div>
-				                <!-- /.input group -->
-				              </div></td>
+														<?php endforeach; ?>
+					                </select>
+												</td>
 												<td><div class="form-group">
 					                <div class="input-group date">
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
 					                </div>
-												</div></td>
-												<td>
-													<div class="form-group">
-														<input id = "projectPeriod0" type="text" class="form-control" value="" readonly>
-													</div>
-												</td>
-												<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
-												<td></td>
-										</tr>
+					                <!-- /.input group -->
+					              </div></td>
+													<td><div class="form-group">
+						                <div class="input-group date">
+						                  <div class="input-group-addon">
+						                    <i class="fa fa-calendar"></i>
+						                  </div>
+						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+						                </div>
+													</div></td>
+													<td>
+														<div class="form-group">
+															<input id = "projectPeriod0" type="text" class="form-control" value="" readonly>
+														</div>
+													</td>
+													<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
+													<td></td>
+											</tr>
 
-									</tbody>
-								</table>
-		            </div>
-								<?php endforeach; ?>
+										</tbody>
+									</table>
+			            </div>
+									<?php endforeach; ?>
+								<?php endif; ?>
 
 		            <!-- /.box-body -->
 								<div class="box-footer">

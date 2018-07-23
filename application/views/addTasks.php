@@ -36,19 +36,19 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
-					<div id="progressContainer">
-						<ul class="progressbar">
-		          <li>Project Details</li>
-		          <li class="active">Add Main Activities</li>
-		          <li>Add Sub Activities</li>
-		          <li>Add Tasks</li>
-							<li>Add Dependecies</li>
-		  			</ul>
+					<div class="container-fluid">
+					  <ul class="list-unstyled multi-steps">
+					    <li>Project Details</li>
+					    <li class="is-active">Add Main Activities</li>
+					    <li>Add Sub Activities</li>
+					    <li>Add Tasks</li>
+					    <li>Add Dependencies</li>
+					  </ul>
 					</div>
-					<br><br>
+					<br>
 					<div class="row">
 		        <div class="col-xs-12">
-		          <div class="box">
+		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">Enter main activities for this project</h3>
 		              <div class="box-tools">
@@ -67,7 +67,7 @@
 									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
 									<?php if (isset($_SESSION['templates'])): ?>
-									<input type="hidden" name="templates" value="0">
+									<input type="hidden" name="templates" value="<?php echo $templateProject['PROJECTID']; ?>">
 								<?php endif; ?>
 
 		            <div class="box-body table-responsive no-padding">
@@ -81,60 +81,146 @@
 											<th></th>
 		                </tr>
 
-		                <tr id="row0">
-		                  <td>
-												<div class="form-group">
-			                  	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-													<input type="hidden" name="row[]" value="0">
-			                	</div>
-											</td>
-											<td>
-				                <select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
+		                <?php if (isset($_SESSION['templates'])): ?>
 
-													<?php foreach ($departments as $row): ?>
+											<?php foreach ($templateMainActivity as $tMain): ?>
+												<tr id="row0">
+													<td>
+														<div class="form-group">
+															<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $tMain['TASKTITLE']; ?>" required>
+															<input type="hidden" name="row[]" value="0">
+														</div>
+													</td>
+													<td>
+														<select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
 
-														<option>
-															<?php echo $row['DEPARTMENTNAME']; ?>
-														</option>
+															<?php foreach ($departments as $row): ?>
+																<?php foreach ($templateRaci as $tRaci): ?>
+																	<?php if ($row['DEPARTMENTID'] == $tRaci['uDept']): ?>
+																		<option selected ="selected">
+																			<?php echo $row['DEPARTMENTNAME']; ?>
+																		</option>
+																	<?php else: ?>
+																		<option>
+																			<?php echo $row['DEPARTMENTNAME']; ?>
+																		</option>
+																<?php endif; ?>
+															<?php endforeach; ?>
+															<?php endforeach; ?>
+														</select>
+													</td>
+													<td>
+														<div class="form-group">
+															<div class="input-group date">
+																<div class="input-group-addon">
+																	<i class="fa fa-calendar"></i>
+																</div>
+																<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-0" data-mainAct="0" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" required>
+															</div>
+															<!-- /.input group -->
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+															<div class="input-group date">
+																<div class="input-group-addon">
+																	<i class="fa fa-calendar"></i>
+																</div>
+																<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-0" data-mainAct="0" required>
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
 
-													<?php endforeach; ?>
-				                </select>
-											</td>
-											<td>
-												<div class="form-group">
-					                <div class="input-group date">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-calendar"></i>
-					                  </div>
-					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-0" data-mainAct="0" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" required>
-					                </div>
-					                <!-- /.input group -->
-					              </div>
-											</td>
-											<td>
-												<div class="form-group">
-					                <div class="input-group date">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-calendar"></i>
-					                  </div>
-					                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-0" data-mainAct="0" required>
-					                </div>
-												</div>
-											</td>
-											<td>
-												<div class="form-group">
-			                  	<input id = "projectPeriod0" type="text" class="form-control" value="" readonly>
-			                	</div>
-											</td>
-											<td class='btn'>
-												<a id = "del0" class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
-											</td>
-										<!-- <td class="btn"><a class="btn delButton"></a></td> -->
-		                </tr>
+															<?php
+																$startdate = date_create($templateProject['PROJECTSTARTDATE']);
+																$enddate = date_create($templateProject['PROJECTACTUALENDDATE']);
+																$temp = date_diff($enddate, $startdate);
+																$dFormat = $temp->format('%d');
+																$diff = (int)$dFormat + 1;
 
-										<tr id="row1">
-											<!-- NEW LINE WILL BE INSERTED HERE  -->
-										</tr>
+																if ($diff >= 1)
+																{
+																	$period = $diff . " day";
+																}
+
+																else
+																{
+																	$period = $diff . " days";
+																}
+															?>
+
+															<input id = "projectPeriod0" type="text" class="form-control" value="<?php echo $period; ?>" readonly>
+														</div>
+													</td>
+													<td class='btn'>
+														<a id = "del0" class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
+													</td>
+												<!-- <td class="btn"><a class="btn delButton"></a></td> -->
+												</tr>
+
+												<tr id="row1">
+													<!-- NEW LINE WILL BE INSERTED HERE  -->
+												</tr>
+											<?php endforeach; ?>
+
+										<?php else: ?>
+											<tr id="row0">
+			                  <td>
+													<div class="form-group">
+				                  	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+														<input type="hidden" name="row[]" value="0">
+				                	</div>
+												</td>
+												<td>
+					                <select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
+
+														<?php foreach ($departments as $row): ?>
+
+															<option>
+																<?php echo $row['DEPARTMENTNAME']; ?>
+															</option>
+
+														<?php endforeach; ?>
+					                </select>
+												</td>
+												<td>
+													<div class="form-group">
+						                <div class="input-group date">
+						                  <div class="input-group-addon">
+						                    <i class="fa fa-calendar"></i>
+						                  </div>
+						                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-0" data-mainAct="0" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" required>
+						                </div>
+						                <!-- /.input group -->
+						              </div>
+												</td>
+												<td>
+													<div class="form-group">
+						                <div class="input-group date">
+						                  <div class="input-group-addon">
+						                    <i class="fa fa-calendar"></i>
+						                  </div>
+						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-0" data-mainAct="0" required>
+						                </div>
+													</div>
+												</td>
+												<td>
+													<div class="form-group">
+				                  	<input id = "projectPeriod0" type="text" class="form-control" value="" readonly>
+				                	</div>
+												</td>
+												<td class='btn'>
+													<a id = "del0" class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
+												</td>
+											<!-- <td class="btn"><a class="btn delButton"></a></td> -->
+			                </tr>
+
+											<tr id="row1">
+												<!-- NEW LINE WILL BE INSERTED HERE  -->
+											</tr>
+										<?php endif; ?>
 
 										<tfoot>
 											<tr align="center">
