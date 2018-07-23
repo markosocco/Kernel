@@ -17,6 +17,8 @@
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
 						<?php elseif(isset($_SESSION['changeRequest'])): ?>
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
+						<?php elseif(isset($_SESSION['templates'])): ?>
+								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Templates</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
@@ -619,12 +621,18 @@
 							</form>
 
 								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
-						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived'): ?>
+						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates'])): ?>
 
 							<form action = 'templateProject' method="POST">
 							</form>
 
 							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
+
+						<?php elseif (isset($_SESSION['templates'])): ?>
+							<form action = 'newProject' method="POST">
+							</form>
+
+							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i> Use Template</a>
 						<?php else: ?>
 								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
 						<?php endif; ?>
@@ -653,6 +661,13 @@
 				$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
 				$("form").submit();
 				});
+
+				$(document).on("click", "#useTemplate", function() {
+					var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+					$("form").attr("name", "formSubmit");
+					$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+					$("form").submit();
+					});
 
 			$("#myProjects").addClass("active");
 

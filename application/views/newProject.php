@@ -29,14 +29,25 @@
             <!-- /.box-header -->
             <!-- form start -->
 						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
+
+							<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
+
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
-									<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
+									<?php if (isset($_SESSION['templates'])): ?>
+										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" value ="<?php echo $project['PROJECTTITLE']; ?>" required>
+									<?php else: ?>
+										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
+									<?php endif; ?>
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-									<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
+									<?php if (isset($_SESSION['templates'])): ?>
+										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required><?php echo $project['PROJECTDESCRIPTION']; ?></textarea>
+									<?php else: ?>
+										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
+									<?php endif; ?>
                 </div>
 
 								<div class="row">
@@ -67,7 +78,29 @@
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="projectperiod">Project Period</label>
-											<input type="text" class="form-control" id="projectPeriod" value="" readonly>
+
+											<?php if (isset($_SESSION['templates'])): ?>
+												<?php
+													$startdate = date_create($project['PROJECTSTARTDATE']);
+													$enddate = date_create($project['PROJECTACTUALENDDATE']);
+													$temp = date_diff($enddate, $startdate);
+													$dFormat = $temp->format('%d');
+													$diff = (int)$dFormat + 1;
+
+													if ($diff >= 1)
+													{
+														$period = $diff . " day";
+													}
+
+													else
+													{
+														$period = $diff . " days";
+													}
+												?>
+												<input type="text" class="form-control" id="projectPeriod" value="<?php echo $period; ?>" readonly>
+											<?php else: ?>
+												<input type="text" class="form-control" id="projectPeriod" value="" readonly>
+											<?php endif; ?>
 										</div>
 									</div>
 								</div>
@@ -83,7 +116,6 @@
 		    <!-- /.content -->
 		  </div>
 			<?php include_once("footer.php"); ?>
-
 
 		</div>
 		<!-- ./wrapper -->
