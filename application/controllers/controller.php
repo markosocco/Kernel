@@ -698,8 +698,6 @@ class controller extends CI_Controller
 					else
 						$endDate = $currTask['TASKADJUSTEDENDDATE'];
 
-					// echo "<br><br>End Date to Compare (Task# " . $postReqsToAdjust[$i] . "): " . $endDate;
-					// echo "<br>Checking: " . $postReqsToAdjust[$i];
 					$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
 					if(COUNT($postReqs) > 0) // if there are post reqs found
 					{
@@ -710,8 +708,6 @@ class controller extends CI_Controller
 							else
 								$startDate = $postReq['TASKADJUSTEDSTARTDATE'];
 
-							// echo "<br>Start: " . $startDate . " && " . " End: " . $endDate;
-
 							if($endDate >= $startDate) //check if currTasks's end date will exceed the postreq's start date
 							{
 								if($postReq['TASKADJUSTEDSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
@@ -721,7 +717,6 @@ class controller extends CI_Controller
 								else
 									$taskDuration = $postReq['initialTaskDuration'];
 
-								// echo "<br>Task# " . $postReq['TASKID'] . "'s Duration: " . $taskDuration;
 								$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
 								$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
 
@@ -730,18 +725,11 @@ class controller extends CI_Controller
 									'TASKADJUSTEDENDDATE' => $new_end
 								);
 								$this->model->updateTaskDates($postReq['TASKID'], $postTaskData); //save adjusted dates
-								// echo "<br>Change Task# " . $postReq['TASKID'] . "'s Start Date to: " . $new_start;
-								// echo "<br>Change Task# " . $postReq['TASKID'] . "'s End Date to: " . $new_end;
 							}
-
 							array_push($postReqsToAdjust, $postReq['TASKID']); // save task to array for checking
-							// echo "<br>++Adding: " . $postReq['TASKID'];
 						}
 					}
-					// echo "<br>--Deleting: " . $postReqsToAdjust[$i];
 					unset($postReqsToAdjust[$i]); // remove current task from array
-					// echo "<br>" . COUNT($postReqsToAdjust) . " to check<br>";
-					// print_r($postReqsToAdjust);
 					$i++; // increase counter
 				}
 			}
