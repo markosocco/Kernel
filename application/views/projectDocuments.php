@@ -70,7 +70,7 @@
 			                  <th width="10">Department</th>
 												<th width="10">Uploaded On</th>
 			                  <th width="25%">Remarks</th>
-												<th width="10%"><i class='fa fa-download'></i></th>
+												<th width="10%" class="text-center"><i class='fa fa-download'></i></th>
 												<!-- <th width="10%"><i class='fa fa-eye'></i></th> -->
 			                </tr>
 										</thead>

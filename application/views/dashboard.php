@@ -400,7 +400,7 @@
 																} else {
 																	echo "<td align='center'>
 																	<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-id ='" . $row['DOCUMENTID'] . "'>
-																	<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
+																	<i class='fa fa-eye'></i> Acknowledge</button></td>";
 																}
 
 															echo "</tr>";

@@ -27,9 +27,10 @@
 
 		      </h1>
 		      <ol class="breadcrumb">
-		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-		        <li class="active">New Project</li>
-						<li class="active"><?php echo $project['PROJECTTITLE'] . " Tasks" ?></li>
+		        <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
+		        <li>New Project</li>
+						<!-- <li class="active"><?php echo $project['PROJECTTITLE'] . " Tasks" ?></li> -->
+						<li class="active">Main Activity</li>
 		      </ol>
 		    </section>
 
@@ -62,6 +63,8 @@
 		            </div>
 		            <!-- /.box-header -->
 								<form id='addTasks' name = 'addTasks' action = 'addTasksToProject' method="POST">
+
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
 									<?php if (isset($_SESSION['templates'])): ?>
 									<input type="hidden" name="templates" value="0">
