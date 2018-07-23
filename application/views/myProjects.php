@@ -28,7 +28,6 @@
 
         <ol class="breadcrumb">
           <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-          <!-- <li class="active">Here</li> -->
         </ol>
       </section>
 

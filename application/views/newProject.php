@@ -14,14 +14,14 @@
 		        <small>Let's create a new project</small>
 		      </h1>
 		      <ol class="breadcrumb">
-		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
+		        <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 		        <li class="active">New Project</li>
 		      </ol>
 		    </section>
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
-					
+
 
 					<div class="box box-primary">
             <div class="box-header with-border">
@@ -30,9 +30,9 @@
             <!-- /.box-header -->
             <!-- form start -->
 						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
-
-							<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
-
+							<?php if (isset($_SESSION['templates'])): ?>
+								<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
+							<?php endif;?>
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>

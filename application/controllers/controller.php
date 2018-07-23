@@ -139,6 +139,33 @@ class controller extends CI_Controller
 
 		else
 		{
+			if ($_SESSION['departments_DEPARTMENTID'] == '1') //ONLY EXECUTIVES CAN VIEW ALL PROJECTS
+			{
+				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
+				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
+				$data['parkedProjects'] = $this->model->getAllParkedProjects();
+				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
+				$data['completedProjects'] = $this->model->getAllCompletedProjects();
+			}
+			else
+			{
+				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
+				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
+				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
+				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
+				$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
+			}
+
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
+
+			$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+
 			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
 			$data['toAcknowledgeDocuments'] = $this->model->getAllDocumentAcknowledgementByUser($_SESSION['USERID']);
@@ -754,7 +781,7 @@ class controller extends CI_Controller
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
 		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-		$data['dependencies'] = $this->model->getDependencies();
+		$data['dependencies'] = $this->model->getDependenciesByProject($id);
 		$data['users'] = $this->model->getAllUsers();
 		$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
 		$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
@@ -1167,6 +1194,14 @@ class controller extends CI_Controller
 			$rfc =$this->input->post("rfc");
 			$mytasks =$this->input->post("mytasks");
 			$templates =$this->input->post("templates");
+			$dashboard =$this->input->post("dashboard");
+
+			// DASHBOARD
+			if (isset($dashboard))
+			{
+				$dashboard =$this->input->post("dashboard");
+				$this->session->set_flashdata('dashboard', $dashboard);
+			}
 
 			// ARCHIVES
 			if (isset($archives))
@@ -1220,7 +1255,7 @@ class controller extends CI_Controller
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
-			$data['dependencies'] = $this->model->getDependencies();
+			$data['dependencies'] = $this->model->getDependenciesByProject($id);
 			$data['users'] = $this->model->getAllUsers();
 			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
 			$data['accountable'] = $this->model->getAllAccountableByProject($id);
@@ -1228,18 +1263,7 @@ class controller extends CI_Controller
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 			// $data['subActivityProgress'] = $this->model->getSubActivityProgress($id);
 
-			// if(	$data['subActivityProgress'] == NULL){
-			// 	echo "empty";
-			// }
-
 			// $this->output->enable_profile(TRUE);
-
-
-			// foreach ($data['subActivityProgress'] as $key => $value) {
-			// 	echo "progress - " . $value['SAProgress'];
-			// 	echo "parent - " . $value['tasks_TASKPARENT'];
-			// 	// code...
-			// }
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
@@ -1927,8 +1951,20 @@ class controller extends CI_Controller
 	public function gantt2(){
 
 		$filter = "tasks.TASKSTARTDATE"; // default
-		$data['ganttData'] = $this->model->getAllProjectTasks(1, $filter);
-		$data['dependencies'] = $this->model->getDependencies();
+		$id = 1;
+
+		// $data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
+		// $data['dependencies'] = $this->model->getDependencies();
+
+		$data['projectProfile'] = $this->model->getProjectByID($id);
+		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+		$data['dependencies'] = $this->model->getDependenciesByProject($id);
+		$data['users'] = $this->model->getAllUsers();
+		$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+		$data['accountable'] = $this->model->getAllAccountableByProject($id);
+		$data['consulted'] = $this->model->getAllConsultedByProject($id);
+		$data['informed'] = $this->model->getAllInformedByProject($id);
+		// $data['subActivityProgress'] = $this->model->getSubActivityProgress($id);
 
 		$this->load->view("gantt2", $data);
 	}
