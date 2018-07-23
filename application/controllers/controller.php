@@ -155,7 +155,6 @@ class controller extends CI_Controller
 			else // if admin/executive is logged in
 				$filter = "REQUESTID = '0'";
 
-
 			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
 
 			$this->load->view("dashboard", $data);
