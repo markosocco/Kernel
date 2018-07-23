@@ -64,6 +64,8 @@
 		            <!-- /.box-header -->
 								<form id='addTasks' name = 'addTasks' action = 'addTasksToProject' method="POST">
 
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+
 									<?php if (isset($_SESSION['templates'])): ?>
 									<input type="hidden" name="templates" value="0">
 								<?php endif; ?>
