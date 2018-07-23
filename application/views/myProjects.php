@@ -12,19 +12,15 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <div id="myProjectsHeader">
-          <h1>
-            My Projects
-            <small>What are my projects?</small>
-          </h1>
-        </div>
+        <h1 id="myProjectsHeader">
+          My Projects
+          <small>What are my projects?</small>
+        </h1>
 
-        <div id="myTeamHeader">
-          <h1>
-            My Team Projects
-            <small>What is my team working on?</small>
-          </h1>
-        </div>
+        <h1 id="myTeamHeader">
+          My Team Projects
+          <small>What is my team working on?</small>
+        </h1>
 
         <ol class="breadcrumb">
           <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
@@ -44,7 +40,7 @@
         </div>
 
         <div id="divShowMyTeam" class="pull-right">
-          <a href="#" id = "showMyTeam" class="btn btn-default btn"><i class="fa fa-briefcase"></i></a>
+          <a href="#" id = "showMyTeam" class="btn btn-default btn"><i class="fa fa-users"></i></a>
         </div>
 
         <!-- TOGGLE MY TEAM -->
@@ -54,12 +50,12 @@
         </div>
 
         <div id="divShowMyProjects" class="pull-right">
-          <a href="#" id = "showMyProjects" class="btn btn-default btn"><i class="fa fa-users"></i></a>
+          <a href="#" id = "showMyProjects" class="btn btn-default btn"><i class="fa fa-briefcase"></i></a>
         </div>
 
         <div class="btn-group"> <!-- SORT/LEGEND -->
           <button type="button" class="btn btn-default">All</button>
-          <button type="button" class="btn bg-silver">Draft</button>
+          <button type="button" class="btn bg-maroon">Draft</button>
           <button type="button" class="btn btn-info">Parked</button>
           <button type="button" class="btn btn-warning">Planned</button>
           <button type="button" class="btn btn-success">Ongoing</button>
@@ -92,15 +88,11 @@
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <a class = "project" data-id = "">
-            <div class="small-box bg-orange">
+            <div class="small-box bg-purple">
               <div class="inner">
-
                 <h2>Project Title</h2>
 
-                <form action = 'projectGantt'  method="POST">
-                </form>
-
-                <p>Completed<br>March 21, 1996</p>
+                <p>Completed on<b></b><br><i>March 21, 1996</i></p>
               </div>
               <div class="icon" style="margin-top:25px;">
                 <i class="ion ion-browsers"></i>
@@ -112,18 +104,30 @@
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <a class = "project" data-id = "">
-            <div class="small-box bg-black">
+            <div class="small-box bg-purple">
               <div class="inner">
+                <h2>Project Title</h2>
 
-                <h2>Project Title Here</h2>
-
-                <form action = 'projectGantt'  method="POST">
-                </form>
-
-                <p></p>
+                <p>Completed on<b></b><br><i>March 21, 1996</i></p>
               </div>
               <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-plus"></i>
+                <i class="ion ion-browsers"></i>
+              </div>
+            </div>
+            </a>
+          </div>
+
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <a class = "project" data-id = "">
+            <div class="small-box bg-purple">
+              <div class="inner">
+                <h2>Project Title</h2>
+
+                <p>Completed on<b></b><br><i>March 21, 1996</i></p>
+              </div>
+              <div class="icon" style="margin-top:25px;">
+                <i class="ion ion-browsers"></i>
               </div>
             </div>
             </a>
@@ -287,22 +291,22 @@
                 <div class="col-lg-3 col-xs-6">
                   <!-- small box -->
                   <a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
-                    <div class="small-box bg-green">
-                    <div class="inner">
-                      <h2><?php echo $row['PROJECTTITLE']; ?></h2>
+                    <div id="draftBox" class="small-box bg-maroon">
+                      <div class="inner">
+                        <h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-                      <form class="gantt" action = 'projectGantt'  method="POST">
-                      </form>
+                        <form class="gantt" action = 'projectGantt'  method="POST">
+                        </form>
 
-                      <?php //Compute for days remaining
-                      $startdate = date_create($row['PROJECTSTARTDATE']);
-                      ?>
-                      <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Draft</i></p>
+                        <?php //Compute for days remaining
+                        $startdate = date_create($row['PROJECTSTARTDATE']);
+                        ?>
+                        <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Draft</i></p>
+                      </div>
+                      <div class="icon" style="margin-top:25px;">
+                        <i class="ion ion-clock"></i>
+                      </div>
                     </div>
-                    <div class="icon" style="margin-top:25px;">
-                      <i class="ion ion-clock"></i>
-                    </div>
-                  </div>
                   </a>
                 </div>
                 <!-- ./col -->
@@ -448,7 +452,7 @@
                         <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <td class="bg-aqua"></td>
+                        <td class="btn-info"></td>
                         <td><?php echo $value['PROJECTTITLE']; ?></td>
                         <td><?php echo date_format($parkedStart, "M d, Y");?></td>
                         <td><?php echo date_format($parkedEnd, "M d, Y");?></td>
@@ -477,7 +481,7 @@
                         <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <td class="bg-silver"></td>
+                        <td class="bg-maroon"></td>
                         <td><?php echo $value['PROJECTTITLE']; ?></td>
                         <td><?php echo date_format($draftedStart, "M d, Y");?></td>
                         <td><?php echo date_format($draftedEnd, "M d, Y");?></td>
@@ -623,7 +627,7 @@
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
 									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
-									<div class="small-box btn-default">
+									<div class="small-box btn-info">
 										<div class="inner">
 
 											<h2>
@@ -655,7 +659,7 @@
 								<div class="col-lg-3 col-xs-6">
 									<!-- small box -->
 									<a class = "myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
-									<div class="small-box btn.bg-white">
+									<div id="draftBox" class="small-box bg-maroon">
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
@@ -816,7 +820,7 @@
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
 
-                        <td class="bg-blue"></td>
+                        <td class="btn-info"></td>
                         <td><?php echo $value['PROJECTTITLE']; ?></td>
                         <td><?php echo date_format($parkedStart, "M d, Y");?></td>
                         <td><?php echo date_format($parkedEnd, "M d, Y");?></td>
@@ -845,7 +849,7 @@
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
 
-                        <td class="bg-blue"></td>
+                        <td class="bg-maroon"></td>
                         <td><?php echo $value['PROJECTTITLE']; ?></td>
                         <td><?php echo date_format($draftedStart, "M d, Y");?></td>
                         <td><?php echo date_format($draftedEnd, "M d, Y");?></td>

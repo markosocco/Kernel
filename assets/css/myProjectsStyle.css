@@ -2,3 +2,8 @@
 {
   cursor: pointer;
 }
+
+#draftBox:hover
+{
+  color:black;
+}

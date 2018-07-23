@@ -15,12 +15,12 @@
 			</section>
 
 			<section class="content container-fluid">
-				<div>
+				<!-- <div>
 					<button id="success" type="button" class="btn btn-success">Test Success</button>
 					<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
 					<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
 					<button id="info" type="button" class="btn btn-info">Test Info</button>
-				</div>
+				</div> -->
 				<br>
 
 				<div class="row">
@@ -85,7 +85,7 @@
 				<div class="row">
 					<!-- Left col -->
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Projects I'm Working On</h3>
 							</div>
@@ -145,7 +145,7 @@
 
 					<!-- Right col -->
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Projects I Need To Edit</h3>
 							</div>
@@ -192,7 +192,7 @@
 					<!-- Left col -->
 					<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Deadlines</h3>
 							</div>
@@ -250,7 +250,7 @@
 					<?php endif;?>
 
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Project Weekly Progress</h3>
 							</div>
@@ -293,7 +293,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-info">
+							<div class="box box-danger">
 								<div class="box-header with-border">
 									<h3 class="box-title">Change Request Approval</h3>
 								</div>
@@ -304,7 +304,7 @@
 											<thead>
 											<tr>
 												<th>Date Requested</th>
-												<th>Request Type</th>
+												<th class="text-center">Request Type</th>
 												<th>Requester</th>
 												<th>Project</th>
 												<th>Task</th>
@@ -327,7 +327,7 @@
 
 														<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
 														<!-- <td><?php echo $type;?></td> -->
-														<td>
+														<td align="center">
 															<?php if($changeRequest['REQUESTTYPE'] == 1):?>
 																<i class="fa fa-user-times"></i>
 															<?php else:?>
@@ -364,7 +364,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-info">
+							<div class="box box-danger">
 								<div class="box-header with-border">
 									<h3 class="box-title">Document Acknowledgement</h3>
 								</div>
