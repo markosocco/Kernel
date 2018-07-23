@@ -20,8 +20,8 @@
 					<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
 					<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
 					<button id="info" type="button" class="btn btn-info">Test Info</button>
-				</div> -->
-				<br>
+				</div>
+				<br> -->
 
 				<div class="row">
 	        <div class="col-md-3 col-sm-6 col-xs-12">
@@ -98,12 +98,12 @@
 											<th>Name</th>
 											<th class="text-center">Target End Date</th>
 											<th class="text-center">Progress</th>
-											<th class="text-center">Days Left</th>
+											<th class="text-center">Until Launch</th>
 										</tr>
 										</thead>
 										<tbody>
 											<?php foreach($ongoingProjects as $key => $ongoingProject): ?>
-												<tr class = "projects" data-id="<?php echo $ongoingProject['PROJECTID'];?>">
+												<tr class = "projects clickable" data-id="<?php echo $ongoingProject['PROJECTID'];?>">
 
 													<form class='projectForm' action = 'projectGantt' method="POST">
 														<input type ='hidden' name='dashboard' value='0'>
@@ -129,7 +129,7 @@
 
 
 
-													<td align="center"><?php echo $ongoingProject['datediff'];?></td>
+													<td align="center"><?php echo $ongoingProject['datediff'];?> day/s</td>
 												</tr>
 											<?php endforeach;?>
 										</tbody>
@@ -161,7 +161,7 @@
 										</tr>
 										</thead>
 										<tbody>
-										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
 											<td align="center">3 days</td>
@@ -215,8 +215,8 @@
 												else
 													$endDate = date_create($row['TASKADJUSTEDENDDATE']);
 
-												echo "<tr style='color:red'>";
-													echo "<td class='projectLink'>" . $row['PROJECTTITLE'] . "</td>";
+												echo "<tr class='clickable' style='color:red'>";
+													echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $row['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
 													echo "<td> DELAYED </td>";
@@ -252,7 +252,7 @@
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Project Weekly Progress</h3>
+								<h3 class="box-title">Weekly Project Progress</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -267,7 +267,7 @@
 										</tr>
 										</thead>
 										<tbody>
-										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
 											<td align="center">80.79%</td>
@@ -318,7 +318,7 @@
 													// else
 													// 	$type = "Change Date/s";
 												?>
-													<tr class="request" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
+													<tr class="request clickable" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
 
 														<form class='changeRequestApproval' action = 'projectGantt' method="POST">
 															<input type ='hidden' name='dashboard' value='0'>
@@ -384,7 +384,7 @@
 												<?php
 													foreach($toAcknowledgeDocuments as $row){
 														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
-															echo "<tr>";
+															echo "<tr class='clickable'>";
 															echo"
 															<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
 																<input type='hidden' name='project_ID' value='" . $row['projects_PROJECTID'] . "'>
