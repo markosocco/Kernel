@@ -103,7 +103,7 @@
 																		echo "<td align='center'>Acknowledged</td>";
 																	} else {
 																		echo "<td align='center'>
-																		<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-id ='" . $row['DOCUMENTID'] . "'>
+																		<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'>
 																		<i class='fa fa-eye'></i> Acknowledge</button></td>";
 																	}
 																}
@@ -206,6 +206,17 @@
 		          <!-- /.modal-dialog -->
 		        </div>
 		        <!-- /.modal -->
+
+						<!-- CONFIRM ACKNOWLEDGEMENT -->
+						<div id="confirmAcknowledge">
+							<div class="modal-body">
+								<h4>Are you sure you want to acknowledge this document?</h4>
+							</div>
+							<div class="modal-footer">
+								<button id="backConfirm" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
+								<button id = "confirmAcknowledgeBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+							</div>
+						</div>
 				</section>
 					</div>
 			<?php require("footer.php"); ?>
