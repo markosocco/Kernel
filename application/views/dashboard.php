@@ -292,7 +292,7 @@
 												?>
 													<tr class="request" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
 
-														<form action = 'projectGantt' method="POST">
+														<form class='changeRequestApproval' action = 'projectGantt' method="POST">
 															<input type ='hidden' name='rfc' value='0'>
 														</form>
 
@@ -322,7 +322,7 @@
 				<?php endif;?>
 
 
-				<?php if($toAcknowledgeDocuments != null):?>
+				<?php if($toAcknowledgeDocuments != NULL):?>
 					<!-- MARKO - Docu-->
 					<!-- Main row -->
 					<div class="row">
@@ -347,14 +347,29 @@
 											<tbody>
 												<?php
 													foreach($toAcknowledgeDocuments as $row){
-														echo "<tr>";
-															echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
-															echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
-															echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
-															echo "<td align='center'>
-															<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton'>
-															<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
-														echo "</tr>";
+														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
+															echo "<tr>";
+															echo"
+															<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
+																<input type='hidden' name='project_ID' value='" . $row['projects_PROJECTID'] . "'>
+																<input type='hidden' name='documentID' value='" . $row['DOCUMENTID'] . "'>
+															</form>";
+																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+																echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+																echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+
+
+																if($row['ACKNOWLEDGEDDATE'] != ''){
+																	echo "<td align='center'>Acknowledged</td>";
+																} else {
+																	echo "<td align='center'>
+																	<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-id ='" . $row['DOCUMENTID'] . "'>
+																	<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
+																}
+
+															echo "</tr>";
+
+														}
 													}
 												?>
 											</tbody>
@@ -389,11 +404,18 @@
 		$(document).on("click", ".request", function() {
 			var $project = $(this).attr('data-project');
 			var $request = $(this).attr('data-request');
-			$("form").attr("name", "formSubmit");
-			$("form").append("<input type='hidden' name='project_ID' value= " + $project + ">");
-			$("form").append("<input type='hidden' name='request_ID' value= " + $request + ">");
-			$("form").submit();
+			$(".changeRequestApproval").attr("name", "formSubmit");
+			$(".changeRequestApproval").append("<input type='hidden' name='project_ID' value= " + $project + ">");
+			$(".changeRequestApproval").append("<input type='hidden' name='request_ID' value= " + $request + ">");
+			$(".changeRequestApproval").submit();
 			});
+
+		$(document).on("click", ".document", function() {
+			var $id = $(this).attr('data-id');
+			$(".acknowledgeDocument").attr("name", "formSubmit");
+			$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
+			$(".acknowledgeDocument").submit();
+		});
 
 		$(document).ready(function()
 		{
