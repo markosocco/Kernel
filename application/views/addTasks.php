@@ -48,7 +48,7 @@
 					<br><br>
 					<div class="row">
 		        <div class="col-xs-12">
-		          <div class="box">
+		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">Enter main activities for this project</h3>
 		              <div class="box-tools">
