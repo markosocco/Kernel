@@ -102,7 +102,7 @@
 										</tr>
 										</thead>
 										<tbody>
-											<?php foreach($ongoingProjects as $ongoingProject): ?>
+											<?php foreach($ongoingProjects as $key => $ongoingProject): ?>
 												<tr class = "projects" data-id="<?php echo $ongoingProject['PROJECTID'];?>">
 
 													<form class='projectForm' action = 'projectGantt' method="POST">
@@ -117,7 +117,18 @@
 														$endDate = date_create($ongoingProject['PROJECTADJUSTEDENDDATE']);
 													?>
 													<td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
-													<td align="center">80.79%</td>  <!-- PUT PROGRESS PLS, @NAMI -->
+													<td align="center">
+														<?php
+		                          foreach ($ongoingProjectProgress as $row)
+		                          {
+		                            if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
+		                            {
+		                              echo $row['projectProgress'];
+		                            }
+		                          } ?>%</td>
+
+
+
 													<td align="center"><?php echo $ongoingProject['datediff'];?></td>
 												</tr>
 											<?php endforeach;?>
