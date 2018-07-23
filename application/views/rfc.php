@@ -62,7 +62,14 @@
 											</form>
 
 											<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
-											<td><?php echo $type;?></td>
+											<td>
+												<?php if($changeRequest['REQUESTTYPE'] == 1):?>
+													<i class="fa fa-user-times"></i>
+												<?php else:?>
+													<i class="fa fa-calendar"></i>
+												<?php endif;?>
+												<!-- <?php echo $type;?> -->
+											</td>
 											<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
 											<td><?php echo $changeRequest['TASKTITLE'];?></td>
 											<td><?php echo date_format($startDate, "M d, Y"); ?></td>

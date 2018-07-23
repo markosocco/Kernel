@@ -11,14 +11,16 @@
 				<section class="content-header">
 					<div style="margin-bottom:10px">
 
-						<?php if(isset($_SESSION['archives'])): ?>
+						<?php if(isset($_SESSION['dashboard'])): ?>
+								<a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Dashboard</a>
+						<?php elseif(isset($_SESSION['archives'])): ?>
 								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Archives</a>
 						<?php elseif(isset($_SESSION['rfc'])): ?>
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
 						<?php elseif(isset($_SESSION['changeRequest'])): ?>
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
-						<?php elseif(isset($_SESSION['mytasks'])): ?>
-								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Tasks</a>
+						<?php elseif(isset($_SESSION['templates'])): ?>
+								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Templates</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
@@ -62,7 +64,14 @@
 														</td>
 														<td>
 															<label>Request Type</label>
-															<p><?php echo $type;?></p>
+															<p>
+																<?php if($changeRequest['REQUESTTYPE'] == 1):?>
+																	<i class="fa fa-user-times"></i>
+																<?php else:?>
+																	<i class="fa fa-calendar"></i>
+																<?php endif;?>
+																<?php echo $type;?>
+															</p>
 														</td>
 														<td colspan='2'>
 															<label>Requester</label>
