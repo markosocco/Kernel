@@ -45,12 +45,21 @@
 											data-project="<?php echo $changeRequest['PROJECTID'];?>"
 											data-task="<?php echo $changeRequest['TASKID'];?>"
 											data-type="<?php echo $changeRequest['REQUESTTYPE'];?>">
-												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
+											<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
+
+											if($changeRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
 												$startDate = date_create($changeRequest['TASKSTARTDATE']);
+											else
+												$startDate = date_create($changeRequest['TASKADJUSTEDSTARTDATE']);
+
+											if($changeRequest['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 												$endDate = date_create($changeRequest['TASKENDDATE']);
-												$newStartDate = date_create($changeRequest['NEWSTARTDATE']);
-												$newEndDate = date_create($changeRequest['NEWENDDATE']);
-												?>
+											else
+												$endDate = date_create($changeRequest['TASKADJUSTEDENDDATE']);
+
+											$newStartDate = date_create($changeRequest['NEWSTARTDATE']);
+											$newEndDate = date_create($changeRequest['NEWENDDATE']);
+											?>
 												<?php if($changeRequest['REQUESTTYPE'] == 1)
 													$type = "Change Performer";
 												else
@@ -161,8 +170,16 @@
 							<div class="modal-header">
 								<h2 class="modal-title taskTitle"><?php echo $changeRequest['TASKTITLE'];?></h2>
 								<h4 class="taskDates"><?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>
-									(<?php echo $changeRequest['initialTaskDuration'];?>
-									<?php if($changeRequest['initialTaskDuration'] > 1):?>
+									(<?php
+										if($changeRequest['TASKADJUSTEDSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+											$taskDuration = $changeRequest['adjustedTaskDuration2'];
+										elseif($changeRequest['TASKSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+											$taskDuration = $changeRequest['adjustedTaskDuration1'];
+										else
+											$taskDuration = $changeRequest['initialTaskDuration'];
+
+									echo $taskDuration;?>
+									<?php if($taskDuration > 1):?>
 										 Days)
 									<?php else:?>
 										Day)
@@ -189,8 +206,16 @@
 								<div class="modal-header">
 									<h2 class="modal-title taskTitle"><?php echo $changeRequest['TASKTITLE'];?></h2>
 									<h4 class="taskDates"><?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>
-										(<?php echo $changeRequest['initialTaskDuration'];?>
-										<?php if($changeRequest['initialTaskDuration'] > 1):?>
+										(<?php
+											if($changeRequest['TASKADJUSTEDSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $changeRequest['adjustedTaskDuration2'];
+											elseif($changeRequest['TASKSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $changeRequest['adjustedTaskDuration1'];
+											else
+												$taskDuration = $changeRequest['initialTaskDuration'];
+
+										echo $taskDuration;?>
+										<?php if($taskDuration > 1):?>
 											 Days)
 										<?php else:?>
 											Day)
@@ -590,22 +615,50 @@
 						$current = date_create(date("Y-m-d")); // get current date
 						?>
 
-						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'];?> day/s)</h4>
+						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?>
+							(<?php echo $projectProfile['duration'];?>
+							<?php if($projectProfile['duration'] > 1):?>
+								days)
+							<?php else:?>
+								day)
+							<?php endif;?>
+						</h4>
 
-						<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived'):?>
+						<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived' || $projectProfile['PROJECTSTATUS'] == 'Complete'):?>
 							<?php $actualEnd = date_create($projectProfile['PROJECTACTUALENDDATE']);?>
 
-							<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?> (<?php echo $projectProfile['actualDuration'];?> day/s)</h4>
-
+							<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?>
+								(<?php echo $projectProfile['actualDuration'];?>
+								<?php if($projectProfile['actualDuration'] > 1):?>
+									days)
+								<?php else:?>
+									day)
+								<?php endif;?>
+							</h4>
 						<?php else:?>
 
 							<h4 style="color:red">
-								<?php if ($current >= $startdate && $current <= $enddate):?>
-									<?php echo $projectProfile['remaining'];?> Day/s Remaining
-								<?php elseif ($current < $startdate):?>
-									Launch in <?php echo $projectProfile['launching'];?> Day/s
-								<?php elseif ($current >= $startdate && $current >= $enddate):?>
-									<?php echo $projectProfile['delayed'];?> Day/s Delayed
+								<?php if ($current >= $startdate && $current <= $enddate && $projectProfile['PROJECTSTATUS'] == 'Ongoing'):?>
+									<?php echo $projectProfile['remaining'];?>
+									<?php if($projectProfile['remaining'] > 1):?>
+										days remaining
+									<?php else:?>
+										day remaining
+									<?php endif;?>
+								<?php elseif ($current < $startdate && $projectProfile['PROJECTSTATUS'] == 'Planning'):?>
+									Launch in <?php echo $projectProfile['launching'];?>
+									<?php if($projectProfile['launching'] > 1):?>
+										days
+									<?php else:?>
+										day
+									<?php endif;?>
+								<?php elseif ($current >= $startdate && $current >= $enddate && $projectProfile['PROJECTSTATUS'] == 'Ongoing'):?>
+									<?php echo $projectProfile['delayed'];?>
+									<?php if($projectProfile['delayed'] > 1):?>
+										days delayed
+									<?php else:?>
+										day delayed
+									<?php endif;?>
 								<?php endif;?>
 							</h4>
 
