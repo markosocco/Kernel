@@ -947,7 +947,7 @@ class controller extends CI_Controller
 			$id = $this->input->post("project_ID");
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasks($id);
-			$data['dependencies'] = $this->model->getDependencies();
+			$data['dependencies'] = $this->model->getDependenciesByProject($id);
 			$data['users'] = $this->model->getAllUsers();
 
 			$departmentID = $_SESSION['departments_DEPARTMENTID'];
@@ -1277,13 +1277,11 @@ class controller extends CI_Controller
 			$data['accountable'] = $this->model->getAllAccountableByProject($id);
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
-			// $data['subActivityProgress'] = $this->model->getSubActivityProgress($id);
 
 			// $this->output->enable_profile(TRUE);
 
-			// $this->load->view("projectGantt", $data);
-			$this->load->view("gantt2", $data);
-
+			$this->load->view("projectGantt", $data);
+			// $this->load->view("gantt2", $data);
 		}
 	}
 
@@ -1355,7 +1353,7 @@ class controller extends CI_Controller
 
 		$data['projectProfile'] = $this->model->getProjectByID($id);
 		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
-		$data['dependencies'] = $this->model->getDependencies();
+		$data['dependencies'] = $this->model->getDependenciesByProject($id);
 		$data['users'] = $this->model->getAllUsers();
 		$data['responsible'] = $this->model->getAllResponsibleByProject($id);
 		$data['accountable'] = $this->model->getAllAccountableByProject($id);
