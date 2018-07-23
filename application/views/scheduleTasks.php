@@ -32,6 +32,16 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<div class="container-fluid">
+					  <ul class="list-unstyled multi-steps">
+					    <li>Project Details</li>
+					    <li>Add Main Activities</li>
+					    <li>Add Sub Activities</li>
+					    <li class="is-active">Add Tasks</li>
+					    <li>Add Dependencies</li>
+					  </ul>
+					</div>
+					<br>
 					<div class="row">
 		        <div class="col-xs-12">
 		          <div class="box box-danger">
@@ -193,6 +203,7 @@
 															<td style="padding-bottom:15px;">
 																<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																	<?php foreach ($departments as $row): ?>
+																		<option></option>
 
 																		<option>
 																			<?php echo $row['DEPARTMENTNAME']; ?>

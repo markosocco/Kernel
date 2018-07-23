@@ -36,16 +36,16 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
-					<div id="progressContainer">
-						<ul class="progressbar">
-		          <li>Project Details</li>
-		          <li class="active">Add Main Activities</li>
-		          <li>Add Sub Activities</li>
-		          <li>Add Tasks</li>
-							<li>Add Dependecies</li>
-		  			</ul>
+					<div class="container-fluid">
+					  <ul class="list-unstyled multi-steps">
+					    <li>Project Details</li>
+					    <li class="is-active">Add Main Activities</li>
+					    <li>Add Sub Activities</li>
+					    <li>Add Tasks</li>
+					    <li>Add Dependencies</li>
+					  </ul>
 					</div>
-					<br><br>
+					<br>
 					<div class="row">
 		        <div class="col-xs-12">
 		          <div class="box box-danger">

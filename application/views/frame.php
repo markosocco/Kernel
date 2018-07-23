@@ -282,7 +282,6 @@ desired effect
 <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-treemap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-table.min.js" type="text/javascript"></script>
 
-
 <!-- Bootstrap 4.1.1 -->
 <!-- <script src="<?php echo base_url()."assets/"; ?>bower_components/bootstrap-4.1.1/dist/js/bootstrap.min.js"></script> -->
 

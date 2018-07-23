@@ -35,6 +35,16 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<div class="container-fluid">
+					  <ul class="list-unstyled multi-steps">
+					    <li>Project Details</li>
+					    <li>Add Main Activities</li>
+					    <li>Add Sub Activities</li>
+					    <li>Add Tasks</li>
+					    <li class="is-active">Add Dependencies</li>
+					  </ul>
+					</div>
+					<br>
 					<div class="row">
 		        <div class="col-xs-12">
 		          <div class="box box-danger">
