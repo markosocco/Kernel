@@ -676,7 +676,7 @@
   									<a class = "myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
   									<div class="small-box bg-yellow">
   										<div class="inner">
-  											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
+  											<h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
 
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
@@ -738,7 +738,7 @@
   									<a class = "myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
   									<div id="draftBox" class="small-box bg-maroon">
   										<div class="inner">
-  											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
+  											<h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
 
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
