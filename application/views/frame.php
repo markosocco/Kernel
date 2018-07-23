@@ -174,7 +174,7 @@ desired effect
           <p><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></p>
           <!-- Status -->
           <!-- <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-circle text-success"></i> Online</a> -->
-          <p style="color:gray"><?php echo $_SESSION['POSITION'] ;?></p>
+          <p class="pos" style="color:gray"><?php echo $_SESSION['POSITION'] ;?></p>
         </div>
       </div>
 
