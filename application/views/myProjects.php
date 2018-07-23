@@ -95,7 +95,7 @@
                 <p>Completed on<b></b><br><i>March 21, 1996</i></p>
               </div>
               <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-browsers"></i>
+                <i class="ion ion-folder"></i>
               </div>
             </div>
             </a>
@@ -111,7 +111,7 @@
                 <p>Completed on<b></b><br><i>March 21, 1996</i></p>
               </div>
               <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-browsers"></i>
+                <i class="ion ion-folder"></i>
               </div>
             </div>
             </a>
@@ -127,7 +127,7 @@
                 <p>Completed on<b></b><br><i>March 21, 1996</i></p>
               </div>
               <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-browsers"></i>
+                <i class="ion ion-folder"></i>
               </div>
             </div>
             </a>
@@ -236,7 +236,7 @@
                   <a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
                   <div class="small-box bg-yellow">
                     <div class="inner">
-                      <h2><?php echo $row['PROJECTTITLE']; ?></h2>
+                      <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
 
                       <form class="gantt" action = 'projectGantt'  method="POST">
                       </form>
@@ -293,7 +293,7 @@
                   <a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
                     <div id="draftBox" class="small-box bg-maroon">
                       <div class="inner">
-                        <h2><?php echo $row['PROJECTTITLE']; ?></h2>
+                        <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
 
                         <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
