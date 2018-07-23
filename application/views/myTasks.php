@@ -740,9 +740,24 @@
 							for (var m = 0; m < data['mainActivity'].length; m++)
 							{
 								var taskID = data['mainActivity'][m].TASKID;
-								var taskDuration = parseInt(data['mainActivity'][m].taskDuration);
-								var taskStart = moment(data['mainActivity'][m].TASKSTARTDATE).format('MMM DD, YYYY');
-								var taskEnd = moment(data['mainActivity'][m].TASKENDDATE).format('MMM DD, YYYY');
+
+								if(data['mainActivity'][m].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+									var taskStart = moment(data['mainActivity'][m].TASKSTARTDATE).format('MMM DD, YYYY');
+								else
+									var taskStart = moment(data['mainActivity'][m].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+
+								if(data['mainActivity'][m].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+									var taskEnd = moment(data['mainActivity'][m].TASKENDDATE).format('MMM DD, YYYY');
+								else
+									var taskEnd = moment(data['mainActivity'][m].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+
+								if(data['mainActivity'][m].TASKADJUSTEDSTARTDATE != null && data['mainActivity'][m].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(data['mainActivity'][m].adjustedTaskDuration2);
+								if(data['mainActivity'][m].TASKSTARTDATE != null && data['mainActivity'][m].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(data['mainActivity'][m].adjustedTaskDuration1);
+								else
+									var taskDuration = parseInt(data['mainActivity'][m].initialTaskDuration);
+
 								$('#mainActivityTable').append(
 														 "<tr><td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
 														 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
@@ -762,9 +777,24 @@
 							for (var s = 0; s < data['subActivity'].length; s++)
 							{
 								var taskID = data['subActivity'][s].TASKID;
-								var taskDuration = parseInt(data['subActivity'][s].taskDuration);
-								var taskStart = moment(data['subActivity'][s].TASKSTARTDATE).format('MMM DD, YYYY');
-								var taskEnd = moment(data['subActivity'][s].TASKENDDATE).format('MMM DD, YYYY');
+
+								if(data['subActivity'][s].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+									var taskStart = moment(data['subActivity'][s].TASKSTARTDATE).format('MMM DD, YYYY');
+								else
+									var taskStart = moment(data['subActivity'][s].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+
+								if(data['subActivity'][s].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+									var taskEnd = moment(data['subActivity'][s].TASKENDDATE).format('MMM DD, YYYY');
+								else
+									var taskEnd = moment(data['subActivity'][s].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+
+								if(data['subActivity'][s].TASKADJUSTEDSTARTDATE != null && data['subActivity'][s].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(data['subActivity'][s].adjustedTaskDuration2);
+								if(data['subActivity'][s].TASKSTARTDATE != null && data['subActivity'][s].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(data['subActivity'][s].adjustedTaskDuration1);
+								else
+									var taskDuration = parseInt(data['subActivity'][s].initialTaskDuration);
+
 								$('#subActivityTable').append(
 														 "<tr><td>" + data['subActivity'][s].TASKTITLE +"</td>"+
 														 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
@@ -783,9 +813,35 @@
 							$('#taskTable').html("");
 							for(i=0; i<data['tasks'].length; i++)
 							{
-								var taskDuration = parseInt(data['tasks'][i].taskDuration);
-								var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
-								var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+								if(data['tasks'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+								{
+									var taskStart = moment(data['tasks'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+									var startDate = data['tasks'][i].TASKSTARTDATE;
+								}
+								else
+								{
+									var taskStart = moment(data['tasks'][i].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+									var startDate = data['tasks'][i].TASKADJUSTEDSTARTDATE;
+								}
+
+								if(data['tasks'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+								{
+									var taskEnd = moment(data['tasks'][i].TASKENDDATE).format('MMM DD, YYYY');
+									var endDate = data['tasks'][i].TASKENDDATE;
+								}
+								else
+								{
+									var taskEnd = moment(data['tasks'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+									var endDate = data['tasks'][i].TASKADJUSTEDENDDATE;
+								}
+
+								if(data['tasks'][i].TASKADJUSTEDSTARTDATE != null && data['tasks'][i].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(data['tasks'][i].adjustedTaskDuration2);
+								if(data['tasks'][i].TASKSTARTDATE != null && data['tasks'][i].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(data['tasks'][i].adjustedTaskDuration1);
+								else
+									var taskDuration = parseInt(data['tasks'][i].initialTaskDuration);
+
 								$('#taskTable').append(
 														 "<tr id='" + data['tasks'][i].TASKID + "'>" +
 														 "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
@@ -793,9 +849,6 @@
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
 														 "<td align='center'>" + taskDuration +"</td>");
-
-								 var startDate = data['tasks'][i].TASKSTARTDATE;
-								 var endDate = data['tasks'][i].TASKENDDATE;
 
 								 // DELEGATE BUTTON
 								 if(data['tasks'][i].users_USERID == <?php echo $_SESSION['USERID'] ;?> && data['tasks'][i].ROLE == '1' && data['tasks'][i].usertype_USERTYPEID != '5') //SHOW BUTTON for assignment
