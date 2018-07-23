@@ -62,6 +62,8 @@
 		            <!-- /.box-header -->
 								<form id='arrangeTasks' name = 'arrangeTasks' action = '<?php echo base_url('index.php/controller/arrangeTasks');?>' method="POST">
 
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+
 									<input type="hidden" name="templates" value="0" id="projectDate" data-startDate="<?php echo $project['PROJECTSTARTDATE'];?>" data-endDate="<?php echo $project['PROJECTENDDATE'];?>">
 
 								<?php if (isset($_SESSION['templates'])): ?>

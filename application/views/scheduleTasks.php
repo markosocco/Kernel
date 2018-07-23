@@ -192,7 +192,6 @@
 															</td>
 															<td style="padding-bottom:15px;">
 																<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
-																	<option></option>
 																	<?php foreach ($departments as $row): ?>
 
 																		<option>
