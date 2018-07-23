@@ -18,7 +18,7 @@
 
 			<!-- Main content -->
 			<section class="content container-fluid">
-				<div class="box">
+				<div class="box box-danger">
 					<div class="box-header">
 						<!-- <h3 class="box-title">All documents of all projects</h3> -->
 					</div>

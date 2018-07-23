@@ -39,7 +39,7 @@
 
 					<div class="row">
 		        <div class="col-xs-12">
-		          <div class="box">
+		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">
 										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Upload</button>
