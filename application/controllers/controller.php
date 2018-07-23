@@ -669,6 +669,21 @@ class controller extends CI_Controller
 			$task = $this->model->getTaskByID($taskID);
 			$taskPostReqs = $this->model->getPostDependenciesByTaskID($taskID);
 
+			if($changeRequest['NEWSTARTDATE'] == "")
+			{
+				$taskData = array(
+					'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
+				);
+			}
+			else
+			{
+				$taskData = array(
+					'TASKADJUSTEDSTARTDATE' => $changeRequest['NEWSTARTDATE'],
+					'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
+				);
+			}
+			$this->model->updateTaskDates($taskID, $taskData); //save adjusted dates of requested task
+
 			if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
 			{
 				$postReqsToAdjust = array();
@@ -677,34 +692,56 @@ class controller extends CI_Controller
 				$endDate = $changeRequest['NEWENDDATE'];
 				while(COUNT($postReqsToAdjust) > 0) // loop while array is not empty/there are postreqs to check
 				{
-					echo "<br><br>End Date to Compare: " . $endDate;
-					$currTask = $this->model->getTaskByID($postReqsToAdjust[$i]);
-					echo "<br>Checking: " . $postReqsToAdjust[$i];
-					// echo "<br>Start: " . $currTask['TASKSTARTDATE'] . " && " . " End: " . $currTask['TASKENDDATE'];
+					$currTask = $this->model->getTaskByID($postReqsToAdjust[$i]); // get current task data
+					if($currTask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+						$endDate = $currTask['TASKENDDATE'];
+					else
+						$endDate = $currTask['TASKADJUSTEDENDDATE'];
+
+					// echo "<br><br>End Date to Compare (Task# " . $postReqsToAdjust[$i] . "): " . $endDate;
+					// echo "<br>Checking: " . $postReqsToAdjust[$i];
 					$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
 					if(COUNT($postReqs) > 0) // if there are post reqs found
 					{
 						foreach($postReqs as $postReq)
 						{
-							echo "<br>Start: " . $postReq['TASKSTARTDATE'] . " && " . " End: " . $postReq['TASKENDDATE'];
-							if($endDate >= $postReq['TASKSTARTDATE'])
+							if($postReq['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+								$startDate = $postReq['TASKSTARTDATE'];
+							else
+								$startDate = $postReq['TASKADJUSTEDSTARTDATE'];
+
+							// echo "<br>Start: " . $startDate . " && " . " End: " . $endDate;
+
+							if($endDate >= $startDate) //check if currTasks's end date will exceed the postreq's start date
 							{
+								if($postReq['TASKADJUSTEDSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+									$taskDuration = $postReq['adjustedTaskDuration2'];
+								elseif($postReq['TASKSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+									$taskDuration = $postReq['adjustedTaskDuration1'];
+								else
+									$taskDuration = $postReq['initialTaskDuration'];
+
+								// echo "<br>Task# " . $postReq['TASKID'] . "'s Duration: " . $taskDuration;
 								$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
-								echo "<br>Change Task# " . $postReq['TASKID'] . "'s Start Date to: " . $new_start;
-								$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($postReq['initialTaskDuration']-1) . ' day')); // set start date to one day after enddate
-								echo "<br>Change Task# " . $postReq['TASKID'] . "'s End Date to: " . $new_end;
+								$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
+
+								$postTaskData = array(
+									'TASKADJUSTEDSTARTDATE' => $new_start,
+									'TASKADJUSTEDENDDATE' => $new_end
+								);
+								$this->model->updateTaskDates($postReq['TASKID'], $postTaskData); //save adjusted dates
+								// echo "<br>Change Task# " . $postReq['TASKID'] . "'s Start Date to: " . $new_start;
+								// echo "<br>Change Task# " . $postReq['TASKID'] . "'s End Date to: " . $new_end;
 							}
 
-							array_push($postReqsToAdjust, $postReq['TASKID']); // save to array for checking
-							// $postReqsToAdjust[] = $postReq['TASKID'];
-							echo "<br>++Adding: " . $postReq['TASKID'];
+							array_push($postReqsToAdjust, $postReq['TASKID']); // save task to array for checking
+							// echo "<br>++Adding: " . $postReq['TASKID'];
 						}
-						$endDate = $currTask['TASKENDDATE'];
 					}
-					echo "<br>--Deleting: " . $postReqsToAdjust[$i];
+					// echo "<br>--Deleting: " . $postReqsToAdjust[$i];
 					unset($postReqsToAdjust[$i]); // remove current task from array
-					echo "<br>" . COUNT($postReqsToAdjust) . " to check<br>";
-					print_r($postReqsToAdjust);
+					// echo "<br>" . COUNT($postReqsToAdjust) . " to check<br>";
+					// print_r($postReqsToAdjust);
 					$i++; // increase counter
 				}
 			}
