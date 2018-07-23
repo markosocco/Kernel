@@ -20,9 +20,9 @@
 						<?php $diff = $dateDiff + 1;?>
 						<small><?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y"). "\t(" . $diff;?>
 						<?php if ($dateDiff < 1):?>
-							day remaining)</small>
+							day)</small>
 						<?php else:?>
-							days remaining)</small>
+							days)</small>
 						<?php endif;?>
 
 		      </h1>
@@ -261,6 +261,8 @@
 		<script>
 
 			$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+			$.fn.datepicker.defaults.autoclose = 'true';
+			$.fn.datepicker.defaults.endDate = $("#start-0").attr('data-end');
 
 			$("#myProjects").addClass("active");
 			$(".taskEndDate").prop('disabled', true);
@@ -285,26 +287,28 @@
 			 $("body").on("change", ".taskStartDate", function(e) {
 				 var mainAct = $(this).attr('data-mainAct');
 
-			 $("#end-" + mainAct).prop('disabled', false);
-			 // $('#end-' + mainAct).data('datepicker').setStartDate(new Date($("#start-" + mainAct).val()));
-			 $("#end-" + mainAct).startDate = "2018-07-30";
-			 if(new Date($("#end-" + mainAct).val()) < $(this).val()) //Removes Target Date Input if new Start Date comes after it
-				 $("#end-" + mainAct).val("");
+				 $("#end-" + mainAct).prop('disabled', false);
+				 if(new Date($("#end-" + mainAct).val()) < $(this).val()) //Removes Target Date Input if new Start Date comes after it
+					 $("#end-" + mainAct).val("");
 
-				var diff = new Date($("#end-"+mainAct).datepicker("getDate") - $("#start-" + mainAct).datepicker("getDate"));
- 				var period = (diff/1000/60/60/24)+1;
-				if ( $("#start-" + mainAct).val() != "" &&  $("#end-" + mainAct).val() != "" && period >=1)
- 				{
-					if(period > 1)
-						$("#projectPeriod" + mainAct).attr("value", period + " days");
-					else
-						$("#projectPeriod" + mainAct).attr("value", period + " day");
- 				}
- 				else
- 					$("#projectPeriod").attr("value", "");
+					var diff = new Date($("#end-"+mainAct).datepicker("getDate") - $("#start-" + mainAct).datepicker("getDate"));
+	 				var period = (diff/1000/60/60/24)+1;
+					if ( $("#start-" + mainAct).val() != "" &&  $("#end-" + mainAct).val() != "" && period >=1)
+	 				{
+						if(period > 1)
+							$("#projectPeriod" + mainAct).attr("value", period + " days");
+						else
+							$("#projectPeriod" + mainAct).attr("value", period + " day");
+	 				}
+	 				else
+	 					$("#projectPeriod").attr("value", "");
+
+					$("#end-" + mainAct).data('datepicker').setStartDate(new Date($("#start-" + mainAct).val()));
+
 			});
 
 			 $('body').on('focus',".taskEndDate", function(){
+
 				 var mainAct = $(this).attr('data-mainAct');
 				 var counter = $(this).attr('data-num');
 
@@ -312,7 +316,6 @@
 		 	       autoclose: true,
 						 orientation: 'auto',
 						 format: 'yyyy-mm-dd',
-						 startDate: $("#start-"+mainAct).val(),
 						 endDate: $("#start-0").attr('data-end') // end date of project
 					 });
 			 });

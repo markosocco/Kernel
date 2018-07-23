@@ -29,7 +29,8 @@
 		      <ol class="breadcrumb">
 		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 		        <li class="active">New Project</li>
-						<li class="active"><?php echo $project['PROJECTTITLE'] . " Tasks" ?></li>
+						<li class="active">Main Activity</li>
+						<li class="active">Sub Activity</li>
 		      </ol>
 		    </section>
 
@@ -79,7 +80,7 @@
 												<thead>
 				                <tr>
 													<th></th>
-													<th width="27.5%">Task Name</th>
+													<th width="27.5%">Sub Activity Name</th>
 													<th width="27.5%">Department</th>
 													<th width="15%">Start Date</th>
 													<th width="15%">Target End Date</th>
@@ -185,7 +186,7 @@
 													</div></td>
 													<td>
 														<div class="form-group">
-															<input id = "projectPeriod0" type="text" class="form-control" value="" readonly>
+															<input id = "projectPeriod0" type="text" class="form-control period" value="" readonly>
 														</div>
 													</td>
 													<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
@@ -312,6 +313,7 @@
  				$("#end_" + mainAct + "-" + counter).prop('disabled', false);
 				if(new Date($("#end_" + mainAct + "-" + counter).val()) < newDate) //Removes Target Date Input if new Start Date comes after it
 					$("#end_" + mainAct + "-" + counter).val("");
+
  			 });
 
 				$('body').on('focus',".taskEndDate", function(){
@@ -325,6 +327,7 @@
 							 orientation: 'auto'
 						});
 				});
+
 		 });
 		</script>
 
