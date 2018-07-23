@@ -30,7 +30,7 @@
 
 					<?php if($mainActivity != null):?> <!-- Show only if there are main activities assigned -->
 
-						<div class="box box-info" id="mainActivityBox">
+						<div class="box box-danger" id="mainActivityBox">
 							<div class="box-header">
 								<h3 class="box-title">Main Activities</h3>
 							</div>
@@ -62,7 +62,7 @@
 
 					<?php if($subActivity != null):?> <!-- Show only if there are sub activities assigned -->
 
-						<div class="box box-info" id="subActivityBox">
+						<div class="box box-danger" id="subActivityBox">
 							<div class="box-header">
 								<h3 class="box-title">Sub Activities</h3>
 							</div>
@@ -91,7 +91,7 @@
 
 					<?php if($tasks != null):?> <!-- Show only if there are tasks assigned -->
 						<!-- TASK-R TABLE -->
-						<div class="box box-info" id="taskBox">
+						<div class="box box-danger" id="taskBox">
 							<div class="box-header">
 								<h3 class="box-title">Tasks - Responsible</h3>
 							</div>
@@ -122,7 +122,7 @@
 
 					<?php if($ACItasks != null):?> <!-- Show only if there are aci tasks assigned -->
 						<!-- ACI TABLE -->
-						<div class="box box-info" id="taskBox">
+						<div class="box box-danger" id="taskBox">
 							<div class="box-header">
 								<h3 class="box-title">Tasks - Accountable, Consulted, Informed</h3>
 							</div>

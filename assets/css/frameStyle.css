@@ -3,6 +3,19 @@
   z-index: 9999 !important;
 }
 
+.pos
+{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 23ch;
+}
+
+.clickable:hover
+{
+  cursor: pointer;
+}
+
 //styling
 $borderWidth: 7px;
 $animationTime: 1.5s;

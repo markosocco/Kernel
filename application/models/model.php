@@ -1145,6 +1145,19 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getOngoingProjectProgressByUser($userID)
+  {
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where('CATEGORY = 3 AND projects.PROJECTSTATUS = "Ongoing" AND !(projectenddate < CURDATE()) &&  users_USERID = ' . $userID);
+    $this->db->group_by('projects_PROJECTID');
+    $this->db->order_by('PROJECTENDDATE');
+
+    return $this->db->get()->result_array();
+  }
+
   public function getSubActivityProgress($projectID)
   {
     $condition = "CATEGORY = 3 && projects_PROJECTID = " . $projectID;

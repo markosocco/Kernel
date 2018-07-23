@@ -15,13 +15,13 @@
 			</section>
 
 			<section class="content container-fluid">
-				<div>
+				<!-- <div>
 					<button id="success" type="button" class="btn btn-success">Test Success</button>
 					<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
 					<button id="danger" type="button" class="btn btn-danger">Test Danger</button>
 					<button id="info" type="button" class="btn btn-info">Test Info</button>
 				</div>
-				<br>
+				<br> -->
 
 				<div class="row">
 	        <div class="col-md-3 col-sm-6 col-xs-12">
@@ -85,7 +85,7 @@
 				<div class="row">
 					<!-- Left col -->
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Projects I'm Working On</h3>
 							</div>
@@ -98,12 +98,12 @@
 											<th>Name</th>
 											<th class="text-center">Target End Date</th>
 											<th class="text-center">Progress</th>
-											<th class="text-center">Days Left</th>
+											<th class="text-center">Until Launch</th>
 										</tr>
 										</thead>
 										<tbody>
-											<?php foreach($ongoingProjects as $ongoingProject): ?>
-												<tr class = "projects" data-id="<?php echo $ongoingProject['PROJECTID'];?>">
+											<?php foreach($ongoingProjects as $key => $ongoingProject): ?>
+												<tr class = "projects clickable" data-id="<?php echo $ongoingProject['PROJECTID'];?>">
 
 													<form class='projectForm' action = 'projectGantt' method="POST">
 														<input type ='hidden' name='dashboard' value='0'>
@@ -117,8 +117,19 @@
 														$endDate = date_create($ongoingProject['PROJECTADJUSTEDENDDATE']);
 													?>
 													<td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
-													<td align="center">80.79%</td>  <!-- PUT PROGRESS PLS, @NAMI -->
-													<td align="center"><?php echo $ongoingProject['datediff'];?></td>
+													<td align="center">
+														<?php
+		                          foreach ($ongoingProjectProgress as $row)
+		                          {
+		                            if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
+		                            {
+		                              echo $row['projectProgress'];
+		                            }
+		                          } ?>%</td>
+
+
+
+													<td align="center"><?php echo $ongoingProject['datediff'];?> day/s</td>
 												</tr>
 											<?php endforeach;?>
 										</tbody>
@@ -134,7 +145,7 @@
 
 					<!-- Right col -->
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Projects I Need To Edit</h3>
 							</div>
@@ -150,7 +161,7 @@
 										</tr>
 										</thead>
 										<tbody>
-										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
 											<td align="center">3 days</td>
@@ -181,7 +192,7 @@
 					<!-- Left col -->
 					<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Deadlines</h3>
 							</div>
@@ -204,8 +215,8 @@
 												else
 													$endDate = date_create($row['TASKADJUSTEDENDDATE']);
 
-												echo "<tr style='color:red'>";
-													echo "<td class='projectLink'>" . $row['PROJECTTITLE'] . "</td>";
+												echo "<tr class='clickable' style='color:red'>";
+													echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $row['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
 													echo "<td> DELAYED </td>";
@@ -239,9 +250,9 @@
 					<?php endif;?>
 
 					<div class="col-md-6">
-						<div class="box box-info">
+						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Project Weekly Progress</h3>
+								<h3 class="box-title">Weekly Project Progress</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -256,7 +267,7 @@
 										</tr>
 										</thead>
 										<tbody>
-										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
 											<td align="center">80.79%</td>
@@ -282,7 +293,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-info">
+							<div class="box box-danger">
 								<div class="box-header with-border">
 									<h3 class="box-title">Change Request Approval</h3>
 								</div>
@@ -293,7 +304,7 @@
 											<thead>
 											<tr>
 												<th>Date Requested</th>
-												<th>Request Type</th>
+												<th class="text-center">Request Type</th>
 												<th>Requester</th>
 												<th>Project</th>
 												<th>Task</th>
@@ -307,7 +318,7 @@
 													// else
 													// 	$type = "Change Date/s";
 												?>
-													<tr class="request" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
+													<tr class="request clickable" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
 
 														<form class='changeRequestApproval' action = 'projectGantt' method="POST">
 															<input type ='hidden' name='dashboard' value='0'>
@@ -316,7 +327,7 @@
 
 														<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
 														<!-- <td><?php echo $type;?></td> -->
-														<td>
+														<td align="center">
 															<?php if($changeRequest['REQUESTTYPE'] == 1):?>
 																<i class="fa fa-user-times"></i>
 															<?php else:?>
@@ -353,7 +364,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-info">
+							<div class="box box-danger">
 								<div class="box-header with-border">
 									<h3 class="box-title">Document Acknowledgement</h3>
 								</div>
@@ -373,7 +384,7 @@
 												<?php
 													foreach($toAcknowledgeDocuments as $row){
 														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
-															echo "<tr>";
+															echo "<tr class='clickable'>";
 															echo"
 															<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
 																<input type='hidden' name='project_ID' value='" . $row['projects_PROJECTID'] . "'>
@@ -389,7 +400,7 @@
 																} else {
 																	echo "<td align='center'>
 																	<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-id ='" . $row['DOCUMENTID'] . "'>
-																	<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
+																	<i class='fa fa-eye'></i> Acknowledge</button></td>";
 																}
 
 															echo "</tr>";

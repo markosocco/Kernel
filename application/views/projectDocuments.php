@@ -39,7 +39,7 @@
 
 					<div class="row">
 		        <div class="col-xs-12">
-		          <div class="box">
+		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">
 										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Upload</button>
@@ -70,8 +70,8 @@
 			                  <th width="10">Department</th>
 												<th width="10">Uploaded On</th>
 			                  <th width="25%">Remarks</th>
-												<th width="10%"><i class='fa fa-download'></i></th>
-												<!-- <th width="10%"><i class='fa fa-eye'></i></th> -->
+												<th width="10%" class="text-center"><i class='fa fa-download'></i></th>
+												<th width="10%" class="text-center"><i class='fa fa-eye'></i></th>
 			                </tr>
 										</thead>
 										<tbody>
@@ -120,6 +120,7 @@
 														echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
 														<button type='button' class='btn btn-success'>
 														<i class='fa fa-download'></i> Download</button></a></td>";
+														echo "<td></td>";
 													echo "</tr>";
 												}
 											}

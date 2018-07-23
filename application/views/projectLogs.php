@@ -32,7 +32,7 @@
 					<h3 class="box-title" style="text-align:center">There are no project logs</h3>
 				<?php else:?>
 
-				<div class="box">
+				<div class="box box-danger">
 					<div class="box-header">
 						<!-- <h3 class="box-title">Generate Reports</h3> -->
 					</div>
