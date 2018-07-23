@@ -12,10 +12,19 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>
-          My Projects
-          <small>What are my projects?</small>
-        </h1>
+        <div id="myProjectsHeader">
+          <h1>
+            My Projects
+            <small>What are my projects?</small>
+          </h1>
+        </div>
+
+        <div id="myTeamHeader">
+          <h1>
+            My Team Projects
+            <small>What is my team working on?</small>
+          </h1>
+        </div>
 
         <ol class="breadcrumb">
           <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
@@ -171,7 +180,7 @@
                             }
                           } ?>%</h2>
 
-                      <form id="gantt" action = 'projectGantt'  method="POST">
+                      <form class="gantt" action = 'projectGantt'  method="POST">
                       </form>
 
                       <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?> day/s delayed</i></p>
@@ -204,7 +213,7 @@
                             }
                           } ?>%</h2>
 
-                          <form id="gantt" action = 'projectGantt'  method="POST">
+                          <form class="gantt" action = 'projectGantt'  method="POST">
                       </form>
 
                       <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?> day/s remaining</i></p>
@@ -226,7 +235,7 @@
                     <div class="inner">
                       <h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-                      <form id="gantt" action = 'projectGantt'  method="POST">
+                      <form class="gantt" action = 'projectGantt'  method="POST">
                       </form>
 
                       <?php //Compute for days remaining
@@ -261,7 +270,7 @@
                             }
                           } ?>%</h2>
 
-                      <form id="gantt" action = 'projectGantt'  method="POST">
+                      <form class="gantt" action = 'projectGantt'  method="POST">
                       </form>
 
                       <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
@@ -283,7 +292,7 @@
                     <div class="inner">
                       <h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-                      <form id="gantt" action = 'projectGantt'  method="POST">
+                      <form class="gantt" action = 'projectGantt'  method="POST">
                       </form>
 
                       <?php //Compute for days remaining
@@ -337,7 +346,7 @@
 
                       <tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                        <form id="gantt" action = 'projectGantt'  method="POST">
+                        <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
                         <td class="bg-blue"></td>
@@ -358,7 +367,7 @@
 
                         <tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                          <form id="gantt" action = 'projectGantt'  method="POST">
+                          <form class="gantt" action = 'projectGantt'  method="POST">
                           </form>
 
                           <td class="bg-red"></td>
@@ -387,7 +396,7 @@
 
                       <tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                        <form id="gantt" action = 'projectGantt'  method="POST">
+                        <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
                         <td class="bg-green"></td>
@@ -416,7 +425,7 @@
 
                       <tr class="project" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-                        <form id="gantt" action = 'projectGantt'  method="POST">
+                        <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
                         <td class="bg-yellow"></td>
@@ -437,7 +446,7 @@
 
                       <tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                        <form id="gantt" action = 'projectGantt'  method="POST">
+                        <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
                         <td class="bg-aqua"></td>
@@ -466,7 +475,7 @@
 
                       <tr class="project" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                        <form id="gantt" action = 'projectGantt'  method="POST">
+                        <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
                         <td class="bg-silver"></td>
@@ -505,7 +514,7 @@
 
 											<h2>100%</h2>
 
-											<form id="teamgantt" action = 'teamGantt'  method="POST">
+											<form class="teamgantt" action = 'teamGantt'  method="POST">
 											</form>
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?> day/s</i></p>
@@ -538,7 +547,7 @@
 													}
 												?>%</h2>
 
-                      <form id="teamgantt" action = 'teamGantt'  method="POST">
+                      <form class="teamgantt" action = 'teamGantt'  method="POST">
 											</form>
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?> day/s delayed</i></p>
@@ -571,7 +580,7 @@
 													}
 												?>%</h2>
 
-                      <form id="teamgantt" action = 'teamGantt'  method="POST">
+                      <form class="teamgantt" action = 'teamGantt'  method="POST">
 											</form>
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?> day/s remaining</i></p>
@@ -593,7 +602,7 @@
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-                      <form id="teamgantt" action = 'teamGantt'  method="POST">
+                      <form class="teamgantt" action = 'teamGantt'  method="POST">
 											</form>
 
 											<?php //Compute for days remaining
@@ -629,7 +638,7 @@
 													}
 												?>%</h2>
 
-                      <form id="teamgantt" action = 'teamGantt'  method="POST">
+                      <form class="teamgantt" action = 'teamGantt'  method="POST">
 											</form>
 
 											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
@@ -651,7 +660,7 @@
 										<div class="inner">
 											<h2><?php echo $row['PROJECTTITLE']; ?></h2>
 
-                      <form id="teamgantt" action = 'teamGantt'  method="POST">
+                      <form class="teamgantt" action = 'teamGantt'  method="POST">
 											</form>
 
 											<?php //Compute for days remaining
@@ -705,7 +714,7 @@
 
                           <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                            <form id="teamgantt" action = 'teamGantt'  method="POST">
+                            <form class="teamgantt" action = 'teamGantt'  method="POST">
                             </form>
 
                             <td class="bg-blue"></td>
@@ -726,7 +735,7 @@
 
                         <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                          <form id="teamgantt" action = 'teamGantt'  method="POST">
+                          <form class="teamgantt" action = 'teamGantt'  method="POST">
                           </form>
 
                           <td class="bg-red"></td>
@@ -755,7 +764,7 @@
 
                       <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                        <form id="teamgantt" action = 'teamGantt'  method="POST">
+                        <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
 
                         <td class="bg-green"></td>
@@ -784,7 +793,7 @@
 
                       <tr class="myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-                        <form id="teamgantt" action = 'teamGantt'  method="POST">
+                        <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
 
                         <td class="bg-yellow"></td>
@@ -805,7 +814,7 @@
 
                       <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                        <form id="teamgantt" action = 'teamGantt'  method="POST">
+                        <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
 
                         <td class="bg-blue"></td>
@@ -834,7 +843,7 @@
 
                       <tr class="myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                        <form id="teamgantt" action = 'teamGantt'  method="POST">
+                        <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
 
                         <td class="bg-blue"></td>
@@ -870,6 +879,7 @@
     $("#myProjectsListView").hide();
     $("#divGridListMyTeam").hide();
     $("#divShowMyProjects").hide();
+    $("#myTeamHeader").hide();
 
     // show my projects (default: grid view)
     $("#showMyProjects").on("click", function(){
@@ -890,6 +900,9 @@
 
       $("#createProject").show();
       $("#hrCreateProject").show();
+
+      $("#myProjectsHeader").show();
+      $("#myTeamHeader").hide();
     });
 
     // show my team (default: grid view)
@@ -911,6 +924,9 @@
 
       $("#createProject").show();
       $("#hrCreateProject").show();
+
+      $("#myTeamHeader").show();
+      $("#myProjectsHeader").hide();
     });
 
     // show my projects in list view
@@ -933,6 +949,9 @@
 
       $("#createProject").hide();
       $("#hrCreateProject").hide();
+
+      $("#myProjectsHeader").show();
+      $("#myTeamHeader").hide();
     });
 
     // show my team in list view
@@ -954,6 +973,9 @@
 
       $("#createProject").hide();
       $("#hrCreateProject").hide();
+
+      $("#myTeamHeader").show();
+      $("#myProjectsHeader").hide();
     });
 
     // show my projects in grid view
@@ -975,6 +997,9 @@
 
       $("#createProject").show();
       $("#hrCreateProject").show();
+
+      $("#myProjectsHeader").show();
+      $("#myTeamHeader").hide();
     });
 
     // show my team in grid view
@@ -996,21 +1021,24 @@
 
       $("#createProject").show();
       $("#hrCreateProject").show();
+
+      $("#myTeamHeader").show();
+      $("#myProjectsHeader").hide();
     });
 
     // IF USING POST METHOD FOR PROJECT ID
     $(document).on("click", ".project", function() {
       var $id = $(this).attr('data-id');
-      $("#gantt").attr("name", "formSubmit");
-      $("#gantt").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-      $("#gantt").submit();
+      $(".gantt").attr("name", "formSubmit");
+      $(".gantt").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+      $(".gantt").submit();
     });
 
     $(document).on("click", ".myTeam", function() {
       var $id = $(this).attr('data-id');
-      $("#teamgantt").attr("name", "formSubmit");
-      $("#teamgantt").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-      $("#teamgantt").submit();
+      $(".teamgantt").attr("name", "formSubmit");
+      $(".teamgantt").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+      $(".teamgantt").submit();
     });
 
     </script>
