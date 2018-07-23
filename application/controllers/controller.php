@@ -667,12 +667,46 @@ class controller extends CI_Controller
 			$taskID = $this->input->post("task_ID");
 			$changeRequest = $this->model->getChangeRequestbyID($requestID);
 			$task = $this->model->getTaskByID($taskID);
-			$postReqs = $this->model->getPostDependenciesByTaskID($taskID);
+			$taskPostReqs = $this->model->getPostDependenciesByTaskID($taskID);
 
-			if(COUNT($postReqs) > 0) // if there are post requisite tasks
+			if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
 			{
+				$postReqsToAdjust = array();
+				$postReqsToAdjust[] = $taskID; // add requested task to array
+				$i = 0; // set counter
+				$endDate = $changeRequest['NEWENDDATE'];
+				while(COUNT($postReqsToAdjust) > 0) // loop while array is not empty/there are postreqs to check
+				{
+					echo "<br><br>End Date to Compare: " . $endDate;
+					$currTask = $this->model->getTaskByID($postReqsToAdjust[$i]);
+					echo "<br>Checking: " . $postReqsToAdjust[$i];
+					// echo "<br>Start: " . $currTask['TASKSTARTDATE'] . " && " . " End: " . $currTask['TASKENDDATE'];
+					$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
+					if(COUNT($postReqs) > 0) // if there are post reqs found
+					{
+						foreach($postReqs as $postReq)
+						{
+							echo "<br>Start: " . $postReq['TASKSTARTDATE'] . " && " . " End: " . $postReq['TASKENDDATE'];
+							if($endDate >= $postReq['TASKSTARTDATE'])
+							{
+								$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
+								echo "<br>Change Task# " . $postReq['TASKID'] . "'s Start Date to: " . $new_start;
+								$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($postReq['initialTaskDuration']-1) . ' day')); // set start date to one day after enddate
+								echo "<br>Change Task# " . $postReq['TASKID'] . "'s End Date to: " . $new_end;
+							}
 
-
+							array_push($postReqsToAdjust, $postReq['TASKID']); // save to array for checking
+							// $postReqsToAdjust[] = $postReq['TASKID'];
+							echo "<br>++Adding: " . $postReq['TASKID'];
+						}
+						$endDate = $currTask['TASKENDDATE'];
+					}
+					echo "<br>--Deleting: " . $postReqsToAdjust[$i];
+					unset($postReqsToAdjust[$i]); // remove current task from array
+					echo "<br>" . COUNT($postReqsToAdjust) . " to check<br>";
+					print_r($postReqsToAdjust);
+					$i++; // increase counter
+				}
 			}
 			else // if no post requisite tasks
 			{

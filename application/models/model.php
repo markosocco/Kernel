@@ -545,7 +545,8 @@ class model extends CI_Model
   public function getPostDependenciesByTaskID($taskID)
   {
     $condition = "raci.STATUS = 'Current' && dependencies.PRETASKID = '$taskID'";
-    $this->db->select('*');
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.tasks_POSTTASKID');
