@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Kernel GANTT 2 - <?php echo  $projectProfile['PROJECTTITLE'];?></title>
+		<title>Kernel GANTT 3 - <?php echo  $projectProfile['PROJECTTITLE'];?></title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myTasksStyle.css")?>"> -->
 	</head>
 	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
