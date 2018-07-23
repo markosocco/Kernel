@@ -2,24 +2,6 @@
 	<head>
 		<title>Kernel - Project Documents</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectDocumentsStyle.css")?>"> -->
-		<!-- TRANSFER TO CSS -->
-		<style>
-	    .example-modal .modal
-			{
-	      position: relative;
-	      top: auto;
-	      bottom: auto;
-	      right: auto;
-	      left: auto;
-	      display: block;
-	      z-index: 1;
-	    }
-
-	    .example-modal .modal
-			{
-	      background: transparent !important;
-	    }
-	  </style>
 	</head>
 	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
 		<?php require("frame.php"); ?>
@@ -62,7 +44,7 @@
 		              <h3 class="box-title">
 										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Upload</button>
 									</h3>
-									<?php if ($documentsByProject != null):?>
+									<!-- <?php if ($documentsByProject != null):?>
 			              <div class="box-tools">
 			                <div class="input-group input-group-sm" style="width: 150px;">
 			                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -72,25 +54,27 @@
 			                  </div>
 			                </div>
 			              </div>
-									<?php endif;?>
+									<?php endif;?> -->
 		            </div>
 		            <!-- /.box-header -->
 
-		            <div class="box-body table-responsive no-padding">
+		            <div class="box-body">
 									<?php if($documentsByProject == NULL):?>
 										<h3 class="box-title" style="text-align:center">There are no documents uploaded</h3>
 									<?php else: ?>
-		              <table class="table table-hover">
-		                <tr>
-		                  <th>#</th>
-		                  <th>Document Name</th>
-		                  <th>Uploaded By</th>
-		                  <th>Department</th>
-											<th>Uploaded On</th>
-		                  <th>Remarks</th>
-											<th align="center"></th>
-											<th align="center"></th>
-		                </tr>
+		              <table id="documentsTable" class="table table-hover">
+										<thead>
+			                <tr>
+			                  <th width="25%">Document Name</th>
+			                  <th width="10%">Uploaded By</th>
+			                  <th width="10">Department</th>
+												<th width="10">Uploaded On</th>
+			                  <th width="25%">Remarks</th>
+												<th width="10%"><i class='fa fa-download'></i></th>
+												<!-- <th width="10%"><i class='fa fa-eye'></i></th> -->
+			                </tr>
+										</thead>
+										<tbody>
 
 										<?php
 
@@ -105,7 +89,6 @@
 													foreach($documentAcknowledgement as $data){
 														if($row['DOCUMENTID'] == $data['documents_DOCUMENTID'] || $row['users_UPLOADEDBY'] == $_SESSION['USERID']){
 															echo "<tr>";
-																echo "<td></td>";
 																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
 																echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 																echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
@@ -121,7 +104,7 @@
 																	} else {
 																		echo "<td align='center'>
 																		<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-id ='" . $row['DOCUMENTID'] . "'>
-																		<i class='fa fa-download'></i> ACKNOWLEDGE</button></td>";
+																		<i class='fa fa-eye'></i> Acknowledge</button></td>";
 																	}
 
 																}
@@ -130,7 +113,6 @@
 													}
 												} else {
 													echo "<tr>";
-														echo "<td></td>";
 														echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
 														echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 														echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
@@ -143,6 +125,7 @@
 												}
 											}
 										?>
+									</tbody>
 		              </table>
 								<?php endif;?>
 		            </div>
@@ -244,6 +227,17 @@
 				$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
 				$(".acknowledgeDocument").submit();
 				});
+
+			$(function () {
+		    $('#documentsTable').DataTable({
+		      'paging'      : false,
+		      'lengthChange': false,
+		      'searching'   : true,
+		      'ordering'    : true,
+		      'info'        : false,
+		      'autoWidth'   : false
+		    })
+		  });
 
 		</script>
 	</body>

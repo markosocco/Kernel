@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - Add Main Activities</title>
-		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/addMainsStyle.css")?>"> -->
+		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/addMainsStyle.css")?>">
 	</head>
 	<body class="hold-transition skin-red sidebar-mini">
 		<?php require("frame.php"); ?>
@@ -35,6 +35,16 @@
 
 		    <!-- Main content -->
 		    <section class="content container-fluid">
+					<div id="progressContainer">
+						<ul class="progressbar">
+		          <li>Project Details</li>
+		          <li class="active">Add Main Activities</li>
+		          <li>Add Sub Activities</li>
+		          <li>Add Tasks</li>
+							<li>Add Dependecies</li>
+		  			</ul>
+					</div>
+					<br><br>
 					<div class="row">
 		        <div class="col-xs-12">
 		          <div class="box">
