@@ -28,12 +28,12 @@
 							<table id="rfcList" class="table table-bordered table-hover">
 								<thead>
 								<tr>
-									<th>Date Requested</th>
-									<th>Request Type</th>
-									<th>Requester</th>
+									<th width="10%">Date Requested</th>
+									<th class="text-center">Type</th>
+									<th width="15%">Requester</th>
 									<th>Task Name</th>
-									<th>Task Start Date</th>
-									<th>Task Target End Date</th>
+									<th width="10%">Start Date</th>
+									<th width="11%">Target End Date</th>
 									<th>Project</th>
 								</tr>
 								</thead>
@@ -62,7 +62,7 @@
 											</form>
 
 											<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
-											<td>
+											<td align="center">
 												<?php if($changeRequest['REQUESTTYPE'] == 1):?>
 													<i class="fa fa-user-times"></i>
 												<?php else:?>

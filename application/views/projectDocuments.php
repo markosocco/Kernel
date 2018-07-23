@@ -71,7 +71,7 @@
 												<th width="10">Uploaded On</th>
 			                  <th width="25%">Remarks</th>
 												<th width="10%" class="text-center"><i class='fa fa-download'></i></th>
-												<!-- <th width="10%"><i class='fa fa-eye'></i></th> -->
+												<th width="10%" class="text-center"><i class='fa fa-eye'></i></th>
 			                </tr>
 										</thead>
 										<tbody>
@@ -120,6 +120,7 @@
 														echo "<td align='center'><a href = '" . $row['DOCUMENTLINK']. "' download>
 														<button type='button' class='btn btn-success'>
 														<i class='fa fa-download'></i> Download</button></a></td>";
+														echo "<td></td>";
 													echo "</tr>";
 												}
 											}
