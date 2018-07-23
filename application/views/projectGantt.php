@@ -44,8 +44,17 @@
 											data-task="<?php echo $changeRequest['TASKID'];?>"
 											data-type="<?php echo $changeRequest['REQUESTTYPE'];?>">
 												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
-												$startDate = date_create($changeRequest['TASKSTARTDATE']);
-												$endDate = date_create($changeRequest['TASKENDDATE']);
+
+												if($changeRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+													$startDate = date_create($changeRequest['TASKSTARTDATE']);
+												else
+													$startDate = date_create($changeRequest['TASKADJUSTEDSTARTDATE']);
+
+												if($changeRequest['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+													$endDate = date_create($changeRequest['TASKENDDATE']);
+												else
+													$endDate = date_create($changeRequest['TASKADJUSTEDENDDATE']);
+
 												$newStartDate = date_create($changeRequest['NEWSTARTDATE']);
 												$newEndDate = date_create($changeRequest['NEWENDDATE']);
 												?>
@@ -152,8 +161,16 @@
 							<div class="modal-header">
 								<h2 class="modal-title taskTitle"><?php echo $changeRequest['TASKTITLE'];?></h2>
 								<h4 class="taskDates"><?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>
-									(<?php echo $changeRequest['taskDuration'];?>
-									<?php if($changeRequest['taskDuration'] > 1):?>
+									(<?php
+										if($changeRequest['TASKADJUSTEDSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+											$taskDuration = $changeRequest['adjustedTaskDuration2'];
+										elseif($changeRequest['TASKSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+											$taskDuration = $changeRequest['adjustedTaskDuration1'];
+										else
+											$taskDuration = $changeRequest['initialTaskDuration'];
+
+									echo $taskDuration;?>
+									<?php if($taskDuration > 1):?>
 										 Days)
 									<?php else:?>
 										Day)
@@ -180,8 +197,16 @@
 								<div class="modal-header">
 									<h2 class="modal-title taskTitle"><?php echo $changeRequest['TASKTITLE'];?></h2>
 									<h4 class="taskDates"><?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>
-										(<?php echo $changeRequest['taskDuration'];?>
-										<?php if($changeRequest['taskDuration'] > 1):?>
+										(<?php
+											if($changeRequest['TASKADJUSTEDSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $changeRequest['adjustedTaskDuration2'];
+											elseif($changeRequest['TASKSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $changeRequest['adjustedTaskDuration1'];
+											else
+												$taskDuration = $changeRequest['initialTaskDuration'];
+
+										echo $taskDuration;?>
+										<?php if($taskDuration > 1):?>
 											 Days)
 										<?php else:?>
 											Day)

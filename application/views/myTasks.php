@@ -44,7 +44,7 @@
 											<th>Project</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
-											<th>Period</th>
+											<th>Period<br><small>(Day/s)</small></th>
 											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
 												<th class="text-center"><i class="fa fa-edit"></i></th>
 												<!-- <th><i class="fa fa-users"></i></th> -->
@@ -75,7 +75,7 @@
 											<th>Project</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
-											<th>Period</th>
+											<th>Period<br><small>(Day/s)</small></th>
 											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
 												<!-- <th><i class="fa fa-users"></i></th> -->
 												<th class="text-center"><i class="fa fa-edit"></i></th>
@@ -105,7 +105,7 @@
 											<th>Project</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
-											<th>Period</th>
+											<th>Period<br><small>(Day/s)</small></th>
 											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
 												<th class="text-center"><i class="fa fa-users"></i></th>
 											<?php endif;?>
@@ -137,7 +137,7 @@
 											<th>Project</th>
 											<th>Start Date</th>
 											<th>Target End Date</th>
-											<th>Period</th>
+											<th>Period<br><small>(Day/s)</small></th>
 											<th class="text-center"><i class="fa fa-briefcase"></i></th>
 										</tr>
 									</thead>
@@ -157,13 +157,32 @@
 												<input type ='hidden' name='mytasks' value='0'>
 											</form>
 
+										<?php
+											if($ACItask['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+												$startDate = date_create($ACItask['TASKSTARTDATE']);
+											else
+												$startDate = date_create($ACItask['TASKADJUSTEDSTARTDATE']);
+
+											if($ACItask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+												$endDate = date_create($ACItask['TASKENDDATE']);
+											else
+												$endDate = date_create($ACItask['TASKADJUSTEDENDDATE']);
+
+											if($ACItask['TASKADJUSTEDSTARTDATE'] != null && $ACItask['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $ACItask['adjustedTaskDuration2'];
+											elseif($ACItask['TASKSTARTDATE'] != null && $ACItask['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $ACItask['adjustedTaskDuration1'];
+											else
+												$taskDuration = $ACItask['initialTaskDuration'];
+										?>
+
 										<tr>
 											<td><?php echo $role;?></td>
 											<td><?php echo $ACItask['TASKTITLE'];?></td>
 											<td><?php echo $ACItask['PROJECTTITLE'];?></td>
-											<td><?php echo $ACItask['TASKSTARTDATE'];?></td>
-											<td><?php echo $ACItask['TASKENDDATE'];?></td>
-											<td><?php echo $ACItask['taskDuration'];?> day/s</td>
+											<td><?php echo date_format($startDate, "M d, Y");?></td>
+											<td><?php echo date_format($endDate, "M d, Y");?></td>
+											<td><?php echo $taskDuration;?></td>
 											<td align="center"><button type="button" class="btn btn-primary btn-sm viewProjectBtn"
 												data-id="1"><i class="fa fa-briefcase"></i> View Project</button>
 											</td>
@@ -729,7 +748,7 @@
 														 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
-														 "<td align='center'>" + taskDuration +" day/s</td>" +
+														 "<td align='center'>" + taskDuration +"</td>" +
 														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
 			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
 			 											 '</td>');
@@ -751,7 +770,7 @@
 														 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
-														 "<td align='center'>" + taskDuration +" day/s</td>" +
+														 "<td align='center'>" + taskDuration +"</td>" +
 														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
 			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
 			 											 '</td>');
@@ -773,7 +792,7 @@
 														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
-														 "<td align='center'>" + taskDuration +" day/s</td>");
+														 "<td align='center'>" + taskDuration +"</td>");
 
 								 var startDate = data['tasks'][i].TASKSTARTDATE;
 								 var endDate = data['tasks'][i].TASKENDDATE;

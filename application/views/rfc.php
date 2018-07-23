@@ -40,8 +40,16 @@
 								<tbody>
 									<?php foreach($changeRequests as $changeRequest):
 										$dateRequested = date_create($changeRequest['REQUESTEDDATE']);
-										$startDate = date_create($changeRequest['TASKSTARTDATE']);
-										$endDate = date_create($changeRequest['TASKENDDATE']);
+										if($changeRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+											$startDate = date_create($changeRequest['TASKSTARTDATE']);
+										else
+											$startDate = date_create($changeRequest['TASKADJUSTEDSTARTDATE']);
+
+										if($changeRequest['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+											$endDate = date_create($changeRequest['TASKENDDATE']);
+										else
+											$endDate = date_create($changeRequest['TASKADJUSTEDENDDATE']);
+
 										if($changeRequest['REQUESTTYPE'] == 1)
 											$type = "Change Performer";
 										else

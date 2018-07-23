@@ -904,6 +904,7 @@ class controller extends CI_Controller
 			$this->session->set_flashdata('projectIDlogs', $id);
 			$data['projectLog'] = $this->model->getProjectLogs($id);
 			$data['projectID'] = $id;
+			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$this->load->view("projectLogs", $data);
 		}
 	}

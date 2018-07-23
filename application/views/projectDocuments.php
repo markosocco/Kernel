@@ -33,9 +33,15 @@
 						</form>
 
 					</div>
+
+					<?php
+						$startdate = date_create($projectProfile['PROJECTSTARTDATE']);
+						$enddate = date_create($projectProfile['PROJECTENDDATE']);
+					?>
+
 					<h1>
 						Documents
-						<small><?php echo $projectProfile['PROJECTTITLE']; ?></small>
+						<small><?php echo $projectProfile['PROJECTTITLE']; ?> (<?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y");?>)</small>
 					</h1>
 					<ol class="breadcrumb">
 						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>

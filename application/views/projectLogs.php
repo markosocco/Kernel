@@ -15,9 +15,14 @@
 					<form id="backForm" action = 'projectGantt' method="POST" data-id="<?php echo $projectID; ?>">
 					</form>
 				</div>
+				<?php
+					$startdate = date_create($projectProfile['PROJECTSTARTDATE']);
+					$enddate = date_create($projectProfile['PROJECTENDDATE']);
+				?>
+
 				<h1>
-					Project title - Project Logs
-					<small>What is happeing to this project?</small>
+					Project Logs
+					<small><?php echo $projectProfile['PROJECTTITLE']; ?> (<?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y");?>)</small>
 				</h1>
 			</section>
 
