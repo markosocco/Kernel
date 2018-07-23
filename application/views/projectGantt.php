@@ -11,7 +11,9 @@
 				<section class="content-header">
 					<div style="margin-bottom:10px">
 
-						<?php if(isset($_SESSION['archives'])): ?>
+						<?php if(isset($_SESSION['dashboard'])): ?>
+								<a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Dashboard</a>
+						<?php elseif(isset($_SESSION['archives'])): ?>
 								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Archives</a>
 						<?php elseif(isset($_SESSION['rfc'])): ?>
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
@@ -71,7 +73,14 @@
 														</td>
 														<td>
 															<label>Request Type</label>
-															<p><?php echo $type;?></p>
+															<p>
+																<?php if($changeRequest['REQUESTTYPE'] == 1):?>
+																	<i class="fa fa-user-times"></i>
+																<?php else:?>
+																	<i class="fa fa-calendar"></i>
+																<?php endif;?>
+																<?php echo $type;?>
+															</p>
 														</td>
 														<td colspan='2'>
 															<label>Requester</label>
@@ -606,22 +615,51 @@
 						$current = date_create(date("Y-m-d")); // get current date
 						?>
 
-						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'];?> day/s)</h4>
+						<h4>Initial Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?>
+							(<?php echo $projectProfile['duration'];?>
+							<?php if($projectProfile['duration'] > 1):?>
+								days)
+							<?php else:?>
+								day)
+							<?php endif;?>
+						</h4>
 
-						<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived'):?>
+						<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived' || $projectProfile['PROJECTSTATUS'] == 'Complete'):?>
 							<?php $actualEnd = date_create($projectProfile['PROJECTACTUALENDDATE']);?>
 
-							<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?> (<?php echo $projectProfile['actualDuration'];?> day/s)</h4>
+							<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?>
+								(<?php echo $projectProfile['actualDuration'];?>
+								<?php if($projectProfile['actualDuration'] > 1):?>
+									days)
+								<?php else:?>
+									day)
+								<?php endif;?>
+							</h4>
 
 						<?php else:?>
 
 							<h4 style="color:red">
-								<?php if ($current >= $startdate && $current <= $enddate):?>
-									<?php echo $projectProfile['remaining'];?> Day/s Remaining
-								<?php elseif ($current < $startdate):?>
-									Launch in <?php echo $projectProfile['launching'];?> Day/s
-								<?php elseif ($current >= $startdate && $current >= $enddate):?>
-									<?php echo $projectProfile['delayed'];?> Day/s Delayed
+								<?php if ($current >= $startdate && $current <= $enddate && $projectProfile['PROJECTSTATUS'] == 'Ongoing'):?>
+									<?php echo $projectProfile['remaining'];?>
+									<?php if($projectProfile['remaining'] > 1):?>
+										days remaining
+									<?php else:?>
+										day remaining
+									<?php endif;?>
+								<?php elseif ($current < $startdate && $projectProfile['PROJECTSTATUS'] == 'Planning'):?>
+									Launch in <?php echo $projectProfile['launching'];?>
+									<?php if($projectProfile['launching'] > 1):?>
+										days
+									<?php else:?>
+										day
+									<?php endif;?>
+								<?php elseif ($current >= $startdate && $current >= $enddate && $projectProfile['PROJECTSTATUS'] == 'Ongoing'):?>
+									<?php echo $projectProfile['delayed'];?>
+									<?php if($projectProfile['delayed'] > 1):?>
+										days delayed
+									<?php else:?>
+										day delayed
+									<?php endif;?>
 								<?php endif;?>
 							</h4>
 
