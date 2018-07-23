@@ -532,9 +532,9 @@ class model extends CI_Model
   }
 
 // GET PRE-REQUISITE ID
-  public function getDependencies()
+  public function getDependenciesByProject($projectID)
   {
-    $condition = "projects.PROJECTID = 1";
+    $condition = "projects.PROJECTID = " . $projectID;
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
@@ -708,8 +708,9 @@ class model extends CI_Model
 
   public function getAllProjectTasksGroupByTaskID($id)
   {
+    // initialTaskDuration
     $condition = "raci.STATUS = 'Current' && projects.PROJECTID = " . $id;
-    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration", 
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
     $this->db->from('tasks');

@@ -754,7 +754,7 @@ class controller extends CI_Controller
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
 		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-		$data['dependencies'] = $this->model->getDependencies();
+		$data['dependencies'] = $this->model->getDependenciesByProject($id);
 		$data['users'] = $this->model->getAllUsers();
 		$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
 		$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
@@ -1220,7 +1220,7 @@ class controller extends CI_Controller
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
-			$data['dependencies'] = $this->model->getDependencies();
+			$data['dependencies'] = $this->model->getDependenciesByProject($id);
 			$data['users'] = $this->model->getAllUsers();
 			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
 			$data['accountable'] = $this->model->getAllAccountableByProject($id);
@@ -1228,18 +1228,7 @@ class controller extends CI_Controller
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 			// $data['subActivityProgress'] = $this->model->getSubActivityProgress($id);
 
-			// if(	$data['subActivityProgress'] == NULL){
-			// 	echo "empty";
-			// }
-
 			// $this->output->enable_profile(TRUE);
-
-
-			// foreach ($data['subActivityProgress'] as $key => $value) {
-			// 	echo "progress - " . $value['SAProgress'];
-			// 	echo "parent - " . $value['tasks_TASKPARENT'];
-			// 	// code...
-			// }
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
@@ -1927,8 +1916,20 @@ class controller extends CI_Controller
 	public function gantt2(){
 
 		$filter = "tasks.TASKSTARTDATE"; // default
-		$data['ganttData'] = $this->model->getAllProjectTasks(1, $filter);
-		$data['dependencies'] = $this->model->getDependencies();
+		$id = 1;
+
+		// $data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
+		// $data['dependencies'] = $this->model->getDependencies();
+
+		$data['projectProfile'] = $this->model->getProjectByID($id);
+		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+		$data['dependencies'] = $this->model->getDependenciesByProject($id);
+		$data['users'] = $this->model->getAllUsers();
+		$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+		$data['accountable'] = $this->model->getAllAccountableByProject($id);
+		$data['consulted'] = $this->model->getAllConsultedByProject($id);
+		$data['informed'] = $this->model->getAllInformedByProject($id);
+		// $data['subActivityProgress'] = $this->model->getSubActivityProgress($id);
 
 		$this->load->view("gantt2", $data);
 	}
