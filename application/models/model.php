@@ -1039,7 +1039,7 @@ class model extends CI_Model
 
   public function addNotification($data)
   {
-    $this->db->insert('logs', $data);
+    $this->db->insert('notifications', $data);
     return true;
   }
 
