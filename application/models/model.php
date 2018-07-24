@@ -1190,5 +1190,23 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function getRACIbyTask($taskID){
+    $condition = "tasks_TASKID = " . $taskID . " AND raci.STATUS = 'Current'";
+    $this->db->select('*');
+    $this->db->from('raci');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getACIbyTask($taskID){
+    $condition = "tasks_TASKID = " . $taskID . " AND raci.STATUS = 'Current' AND role != 1";
+    $this->db->select('*');
+    $this->db->from('raci');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>
