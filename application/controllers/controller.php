@@ -2135,6 +2135,34 @@ class controller extends CI_Controller
 			{
 				$dashboard =$this->input->post("dashboard");
 				$this->session->set_flashdata('dashboard', $dashboard);
+				
+				$rfc =$this->input->post("rfc");
+				$this->session->set_flashdata('rfc', $rfc);
+				$requestID = $this->input->post("request_ID");
+				$data['changeRequest'] = $this->model->getChangeRequestbyID($requestID);
+				switch($_SESSION['usertype_USERTYPEID'])
+				{
+					case '2':
+						$filter = "users.usertype_USERTYPEID = '3'";
+						break;
+
+					case '3':
+						$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
+						break;
+
+					case '4':
+						$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+						break;
+
+					default:
+						$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
+						break;
+				}
+				$data['departments'] = $this->model->getAllDepartments();
+				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
+				$data['projectCount'] = $this->model->getProjectCount($filter);
+				$data['taskCount'] = $this->model->getTaskCount($filter);
 			}
 
 			// ARCHIVES
