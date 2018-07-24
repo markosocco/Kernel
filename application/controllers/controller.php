@@ -1921,15 +1921,15 @@ class controller extends CI_Controller
 		$dateDiff = $diff->format('%R%a');
 
 		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
+		// TODO PUT ALERT
+		// TODO Nami: "user Has Created A Project" -- tag PO, people involved sa RACI
 		$data['project'] = $this->model->addProject($data);
+
 		$data['dateDiff'] =$dateDiff;
 		$data['departments'] = $this->model->getAllDepartments();
 
 		if ($data)
 		{
-			// TODO PUT ALERT
-			// TODO Nami: put notif and log
-
 			$templates = $this->input->post('templates');
 
 			if (isset($templates))
@@ -2473,6 +2473,8 @@ class controller extends CI_Controller
 								);
 
 								// ENTER INTO RACI
+								// TODO PUT ALERT
+								// TODO Nami: "user Has Added a Main Activity to Project projectitle" -- tag PO, people involved sa RACI
 								$result = $this->model->addToRaci($data);
 							}
 							// echo "<br>";
@@ -2500,6 +2502,15 @@ class controller extends CI_Controller
 			if (isset($templates))
 			{
 				$this->session->set_flashdata('templates', $templates);
+
+				$data['templateProject'] = $this->model->getProjectByID($templates);
+				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateRaci'] = $this->model->getRaci($templates);
+				$data['templateUsers'] = $this->model->getAllUsers();
 			}
 
 			// $this->output->enable_profile(TRUE);
