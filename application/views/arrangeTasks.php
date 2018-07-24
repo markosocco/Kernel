@@ -172,7 +172,10 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+					                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-0"
+														data-mainAct="<?php echo $value['TASKID'];?>" data-num="0"
+														data-mainStart<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKSTARTDATE']; ?>"
+														data-mainEnd<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKENDDATE']; ?>" required>
 					                </div>
 					                <!-- /.input group -->
 					              </div></td>
@@ -181,12 +184,13 @@
 						                  <div class="input-group-addon">
 						                    <i class="fa fa-calendar"></i>
 						                  </div>
-						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $key; ?>-0" data-mainAct="<?php echo $key; ?>" data-num="0" required>
+						                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $value['TASKID'];?>-0"
+															data-mainAct="<?php echo $value['TASKID']; ?>" data-num="0" required>
 						                </div>
 													</div></td>
 													<td>
 														<div class="form-group">
-															<input id = "projectPeriod0" type="text" class="form-control period" value="" readonly>
+															<input id = "projectPeriod_<?php echo $value['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
 														</div>
 													</td>
 													<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
@@ -222,6 +226,8 @@
 		<script type='text/javascript'>
 
 		$("#myProjects").addClass("active");
+		$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+		$.fn.datepicker.defaults.autoclose = 'true';
 
 		$(document).ready(function() {
 
@@ -247,7 +253,7 @@
 										"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
 										"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
 										"name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
-										"' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod" + i + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
+										"' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod_" + mainAct + "-" + counter + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
 										" counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
 
 					$("#end_" + mainAct + "-" + counter).prop('disabled', true);
@@ -296,11 +302,15 @@
 
 				//Date picker
 				$('body').on('focus',".taskStartDate", function(){
+					var mainAct = $(this).attr('data-mainAct');
+  				var mainStart = $("#start_" + mainAct + "-0").attr('data-mainStart' + mainAct);
+					var mainEnd = $("#start_" + mainAct + "-0").attr('data-mainEnd' + mainAct);
+
 				    $(this).datepicker({
 							format: 'yyyy-mm-dd',
 		  	       autoclose: true,
-							 startDate: $("#projectDate").attr('data-startDate'),
-							 endDate: $("#projectDate").attr('data-endDate'),
+							 startDate: mainStart,
+							 endDate: mainEnd,
 							 orientation: 'auto'
 						});
 				});
@@ -311,22 +321,53 @@
 					var newDate = $(this).val();
 
  				$("#end_" + mainAct + "-" + counter).prop('disabled', false);
-				if(new Date($("#end_" + mainAct + "-" + counter).val()) < newDate) //Removes Target Date Input if new Start Date comes after it
+				var diff = new Date($("#end_" + mainAct + "-" + counter).datepicker("getDate") - $("#start_" + mainAct + "-" + counter).datepicker("getDate"));
+ 				var period = (diff/1000/60/60/24)+1;
+ 				if ($("#start_" + mainAct + "-" + counter).val() != "" &&  $("#end_" + mainAct + "-" + counter).val() != "" && period >=1)
+ 				{
+ 					if(period > 1)
+ 						$("#projectPeriod_" + mainAct + "-" + counter).attr("value", period + " days");
+ 					else
+ 						$("#projectPeriod_" + mainAct + "-" + counter).attr("value", period + " day");
+ 				}
+ 				else
+				{
+					$("#projectPeriod_" + mainAct + "-" + counter).attr("value", "");
 					$("#end_" + mainAct + "-" + counter).val("");
+				}
+
+				var mainEnd = $("#start_" + mainAct + "-0").attr('data-mainEnd' + mainAct);
+				$("#end_" + mainAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + mainAct + "-" + counter).val()));
+				$("#end_" + mainAct + "-" + counter).data('datepicker').setEndDate(new Date(mainEnd));
 
  			 });
 
 				$('body').on('focus',".taskEndDate", function(){
 					var mainAct = $(this).attr('data-mainAct');
 					var counter = $(this).attr('data-num');
+
 						$(this).datepicker({
 							format: 'yyyy-mm-dd',
 							 autoclose: true,
-							 startDate: $("#start_" + mainAct + "-" + counter).val(),
-							 endDate: $("#projectDate").attr('data-endDate'),
 							 orientation: 'auto'
 						});
 				});
+
+				$("body").on("change", ".taskEndDate", function() {
+	 				var mainAct = $(this).attr('data-mainAct');
+					var counter = $(this).attr('data-num');
+	 				var diff = new Date($("#end_" + mainAct + "-" + counter).datepicker("getDate") - $("#start_" + mainAct + "-" + counter).datepicker("getDate"));
+	 				var period = (diff/1000/60/60/24)+1;
+	 				if ($("#start_" + mainAct + "-" + counter).val() != "" &&  $("#end_" + mainAct + "-" + counter).val() != "" && period >=1)
+	 				{
+	 					if(period > 1)
+	 						$("#projectPeriod_" + mainAct + "-" + counter).attr("value", period + " days");
+	 					else
+	 						$("#projectPeriod_" + mainAct + "-" + counter).attr("value", period + " day");
+	 				}
+	 				else
+	 					$("#projectPeriod_" + mainAct + "-" + counter).attr("value", "");
+ 			 });
 
 		 });
 		</script>
