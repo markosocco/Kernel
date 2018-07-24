@@ -889,7 +889,7 @@ class controller extends CI_Controller
 		// $this->model->addNotification($notificationData);
 		// // END: Notification
 
-		if($remarks == 'Approved' && $requestType == '1') // if approved change performer
+		if($status == 'Approved' && $requestType == '1') // if approved change performer
 		{
 			$taskID = $this->input->post("task_ID");
 
@@ -903,6 +903,7 @@ class controller extends CI_Controller
 					!$this->input->post("consultedEmp[]") && !$this->input->post("informedDept[]") &&
 					!$this->input->post("informedEmp[]")) // return to approver in tasks
 			{
+				echo "Responsible Tp User";
 				$responsibleData = array(
 					'ROLE' => '1',
 					'users_USERID' => $_SESSION['USERID'],
@@ -911,7 +912,6 @@ class controller extends CI_Controller
 				);
 				$result = $this->model->addToRaci($responsibleData);
 				//TODO: Nami Logs/Notif -> Task Delegated to the approver (for delegation)
-
 			}
 			else
 			{
