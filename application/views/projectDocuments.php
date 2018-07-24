@@ -209,16 +209,25 @@
 		        <!-- /.modal -->
 
 						<!-- CONFIRM ACKNOWLEDGEMENT -->
-						<!-- ayaw maclick nung upload button nung meron nito so i commented it out first HAHAHHA -->
-						<!-- <div id="confirmAcknowledge">
-							<div class="modal-body">
-								<h4>Are you sure you want to acknowledge this document?</h4>
+						<div class="modal fade" id="confirmAcknowledge" tabindex="-1">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h2 class="modal-title">Confirm Document Acknowledgement</h2>
+									</div>
+									<div class="modal-body">
+										<h4>Are you sure you want to acknowledge this document?</h4>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+											<button id = "doneConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+										</div>
+									</div>
+								</div>
+								<!-- /.modal-content -->
 							</div>
-							<div class="modal-footer">
-								<button id="backConfirm" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
-								<button id = "confirmAcknowledgeBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
-							</div>
-						</div> -->
+							<!-- /.modal-dialog -->
+						</div>
+						<!-- /.modal -->
 				</section>
 					</div>
 			<?php require("footer.php"); ?>
