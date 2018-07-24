@@ -2075,6 +2075,8 @@ class controller extends CI_Controller
 								);
 
 								// ENTER INTO RACI
+								// TODO PUT ALERT
+								// TODO Nami: "user Has Added A Task to Project projectitle" -- tag PO, people involved sa RACI
 								$result = $this->model->addToRaci($data);
 							}
 							// echo "<br>";
@@ -2295,6 +2297,8 @@ class controller extends CI_Controller
 										// echo $d . ", ";
 
 										// ENTER DEPENDENCIES TO DB
+										// TODO PUT ALERT
+										// TODO Nami: "user Has Added A Dependency to Project projectitle" -- tag PO, people involved sa RACI
 										$result = $this->model->addToDependencies($data);
 									}
 								}
@@ -2638,6 +2642,8 @@ class controller extends CI_Controller
 	 								);
 
 	 								// ENTER INTO RACI
+									// TODO PUT ALERT
+									// TODO Nami: "user Has Added A Sub Activity to Project projectitle" -- tag PO, people involved sa RACI
 	 								$result = $this->model->addToRaci($data);
 	 							}
 	 							// echo "<br>";
@@ -2702,6 +2708,8 @@ class controller extends CI_Controller
 			);
 
 			// TODO NAMI: LOGS
+			// TODO PUT ALERT
+			// TODO Nami: "user Has Archived Project projectitle" -- tag PO, people involved sa RACI
 			$result = $this->model->archiveProject($id, $data);
 
 			if ($result)
@@ -2731,6 +2739,8 @@ class controller extends CI_Controller
 			);
 
 			// TODO NAMI: LOGS
+			// TODO PUT ALERT
+			// TODO Nami: "user Has Made Project projectitle a Template" -- tag PO, people involved sa RACI
 			$result = $this->model->templateProject($data);
 
 			//
