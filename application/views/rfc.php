@@ -150,7 +150,7 @@
 												<?php if($userRequest['REQUESTSTATUS'] == 'Pending'):?>
 													<td align="center">-</td>
 												<?php else:?>
-													<!-- <td><?php echo $userRequest['FIRSTNAME'] . " " .  $userRequest['LASTNAME'] ;?></td> -->
+													<td><?php echo $userRequest['FIRSTNAME'] . " " .  $userRequest['LASTNAME'] ;?></td>
 												<?php endif;?>
 											</tr>
 										<?php endforeach;?>
