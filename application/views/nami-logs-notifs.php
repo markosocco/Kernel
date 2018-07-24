@@ -28,7 +28,7 @@ $details = $userName . " has uploaded " . $fileName . " and needs your acknowled
 $notificationData = array(
 	'users_USERID' => $userIDByDepartment['users_USERID'],
 	'DETAILS' => $details,
-	'TIMESTAMP' => date('Y-m-d'),
+	'TIMESTAMP' => date('Y-m-d H:i:s'),
 	'status' => 'Unread'
 );
 
