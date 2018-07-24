@@ -183,7 +183,8 @@ class controller extends CI_Controller
 			else // if admin/executive is logged in
 				$filter = "REQUESTID = '0'";
 
-			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
+			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
+			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
 
 			$this->load->view("dashboard", $data);
 		}
@@ -215,7 +216,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
 				$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
-
 			}
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
@@ -1577,6 +1577,7 @@ class controller extends CI_Controller
 			$id = $this->input->post("project_ID");
 			$archives =$this->input->post("archives");
 			$rfc =$this->input->post("rfc");
+			$userRequest =$this->input->post("userRequest");
 			$mytasks =$this->input->post("mytasks");
 			$templates =$this->input->post("templates");
 			$dashboard =$this->input->post("dashboard");
@@ -1589,7 +1590,7 @@ class controller extends CI_Controller
 			}
 
 			// ARCHIVES
-			if (isset($archives))
+			elseif (isset($archives))
 			{
 				$archives = $this->input->post("archives");
 				$this->session->set_flashdata('archives', $archives);
@@ -1626,6 +1627,7 @@ class controller extends CI_Controller
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 				$data['projectCount'] = $this->model->getProjectCount($filter);
 				$data['taskCount'] = $this->model->getTaskCount($filter);
+				$data['projTeam'] = $this->model->getAllUsersByProject($id);
 			}
 			elseif (isset($mytasks))
 			{
@@ -1636,6 +1638,11 @@ class controller extends CI_Controller
 			{
 				$templates = $this->input->post("templates");
 				$this->session->set_flashdata('templates', $templates);
+			}
+			elseif (isset($userRequest))
+			{
+				$userRequest =$this->input->post("userRequest");
+				$this->session->set_flashdata('userRequest', $userRequest);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -1764,7 +1771,8 @@ class controller extends CI_Controller
 					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
 			}
 
-			$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
+			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
+			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
 			$this->load->view("rfc", $data);
 		}
 	}
@@ -2374,7 +2382,8 @@ class controller extends CI_Controller
 				else // if admin/executive is logged in
 					$filter = "REQUESTID = '0'";
 
-				$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
+				$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
+				$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
 
 				$this->load->view("dashboard", $data);
 

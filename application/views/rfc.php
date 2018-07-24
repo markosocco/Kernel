@@ -21,6 +21,7 @@
 				<?php if($changeRequests != null):?>
 					<div class="box box-danger">
 						<div class="box-header">
+							<h3 class="box-title">Pending Requests For Approval</h3>
 						</div>
 						<!-- /.box-header -->
 
@@ -84,8 +85,86 @@
 						<!-- /.box-body -->
 					</div>
 					<!-- /.box -->
-				<?php else:?>
-					<h3 class="box-title" style="text-align:center" >You have no change requests to approve</h3>
+				<?php endif;?>
+
+
+					<?php if($userRequests != null):?>
+						<div class="box box-danger">
+							<div class="box-header">
+								<h3 class="box-title">Pending Requests Sent</h3>
+							</div>
+							<!-- /.box-header -->
+
+							<div class="box-body">
+								<table id="userrfcList" class="table table-bordered table-hover">
+									<thead>
+									<tr>
+										<th width="10%">Date Requested</th>
+										<th class="text-center">Type</th>
+										<th>Task Name</th>
+										<th width="10%">Start Date</th>
+										<th width="11%">Target End Date</th>
+										<th>Project</th>
+										<th>Status</th>
+										<th>Approved By</th>
+									</tr>
+									</thead>
+									<tbody>
+										<?php foreach($userRequests as $userRequest):
+											$dateRequested = date_create($userRequest['REQUESTEDDATE']);
+											if($userRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+												$startDate = date_create($userRequest['TASKSTARTDATE']);
+											else
+												$startDate = date_create($userRequest['TASKADJUSTEDSTARTDATE']);
+
+											if($userRequest['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+												$endDate = date_create($userRequest['TASKENDDATE']);
+											else
+												$endDate = date_create($userRequest['TASKADJUSTEDENDDATE']);
+
+											if($userRequest['REQUESTTYPE'] == 1)
+												$type = "Change Performer";
+											else
+												$type = "Change Date/s";
+										?>
+											<tr class="request" data-project = "<?php echo $userRequest['PROJECTID']; ?>" data-request = "<?php echo $userRequest['REQUESTID']; ?>">
+
+												<form action = 'projectGantt' method="POST">
+													<input type ='hidden' name='userRequest' value='0'>
+												</form>
+
+												<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
+												<td align="center">
+													<?php if($userRequest['REQUESTTYPE'] == 1):?>
+														<i class="fa fa-user-times"></i>
+													<?php else:?>
+														<i class="fa fa-calendar"></i>
+													<?php endif;?>
+													<!-- <?php echo $type;?> -->
+												</td>
+												<td><?php echo $userRequest['TASKTITLE'];?></td>
+												<td><?php echo date_format($startDate, "M d, Y"); ?></td>
+												<td><?php echo date_format($endDate, "M d, Y"); ?></td>
+												<td><?php echo $userRequest['PROJECTTITLE'];?></td>
+												<td><?php echo $userRequest['REQUESTSTATUS'];?></td>
+												<?php if($userRequest['REQUESTSTATUS'] == 'Pending'):?>
+													<td align="center">-</td>
+												<?php else:?>
+													<!-- <td><?php echo $userRequest['FIRSTNAME'] . " " .  $userRequest['LASTNAME'] ;?></td> -->
+												<?php endif;?>
+											</tr>
+										<?php endforeach;?>
+
+									</tbody>
+								</table>
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+					<?php endif;?>
+
+				<?php if($changeRequests == null && $userRequests == null):?>
+					<h3 class="box-title" style="text-align:center" >You have no change requests</h3>
 				<?php endif;?>
 
 			</section>
@@ -111,6 +190,15 @@
 
 		$(function () {
 			$('#rfcList').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false
+			});
+
+			$('#userrfcList').DataTable({
 				'paging'      : false,
 				'lengthChange': false,
 				'searching'   : true,

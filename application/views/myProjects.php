@@ -575,7 +575,14 @@
   											<form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
 
-  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?> day/s</i></p>
+  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?>
+                          <?php if($value['datediff'] +1 > 1) :?>
+                            days
+                          <?php else:?>
+                            day
+                          <?php endif;?>
+                        </i></p>
+
   										</div>
   										<div class="icon" style="margin-top:25px;">
   											<i class="ion ion-checkmark"></i>
@@ -610,8 +617,16 @@
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
 
-  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?> day/s delayed</i></p>
-  										</div>
+  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?>
+                          <?php if($value['datediff'] > 1) :?>
+                            days
+                          <?php else:?>
+                            day
+                          <?php endif;?>
+                          delayed
+                        </i></p>
+
+                    	</div>
   										<div class="icon" style="margin-top:25px;">
   											<i class="ion ion-alert-circled"></i>
   										</div>
@@ -645,7 +660,13 @@
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
 
-  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?> day/s remaining</i></p>
+  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?>
+                          <?php if($value['datediff'] > 1) :?>
+                            days
+                          <?php else:?>
+                            day
+                          <?php endif;?>
+                        remaining</i></p>
   										</div>
   										<div class="icon" style="margin-top:25px;">
   											<i class="ion ion-clipboard"></i>
@@ -672,7 +693,13 @@
   											<?php //Compute for days remaining
   											$startdate = date_create($row['PROJECTSTARTDATE']);
   											?>
-  											<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $row['datediff'] +1;?> day/s</i></p>
+  											<p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in <?php echo $row['datediff'] +1;?>
+                          <?php if($value['datediff']+1 > 1) :?>
+                            days
+                          <?php else:?>
+                            day
+                          <?php endif;?>
+                        </i></p>
   										</div>
   										<div class="icon" style="margin-top:25px;">
   											<i class="ion ion-lightbulb"></i>
@@ -952,6 +979,7 @@
 
     // show my projects (default: grid view)
     $("#showMyProjects").on("click", function(){
+
       $("#projectView").show();
       $("#teamView").hide();
 
@@ -972,6 +1000,8 @@
 
       $("#myProjectsHeader").show();
       $("#myTeamHeader").hide();
+
+      filterProjects($(".filter.active").attr('id'));
     });
 
     // show my team (default: grid view)
@@ -996,6 +1026,8 @@
 
       $("#myTeamHeader").show();
       $("#myProjectsHeader").hide();
+
+      filterProjects($(".filter.active").attr('id'));
     });
 
     // show my projects in list view
@@ -1021,6 +1053,8 @@
 
       $("#myProjectsHeader").show();
       $("#myTeamHeader").hide();
+
+      filterProjects($(".filter.active").attr('id'));
     });
 
     // show my team in list view
@@ -1045,6 +1079,8 @@
 
       $("#myTeamHeader").show();
       $("#myProjectsHeader").hide();
+
+      filterProjects($(".filter.active").attr('id'));
     });
 
     // show my projects in grid view
@@ -1069,6 +1105,8 @@
 
       $("#myProjectsHeader").show();
       $("#myTeamHeader").hide();
+
+      filterProjects($(".filter.active").attr('id'));
     });
 
     // show my team in grid view
@@ -1093,6 +1131,8 @@
 
       $("#myTeamHeader").show();
       $("#myProjectsHeader").hide();
+
+      filterProjects($(".filter.active").attr('id'));
     });
 
     $("#filterAll").addClass('active');
@@ -1102,12 +1142,18 @@
       $(".filter").removeClass('active');
       $(this).addClass('active');
 
-      if(e.target.id == "filterAll")
+      filterProjects(e.target.id);
+
+    });
+
+    function filterProjects(selectedFilter)
+    {
+      if(selectedFilter == "filterAll")
         $(".emptyProjects").hide();
       else
         $(".emptyProjects").show();
 
-      switch(e.target.id)
+      switch(selectedFilter)
       {
         case "filterAll": var filter = 'all'; break;
         case "filterCompleted": var filter = 'completed'; break;
@@ -1166,7 +1212,7 @@
         else
           $("." + filter + "ProjList").show();
       }
-    });
+    }
 
     // IF USING POST METHOD FOR PROJECT ID
     $(document).on("click", ".project", function() {

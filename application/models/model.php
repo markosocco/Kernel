@@ -147,14 +147,27 @@ class model extends CI_Model
   //   return $data->result_array();
   // }
 
-  public function getChangeRequestsbyUser($filter)
+  public function getChangeRequestsForApproval($filter, $id)
   {
     $this->db->select('*');
     $this->db->from('changerequests');
     $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
-    $this->db->where($filter);
+    $this->db->where($filter . " && changerequests.users_REQUESTEDBY != '$id'");
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getChangeRequestsByUser($id)
+  {
+    $this->db->select('*');
+    $this->db->from('changerequests');
+    $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
+    $this->db->where("changerequests.users_REQUESTEDBY = '$id' && projects.PROJECTSTATUS = 'Ongoing'");
     $query = $this->db->get();
 
     return $query->result_array();
