@@ -114,11 +114,11 @@
 														<td align="center">
 															<?php // TODO: NAMI FIX ?>
 															<?php
-																foreach ($parkedProjectProgress as $row)
+																foreach ($lastWeekProgress as $row)
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																	{
-																		echo $ongoingProject['projectProgress'];
+																		echo $row['PROGRESS'];
 																	}
 																} ?>%</h2>
 
@@ -225,6 +225,7 @@
 					<?php endif;?>
 
 					<!-- Right col -->
+					<?php if ($editProjects != NULL): ?>
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
@@ -265,6 +266,8 @@
 					</div>
 
 				</div>
+				<?php endif;?>
+
 
 				<?php if($changeRequests != null):?>
 
