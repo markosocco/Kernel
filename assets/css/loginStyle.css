@@ -3,11 +3,11 @@ body
   background-attachment: fixed;
   /* background-size: cover; */
   text-align: center;
-  /* background-color: #E9EBEE; */
+  background-color: #E9EBEE;
   color: BLACK;
-  background: url('../media/popcorn.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* background: url('../media/popcorn.png'); */
+  /* background-repeat: no-repeat;
+  background-size: cover; */
   font-family: 'Source Sans Pro', sans-serif;
 }
 
