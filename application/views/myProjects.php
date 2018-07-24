@@ -86,53 +86,28 @@
           </div>
           <!-- ./col -->
 
-          <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <a class = "project" data-id = "">
-            <div class="small-box bg-purple">
-              <div class="inner">
-                <h2>Project Title</h2>
-
-                <p>Completed on<b></b><br><i>March 21, 1996</i></p>
+          <?php if($templates != null):?>
+            <?php foreach($templates as $template):?>
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <a class = "project" data-id = "">
+              <div class="small-box bg-purple">
+                <div class="inner">
+                  <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
+                  <?php
+                    $enddate = date_create($template['PROJECTACTUALENDDATE']);
+                  ;?>
+                  <p>Completed on<b></b><br><i><?php echo date_format($enddate, "F d, Y");?></i></p>
+                </div>
+                <div class="icon" style="margin-top:25px;">
+                  <i class="ion ion-folder"></i>
+                </div>
               </div>
-              <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-folder"></i>
-              </div>
+              </a>
             </div>
-            </a>
-          </div>
+          <?php endforeach;?>
+        <?php endif;?>
 
-          <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <a class = "project" data-id = "">
-            <div class="small-box bg-purple">
-              <div class="inner">
-                <h2>Project Title</h2>
-
-                <p>Completed on<b></b><br><i>March 21, 1996</i></p>
-              </div>
-              <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-folder"></i>
-              </div>
-            </div>
-            </a>
-          </div>
-
-          <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <a class = "project" data-id = "">
-            <div class="small-box bg-purple">
-              <div class="inner">
-                <h2>Project Title</h2>
-
-                <p>Completed on<b></b><br><i>March 21, 1996</i></p>
-              </div>
-              <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-folder"></i>
-              </div>
-            </div>
-            </a>
-          </div>
         </div>
 
         <hr id="hrCreateProject" style="height:1px; background-color:black">
@@ -388,7 +363,6 @@
                       <th>Start Date</th>
                       <th>Target End Date</th>
                       <th>Progress</th>
-                      <th>Status</th>
                     </tr>
                   </thead>
 
@@ -411,7 +385,6 @@
                         <td><?php echo date_format($completedStart, "M d, Y");?></td>
                         <td><?php echo date_format($completedEnd, "M d, Y");?></td>
                         <td>100%</td>
-                        <td>Complete</td>
                       </tr>
                     <?php endforeach;?>
 
@@ -469,7 +442,6 @@
                               echo $row['projectProgress'];
                             }
                           } ?>%</td>
-                        <td><?php echo $value['PROJECTSTATUS']; ?></td>
                       </tr>
                     <?php endforeach;?>
 
@@ -490,7 +462,6 @@
                         <td><?php echo date_format($plannedStart, "M d, Y");?></td>
                         <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
                         <td>0.00%</td>
-                        <td><?php echo $row['PROJECTSTATUS']; ?></td>
                       </tr>
                     <?php endforeach;?>
 
@@ -519,7 +490,6 @@
                                 echo $row['projectProgress'];
                               }
                             } ?>%</td>
-                        <td><?php echo "Parked"; ?></td>
                       </tr>
                     <?php endforeach;?>
 
@@ -540,7 +510,6 @@
                         <td><?php echo date_format($draftedStart, "M d, Y");?></td>
                         <td><?php echo date_format($draftedEnd, "M d, Y");?></td>
                         <td>0.00%</td>
-                        <td><?php echo "Draft"; ?></td>
                       </tr>
                     <?php endforeach;?>
                   </tbody>
@@ -795,7 +764,6 @@
                     <th>Start Date</th>
                     <th>Target End Date</th>
                     <th>Progress</th>
-                    <th>Status</th>
                   </tr>
                   </thead>
 
@@ -818,7 +786,6 @@
                         <td><?php echo date_format($completedStart, "M d, Y");?></td>
                         <td><?php echo date_format($completedEnd, "M d, Y");?></td>
                         <td>100%</td>
-                        <td>Complete</td>
                       </tr>
                     <?php endforeach;?>
 
@@ -847,7 +814,6 @@
                               echo $row['projectProgress'];
                             }
                           } ?>%</td>
-                      <td><?php echo "Delayed"; ?></td>
                     </tr>
                   <?php endforeach;?>
 
@@ -876,7 +842,6 @@
                             echo $row['projectProgress'];
                           }
                         } ?>%</td>
-                      <td><?php echo $value['PROJECTSTATUS']; ?></td>
                   </tr>
                 <?php endforeach;?>
 
@@ -897,7 +862,6 @@
                     <td><?php echo date_format($plannedStart, "M d, Y");?></td>
                     <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
                     <td>0.00%</td>
-                    <td><?php echo $row['PROJECTSTATUS']; ?></td>
                   </tr>
                 <?php endforeach;?>
 
@@ -926,7 +890,6 @@
                             echo $row['projectProgress'];
                           }
                         } ?>%</td>
-                    <td><?php echo "Parked"; ?></td>
                   </tr>
                 <?php endforeach;?>
 
@@ -947,7 +910,6 @@
                     <td><?php echo date_format($draftedStart, "M d, Y");?></td>
                     <td><?php echo date_format($draftedEnd, "M d, Y");?></td>
                     <td>0.00%</td>
-                    <td><?php echo "Draft"; ?></td>
                   </tr>
                 <?php endforeach;?>
 

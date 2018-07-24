@@ -226,6 +226,7 @@ class controller extends CI_Controller
 			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
+			$data['templates'] = $this->model->getAllTemplates();
 			$this->load->view("myProjects", $data);
 		}
 	}
@@ -1771,7 +1772,7 @@ class controller extends CI_Controller
 			$archives =$this->input->post("archives");
 			$rfc =$this->input->post("rfc");
 			$userRequest =$this->input->post("userRequest");
-			$mytasks =$this->input->post("mytasks");
+			$myTasks =$this->input->post("myTasks");
 			$templates =$this->input->post("templates");
 			$dashboard =$this->input->post("dashboard");
 
@@ -1804,7 +1805,7 @@ class controller extends CI_Controller
 						break;
 
 					case '3':
-						$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+						$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
 						break;
 
 					case '4':
@@ -1812,20 +1813,19 @@ class controller extends CI_Controller
 						break;
 
 					default:
-						$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+						$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
 						break;
 				}
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
-				$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
 				$data['projectCount'] = $this->model->getProjectCount($filter);
 				$data['taskCount'] = $this->model->getTaskCount($filter);
-				$data['projTeam'] = $this->model->getAllUsersByProject($id);
 			}
-			elseif (isset($mytasks))
+			elseif (isset($myTasks))
 			{
-				$mytasks = $this->input->post("mytasks");
-				$this->session->set_flashdata('mytasks', $mytasks);
+				$mytasks = $this->input->post("myTasks");
+				$this->session->set_flashdata('myTasks', $mytasks);
 			}
 			elseif (isset($templates))
 			{
@@ -1834,7 +1834,7 @@ class controller extends CI_Controller
 			}
 			elseif (isset($userRequest))
 			{
-				$userRequest =$this->input->post("userRequest");
+				$userRequest = $this->input->post("userRequest");
 				$this->session->set_flashdata('userRequest', $userRequest);
 			}
 

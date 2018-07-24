@@ -51,6 +51,9 @@
 											<?php endif;?>
 										</tr>
 									</thead>
+									<form id = "addMain" action = 'projectGantt' method="POST">
+										<input type ='hidden' name='myTasks' value='0'>
+									</form>
 									<tbody id="mainActivityTable">
 									</tbody>
 								</table>
@@ -82,6 +85,9 @@
 											<?php endif;?>
 										</tr>
 									</thead>
+									<form id = "addSub" action = 'projectGantt' method="POST">
+										<input type ='hidden' name='myTasks' value='0'>
+									</form>
 									<tbody id="subActivityTable">
 									</tbody>
 								</table>
@@ -141,6 +147,11 @@
 											<th class="text-center"><i class="fa fa-briefcase"></i></th>
 										</tr>
 									</thead>
+
+									<form id = "viewProject" action = 'projectGantt' method="POST">
+										<input type ='hidden' name='myTasks' value='0'>
+									</form>
+
 									<tbody id="aciTable">
 										<?php foreach($ACItasks as $ACItask):?>
 											<?php switch($ACItask['ROLE'])
@@ -152,10 +163,6 @@
 													default: $role = 'A'; break;
 												}
 											;?>
-
-											<form class = "viewProject" action = 'projectGantt' method="POST" data-id="<?php echo $ACItask['PROJECTID'];?>">
-												<input type ='hidden' name='mytasks' value='0'>
-											</form>
 
 										<?php
 											if($ACItask['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
@@ -184,7 +191,7 @@
 											<td><?php echo date_format($endDate, "M d, Y");?></td>
 											<td><?php echo $taskDuration;?></td>
 											<td align="center"><button type="button" class="btn btn-primary btn-sm viewProjectBtn"
-												data-id="1"><i class="fa fa-briefcase"></i> View Project</button>
+												data-id="<?php echo $ACItask['PROJECTID'];?>"><i class="fa fa-briefcase"></i> View Project</button>
 											</td>
 										</tr>
 									<?php endforeach;?>
@@ -759,14 +766,17 @@
 									var taskDuration = parseInt(data['mainActivity'][m].initialTaskDuration);
 
 								$('#mainActivityTable').append(
-														 "<tr><td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
+														 "<tr>" +
+														 "<td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
 														 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
 														 "<td align='center'>" + taskDuration +"</td>" +
-														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
+														 '<td align="center"><button type="button" data-id="' + data['mainActivity'][m].PROJECTID +
+														 '" class="btn btn-info btn-sm addMainsBtn"' +
 			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
 			 											 '</td>');
+
 							} // end of main activity for loop
 						} // end of main activity if statement
 
@@ -801,7 +811,7 @@
 														 "<td align='center'>" + taskStart +"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>"+
 														 "<td align='center'>" + taskDuration +"</td>" +
-														 '<td align="center"><button type="button" class="btn btn-info btn-sm editProjectBtn"' +
+														 '<td align="center"><button type="button" data-id="' + data['subActivity'][s].PROJECTID + '" class="btn btn-info btn-sm addSubsBtn"' +
 			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
 			 											 '</td>');
 							} // end of sub activity for loop
@@ -1236,14 +1246,23 @@
 				// ACI SCRIPT
 				$("body").on('click','.viewProjectBtn',function(){
 					var $id = $(this).attr('data-id');
-					$(".viewProject").attr("name", "formSubmit");
-					$(".viewProject").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-
-					$(".viewProject").submit();
+					$("#viewProject").attr("name", "formSubmit");
+					$("#viewProject").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+					$("#viewProject").submit();
 				});
 
-				$("body").on('click','.editProjectBtn',function(){
-					alert("edit");
+				$("body").on('click','.addMainsBtn',function(){
+					var $id = $(this).attr('data-id');
+					$("#addMain").attr("name", "formSubmit");
+					$("#addMain").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+					$("#addMain").submit();
+				});
+
+				$("body").on('click','.addSubsBtn',function(){
+					var $id = $(this).attr('data-id');
+					$("#addSub").attr("name", "formSubmit");
+					$("#addSub").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+					$("#addSub").submit();
 				});
 
 			});
