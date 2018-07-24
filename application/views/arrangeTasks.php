@@ -70,7 +70,7 @@
 
 									<input type="hidden" name="templates" value="<?php echo $templateProject['PROJECTID']; ?>">
 
-									<?php foreach ($templateMainActivity as $key => $value): ?>
+									<?php foreach ($groupedTasks as $key => $value): ?>
 										<div class="box-body table-responsive no-padding">
 											<table class="table table-hover" id="table_<?php echo $key;?>">
 
@@ -93,8 +93,8 @@
 											<tbody>
 
 												<tr>
-													<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $groupedTasks[$key]['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-													<td width="27.5%"><b><?php echo $groupedTasks[$key]['TASKTITLE']; ?></b></td>
+													<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+													<td width="27.5%"><b><?php echo $value['TASKTITLE']; ?></b></td>
 													<td width="27.5%"><b>
 														<?php
 
@@ -124,8 +124,8 @@
 													</b></td>
 
 													<?php
-														$startdate = date_create($groupedTasks[$key]['TASKSTARTDATE']);
-														$enddate = date_create($groupedTasks[$key]['TASKENDDATE']);
+														$startdate = date_create($value['TASKSTARTDATE']);
+														$enddate = date_create($value['TASKENDDATE']);
 														$diff = date_diff($enddate, $startdate);
 														$dDiff = intval($diff->format('%d'));
 													?>
@@ -146,15 +146,72 @@
 													</td>
 													<td width="5%"></td>
 												</tr>
-													<?php foreach ($templateSubActivity as $tSub): ?>
-															<?php if($tSub['tasks_TASKPARENT'] == $value['TASKID']): ?>
+
+														<?php if (isset($templateMainActivity[$key])): ?>
+															<?php foreach ($templateSubActivity as $tSub): ?>
+																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
+																	<tr>
+																		<td></td>
+																		<td><div class="form-group">
+
+																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
+
+																			<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value="<?php echo $tSub['TASKTITLE'];?>" required>
+
+																			<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+																		</div></td>
+																		<td>
+																			<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																				<?php foreach ($departments as $row): ?>
+
+																					<option>
+																						<?php echo $row['DEPARTMENTNAME']; ?>
+																					</option>
+
+																				<?php endforeach; ?>
+																			</select>
+																		</td>
+																		<td><div class="form-group">
+																			<div class="input-group date">
+																				<div class="input-group-addon">
+																					<i class="fa fa-calendar"></i>
+																				</div>
+																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $templateMainActivity[$key]['TASKID'];?>-0"
+																				data-mainAct="<?php echo $tSub['TASKID'];?>" data-num="0"
+																				data-mainStart<?php echo $tSub['TASKID']; ?> = "<?php echo $tSub['TASKSTARTDATE']; ?>"
+																				data-mainEnd<?php echo $tSub['TASKID']; ?> = "<?php echo $tSub['TASKENDDATE']; ?>" required>
+																			</div>
+																			<!-- /.input group -->
+																		</div></td>
+																			<td><div class="form-group">
+																				<div class="input-group date">
+																					<div class="input-group-addon">
+																						<i class="fa fa-calendar"></i>
+																					</div>
+																					<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $tSub['TASKID'];?>-0"
+																					data-mainAct="<?php echo $tSub['TASKID']; ?>" data-num="0" required>
+																				</div>
+																			</div></td>
+																			<td>
+																				<div class="form-group">
+																					<input id = "projectPeriod_<?php echo $tSub['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
+																				</div>
+																			</td>
+																			<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
+																			<td></td>
+																	</tr>
+																	<?php endif; ?>
+																<?php endforeach; ?>
+
+															<?php else: ?>
+
 																<tr>
 																	<td></td>
-																	<td><div class="form-group">
+									                <td><div class="form-group">
 
-																		<input type="hidden" name="mainActivity_ID[]" value="<?php echo $groupedTasks[$key]['TASKID']; ?>">
+																		<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
-																		<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value="<?php echo $tSub['TASKTITLE'];?>" required>
+																		<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
 																		<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 																	</div></td>
 																	<td>
@@ -166,39 +223,39 @@
 																				</option>
 
 																			<?php endforeach; ?>
-																		</select>
+										                </select>
 																	</td>
 																	<td><div class="form-group">
-																		<div class="input-group date">
-																			<div class="input-group-addon">
-																				<i class="fa fa-calendar"></i>
-																			</div>
-																			<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-0"
-																			data-mainAct="<?php echo $tSub['TASKID'];?>" data-num="0"
-																			data-mainStart<?php echo $tSub['TASKID']; ?> = "<?php echo $tSub['TASKSTARTDATE']; ?>"
-																			data-mainEnd<?php echo $tSub['TASKID']; ?> = "<?php echo $tSub['TASKENDDATE']; ?>" required>
-																		</div>
-																		<!-- /.input group -->
-																	</div></td>
+										                <div class="input-group date">
+										                  <div class="input-group-addon">
+										                    <i class="fa fa-calendar"></i>
+										                  </div>
+										                  <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-0"
+																			data-mainAct="<?php echo $value['TASKID'];?>" data-num="0"
+																			data-mainStart<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKSTARTDATE']; ?>"
+																			data-mainEnd<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKENDDATE']; ?>" required>
+										                </div>
+										                <!-- /.input group -->
+										              </div></td>
 																		<td><div class="form-group">
-																			<div class="input-group date">
-																				<div class="input-group-addon">
-																					<i class="fa fa-calendar"></i>
-																				</div>
-																				<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $tSub['TASKID'];?>-0"
-																				data-mainAct="<?php echo $tSub['TASKID']; ?>" data-num="0" required>
-																			</div>
+											                <div class="input-group date">
+											                  <div class="input-group-addon">
+											                    <i class="fa fa-calendar"></i>
+											                  </div>
+											                  <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $value['TASKID'];?>-0"
+																				data-mainAct="<?php echo $value['TASKID']; ?>" data-num="0" required>
+											                </div>
 																		</div></td>
 																		<td>
 																			<div class="form-group">
-																				<input id = "projectPeriod_<?php echo $tSub['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
+																				<input id = "projectPeriod_<?php echo $value['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
 																			</div>
 																		</td>
 																		<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 																		<td></td>
 																</tr>
+
 															<?php endif; ?>
-													<?php endforeach; ?>
 
 											</tbody>
 										</table>
