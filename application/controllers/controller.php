@@ -2183,7 +2183,7 @@ class controller extends CI_Controller
 				foreach($departmentIDs as $departmentRow){
 
 					// START: FOREACH - GETS ALL USERS OF A DEPARTMENT
-					foreach ($this->model->getAllUserstsByProjectByDepartment($id, $departmentRow) as $userIDByDepartment) {
+					foreach ($this->model->getAllUsersByProjectByDepartment($id, $departmentRow) as $userIDByDepartment) {
 						$acknowledgementData = array (
 							'documents_DOCUMENTID' => $documentID,
 							'users_ACKNOWLEDGEDBY' => $userIDByDepartment['users_USERID']

@@ -628,7 +628,7 @@ class model extends CI_Model
   }
 
 // GETS ALL THE USERS OF A DEPARTMENT THAT ARE INVOLVED IN A PROJECT EXCEPT THE SESSION USER
-  public function getAllUserstsByProjectByDepartment($projectID, $departmentID)
+  public function getAllUsersByProjectByDepartment($projectID, $departmentID)
   {
     $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " AND departments_DEPARTMENTID = " . $departmentID;
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",

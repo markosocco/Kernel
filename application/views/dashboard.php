@@ -112,7 +112,16 @@
 
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
 														<td align="center">
-															NAMI%
+															<?php // TODO: NAMI FIX ?>
+															<?php
+																foreach ($parkedProjectProgress as $row)
+																{
+																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
+																	{
+																		echo $ongoingProject['projectProgress'];
+																	}
+																} ?>%</h2>
+
 														</td>
 														<td align="center">
 															<?php
