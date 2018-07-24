@@ -1653,7 +1653,7 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next task person
-			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
+			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
 			if($postTasksData['nextTaskID'] != NULL){
 
 				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
@@ -1677,7 +1677,7 @@ class controller extends CI_Controller
 			}
 
 			// notify next ACI
-			$ACIdata['ACI'] = $this->model->getACIbyTask($id);
+			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
 			if($ACIdata['ACI'] != NULL) {
 
 				foreach($ACIdata['ACI'] as $ACIusers){

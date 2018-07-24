@@ -771,12 +771,13 @@
 				var $project = $("#approvalForm").attr('data-project');
 				var $task = $("#approvalForm").attr('data-task');
 				var $type = $("#approvalForm").attr('data-type');
-
+				var $requestor = $("#approvalForm").attr('data-requestor');
 				$("#approvalForm").attr("name", "formSubmit");
 				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
 				$("#approvalForm").append("<input type='hidden' name='request_type' value= '" + $type + "'>");
 				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
 				$("#approvalForm").append("<input type='hidden' name='task_ID' value= '" + $task + "'>");
+				$("#approvalForm").append("<input type='hidden' name='requestor_ID' value= '" + $requestor + "'>");
 				$("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
 				$("#approvalForm").submit();
 				});
@@ -784,9 +785,15 @@
 			$(document).on("click", "#confirmDenyBtn", function() { // deny
 				var $request = $("#approvalForm").attr('data-request');
 				var $project = $("#approvalForm").attr('data-project');
+				var $task = $("#approvalForm").attr('data-task');
+				var $type = $("#approvalForm").attr('data-type');
+				var $requestor = $("#approvalForm").attr('data-requestor');
 				$("#approvalForm").attr("name", "formSubmit");
 				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
+				$("#approvalForm").append("<input type='hidden' name='request_type' value= '" + $type + "'>");
 				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
+				$("#approvalForm").append("<input type='hidden' name='task_ID' value= '" + $task + "'>");
+				$("#approvalForm").append("<input type='hidden' name='requestor_ID' value= '" + $requestor + "'>");
 				$("#approvalForm").append("<input type='hidden' name='status' value= 'Denied'>");
 				$("#approvalForm").submit();
 				});
