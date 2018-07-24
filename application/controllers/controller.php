@@ -1116,13 +1116,13 @@ class controller extends CI_Controller
 		$taskDetails = $this->model->getTaskByID($taskID);
 		$taskTitle = $taskDetails['TASKTITLE'];
 
-		// $projectID = $taskDetails['projects_PROJECTID'];
+		$projectID = $taskDetails['projects_PROJECTID'];
 		$projectDetails = $this->model->getProjectByID($projectID);
 		$projectTitle = $projectDetails['PROJECTTITLE'];
 
 		$details = $userName . " has " . $status . " change request for " . $taskTitle . ".";
 
-		// it's not working sa deny :(
+		// it doesn't work sa deny
 		$logData = array (
 			'LOGDETAILS' => $details,
 			'TIMESTAMP' => date('Y-m-d H:i:s'),
@@ -1192,7 +1192,7 @@ class controller extends CI_Controller
 					$projectDetails = $this->model->getProjectByID($projectID);
 					$projectTitle = $projectDetails['PROJECTTITLE'];
 
-					$userDetails = $this->model->getUserByID($responsibleEmp);
+					$userDetails = $this->model->getTaskByID($this->input->post('responsibleEmp'));
 					$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 					// START: LOG DETAILS
@@ -1653,7 +1653,7 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next task person
-			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
+			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
 			if($postTasksData['nextTaskID'] != NULL){
 
 				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
@@ -1677,7 +1677,7 @@ class controller extends CI_Controller
 			}
 
 			// notify next ACI
-			$data['ACI'] = $this->model->getACIbyTask($taskID);
+			$data['ACI'] = $this->model->getACIbyTask($id);
 			if($data['ACI'] != NULL) {
 
 				foreach($data['ACI'] as $ACIusers){
