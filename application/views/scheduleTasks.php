@@ -198,61 +198,69 @@
 																<td><i><?php echo date_format($edate, "M d, Y"); ?></i></td>
 																<td></td>
 															</tr>
-															<tr>
-																<td></td>
-																<td>
-																	<div class="form-group">
 
-																		<input type="hidden" name="subActivity_ID[]" value="<?php echo $sValue['TASKID']; ?>">
+															<?php if (isset($templateSubActivity[$sKey])): ?>
+																<?php foreach ($templateTasks as $tTask): ?>
+																	<?php if ($tTask['tasks_TASKPARENT'] == $templateSubActivity[$sKey]['TASKID']): ?>
+																		<tr>
+																			<td></td>
+																			<td>
+																				<div class="form-group">
 
-																		<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-																		<input type="hidden" name="row[]" value="<?php echo $c; ?>">
-																	</div>
-																</td>
-																<td style="padding-bottom:15px;">
-																	<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
-																		<?php foreach ($departments as $row): ?>
-																			<option></option>
+																					<input type="hidden" name="subActivity_ID[]" value="<?php echo $sValue['TASKID']; ?>">
 
-																			<option>
-																				<?php echo $row['DEPARTMENTNAME']; ?>
-																			</option>
+																					<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $tTask['TASKTITLE']; ?>" required>
+																					<input type="hidden" name="row[]" value="<?php echo $c; ?>">
+																				</div>
+																			</td>
+																			<td style="padding-bottom:15px;">
+																				<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
+																					<?php foreach ($departments as $row): ?>
+																						<option></option>
 
-																		<?php endforeach; ?>
-																	</select>
-																</td>
-																<td>
-																	<div class="form-group">
-																		<div class="input-group date">
-																			<div class="input-group-addon">
-																				<i class="fa fa-calendar"></i>
-																			</div>
-																			<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-0"
-																			data-subAct="<?php echo $sValue['TASKID'];?>" data-num="0"
-																			data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
-																			data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
-																		</div>
-																	</div>
-																</td>
-																<td>
-																	<div class="form-group">
-																		<div class="input-group date">
-																			<div class="input-group-addon">
-																				<i class="fa fa-calendar"></i>
-																			</div>
-																			<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-0"
-																			data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="0" required>
-																		</div>
-																	</div>
-																</td>
-																<td>
-																	<div class="form-group">
-																		<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
-																	</div>
-																</td>
-																<td></td>
-																<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
-															</tr>
+																						<option>
+																							<?php echo $row['DEPARTMENTNAME']; ?>
+																						</option>
+
+																					<?php endforeach; ?>
+																				</select>
+																			</td>
+																			<td>
+																				<div class="form-group">
+																					<div class="input-group date">
+																						<div class="input-group-addon">
+																							<i class="fa fa-calendar"></i>
+																						</div>
+																						<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-0"
+																						data-subAct="<?php echo $sValue['TASKID'];?>" data-num="0"
+																						data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
+																						data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
+																					</div>
+																				</div>
+																			</td>
+																			<td>
+																				<div class="form-group">
+																					<div class="input-group date">
+																						<div class="input-group-addon">
+																							<i class="fa fa-calendar"></i>
+																						</div>
+																						<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-0"
+																						data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="0" required>
+																					</div>
+																				</div>
+																			</td>
+																			<td>
+																				<div class="form-group">
+																					<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
+																				</div>
+																			</td>
+																			<td></td>
+																			<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
+																		</tr>
+																	<?php endif; ?>
+																<?php endforeach; ?>
+															<?php endif; ?>
+
 														</tbody>
 													</table>
 
@@ -424,7 +432,7 @@
 																			<div class="input-group-addon">
 																				<i class="fa fa-calendar"></i>
 																			</div>
-																			<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-0"
+																			<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-<?php echo $sKey; ?>"
 																			data-subAct="<?php echo $sValue['TASKID'];?>" data-num="0"
 																			data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
 																			data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
@@ -437,14 +445,14 @@
 																			<div class="input-group-addon">
 																				<i class="fa fa-calendar"></i>
 																			</div>
-																			<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-0"
-																			data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="0" required>
+																			<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-<?php echo $sKey; ?>"
+																			data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="<?php echo $sKey; ?>" required>
 																		</div>
 																	</div>
 																</td>
 																<td>
 																	<div class="form-group">
-																		<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
+																		<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-<?php echo $sKey; ?>" type="text" class="form-control period" value="" readonly>
 																	</div>
 																</td>
 																<td></td>
@@ -586,8 +594,8 @@
 			}
 
 			var subEnd = $("#start_" + subAct + "-0").attr('data-subEnd' + subAct);
-			$("#end_" + subAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + subAct + "-" + counter).val()));
-			$("#end_" + subAct + "-" + counter).data('datepicker').setEndDate(new Date(subEnd));
+			// $("#end_" + subAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + subAct + "-" + counter).val()));
+			// $("#end_" + subAct + "-" + counter).data('datepicker').setEndDate(new Date(subEnd));
 
 			});
 
