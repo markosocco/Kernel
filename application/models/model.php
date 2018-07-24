@@ -266,7 +266,7 @@ class model extends CI_Model
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE
   public function getAllOngoingProjects()
   {
-    $condition = "PROJECTSTARTDATE <= CURDATE() && PROJECTENDDATE => CURDATE() && PROJECTSTATUS = 'Ongoing'";
+    $condition = "PROJECTSTARTDATE <= CURDATE() && PROJECTENDDATE >= CURDATE() && PROJECTSTATUS = 'Ongoing'";
     $this->db->select('*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->where($condition);
