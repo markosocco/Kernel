@@ -303,8 +303,10 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
-			$data['projectCount'] = $this->model->getProjectCount($filter);
-			$data['taskCount'] = $this->model->getTaskCount($filter);
+			$data['projectCountR'] = $this->model->getProjectCount($filter);
+			$data['taskCountR'] = $this->model->getTaskCount($filter);
+			$data['projectCount'] = $this->model->getProjectCount($_SESSION['departments_DEPARTMENTID']);
+			$data['taskCount'] = $this->model->getTaskCount($_SESSION['departments_DEPARTMENTID']);
 
 			$data['users'] = $this->model->getAllUsers();
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
@@ -2166,8 +2168,10 @@ class controller extends CI_Controller
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
-				$data['projectCount'] = $this->model->getProjectCount($filter);
-				$data['taskCount'] = $this->model->getTaskCount($filter);
+				$data['projectCountR'] = $this->model->getProjectCount($filter);
+				$data['taskCountR'] = $this->model->getTaskCount($filter);
+				$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
+				$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 			}
 
 			// ARCHIVES
@@ -2206,8 +2210,10 @@ class controller extends CI_Controller
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
-				$data['projectCount'] = $this->model->getProjectCount($filter);
-				$data['taskCount'] = $this->model->getTaskCount($filter);
+				$data['projectCountR'] = $this->model->getProjectCount($filter);
+				$data['taskCountR'] = $this->model->getTaskCount($filter);
+				$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
+				$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 			}
 			elseif (isset($myTasks))
 			{
@@ -2672,22 +2678,6 @@ class controller extends CI_Controller
 			$dateDiff = $diff->format('%R%a');
 
 		  $data['dateDiff'] = $dateDiff;
-
-			$templates = $this->input->post('templates');
-
-			if (isset($templates))
-			{
-				$this->session->set_flashdata('templates', $templates);
-
-				$data['templateProject'] = $this->model->getProjectByID($templates);
-				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
-				$data['templateRaci'] = $this->model->getRaci($templates);
-				$data['templateUsers'] = $this->model->getAllUsers();
-			}
 
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');
