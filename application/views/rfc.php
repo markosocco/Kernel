@@ -91,7 +91,7 @@
 					<?php if($userRequests != null):?>
 						<div class="box box-danger">
 							<div class="box-header">
-								<h3 class="box-title">Pending Requests Sent</h3>
+								<h3 class="box-title">Requests Sent</h3>
 							</div>
 							<!-- /.box-header -->
 

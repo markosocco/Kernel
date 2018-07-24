@@ -19,7 +19,9 @@
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
 						<?php elseif(isset($_SESSION['rfc'])): ?>
 								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
-								<?php elseif(isset($_SESSION['templates'])): ?>
+						<?php elseif(isset($_SESSION['myTasks'])): ?>
+								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Tasks</a>
+						<?php elseif(isset($_SESSION['templates'])): ?>
 								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Templates</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
@@ -28,7 +30,7 @@
 						<!-- <a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a> -->
 					</div>
 
-				<?php if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest']) ): ?>
+				<?php if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])): ?>
 
 					<!-- RFC GANTT START -->
 					<div id="rfcGantt">
