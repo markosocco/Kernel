@@ -163,9 +163,9 @@ class controller extends CI_Controller
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
 			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
 
-			$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			// $data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			// $data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			// $data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
 			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
@@ -2183,7 +2183,7 @@ class controller extends CI_Controller
 				foreach($departmentIDs as $departmentRow){
 
 					// START: FOREACH - GETS ALL USERS OF A DEPARTMENT
-					foreach ($this->model->getAllUserstsByProjectByDepartment($id, $departmentRow) as $userIDByDepartment) {
+					foreach ($this->model->getAllUsersByProjectByDepartment($id, $departmentRow) as $userIDByDepartment) {
 						$acknowledgementData = array (
 							'documents_DOCUMENTID' => $documentID,
 							'users_ACKNOWLEDGEDBY' => $userIDByDepartment['users_USERID']
@@ -2351,9 +2351,9 @@ class controller extends CI_Controller
 				$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
 				$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
 
-				$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-				$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-				$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+				// $data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+				// $data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+				// $data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
 				$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 				$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();

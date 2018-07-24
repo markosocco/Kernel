@@ -1089,6 +1089,43 @@
 						}
 						// END: Checks for dependecies
 
+						// START: Checks for responsible
+						$responsiblePerson = '';
+						foreach ($responsible as $r) {
+							if($r['tasks_TASKID'] == $value['TASKID']){
+								$responsiblePerson = $r['FIRSTNAME'] . " " . $r['LASTNAME'];
+							}
+						}
+						// END: Checks for responsible
+
+						// START: Checks for accountable
+						$accountablePerson = '';
+						foreach ($accountable as $a) {
+							if($r['tasks_TASKID'] == $value['TASKID']){
+								$accountablePerson = $a['FIRSTNAME'] . " " . $a['LASTNAME'];
+							}
+						}
+						// END: Checks for accountable
+
+						// START: Checks for consulted
+						$consultedPerson = '';
+						foreach ($consulted as $c) {
+							if($c['tasks_TASKID'] == $value['TASKID']){
+								$consultedPerson = $c['FIRSTNAME'] . " " . $c['LASTNAME'];
+							}
+						}
+						// END: Checks for consulted
+
+						// START: Checks for informed
+						$informedPerson = '';
+						foreach ($informed as $i) {
+							if($i['tasks_TASKID'] == $value['TASKID']){
+								$informedPerson = $c['FIRSTNAME'] . " " . $i['LASTNAME'];
+							}
+						}
+						// END: Checks for informed
+
+
 
 						//START: CHECKS IF RACI IS EMPTY
 						if($accountable == NULL || $consulted == NULL || $informed == NULL ){
@@ -1116,10 +1153,10 @@
 										'name': '" . $value['TASKTITLE'] . "',
 										'actualStart': '" . $formatted_startDate . "',
 										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1135,10 +1172,10 @@
 										'name': '" . $value['TASKTITLE'] . "',
 										'actualStart': '" . $formatted_startDate . "',
 										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1156,10 +1193,10 @@
 										'name': '" . $value['TASKTITLE'] . "',
 										'actualStart': '" . $formatted_startDate . "',
 										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1177,10 +1214,10 @@
 										'name': '" . $value['TASKTITLE'] . "',
 										'actualStart': '" . $formatted_startDate . "',
 										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
@@ -1197,10 +1234,10 @@
 										'name': '" . $value['TASKTITLE'] . "',
 										'actualStart': '" . $formatted_startDate . "',
 										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
@@ -1219,10 +1256,10 @@
 										'name': '" . $value['TASKTITLE'] . "',
 										'actualStart': '" . $formatted_startDate . "',
 										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
