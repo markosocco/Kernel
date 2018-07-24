@@ -155,9 +155,9 @@
 							</div>
 							<!-- /.box -->
 						</div>
+					</div>
 					<?php endif;?>
 
-				</div>
 
 				<!-- END MANAGE TABLE -->
 

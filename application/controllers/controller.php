@@ -232,6 +232,21 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function parkProject()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$id = $this->input->post("project_ID");
+			$this->model->parkProjectByID($id);
+			$this->myProjects();
+		}
+	}
+
 	public function myTeam()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -2135,7 +2150,7 @@ class controller extends CI_Controller
 			{
 				$dashboard =$this->input->post("dashboard");
 				$this->session->set_flashdata('dashboard', $dashboard);
-				
+
 				$rfc =$this->input->post("rfc");
 				$this->session->set_flashdata('rfc', $rfc);
 				$requestID = $this->input->post("request_ID");
