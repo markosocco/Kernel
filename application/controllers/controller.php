@@ -1238,8 +1238,8 @@ class controller extends CI_Controller
 
 		$sDate = date_create($startDate);
 		$eDate = date_create($this->input->post('endDate'));
-		$diff = date_diff($eDate, $sDate);
-		$dateDiff = $diff->format('%d');
+		$diff = date_diff($eDate, $sDate, true);
+		$dateDiff = $diff->format('%R%a');
 
 		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
 		$data['project'] = $this->model->addProject($data);
@@ -1425,8 +1425,8 @@ class controller extends CI_Controller
 
 		$sDate = date_create($data['project']['PROJECTSTARTDATE']);
 		$eDate = date_create($data['project']['PROJECTENDDATE']);
-		$diff = date_diff($eDate, $sDate);
-		$dateDiff = $diff->format('%d');
+		$diff = date_diff($eDate, $sDate, true);
+		$dateDiff = $diff->format('%R%a');
 
 		$data['dateDiff'] = $dateDiff;
 
@@ -1938,8 +1938,8 @@ class controller extends CI_Controller
 
 		  $sDate = date_create($data['project']['PROJECTSTARTDATE']);
 		  $eDate = date_create($data['project']['PROJECTENDDATE']);
-		  $diff = date_diff($eDate, $sDate);
-		  $dateDiff = $diff->format('%d');
+			$diff = date_diff($eDate, $sDate, true);
+			$dateDiff = $diff->format('%R%a');
 
 		  $data['dateDiff'] = $dateDiff;
 
