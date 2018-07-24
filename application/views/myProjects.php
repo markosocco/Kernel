@@ -90,9 +90,11 @@
             <?php foreach($templates as $template):?>
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <a class = "project" data-id = "">
+              <a class = "project clickable" data-id = "<?php echo $template['PROJECTSTATUS']; ?>">
               <div class="small-box bg-purple">
                 <div class="inner">
+                  <form action = 'projectGantt'  method="POST">
+                  </form>
                   <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
                   <?php
                     $enddate = date_create($template['PROJECTACTUALENDDATE']);
@@ -130,7 +132,7 @@
 
                   <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <a class = "project clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
                     <div class="small-box bg-teal">
                       <div class="inner">
                         <h2>100%</h2>
@@ -163,7 +165,7 @@
 
                   <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <a class = "project clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
                     <div class="small-box bg-red">
                       <div class="inner">
 
@@ -205,7 +207,7 @@
 
                   <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <a class = "project clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
                     <div class="small-box bg-green">
                       <div class="inner">
 
@@ -245,7 +247,7 @@
                 <?php foreach ($plannedProjects as $row):?>
                   <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
+                    <a class = "project clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
                     <div class="small-box bg-yellow">
                       <div class="inner">
                         <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -284,7 +286,7 @@
 
                   <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <a class = "project" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <a class = "project clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
                     <div class="small-box btn-info">
                       <div class="inner">
 
@@ -317,7 +319,7 @@
                 <?php foreach ($draftedProjects as $row):?>
                   <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <a class = "project" data-id = "<?php echo $row['PROJECTID']; ?>">
+                    <a class = "project clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
                       <div id="draftBox" class="small-box bg-maroon">
                         <div class="inner">
                           <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -535,7 +537,7 @@
 
   								<div class="col-lg-3 col-xs-6">
   									<!-- small box -->
-  									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
+  									<a class = "myTeam clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
   									<div class="small-box bg-teal">
   										<div class="inner">
 
@@ -568,7 +570,7 @@
 
   								<div class="col-lg-3 col-xs-6">
   									<!-- small box -->
-  									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
+  									<a class = "myTeam clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
   									<div class="small-box bg-red">
   										<div class="inner">
 
@@ -611,7 +613,7 @@
 
   								<div class="col-lg-3 col-xs-6">
   									<!-- small box -->
-  									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
+  									<a class = "myTeam clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
   									<div class="small-box bg-green">
   										<div class="inner">
 
@@ -651,7 +653,7 @@
   							<?php foreach ($plannedProjects as $row):?>
   								<div class="col-lg-3 col-xs-6">
   									<!-- small box -->
-  									<a class = "myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
+  									<a class = "myTeam clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
   									<div class="small-box bg-yellow">
   										<div class="inner">
   											<h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -685,7 +687,7 @@
 
   								<div class="col-lg-3 col-xs-6">
   									<!-- small box -->
-  									<a class = "myTeam" data-id = "<?php echo $value['PROJECTID']; ?>">
+  									<a class = "myTeam clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
   									<div class="small-box btn-info">
   										<div class="inner">
 
@@ -719,7 +721,7 @@
   							<?php foreach ($draftedProjects as $row):?>
   								<div class="col-lg-3 col-xs-6">
   									<!-- small box -->
-  									<a class = "myTeam" data-id = "<?php echo $row['PROJECTID']; ?>">
+  									<a class = "myTeam clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
   									<div id="draftBox" class="small-box bg-maroon">
   										<div class="inner">
   											<h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -776,7 +778,7 @@
                           $completedEnd = date_create($value['PROJECTENDDATE']);
                         ?>
 
-                      <tr class="myTeam completedTeamList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                      <tr class="myTeam completedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
@@ -796,7 +798,7 @@
                         $delayedEnd = date_create($value['PROJECTENDDATE']);
                       ?>
 
-                    <tr class="myTeam delayedTeamList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="myTeam delayedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                       <form class="teamgantt" action = 'teamGantt'  method="POST">
                       </form>
@@ -824,7 +826,7 @@
                       $ongoingEnd = date_create($value['PROJECTENDDATE']);
                     ?>
 
-                  <tr class="myTeam ongoingTeamList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                  <tr class="myTeam ongoingTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                     <form class="teamgantt" action = 'teamGantt'  method="POST">
                     </form>
@@ -852,7 +854,7 @@
                     $plannedEnd = date_create($row['PROJECTENDDATE']);
                   ?>
 
-                  <tr class="myTeam plannedTeamList" data-id = "<?php echo $row['PROJECTID']; ?>">
+                  <tr class="myTeam plannedTeamList clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
 
                     <form class="teamgantt" action = 'teamGantt'  method="POST">
                     </form>
@@ -872,7 +874,7 @@
                     $parkedEnd = date_create($value['PROJECTENDDATE']);
                   ?>
 
-                  <tr class="myTeam parkedTeamList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                  <tr class="myTeam parkedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                     <form class="teamgantt" action = 'teamGantt'  method="POST">
                     </form>
@@ -900,7 +902,7 @@
                     $draftedEnd = date_create($value['PROJECTENDDATE']);
                   ?>
 
-                  <tr class="myTeam draftedTeamList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                  <tr class="myTeam draftedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                     <form class="teamgantt" action = 'teamGantt'  method="POST">
                     </form>

@@ -242,16 +242,17 @@
 										</tr>
 										</thead>
 										<tbody>
-										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
-											<td>Store Opening - SM Southmall</td>
-											<td align="center">Dec 73, 2080</td>
-											<td align="center">3 days</td>
-										</tr>
-										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
-											<td>Store Opening - SM Southmall</td>
-											<td align="center">Dec 73, 2080</td>
-											<td align="center">75 days</td>
-										</tr>
+
+											<?php foreach($editProjects as $editProject):?>
+												<?php $startdate = date_create($editProject['PROJECTSTARTDATE']);?>
+
+												<tr class="clickable" data-id="<?php echo $editProject['PROJECTID'] ;?>'">
+													<td><?php echo $editProject['PROJECTTITLE'];?></td>
+													<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
+													<td align="center"><?php echo $editProject['launching'];?></td>
+												</tr>
+											<?php endforeach;?>
+
 										</tbody>
 									</table>
 								</div>

@@ -26,8 +26,9 @@
 						<small><?php echo $projectProfile['PROJECTTITLE']; ?> (<?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y");?>)</small>
 					</h1>
 					<ol class="breadcrumb">
-						<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
+						<li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
 						<!-- <li class="active">Here</li> -->
+						<li class='active'>Documents</li>
 					</ol>
 				</section>
 
@@ -42,7 +43,9 @@
 		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Upload</button>
+										<?php if($projectProfile['PROJECTSTATUS'] != 'Completed' &&  $projectProfile['PROJECTSTATUS'] != 'Archived'):?>
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Upload</button>
+										<?php endif;?>
 									</h3>
 									<!-- <?php if ($documentsByProject != null):?>
 			              <div class="box-tools">

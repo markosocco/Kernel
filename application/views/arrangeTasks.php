@@ -176,10 +176,10 @@
 																				<div class="input-group-addon">
 																					<i class="fa fa-calendar"></i>
 																				</div>
-																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $templateMainActivity[$key]['TASKID'];?>-0"
+																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $tSub['TASKID'];?>-0"
 																				data-mainAct="<?php echo $tSub['TASKID'];?>" data-num="0"
-																				data-mainStart<?php echo $tSub['TASKID']; ?> = "<?php echo $tSub['TASKSTARTDATE']; ?>"
-																				data-mainEnd<?php echo $tSub['TASKID']; ?> = "<?php echo $tSub['TASKENDDATE']; ?>" required>
+																				data-mainStart<?php echo $tSub['TASKID']; ?> = "<?php echo $value['TASKSTARTDATE']; ?>"
+																				data-mainEnd<?php echo $tSub['TASKID']; ?> = "<?php echo $value['TASKENDDATE']; ?>" required>
 																			</div>
 																			<!-- /.input group -->
 																		</div></td>
@@ -499,7 +499,6 @@
 					var mainAct = $(this).attr('data-mainAct');
   				var mainStart = $("#start_" + mainAct + "-0").attr('data-mainStart' + mainAct);
 					var mainEnd = $("#start_" + mainAct + "-0").attr('data-mainEnd' + mainAct);
-
 				    $(this).datepicker({
 							format: 'yyyy-mm-dd',
 		  	       autoclose: true,
@@ -531,8 +530,8 @@
 				}
 
 				var mainEnd = $("#start_" + mainAct + "-0").attr('data-mainEnd' + mainAct);
-				// $("#end_" + mainAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + mainAct + "-" + counter).val()));
-				// $("#end_" + mainAct + "-" + counter).data('datepicker').setEndDate(new Date(mainEnd));
+				$("#end_" + mainAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + mainAct + "-" + counter).val()));
+				$("#end_" + mainAct + "-" + counter).data('datepicker').setEndDate(new Date(mainEnd));
 
  			 });
 
