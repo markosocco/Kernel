@@ -324,14 +324,20 @@ class controller extends CI_Controller
 			);
 
 			$updateTasks = $this->model->updateTaskDone($id, $data);
-			//TODO: Nami Notif -> Task completed
 
-			// START: LOG DETAILS
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
 			$taskDetails = $this->model->getTaskByID($id);
 			$taskTitle = $taskDetails['TASKTITLE'];
+
 			$projectID = $taskDetails['projects_PROJECTID'];
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-			$details = $userName . " has completed " . $taskTitle;
+			$projectDetails = $this->model->getProjectByID($projectID);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
+
+			$details = $userName . " has completed " . $taskTitle . ".";
 
 			$logData = array (
 				'LOGDETAILS' => $details,
@@ -341,6 +347,64 @@ class controller extends CI_Controller
 
 			$this->model->addToProjectLogs($logData);
 			// END: LOG DETAILS
+
+			$projectOwnerID = $projectDetails['users_USERID'];
+
+			// START: Notifications
+			$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle;
+
+			// notify project owner
+			$notificationData = array(
+				'users_USERID' => $projectOwnerID,
+				'DETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'status' => 'Unread'
+			);
+
+			$this->model->addNotification($notificationData);
+
+			// notify next task person
+			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
+			if($postTasksData['nextTaskID'] != NULL){
+
+				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
+
+					$nextTaskID = $nextTaskDetails['tasks_POSTTASKID'];
+					$postTasksData['users'] = $this->model->getRACIbyTask($nextTaskID);
+
+					foreach($postTasksData['users'] as $postTasksDataUsers){
+						$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
+
+						$notificationData = array(
+							'users_USERID' => $postTasksDataUsers['users_USERID'],
+							'DETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'status' => 'Unread'
+						);
+
+						$this->model->addNotification($notificationData);
+					}
+				}
+			}
+
+			// notify next ACI
+			$data['ACI'] = $this->model->getACIbyTask($id);
+			if($data['ACI'] != NULL) {
+
+				foreach($data['ACI'] as $ACIusers){
+
+					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle;
+
+					$notificationData = array(
+						'users_USERID' => $ACIusers['users_USERID'],
+						'DETAILS' => $details,
+						'TIMESTAMP' => date('Y-m-d H:i:s'),
+						'status' => 'Unread'
+					);
+					$this->model->addNotification($notificationData);
+				}
+			}
+			// END: Notification
 
 			// Check and Complete Main and Sub Activities
 			$parentID = $this->model->getParentTask($id);
@@ -352,7 +416,44 @@ class controller extends CI_Controller
 							'TASKACTUALENDDATE' => date('Y-m-d')
 				);
 				$this->model->updateTaskDone($parentID['tasks_TASKPARENT'], $subData); // Complete Sub Activity
-				//TODO: Nami Logs/Notif -> Sub Activity Completed
+
+				// START OF LOGS/NOTIFS
+				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+				$taskDetails = $this->model->getTaskByID($id);
+				$taskTitle = $taskDetails['TASKTITLE'];
+
+				$projectID = $taskDetails['projects_PROJECTID'];
+				$projectDetails = $this->model->getProjectByID($projectID);
+				$projectTitle = $projectDetails['PROJECTTITLE'];
+
+				// START: LOG DETAILS
+
+				$details = $userName . " has completed Sub Activity - " . $taskTitle . ".";
+
+				$logData = array (
+					'LOGDETAILS' => $details,
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
+					'projects_PROJECTID' => $projectID
+				);
+
+				$this->model->addToProjectLogs($logData);
+				// END: LOG DETAILS
+
+				$projectOwnerID = $projectDetails['users_USERID'];
+
+				// START: Notifications
+				$details = "Sub Activty - " . $taskTitle . " has been completed by " . $userName . " in " . $projectTitle . ".";
+
+				$notificationData = array(
+					'users_USERID' => $projectOwnerID,
+					'DETAILS' => $details,
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
+					'status' => 'Unread'
+				);
+
+				$this->model->addNotification($notificationData);
+				// END: Notification
 
 				$mainID = $this->model->getParentTask($parentID['tasks_TASKPARENT']);
 				$completeSubs = $this->model->checkTasksStatus($mainID['tasks_TASKPARENT']);
@@ -363,7 +464,43 @@ class controller extends CI_Controller
 								'TASKACTUALENDDATE' => date('Y-m-d')
 					);
 					$this->model->updateTaskDone($mainID['tasks_TASKPARENT'], $mainData); // Complete Main Activity
-					//TODO: Nami Logs/Notif -> Main Activity Completed
+
+					// START OF LOGS/NOTIFS
+					$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+					$taskDetails = $this->model->getTaskByID($id);
+					$taskTitle = $taskDetails['TASKTITLE'];
+
+					$projectID = $taskDetails['projects_PROJECTID'];
+					$projectDetails = $this->model->getProjectByID($projectID);
+					$projectTitle = $projectDetails['PROJECTTITLE'];
+
+					// START: LOG DETAILS
+					$details = $userName . " has completed Main Activity - " . $taskTitle . ".";
+
+					$logData = array (
+						'LOGDETAILS' => $details,
+						'TIMESTAMP' => date('Y-m-d H:i:s'),
+						'projects_PROJECTID' => $projectID
+					);
+
+					$this->model->addToProjectLogs($logData);
+					// END: LOG DETAILS
+
+					$projectOwnerID = $projectDetails['users_USERID'];
+
+					// START: Notifications
+					$details = "Main Activity - " . $taskTitle . " has been completed by " . $userName . " in " . $projectTitle . ".";
+
+					$notificationData = array(
+						'users_USERID' => $projectOwnerID,
+						'DETAILS' => $details,
+						'TIMESTAMP' => date('Y-m-d H:i:s'),
+						'status' => 'Unread'
+					);
+
+					$this->model->addNotification($notificationData);
+					// END: Notification
 
 					// Check and Complete a Project
 					$completeProject = $this->model->checkProjectStatus($mainID['projects_PROJECTID']);
@@ -374,8 +511,49 @@ class controller extends CI_Controller
 									'PROJECTACTUALENDDATE' => date('Y-m-d')
 						);
 						$this->model->completeProject($mainID['projects_PROJECTID'], $projectData); // Complete Project
-						//TODO: Nami Logs/Notif -> Project Completed
 
+						// START OF LOGS/NOTIFS
+						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+						$taskDetails = $this->model->getTaskByID($id);
+						$taskTitle = $taskDetails['TASKTITLE'];
+
+						$projectID = $taskDetails['projects_PROJECTID'];
+						$projectDetails = $this->model->getProjectByID($projectID);
+						$projectTitle = $projectDetails['PROJECTTITLE'];
+
+						// START: LOG DETAILS
+						$details = "Project completed!";
+
+						$logData = array (
+							'LOGDETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'projects_PROJECTID' => $projectID
+						);
+
+						$this->model->addToProjectLogs($logData);
+						// END: LOG DETAILS
+
+						$projectOwnerID = $projectDetails['users_USERID'];
+
+						$data['projectUsers'] = $this->model->getAllUsersByProject($projectIDs);
+
+						if($data['projectUsers'] != NULL){
+							foreach($data['projectUsers'] as $projectUsers ) {
+								// START: Notifications
+								$details = $projectTitle . " has been completed and will be archived in 7 days.";
+
+								$notificationData = array(
+									'users_USERID' => $projectOwnerID,
+									'DETAILS' => $details,
+									'TIMESTAMP' => date('Y-m-d H:i:s'),
+									'status' => 'Unread'
+								);
+
+								$this->model->addNotification($notificationData);
+							}
+						}
+						// END: Notification
 					}
 				}
 			}
