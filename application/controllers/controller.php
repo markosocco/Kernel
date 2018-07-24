@@ -666,7 +666,7 @@ class controller extends CI_Controller
 				$projectDetails = $this->model->getProjectByID($projectID);
 				$projectTitle = $projectDetails['PROJECTTITLE'];
 
-				$userDetails = $this->model->$this->model->getUserByID($deptID);
+				$userDetails = $this->model->getUserByID($deptID);
 				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 				// START: LOG DETAILS
@@ -719,7 +719,7 @@ class controller extends CI_Controller
 				$projectDetails = $this->model->getProjectByID($projectID);
 				$projectTitle = $projectDetails['PROJECTTITLE'];
 
-				$userDetails = $this->model->$this->model->getUserByID($empID);
+				$userDetails = $this->model->getUserByID($empID);
 				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 				// START: LOG DETAILS
@@ -1116,12 +1116,13 @@ class controller extends CI_Controller
 		$taskDetails = $this->model->getTaskByID($taskID);
 		$taskTitle = $taskDetails['TASKTITLE'];
 
-		$projectID = $taskDetails['projects_PROJECTID'];
+		// $projectID = $taskDetails['projects_PROJECTID'];
 		$projectDetails = $this->model->getProjectByID($projectID);
 		$projectTitle = $projectDetails['PROJECTTITLE'];
 
 		$details = $userName . " has " . $status . " change request for " . $taskTitle . ".";
 
+		// it's not working sa deny :(
 		$logData = array (
 			'LOGDETAILS' => $details,
 			'TIMESTAMP' => date('Y-m-d H:i:s'),
@@ -1191,7 +1192,7 @@ class controller extends CI_Controller
 					$projectDetails = $this->model->getProjectByID($projectID);
 					$projectTitle = $projectDetails['PROJECTTITLE'];
 
-					$userDetails = $this->model->getTaskByID($this->input->post('responsibleEmp'));
+					$userDetails = $this->model->getUserByID($responsibleEmp);
 					$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 					// START: LOG DETAILS
@@ -1243,7 +1244,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($deptID);
+						$userDetails = $this->model->getUserByID($deptID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1294,7 +1295,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($empID);
+						$userDetails = $this->model->getUserByID($empID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1347,7 +1348,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($deptID);
+						$userDetails = $this->model->getUserByID($deptID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1398,7 +1399,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($empID);
+						$userDetails = $this->model->getUserByID($empID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1450,7 +1451,7 @@ class controller extends CI_Controller
 					$projectDetails = $this->model->getProjectByID($projectID);
 					$projectTitle = $projectDetails['PROJECTTITLE'];
 
-					$userDetails = $this->model->$this->model->getUserByID($deptID);
+					$userDetails = $this->model->getUserByID($deptID);
 					$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 					// START: LOG DETAILS
@@ -1643,7 +1644,7 @@ class controller extends CI_Controller
 
 			// notify project owner
 			$notificationData = array(
-				'users_USERID' => $projectOwnerID,
+				'users_USERID' => $projectDetails['users_USERID'],
 				'DETAILS' => $details,
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread'
@@ -1652,7 +1653,7 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next task person
-			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
+			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
 			if($postTasksData['nextTaskID'] != NULL){
 
 				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
@@ -1676,7 +1677,7 @@ class controller extends CI_Controller
 			}
 
 			// notify next ACI
-			$data['ACI'] = $this->model->getACIbyTask($id);
+			$data['ACI'] = $this->model->getACIbyTask($taskID);
 			if($data['ACI'] != NULL) {
 
 				foreach($data['ACI'] as $ACIusers){
@@ -2135,7 +2136,7 @@ class controller extends CI_Controller
 			{
 				$dashboard =$this->input->post("dashboard");
 				$this->session->set_flashdata('dashboard', $dashboard);
-				
+
 				$rfc =$this->input->post("rfc");
 				$this->session->set_flashdata('rfc', $rfc);
 				$requestID = $this->input->post("request_ID");
