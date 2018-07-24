@@ -79,10 +79,56 @@ class controller extends CI_Controller
 
 				$this->model->updateTaskStatus($currentDate);
 				$this->model->updateProjectStatus($currentDate);
-				// $this->model->updateProjectWeeklyProgress($currentDate);
 
+// START
 
-				redirect('controller/dashboard');
+			// 	$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			// 	$data['ongoingProjectofUser'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
+			// 	$data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
+			//
+			// // 	$sDate = date_create($data['lastWeekProgress']);
+			// // 	$diff = date_diff($eDate, $sDate, true);
+			// // 	$dateDiff = $diff->format('%R%a');
+			// //
+		  // // $data['dateDiff'] = $dateDiff;
+			//
+			// 	foreach($data['lastWeekProgress'] as $lastProgress){
+			//
+			// 		$lastDate = date_create(strtotime($lastProgress['DATE']));
+			// 		$curDate =  date('Y-m-d'); // date_create($data['lastWeekProgress']);
+			// 		$diff = date_diff($curDate, $lastDate, true);
+			// 		$dateDiff = $diff->format('%d%a');
+			//
+			// 		if($dateDiff < 5) {
+			// 			echo "<script>console.log('yes');</script>";
+			// 		}
+			// 	}
+
+				// foreach($data['ongoingProjectProgress'] as $projectProgress){
+				// 	foreach($data['ongoingProjectofUser'] as $ongoingProject){
+				// 		if($ongoingProject['PROJECTID'] == $projectProgress['projects_PROJECTID']){
+				//
+				// 			$progress = $projectProgress['projectProgress'];
+				//
+				// 			$notificationData = array(
+				// 				'users_USERID' => $projectOwnerID,
+				// 				'DETAILS' => $details,
+				// 				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				// 				'status' => 'Unread'
+				// 			);
+				// 			$progressData = array(
+				//
+				//
+				//
+				// 			),
+				//
+				// 			$this->model->insertToProjectWeeklyProgress($progressData, $currentDate);
+				// 		}
+				// 	}
+				// 	// $this->model->updateProjectWeeklyProgress($currentDate);
+				// }
+// END
+				// redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -2504,15 +2550,6 @@ class controller extends CI_Controller
 			if (isset($templates))
 			{
 				$this->session->set_flashdata('templates', $templates);
-
-				$data['templateProject'] = $this->model->getProjectByID($templates);
-				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
-				$data['templateRaci'] = $this->model->getRaci($templates);
-				$data['templateUsers'] = $this->model->getAllUsers();
 			}
 
 			// $this->output->enable_profile(TRUE);
@@ -2672,22 +2709,6 @@ class controller extends CI_Controller
 			$dateDiff = $diff->format('%R%a');
 
 		  $data['dateDiff'] = $dateDiff;
-
-			$templates = $this->input->post('templates');
-
-			if (isset($templates))
-			{
-				$this->session->set_flashdata('templates', $templates);
-
-				$data['templateProject'] = $this->model->getProjectByID($templates);
-				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
-				$data['templateRaci'] = $this->model->getRaci($templates);
-				$data['templateUsers'] = $this->model->getAllUsers();
-			}
 
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');
