@@ -1009,6 +1009,7 @@ class controller extends CI_Controller
 					$this->model->addNotification($notificationData);
 				}
 			// END: Notification
+			}
 		}
 		else
 		{
@@ -1081,7 +1082,8 @@ class controller extends CI_Controller
 					);
 					$this->model->addNotification($notificationData);
 				}
-			// END: Notification
+			}
+		// END: Notification
 		}
 		$this->model->addRFC($data);
 
