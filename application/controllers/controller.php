@@ -163,9 +163,9 @@ class controller extends CI_Controller
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
 			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
 
-			// $data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			// $data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			// $data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+			$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
 			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 			$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
@@ -933,11 +933,18 @@ class controller extends CI_Controller
 				'REQUESTEDDATE' => date('Y-m-d')
 			);
 
-			// START: LOG DETAILS
+			// START OF LOGS/NOTIFS
 			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-			$taskDetails = $this->model->getTaskByID($this->input->post("task_ID"));
+
+			$taskID = $this->input->post("task_ID");
+			$taskDetails = $this->model->getTaskByID($taskID);
 			$taskTitle = $taskDetails['TASKTITLE'];
+
 			$projectID = $taskDetails['projects_PROJECTID'];
+			$projectDetails = $this->model->getProjectByID($projectID);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
 			$details = $userName . " requested a change in performer for " . $taskTitle . ".";
 
 			$logData = array (
@@ -949,21 +956,25 @@ class controller extends CI_Controller
 			$this->model->addToProjectLogs($logData);
 			// END: LOG DETAILS
 
-			//TODO: Nami Notif -> RFC Submitted
+			// START: Notifications
+			$details = $userName . " requested a change in performer for " . $taskTitle . ".";
+			$taggedUserID = "";
 
-			// // START: Notifications
-			// $projectDetails = $this->model->getProjectByID($projectID);
-			// $projectTitle = $projectDetails['PROJECTTITLE'];
-			// $details = $userName . " requested a change in performer for " . $taskTitle "";
-			// $notificationData = array(
-			// 	'users_USERID' => $empID,
-			// 	'DETAILS' => $details,
-			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
-			// 	'status' => 'Unread'
-			// );
-			//
-			// $this->model->addNotification($notificationData);
-			// // END: Notification
+			if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
+				$taggedUserID = $_SESSION['users_SUPERVISORS'];
+			} else {
+				$taggedUserID = $projectDetails['users_USERID'];
+			}
+
+			$notificationData = array(
+				'users_USERID' => $taggedUserID,
+				'DETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'status' => 'Unread'
+			);
+
+			$this->model->addNotification($notificationData);
+			// END: Notification
 
 		}
 		else
@@ -995,22 +1006,25 @@ class controller extends CI_Controller
 			$this->model->addToProjectLogs($logData);
 			// END: LOG DETAILS
 
-			//TODO: Nami Notif -> RFC Submitted
+			// START: Notifications
+			$details = $userName . " requested a change in date/s for " . $taskTitle . ".";
+			$taggedUserID = "";
 
-			// // START: Notifications
-			// $projectDetails = $this->model->getProjectByID($projectID);
-			// $projectTitle = $projectDetails['PROJECTTITLE'];
-			// $details = $userName . " requested a change in dates for " . $taskTitle "";
-			// $notificationData = array(
-			// 	'users_USERID' => $empID,
-			// 	'DETAILS' => $details,
-			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
-			// 	'status' => 'Unread'
-			// );
-			//
-			// $this->model->addNotification($notificationData);
-			// // END: Notification
+			if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
+				$taggedUserID = $_SESSION['users_SUPERVISORS'];
+			} else {
+				$taggedUserID = $projectDetails['users_USERID'];
+			}
 
+			$notificationData = array(
+				'users_USERID' => $taggedUserID,
+				'DETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'status' => 'Unread'
+			);
+
+			$this->model->addNotification($notificationData);
+			// END: Notification
 		}
 		$this->model->addRFC($data);
 
