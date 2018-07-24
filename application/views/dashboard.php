@@ -82,105 +82,71 @@
 
 				<!-- MANAGE TABLE -->
 				<!-- Main row -->
-				<div class="row">
-					<!-- Left col -->
-					<div class="col-md-6">
-						<div class="box box-danger">
-							<div class="box-header with-border">
-								<h3 class="box-title">Projects I'm Working On</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<table class="table table-hover no-margin" id="projWeeklyProgress">
-										<thead>
-										<tr>
-											<th>Name</th>
-											<th class="text-center">Target End Date</th>
-											<th class="text-center">Progress</th>
-											<th class="text-center">Until Launch</th>
-										</tr>
-										</thead>
-										<tbody>
-											<?php foreach($ongoingProjects as $key => $ongoingProject): ?>
-												<tr class = "projects clickable" data-id="<?php echo $ongoingProject['PROJECTID'];?>">
+				<?php if($ongoingProjects != null):?>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+									<h3 class="box-title">Projects I'm Working On</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<table class="table table-hover no-margin" id="projWeeklyProgress">
+											<thead>
+											<tr>
+												<th>Name</th>
+												<th class="text-center">Last Week's Progress</th>
+												<th class="text-center">Current Progress</th>
+												<th class="text-center">Target End Date</th>
+												<th class="text-center">Days Remaining</th>
+											</tr>
+											</thead>
+											<tbody>
+												<?php foreach($ongoingProjects as $key => $ongoingProject): ?>
+													<tr class = "projects clickable" data-id="<?php echo $ongoingProject['PROJECTID'];?>">
 
-													<form class='projectForm' action = 'projectGantt' method="POST">
-														<input type ='hidden' name='dashboard' value='0'>
-													</form>
+														<form class='projectForm' action = 'projectGantt' method="POST">
+															<input type ='hidden' name='dashboard' value='0'>
+														</form>
 
-													<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
-													<?php
-													if($ongoingProject['PROJECTADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-														$endDate = date_create($ongoingProject['PROJECTENDDATE']);
-													else
-														$endDate = date_create($ongoingProject['PROJECTADJUSTEDENDDATE']);
-													?>
-													<td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
-													<td align="center">
+														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
+														<td align="center">
+															NAMI%
+														</td>
+														<td align="center">
+															<?php
+			                          foreach ($ongoingProjectProgress as $row)
+			                          {
+			                            if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
+			                            {
+			                              echo $row['projectProgress'];
+			                            }
+			                          } ?>%
+														</td>
 														<?php
-		                          foreach ($ongoingProjectProgress as $row)
-		                          {
-		                            if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
-		                            {
-		                              echo $row['projectProgress'];
-		                            }
-		                          } ?>%</td>
+														if($ongoingProject['PROJECTADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+															$endDate = date_create($ongoingProject['PROJECTENDDATE']);
+														else
+															$endDate = date_create($ongoingProject['PROJECTADJUSTEDENDDATE']);
+														?>
+														<td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
 
-
-
-													<td align="center"><?php echo $ongoingProject['datediff'];?> day/s</td>
-												</tr>
-											<?php endforeach;?>
-										</tbody>
-									</table>
+														<td align="center"><?php echo $ongoingProject['datediff'];?>
+														</td>
+													</tr>
+												<?php endforeach;?>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.table-responsive -->
 								</div>
-								<!-- /.table-responsive -->
+								<!-- /.box-body -->
+								<!-- /.box-footer -->
 							</div>
-							<!-- /.box-body -->
-							<!-- /.box-footer -->
+							<!-- /.box -->
 						</div>
-						<!-- /.box -->
-					</div>
-
-					<!-- Right col -->
-					<div class="col-md-6">
-						<div class="box box-danger">
-							<div class="box-header with-border">
-								<h3 class="box-title">Projects I Need To Edit</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<table class="table table-hover no-margin" id="projWeeklyProgress">
-										<thead>
-										<tr>
-											<th>Project</th>
-											<th class="text-center">Start Date</th>
-											<th class="text-center">Until Launch</th>
-										</tr>
-										</thead>
-										<tbody>
-										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
-											<td>Store Opening - SM Southmall</td>
-											<td align="center">Dec 73, 2080</td>
-											<td align="center">3 days</td>
-										</tr>
-										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
-											<td>Store Opening - SM Southmall</td>
-											<td align="center">Dec 73, 2080</td>
-											<td align="center">75 days</td>
-										</tr>
-										</tbody>
-									</table>
-								</div>
-								<!-- /.table-responsive -->
-							</div>
-							<!-- /.box-body -->
-							<!-- /.box-footer -->
-						</div>
-						<!-- /.box -->
-					</div>
+					<?php endif;?>
 
 				</div>
 
@@ -249,10 +215,11 @@
 					</div>
 					<?php endif;?>
 
+					<!-- Right col -->
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Weekly Project Progress</h3>
+								<h3 class="box-title">Projects I Need To Edit</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -261,17 +228,20 @@
 										<thead>
 										<tr>
 											<th>Project</th>
-											<th class="text-center">Launch Date</th>
-											<th class="text-center">Last Week's Progress</th>
-											<th class="text-center">This Week's Progress</th>
+											<th class="text-center">Start Date</th>
+											<th class="text-center">Until Launch</th>
 										</tr>
 										</thead>
 										<tbody>
 										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
 											<td>Store Opening - SM Southmall</td>
 											<td align="center">Dec 73, 2080</td>
-											<td align="center">80.79%</td>
-											<td align="center">90.80%</td>
+											<td align="center">3 days</td>
+										</tr>
+										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
+											<td>Store Opening - SM Southmall</td>
+											<td align="center">Dec 73, 2080</td>
+											<td align="center">75 days</td>
 										</tr>
 										</tbody>
 									</table>
@@ -305,9 +275,9 @@
 											<tr>
 												<th>Date Requested</th>
 												<th class="text-center">Request Type</th>
-												<th>Requester</th>
 												<th>Project</th>
 												<th>Task</th>
+												<th>Requester</th>
 											</tr>
 											</thead>
 											<tbody>
@@ -334,9 +304,9 @@
 																<i class="fa fa-calendar"></i>
 															<?php endif;?>
 														</td>
-														<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
 														<td><?php echo $changeRequest['PROJECTTITLE'];?></td>
 														<td><?php echo $changeRequest['TASKTITLE'];?></td>
+														<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
 													</tr>
 												<?php endforeach;?>
 											</tbody>
