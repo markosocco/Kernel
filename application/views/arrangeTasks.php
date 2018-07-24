@@ -20,16 +20,16 @@
 						<?php $diff = $dateDiff + 1;?>
 						<small><?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y"). "\t(" . $diff;?>
 						<?php if ($dateDiff < 1):?>
-							day remaining)</small>
+							day)</small>
 						<?php else:?>
-							days remaining)</small>
+							days)</small>
 						<?php endif;?>
 
 		      </h1>
 		      <ol class="breadcrumb">
-		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-		        <li class="active">New Project</li>
-						<li class="active">Main Activity</li>
+		        <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
+		        <li>New Project</li>
+						<li>Main Activity</li>
 						<li class="active">Sub Activity</li>
 		      </ol>
 		    </section>

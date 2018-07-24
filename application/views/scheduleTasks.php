@@ -12,21 +12,26 @@
 		      <h1>
 		        <?php echo $project['PROJECTTITLE'] ?>
 
-						<?php if ($dateDiff <= 1):
-							$diff = $dateDiff + 1;?>
-							<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " day remaining"?></small>
-							<?php endif; ?>
+						<?php
+						$startdate = date_create($project['PROJECTSTARTDATE']);
+						$enddate = date_create($project['PROJECTENDDATE']);
+						?>
 
-						<?php if ($dateDiff > 1):
-							$diff = $dateDiff + 1;
-							?>
-						<small><?php echo $project['PROJECTSTARTDATE'] . " - " . $project['PROJECTENDDATE'] . "\t" . $diff . " days remaining"?></small>
-						<?php endif; ?>
+						<?php $diff = $dateDiff + 1;?>
+						<small><?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y"). "\t(" . $diff;?>
+						<?php if ($dateDiff < 1):?>
+							day)</small>
+						<?php else:?>
+							days)</small>
+						<?php endif;?>
+						
 		      </h1>
 		      <ol class="breadcrumb">
-		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-		        <li class="active">New Project</li>
-						<li class="active"><?php echo $project['PROJECTTITLE'] . " Tasks" ?></li>
+		        <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
+						<li>New Project</li>
+						<li>Main Activity</li>
+						<li>Sub Activity</li>
+						<li class = 'active'>Tasks</li>
 		      </ol>
 		    </section>
 

@@ -1773,8 +1773,8 @@ class controller extends CI_Controller
 
 			$sDate = date_create($data['project']['PROJECTSTARTDATE']);
 			$eDate = date_create($data['project']['PROJECTENDDATE']);
-			$diff = date_diff($eDate, $sDate);
-			$dateDiff = $diff->format('%d');
+			$diff = date_diff($eDate, $sDate, true);
+			$dateDiff = $diff->format('%R%a');
 
 			$data['dateDiff'] = $dateDiff;
 
