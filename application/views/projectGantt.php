@@ -48,7 +48,7 @@
 											data-task="<?php echo $changeRequest['TASKID'];?>"
 											data-type="<?php echo $changeRequest['REQUESTTYPE'];?>"
 											data-requestor="<?php echo $changeRequest['users_REQUESTEDBY'];?>">
-											
+
 												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
 
 												if($changeRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
@@ -701,10 +701,12 @@
 
 							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i> Use Template</a>
 						<?php endif; ?>
-						<?php if($projectProfile['PROJECTSTATUS'] != 'Parked'): ?>
-							<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
-						<?php else:?>
-							<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i> Continue Project</a>
+						<?php if(!isset($_SESSION['templates'])):?>
+							<?php if($projectProfile['PROJECTSTATUS'] != 'Parked'): ?>
+								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+							<?php else:?>
+								<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i> Continue Project</a>
+							<?php endif;?>
 						<?php endif;?>
 
 					</div>
