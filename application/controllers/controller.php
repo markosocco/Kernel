@@ -2673,6 +2673,22 @@ class controller extends CI_Controller
 
 		  $data['dateDiff'] = $dateDiff;
 
+			$templates = $this->input->post('templates');
+
+			if (isset($templates))
+			{
+				$this->session->set_flashdata('templates', $templates);
+
+				$data['templateProject'] = $this->model->getProjectByID($templates);
+				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateRaci'] = $this->model->getRaci($templates);
+				$data['templateUsers'] = $this->model->getAllUsers();
+			}
+
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');
 		  $this->load->view("scheduleTasks", $data);

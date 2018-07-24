@@ -69,7 +69,6 @@
 
 								<?php if (isset($_SESSION['templates'])): ?>
 
-
 									<?php $c = 0; ?>
 
 									<?php foreach ($mainActivity as $key=>$value): ?>
