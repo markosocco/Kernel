@@ -112,7 +112,6 @@
 
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
 														<td align="center">
-															<?php // TODO: NAMI FIX ?>
 															<?php
 																foreach ($lastWeekProgress as $row)
 																{
@@ -190,7 +189,7 @@
 												else
 													$endDate = date_create($row['TASKADJUSTEDENDDATE']);
 
-												echo "<tr class='clickable' style='color:red'>";
+												echo "<tr class='clickable deadline' style='color:red'>";
 													echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $row['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
@@ -204,7 +203,7 @@
 												else
 													$endDate = date_create($data['TASKADJUSTEDENDDATE']);
 
-												echo "<tr class='clickable'>";
+												echo "<tr class='clickable deadline'>";
 													echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $data['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
@@ -387,9 +386,7 @@
 																	<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'>
 																	<i class='fa fa-eye'></i> Acknowledge</button></td>";
 																}
-
 															echo "</tr>";
-
 														}
 													}
 												?>
@@ -464,6 +461,10 @@
 			$(".acknowledgeDocument").attr("name", "formSubmit");
 			$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
 			$(".acknowledgeDocument").submit();
+		});
+
+		$(document).on("click", ".deadline", function(){
+			window.location.replace("<?php echo base_url("index.php/controller/myTasks") ?>");
 		});
 
 		$(document).ready(function()
