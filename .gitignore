@@ -40,3 +40,4 @@ application/config/database.php
 *.pdf
 application/views/myProjects2.php
 application/config/database.php
+assets/uploads/BSIS-Flowchart.docx

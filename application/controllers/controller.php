@@ -390,10 +390,10 @@ class controller extends CI_Controller
 			}
 
 			// notify next ACI
-			$data['ACI'] = $this->model->getACIbyTask($id);
-			if($data['ACI'] != NULL) {
+			$ACIdata['ACI'] = $this->model->getACIbyTask($id);
+			if($ACIdata['ACI'] != NULL) {
 
-				foreach($data['ACI'] as $ACIusers){
+				foreach($ACIdata['ACI'] as $ACIusers){
 
 					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
@@ -614,7 +614,7 @@ class controller extends CI_Controller
 			$projectDetails = $this->model->getProjectByID($projectID);
 			$projectTitle = $projectDetails['PROJECTTITLE'];
 
-			$userDetails = $this->model->getTaskByID($this->input->post('responsibleEmp'));
+			$userDetails = $this->model->getUserByID($this->input->post('responsibleEmp'));
 			$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 			// START: LOG DETAILS
@@ -666,7 +666,7 @@ class controller extends CI_Controller
 				$projectDetails = $this->model->getProjectByID($projectID);
 				$projectTitle = $projectDetails['PROJECTTITLE'];
 
-				$userDetails = $this->model->$this->model->getUserByID($deptID);
+				$userDetails = $this->model->getUserByID($deptID);
 				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 				// START: LOG DETAILS
@@ -719,7 +719,7 @@ class controller extends CI_Controller
 				$projectDetails = $this->model->getProjectByID($projectID);
 				$projectTitle = $projectDetails['PROJECTTITLE'];
 
-				$userDetails = $this->model->$this->model->getUserByID($empID);
+				$userDetails = $this->model->getUserByID($empID);
 				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 				// START: LOG DETAILS
@@ -994,10 +994,10 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next ACI
-			$data['ACI'] = $this->model->getACIbyTask($id);
-			if($data['ACI'] != NULL) {
+			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
+			if($ACIdata['ACI'] != NULL) {
 
-				foreach($data['ACI'] as $ACIusers){
+				foreach($ACIdata['ACI'] as $ACIusers){
 
 					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
@@ -1068,10 +1068,10 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next ACI
-			$data['ACI'] = $this->model->getACIbyTask($id);
-			if($data['ACI'] != NULL) {
+			$aciData['ACI'] = $this->model->getACIbyTask($taskID);
+			if($aciData['ACI'] != NULL) {
 
-				foreach($data['ACI'] as $ACIusers){
+				foreach($aciData['ACI'] as $ACIusers){
 
 					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
@@ -1122,6 +1122,7 @@ class controller extends CI_Controller
 
 		$details = $userName . " has " . $status . " change request for " . $taskTitle . ".";
 
+		// it doesn't work sa deny
 		$logData = array (
 			'LOGDETAILS' => $details,
 			'TIMESTAMP' => date('Y-m-d H:i:s'),
@@ -1243,7 +1244,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($deptID);
+						$userDetails = $this->model->getUserByID($deptID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1294,7 +1295,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($empID);
+						$userDetails = $this->model->getUserByID($empID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1347,7 +1348,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($deptID);
+						$userDetails = $this->model->getUserByID($deptID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1398,7 +1399,7 @@ class controller extends CI_Controller
 						$projectDetails = $this->model->getProjectByID($projectID);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						$userDetails = $this->model->$this->model->getUserByID($empID);
+						$userDetails = $this->model->getUserByID($empID);
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
@@ -1450,7 +1451,7 @@ class controller extends CI_Controller
 					$projectDetails = $this->model->getProjectByID($projectID);
 					$projectTitle = $projectDetails['PROJECTTITLE'];
 
-					$userDetails = $this->model->$this->model->getUserByID($deptID);
+					$userDetails = $this->model->getUserByID($deptID);
 					$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 					// START: LOG DETAILS
@@ -1643,7 +1644,7 @@ class controller extends CI_Controller
 
 			// notify project owner
 			$notificationData = array(
-				'users_USERID' => $projectOwnerID,
+				'users_USERID' => $projectDetails['users_USERID'],
 				'DETAILS' => $details,
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread'
@@ -1676,10 +1677,10 @@ class controller extends CI_Controller
 			}
 
 			// notify next ACI
-			$data['ACI'] = $this->model->getACIbyTask($id);
-			if($data['ACI'] != NULL) {
+			$ACIdata['ACI'] = $this->model->getACIbyTask($id);
+			if($ACIdata['ACI'] != NULL) {
 
-				foreach($data['ACI'] as $ACIusers){
+				foreach($ACIdata['ACI'] as $ACIusers){
 
 					$details = "Dates for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
 
@@ -2499,15 +2500,6 @@ class controller extends CI_Controller
 			if (isset($templates))
 			{
 				$this->session->set_flashdata('templates', $templates);
-
-				$data['templateProject'] = $this->model->getProjectByID($templates);
-				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
-				$data['templateRaci'] = $this->model->getRaci($templates);
-				$data['templateUsers'] = $this->model->getAllUsers();
 			}
 
 			// $this->output->enable_profile(TRUE);
