@@ -79,6 +79,9 @@ class controller extends CI_Controller
 
 				$this->model->updateTaskStatus($currentDate);
 				$this->model->updateProjectStatus($currentDate);
+				
+				redirect('controller/dashboard');
+
 
 // START
 
