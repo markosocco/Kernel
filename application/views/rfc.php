@@ -127,9 +127,9 @@
 											else
 												$type = "Change Date/s";
 										?>
-											<tr class="request" data-project = "<?php echo $userRequest['PROJECTID']; ?>" data-request = "<?php echo $userRequest['REQUESTID']; ?>">
+											<tr class="userRequest" data-project = "<?php echo $userRequest['PROJECTID']; ?>" data-request = "<?php echo $userRequest['REQUESTID']; ?>">
 
-												<form action = 'projectGantt' method="POST">
+												<form id = "viewProject" action = 'projectGantt' method="POST">
 													<input type ='hidden' name='userRequest' value='0'>
 												</form>
 
@@ -150,7 +150,7 @@
 												<?php if($userRequest['REQUESTSTATUS'] == 'Pending'):?>
 													<td align="center">-</td>
 												<?php else:?>
-													<!-- <td><?php echo $userRequest['FIRSTNAME'] . " " .  $userRequest['LASTNAME'] ;?></td> -->
+													<td><?php echo $userRequest['FIRSTNAME'] . " " .  $userRequest['LASTNAME'] ;?></td>
 												<?php endif;?>
 											</tr>
 										<?php endforeach;?>
@@ -186,7 +186,16 @@
 			$("form").append("<input type='hidden' name='project_ID' value= " + $project + ">");
 			$("form").append("<input type='hidden' name='request_ID' value= " + $request + ">");
 			$("form").submit();
-			});
+		});
+
+		$(document).on("click", ".userRequest", function() {
+			var $project = $(this).attr('data-project');
+			var $request = $(this).attr('data-request');
+			$("#viewProject").attr("name", "formSubmit");
+			$("#viewProject").append("<input type='hidden' name='project_ID' value= " + $project + ">");
+			$("#viewProject").append("<input type='hidden' name='request_ID' value= " + $request + ">");
+			$("#viewProject").submit();
+		});
 
 		$(function () {
 			$('#rfcList').DataTable({
