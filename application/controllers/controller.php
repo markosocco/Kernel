@@ -1695,22 +1695,25 @@ class controller extends CI_Controller
 					{
 						// echo $value['TASKID'] . " == " . $tValue . "<br>";
 
-						foreach ($dependencies as $dKey => $dValue)
+						if ($dependencies != NULL)
 						{
-							if ($tKey == $dKey)
+							foreach ($dependencies as $dKey => $dValue)
 							{
-								// echo $tKey . " == " . $dKey . "<br>";
-								foreach ($dValue as $d)
+								if ($tKey == $dKey)
 								{
-									$data = array(
-										'PRETASKID' => $d,
-										'tasks_POSTTASKID' => $value['TASKID']
-									);
+									// echo $tKey . " == " . $dKey . "<br>";
+									foreach ($dValue as $d)
+									{
+										$data = array(
+											'PRETASKID' => $d,
+											'tasks_POSTTASKID' => $value['TASKID']
+										);
 
-									// echo $d . ", ";
+										// echo $d . ", ";
 
-									// ENTER DEPENDENCIES TO DB
-									$result = $this->model->addToDependencies($data);
+										// ENTER DEPENDENCIES TO DB
+										$result = $this->model->addToDependencies($data);
+									}
 								}
 							}
 						}
