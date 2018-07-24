@@ -388,6 +388,8 @@
 															echo"
 															<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
 																<input type='hidden' name='project_ID' value='" . $row['projects_PROJECTID'] . "'>
+																<input type='hidden' name='fromWhere' value='dashboard'>
+																<input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
 																<input type='hidden' name='documentID' value='" . $row['DOCUMENTID'] . "'>
 															</form>";
 																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";

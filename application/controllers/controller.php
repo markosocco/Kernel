@@ -450,7 +450,7 @@ class controller extends CI_Controller
 			$notificationData = array(
 				'users_USERID' => $this->input->post('responsibleEmp'),
 				'DETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d'),
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread'
 			);
 
@@ -495,7 +495,7 @@ class controller extends CI_Controller
 				$notificationData = array(
 					'users_USERID' => $deptID,
 					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d'),
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread'
 				);
 
@@ -591,7 +591,7 @@ class controller extends CI_Controller
 				$notificationData = array(
 					'users_USERID' => $deptID,
 					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d'),
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread'
 				);
 
@@ -643,7 +643,6 @@ class controller extends CI_Controller
 
 				$this->model->addNotification($notificationData);
 				// END: Notification
-
 			}
 		}
 
@@ -685,7 +684,7 @@ class controller extends CI_Controller
 				$notificationData = array(
 					'users_USERID' => $deptID,
 					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d'),
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread'
 				);
 
@@ -740,7 +739,6 @@ class controller extends CI_Controller
 
 			}
 		}
-		//TODO: Nami Logs/Notif -> Task delegated
 		$this->myTasks();
 	}
 
@@ -756,6 +754,39 @@ class controller extends CI_Controller
 				'users_REQUESTEDBY' => $_SESSION['USERID'],
 				'REQUESTEDDATE' => date('Y-m-d')
 			);
+
+			// START: LOG DETAILS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+			$taskDetails = $this->model->getTaskByID($this->input->post("task_ID"));
+			$taskTitle = $taskDetails['TASKTITLE'];
+			$projectID = $taskDetails['projects_PROJECTID'];
+			$details = $userName . " requested a change in performer for " . $taskTitle . ".";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $projectID
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
+
+			//TODO: Nami Notif -> RFC Submitted
+
+			// // START: Notifications
+			// $projectDetails = $this->model->getProjectByID($projectID);
+			// $projectTitle = $projectDetails['PROJECTTITLE'];
+			// $details = $userName . " requested a change in performer for " . $taskTitle "";
+			// $notificationData = array(
+			// 	'users_USERID' => $empID,
+			// 	'DETAILS' => $details,
+			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+			// 	'status' => 'Unread'
+			// );
+			//
+			// $this->model->addNotification($notificationData);
+			// // END: Notification
+
 		}
 		else
 		{
@@ -769,9 +800,42 @@ class controller extends CI_Controller
 				'NEWSTARTDATE' => $this->input->post("startDate"),
 				'NEWENDDATE' => $this->input->post("endDate"),
 			);
+
+			// START: LOG DETAILS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+			$taskDetails = $this->model->getTaskByID($taskID);
+			$taskTitle = $taskDetails['TASKTITLE'];
+			$projectID = $taskDetails['projects_PROJECTID'];
+			$details = $userName . " requested a change in dates for " . $taskTitle . ".";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $projectID
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
+
+			//TODO: Nami Notif -> RFC Submitted
+
+			// // START: Notifications
+			// $projectDetails = $this->model->getProjectByID($projectID);
+			// $projectTitle = $projectDetails['PROJECTTITLE'];
+			// $details = $userName . " requested a change in dates for " . $taskTitle "";
+			// $notificationData = array(
+			// 	'users_USERID' => $empID,
+			// 	'DETAILS' => $details,
+			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+			// 	'status' => 'Unread'
+			// );
+			//
+			// $this->model->addNotification($notificationData);
+			// // END: Notification
+
 		}
 		$this->model->addRFC($data);
-		//TODO: Nami Logs/Notif -> RFC Submitted
+
 		$this->myTasks();
 	}
 
@@ -782,6 +846,8 @@ class controller extends CI_Controller
 		$projectID = $this->input->post('project_ID');
 		$remarks = $this->input->post('remarks');
 		$status = $this->input->post('status');
+		$taskID = $this->input->post('task_ID');
+		$requestor = $this->input->post('task_ID');
 
 		$data = array(
 			'REQUESTSTATUS' => $status,
@@ -790,8 +856,38 @@ class controller extends CI_Controller
 			'APPROVEDDATE' => date('Y-m-d')
 		);
 
-		//TODO: Nami Logs/Notif -> RFC Approved/Denied
 		$this->model->updateRFC($requestID, $data);
+		//TODO: Nami Logs/Notif -> RFC Approved/Denied
+
+		// // START: LOG DETAILS
+		// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		// $taskDetails = $this->model->getTaskByID($taskID);
+		// $taskTitle = $taskDetails['TASKTITLE'];
+		// $projectID = $taskDetails['projects_PROJECTID'];
+		// $details = $userName . " has " . $status . " requested for " . $taskTitle . ".";
+		//
+		// $logData = array (
+		// 	'LOGDETAILS' => $details,
+		// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+		// 	'projects_PROJECTID' => $projectID
+		// );
+		//
+		// $this->model->addToProjectLogs($logData);
+		// // END: LOG DETAILS
+		//
+		// // START: Notifications
+		// $projectDetails = $this->model->getProjectByID($projectID);
+		// $projectTitle = $projectDetails['PROJECTTITLE'];
+		// $details = $userName . " has " . $status . " your request for " . $taskTitle . " in " . $projectTitle . ".";
+		// $notificationData = array(
+		// 	'users_USERID' => $requestor,
+		// 	'DETAILS' => $details,
+		// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+		// 	'status' => 'Unread'
+		// );
+		//
+		// $this->model->addNotification($notificationData);
+		// // END: Notification
 
 		if($remarks == 'Approved' && $requestType == '1') // if approved change performer
 		{
@@ -815,6 +911,7 @@ class controller extends CI_Controller
 				);
 				$result = $this->model->addToRaci($responsibleData);
 				//TODO: Nami Logs/Notif -> Task Delegated to the approver (for delegation)
+
 			}
 			else
 			{
@@ -830,6 +927,39 @@ class controller extends CI_Controller
 					);
 					$result = $this->model->addToRaci($responsibleData);
 					//TODO: Nami Logs/Notif -> Task delegated to responsible users
+
+					// // START: LOG DETAILS
+					// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+					// $taskDetails = $this->model->getTaskByID($taskID);
+					// $taskTitle = $taskDetails['TASKTITLE'];
+					// $projectID = $taskDetails['projects_PROJECTID'];
+					// $userDetails = $this->model->getUserByID($responsibleEmp);
+					// $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+					// $details = $userName . " has marked " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+					//
+					// $logData = array (
+					// 	'LOGDETAILS' => $details,
+					// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+					// 	'projects_PROJECTID' => $projectID
+					// );
+					//
+					// $this->model->addToProjectLogs($logData);
+					// // END: LOG DETAILS
+					//
+					// // START: Notifications
+					// $projectDetails = $this->model->getProjectByID($projectID);
+					// $projectTitle = $projectDetails['PROJECTTITLE'];
+					// $details = "You have been tagged as responsible for " . $taskTitle . " in " . $projectTitle . ".";
+					// $notificationData = array(
+					// 	'users_USERID' => $this->input->post('responsibleEmp'),
+					// 	'DETAILS' => $details,
+					// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+					// 	'status' => 'Unread'
+					// );
+					//
+					// $this->model->addNotification($notificationData);
+					// // END: Notification
+
 				}
 
 				// SAVE ACCOUNTABLE
@@ -1020,7 +1150,7 @@ class controller extends CI_Controller
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
 		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-		$data['dependencies'] = $this->model->getDependenciesByProject($id);
+		$data['dependencies'] = $this->model->getDependenciesByProject($projectID);
 		$data['users'] = $this->model->getAllUsers();
 		$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
 		$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
@@ -2062,20 +2192,20 @@ class controller extends CI_Controller
 						// INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
 						$this->model->addToDocumentAcknowledgement($acknowledgementData);
 
-						// // START: Notification
-						// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-						// $projectTitle = $projectID['PROJECTTITLE'];
-						// $details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
-						//
-						// $notificationData = array(
-						// 	'users_USERID' => $userIDByDepartment['users_USERID'],
-						// 	'DETAILS' => $details,
-						// 	'TIMESTAMP' => date('Y-m-d'),
-						// 	'status' => 'Unread'
-						// );
-						//
-						// $this->model->addNotification($notificationData);
-						// // END: Notification
+						// START: Notification
+						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+						$projectTitle = $projectID['PROJECTTITLE'];
+						$details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
+
+						$notificationData = array(
+							'users_USERID' => $userIDByDepartment['users_USERID'],
+							'DETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'status' => 'Unread'
+						);
+
+						$this->model->addNotification($notificationData);
+						// END: Notification
 
 					} // END: FOREACH - GETS ALL USERS OF A DEPARTMENT
 
@@ -2094,18 +2224,18 @@ class controller extends CI_Controller
 
 				$this->model->uploadDocument($uploadData);
 
-				// // START: Notification
-				// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				// $details = $userName . " has uploaded " . $fileName . " and needs your acknowledgement.";
-				// $notificationData = array(
-				// 	'users_USERID' => $userIDByDepartment['users_USERID'],
-				// 	'DETAILS' => $details,
-				// 	'TIMESTAMP' => date('Y-m-d'),
-				// 	'status' => 'Unread'
-				// );
-				//
-				// $this->model->addNotification($notificationData);
-				// // END: Notification
+				// START: Notification
+				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+				$details = $userName . " has uploaded " . $fileName . " and needs your acknowledgement.";
+				$notificationData = array(
+					'users_USERID' => $userIDByDepartment['users_USERID'],
+					'DETAILS' => $details,
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
+					'status' => 'Unread'
+				);
+
+				$this->model->addNotification($notificationData);
+				// END: Notification
 
 			} // END: DOESN'T NEED ACKNOWLEDGMENT
 
@@ -2122,6 +2252,21 @@ class controller extends CI_Controller
 							'documents_DOCUMENTID' => $documentID,
 							'users_ACKNOWLEDGEDBY' => $userID
 						);
+
+						// START: Notification
+						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+						$projectTitle = $projectID['PROJECTTITLE'];
+						$details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
+
+						$notificationData = array(
+							'users_USERID' => $userIDByDepartment['users_USERID'],
+							'DETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'status' => 'Unread'
+						);
+
+						$this->model->addNotification($notificationData);
+						// END: Notification
 
 						// INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
 						$this->model->addToDocumentAcknowledgement($acknowledgementData);
@@ -2143,6 +2288,7 @@ class controller extends CI_Controller
 
 			$this->model->addToProjectLogs($logData);
 			// END: LOG DETAILS
+
 		}
 
 		$this->session->set_flashdata('projectID', $id);
@@ -2159,37 +2305,87 @@ class controller extends CI_Controller
 		//GET DOCUMENT ID
 		$documentID = $this->input->post("documentID");
 		$projectID = $this->input->post("project_ID");
+		$dashboard = $this->input->post("fromWhere");
+		$fileName = $this->input->post("fileName");
 
 		$currentDate = date('Y-m-d');
 
 		$result = $this->model->updateDocumentAcknowledgement($documentID, $_SESSION['USERID'], $currentDate);
 
-		// // START: LOG DETAILS
-		// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-		// $details = $userName . " has acknowledged " . $fileName;
-		//
-		// $logData = array (
-		// 	'LOGDETAILS' => $details,
-		// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
-		// 	'projects_PROJECTID' => $projectID
-		// );
-		//
-		// $this->model->addToProjectLogs($logData);
-		// // END: LOG DETAILS
+		// START: LOG DETAILS
+		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		$details = $userName . " has acknowledged " . $fileName;
+
+		$logData = array (
+			'LOGDETAILS' => $details,
+			'TIMESTAMP' => date('Y-m-d H:i:s'),
+			'projects_PROJECTID' => $projectID
+		);
+
+		$this->model->addToProjectLogs($logData);
+		// END: LOG DETAILS
 
 		if ($result)
 		{
-			$this->session->set_flashdata('projectID', $id);
+			if(isset($dashboard)){
+				if ($_SESSION['departments_DEPARTMENTID'] == '1') //ONLY EXECUTIVES CAN VIEW ALL PROJECTS
+				{
+					$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
+					$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+					$data['delayedProjects'] = $this->model->getAllDelayedProjects();
+					$data['parkedProjects'] = $this->model->getAllParkedProjects();
+					$data['draftedProjects'] = $this->model->getAllDraftedProjects();
+					$data['completedProjects'] = $this->model->getAllCompletedProjects();
+				}
+				else
+				{
+					$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
+					$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
+					$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
+					$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
+					$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
+					$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
+				}
 
-			$data['projectProfile'] = $this->model->getProjectByID($id);
-			$data['departments'] = $this->model->getAllDepartmentsByProject($id);
-			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
-			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
-			$data['users'] = $this->model->getAllUsersByProject($id);
+				$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+				$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+				$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
 
-			$this->load->view("projectDocuments", $data);
+				$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+				$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+				$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 
-			// redirect('controller/projectDocuments');
+				$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
+				$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
+				$data['toAcknowledgeDocuments'] = $this->model->getAllDocumentAcknowledgementByUser($_SESSION['USERID']);
+
+				// RFC Approval Data
+				$userID = $_SESSION['USERID'];
+				$deptID = $_SESSION['departments_DEPARTMENTID'];
+				if($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
+					$filter = "projects.users_USERID = '$userID'";
+				elseif($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
+					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || projects.users_USERID = '$userID'";
+				elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
+					$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || projects.users_USERID = '$userID'";
+				else // if admin/executive is logged in
+					$filter = "REQUESTID = '0'";
+
+				$data['changeRequests'] = $this->model->getChangeRequestsbyUser($filter);
+
+				$this->load->view("dashboard", $data);
+
+			} else {
+				$this->session->set_flashdata('projectID', $id);
+
+				$data['projectProfile'] = $this->model->getProjectByID($id);
+				$data['departments'] = $this->model->getAllDepartmentsByProject($id);
+				$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+				$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+				$data['users'] = $this->model->getAllUsersByProject($id);
+
+				$this->load->view("projectDocuments", $data);
+			}
 		}
 
 		else {

@@ -44,7 +44,9 @@
 											data-request="<?php echo $changeRequest['REQUESTID'];?>"
 											data-project="<?php echo $changeRequest['PROJECTID'];?>"
 											data-task="<?php echo $changeRequest['TASKID'];?>"
-											data-type="<?php echo $changeRequest['REQUESTTYPE'];?>">
+											data-type="<?php echo $changeRequest['REQUESTTYPE'];?>"
+											data-type="<?php echo $changeRequest['users_REQUESTEDBY'];?>">
+
 												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
 
 												if($changeRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
@@ -787,11 +789,13 @@
 				var $project = $("#approvalForm").attr('data-project');
 				var $task = $("#approvalForm").attr('data-task');
 				var $type = $("#approvalForm").attr('data-type');
+				var $requestor = $("#approvalForm").attr('data-requestor');
 				$("#approvalForm").attr("name", "formSubmit");
 				$("#approvalForm").append("<input type='hidden' name='request_ID' value= '" + $request + "'>");
 				$("#approvalForm").append("<input type='hidden' name='request_type' value= '" + $type + "'>");
 				$("#approvalForm").append("<input type='hidden' name='project_ID' value= '" + $project + "'>");
 				$("#approvalForm").append("<input type='hidden' name='task_ID' value= '" + $task + "'>");
+				$("#approvalForm").append("<input type='hidden' name='requestor_ID' value= '" + $requestor + "'>");
 				$("#approvalForm").append("<input type='hidden' name='status' value= 'Approved'>");
 				$("#approvalForm").submit();
 				});
@@ -1075,17 +1079,19 @@
 						// START: Checks for dependecies
 						$dependency = '';
 						$type = '';
-						foreach ($dependencies as $data) {
-							if($data['PRETASKID'] == $value['TASKID']){
-								$dependency = $data['tasks_POSTTASKID'];
-								$type = 'finish-start';
+						if($dependencies != NULL){
+							foreach ($dependencies as $data) {
+								if($data['PRETASKID'] == $value['TASKID']){
+									$dependency = $data['tasks_POSTTASKID'];
+									$type = 'finish-start';
+								}
 							}
 						}
 						// END: Checks for dependecies
 
 
 						//START: CHECKS IF RACI IS EMPTY
-						if($accountable == NULL || $consulted == NULL || $informed == NULL){
+						if($accountable == NULL || $consulted == NULL || $informed == NULL ){
 							echo "
 							{
 								'id': " . $value['TASKID'] . ",

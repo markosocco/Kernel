@@ -84,6 +84,7 @@
 													echo"
 													<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
 														<input type='hidden' name='project_ID' value='" . $projectProfile['PROJECTID'] . "'>
+														<input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
 													</form>";
 
 													foreach($documentAcknowledgement as $data){
@@ -208,7 +209,8 @@
 		        <!-- /.modal -->
 
 						<!-- CONFIRM ACKNOWLEDGEMENT -->
-						<div id="confirmAcknowledge">
+						<!-- ayaw maclick nung upload button nung meron nito so i commented it out first HAHAHHA -->
+						<!-- <div id="confirmAcknowledge">
 							<div class="modal-body">
 								<h4>Are you sure you want to acknowledge this document?</h4>
 							</div>
@@ -216,7 +218,7 @@
 								<button id="backConfirm" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
 								<button id = "confirmAcknowledgeBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
 							</div>
-						</div>
+						</div> -->
 				</section>
 					</div>
 			<?php require("footer.php"); ?>
