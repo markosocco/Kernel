@@ -93,23 +93,13 @@
 													</td>
 													<td>
 														<select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
+															<?php foreach ($departments as $row): ?>
 
-															<?php foreach ($templateRaci as $tRaci): ?>
-																<?php if ($tRaci['tCat'] == '1'): ?>
-																	<?php foreach ($departments as $row): ?>
-																		<?php if ($row['DEPARTMENTID'] == $tRaci['uDept']): ?>
-																			<option selected ="selected">
-																				<?php echo $row['DEPARTMENTNAME']; ?>
-																			</option>
-																		<?php else: ?>
-																			<option>
-																				<?php echo $row['DEPARTMENTNAME']; ?>
-																			</option>
-																		<?php endif; ?>
-																	<?php endforeach; ?>
-																<?php endif; ?>
+																<option>
+																	<?php echo $row['DEPARTMENTNAME']; ?>
+																</option>
+
 															<?php endforeach; ?>
-
 														</select>
 													</td>
 													<td>

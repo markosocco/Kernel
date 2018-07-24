@@ -946,7 +946,8 @@ class controller extends CI_Controller
 				'REASON' => $this->input->post("reason"),
 				'REQUESTSTATUS' => "Pending",
 				'users_REQUESTEDBY' => $_SESSION['USERID'],
-				'REQUESTEDDATE' => date('Y-m-d')
+				'REQUESTEDDATE' => date('Y-m-d'),
+				'users_APPROVEDBY' => '1'
 			);
 
 			// START OF LOGS/NOTIFS
