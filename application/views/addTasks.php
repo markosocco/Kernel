@@ -83,8 +83,8 @@
 
 		                <?php if (isset($_SESSION['templates'])): ?>
 
-											<?php foreach ($templateMainActivity as $tMain): ?>
-												<tr id="row0">
+											<?php foreach ($templateMainActivity as $key=> $tMain): ?>
+												<tr id ="row<?php echo  $key?>">
 													<td>
 														<div class="form-group">
 															<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $tMain['TASKTITLE']; ?>" required>
@@ -92,7 +92,7 @@
 														</div>
 													</td>
 													<td>
-														<select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
+														<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
 															<?php foreach ($departments as $row): ?>
 
 																<option>
@@ -108,7 +108,7 @@
 																<div class="input-group-addon">
 																	<i class="fa fa-calendar"></i>
 																</div>
-																<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-0" data-mainAct="0" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" required>
+																<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" required>
 															</div>
 															<!-- /.input group -->
 														</div>
@@ -119,7 +119,7 @@
 																<div class="input-group-addon">
 																	<i class="fa fa-calendar"></i>
 																</div>
-																<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-0" data-mainAct="0" required>
+																<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" required>
 															</div>
 														</div>
 													</td>
@@ -144,18 +144,20 @@
 																}
 															?>
 
-															<input id = "projectPeriod0" type="text" class="form-control" value="<?php echo $period; ?>" readonly>
+															<input id = "projectPeriod<?php echo $key; ?>" type="text" class="form-control" value="<?php echo $period; ?>" readonly>
 														</div>
 													</td>
 													<td class='btn'>
-														<a id = "del0" class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
+														<a id = "del<?php echo $key; ?>" class='btn delButton' data-id = "<?php echo $key; ?>"><i class='glyphicon glyphicon-trash'></i></a>
 													</td>
 												<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 												</tr>
 
-												<tr id="row1">
-													<!-- NEW LINE WILL BE INSERTED HERE  -->
-												</tr>
+												<?php if ($key == (count($templateMainActivity) - 1)): ?>
+														<tr id="row<?php echo ($key + 1) ;?>">
+														</tr>
+												<?php endif; ?>
+
 											<?php endforeach; ?>
 
 										<?php else: ?>
@@ -205,7 +207,7 @@
 				                	</div>
 												</td>
 												<td class='btn'>
-													<a id = "del0" class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a>
+													<!-- <a id = "del0" class='btn delButton' data-id = ""><i class='glyphicon glyphicon-trash'></i></a> -->
 												</td>
 											<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 			                </tr>
@@ -331,8 +333,13 @@
 
 		 $(document).ready(function() {
 
-			 var i = 1;
-			 var x = 2;
+			 <?php if (isset($_SESSION['templates'])): ?>
+			 		var i = <?php echo (count($templateMainActivity)); ?>;
+					var x = <?php echo (count($templateMainActivity) + 1); ?>;
+				<?php else: ?>
+					var i = 1;
+					var x = 2;
+			 <?php endif; ?>
 
 			 $(document).on("click", "a.addButton", function() {
 
@@ -355,8 +362,6 @@
 
 					counter++;
 					$("a.addButton").attr('data-counter', counter);
-					console.log(counter);
-					 // $('#row' + i).html("<td id='num" + i + "'>" + x + "</td><td><div class='form-group'><select class ='form-control' name = 'category" + i + "'><option disabled selected value> -- Select Category -- </option><option>Main Activity</option><option>Sub Activity</option><option>Task</option></select></div></td> <td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title" + i +"'</div></td>  <td><select class='form-control' id ='dept' name = 'department" + i +"'><option disabled selected value> -- Select Department -- </option>" + "<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>'; } ?>" + "</select></td>  <td class='btn'><a class='btn addButton'><i class='glyphicon glyphicon-plus-sign'></i></a></td> <td class='btn'><a class='btn delButton' data-id = " + i +" counter = " + x + "><i class='glyphicon glyphicon-trash'></i></a></td>");
 
 					 $('#table').append('<tr id="row' + (i + 1) + '"></tr>');
 					 i++;
@@ -364,60 +369,19 @@
 				});
 
 				$(document).on("click", "a.delButton", function() {
-						if (x > 2)
-						{
-							var j = $(this).attr('data-id');
-							console.log("this is j = " + j);
+							if (x > 2)
+							{
+								var j = $(this).attr('data-id');
 
-							var counter = $("a.addButton").attr('data-counter');
+								var counter = $("a.addButton").attr('data-counter');
 
-							$('#row' + j).remove();
+								$('#row' + j).remove();
 
-							counter--;
-							$("a.addButton").attr('data-counter', counter);
-
-							// for (var a = j; a <= counter; a++)
-							// {
-							// 	$("#row" + (j + 1)).attr('data-id', (a-1));
-							// 	$("#select" + a).attr('name', 'department_' + (counter - 1) + '[]');
-							// }
-							//
-							// console.log(x);
-							//
-							// console.log("after removing: " + x);
-						}
+								counter--;
+								$("a.addButton").attr('data-counter', counter);
+							}
 					});
-
-					// $(document).on("click", "#arrangeTask", function() {
-					//
-	 				//  var counter = $("a.addButton").attr('data-counter');
-					//
-					//  for (var a = 1; a <= counter; a++)
-					//  {
-					// 	 $("#select" + a).attr('name', 'department_' + a);
-					//  }
-					//
-					//  // console.log(counter);
-	 				// });
         });
-
-				// var el = document.getElementById('table');
-				// var dragger = tableDragger(el, {
-				//  mode: 'row',
-				//  dragHandler: '.handle',
-				//  onlyBody: true,
-				//  animation: 300
-				// });
-
-				// $(document).on("drop", "a.handle", function() {
-				//
- 				// });
-
-				// dragger.on('drop',function(from, to){
-				//  console.log(from);
-				//  console.log(to);
-				// });
-				// THIS SHIT BETTER WORK
 		</script>
 	</body>
 </html>

@@ -47,7 +47,7 @@
 											data-project="<?php echo $changeRequest['PROJECTID'];?>"
 											data-task="<?php echo $changeRequest['TASKID'];?>"
 											data-type="<?php echo $changeRequest['REQUESTTYPE'];?>"
-											data-type="<?php echo $changeRequest['users_REQUESTEDBY'];?>">
+											data-requestor="<?php echo $changeRequest['users_REQUESTEDBY'];?>">
 
 												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
 
@@ -700,9 +700,14 @@
 							</form>
 
 							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i> Use Template</a>
-						<?php else: ?>
-								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
 						<?php endif; ?>
+						<?php if(!isset($_SESSION['templates'])):?>
+							<?php if($projectProfile['PROJECTSTATUS'] != 'Parked'): ?>
+								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+							<?php else:?>
+								<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i> Continue Project</a>
+							<?php endif;?>
+						<?php endif;?>
 
 					</div>
 					<br>
@@ -972,62 +977,27 @@
 			$("#projectLog").click(function() //redirect to individual project logs
       {
 				$("#prjID").attr("action","projectLogs");
-				// console.log("hello");
 				$("#prjID").submit();
       });
+
+			$("#parkProject").click(function() //submitPark
+      {
+				$("#prjID").attr("action","parkProject");
+				$("#prjID").submit();
+      });
+
+			$("#continueProject").click(function() //submitPark
+      {
+				alert("Continue Project");
+      });
+
 		</script>
 
 		<script>
 
 			anychart.onDocumentReady(function (){
 
-					// name: task TITLE
-					// actualStart: Start date
-					// actualEnd: End date
-					// baselineStart: Actual Start date
-					// baselineEnd: Actual End date
-					// period: actual end - actual start
-					// progressValue - progress (completeness)
-					// 'progress':{'fill': 'red'}
-
-					// planned and actual in data
-					// {
-					//   'name': "revision",
-					//   'actualStart': Date.UTC(2010, 5, 1, 8),
-					//   'actualEnd': Date.UTC(2010, 5, 24, 18),
-					//   'actual':
-					//       {
-					//           'fill':
-					//           {
-					//               'keys': ['orange', 'red'],
-					//               'angle': 0
-					//           },
-					//       },
-					//   'baselineStart': Date.UTC(2010, 4, 29, 9),
-					//   'baselineEnd': Date.UTC(2010, 5, 27, 18),
-					//   'baseline':
-					//       {
-					//           'stroke': '3 black',
-					//           'fill': {'color': 'gray'}
-					//       }
-					//   '"connectTo": "5",
-					//   "connectorType": "finish-start"'
-					//      'connector':
-					//        {
-					//         'stroke': {color: '#3300CC .2'},
-					//          'fill': {'color': '6600CC .5'}
-					//        }
-					// }
-
 				var rawData = [
-
-// {"id": "1", "name": "Phase 1 - Strategic Plan", "progressValue": "14%", "actualStart": 951350400000, "actualEnd": 951609600000},
-// {"id": "2", "name": "Self-Assessment", parent:"1", "progressValue": "25%", "actualStart": 951350400000, "actualEnd": 951782400000},
-// {"id": "3", "name": "Define business vision", parent:"2", "progressValue": "0%", "actualStart": 951408000000, "actualEnd": 951440400000, "connectTo": "4", "connectorType": "finish-start"},
-// {"id": "4", "name": "Identify available skills, information and support", parent:"2", "progressValue": "0%", "actualStart": 951494400000, "actualEnd": 951526800000, "connectTo": "5", "connectorType": "finish-start"},
-// {"id": "5", "name": "Decide whether to proceed", parent:"2", "progressValue": "0%", "actualStart": 951609600000, "actualEnd": 951696000000, "connectTo": "6", "connectorType": "finish-start"},
-// {"id": "6", "name": "Define the Opportunity", parent:"5", "progressValue": "27%", "actualStart": 951696000000, "actualEnd": 951782400000}
-
 					<?php
 
 					foreach ($ganttData as $key => $value) {
@@ -1333,102 +1303,6 @@
 				chart.container('container').draw();      // set container and initiate drawing
 
 			});
-
-// OTHER CONDITIONS
-			// if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){
-			//   echo "
-			//   {
-			//       'id':" . $value['TASKID'] . ",
-			//       'name': '" . $value['TASKTITLE'] . "',
-			//       'actualStart': '" . $formattedStartDate . "',
-			//       'actualEnd': '" . $formattedEndDate . "',
-			//       'actual':
-			//       {
-			//         'fill':
-			//         {
-			//           'keys': ['grey'],
-			//         },
-			//       },
-			//       'baselineStart': '" . $value['TASKACTUALSTARTDATE'] . "',
-			//       'baselineEnd': '" . $value['TASKACTUALENDDATE'] . "',
-			//       'period': '" . $value['taskDuration'] . "',
-			//   },
-			//   ";
-			// }
-
-			// if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){
-			//   echo "
-			//   {
-			//       'id':" . $value['TASKID'] . ",
-			//       'name': '" . $value['TASKTITLE'] . "',
-			//       'actualStart': '" . $formattedStartDate . "',
-			//       'actualEnd': '" . $formattedEndDate . "',
-			//       'actual':
-			//       {
-			//         'fill':
-			//         {
-			//           'keys': ['grey'],
-			//         },
-			//       },
-			//       'baselineStart': '" . $formattedActualStartDate . "',
-			//       'baselineEnd': '" . $formattedActualEndDate . "',
-			//       'period': '" . $value['taskDuration'] . "',
-			//   },
-			//   ";
-			// }
-			//
-			// if(date('Y-m-d') > $value['TASKENDDATE'] and $value['TASKSTATUS'] != 'Complete'){
-			//   echo "
-			//   {
-			//       'id':" . $value['TASKID'] . ",
-			//       'name': '" . $value['TASKTITLE'] . "',
-			//       'actualStart': '" . $formattedStartDate . "',
-			//       'actualEnd': '" . $formattedEndDate . "',
-			//       'actual':
-			//       {
-			//         'fill':
-			//         {
-			//           'keys': ['red'],
-			//         },
-			//       },
-			//       'baselineStart': '" . $formattedActualStartDate . "',
-			//       'baselineEnd': '" . $formattedActualEndDate . "',
-			//       'period': '" . $value['taskDuration'] . "',
-			//   },
-			//   ";
-			// }
-
-			// echo "
-			//   {
-			//       'name': '" . $value['TASKTITLE'] . "',
-			//       'actualStart': '" . $formatted_startDate . "',
-			//       'actualEnd': '" . $formatted_endDate . "',
-			//       'department': '" . $formatted_actualStartDate  . "',
-			//       'responsible': '" . $formatted_actualEndDate . "',
-			//       'period': '" . $value['taskDuration'] . "'
-			//   },";
-
-				// if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){
-				//   echo "
-				//     {
-				//       'actual': {
-				//         'fill': {
-				//           'keys': ['grey'],
-				//         }
-				//       }
-				//     },";
-				// }
-				//
-				// if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] = 'Complete'){
-				//   echo "
-				//     {
-				//       'actual': {
-				//         'fill': {
-				//           'keys': ['green'],
-				//         }
-				//       }
-				//     },";
-				// }
 
 		</script>
 	</body>

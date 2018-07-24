@@ -1013,6 +1013,14 @@ class model extends CI_Model
     $this->db->update('projects');
   }
 
+  public function parkProjectByID($projectID)
+  {
+    $condition = "PROJECTID = '$projectID';";
+    $this->db->set('PROJECTSTATUS', 'Parked');
+    $this->db->where($condition);
+    $this->db->update('projects');
+  }
+
   public function getDelayedTasksByUser()
   {
     $condition = "raci.STATUS = 'Current' && tasks.TASKENDDATE < CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];

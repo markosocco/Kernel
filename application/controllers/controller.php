@@ -232,6 +232,21 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function parkProject()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$id = $this->input->post("project_ID");
+			$this->model->parkProjectByID($id);
+			$this->myProjects();
+		}
+	}
+
 	public function myTeam()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -2500,6 +2515,15 @@ class controller extends CI_Controller
 			if (isset($templates))
 			{
 				$this->session->set_flashdata('templates', $templates);
+
+				$data['templateProject'] = $this->model->getProjectByID($templates);
+				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateRaci'] = $this->model->getRaci($templates);
+				$data['templateUsers'] = $this->model->getAllUsers();
 			}
 
 			// $this->output->enable_profile(TRUE);
