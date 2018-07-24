@@ -90,9 +90,11 @@
             <?php foreach($templates as $template):?>
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <a class = "project clickable" data-id = "">
+              <a class = "project clickable" data-id = "<?php echo $template['PROJECTSTATUS']; ?>">
               <div class="small-box bg-purple">
                 <div class="inner">
+                  <form action = 'projectGantt'  method="POST">
+                  </form>
                   <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
                   <?php
                     $enddate = date_create($template['PROJECTACTUALENDDATE']);

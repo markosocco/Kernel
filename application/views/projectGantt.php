@@ -701,7 +701,7 @@
 
 							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i> Use Template</a>
 						<?php endif; ?>
-						<?php if(!isset($_SESSION['templates'])):?>
+						<?php if(!isset($_SESSION['templates']) && $projectProfile['PROJECTSTATUS'] != 'Archived'):?>
 							<?php if($projectProfile['PROJECTSTATUS'] != 'Parked'): ?>
 								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
 							<?php else:?>
@@ -1080,7 +1080,7 @@
 						// START: Checks for accountable
 						$accountablePerson = '';
 						foreach ($accountable as $a) {
-							if($r['tasks_TASKID'] == $value['TASKID']){
+							if($a['tasks_TASKID'] == $value['TASKID']){
 								$accountablePerson = $a['FIRSTNAME'] . " " . $a['LASTNAME'];
 							}
 						}
