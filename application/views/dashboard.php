@@ -204,7 +204,7 @@
 												else
 													$endDate = date_create($data['TASKADJUSTEDENDDATE']);
 
-												echo "<tr>";
+												echo "<tr class='clickable'>";
 													echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $data['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";

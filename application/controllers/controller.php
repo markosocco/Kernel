@@ -79,7 +79,7 @@ class controller extends CI_Controller
 
 				$this->model->updateTaskStatus($currentDate);
 				$this->model->updateProjectStatus($currentDate);
-				
+
 				redirect('controller/dashboard');
 
 
@@ -130,7 +130,9 @@ class controller extends CI_Controller
 				// 	}
 				// 	// $this->model->updateProjectWeeklyProgress($currentDate);
 				// }
+
 // END
+
 				// redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
