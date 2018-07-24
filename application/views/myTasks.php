@@ -45,9 +45,9 @@
 											<th>Start Date</th>
 											<th>Target End Date</th>
 											<th>Period<br><small>(Day/s)</small></th>
+											<th class="text-center"><i class="fa fa-edit"></i></th>
 											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-												<th class="text-center"><i class="fa fa-edit"></i></th>
-												<!-- <th><i class="fa fa-users"></i></th> -->
+												<th class="text-center"><i class="fa fa-users"></i></th>
 											<?php endif;?>
 										</tr>
 									</thead>
@@ -79,9 +79,9 @@
 											<th>Start Date</th>
 											<th>Target End Date</th>
 											<th>Period<br><small>(Day/s)</small></th>
+											<th class="text-center"><i class="fa fa-edit"></i></th>
 											<?php if($_SESSION['usertype_USERTYPEID'] != '5'):?>
-												<!-- <th><i class="fa fa-users"></i></th> -->
-												<th class="text-center"><i class="fa fa-edit"></i></th>
+												<th class="text-center"><i class="fa fa-users"></i></th>
 											<?php endif;?>
 										</tr>
 									</thead>
@@ -316,7 +316,8 @@
 							                    </label>
 							                  </div></td>
 																<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-																<?php foreach($projectCount as $count): ;?>
+																<?php $hasProjects = false;?>
+																<?php foreach($projectCountR as $count): ;?>
 																	<?php $hasProjects = false;?>
 																	<?php if ($count['USERID'] == $employee['USERID']):?>
 																		<td align="center"><?php echo $count['projectCount'];?></td>
@@ -329,7 +330,8 @@
 																	<td align="center">0</td>
 																<?php endif;?>
 
-																<?php foreach($taskCount as $count): ;?>
+																<?php $hasTasks = false;?>
+																<?php foreach($taskCountR as $count): ;?>
 																	<?php $hasTasks = false;?>
 																	<?php if ($count['USERID'] == $employee['USERID']):?>
 																		<td align="center"><?php echo $count['taskCount'];?></td>
@@ -765,18 +767,38 @@
 								else
 									var taskDuration = parseInt(data['mainActivity'][m].initialTaskDuration);
 
-								$('#mainActivityTable').append(
-														 "<tr>" +
-														 "<td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
-														 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
-														 "<td align='center'>" + taskStart +"</td>"+
-														 "<td align='center'>" + taskEnd +"</td>"+
-														 "<td align='center'>" + taskDuration +"</td>" +
-														 '<td align="center"><button type="button" data-id="' + data['mainActivity'][m].PROJECTID +
-														 '" class="btn btn-info btn-sm addMainsBtn"' +
-			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
-			 											 '</td>');
-
+								if (data['mainActivity'][m].usertype_USERTYPEID != 5)
+								{
+									$('#mainActivityTable').append(
+															 "<tr>" +
+															 "<td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
+															 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
+															 "<td align='center'>" + taskStart +"</td>"+
+															 "<td align='center'>" + taskEnd +"</td>"+
+															 "<td align='center'>" + taskDuration +"</td>" +
+															 '<td align="center"><button type="button" data-id="' + data['mainActivity'][m].PROJECTID +
+															 '" class="btn btn-info btn-sm addMainsBtn"' +
+				 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button></td>' +
+															 '<td align="center"><button type="button" class="btn btn-primary btn-sm delegateBtn"' +
+															 'data-toggle="modal" data-target="#modal-delegate" data-id="' +
+															 data['mainActivity'][m].TASKID + '" data-title="' + data['mainActivity'][m].TASKTITLE +
+															 '" data-start="'+ taskStart +
+															 '" data-end="'+ taskEnd +'">' +
+															 '<i class="fa fa-users"></i> Delegate</button></td>'+ '</tr>');
+								}
+								else
+								{
+									$('#mainActivityTable').append(
+															 "<tr>" +
+															 "<td>" + data['mainActivity'][m].TASKTITLE +"</td>"+
+															 "<td>" + data['mainActivity'][m].PROJECTTITLE+"</td>"+
+															 "<td align='center'>" + taskStart +"</td>"+
+															 "<td align='center'>" + taskEnd +"</td>"+
+															 "<td align='center'>" + taskDuration +"</td>" +
+															 '<td align="center"><button type="button" data-id="' + data['mainActivity'][m].PROJECTID +
+															 '" class="btn btn-info btn-sm addMainsBtn"' +
+															 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button></td></tr>');
+								}
 							} // end of main activity for loop
 						} // end of main activity if statement
 
@@ -805,15 +827,38 @@
 								else
 									var taskDuration = parseInt(data['subActivity'][s].initialTaskDuration);
 
-								$('#subActivityTable').append(
-														 "<tr><td>" + data['subActivity'][s].TASKTITLE +"</td>"+
-														 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
-														 "<td align='center'>" + taskStart +"</td>"+
-														 "<td align='center'>" + taskEnd +"</td>"+
-														 "<td align='center'>" + taskDuration +"</td>" +
-														 '<td align="center"><button type="button" data-id="' + data['subActivity'][s].PROJECTID + '" class="btn btn-info btn-sm addSubsBtn"' +
-			 											 'data-id="1"><i class="fa fa-edit"></i> Edit Project</button>' +
-			 											 '</td>');
+								if (data['subActivity'][s].usertype_USERTYPEID != 5)
+								{
+									$('#subActivityTable').append(
+															 "<tr><td>" + data['subActivity'][s].TASKTITLE +"</td>"+
+															 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
+															 "<td align='center'>" + taskStart +"</td>"+
+															 "<td align='center'>" + taskEnd +"</td>"+
+															 "<td align='center'>" + taskDuration +"</td>" +
+															 "<td align='center'><button type='button' data-id='" + data['subActivity'][s].PROJECTID +
+															 "' class='btn btn-info btn-sm addSubsBtn'" +
+				 											 "data-id='1'><i class='fa fa-edit'></i> Edit Project</button>" +
+															 "<td align='center'><button type='button' class='btn btn-primary btn-sm delegateBtn'" +
+															 "data-toggle='modal' data-target='#modal-delegate' data-id='" +
+															 data['subActivity'][s].TASKID + "' data-title='" + data['subActivity'][s].TASKTITLE +
+															 "' data-start='" + taskStart +
+															 "' data-end='"+ taskEnd + "'>" +
+															 "<i class='fa fa-users'></i> Delegate</button></td>" + "</tr>");
+								}
+								else
+								{
+									$('#subActivityTable').append(
+															 "<tr><td>" + data['subActivity'][s].TASKTITLE +"</td>"+
+															 "<td>" + data['subActivity'][s].PROJECTTITLE+"</td>"+
+															 "<td align='center'>" + taskStart +"</td>"+
+															 "<td align='center'>" + taskEnd +"</td>"+
+															 "<td align='center'>" + taskDuration +"</td>" +
+															 "<td align='center'><button type='button' data-id='" + data['subActivity'][s].PROJECTID +
+															 "' class='btn btn-info btn-sm addSubsBtn'" +
+				 											 "data-id='1'><i class='fa fa-edit'></i> Edit Project</button></tr>");
+								}
+
+
 							} // end of sub activity for loop
 						}	// end of sub activity if statement
 
