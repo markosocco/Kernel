@@ -39,6 +39,7 @@ $taskDetails = $this->model->getTaskByID($taskID);
 $taskTitle = $taskDetails['TASKTITLE'];
 
 $projectID = $taskDetails['projects_PROJECTID'];
+$projectDetails = $this->model->getProjectByID($projectID);
 $projectTitle = $projectDetails['PROJECTTITLE'];
 
 $userDetails = $this->model->getUserByID($deptID);

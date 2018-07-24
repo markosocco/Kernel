@@ -324,14 +324,20 @@ class controller extends CI_Controller
 			);
 
 			$updateTasks = $this->model->updateTaskDone($id, $data);
-			//TODO: Nami Notif -> Task completed
 
-			// START: LOG DETAILS
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
 			$taskDetails = $this->model->getTaskByID($id);
 			$taskTitle = $taskDetails['TASKTITLE'];
+
 			$projectID = $taskDetails['projects_PROJECTID'];
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-			$details = $userName . " has completed " . $taskTitle;
+			$projectDetails = $this->model->getProjectByID($projectID);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
+
+			$details = $userName . " has completed " . $taskTitle . ".";
 
 			$logData = array (
 				'LOGDETAILS' => $details,
@@ -341,6 +347,18 @@ class controller extends CI_Controller
 
 			$this->model->addToProjectLogs($logData);
 			// END: LOG DETAILS
+
+			// START: Notifications
+			$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle;
+			$notificationData = array(
+				'users_USERID' => $userIDByDepartment['users_USERID'],
+				'DETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'status' => 'Unread'
+			);
+
+			$this->model->addNotification($notificationData);
+			// END: Notification
 
 			// Check and Complete Main and Sub Activities
 			$parentID = $this->model->getParentTask($id);
