@@ -3023,6 +3023,23 @@ class controller extends CI_Controller
 
 	/******************** MY PROJECTS END ********************/
 
+// REPORT STARTS HERE
+public function reportsProjectPerDept()
+{
+	if (!isset($_SESSION['EMAIL']))
+	{
+		$this->load->view('contact');
+	}
+
+	else
+	{
+		$this->load->view("reportsProjectPerDept");
+	}
+}
+
+
+//REPORTS END HERE
+
 	public function gantt2(){
 
 		$filter = "tasks.TASKSTARTDATE"; // default

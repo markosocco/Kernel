@@ -27,7 +27,7 @@
 							<tbody>
 								<tr>
 									<td>Projects Per Department</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/documents"); ?>" target="_blank" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</a></td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsProjectPerDept"); ?>" target="_blank" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</a></td>
 								</tr>
 								<tr>
 									<td>Ongoing Projects</td>
