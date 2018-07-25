@@ -1933,6 +1933,58 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function taskTodo()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("taskTodo");
+		}
+	}
+
+	public function taskDelegate()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("taskDelegate");
+		}
+	}
+
+	public function taskMonitor()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("taskMonitor");
+		}
+	}
+
+	public function notifications()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("notifications");
+		}
+	}
+
 // DELETE THIS MAYBE?
 	public function newProjectTask()
 	{

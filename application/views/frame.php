@@ -208,6 +208,19 @@ desired effect
         <?php endif;?>
 
         <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
+        <li id = 'tasks' class="treeview">
+          <a href=" ">
+            <i class="fa fa-briefcase"></i><span> Tasks</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li id = 'taskDelegate'><a href="<?php echo base_url("index.php/controller/taskDelegate"); ?>"><i class="fa fa-circle-o"></i> Delegate</a></li>
+            <li id = 'taskTodo'><a href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-circle-o"></i> To Do</a></li>
+            <li id = 'taskMonitor'><a href="<?php echo base_url("index.php/controller/taskMonitor"); ?>"><i class="fa fa-circle-o"></i> Monitor</a></li>
+          </ul>
+        </li>
         <li id = 'rfc'><a href="<?php echo base_url("index.php/controller/rfc"); ?>"><i class="fa fa-warning"></i> <span> Change Requests</span></a></li>
         <!-- <?php //if($_SESSION['usertype_USERTYPEID'] != 2):?> NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <!-- <li id = 'myTeam'><a href="<?php //echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span> My Team</span></a></li> -->
