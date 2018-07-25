@@ -82,13 +82,13 @@
 
 											<thead>
 				                <tr>
-													<th width="65px"></th>
-													<th width="30%">Task Title</th>
-													<th width="30%">Department</th>
+													<th width="5%"></th>
+													<th width="25%">Task Title</th>
+													<th width="25%">Department</th>
 													<th width="15%">Start Date</th>
 													<th width="15%">Target End Date</th>
-													<th width="65px">Period</th>
-													<th width="65px"></th>
+													<th width="10%">Period</th>
+													<th width="5%"></th>
 				                </tr>
 											</thead>
 
@@ -149,10 +149,11 @@
 																<thead>
 																	<tr>
 																		<th width="5%"></th>
-																		<th width="30%"></th>
-																		<th width="30%"></th>
+																		<th width="25%"></th>
+																		<th width="25%"></th>
 																		<th width="15%"></th>
 																		<th width="15%"></th>
+																		<th width="10%"></th>
 																		<th width="5%"></th>
 																	</tr>
 																</thead>
