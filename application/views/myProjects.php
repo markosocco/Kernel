@@ -416,7 +416,6 @@
                                 echo $row['projectProgress'];
                               }
                             } ?>%</td>
-                          <td><?php echo "Delayed"; ?></td>
                       </tr>
                     <?php endforeach;?>
 
