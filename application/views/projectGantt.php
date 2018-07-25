@@ -27,7 +27,6 @@
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
 
-						<!-- <a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a> -->
 					</div>
 
 				<?php if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])): ?>
@@ -606,10 +605,17 @@
 						<li class="active"><?php echo $projectProfile['PROJECTTITLE']; ?></li>
 					</ol>
 
+					<div class="pull-right" style="margin-left:50px; margin-right:40px;">
+						<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+					</div>
+					<div class="pull-right">
+						<div class="circlechart" id="completeness" data-percentage="70.79">Timeliness</div>
+					</div>
 				</section>
 
 				<!-- Main content -->
 				<section class="content container-fluid">
+
 					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
 					<div>
 
@@ -962,6 +968,7 @@
 		<script>
 
 			$('.select2').select2()
+			$('.circlechart').circlechart(); // Initialization
 
 			$(function ()
 			{
