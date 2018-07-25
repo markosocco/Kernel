@@ -24,61 +24,32 @@
 				<br> -->
 
 				<div class="row">
-	        <div class="col-md-3 col-sm-6 col-xs-12">
-	          <div class="info-box">
-	            <span class="info-box-icon bg-blue" style="padding-top:20px;"><i class="fa fa-check"></i></span>
-
-	            <div class="info-box-content">
-	              <span class="info-box-text">My Completeness</span>
-	              <span class="info-box-number">10.99%</span>
-	            </div>
-	            <!-- /.info-box-content -->
-	          </div>
-	          <!-- /.info-box -->
-	        </div>
-	        <!-- /.col -->
-	        <div class="col-md-3 col-sm-6 col-xs-12">
-	          <div class="info-box">
-	            <span class="info-box-icon bg-blue" style="padding-top:20px;"><i class="fa fa-clock-o"></i></span>
-
-	            <div class="info-box-content">
-	              <span class="info-box-text">My Timeliness</span>
-	              <span class="info-box-number">99%</span>
-	            </div>
-
-	            <!-- /.info-box-content -->
-	          </div>
-	          <!-- /.info-box -->
-	        </div>
-	        <!-- /.col -->
-					<div class="col-md-3 col-sm-6 col-xs-12">
-						<div class="info-box">
-							<span class="info-box-icon bg-light-blue" style="padding-top:20px;"><i class="fa fa-check"></i></span>
-
-							<div class="info-box-content">
-								<span class="info-box-text">DeptName<br>Completeness</span>
-								<span class="info-box-number">10.99%</span>
-							</div>
-							<!-- /.info-box-content -->
+	        <div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
+						<div>
+							<div class="circlechart" id="completeness" data-percentage="50.79">My Completeness</div>
 						</div>
-						<!-- /.info-box -->
+	        </div>
+	        <!-- /.col -->
+	        <div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
+						<div>
+ 						 <div class="circlechart" id="completeness" data-percentage="50.79">My Timeliness</div>
+ 					 </div>
+	        </div>
+	        <!-- /.col -->
+					<div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
+						<div>
+							<div class="circlechart" id="completeness" data-percentage="50.79">MKT Completeness</div>
+						</div>
 					</div>
 					<!-- /.col -->
-					<div class="col-md-3 col-sm-6 col-xs-12">
-						<div class="info-box">
-							<span class="info-box-icon bg-light-blue" style="padding-top:20px;"><i class="fa fa-clock-o"></i></span>
-
-							<div class="info-box-content">
-								<span class="info-box-text">DeptName<br>Timeliness</span>
-								<span class="info-box-number">99%</span>
-							</div>
-
-							<!-- /.info-box-content -->
+					<div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
+						<div>
+							<div class="circlechart" id="completeness" data-percentage="50.79">MIS Timeliness</div>
 						</div>
-						<!-- /.info-box -->
 					</div>
 					<!-- /.col -->
 				</div>
+				<br>
 
 				<!-- MANAGE TABLE -->
 				<!-- Main row -->
@@ -439,6 +410,7 @@
 
 	<script>
 		$("#dashboard").addClass("active");
+		$('.circlechart').circlechart(); // Initialization
 
 		$(document).on("click", ".request", function() {
 			var $project = $(this).attr('data-project');
