@@ -517,15 +517,15 @@
 										"<option></option> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
-										"name='taskStartDate[]' id='start_" + subAct + "-" + counter +"' data-subAct = '" + subAct + "' data-num='" + counter +
+										"name='taskStartDate[]' id='start_" + subAct + "-" + x +"' data-subAct = '" + subAct + "' data-num='" + x +
 										"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
 										"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
-										"name='taskEndDate[]' id='end_" + subAct + "-" + counter + "' data-subAct = '" + subAct + "' data-num='" + counter +
-										"' required></div></div></td><td><div class='form-group'><input id = 'projectPeriod_" + subAct + "-" + counter + "' type='text'" +
+										"name='taskEndDate[]' id='end_" + subAct + "-" + x + "' data-subAct = '" + subAct + "' data-num='" + x +
+										"' required></div></div></td><td><div class='form-group'><input id = 'projectPeriod_" + subAct + "-" + x + "' type='text'" +
 										" class='form-control period' value=''readonly></div></td> <td class='btn'><a class='btn delButton' data-mTable = " + mTable +
 										" counter = " + x + " data-sTable = " + (i) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
 
-					$("#end_" + subAct + "-" + counter).prop('disabled', true);
+					$("#end_" + subAct + "-" + x).prop('disabled', true);
 
 				 var newCount = counter + 1;
 				 var newTot = tot + 1;
