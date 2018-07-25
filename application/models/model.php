@@ -510,7 +510,7 @@ class model extends CI_Model
 
   public function getAllMainActivitiesByUser($id)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '1'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Planning' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '1'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -528,7 +528,7 @@ class model extends CI_Model
 
   public function getAllSubActivitiesByUser($id)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '2'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Planning' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '2'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -546,7 +546,7 @@ class model extends CI_Model
 
   public function getAllProjectsToEditByUser($id)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY != '3'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Planning' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY != '3'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -896,7 +896,7 @@ class model extends CI_Model
 
   public function getAllDocumentAcknowledgementByUser($userID)
   {
-    $condition = "ACKNOWLEDGEDDATE = '' && users_ACKNOWLEDGEDBY = " . $userID;
+    $condition = "ACKNOWLEDGEDDATE = '' && users_ACKNOWLEDGEDBY = " . $userID . " && users_UPLOADEDBY != '$userID'";
     $this->db->select('*');
     $this->db->from('documentAcknowledgement');
     $this->db->join('documents', 'documents_DOCUMENTID = DOCUMENTID');

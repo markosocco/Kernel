@@ -688,13 +688,13 @@
 							</form>
 							<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
 
-						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates'])): ?>
+						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
 							<form action = 'templateProject' method="POST">
 							</form>
 							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 
-						<?php elseif (isset($_SESSION['templates'])): ?>
+						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST">
 							</form>
 							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i> Use Template</a>

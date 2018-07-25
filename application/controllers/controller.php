@@ -135,9 +135,7 @@ class controller extends CI_Controller
 				// 	}
 				// 	// $this->model->updateProjectWeeklyProgress($currentDate);
 				// }
-
 // END
-
 				// redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
@@ -2190,6 +2188,7 @@ class controller extends CI_Controller
 			$myTasks =$this->input->post("myTasks");
 			$templates =$this->input->post("templates");
 			$dashboard =$this->input->post("dashboard");
+			$templateProjectGantt = $this->input->post("templateProjectGantt");
 
 			// DASHBOARD
 			if (isset($dashboard))
@@ -2197,33 +2196,46 @@ class controller extends CI_Controller
 				$dashboard =$this->input->post("dashboard");
 				$this->session->set_flashdata('dashboard', $dashboard);
 
-				$rfc =$this->input->post("rfc");
-				$this->session->set_flashdata('rfc', $rfc);
-				$requestID = $this->input->post("request_ID");
-				$data['changeRequest'] = $this->model->getChangeRequestbyID($requestID);
-				switch($_SESSION['usertype_USERTYPEID'])
+				if (isset($rfc))
 				{
-					case '2':
-						$filter = "users.usertype_USERTYPEID = '3'";
-						break;
+					$rfc =$this->input->post("rfc");
+					$this->session->set_flashdata('rfc', $rfc);
+					$requestID = $this->input->post("request_ID");
+					$data['changeRequest'] = $this->model->getChangeRequestbyID($requestID);
+					switch($_SESSION['usertype_USERTYPEID'])
+					{
+						case '2':
+							$filter = "users.usertype_USERTYPEID = '3'";
+							break;
 
-					case '3':
-						$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
-						break;
+						case '3':
+							$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
+							break;
 
-					case '4':
-						$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
-						break;
+						case '4':
+							$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+							break;
 
-					default:
-						$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
-						break;
+						default:
+							$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
+							break;
+					}
+					$data['departments'] = $this->model->getAllDepartments();
+					$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+					$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
+					$data['projectCountR'] = $this->model->getProjectCount($filter);
+					$data['taskCountR'] = $this->model->getTaskCount($filter);
+					$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
+					$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 				}
+<<<<<<< HEAD
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
 				$data['projectCount'] = $this->model->getProjectCount($filter);
 				$data['taskCount'] = $this->model->getTaskCount($filter);
+=======
+>>>>>>> c12568b56dcd8b40ea1ee7d782e29290fea6e91c
 			}
 
 			// ARCHIVES
@@ -2279,6 +2291,11 @@ class controller extends CI_Controller
 			{
 				$userRequest = $this->input->post("userRequest");
 				$this->session->set_flashdata('userRequest', $userRequest);
+			}
+			elseif (isset($templateProjectGantt))
+			{
+				$templateProjectGantt = $this->input->post("templateProjectGantt");
+				$this->session->set_flashdata('templateProjectGantt', $templateProjectGantt);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
@@ -2560,6 +2577,15 @@ class controller extends CI_Controller
 			if (isset($templates))
 			{
 				$this->session->set_flashdata('templates', $templates);
+
+				$data['templateProject'] = $this->model->getProjectByID($templates);
+				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateRaci'] = $this->model->getRaci($templates);
+				$data['templateUsers'] = $this->model->getAllUsers();
 			}
 
 			// $this->output->enable_profile(TRUE);
@@ -2719,6 +2745,20 @@ class controller extends CI_Controller
 			$dateDiff = $diff->format('%R%a');
 
 		  $data['dateDiff'] = $dateDiff;
+
+			$templates = $this->input->post('templates');
+
+			if (isset($templates))
+			{
+				$data['templateProject'] = $this->model->getProjectByID($templates);
+				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateRaci'] = $this->model->getRaci($templates);
+				$data['templateUsers'] = $this->model->getAllUsers();
+			}
 
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');
