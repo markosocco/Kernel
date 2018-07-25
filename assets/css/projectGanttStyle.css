@@ -1,17 +1,3 @@
-/**
- * Inspiration for this project found at:
- * https://markus.oberlehner.net/blog/pure-css-animated-svg-circle-chart
- * 1. The `reverse` animation direction plays the animation backwards
- *    which makes it start at the stroke offset 100 which means displaying
- *    no stroke at all and animating it to the value defined in the SVG
- *    via the inline `stroke-dashoffset` attribute.
- * 2. Rotate by -90 degree to make the starting point of the
- *    stroke the top of the circle.
- * 3. Using CSS transforms on SVG elements is not supported by Internet Explorer
- *    and Edge, use the transform attribute directly on the SVG element as a
- * .  workaround.
- */
-
 .circle-chart {
   width: 120px;
   height: 120px;
@@ -26,16 +12,6 @@
   transform: rotate(90deg); /* 2, 3 */
   transform-origin: center; /* 4 */
 }
-
-/**
- * 1. Rotate by -90 degree to make the starting point of the
- *    stroke the top of the circle.
- * 2. Scaling mirrors the circle to make the stroke move right
- *    to mark a positive chart value.
- * 3. Using CSS transforms on SVG elements is not supported by Internet Explorer
- *    and Edge, use the transform attribute directly on the SVG element as a
- * .  workaround.
- */
 
 .circle-chart__circle--negative {
   transform: rotate(-90deg) scale(1,-1); /* 1, 2, 3 */
