@@ -1198,6 +1198,7 @@
       var $id = $(this).attr('data-id');
       $("#template").attr("name", "formSubmit");
       $("#template").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+      $("#template").append("<input type='hidden' name='templateProjectGantt' value='0'>");
       $("#template").submit();
     });
 
