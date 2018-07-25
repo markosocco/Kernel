@@ -2228,14 +2228,11 @@ class controller extends CI_Controller
 					$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
 					$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 				}
-<<<<<<< HEAD
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
 				$data['projectCount'] = $this->model->getProjectCount($filter);
 				$data['taskCount'] = $this->model->getTaskCount($filter);
-=======
->>>>>>> c12568b56dcd8b40ea1ee7d782e29290fea6e91c
 			}
 
 			// ARCHIVES
@@ -2576,11 +2573,8 @@ class controller extends CI_Controller
 
 			if (isset($templates))
 			{
-<<<<<<< HEAD
-=======
 				$this->session->set_flashdata('templates', $templates);
 
->>>>>>> 093f2b3f4604205a39ba197623a4c5cbddb381c5
 				$data['templateProject'] = $this->model->getProjectByID($templates);
 				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
