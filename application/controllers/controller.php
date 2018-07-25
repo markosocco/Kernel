@@ -82,6 +82,59 @@ class controller extends CI_Controller
 
 				redirect('controller/dashboard');
 
+
+// START
+
+			// 	$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			// 	$data['ongoingProjectofUser'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
+			// 	$data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
+			//
+			// // 	$sDate = date_create($data['lastWeekProgress']);
+			// // 	$diff = date_diff($eDate, $sDate, true);
+			// // 	$dateDiff = $diff->format('%R%a');
+			// //
+		  // // $data['dateDiff'] = $dateDiff;
+			//
+			// 	foreach($data['lastWeekProgress'] as $lastProgress){
+			//
+			// 		$lastDate = date_create(strtotime($lastProgress['DATE']));
+			// 		$curDate =  date('Y-m-d'); // date_create($data['lastWeekProgress']);
+			// 		$diff = date_diff($curDate, $lastDate, true);
+			// 		$dateDiff = $diff->format('%d%a');
+			//
+			// 		if($dateDiff < 5) {
+			// 			echo "<script>console.log('yes');</script>";
+			// 		}
+			// 	}
+
+				// foreach($data['ongoingProjectProgress'] as $projectProgress){
+				// 	foreach($data['ongoingProjectofUser'] as $ongoingProject){
+				// 		if($ongoingProject['PROJECTID'] == $projectProgress['projects_PROJECTID']){
+				//
+				// 			$progress = $projectProgress['projectProgress'];
+				//
+				// 			$notificationData = array(
+				// 				'users_USERID' => $projectOwnerID,
+				// 				'DETAILS' => $details,
+				// 				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				// 				'status' => 'Unread'
+				// 			);
+				// 			$progressData = array(
+				//
+				//
+				//
+				// 			),
+				//
+				// 			$this->model->insertToProjectWeeklyProgress($progressData, $currentDate);
+				// 		}
+				// 	}
+				// 	// $this->model->updateProjectWeeklyProgress($currentDate);
+				// }
+
+// END
+
+				// redirect('controller/dashboard');
+
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
 					// 	$this->load->view("home");
@@ -186,6 +239,8 @@ class controller extends CI_Controller
 
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
+			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
+			$data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
 
 			$this->load->view("dashboard", $data);
 		}
@@ -299,8 +354,10 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
-			$data['projectCount'] = $this->model->getProjectCount($filter);
-			$data['taskCount'] = $this->model->getTaskCount($filter);
+			$data['projectCountR'] = $this->model->getProjectCount($filter);
+			$data['taskCountR'] = $this->model->getTaskCount($filter);
+			$data['projectCount'] = $this->model->getProjectCount($_SESSION['departments_DEPARTMENTID']);
+			$data['taskCount'] = $this->model->getTaskCount($_SESSION['departments_DEPARTMENTID']);
 
 			$data['users'] = $this->model->getAllUsers();
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
@@ -968,7 +1025,7 @@ class controller extends CI_Controller
 			$logData = array (
 				'LOGDETAILS' => $details,
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $projectID
+				'projects_PROJECTID' => $taskDetails['projects_PROJECTID']
 			);
 
 			$this->model->addToProjectLogs($logData);
@@ -1653,7 +1710,7 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next task person
-			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
+			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
 			if($postTasksData['nextTaskID'] != NULL){
 
 				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
@@ -1677,7 +1734,7 @@ class controller extends CI_Controller
 			}
 
 			// notify next ACI
-			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
+			$ACIdata['ACI'] = $this->model->getACIbyTask($id);
 			if($ACIdata['ACI'] != NULL) {
 
 				foreach($ACIdata['ACI'] as $ACIusers){
@@ -1921,15 +1978,15 @@ class controller extends CI_Controller
 		$dateDiff = $diff->format('%R%a');
 
 		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
-		// TODO PUT ALERT
-		// TODO Nami: "user Has Created A Project" -- tag PO, people involved sa RACI
 		$data['project'] = $this->model->addProject($data);
-
 		$data['dateDiff'] =$dateDiff;
 		$data['departments'] = $this->model->getAllDepartments();
 
 		if ($data)
 		{
+			// TODO PUT ALERT
+			// TODO Nami: put notif and log
+
 			$templates = $this->input->post('templates');
 
 			if (isset($templates))
@@ -2075,8 +2132,6 @@ class controller extends CI_Controller
 								);
 
 								// ENTER INTO RACI
-								// TODO PUT ALERT
-								// TODO Nami: "user Has Added A Task to Project projectitle" -- tag PO, people involved sa RACI
 								$result = $this->model->addToRaci($data);
 							}
 							// echo "<br>";
@@ -2164,8 +2219,10 @@ class controller extends CI_Controller
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
-				$data['projectCount'] = $this->model->getProjectCount($filter);
-				$data['taskCount'] = $this->model->getTaskCount($filter);
+				$data['projectCountR'] = $this->model->getProjectCount($filter);
+				$data['taskCountR'] = $this->model->getTaskCount($filter);
+				$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
+				$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 			}
 
 			// ARCHIVES
@@ -2204,8 +2261,10 @@ class controller extends CI_Controller
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
-				$data['projectCount'] = $this->model->getProjectCount($filter);
-				$data['taskCount'] = $this->model->getTaskCount($filter);
+				$data['projectCountR'] = $this->model->getProjectCount($filter);
+				$data['taskCountR'] = $this->model->getTaskCount($filter);
+				$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
+				$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 			}
 			elseif (isset($myTasks))
 			{
@@ -2297,8 +2356,6 @@ class controller extends CI_Controller
 										// echo $d . ", ";
 
 										// ENTER DEPENDENCIES TO DB
-										// TODO PUT ALERT
-										// TODO Nami: "user Has Added A Dependency to Project projectitle" -- tag PO, people involved sa RACI
 										$result = $this->model->addToDependencies($data);
 									}
 								}
@@ -2477,8 +2534,6 @@ class controller extends CI_Controller
 								);
 
 								// ENTER INTO RACI
-								// TODO PUT ALERT
-								// TODO Nami: "user Has Added a Main Activity to Project projectitle" -- tag PO, people involved sa RACI
 								$result = $this->model->addToRaci($data);
 							}
 							// echo "<br>";
@@ -2506,15 +2561,6 @@ class controller extends CI_Controller
 			if (isset($templates))
 			{
 				$this->session->set_flashdata('templates', $templates);
-
-				$data['templateProject'] = $this->model->getProjectByID($templates);
-				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
-				$data['templateRaci'] = $this->model->getRaci($templates);
-				$data['templateUsers'] = $this->model->getAllUsers();
 			}
 
 			// $this->output->enable_profile(TRUE);
@@ -2642,8 +2688,6 @@ class controller extends CI_Controller
 	 								);
 
 	 								// ENTER INTO RACI
-									// TODO PUT ALERT
-									// TODO Nami: "user Has Added A Sub Activity to Project projectitle" -- tag PO, people involved sa RACI
 	 								$result = $this->model->addToRaci($data);
 	 							}
 	 							// echo "<br>";
@@ -2679,23 +2723,6 @@ class controller extends CI_Controller
 
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');
-
-			$templates = $this->input->post('templates');
-
-			if (isset($templates))
-			{
-				$this->session->set_flashdata('templates', $templates);
-
-				$data['templateProject'] = $this->model->getProjectByID($templates);
-				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
-				$data['templateRaci'] = $this->model->getRaci($templates);
-				$data['templateUsers'] = $this->model->getAllUsers();
-			}
-
 		  $this->load->view("scheduleTasks", $data);
 		}
 
@@ -2708,8 +2735,6 @@ class controller extends CI_Controller
 			);
 
 			// TODO NAMI: LOGS
-			// TODO PUT ALERT
-			// TODO Nami: "user Has Archived Project projectitle" -- tag PO, people involved sa RACI
 			$result = $this->model->archiveProject($id, $data);
 
 			if ($result)
@@ -2739,8 +2764,6 @@ class controller extends CI_Controller
 			);
 
 			// TODO NAMI: LOGS
-			// TODO PUT ALERT
-			// TODO Nami: "user Has Made Project projectitle a Template" -- tag PO, people involved sa RACI
 			$result = $this->model->templateProject($data);
 
 			//
@@ -2953,62 +2976,15 @@ class controller extends CI_Controller
 		if ($result)
 		{
 			if(isset($dashboard)){
-				if ($_SESSION['departments_DEPARTMENTID'] == '1') //ONLY EXECUTIVES CAN VIEW ALL PROJECTS
-				{
-					$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-					$data['plannedProjects'] = $this->model->getAllPlannedProjects();
-					$data['delayedProjects'] = $this->model->getAllDelayedProjects();
-					$data['parkedProjects'] = $this->model->getAllParkedProjects();
-					$data['draftedProjects'] = $this->model->getAllDraftedProjects();
-					$data['completedProjects'] = $this->model->getAllCompletedProjects();
-				}
-				else
-				{
-					$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
-					$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
-					$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
-					$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
-					$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
-					$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
-				}
-
-				$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-				$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
-				$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
-
-				// $data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-				// $data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-				// $data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-
-				$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
-				$data['tasks3DaysBeforeDeadline'] = $this->model->getTasks3DaysBeforeDeadline();
-				$data['toAcknowledgeDocuments'] = $this->model->getAllDocumentAcknowledgementByUser($_SESSION['USERID']);
-
-				// RFC Approval Data
-				$userID = $_SESSION['USERID'];
-				$deptID = $_SESSION['departments_DEPARTMENTID'];
-				if($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
-					$filter = "projects.users_USERID = '$userID'";
-				elseif($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
-					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || projects.users_USERID = '$userID'";
-				elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
-					$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || projects.users_USERID = '$userID'";
-				else // if admin/executive is logged in
-					$filter = "REQUESTID = '0'";
-
-				$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
-				$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
-
-				$this->load->view("dashboard", $data);
-
+				redirect('controller/dashboard');
 			} else {
-				$this->session->set_flashdata('projectID', $id);
+				// redirect('controller/projectDocuments');
 
-				$data['projectProfile'] = $this->model->getProjectByID($id);
-				$data['departments'] = $this->model->getAllDepartmentsByProject($id);
-				$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+				$data['projectProfile'] = $this->model->getProjectByID($projectID);
+				$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
+				$data['documentsByProject'] = $this->model->getAllDocumentsByProject($projectID);
 				$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
-				$data['users'] = $this->model->getAllUsersByProject($id);
+				$data['users'] = $this->model->getAllUsersByProject($projectID);
 
 				$this->load->view("projectDocuments", $data);
 			}

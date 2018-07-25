@@ -45,11 +45,17 @@
 												<input type ='hidden' name='archives' value='0'>
 										</form>
 
+										<?php
+											$start = date_create($a['PROJECTSTARTDATE']);
+											$end = date_create($a['PROJECTENDDATE']);
+											$actualEnd = date_create($a['PROJECTACTUALENDDATE']);
+										;?>
+
 										<td><?php echo $a['PROJECTTITLE']; ?></td>
 										<td><?php echo $a['FIRSTNAME'] . " " . $a['LASTNAME']; ?></td>
-										<td><?php echo $a['PROJECTSTARTDATE']; ?></td>
-										<td><?php echo $a['PROJECTENDDATE']; ?></td>
-										<td><?php echo $a['PROJECTACTUALENDDATE']; ?></td>
+										<td><?php echo date_format($start, "M d, Y"); ?></td>
+										<td><?php echo date_format($end, "M d, Y"); ?></td>
+										<td><?php echo date_format($actualEnd, "M d, Y"); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>

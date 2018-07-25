@@ -686,27 +686,26 @@
 
 							<form action = 'archiveProject' method="POST">
 							</form>
+							<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
 
-								<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates'])): ?>
 
 							<form action = 'templateProject' method="POST">
 							</form>
-
 							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
 
 						<?php elseif (isset($_SESSION['templates'])): ?>
 							<form action = 'newProject' method="POST">
 							</form>
-
 							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i> Use Template</a>
 						<?php endif; ?>
-						<?php if(!isset($_SESSION['templates'])):?>
-							<?php if($projectProfile['PROJECTSTATUS'] != 'Parked'): ?>
-								<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
-							<?php else:?>
-								<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i> Continue Project</a>
-							<?php endif;?>
+
+						<?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
+							<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+						<?php endif;?>
+
+						<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
+							<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i> Continue Project</a>
 						<?php endif;?>
 
 					</div>
@@ -1080,7 +1079,7 @@
 						// START: Checks for accountable
 						$accountablePerson = '';
 						foreach ($accountable as $a) {
-							if($r['tasks_TASKID'] == $value['TASKID']){
+							if($a['tasks_TASKID'] == $value['TASKID']){
 								$accountablePerson = $a['FIRSTNAME'] . " " . $a['LASTNAME'];
 							}
 						}

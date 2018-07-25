@@ -112,13 +112,12 @@
 
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
 														<td align="center">
-															<?php // TODO: NAMI FIX ?>
 															<?php
-																foreach ($parkedProjectProgress as $row)
+																foreach ($lastWeekProgress as $row)
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																	{
-																		echo $ongoingProject['projectProgress'];
+																		echo $row['PROGRESS'];
 																	}
 																} ?>%</h2>
 
@@ -190,7 +189,7 @@
 												else
 													$endDate = date_create($row['TASKADJUSTEDENDDATE']);
 
-												echo "<tr class='clickable' style='color:red'>";
+												echo "<tr class='clickable deadline' style='color:red'>";
 													echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $row['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
@@ -204,7 +203,7 @@
 												else
 													$endDate = date_create($data['TASKADJUSTEDENDDATE']);
 
-												echo "<tr>";
+												echo "<tr class='clickable deadline'>";
 													echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $data['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
@@ -225,6 +224,7 @@
 					<?php endif;?>
 
 					<!-- Right col -->
+					<?php if ($editProjects != NULL): ?>
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
@@ -242,16 +242,17 @@
 										</tr>
 										</thead>
 										<tbody>
-										<tr class="clickable" data-id="" data-toggle="modal" data-target="projectGantt of this project">
-											<td>Store Opening - SM Southmall</td>
-											<td align="center">Dec 73, 2080</td>
-											<td align="center">3 days</td>
-										</tr>
-										<tr data-id="" data-toggle="modal" data-target="projectGantt of this project">
-											<td>Store Opening - SM Southmall</td>
-											<td align="center">Dec 73, 2080</td>
-											<td align="center">75 days</td>
-										</tr>
+
+											<?php foreach($editProjects as $editProject):?>
+												<?php $startdate = date_create($editProject['PROJECTSTARTDATE']);?>
+
+												<tr class="clickable" data-id="<?php echo $editProject['PROJECTID'] ;?>'">
+													<td><?php echo $editProject['PROJECTTITLE'];?></td>
+													<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
+													<td align="center"><?php echo $editProject['launching'];?></td>
+												</tr>
+											<?php endforeach;?>
+
 										</tbody>
 									</table>
 								</div>
@@ -264,6 +265,8 @@
 					</div>
 
 				</div>
+				<?php endif;?>
+
 
 				<?php if($changeRequests != null):?>
 
@@ -383,9 +386,7 @@
 																	<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'>
 																	<i class='fa fa-eye'></i> Acknowledge</button></td>";
 																}
-
 															echo "</tr>";
-
 														}
 													}
 												?>
@@ -460,6 +461,10 @@
 			$(".acknowledgeDocument").attr("name", "formSubmit");
 			$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
 			$(".acknowledgeDocument").submit();
+		});
+
+		$(document).on("click", ".deadline", function(){
+			window.location.replace("<?php echo base_url("index.php/controller/myTasks") ?>");
 		});
 
 		$(document).ready(function()

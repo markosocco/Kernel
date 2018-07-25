@@ -90,9 +90,12 @@
             <?php foreach($templates as $template):?>
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <a class = "project clickable" data-id = "">
+              <a class = "templateProj clickable" data-id = "<?php echo $template['PROJECTSTATUS']; ?>">
               <div class="small-box bg-purple">
                 <div class="inner">
+                  <form id = 'template' action = 'projectGantt'  method="POST">
+                    <input type='hidden' name='myProjects' value= "0">
+                  </form>
                   <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
                   <?php
                     $enddate = date_create($template['PROJECTACTUALENDDATE']);
@@ -1189,6 +1192,13 @@
       $(".teamgantt").attr("name", "formSubmit");
       $(".teamgantt").append("<input type='hidden' name='project_ID' value= " + $id + ">");
       $(".teamgantt").submit();
+    });
+
+    $(document).on("click", ".templateProj", function() {
+      var $id = $(this).attr('data-id');
+      $("#template").attr("name", "formSubmit");
+      $("#template").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+      $("#template").submit();
     });
 
     </script>
