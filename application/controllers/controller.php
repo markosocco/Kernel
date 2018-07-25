@@ -357,6 +357,8 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			$data['projectCountR'] = $this->model->getProjectCount($_SESSION['departments_DEPARTMENTID']);
+			$data['taskCountR'] = $this->model->getTaskCount($_SESSION['departments_DEPARTMENTID']);
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
 

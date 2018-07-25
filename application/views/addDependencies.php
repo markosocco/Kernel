@@ -26,11 +26,6 @@
 						<?php endif;?>
 
 		      </h1>
-		      <ol class="breadcrumb">
-		        <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-		        <li class="active">New Project</li>
-						<li class="active"><?php echo $project['PROJECTTITLE'] . " Tasks" ?></li>
-		      </ol>
 		    </section>
 
 		    <!-- Main content -->
@@ -51,13 +46,6 @@
 		            <div class="box-header">
 		              <h3 class="box-title">Enter task dependencies</h3>
 		              <div class="box-tools">
-		                <div class="input-group input-group-sm" style="width: 150px;">
-		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-		                  <div class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-		                  </div>
-		                </div>
 		              </div>
 		            </div>
 		            <!-- /.box-header -->

@@ -56,8 +56,8 @@
         <div> <!-- SORT/LEGEND -->
           <button type="button" id = "filterAll" class="btn btn-default filter">All</button>
           <button type="button" id = "filterCompleted" class="btn bg-teal filter">Completed</button>
-          <button type="button" id = "filterDelayed" class="btn btn-danger filter">Delayed</button>
           <button type="button" id = "filterOngoing" class="btn btn-success filter">Ongoing</button>
+          <button type="button" id = "filterDelayed" class="btn btn-danger filter">Delayed</button>
           <button type="button" id = "filterPlanned" class="btn btn-warning filter">Planned</button>
           <button type="button" id = "filterParked" class="btn btn-info filter">Parked</button>
           <button type="button" id = "filterDrafted" class="btn bg-maroon filter">Draft</button>
