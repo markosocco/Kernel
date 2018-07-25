@@ -29,7 +29,7 @@
   <!-- Any Gantt -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>anyChart/css/anychart-ui.min.css" type="text/css"/>
   <!-- Progress Circle -->
-  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>css-percentage-circle-master/css/circle.css" type="text/css"/>
+  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>progress-circle/progresscircle.css" type="text/css"/>
   <!-- Frame Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/frameStyle.css")?>">
 
@@ -93,12 +93,40 @@ desired effect
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
+          <!-- Tasks: style can be found in dropdown.less -->
+          <li class="dropdown tasks-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-flag-o"></i>
+              <span class="label label-success">count</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">Your Tasks</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li><!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Task 1.2.3-Buy a Ferrari
+                        <small class="pull-right">Mar 21, 1996</small>
+                      </h3>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                </ul>
+              </li>
+              <li class="footer">
+                <a href="#">View all tasks</a>
+              </li>
+            </ul>
+          </li>
+
           <!-- Notifications Menu -->
           <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->
-            <a href="<?php echo base_url()."assets/"; ?>#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">something</span>
+              <span class="label label-warning">count</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Your Notifications</li>
@@ -108,14 +136,14 @@ desired effect
                   <?php foreach ($_SESSION['notifications'] as $row): ?>
                     <li><!-- start notification -->
                       <a href="<?php echo base_url("index.php/controller/notifications"); ?>">
-                        <i class="fa fa-users text-aqua"></i><?php echo $row['DETAILS']; ?>
+                        <i class="fa fa-users text-aqua"></i> <?php echo $row['DETAILS']; ?>
                       </a>
                     </li>
                   <?php endforeach; ?>
                   <!-- end notification -->
                 </ul>
               </li>
-              <li class="footer"><a href="<?php echo base_url()."assets/"; ?>#">View all</a></li>
+              <li class="footer"><a href="<?php echo base_url("index.php/controller/notifications"); ?>">View all</a></li>
             </ul>
           </li>
           <!-- Tasks Menu -->
@@ -210,7 +238,7 @@ desired effect
         <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
         <li id = 'tasks' class="treeview">
           <a href=" ">
-            <i class="fa fa-briefcase"></i><span> Tasks</span>
+            <i class="fa fa-check-square-o"></i><span> Tasks</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -294,6 +322,8 @@ desired effect
 <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-gantt.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-treemap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url()."assets/"; ?>anyChart/js/anychart-table.min.js" type="text/javascript"></script>
+<!-- Progress Circle -->
+<script src="<?php echo base_url()."assets/"; ?>progress-circle/progresscircle.js" type="text/javascript"></script>
 
 <!-- Bootstrap 4.1.1 -->
 <!-- <script src="<?php echo base_url()."assets/"; ?>bower_components/bootstrap-4.1.1/dist/js/bootstrap.min.js"></script> -->
