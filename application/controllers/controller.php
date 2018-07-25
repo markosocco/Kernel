@@ -2187,6 +2187,7 @@ class controller extends CI_Controller
 			$myTasks =$this->input->post("myTasks");
 			$templates =$this->input->post("templates");
 			$dashboard =$this->input->post("dashboard");
+			$templateProjectGantt = $this->input->post("templateProjectGantt");
 
 			// DASHBOARD
 			if (isset($dashboard))
@@ -2280,6 +2281,11 @@ class controller extends CI_Controller
 			{
 				$userRequest = $this->input->post("userRequest");
 				$this->session->set_flashdata('userRequest', $userRequest);
+			}
+			elseif (isset($templateProjectGantt))
+			{
+				$templateProjectGantt = $this->input->post("templateProjectGantt");
+				$this->session->set_flashdata('templateProjectGantt', $templateProjectGantt);
 			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
