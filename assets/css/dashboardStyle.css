@@ -23,7 +23,7 @@
   stroke-linecap: square;
   fill: none;
   animation: circle-chart-fill 2s reverse; /* 1 */
-  transform: rotate(90deg); /* 2, 3 */
+  transform: rotate(-90deg); /* 2, 3 */
   transform-origin: center; /* 4 */
 }
 

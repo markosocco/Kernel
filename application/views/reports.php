@@ -27,43 +27,43 @@
 							<tbody>
 								<tr>
 									<td>Projects Per Department</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsProjectPerDept"); ?>" target="_blank" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</a></td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsProjectPerDept"); ?>" target="_blank" class="btn btn-success generateBtn"><i class="fa fa-print"></i></a></td>
 								</tr>
 								<tr>
 									<td>Ongoing Projects</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Planned Projects</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Parked Projects</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Project Performance</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Employee Performance per Project</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Project Performance of a User</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Departmetal Performance per Department</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Departmetal Performance per Project</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Change Requests</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i> Generate Report</button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
 								</tr>
 							</tbody>
 						</table>

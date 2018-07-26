@@ -155,8 +155,8 @@
 												<div class="form-group">
 													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
 												</div>
-												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny"><i class="fa fa-close"></i> Deny Request</button>
-												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve"><i class="fa fa-check" ></i> Approve Request</button>
+												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny"><i class="fa fa-close"></i></button>
+												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve"><i class="fa fa-check" ></i></button>
 										</div>
 										<!-- /.box-body -->
 										<!-- /.box-footer -->
@@ -195,8 +195,8 @@
 								<div id="denyConfirm">
 									<h4>Are you sure you want to deny this request?</h4>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
-										<button id = "confirmDenyBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
+										<button id = "confirmDenyBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
 									</div>
 								</div>
 							</div>
@@ -236,10 +236,10 @@
 								<div id="approveConfirm">
 									<h4>Are you sure you want to approve this request?</h4>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
-										<button id = "confirmApproveBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
+										<button id = "confirmApproveBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
 										<?php if ($changeRequest['REQUESTTYPE'] == '1'):?>
-											<button id="delegateBtn" type="button" class="btn btn-success pull-left" style="margin-right: 15%"><i class="fa fa-check"></i> Delegate Task</button>
+											<button id="delegateBtn" type="button" class="btn btn-success pull-left" style="margin-right: 15%"><i class="fa fa-check"></i></button>
 										<?php endif;?>
 									</div>
 								</div>
@@ -248,8 +248,8 @@
 								<div id="delegateConfirm">
 									<h4>Are you sure you want to delegate this task and approve this request?</h4>
 									<div class="modal-footer">
-										<button id = "backConfirmDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
-										<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+										<button id = "backConfirmDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i></button>
+										<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
 									</div>
 								</div>
 
@@ -551,8 +551,8 @@
 							</div>
 
 							<div class="modal-footer">
-								<button id="backDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i> Back</button>
-								<button id = "delegateTask" type="button" class="btn btn-success delegate" data-id="<?php $changeRequest['tasks_REQUESTEDTASK'];?>"><i class="fa fa-check"></i> Delegate Task</button>
+								<button id="backDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
+								<button id = "delegateTask" type="button" class="btn btn-success delegate" data-id="<?php $changeRequest['tasks_REQUESTEDTASK'];?>"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
 						</div>
@@ -568,7 +568,7 @@
 									<div class="modal-body" id = "workloadDiv">
 									</div>
 									<div class="modal-footer">
-										<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i> Back</button>
+										<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
 									</div>
 								</div>
 							</div>
@@ -687,15 +687,15 @@
 						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
 						<!-- <a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a> -->
 
-						<a name="PROJECTID" class="btn btn-success btn" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
+						<a name="PROJECTID" class="btn btn-success btn" id="projectDocu"><i class="fa fa-folder"></i></a>
 
-						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog"><i class="fa fa-flag"></i> View Logs</a>
+						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog"><i class="fa fa-flag"></i></a>
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
 
 							<form action = 'archiveProject' method="POST">
 							</form>
-							<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i> Archive Project</a>
+							<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i></a>
 
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 

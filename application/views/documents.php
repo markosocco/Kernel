@@ -71,7 +71,7 @@
 											echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
 											echo "<td>" . $formattedDate . "</td>";
 											echo "<td align='center'><button type='button' class='btn btn-success'>
-											<i class='fa fa-download'></i> Download</button></td>";
+											<i class='fa fa-download'></i></button></td>";
 
 										echo "</tr>";
 									}

@@ -45,15 +45,6 @@
 		          <div class="box box-danger">
 		            <div class="box-header">
 		              <h3 class="box-title">Enter sub activities for this project</h3>
-		              <div class="box-tools">
-		                <div class="input-group input-group-sm" style="width: 150px;">
-		                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-		                  <div class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-		                  </div>
-		                </div>
-		              </div>
 		            </div>
 		            <!-- /.box-header -->
 								<form id='arrangeTasks' name = 'arrangeTasks' action = '<?php echo base_url('index.php/controller/arrangeTasks');?>' method="POST">
@@ -87,7 +78,8 @@
 											<tbody>
 
 												<tr>
-													<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+													<td></td>
+													<!-- <td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td> -->
 													<td width="27.5%"><b><?php echo $value['TASKTITLE']; ?></b></td>
 													<td width="27.5%"><b>
 														<?php
@@ -145,7 +137,7 @@
 															<?php foreach ($templateSubActivity as $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
-																		<td></td>
+																		<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																		<td><div class="form-group">
 
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -200,7 +192,7 @@
 															<?php else: ?>
 
 																<tr>
-																	<td></td>
+																	<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 									                <td><div class="form-group">
 
 																		<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -282,7 +274,8 @@
 										<tbody>
 
 											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+												<td></td>
+												<!-- <td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td> -->
 												<td width="27.5%"><b><?php echo $value['TASKTITLE']; ?></b></td>
 												<td width="27.5%"><b>
 													<?php
@@ -336,7 +329,7 @@
 												<td width="5%"></td>
 											</tr>
 											<tr>
-												<td></td>
+												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 				                <td><div class="form-group">
 
 													<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">

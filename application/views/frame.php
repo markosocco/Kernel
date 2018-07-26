@@ -227,13 +227,13 @@ desired effect
               <li><a href=""><i class="fa fa-circle-o"></i> General Service</a></li>
               <li><a href=""><i class="fa fa-circle-o"></i> Human Resource</a></li>
               <li><a href=""><i class="fa fa-circle-o"></i> Marketing</a></li>
-              <li><a href="finance"><i class="fa fa-circle-o"></i> MIS</a></li>
-              <li><a href="finance"><i class="fa fa-circle-o"></i> Store Operations</a></li>
+              <li><a href=""><i class="fa fa-circle-o"></i> MIS</a></li>
+              <li><a href=""><i class="fa fa-circle-o"></i> Store Operations</a></li>
             </ul>
           </li>
         <?php endif;?>
 
-        <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
+        <!-- <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li> -->
         <li id = 'tasks' class="treeview">
           <a href=" ">
             <i class="fa fa-check-square-o"></i><span> Tasks</span>
@@ -251,11 +251,11 @@ desired effect
         <!-- <?php //if($_SESSION['usertype_USERTYPEID'] != 2):?> NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <!-- <li id = 'myTeam'><a href="<?php //echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span> My Team</span></a></li> -->
         <?php //endif;?>
-        <!-- <li id = 'myCalendar'><a href="<?php echo base_url("index.php/controller/myCalendar"); ?>"><i class="fa fa-calendar"></i><span> My Calendar</span></a></li> -->
+        <li id = 'myCalendar'><a href="<?php echo base_url("index.php/controller/myCalendar"); ?>"><i class="fa fa-calendar"></i><span> My Calendar</span></a></li>
         <li id = 'reports'><a href="<?php echo base_url("index.php/controller/reports"); ?>"><i class="fa fa-tachometer"></i><span> Reports</span></a></li>
         <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i><span> Templates</span></a></li>
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Archives</span></a></li>
-        <!-- <li id = 'documents'><a href="<?php echo base_url("index.php/controller/documents"); ?>"><i class="fa fa-folder"></i><span> Documents</span></a></li> -->
+        <li id = 'documents'><a href="<?php echo base_url("index.php/controller/documents"); ?>"><i class="fa fa-folder"></i><span> Documents</span></a></li>
 
         <!-- <li class="treeview">
           <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-link"></i> <span>Multilevel</span>
