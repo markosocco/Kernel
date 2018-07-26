@@ -20,13 +20,9 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 
-				<!-- <div id = "divGridListMyProjects">
-          <a href="#" id = "buttonListProjects" class="btn btn-default btn pull-left"><i class="fa fa-th-list"></i>
-          <a href="#" id = "buttonGridProjects" class="btn btn-default btn pull-left"><i class="fa fa-th-large"></i></a>
-					<a id = "viewAll" class = "pull-right">View All Tasks >></a> <br><br>
-        </div> -->
+				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye"></i></button>
 
-				<a id = "viewAll" class = "pull-right clickable">View All Tasks</a> <br><br>
+				<br><br>
 
 				<div id = "filteredTasks">
 
@@ -37,16 +33,16 @@
 						<?php if ($uniqueOngoingACItasks != NULL): ?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Ongoing Tasks</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+									<!-- <div class="table-responsive"> -->
+										<table class="table table-hover no-margin" id="ongoingTaskTable">
 											<thead>
 											<tr>
-												<th width="1%"></th>
+												<th width=".5%"></th>
 												<th width="4%" class="text-center">Role</th>
 												<th width="20%">Responsible</th>
 												<th width="27.5%">Project</th>
@@ -134,14 +130,14 @@
 
 											</tbody>
 										</table>
-									</div>
+									<!-- </div> -->
 								</div>
 							</div>
 						</div>
 					<?php else:?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Ongoing Tasks</h3>
 								</div>
 								<div class="box-body">
@@ -178,16 +174,16 @@
 						<?php if ($uniqueCompletedACItasks != NULL): ?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Completed Tasks</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+										<table class="table table-hover no-margin" id="completedTaskTable">
 											<thead>
 											<tr>
-												<th width="1%"></th>
+												<th width=".5%"></th>
 												<th width="4%" class="text-center">Role</th>
 												<th width="20%">Responsible</th>
 												<th width="27.5%">Project</th>
@@ -279,7 +275,7 @@
 					<?php else:?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Completed Tasks</h3>
 								</div>
 								<div class="box-body">
@@ -351,7 +347,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Delayed <br><br><b><?php echo $delayedTasks;?></b></h4>
+										<h4 align="center"> Delayed <br><br><span style='color:red'><b><?php echo $delayedTasks;?></b></span></h4>
 									</div>
 								</div>
 							</div>
@@ -366,13 +362,13 @@
 						<?php if ($uniqueOngoingACItasks != NULL || $uniqueCompletedACItasks != NULL): ?>
 						<div class="col-md-12">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">All Tasks</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+										<table class="table table-hover no-margin" id="allTaskTable">
 											<thead>
 											<tr>
 												<th width="1%"></th>
@@ -572,9 +568,9 @@
 				$("#filteredTasks").toggle();
 
 				if($("#allTasks").css("display") == "none")
-					$("#viewAll").html("View All Tasks");
+					$("#viewAll").html("<i class='fa fa-eye'></i>");
 				else
-					$("#viewAll").html("Hide All Tasks");
+					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
 			});
 
 			$(document).on("click", ".viewProject", function() {
@@ -582,6 +578,51 @@
 				$("#viewProject").attr("name", "formSubmit");
 				$("#viewProject").append("<input type='hidden' name='project_ID' value= " + $projectID + ">");
 				$("#viewProject").submit();
+			});
+
+			$('#ongoingTaskTable').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false,
+				'order'				: [[ 6, "desc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 0 ],
+					'orderable'	: false
+				} ]
+			});
+
+			$('#allTaskTable').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false,
+				'order'				: [[ 7, "asc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 0 ],
+					'orderable'	: false
+				} ]
+			});
+
+			$('#completedTaskTable').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false,
+				'order'				: [[ 6, "desc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 0 ],
+					'orderable'	: false
+				} ]
 			});
 		</script>
 	</body>
