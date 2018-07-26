@@ -2039,7 +2039,9 @@ class controller extends CI_Controller
 		{
 			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 
-			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
+			$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects.PROJECTID");
+			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "1");
+			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "2");
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 			$data['projectCount'] = $this->model->getProjectCount($filter);

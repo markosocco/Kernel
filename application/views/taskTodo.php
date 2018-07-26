@@ -40,7 +40,7 @@
 										<table class="table table-hover no-margin" id="toDoTable">
 											<thead>
 											<tr>
-												<th width="1%"></th>
+												<th width=".5%"></th>
 												<th>Task</th>
 												<th>Project</th>
 												<th class="text-center">End Date</th>
@@ -63,7 +63,7 @@
 									<h3 class="box-title">To Do</h3>
 								</div>
 								<div class="box-body">
-									<h4 align="center">You have no tasks due in 3 days</h4>
+									<h4 align="center">You have no tasks due in 2 days</h4>
 								</div>
 							</div>
 						</div>
@@ -141,7 +141,7 @@
 										<table class="table table-hover no-margin" id = "allTaskTable">
 											<thead>
 											<tr>
-												<th width="1%"></th>
+												<th width=".5%"></th>
 												<th>Task</th>
 												<th>Project</th>
 												<th class="text-center">Start Date</th>
@@ -431,7 +431,13 @@
 						'searching'   : true,
 						'ordering'    : true,
 						'info'        : false,
-						'autoWidth'   : false
+						'autoWidth'   : false,
+						'order'				: [[ 5, "desc" ]],
+						'columnDefs'	: [
+						{
+							'targets'		: [ 0, 6 ],
+							'orderable'	: false
+						} ]
 					});
 					$('#toDoTable').DataTable({
 						'paging'      : false,
@@ -439,7 +445,13 @@
 						'searching'   : true,
 						'ordering'    : true,
 						'info'        : false,
-						'autoWidth'   : false
+						'autoWidth'   : false,
+						'order'				: [[ 4, "desc" ]],
+						'columnDefs'	: [
+						{
+							'targets'		: [ 0, 5 ],
+							'orderable'	: false
+						} ]
 					});
 				}
 			});
