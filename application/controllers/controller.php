@@ -1831,11 +1831,20 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post("project_ID");
+			$edit = $this->input->post("edit");
 
 			// TEMPLATES
 			if (isset($id))
 			{
-				$this->session->set_flashdata('templates', $id);
+				if (isset($edit))
+				{
+					$this->session->set_flashdata('edit', $edit);
+				}
+
+				else
+				{
+					$this->session->set_flashdata('templates', $id);
+				}
 
 				$data['project'] = $this->model->getProjectByID($id);
 				$data['allTasks'] = $this->model->getAllProjectTasks($id);

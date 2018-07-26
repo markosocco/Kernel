@@ -600,6 +600,7 @@
 							<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
 
 								<form id="editProjectForm" action = 'newProject'  method="POST">
+									<input type='hidden' name='edit' value='<?php echo $projectProfile['PROJECTID'];?>'>
 								</form>
 
 								<a id="editProject" data-id="<?php echo $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>

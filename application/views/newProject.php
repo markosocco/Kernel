@@ -35,13 +35,13 @@
             <!-- /.box-header -->
             <!-- form start -->
 						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
-							<?php if (isset($_SESSION['templates'])): ?>
+							<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 								<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
 							<?php endif;?>
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Project Title</label>
-									<?php if (isset($_SESSION['templates'])): ?>
+									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" value ="<?php echo $project['PROJECTTITLE']; ?>" required>
 									<?php else: ?>
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="form-group">
 									<label>Project Details</label>
-									<?php if (isset($_SESSION['templates'])): ?>
+									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required><?php echo $project['PROJECTDESCRIPTION']; ?></textarea>
 									<?php else: ?>
 										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
@@ -64,7 +64,11 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-calendar"></i>
 			                  </div>
-			                  <input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
+												<?php if (isset($_SESSION['edit'])): ?>
+													<input type="text" class="form-control pull-right" id="startDate" name="startDate" value="<?php echo $project['PROJECTSTARTDATE']; ?>" required>
+												<?php else: ?>
+													<input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
+												<?php endif; ?>
 			                </div>
 			              </div>
 									</div>
