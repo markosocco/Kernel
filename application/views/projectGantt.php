@@ -1046,6 +1046,7 @@
 
 		<script>
 
+		// PROJECT GANTT START
 			anychart.onDocumentReady(function (){
 
 				var rawData = [
@@ -1355,7 +1356,7 @@
 				chart.container('container').draw();      // set container and initiate drawing
 
 			});
-
+			// PROJECT GANTT END
 		</script>
 	</body>
 </html>
