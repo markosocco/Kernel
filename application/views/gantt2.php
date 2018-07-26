@@ -1274,8 +1274,10 @@
 				var columnStartDate = dataGrid.column(2);
 				columnStartDate.title("Target Start Date");
 				columnStartDate.setColumnFormat("actualStart", {
-					"formatter": function(value){
-						
+					"formatter": function(val){
+						var date = new Date(val);
+						var month = date.toLocaleDateString("en-US", {month: "short"});
+						return month + " " + format(date.getUTCDate());
 					}
 				});
 				columnStartDate.width(100);
