@@ -1,4 +1,4 @@
-<html>
+	<html>
 	<head>
 		<title>Kernel - <?php echo  $projectProfile['PROJECTTITLE'];?></title>
 		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectGanttStyle.css")?>">
@@ -598,7 +598,12 @@
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
 							<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
-								<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
+
+								<form id="editProjectForm" action = 'newProject'  method="POST">
+									<input type='hidden' name='edit' value='<?php echo $projectProfile['PROJECTID'];?>'>
+								</form>
+
+								<a id="editProject" data-id="<?php echo $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
 							<?php endif; ?>
 					</h1>
 
@@ -747,6 +752,12 @@
 					$("form").attr("name", "formSubmit");
 					$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
 					$("form").submit();
+					});
+
+				$(document).on("click", "#editProject", function() {
+					var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+					$("#editProjectForm").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+					$("#editProjectForm").submit();
 					});
 
 			$("#myProjects").addClass("active");

@@ -24,32 +24,41 @@
 				<br> -->
 
 				<div class="row">
-	        <div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
-						<div>
-							<div class="circlechart" id="completeness" data-percentage="50.79">My Completeness</div>
+	        <div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="box box-danger">
+							<div class="box-header with-border">
+								<h3 class="box-title">My Performance</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div style="display:inline-block; text-align:center; width:49%;">
+									<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+								</div>
+								<div style="display:inline-block; text-align:center; width:49%;">
+		 						 <div class="circlechart" id="completeness" data-percentage="50.79">Timeliness</div>
+		 					 </div>
+							</div>
 						</div>
 	        </div>
 	        <!-- /.col -->
-	        <div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
-						<div>
- 						 <div class="circlechart" id="completeness" data-percentage="50.79">My Timeliness</div>
- 					 </div>
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="box box-danger">
+							<div class="box-header with-border">
+								<h3 class="box-title">deptName Performance</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div style="display:inline-block; text-align:center; width:49%;">
+									<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+								</div>
+								<div style="display:inline-block; text-align:center; width:49%;">
+		 						 <div class="circlechart" id="completeness" data-percentage="50.79">Timeliness</div>
+		 					 </div>
+							</div>
+						</div>
 	        </div>
 	        <!-- /.col -->
-					<div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
-						<div>
-							<div class="circlechart" id="completeness" data-percentage="50.79">MKT Completeness</div>
-						</div>
-					</div>
-					<!-- /.col -->
-					<div class="col-md-3 col-sm-6 col-xs-12" style="text-align:center">
-						<div>
-							<div class="circlechart" id="completeness" data-percentage="50.79">MIS Timeliness</div>
-						</div>
-					</div>
-					<!-- /.col -->
 				</div>
-				<br>
 
 				<!-- MANAGE TABLE -->
 				<!-- Main row -->

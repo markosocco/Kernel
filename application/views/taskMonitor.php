@@ -26,7 +26,7 @@
 					<a id = "viewAll" class = "pull-right">View All Tasks >></a> <br><br>
         </div> -->
 
-				<a id = "viewAll" class = "pull-right">View All Tasks >></a> <br><br>
+				<a id = "viewAll" class = "pull-right clickable">View All Tasks</a> <br><br>
 
 				<div id = "filteredTasks">
 
@@ -47,14 +47,14 @@
 											<thead>
 											<tr>
 												<th width="1%"></th>
-												<th class="text-center">Role</th>
-												<th>Responsible</th>
-												<th>Project</th>
-												<th>Task</th>
+												<th width="4%" class="text-center">Role</th>
+												<th width="20%">Responsible</th>
+												<th width="27.5%">Project</th>
+												<th width="27.5%">Task</th>
 												<!-- <th class="text-center">Start Date</th> -->
-												<th class="text-center">End Date</th>
+												<th width="12%" class="text-center">End Date</th>
 												<!-- <th class="text-center">Status</th> -->
-												<th class="text-center">Days Delayed</th>
+												<th width="8%" class="text-center">Days Delayed</th>
 											</tr>
 											</thead>
 											<tbody>
@@ -85,7 +85,7 @@
 													$delay = $diff->format("%a")+1;
 													?>
 
-													<tr class="viewProject" data-id="<?php echo $uniqueOngoingACItask['PROJECTID'] ;?>">
+													<tr class="viewProject clickable" data-id="<?php echo $uniqueOngoingACItask['PROJECTID'] ;?>">
 
 														<?php
 														$role="";
@@ -188,14 +188,14 @@
 											<thead>
 											<tr>
 												<th width="1%"></th>
-												<th class="text-center">Role</th>
-												<th>Responsible</th>
-												<th>Project</th>
-												<th>Task</th>
-												<!-- <th class="text-center">Start Date</th>
-												<th class="text-center">End Date</th> -->
-												<th class="text-center">Actual End Date</th>
-												<th class="text-center">Days Delayed</th>
+												<th width="4%" class="text-center">Role</th>
+												<th width="20%">Responsible</th>
+												<th width="27.5%">Project</th>
+												<th width="27.5%">Task</th>
+												<!-- <th class="text-center">Start Date</th> -->
+												<th width="12%" class="text-center">Actual<br>End Date</th>
+												<!-- <th class="text-center">Status</th> -->
+												<th width="8%" class="text-center">Days Delayed</th>
 											</tr>
 											</thead>
 											<tbody>
@@ -227,7 +227,7 @@
 													$delay = $diff->format("%a")+1;
 													?>
 
-													<tr class="viewProject" data-id="<?php echo $uniqueCompletedACItask['PROJECTID'] ;?>">
+													<tr class="viewProject clickable" data-id="<?php echo $uniqueCompletedACItask['PROJECTID'] ;?>">
 
 														<?php
 														$role="";
@@ -376,14 +376,14 @@
 											<thead>
 											<tr>
 												<th width="1%"></th>
-												<th class="text-center">Role</th>
-												<th>Responsible</th>
-												<th>Project</th>
-												<th>Task</th>
-												<th class="text-center">Start Date</th>
-												<th class="text-center">End Date</th>
-												<th class="text-center">Actual End Date</th>
-												<th class="text-center">Days Delayed</th>
+												<th width="4%" class="text-center">Role</th>
+												<th width="17%">Responsible</th>
+												<th width="20%">Project</th>
+												<th width="20%">Task</th>
+												<th width="10%" class="text-center">Start Date</th>
+												<th width="10%" class="text-center">End Date</th>
+												<th width="10%" class="text-center">Actual<br>End Date</th>
+												<th width="8%" class="text-center">Days Delayed</th>
 											</tr>
 											</thead>
 											<tbody>
@@ -572,9 +572,9 @@
 				$("#filteredTasks").toggle();
 
 				if($("#allTasks").css("display") == "none")
-					$("#viewAll").html("View All Tasks >>");
+					$("#viewAll").html("View All Tasks");
 				else
-					$("#viewAll").html("Hide All Tasks >>");
+					$("#viewAll").html("Hide All Tasks");
 			});
 
 			$(document).on("click", ".viewProject", function() {
