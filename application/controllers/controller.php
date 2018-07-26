@@ -2080,6 +2080,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function projectSummary()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("projectSummary");
+		}
+	}
+
 // DELETE THIS MAYBE?
 	public function newProjectTask()
 	{
