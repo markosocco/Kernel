@@ -1897,7 +1897,8 @@ class controller extends CI_Controller
 		$edit = $this->input->post('edit');
 
 		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
-		$data['project'] = $this->model->editProject($edit, $data);
+		$editProject = $this->model->editProject($edit, $data);
+		$data['project'] = $this->model->getProjectByID($edit);
 		$data['dateDiff'] =$dateDiff;
 		$data['departments'] = $this->model->getAllDepartments();
 
@@ -2455,8 +2456,8 @@ class controller extends CI_Controller
 
 			// $this->output->enable_profile(TRUE);
 
-			// $this->load->view("projectGantt", $data);
-			$this->load->view("gantt2", $data);
+			$this->load->view("projectGantt", $data);
+			// $this->load->view("gantt2", $data);
 		}
 	}
 
@@ -2742,6 +2743,189 @@ class controller extends CI_Controller
 			// $this->output->enable_profile(TRUE);
 			$this->load->view('arrangeTasks', $data);
 		}
+
+		public function editMainActivity()
+		{
+			// GET PROJECT ID
+			$id = $this->input->post("project_ID");
+
+			// echo $id;
+
+			// GET ARRAY OF INPUTS FROM VIEW
+			$title = $this->input->post('title');
+			$startDates = $this->input->post('taskStartDate');
+			$endDates = $this->input->post('taskEndDate');
+			$department = $this->input->post("department");
+			$rowNum = $this->input->post('row');
+			$taskID = $this->input->post('taskid');
+
+			$addedTask = array();
+
+			// GET ALL DEPTS TO ASSIGN DEPT HEAD TO TASK
+			$departments = $this->model->getAllDepartments();
+
+			foreach($departments as $row)
+			{
+				switch ($row['DEPARTMENTNAME'])
+				{
+					case 'Executive':
+						$execHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Marketing':
+						$mktHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Finance':
+						$finHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Procurement':
+						$proHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'HR':
+						$hrHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'MIS':
+						$misHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Store Operations':
+						$opsHead = $row['users_DEPARTMENTHEAD'];
+						break;
+					case 'Facilities Administration':
+						$fadHead = $row['users_DEPARTMENTHEAD'];
+						break;
+				}
+			}
+
+			foreach ($title as $key=> $row)
+			{
+				$data = array(
+	          'TASKTITLE' => $row,
+	          'TASKSTARTDATE' => $startDates[$key],
+	          'TASKENDDATE' => $endDates[$key],
+	          'TASKSTATUS' => 'Planning',
+	          'CATEGORY' => '1',
+	          'projects_PROJECTID' => $id
+	      );
+
+				if (isset($taskID[$key]))
+				{
+					$addedTask[] = $this->model->editProjectTask($taskID[$key], $data);
+				}
+
+				else
+				{
+					$addedTask[] = $this->model->addTasksToProject($data);
+
+				}
+			}
+
+
+
+			// TESTING
+			foreach ($addedTask as $aKey=> $a)
+			{
+				foreach ($rowNum as $rKey => $row)
+				{
+					if ($aKey == $rKey)
+					{
+						foreach ($department as $dKey => $d)
+						{
+							if ($row == $dKey)
+							{
+								foreach ($d as $value)
+								{
+									switch ($value)
+									{
+										case 'Executive':
+											$deptHead = $execHead;
+											break;
+										case 'Marketing':
+											$deptHead = $mktHead;
+											break;
+										case 'Finance':
+											$deptHead = $finHead;
+											break;
+										case 'Procurement':
+											$deptHead = $proHead;
+											break;
+										case 'HR':
+											$deptHead = $hrHead;
+											break;
+										case 'MIS':
+											$deptHead = $misHead;
+											break;
+										case 'Store Operations':
+											$deptHead = $opsHead;
+											break;
+										case 'Facilities Administration':
+											$deptHead = $fadHead;
+											break;
+									}
+
+									// echo $value . ", ";
+
+									$data = array(
+											'ROLE' => '1',
+											'users_USERID' => $deptHead,
+											'tasks_TASKID' => $a,
+											'STATUS' => 'Current'
+									);
+
+									$status = array(
+										'STATUS' => 'Changed'
+									);
+
+									// ENTER INTO RACI
+									if (isset($a))
+									{
+										$updateStatus = $this->model->updateRaciStatus($a, $status);
+									}
+
+									$result = $this->model->addToRaci($data);
+								}
+								// echo "<br>";
+							}
+						}
+					}
+				}
+			}
+
+			$status = array(
+				"PROJECTSTATUS" => "Planning");
+
+			$changeStatues = $this->model->updateProjectStatusPlanning($id, $status);
+
+				$data['project'] = $this->model->getProjectByID($id);
+				$data['tasks'] = $this->model->getAllProjectTasks($id);
+				$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+				$data['users'] = $this->model->getAllUsers();
+				$data['departments'] = $this->model->getAllDepartments();
+
+				$sDate = date_create($data['project']['PROJECTSTARTDATE']);
+				$eDate = date_create($data['project']['PROJECTENDDATE']);
+				$diff = date_diff($eDate, $sDate, true);
+				$dateDiff = $diff->format('%R%a');
+
+				$data['dateDiff'] = $dateDiff;
+
+				$templates = $this->input->post('templates');
+
+				if (isset($templates))
+				{
+					$this->session->set_flashdata('templates', $templates);
+
+					$data['templateProject'] = $this->model->getProjectByID($templates);
+					$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+					$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+					$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+					$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+					$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+					$data['templateRaci'] = $this->model->getRaci($templates);
+					$data['templateUsers'] = $this->model->getAllUsers();
+				}
+
+				// $this->output->enable_profile(TRUE);
+				// $this->load->view('arrangeTasks', $data);
+			}
 
 		// ADDS SUB ACTIVITIES TO MAIN ACTIVITIES OF PROJECT
 		public function arrangeTasks()

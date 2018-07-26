@@ -1295,5 +1295,19 @@ class model extends CI_Model
     $this->db->where('PROJECTID', $id);
     $result = $this->db->update('projects', $status);
   }
+
+  public function editProjectTask($id, $data)
+  {
+    $this->db->where('TASKID', $id);
+    $result = $this->db->update('tasks', $data);
+
+    return $id;
+  }
+
+  public function updateRaciStatus($id, $data)
+  {
+    $this->db->where('tasks_TASKID', $id);
+    $result = $this->db->update('raci', $data);
+  }
 }
 ?>
