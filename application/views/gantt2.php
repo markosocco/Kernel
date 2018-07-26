@@ -1013,26 +1013,34 @@
 					foreach ($ganttData as $key => $value) {
 
 						// START: Formatting of TARGET START date
-						$startDate = $value['TASKSTARTDATE'];
-						$formatted_startDate = date('M d, Y', strtotime($startDate));
-						$startDateTime = $formatted_startDate . "T00:00";
+						$targetStartDate = $value['TASKSTARTDATE'];
+						$formatted_startDate = date('Y-m-d', strtotime($targetStartDate));
 						// END: Formatting of TARGET START date
 
 						// START: Formatting of TARGET END date
-						$endDate = $value['TASKENDDATE'];
-						$formatted_endDate = date('M d, Y', strtotime($endDate));
-						$endDateTime = $formatted_endDate . "T24:00";
+						$targetEndDate = $value['TASKENDDATE'];
+						$formatted_endDate = date('Y-m-d', strtotime($targetEndDate));
 						// END: Formatting of TARGET END date
 
 						// START: Formatting of ACTUAL START date
 						$actualStartDate = $value['TASKACTUALSTARTDATE'];
-						$formatted_actualStartDate = date('M d, Y', strtotime($actualStartDate));
+						$formatted_actualStartDate = date('Y-m-d', strtotime($actualStartDate));
 						// END: Formatting of ACTUAL START date
 
 						// START: Formatting of ACTUAL END date
 						$actualEndDate = $value['TASKACTUALENDDATE'];
-						$formatted_actualEndDate = date('M d, Y', strtotime($actualEndDate));
+						$formatted_actualEndDate = date('Y-m-d', strtotime($actualEndDate));
 						// END: Formatting of ACTUAL END date
+
+						// // START: Formatting of ADJUSTED START date
+						// $adjustedStartDate = $value['TASKADJUSTEDSTARTDATE'];
+						// $formatted_adjustedStartDate = date('Y-m-d', strtotime($adjustedStartDate));
+						// // END: Formatting of ACTUAL END date
+						//
+						// // START: Formatting of ADJUSTED END date
+						// $adjustedEndDate = $value['TASKADJUSTEDENDDATE'];
+						// $formatted_adjustedEndDate = date('Y-m-d', strtotime($adjustedEndDate));
+						// // END: Formatting of ACTUAL END date
 
 						// START: Checks for progress value
 						$progress = '0';
@@ -1045,20 +1053,20 @@
 						$parent = '0';
 						if($value['tasks_TASKPARENT'] != NULL){
 							$parent = $value['tasks_TASKPARENT'];
-							// echo "<script>console.log(".$parent.");</script>";
 						}
 						// END: Checks for parent
 
-						// START: Checks for period
-						$period = '';
-						if($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] == NULL){
-							$period = $value['initialTaskDuration'];
-						} else if ($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] != NULL){
-							$period = $value['adjustedTaskDuration1'];
-						} else {
-							$period = $value['adjustedTaskDuration2'];
-						}
-						// END: Checks for period
+						// // START: Checks for period
+						// $period = '';
+						// if($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] == NULL){
+						// 	$period = $value['initialTaskDuration'];
+						// } else if ($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] != NULL){
+						// 	$period = $value['adjustedTaskDuration1'];
+						// } else {
+						// 	$period = $value['adjustedTaskDuration2'];
+						// }
+						// echo "<script>console.log(".$period.");</script>";
+						// // END: Checks for period
 
 						// START: Checks for dependecies
 						$dependency = '';
@@ -1114,13 +1122,13 @@
 							{
 								'id': " . $value['TASKID'] . ",
 								'name': '" . $value['TASKTITLE'] . "',
-								'actualStart': '" . $startDateTime . "',
-								'actualEnd': '" . $endDateTime . "',
+								'actualStart': '" . $formatted_startDate .  "T00:00',
+								'actualEnd': '" . $formatted_endDate . "T13:00',
 								'responsible': '',
 								'accountable': '',
 								'consulted': '',
 								'informed': '',
-								'period': '" . $progress . "',
+								'period': '" . $value['initialTaskDuration'] . "',
 								'progressValue': '0%'
 							},";
 						} else { // START: RACI IS NOT EMPTY
@@ -1132,13 +1140,13 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $startDateTime . "',
-										'actualEnd': '" . $endDateTime . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
 										'responsible': '" . $responsiblePerson  ."',
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "'
@@ -1151,13 +1159,13 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $startDateTime . "',
-										'actualEnd': '" . $endDateTime . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
 										'responsible': '" . $responsiblePerson  ."',
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] ."',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
@@ -1172,13 +1180,13 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $startDateTime . "',
-										'actualEnd': '" . $endDateTime . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
 										'responsible': '" . $responsiblePerson  ."',
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
@@ -1193,13 +1201,13 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $startDateTime . "',
-										'actualEnd': '" . $endDateTime . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
 										'responsible': '" . $responsiblePerson  ."',
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1213,18 +1221,18 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $startDateTime . "',
-										'actualEnd': '" . $endDateTime . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
 										'responsible': '" . $responsiblePerson  ."',
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
-										'baselineStart': '" . $formatted_actualStartDate . "',
+										'baselineStart': '" . $formatted_actualStartDate ."',
 										'baselineEnd': '" . date('M d, Y') . "'
 									},";
 								} // END: Ongoing tasks - baselineEnd is the date today
@@ -1235,13 +1243,13 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $startDateTime . "',
-										'actualEnd': '" . $endDateTime . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
 										'responsible': '" . $responsiblePerson  ."',
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] ."',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1273,19 +1281,18 @@
 
 				var columnStartDate = dataGrid.column(2);
 				columnStartDate.title("Target Start Date");
+				columnStartDate.setColumnFormat("actualStart", "direct-numbering");
 				columnStartDate.setColumnFormat("actualStart", {
-					"formatter": function(val){
-						var date = new Date(val);
-						var month = date.toLocaleDateString("en-US", {month: "short"});
-						return month + " " + format(date.getUTCDate());
-					}
+					"formatter": dateFormatter
 				});
 				columnStartDate.width(100);
 
 				var columnEndDate = dataGrid.column(3);
 
 				columnEndDate.title("Target End Date");
-				columnEndDate.setColumnFormat("actualEnd", "direct-numbering");
+				columnEndDate.setColumnFormat("actualEnd", {
+					"formatter": dateFormatter
+				});
 				columnEndDate.width(100);
 
 				var columnPeriod = dataGrid.column(4);
@@ -1317,13 +1324,21 @@
 
 				chart.splitterPosition(1040);
 				chart.container('container').draw();      // set container and initiate drawing
+				chart.ZoomTo('day');
 
 			});
 
-			// function dateFormatter (value){
-			// 	var date = new Date(value);
-			// 	console.log(date);
-			// }
+			function dateFormatter (value){
+				// var stringDate = strtotime(value);
+				var date = new Date(value);
+				var month = date.toLocaleDateString("en-US", {month: "short"});
+				var day = date.getDate();
+				if(day < 10){
+					day = "0"+day;
+				}
+				var year = date.getFullYear()
+				return month + " " + day + ", " + year;
+			}
 
 // OTHER CONDITIONS
 			// if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){
