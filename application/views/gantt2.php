@@ -1115,7 +1115,6 @@
 						}
 						// END: Checks for informed
 
-
 						//START: CHECKS IF RACI IS EMPTY
 						if($accountable == NULL || $consulted == NULL || $informed == NULL){
 							echo "
@@ -1129,7 +1128,8 @@
 								'consulted': '',
 								'informed': '',
 								'period': '" . $value['initialTaskDuration'] . "',
-								'progressValue': '0%'
+								'progressValue': '0%',
+								'parent': '" . $parent . "'
 							},";
 						} else { // START: RACI IS NOT EMPTY
 							// START: CHECKS IF MAIN OR SUB
@@ -1155,6 +1155,60 @@
 
 								// START: Ongoing tasks - baselineEnd is the date today
 								else if($value['TASKACTUALENDDATE'] == NULL){
+									// not delayed
+									if($value['TASKENDDATE'] > date('Y-m-d')){
+										// echo "
+										// {
+										// 	'id': " . $value['TASKID'] . ",
+										// 	'name': '" . $value['TASKTITLE'] . "',
+										// 	'actualStart': '" . $formatted_startDate . "',
+										// 	'actualEnd': '" . $formatted_endDate . "',
+										// 	'responsible': '" . $responsiblePerson  ."',
+										// 	'accountable': '" . $accountablePerson ."',
+										// 	'consulted': '" . $consultedPerson  ."',
+										// 	'informed': '" . $informedPerson  ."',
+										// 	'period': '" . $value['initialTaskDuration'] ."',
+										// 	'parent': '" . $parent . "',
+										// 	'connectTo': '" . $dependency . "',
+										// 	'connectorType': '" . $type . "',
+										// 	'baselineStart': '" . $formatted_actualStartDate . "',
+										// 	'baselineEnd': '" . date('M d, Y') . "',
+										// 	'baseline':{'fill': 'green'},
+										// },";
+										// echo "<script> console.log(" . $value['TASKID'] . "); </script>";
+										// echo "<script> console.log(" . $value['TASKENDDATE'] . "); </script>";
+										// echo "<script> console.log(" . date('Y-m-d'). "); </script>";
+										// echo "<script> console.log('not yet delayed'); </script>";
+										// echo "<script> console.log(''); </script>";
+										$color = "green";
+									} else {
+										// delayed
+										// echo "
+										// {
+										// 	'id': " . $value['TASKID'] . ",
+										// 	'name': '" . $value['TASKTITLE'] . "',
+										// 	'actualStart': '" . $formatted_startDate . "',
+										// 	'actualEnd': '" . $formatted_endDate . "',
+										// 	'actual':{'fill': '#DC401F'},
+										// 	'responsible': '" . $responsiblePerson  ."',
+										// 	'accountable': '" . $accountablePerson ."',
+										// 	'consulted': '" . $consultedPerson  ."',
+										// 	'informed': '" . $informedPerson  ."',
+										// 	'period': '" . $value['initialTaskDuration'] ."',
+										// 	'parent': '" . $parent . "',
+										// 	'connectTo': '" . $dependency . "',
+										// 	'connectorType': '" . $type . "',
+										// 	'baselineStart': '" . $formatted_actualStartDate . "',
+										// 	'baselineEnd': '" . date('M d, Y') . "',
+										// 	'baseline':{'fill': '#DC401F'},
+										// },";
+										// echo "<script> console.log(" . $value['TASKID'] . "); </script>";
+										// echo "<script> console.log(" . $value['TASKENDDATE'] . "); </script>";
+										// echo "<script> console.log(" . date('Y-m-d') . "); </script>";
+										// echo "<script> console.log('delayed'); </script>";
+										// echo "<script> console.log(''); </script>";
+										$color = "#F53006";
+									}
 									echo "
 									{
 										'id': " . $value['TASKID'] . ",
@@ -1170,7 +1224,8 @@
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
 										'baselineStart': '" . $formatted_actualStartDate . "',
-										'baselineEnd': '" . date('M d, Y') . "'
+										'baselineEnd': '" . date('M d, Y') . "',
+										'baseline':{'fill': '" .$color. "'},
 									},";
 								} // END: Ongoing tasks - baselineEnd is the date today
 
@@ -1273,6 +1328,8 @@
 				// data grid getter
 				var dataGrid = chart.dataGrid();
 
+				dataGrid.column(0).labels({hAlign: 'center'});
+
 				// create custom column
 				var columnTitle = dataGrid.column(1);
 				columnTitle.title("Task Name");
@@ -1281,7 +1338,7 @@
 
 				var columnStartDate = dataGrid.column(2);
 				columnStartDate.title("Target Start Date");
-				columnStartDate.setColumnFormat("actualStart", "direct-numbering");
+				columnStartDate.labels({hAlign: 'center'});
 				columnStartDate.setColumnFormat("actualStart", {
 					"formatter": dateFormatter
 				});
@@ -1290,6 +1347,7 @@
 				var columnEndDate = dataGrid.column(3);
 
 				columnEndDate.title("Target End Date");
+				columnEndDate.labels({hAlign: 'center'});
 				columnEndDate.setColumnFormat("actualEnd", {
 					"formatter": dateFormatter
 				});
@@ -1299,6 +1357,7 @@
 				columnPeriod.title("Period");
 				columnPeriod.setColumnFormat("period", "text");
 				columnPeriod.width(80);
+				columnPeriod.labels({hAlign: 'center'});
 
 				var columnResponsible = dataGrid.column(5);
 				columnResponsible.title("Responsible");
@@ -1321,10 +1380,13 @@
 				columnInformed.width(100);
 
 				//get chart timeline link to change color
+				// var tasks = timeLine.tasks();
+				//
+				// tasks.fill('white');
 
 				chart.splitterPosition(1040);
 				chart.container('container').draw();      // set container and initiate drawing
-				chart.ZoomTo('day');
+				chart.zoomTo("week", 2);
 
 			});
 

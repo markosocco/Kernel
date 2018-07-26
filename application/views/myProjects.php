@@ -141,7 +141,7 @@
                         <form action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p class="subtitle"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in
+                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days
@@ -183,7 +183,7 @@
                         <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p class="subtitle"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
+                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
                           <?php echo $value['datediff'];?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days delayed
@@ -225,7 +225,7 @@
                             <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b class="subtitle"><?php echo $value['PROJECTTITLE']; ?></b><br><i>
+                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days remaining
@@ -304,7 +304,7 @@
                         <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p class="subtitle"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
+                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
                       </div>
                       <div class="icon" style="margin-top:25px;">
                         <i class="ion ion-clock"></i>

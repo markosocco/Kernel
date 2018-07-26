@@ -44,7 +44,11 @@
 		        <div class="col-xs-12">
 		          <div class="box box-danger">
 		            <div class="box-header">
-		              <h3 class="box-title">Enter main activities for this project</h3>
+									<?php if (isset($_SESSION['edit'])): ?>
+										<h3 class="box-title">Edit main activities for this project</h3>
+									<?php else: ?>
+										<h3 class="box-title">Enter main activities for this project</h3>
+									<?php endif; ?>
 		            </div>
 		            <!-- /.box-header -->
 								<?php if (isset($_SESSION['edit'])): ?>
@@ -149,6 +153,86 @@
 
 											<?php endforeach; ?>
 
+										<?php elseif (isset($_SESSION['edit'])): ?>
+
+												<?php foreach ($editMainActivity as $key=> $eMain): ?>
+													<tr id ="row<?php echo  $key?>">
+														<td>
+															<div class="form-group">
+																<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $eMain['TASKTITLE']; ?>" required>
+																<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+																<input type="hidden" name="taskid[]" value="<?php echo $eMain['TASKID']; ?>">
+															</div>
+														</td>
+														<td>
+															<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																<?php foreach ($departments as $row): ?>
+
+																	<option>
+																		<?php echo $row['DEPARTMENTNAME']; ?>
+																	</option>
+
+																<?php endforeach; ?>
+															</select>
+														</td>
+														<td>
+															<div class="form-group">
+																<div class="input-group date">
+																	<div class="input-group-addon">
+																		<i class="fa fa-calendar"></i>
+																	</div>
+																	<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" value="<?php echo $eMain['TASKSTARTDATE']; ?>" required>
+																</div>
+																<!-- /.input group -->
+															</div>
+														</td>
+														<td>
+															<div class="form-group">
+																<div class="input-group date">
+																	<div class="input-group-addon">
+																		<i class="fa fa-calendar"></i>
+																	</div>
+																	<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" value="<?php echo $eMain['TASKENDDATE']; ?>" required>
+																</div>
+															</div>
+														</td>
+														<td>
+															<div class="form-group">
+
+																<?php
+																	$startdate = date_create($editProject['PROJECTSTARTDATE']);
+																	$enddate = date_create($editProject['PROJECTACTUALENDDATE']);
+																	$temp = date_diff($enddate, $startdate);
+																	$dFormat = $temp->format('%d');
+																	$diff = (int)$dFormat + 1;
+
+																	if ($diff >= 1)
+																	{
+																		$period = $diff . " day";
+																	}
+
+																	else
+																	{
+																		$period = $diff . " days";
+																	}
+																?>
+
+																<input id = "projectPeriod<?php echo $key; ?>" type="text" class="form-control" value="<?php echo $period; ?>" readonly>
+															</div>
+														</td>
+														<td class='btn'>
+															<a id = "del<?php echo $key; ?>" class='btn delButton' data-id = "<?php echo $key; ?>"><i class='glyphicon glyphicon-trash'></i></a>
+														</td>
+													<!-- <td class="btn"><a class="btn delButton"></a></td> -->
+													</tr>
+
+													<?php if ($key == (count($editMainActivity) - 1)): ?>
+															<tr id="row<?php echo ($key + 1) ;?>">
+															</tr>
+													<?php endif; ?>
+
+												<?php endforeach; ?>
+
 										<?php else: ?>
 											<tr id="row0">
 			                  <td>
@@ -218,7 +302,13 @@
 		            <!-- /.box-body -->
 								<div class="box-footer">
 									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Project details</button>
-									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>><i class="fa fa-forward"></i> Add Sub Activities</button>
+									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>><i class="fa fa-forward"></i>
+										<?php if (isset($_SESSION['edit'])): ?>
+											Edit Sub Activities
+										<?php else: ?>
+											Add Sub Activities
+										<?php endif; ?>
+									</button>
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 25%"><i class="fa fa-file-excel-o"></i> Import Spreadsheet File</button> -->
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-window-maximize"></i> Use a Template</button> -->
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button> -->
@@ -249,7 +339,12 @@
 			$.fn.datepicker.defaults.endDate = $("#start-0").attr('data-end');
 
 			$("#myProjects").addClass("active");
-			$(".taskEndDate").prop('disabled', true);
+
+			<?php if (isset($_SESSION['edit'])): ?>
+				$(".taskEndDate").prop('disabled', false);
+			<?php else: ?>
+				$(".taskEndDate").prop('disabled', true);
+			<?php endif; ?>
 
 		  $(function ()
 			{
@@ -325,6 +420,9 @@
 			 <?php if (isset($_SESSION['templates'])): ?>
 			 		var i = <?php echo (count($templateMainActivity)); ?>;
 					var x = <?php echo (count($templateMainActivity) + 1); ?>;
+					<?php elseif (isset($_SESSION['edit'])): ?>
+						var i = <?php echo (count($editMainActivity)); ?>;
+						var x = <?php echo (count($editMainActivity) + 1); ?>;
 				<?php else: ?>
 					var i = 1;
 					var x = 2;
