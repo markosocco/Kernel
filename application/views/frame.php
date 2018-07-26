@@ -441,6 +441,11 @@ desired effect
         '</div>'
         });
       };
+
+      $(function ()
+      {
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+      })
 </script>
 
 </body>
