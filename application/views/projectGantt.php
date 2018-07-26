@@ -1431,7 +1431,6 @@
 				chart.zoomTo("week", 2);
 
 			});
-<<<<<<< HEAD
 
 			function dateFormatter (value){
 				// var stringDate = strtotime(value);
@@ -1445,9 +1444,6 @@
 				return month + " " + day + ", " + year;
 			}
 
-=======
-			// PROJECT GANTT END
->>>>>>> 947bc3e6b628745b4b75cf92188d4c2175cb6b0f
 		</script>
 	</body>
 </html>
