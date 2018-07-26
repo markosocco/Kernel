@@ -42,7 +42,7 @@
 										<table class="table table-hover no-margin" id="ongoingTaskTable">
 											<thead>
 											<tr>
-												<th width="1%"></th>
+												<th width=".5%"></th>
 												<th width="4%" class="text-center">Role</th>
 												<th width="20%">Responsible</th>
 												<th width="27.5%">Project</th>
@@ -183,7 +183,7 @@
 										<table class="table table-hover no-margin" id="completedTaskTable">
 											<thead>
 											<tr>
-												<th width="1%"></th>
+												<th width=".5%"></th>
 												<th width="4%" class="text-center">Role</th>
 												<th width="20%">Responsible</th>
 												<th width="27.5%">Project</th>
@@ -586,7 +586,13 @@
 				'searching'   : true,
 				'ordering'    : true,
 				'info'        : false,
-				'autoWidth'   : false
+				'autoWidth'   : false,
+				'order'				: [[ 6, "desc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 0 ],
+					'orderable'	: false
+				} ]
 			});
 
 			$('#allTaskTable').DataTable({
@@ -595,7 +601,13 @@
 				'searching'   : true,
 				'ordering'    : true,
 				'info'        : false,
-				'autoWidth'   : false
+				'autoWidth'   : false,
+				'order'				: [[ 7, "asc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 0 ],
+					'orderable'	: false
+				} ]
 			});
 
 			$('#completedTaskTable').DataTable({
@@ -604,7 +616,13 @@
 				'searching'   : true,
 				'ordering'    : true,
 				'info'        : false,
-				'autoWidth'   : false
+				'autoWidth'   : false,
+				'order'				: [[ 6, "desc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 0 ],
+					'orderable'	: false
+				} ]
 			});
 		</script>
 	</body>
