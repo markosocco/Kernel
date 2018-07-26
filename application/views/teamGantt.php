@@ -18,7 +18,8 @@
 
 				<!-- Main content -->
 				<section class="content container-fluid">
-					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
+					<h4>Project Owner: <?php echo $projectProfile['FIRSTNAME']; ?> <?php echo $projectProfile['LASTNAME']; ?></h4>
+					<h4>Description: <?php echo $projectProfile['PROJECTDESCRIPTION']; ?></h4>
 					<div>
 
 						<?php
@@ -27,29 +28,68 @@
 						$current = date_create(date("Y-m-d")); // get current date
 						?>
 
-						<h4>Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?> (<?php echo $projectProfile['duration'] + 1;?> day/s)</h4>
-
-						<h4 style="color:red">
-							<?php if ($current >= $startdate):?>
-								<?php echo $projectProfile['remaining'] + 1;?> Day/s Remaining
+						<h4>Initial Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($enddate, "F d, Y"); ?>
+							(<?php echo $projectProfile['duration'];?>
+							<?php if($projectProfile['duration'] > 1):?>
+								days)
 							<?php else:?>
-								<?php echo $projectProfile['launching'];?> Day/s Remaining before Project Launch
+								day)
 							<?php endif;?>
 						</h4>
 
+						<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived' || $projectProfile['PROJECTSTATUS'] == 'Complete'):?>
+							<?php $actualEnd = date_create($projectProfile['PROJECTACTUALENDDATE']);?>
+
+							<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?>
+								(<?php echo $projectProfile['actualDuration'];?>
+								<?php if($projectProfile['actualDuration'] > 1):?>
+									days)
+								<?php else:?>
+									day)
+								<?php endif;?>
+							</h4>
+
+						<?php else:?>
+
+							<h4 style="color:red">
+								<?php if ($current >= $startdate && $current <= $enddate && $projectProfile['PROJECTSTATUS'] == 'Ongoing'):?>
+									<?php echo $projectProfile['remaining'];?>
+									<?php if($projectProfile['remaining'] > 1):?>
+										days remaining
+									<?php else:?>
+										day remaining
+									<?php endif;?>
+								<?php elseif ($current < $startdate && $projectProfile['PROJECTSTATUS'] == 'Planning'):?>
+									Launch in <?php echo $projectProfile['launching'];?>
+									<?php if($projectProfile['launching'] > 1):?>
+										days
+									<?php else:?>
+										day
+									<?php endif;?>
+								<?php elseif ($current >= $startdate && $current >= $enddate && $projectProfile['PROJECTSTATUS'] == 'Ongoing'):?>
+									<?php echo $projectProfile['delayed'];?>
+									<?php if($projectProfile['delayed'] > 1):?>
+										days delayed
+									<?php else:?>
+										day delayed
+									<?php endif;?>
+								<?php endif;?>
+							</h4>
+
+						<?php endif;?>
+
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
+							<input type="hidden" name="projectID_logs" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
 
 						<!-- IF USING GET METHOD
 						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
+						<!-- <a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a> -->
 
-						<a name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a>
-
-						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a>
-						<a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-edit"></i> Edit Project</a>
 					</div>
-					<div style="position: relative" class="gantt" id="GanttChartDIV"></div>
+					<br>
+					<div id="container" style="height: 600px;"></div>
 
 					<!-- </section> -->
 				</section>
@@ -58,112 +98,317 @@
 		</div>
 		<script>
 			$("#myTeam").addClass("active");
-
-			// $("#projectDocu").click(function()
-			// {
-			// 	("#gantt").submit();
-      // });
-
 		</script>
-
-		<!-- Javascript for Tasks -->
-
 		<script>
+			anychart.onDocumentReady(function (){
 
-			$('.select2').select2()
+				var rawData = [
+					<?php
 
-			$(function ()
-			{
-				//Date picker
- 	     $('#startDate').datepicker({
- 	       autoclose: true
- 	     });
+					foreach ($ganttData as $key => $value) {
 
- 	     $('#endDate').datepicker({
- 	       autoclose: true
- 	     });
-		 });
+						// START: Formatting of TARGET START date
+						$startDate = $value['TASKSTARTDATE'];
+						$formatted_startDate = date('M d, Y', strtotime($startDate));
+						// END: Formatting of TARGET START date
 
-			$("#projectDocu").click(function() //redirect to individual project profile
-      {
-				// var $id = $(this).attr('data-id');
-				$("#prjID").submit();
-        // window.location.replace("<?php echo base_url("index.php/controller/projectGantt/?id="); ?>" + $id);
-      });
-		</script>
+						// START: Formatting of TARGET END date
+						$endDate = $value['TASKENDDATE'];
+						$formatted_endDate = date('M d, Y', strtotime($endDate));
+						// END: Formatting of TARGET END date
 
-			<!-- Javascript for Gantt Chart -->
-	    <script src="<?php echo base_url()."assets/"; ?>jsgantt/jsgantt.js" type="text/javascript"></script>
-	    <script type="text/javascript">
+						// START: Formatting of ACTUAL START date
+						$actualStartDate = $value['TASKACTUALSTARTDATE'];
+						$formatted_actualStartDate = date('M d, Y', strtotime($actualStartDate));
+						// END: Formatting of ACTUAL START date
 
-		    var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
+						// START: Formatting of ACTUAL END date
+						$actualEndDate = $value['TASKACTUALENDDATE'];
+						$formatted_actualEndDate = date('M d, Y', strtotime($actualEndDate));
+						// END: Formatting of ACTUAL END date
 
-		    <?php
-
-		    foreach($ganttData as $row)
-		    {
-
-		// FOR RESOURCE PERSON
-		      $firstName = $row['FIRSTNAME'];
-					$lastName = $row['LASTNAME'];
-					$name = $firstName . " " . $lastName;
-
-	        $parent = 1;
-	        $hasChildren = false;
-	        $completion = 100;
-	        $MAcounter = 0;
-					$group = 0;
-
-		// FOR GROUPING
-					$currentTask = $row['TASKID'];
-		      $group = 0;
-					$isParent = 0; // 1 = true, 0 = false
-					foreach ($ganttData as $data) {
-						if($data['tasks_TASKPARENT'] == $currentTask ){
-							$group = 1;
+						// START: Checks for progress value
+						$progress = '0';
+						if($value['TASKSTATUS'] == 'Complete' && $value['CATEGORY'] == 3){
+							$progress = 100;
 						}
-					}
+						// END: Checks for progress value
 
-		// FOR PARENT
-					if($row['tasks_TASKPARENT'] == NULL){
-						$parent = 0;
-					} else {
-						$parent = $row['tasks_TASKPARENT'];
-					}
-
-		// FOR COMPLETION
-					if($row['TASKSTATUS'] == 'Pending'){
-						$complete = 0;
-					} else {
-						$complete = 100;
-					}
-
-		// TODO: CHECK FOR PREREQ
-				$dependency = '';
-				foreach ($dependencies as $data) {
-					if($currentTask == $data['tasks_POSTTASKID']){
-						if($row['TASKSTARTDATE'] == $data["TASKSTARTDATE"])
-						{
-							$dependency = $data['PRETASKID'];
-
-							echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
-				      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-				      "'gtaskBlue', '', 0, '" . $name . "', " . $complete . ", " . $group . ", " .
-							$parent . ", 1, '". $dependency."SS', '', '', g));";
+						// START: Checks for parent
+						$parent = '0';
+						if($value['tasks_TASKPARENT'] != NULL){
+							$parent = $value['tasks_TASKPARENT'];
+							// echo "<script>console.log(".$parent.");</script>";
 						}
-					}
-				}
+						// END: Checks for parent
 
-		      echo "g.AddTaskItem(new JSGantt.TaskItem(" . $row['TASKID'] . ", '" .
-		      $row['TASKTITLE'] . "','" . $row['TASKSTARTDATE'] . "','" . $row['TASKENDDATE'] . "'," .
-		      "'gtaskBlue', '', 0, '" . $name . "', " . $complete . ", " . $group . ", " .
-					$parent . ", 1, '". $dependency."', '', '', g));";
+						// START: Checks for period
+						$period = '';
+						if($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] == NULL){
+							$period = $value['initialTaskDuration'];
+						} else if ($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] != NULL){
+							$period = $value['adjustedTaskDuration1'];
+						} else {
+							$period = $value['adjustedTaskDuration2'];
+						}
+						// END: Checks for period
 
-		    }
+						// START: Checks for dependecies
+						$dependency = '';
+						$type = '';
+						if($dependencies != NULL){
+							foreach ($dependencies as $data) {
+								if($data['PRETASKID'] == $value['TASKID']){
+									$dependency = $data['tasks_POSTTASKID'];
+									$type = 'finish-start';
+								}
+							}
+						}
+						// END: Checks for dependecies
 
-		    echo "g.Draw();";
+						// START: Checks for responsible
+						$responsiblePerson = '';
+						foreach ($responsible as $r) {
+							if($r['tasks_TASKID'] == $value['TASKID']){
+								$responsiblePerson = $r['FIRSTNAME'] . " " . $r['LASTNAME'];
+							}
+						}
+						// END: Checks for responsible
 
-		    ?>
+						// START: Checks for accountable
+						$accountablePerson = '';
+						foreach ($accountable as $a) {
+							if($a['tasks_TASKID'] == $value['TASKID']){
+								$accountablePerson = $a['FIRSTNAME'] . " " . $a['LASTNAME'];
+							}
+						}
+						// END: Checks for accountable
+
+						// START: Checks for consulted
+						$consultedPerson = '';
+						foreach ($consulted as $c) {
+							if($c['tasks_TASKID'] == $value['TASKID']){
+								$consultedPerson = $c['FIRSTNAME'] . " " . $c['LASTNAME'];
+							}
+						}
+						// END: Checks for consulted
+
+						// START: Checks for informed
+						$informedPerson = '';
+						foreach ($informed as $i) {
+							if($i['tasks_TASKID'] == $value['TASKID']){
+								$informedPerson = $c['FIRSTNAME'] . " " . $i['LASTNAME'];
+							}
+						}
+						// END: Checks for informed
+
+
+
+						//START: CHECKS IF RACI IS EMPTY
+						if($accountable == NULL || $consulted == NULL || $informed == NULL ){
+							echo "
+							{
+								'id': " . $value['TASKID'] . ",
+								'name': '" . $value['TASKTITLE'] . "',
+								'actualStart': '" . $formatted_startDate . "',
+								'actualEnd': '" . $formatted_endDate . "',
+								'responsible': '',
+								'accountable': '',
+								'consulted': '',
+								'informed': '',
+								'period': '" . $progress . "',
+								'progressValue': '0%'
+							},";
+						} else { // START: RACI IS NOT EMPTY
+							// START: CHECKS IF MAIN OR SUB
+							if($value['CATEGORY'] == 2 || $value['CATEGORY'] == 1){
+								// START: Planning - no baseline since task have not yet started
+								if(($value['TASKACTUALSTARTDATE'] == NULL)){
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $period . "',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "'
+									},";
+								} // END: Planning - no baseline since task have not yet started
+
+								// START: Ongoing tasks - baselineEnd is the date today
+								else if($value['TASKACTUALENDDATE'] == NULL){
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $period . "',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_actualStartDate . "',
+										'baselineEnd': '" . date('M d, Y') . "'
+									},";
+								} // END: Ongoing tasks - baselineEnd is the date today
+
+								// START: Completed tasks - baselineStart and baselineEnd are present
+								else {
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $period . "',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_actualStartDate . "',
+										'baselineEnd': '" . $formatted_actualEndDate . "'
+									},";
+								} // END: Completed tasks - baselineStart and baselineEnd are present
+
+							} else { // START: IF TASK
+								if(($value['TASKACTUALSTARTDATE'] == NULL)){
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $period . "',
+										'progressValue': '" . $progress . "%',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "'
+									},";
+								} // END: Planning - no baseline since task have not yet started
+
+								// START: Ongoing tasks - baselineEnd is the date today
+								else if($value['TASKACTUALENDDATE'] == NULL){
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $period . "',
+										'progressValue': '" . $progress . "%',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_actualStartDate . "',
+										'baselineEnd': '" . date('M d, Y') . "'
+									},";
+								} // END: Ongoing tasks - baselineEnd is the date today
+
+								// START: Completed tasks - baselineStart and baselineEnd are present
+								else {
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $period . "',
+										'progressValue': '" . $progress . "%',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_actualStartDate . "',
+										'baselineEnd': '" . $formatted_actualEndDate . "'
+									},";
+								} // END: Completed tasks - baselineStart and baselineEnd are present
+							} // END: CHECKS FOR CATEGORY
+						} // END: CHECKS IF RACI IS EMPTY OR NOT
+					} // END: Foreach
+					?>
+				];
+
+				// data tree settings
+				var treeData = anychart.data.tree(rawData, "as-table");
+				var chart = anychart.ganttProject();      // chart type
+				chart.data(treeData);                     // chart data
+
+				// data grid getter
+				var dataGrid = chart.dataGrid();
+
+				// create custom column
+				var columnTitle = dataGrid.column(1);
+				columnTitle.title("Task Name");
+				columnTitle.setColumnFormat("name", "text");
+				columnTitle.width(300);
+
+				var columnStartDate = dataGrid.column(2);
+				columnStartDate.title("Target Start Date");
+				columnStartDate.setColumnFormat("actualStart", "dateCommonLog");
+				columnStartDate.width(100);
+
+				var columnEndDate = dataGrid.column(3);
+
+				columnEndDate.title("Target End Date");
+				columnEndDate.setColumnFormat("actualEnd", "dateCommonLog");
+				columnEndDate.width(100);
+
+				var columnPeriod = dataGrid.column(4);
+				columnPeriod.title("Period");
+				columnPeriod.setColumnFormat("period", "text");
+				columnPeriod.width(80);
+
+				var columnResponsible = dataGrid.column(5);
+				columnResponsible.title("Responsible");
+				columnResponsible.setColumnFormat("responsible", "text");
+				columnResponsible.width(100);
+
+				var columnAccountable = dataGrid.column(6);
+				columnAccountable.title("Accountable");
+				columnAccountable.setColumnFormat("accountable", "text");
+				columnAccountable.width(100);
+
+				var columnConsulted = dataGrid.column(7);
+				columnConsulted.title("Consulted");
+				columnConsulted.setColumnFormat("consulted", "text");
+				columnConsulted.width(100);
+
+				var columnInformed = dataGrid.column(9);
+				columnInformed.title("Informed");
+				columnInformed.setColumnFormat("informed", "text");
+				columnInformed.width(100);
+
+				//get chart timeline link to change color
+
+				chart.zoomTo("week", 3, "firstDate");
+				chart.splitterPosition(650);
+				chart.container('container').draw();      // set container and initiate drawing
+
+			});
 		</script>
 	</body>
 </html>

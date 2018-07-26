@@ -198,8 +198,12 @@ desired effect
             <img src="<?php echo base_url()."assets/"; ?>media/mickey.jpg" class="img-circle" alt="User Image">
           <?php elseif($_SESSION['USERID'] == "9"):?>
             <img src="<?php echo base_url()."assets/"; ?>media/donald.png" class="img-circle" alt="User Image">
-          <?php elseif($_SESSION['USERID'] == "41"):?>
+          <?php elseif($_SESSION['USERID'] == "45"):?>
             <img src="<?php echo base_url()."assets/"; ?>media/goofy.png" class="img-circle" alt="User Image">
+          <?php elseif($_SESSION['USERID'] == "46"):?>
+            <img src="<?php echo base_url()."assets/"; ?>media/minnie.gif" class="img-circle" alt="User Image">
+          <?php elseif($_SESSION['USERID'] == "25"):?>
+            <img src="<?php echo base_url()."assets/"; ?>media/winnie.jpg" class="img-circle" alt="User Image">
           <?php else:?>
             <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="img-circle" alt="User Image">
           <?php endif;?>
@@ -241,7 +245,7 @@ desired effect
           </li>
         <?php endif;?>
 
-        <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
+        <!-- <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li> -->
         <li id = 'tasks' class="treeview">
           <a href=" ">
             <i class="fa fa-check-square-o"></i><span> Tasks</span>
