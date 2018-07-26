@@ -627,7 +627,7 @@ class controller extends CI_Controller
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
-		$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID']);
+		$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Ongoing");
 		$data['mainActivity'] = $this->model->getAllMainActivitiesByUser($_SESSION['USERID']);
 		$data['subActivity'] = $this->model->getAllSubActivitiesByUser($_SESSION['USERID']);
 
