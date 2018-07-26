@@ -1312,7 +1312,8 @@
 
 				//get chart timeline link to change color
 
-				chart.splitterPosition(1040);
+				chart.zoomTo("week", 3, "firstDate");
+				chart.splitterPosition(650);
 				chart.container('container').draw();      // set container and initiate drawing
 
 			});

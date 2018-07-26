@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
   <!-- Any Gantt -->
   <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>anyChart/css/anychart-ui.min.css" type="text/css"/>
-  <!-- Progress Circle -->
-  <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>progress-circle/progresscircle.css" type="text/css"/>
+  <!-- Frame Style -->
+  <link rel="stylesheet" href="<?php echo base_url("/assets/css/frameStyle.css")?>">
 
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
