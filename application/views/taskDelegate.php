@@ -19,7 +19,9 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
         <!-- START HERE -->
-				<a id = "viewAll" class = "pull-right">View All Tasks >></a> <br><br>
+				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye"></i></button>
+
+				<br><br>
 
 				<div id = "filteredTasks">
 					<div class="row">
@@ -363,9 +365,9 @@
 				$("#allTasks").toggle();
 				$("#filteredTasks").toggle();
 				if($("#allTasks").css("display") == "none")
-					$("#viewAll").html("View All Tasks >>");
+					$("#viewAll").html("<i class='fa fa-eye'></i>");
 				else
-					$("#viewAll").html("Hide All Tasks >>");
+					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
 			});
 
 			// $(document).on("click", ".viewProject", function() {

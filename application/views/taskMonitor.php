@@ -20,13 +20,9 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 
-				<!-- <div id = "divGridListMyProjects">
-          <a href="#" id = "buttonListProjects" class="btn btn-default btn pull-left"><i class="fa fa-th-list"></i>
-          <a href="#" id = "buttonGridProjects" class="btn btn-default btn pull-left"><i class="fa fa-th-large"></i></a>
-					<a id = "viewAll" class = "pull-right">View All Tasks >></a> <br><br>
-        </div> -->
+				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye"></i></button>
 
-				<a id = "viewAll" class = "pull-right clickable">View All Tasks</a> <br><br>
+				<br><br>
 
 				<div id = "filteredTasks">
 
@@ -572,9 +568,9 @@
 				$("#filteredTasks").toggle();
 
 				if($("#allTasks").css("display") == "none")
-					$("#viewAll").html("View All Tasks");
+					$("#viewAll").html("<i class='fa fa-eye'></i>");
 				else
-					$("#viewAll").html("Hide All Tasks");
+					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
 			});
 
 			$(document).on("click", ".viewProject", function() {

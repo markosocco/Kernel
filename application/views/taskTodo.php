@@ -19,7 +19,9 @@
       <!-- Main content -->
 			<section class="content container-fluid">
         <!-- START HERE -->
-				<a id = "viewAll" class = "pull-right">View All Tasks >></a> <br><br>
+
+				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye"></i></button>
+				<br><br>
 
 				<div id = "filteredTasks">
 
@@ -42,59 +44,11 @@
 												<th>Task</th>
 												<th>Project</th>
 												<th class="text-center">End Date</th>
+												<th class="text-center">Days Delayed</th>
 												<th class="text-center">Action</th>
 											</tr>
 											</thead>
-											<tbody>
-
-												<?php
-													$totalToDo=0;
-													$delayedToDo=0;
-												?>
-												<?php foreach($tasks as $task):?>
-												<?php
-												if($task['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
-													$startDate = $task['TASKSTARTDATE'];
-												else
-													$startDate = $task['TASKADJUSTEDSTARTDATE'];
-
-												if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-													$endDate = $task['TASKENDDATE'];
-												else
-													$endDate = $task['TASKADJUSTEDENDDATE'];
-
-												$enddate = date_create($endDate);
-												?>
-
-													<?php if($task['threshold'] <= $endDate):?>
-														<?php $totalToDo++;?>
-														<tr class="viewProject" data-id="<?php echo $task['PROJECTID'] ;?>">
-															<?php if($task['currentDate'] < $endDate):?>
-																<td class="bg-green"></td>
-															<?php else:?>
-																<td class="bg-red"></td>
-																<?php $delayedToDo++;?>
-															<?php endif;?>
-															<td><?php echo $task['TASKTITLE'];?></td>
-															<td><?php echo $task['PROJECTTITLE'];?></td>
-															<td align="center"><?php echo date_format($enddate, 'M d, Y');?></td>
-															<td align="center">
-																<button type="button" class="btn btn-warning btn-sm editBtn"
-																data-id="<?php echo $task['TASKID'];?>">
-																	<i class="fa fa-fire"></i>
-																</button>
-																<button type="button" class="btn btn-success btn-sm delegateBtn"
-																data-toggle="modal" data-target="#modal-delegate"
-																data-id="<?php echo $task['TASKID'];?>"
-																data-title="<?php echo $task['TASKTITLE'];?>"
-																data-start="<?php echo $startDate;?>"
-																data-end="<?php echo $endDate;?>">
-																	<i class="fa fa-check"></i>
-																</button>
-															</td>
-														</tr>
-													<?php endif;?>
-												<?php endforeach;?>
+											<tbody id="taskTable">
 
 											</tbody>
 										</table>
@@ -119,7 +73,7 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="table-responsive">
-									<h4 align="center"> Total: <br><br><b><?php echo $totalToDo;?></b></h4>
+									<h4 align="center" id="totalToDo"> Total <br><br><b>N</b></h4>
 								</div>
 							</div>
 						</div>
@@ -128,7 +82,7 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="table-responsive">
-									<h4 align="center"> Delayed: <br><br><span style='color:red'><b><?php echo $delayedToDo;?></b></span></h4>
+									<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayedToDo">N</b></span></h4>
 								</div>
 							</div>
 						</div>
@@ -145,7 +99,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Total: <br><br><b><?php echo count($tasks);?></b></h4>
+										<h4 align="center" id="total"> Total <br><br><b>N</b></h4>
 									</div>
 								</div>
 							</div>
@@ -156,13 +110,12 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Delayed: <br><br><b><?php echo count($tasks);?></b></h4>
+										<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayed">N</span></b></h4>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
 
 					<?php if ($tasks != NULL): ?>
 					<div class = "row">
@@ -177,15 +130,18 @@
 										<table class="table table-hover no-margin">
 											<thead>
 											<tr>
+												<th width="1%"></th>
 												<th>Task</th>
 												<th>Project</th>
 												<th class="text-center">Start Date</th>
-												<th class="text-center">Target End Date</th>
-												<th class="text-center">Period <small>(day/s)</small></th>
+												<th class="text-center">End Date</th>
+												<th class="text-center">Days Delayed</th>
 												<th class="text-center">Action</th>
 											</tr>
 											</thead>
-											<tbody id="taskTable">
+											<tbody id="taskAll">
+
+
 
 											</tbody>
 										</table>
@@ -216,6 +172,11 @@
 				dataType: 'json',
 				success:function(data)
 				{
+					var totalToDo=0;
+					var totalDelayedToDo=0;
+					var total=0;
+					var totalDelayed=0;
+
 					if(data['tasks'].length > 0)
 					{
 						$('#taskTable').html("");
@@ -250,14 +211,53 @@
 							else
 								var taskDuration = parseInt(data['tasks'][i].initialTaskDuration);
 
-							$('#taskTable').append(
+							var delayDays = data['tasks'][i].delay - taskDuration;
+
+							if(delayDays <= 0)
+								delayDays = 0;
+
+							if(data['tasks'][i].threshold >= endDate)
+							{
+								if(data['tasks'][i].currentDate <= endDate)
+									var status = "<td class='bg-green'></td>";
+								else
+								{
+									var status = "<td class='bg-red'></td>";
+									var totalDelayedToDo = totalDelayedToDo+1;
+									var totalDelayed = totalDelayed+1;
+								}
+
+								var totalToDo = totalToDo+1;
+
+								$('#taskTable').append(
+														 "<tr id='" + data['tasks'][i].TASKID + "'>" +
+														 status + "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
+														 "<td align='center'>" + taskEnd +"</td>" +
+														 "<td align='center'>" + delayDays + "</td>" +
+														 "<td class = 'action-" + data['tasks'][i].TASKID +"'>" +
+														 "<button type='button' class='btn btn-warning btn-sm editBtn'" +
+										         "data-id='" + data['tasks'][i].TASKID + "'><i class='fa fa-flag'></i></button></td>");
+							}
+
+							var total = total+1;
+
+							$('#taskAll').append(
 													 "<tr id='" + data['tasks'][i].TASKID + "'>" +
-													 "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+													 status + "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
 													 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
-													 "<td align='center'>" + taskStart +"</td>"+
-													 "<td align='center'>" + taskEnd +"</td>"+
-													 "<td align='center'>" + taskDuration +"</td>");
+													 "<td align='center'>" + taskStart +"</td>" +
+													 "<td align='center'>" + taskEnd +"</td>" +
+													 "<td align='center'>" + delayDays + "</td>" +
+													 "<td class = 'action-" + data['tasks'][i].TASKID +"'>" +
+													 "<button type='button' class='btn btn-warning btn-sm editBtn'" +
+													 "data-id='" + data['tasks'][i].TASKID + "'><i class='fa fa-flag'></i></button></td>");
+
 						}
+						$('#totalToDo').html("Total<br><br><b>" + totalToDo + "</b>");
+						$('#totalDelayedToDo').html(totalDelayedToDo);
+						$('#total').html("Total<br><br><b>" + total + "</b>");
+						$('#totalDelayed').html(totalDelayed);
 					}
 
 				},
@@ -273,9 +273,9 @@
 				$("#filteredTasks").toggle();
 
 				if($("#allTasks").css("display") == "none")
-					$("#viewAll").html("View All Tasks >>");
+					$("#viewAll").html("<i class='fa fa-eye'></i>");
 				else
-					$("#viewAll").html("Hide All Tasks >>");
+					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
 			});
 
 			$(document).on("click", ".viewProject", function() {
