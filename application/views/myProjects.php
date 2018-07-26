@@ -32,25 +32,25 @@
 
         <!-- TOGGLE MY PROJECT -->
         <div id = "divGridListMyProjects" class="pull-right">
-          <a href="#" id = "buttonListProjects" class="btn btn-default btn"><i class="fa fa-th-list"></i>
-          <a href="#" id = "buttonGridProjects" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+          <a href="#" id = "buttonListProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="List View"><i class="fa fa-th-list"></i>
+          <a href="#" id = "buttonGridProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Grid View"><i class="fa fa-th-large"></i></a>
 
           <!-- <a href="#" id = "buttonListProjects" class="btn btn-default btn"><i class="fa fa-bars"></i>
           <a href="#" id = "buttonGridProjects" class="btn btn-default btn"><i class="fa fa-clone"></i></a> -->
         </div>
 
         <div id="divShowMyTeam" class="pull-right">
-          <a href="#" id = "showMyTeam" class="btn btn-default btn"><i class="fa fa-users"></i></a>
+          <a href="#" id = "showMyTeam" class="btn btn-default btn"><i class="fa fa-users" data-toggle="tooltip" data-placement="top" title="Show My Team"></i></a>
         </div>
 
         <!-- TOGGLE MY TEAM -->
         <div id = "divGridListMyTeam" class="pull-right">
-          <a href="#" id = "buttonListTeam" class="btn btn-default btn"><i class="fa fa-th-list"></i>
-          <a href="#" id = "buttonGridTeam" class="btn btn-default btn"><i class="fa fa-th-large"></i></a>
+          <a href="#" id = "buttonListTeam" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="List View"><i class="fa fa-th-list"></i>
+          <a href="#" id = "buttonGridTeam" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Grid View"><i class="fa fa-th-large"></i></a>
         </div>
 
         <div id="divShowMyProjects" class="pull-right">
-          <a href="#" id = "showMyProjects" class="btn btn-default btn"><i class="fa fa-briefcase"></i></a>
+          <a href="#" id = "showMyProjects" class="btn btn-default btn"><i class="fa fa-briefcase" data-toggle="tooltip" data-placement="top" title="Show My Projects"></i></a>
         </div>
 
         <div> <!-- SORT/LEGEND -->
@@ -141,7 +141,7 @@
                         <form action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in
+                        <p class="subtitle"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days
@@ -183,7 +183,7 @@
                         <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
+                        <p class="subtitle"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
                           <?php echo $value['datediff'];?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days delayed
@@ -225,7 +225,7 @@
                             <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
+                        <p><b class="subtitle"><?php echo $value['PROJECTTITLE']; ?></b><br><i>
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days remaining
@@ -304,7 +304,7 @@
                         <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
+                        <p class="subtitle"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
                       </div>
                       <div class="icon" style="margin-top:25px;">
                         <i class="ion ion-clock"></i>

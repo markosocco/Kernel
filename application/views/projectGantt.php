@@ -12,21 +12,21 @@
 					<div style="margin-bottom:10px">
 
 						<?php if(isset($_SESSION['dashboard'])): ?>
-								<a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Dashboard</a>
+								<a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Dashboard"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['archives'])): ?>
-								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Archives</a>
+								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Archives"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['changeRequest']) || isset($_SESSION['userRequest'])): ?>
-								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
+								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Change Requests"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['rfc'])): ?>
-								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Change Requests</a>
+								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Change Requests"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['myTasks'])): ?>
-								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Tasks</a>
+								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Tasks"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['templates'])): ?>
-								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Templates</a>
+								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Templates"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['monitorTasks'])): ?>
-								<a href="<?php echo base_url("index.php/controller/taskMonitor"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Monitor Tasks</a>
+								<a href="<?php echo base_url("index.php/controller/taskMonitor"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Monitor Tasks"><i class="fa fa-arrow-left"></i></a>
 						<?php else: ?>
-								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
+								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 						<?php endif; ?>
 
 					</div>
@@ -724,26 +724,26 @@
 
 							<form action = 'archiveProject' method="POST" style="display:inline-block">
 							</form>
-							<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i></a>
+							<a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a>
 
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
 							<form action = 'templateProject' method="POST" style="display:inline-block">
 							</form>
-							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i></a>
+							<a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST" style="display:inline-block">
 							</form>
-							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i></a>
+							<a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use this as Template"><i class="fa fa-window-maximize"></i></a>
 						<?php endif; ?>
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
-							<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i></a>
+							<a name="" class="btn btn-default btn" id="parkProject" data-toggle="tooltip" data-placement="top" title="Park Project"><i class="fa fa-clock-o"></i></a>
 						<?php endif;?>
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
-							<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i></a>
+							<a name="" class="btn btn-default btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a>
 						<?php endif;?>
 
 					</div>

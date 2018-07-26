@@ -19,7 +19,7 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
         <!-- START HERE -->
-				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye"></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top" title="View All"><i class="fa fa-eye"></i></button>
 
 				<br><br>
 
@@ -54,17 +54,19 @@
 														<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 														<td align="center">
 															<button type="button" class="btn bg-teal btn-sm editBtn"
-															data-id="<?php echo $editProject['PROJECTID'];?>">
+															data-id="<?php echo $editProject['PROJECTID'];?>" data-toggle="tooltip"
+															data-placement="top" title="Edit">
 																<i class="fa fa-edit"></i>
 															</button>
-															<button type="button" class="btn btn-primary btn-sm delegateBtn"
-															data-toggle="modal" data-target="#modal-delegate"
+															<span data-toggle="modal" data-target="#modal-delegate"
 															data-id="<?php echo $editProject['PROJECTID'];?>"
 															data-title="<?php echo $editProject['PROJECTTITLE'];?>"
 															data-start="<?php echo $editProject['PROJECTSTARTDATE'];?>"
 															data-end="<?php echo $editProject['PROJECTENDDATE'];?>">
+															<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate">
 																<i class="fa fa-users"></i>
 															</button>
+															</span>
 														</td>
 													</tr>
 												<?php endforeach;?>
@@ -131,17 +133,20 @@
 														<td align = "center"><?php echo $period;?></td>
 														<td align="center">
 															<button type="button" class="btn bg-teal btn-sm editBtn"
-															data-id="<?php echo $editProject['PROJECTID'];?>">
+															data-id="<?php echo $editProject['PROJECTID'];?>" data-toggle="tooltip"
+															data-placement="top" title="Edit">
 																<i class="fa fa-edit"></i>
 															</button>
-															<button type="button" class="btn btn-primary btn-sm delegateBtn"
-															data-toggle="modal" data-target="#modal-delegate"
+															<span data-toggle="modal" data-target="#modal-delegate"
 															data-id="<?php echo $editProject['PROJECTID'];?>"
 															data-title="<?php echo $editProject['PROJECTTITLE'];?>"
 															data-start="<?php echo $editProject['PROJECTSTARTDATE'];?>"
 															data-end="<?php echo $editProject['PROJECTENDDATE'];?>">
+															<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip"
+															data-placement="top" title="Delegate">
 																<i class="fa fa-users"></i>
 															</button>
+															</span>
 														</td>
 													</tr>
 												<?php endforeach;?>
@@ -326,8 +331,8 @@
 							<!-- </div> -->
 
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-								<button type="button" class="btn btn-success delegate" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i> Delegate Task</button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
+								<button type="button" class="btn btn-success delegate" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
 						</div>
@@ -343,7 +348,7 @@
 							<div class="modal-body" id = "workloadDiv">
 							</div>
 							<div class="modal-footer">
-								<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i> Back</button>
+								<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
 							</div>
 
 						</div>
@@ -365,9 +370,15 @@
 				$("#allTasks").toggle();
 				$("#filteredTasks").toggle();
 				if($("#allTasks").css("display") == "none")
+				{
 					$("#viewAll").html("<i class='fa fa-eye'></i>");
+					$("#viewAll").attr('title', 'View All');
+				}
 				else
+				{
 					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
+					$("#viewAll").attr('title', 'View None');
+				}
 			});
 
 			// $(document).on("click", ".viewProject", function() {
