@@ -619,7 +619,7 @@ class controller extends CI_Controller
 				}
 			}
 		}
-		$this->myTasks();
+		$this->taskTodo();
 	}
 
 	public function loadTasks()
@@ -1148,7 +1148,7 @@ class controller extends CI_Controller
 		}
 		$this->model->addRFC($data);
 
-		$this->myTasks();
+		$this->taskTodo();
 	}
 
 	public function approveDenyRFC()
