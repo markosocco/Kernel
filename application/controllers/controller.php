@@ -2453,7 +2453,10 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			// $this->output->enable_profile(TRUE);
+			// $data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
+			$data['tasks'] = $this->model->getAllProjectTasks($id);
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
