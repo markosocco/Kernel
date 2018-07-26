@@ -599,7 +599,7 @@
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
 							<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
 
-								<form id="editProjectForm" action = 'newProject'  method="POST">
+								<form id="editProjectForm" action = 'newProject'  method="POST" style="display:inline-block">
 									<input type='hidden' name='edit' value='<?php echo $projectProfile['PROJECTID'];?>'>
 								</form>
 
@@ -612,12 +612,36 @@
 						<li class="active"><?php echo $projectProfile['PROJECTTITLE']; ?></li>
 					</ol>
 
-					<div class="pull-right" style="margin-left:50px; margin-right:40px;">
-						<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+					<div class="col-md-3 col-sm-6 col-xs-12 pull-right">
+							<div class="box-header with-border" style="text-align:center;">
+								<h3 class="box-title" >deptName Performance</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div style="display:inline-block; text-align:center; width:49%;">
+									<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+								</div>
+								<div style="display:inline-block; text-align:center; width:49%;">
+								 <div class="circlechart" id="completeness" data-percentage="50.79">Timeliness</div>
+							 </div>
+							</div>
 					</div>
-					<div class="pull-right">
-						<div class="circlechart" id="completeness" data-percentage="70.79">Timeliness</div>
+					<!-- /.col -->
+					<div class="col-md-3 col-sm-6 col-xs-12 pull-right" style="border-right: solid 1px #b3b3b3;">
+							<div class="box-header with-border" style="text-align:center;">
+								<h3 class="box-title">My Performance</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div style="display:inline-block; text-align:center; width:49%;">
+									<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+								</div>
+								<div style="display:inline-block; text-align:center; width:49%;">
+								 <div class="circlechart" id="completeness" data-percentage="50.79">Timeliness</div>
+							 </div>
+							</div>
 					</div>
+					<!-- /.col -->
 				</section>
 
 				<!-- Main content -->
@@ -692,24 +716,24 @@
 						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
 						<!-- <a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a> -->
 
-						<a name="PROJECTID" class="btn btn-success btn" id="projectDocu"><i class="fa fa-folder"></i></a>
+						<a name="PROJECTID" class="btn btn-success btn" id="projectDocu" data-toggle="tooltip" data-placement="top" title="View Documents"><i class="fa fa-folder"></i></a>
 
-						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog"><i class="fa fa-flag"></i></a>
+						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="View Logs"><i class="fa fa-flag"></i></a>
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
 
-							<form action = 'archiveProject' method="POST">
+							<form action = 'archiveProject' method="POST" style="display:inline-block">
 							</form>
 							<a name="" class="btn btn-primary btn" id="archiveProject"><i class="fa fa-archive"></i></a>
 
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
-							<form action = 'templateProject' method="POST">
+							<form action = 'templateProject' method="POST" style="display:inline-block">
 							</form>
 							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i></a>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
-							<form action = 'newProject' method="POST">
+							<form action = 'newProject' method="POST" style="display:inline-block">
 							</form>
 							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i></a>
 						<?php endif; ?>

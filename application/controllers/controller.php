@@ -1863,6 +1863,72 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function editProject()
+	{
+		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
+		$startDate = $this->input->post('startDate');
+		date_default_timezone_set("Singapore");
+		$currDate = date("mm-dd-YYYY");
+
+		if ($currDate >= $startDate)
+		{
+			$status = 'Ongoing';
+		}
+
+		else
+		{
+			$status = 'Planning';
+		}
+
+		$data = array(
+				'PROJECTTITLE' => $this->input->post('projectTitle'),
+				'PROJECTSTARTDATE' => $startDate,
+				'PROJECTENDDATE' => $this->input->post('endDate'),
+				'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
+				'PROJECTSTATUS' => $status,
+				'users_USERID' => $_SESSION['USERID']
+		);
+
+		$sDate = date_create($startDate);
+		$eDate = date_create($this->input->post('endDate'));
+		$diff = date_diff($eDate, $sDate, true);
+		$dateDiff = $diff->format('%R%a');
+
+		$edit = $this->input->post('edit');
+
+		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
+		$data['project'] = $this->model->editProject($edit, $data);
+		$data['dateDiff'] =$dateDiff;
+		$data['departments'] = $this->model->getAllDepartments();
+
+		if ($data)
+		{
+			// TODO PUT ALERT
+			// TODO Nami: put notif and log - "user Edited Project projectitile"
+
+
+			if (isset($edit))
+			{
+				$data['editProject'] = $this->model->getProjectByID($edit);
+				$data['editAllTasks'] = $this->model->getAllProjectTasks($edit);
+				$data['editGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($edit);
+				$data['editMainActivity'] = $this->model->getAllMainActivitiesByID($edit);
+				$data['editSubActivity'] = $this->model->getAllSubActivitiesByID($edit);
+				$data['editTasks'] = $this->model->getAllTasksByID($edit);
+				$data['editRaci'] = $this->model->getRaci($edit);
+				$data['editUsers'] = $this->model->getAllUsers();
+			}
+
+			$this->load->view('addTasks', $data);
+		}
+
+		else
+		{
+			// TODO PUT ALERT
+			redirect('controller/contact');
+		}
+	}
+
 	public function myCalendar()
 	{
 		if (!isset($_SESSION['EMAIL']))

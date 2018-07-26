@@ -1283,5 +1283,11 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function editProject($id, $data)
+  {
+    $this->db->where('PROJECTID', $id);
+    $result = $this->db->update('projects', $data);
+  }
 }
 ?>
