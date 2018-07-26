@@ -149,7 +149,7 @@
 																		<td>
 																			<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
 																				<?php foreach ($departments as $row): ?>
-
+																					<?php foreach ($value) ?>
 																					<option>
 																						<?php echo $row['DEPARTMENTNAME']; ?>
 																					</option>
