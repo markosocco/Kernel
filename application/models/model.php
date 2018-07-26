@@ -204,7 +204,6 @@ class model extends CI_Model
     $condition = $filter;
     $this->db->select('*');
     $this->db->from('users');
-    $this->db->where($condition . "&& users.USERID !='" . $_SESSION['USERID'] . "'");
     $query = $this->db->get();
 
     return $query->result_array();
@@ -567,7 +566,7 @@ class model extends CI_Model
   public function getAllProjectsToEditByUser($id)
   {
     $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Planning' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY != '3'";
-    $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    $this->db->select('*, DATE_ADD(CURDATE(), INTERVAL +2 day) as "threshold", CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
     (DATEDIFF(projects.PROJECTENDDATE, projects.PROJECTSTARTDATE) + 1) as "projectDuration",
@@ -578,6 +577,26 @@ class model extends CI_Model
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('tasks.TASKSTARTDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllActivitiesToEditByUser($id, $category)
+  {
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Planning' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '$category'";
+    $this->db->select('*, DATE_ADD(CURDATE(), INTERVAL +2 day) as "threshold", CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    (DATEDIFF(projects.PROJECTENDDATE, projects.PROJECTSTARTDATE) + 1) as "projectDuration",
+    DATEDIFF(PROJECTSTARTDATE, CURDATE())+1 as "launching"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->order_by('tasks.TASKSTARTDATE');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();

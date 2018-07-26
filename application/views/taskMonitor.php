@@ -540,7 +540,18 @@
 								</div>
 							</div>
 						</div>
-					<?php endif;?>
+				<?php else:?>
+					<div class="col-md-12">
+						<div class="box box-danger">
+							<div class="box-header">
+								<h3 class="box-title">All Tasks</h3>
+							</div>
+							<div class="box-body">
+								<h4 align="center">You have no tasks</h4>
+							</div>
+						</div>
+					</div>
+				<?php endif;?>
 
 
 
