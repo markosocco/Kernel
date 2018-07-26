@@ -1001,7 +1001,7 @@
 
 				var rawData = [
 
-// {"id": "1", "name": "Phase 1 - Strategic Plan", "progressValue": "14%", "actualStart": 951350400000, "actualEnd": 951609600000},
+// {"id": "1", "name": "Phase 1 - Strategic Plan", "progressValue": "14%", "actualStart": '2000-02-19', "actualEnd": '2000-02-21'},
 // {"id": "2", "name": "Self-Assessment", parent:"1", "progressValue": "25%", "actualStart": 951350400000, "actualEnd": 951782400000},
 // {"id": "3", "name": "Define business vision", parent:"2", "progressValue": "0%", "actualStart": 951408000000, "actualEnd": 951440400000, "connectTo": "4", "connectorType": "finish-start"},
 // {"id": "4", "name": "Identify available skills, information and support", parent:"2", "progressValue": "0%", "actualStart": 951494400000, "actualEnd": 951526800000, "connectTo": "5", "connectorType": "finish-start"},
@@ -1015,11 +1015,13 @@
 						// START: Formatting of TARGET START date
 						$startDate = $value['TASKSTARTDATE'];
 						$formatted_startDate = date('M d, Y', strtotime($startDate));
+						$startDateTime = $formatted_startDate . "T00:00";
 						// END: Formatting of TARGET START date
 
 						// START: Formatting of TARGET END date
 						$endDate = $value['TASKENDDATE'];
 						$formatted_endDate = date('M d, Y', strtotime($endDate));
+						$endDateTime = $formatted_endDate . "T24:00";
 						// END: Formatting of TARGET END date
 
 						// START: Formatting of ACTUAL START date
@@ -1069,6 +1071,42 @@
 						}
 						// END: Checks for dependecies
 
+						// START: Checks for responsible
+						$responsiblePerson = '';
+						foreach ($responsible as $r) {
+							if($r['tasks_TASKID'] == $value['TASKID']){
+								$responsiblePerson = $r['FIRSTNAME'] . " " . $r['LASTNAME'];
+							}
+						}
+						// END: Checks for responsible
+
+						// START: Checks for accountable
+						$accountablePerson = '';
+						foreach ($accountable as $a) {
+							if($a['tasks_TASKID'] == $value['TASKID']){
+								$accountablePerson = $a['FIRSTNAME'] . " " . $a['LASTNAME'];
+							}
+						}
+						// END: Checks for accountable
+
+						// START: Checks for consulted
+						$consultedPerson = '';
+						foreach ($consulted as $c) {
+							if($c['tasks_TASKID'] == $value['TASKID']){
+								$consultedPerson = $c['FIRSTNAME'] . " " . $c['LASTNAME'];
+							}
+						}
+						// END: Checks for consulted
+
+						// START: Checks for informed
+						$informedPerson = '';
+						foreach ($informed as $i) {
+							if($i['tasks_TASKID'] == $value['TASKID']){
+								$informedPerson = $c['FIRSTNAME'] . " " . $i['LASTNAME'];
+							}
+						}
+						// END: Checks for informed
+
 
 						//START: CHECKS IF RACI IS EMPTY
 						if($accountable == NULL || $consulted == NULL || $informed == NULL){
@@ -1076,8 +1114,8 @@
 							{
 								'id': " . $value['TASKID'] . ",
 								'name': '" . $value['TASKTITLE'] . "',
-								'actualStart': '" . $formatted_startDate . "',
-								'actualEnd': '" . $formatted_endDate . "',
+								'actualStart': '" . $startDateTime . "',
+								'actualEnd': '" . $endDateTime . "',
 								'responsible': '',
 								'accountable': '',
 								'consulted': '',
@@ -1094,12 +1132,12 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'actualStart': '" . $startDateTime . "',
+										'actualEnd': '" . $endDateTime . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1113,12 +1151,12 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'actualStart': '" . $startDateTime . "',
+										'actualEnd': '" . $endDateTime . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1134,12 +1172,12 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'actualStart': '" . $startDateTime . "',
+										'actualEnd': '" . $endDateTime . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1155,12 +1193,12 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'actualStart': '" . $startDateTime . "',
+										'actualEnd': '" . $endDateTime . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
@@ -1175,12 +1213,12 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'actualStart': '" . $startDateTime . "',
+										'actualEnd': '" . $endDateTime . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
@@ -1197,12 +1235,12 @@
 									{
 										'id': " . $value['TASKID'] . ",
 										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsible[$key]['FIRSTNAME'] . " " . $responsible[$key]['LASTNAME']  ."',
-										'accountable': '" . $accountable[$key]['FIRSTNAME'] . " " . $accountable[$key]['LASTNAME']  ."',
-										'consulted': '" . $consulted[$key]['FIRSTNAME'] . " " . $consulted[$key]['LASTNAME']  ."',
-										'informed': '" . $informed[$key]['FIRSTNAME'] . " " . $informed[$key]['LASTNAME']  ."',
+										'actualStart': '" . $startDateTime . "',
+										'actualEnd': '" . $endDateTime . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
 										'period': '" . $period . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
@@ -1216,6 +1254,7 @@
 						} // END: CHECKS IF RACI IS EMPTY OR NOT
 					} // END: Foreach
 					?>
+
 				];
 
 				// data tree settings
@@ -1234,13 +1273,17 @@
 
 				var columnStartDate = dataGrid.column(2);
 				columnStartDate.title("Target Start Date");
-				columnStartDate.setColumnFormat("actualStart", "dateCommonLog");
+				columnStartDate.setColumnFormat("actualStart", {
+					"formatter": function(value){
+						
+					}
+				});
 				columnStartDate.width(100);
 
 				var columnEndDate = dataGrid.column(3);
 
 				columnEndDate.title("Target End Date");
-				columnEndDate.setColumnFormat("actualEnd", "dateCommonLog");
+				columnEndDate.setColumnFormat("actualEnd", "direct-numbering");
 				columnEndDate.width(100);
 
 				var columnPeriod = dataGrid.column(4);
@@ -1274,6 +1317,11 @@
 				chart.container('container').draw();      // set container and initiate drawing
 
 			});
+
+			// function dateFormatter (value){
+			// 	var date = new Date(value);
+			// 	console.log(date);
+			// }
 
 // OTHER CONDITIONS
 			// if(date('Y-m-d') < $value['TASKSTARTDATE'] and $value['TASKSTATUS'] != 'Complete'){

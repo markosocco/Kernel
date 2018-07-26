@@ -2387,8 +2387,8 @@ class controller extends CI_Controller
 
 			// $this->output->enable_profile(TRUE);
 
-			$this->load->view("projectGantt", $data);
-			// $this->load->view("gantt2", $data);
+			// $this->load->view("projectGantt", $data);
+			$this->load->view("gantt2", $data);
 		}
 	}
 
