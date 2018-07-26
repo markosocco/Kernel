@@ -86,58 +86,6 @@
 						</div>
 					<?php endif;?>
 
-						<!-- RECENTLY ADDED -->
-
-						<?php if ($editProjects != NULL): ?>
-						<div class="col-md-6">
-							<div class="box box-danger">
-								<div class="box-header with-border">
-									<h3 class="box-title">Recently Added</h3>
-								</div>
-								<!-- /.box-header -->
-								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table table-hover no-margin">
-											<thead>
-											<tr>
-												<th>Project</th>
-												<th class="text-center">Start Date</th>
-												<th class="text-center">Action</th>
-											</tr>
-											</thead>
-											<tbody>
-
-												<?php foreach($editProjects as $editProject):?>
-													<?php $startdate = date_create($editProject['PROJECTSTARTDATE']);?>
-
-													<tr class="viewProject" data-id="<?php echo $editProject['PROJECTID'] ;?>">
-														<td><?php echo $editProject['PROJECTTITLE'];?></td>
-														<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
-														<td align="center">
-															<button type="button" class="btn bg-teal btn-sm editBtn"
-															data-id="<?php echo $editProject['PROJECTID'];?>">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" class="btn btn-primary btn-sm delegateBtn"
-															data-toggle="modal" data-target="#modal-delegate"
-															data-id="<?php echo $editProject['PROJECTID'];?>"
-															data-title="<?php echo $editProject['PROJECTTITLE'];?>"
-															data-start="<?php echo $editProject['PROJECTSTARTDATE'];?>"
-															data-end="<?php echo $editProject['PROJECTENDDATE'];?>">
-																<i class="fa fa-users"></i>
-															</button>
-														</td>
-													</tr>
-												<?php endforeach;?>
-
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php endif;?>
-
 					</div> <!-- CLOSING ROW -->
 				</div>
 
