@@ -241,7 +241,7 @@ desired effect
           </li>
         <?php endif;?>
 
-        <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li>
+        <!-- <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li> -->
         <li id = 'tasks' class="treeview">
           <a href=" ">
             <i class="fa fa-check-square-o"></i><span> Tasks</span>

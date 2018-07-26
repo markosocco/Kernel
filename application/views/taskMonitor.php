@@ -33,12 +33,12 @@
 						<?php if ($uniqueOngoingACItasks != NULL): ?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Ongoing Tasks</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
-									<div class="table-responsive">
+									<!-- <div class="table-responsive"> -->
 										<table class="table table-hover no-margin" id="ongoingTaskTable">
 											<thead>
 											<tr>
@@ -130,14 +130,14 @@
 
 											</tbody>
 										</table>
-									</div>
+									<!-- </div> -->
 								</div>
 							</div>
 						</div>
 					<?php else:?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Ongoing Tasks</h3>
 								</div>
 								<div class="box-body">
@@ -174,7 +174,7 @@
 						<?php if ($uniqueCompletedACItasks != NULL): ?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Completed Tasks</h3>
 								</div>
 								<!-- /.box-header -->
@@ -275,7 +275,7 @@
 					<?php else:?>
 						<div class="col-md-10">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">Completed Tasks</h3>
 								</div>
 								<div class="box-body">
@@ -362,7 +362,7 @@
 						<?php if ($uniqueOngoingACItasks != NULL || $uniqueCompletedACItasks != NULL): ?>
 						<div class="col-md-12">
 							<div class="box box-danger">
-								<div class="box-header with-border">
+								<div class="box-header">
 									<h3 class="box-title">All Tasks</h3>
 								</div>
 								<!-- /.box-header -->
