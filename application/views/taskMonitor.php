@@ -39,7 +39,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+										<table class="table table-hover no-margin" id="ongoingTaskTable">
 											<thead>
 											<tr>
 												<th width="1%"></th>
@@ -180,7 +180,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+										<table class="table table-hover no-margin" id="completedTaskTable">
 											<thead>
 											<tr>
 												<th width="1%"></th>
@@ -347,7 +347,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Delayed <br><br><b><?php echo $delayedTasks;?></b></h4>
+										<h4 align="center"> Delayed <br><br><span style='color:red'><b><?php echo $delayedTasks;?></b></span></h4>
 									</div>
 								</div>
 							</div>
@@ -368,7 +368,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+										<table class="table table-hover no-margin" id="allTaskTable">
 											<thead>
 											<tr>
 												<th width="1%"></th>
@@ -578,6 +578,33 @@
 				$("#viewProject").attr("name", "formSubmit");
 				$("#viewProject").append("<input type='hidden' name='project_ID' value= " + $projectID + ">");
 				$("#viewProject").submit();
+			});
+
+			$('#ongoingTaskTable').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false
+			});
+
+			$('#allTaskTable').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false
+			});
+
+			$('#completedTaskTable').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : false,
+				'autoWidth'   : false
 			});
 		</script>
 	</body>

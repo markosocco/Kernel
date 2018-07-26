@@ -486,7 +486,7 @@ class model extends CI_Model
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
-    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->order_by('tasks.TASKSTARTDATE');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();

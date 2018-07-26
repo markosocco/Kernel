@@ -20,7 +20,7 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 
-				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye"></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right" title="View All Tasks"><i class="fa fa-eye"></i></button>
 				<br><br>
 
 				<div id = "filteredTasks">
@@ -37,7 +37,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+										<table class="table table-hover no-margin" id="toDoTable">
 											<thead>
 											<tr>
 												<th width="1%"></th>
@@ -115,6 +115,17 @@
 								</div>
 							</div>
 						</div>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center" id="totalPlanned"> Planned <br><br><b>N</b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<?php if ($tasks != NULL): ?>
@@ -127,7 +138,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<table class="table table-hover no-margin">
+										<table class="table table-hover no-margin" id = "allTaskTable">
 											<thead>
 											<tr>
 												<th width="1%"></th>
@@ -176,6 +187,7 @@
 					var totalDelayedToDo=0;
 					var total=0;
 					var totalDelayed=0;
+					var totalPlanned=0;
 
 					if(data['tasks'].length > 0)
 					{
@@ -216,54 +228,148 @@
 							if(delayDays <= 0)
 								delayDays = 0;
 
+							if(data['tasks'][i].currentDate <= endDate)
+								var status = "<td class='bg-green'></td>";
+							if(data['tasks'][i].TASKSTATUS == 'Planning')
+							{
+								var status = "<td class='bg-yellow'></td>";
+								var totalPlanned = totalPlanned+1;
+							}
+							if(data['tasks'][i].currentDate > endDate)
+							{
+								var status = "<td class='bg-red'></td>";
+								var totalDelayedToDo = totalDelayedToDo+1;
+								var totalDelayed = totalDelayed+1;
+							}
+
+							var taskID = data['tasks'][i].TASKID;
+
 							if(data['tasks'][i].threshold >= endDate)
 							{
-								if(data['tasks'][i].currentDate <= endDate)
-									var status = "<td class='bg-green'></td>";
-								else
-								{
-									var status = "<td class='bg-red'></td>";
-									var totalDelayedToDo = totalDelayedToDo+1;
-									var totalDelayed = totalDelayed+1;
-								}
-
 								var totalToDo = totalToDo+1;
 
 								$('#taskTable').append(
-														 "<tr id='" + data['tasks'][i].TASKID + "'>" +
+														 "<tr id='" + taskID + "'>" +
 														 status + "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
 														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>" +
 														 "<td align='center'>" + delayDays + "</td>" +
-														 "<td class = 'action-" + data['tasks'][i].TASKID +"'>" +
-														 "<button type='button' class='btn btn-warning btn-sm editBtn'" +
-										         "data-id='" + data['tasks'][i].TASKID + "'><i class='fa fa-flag'></i></button></td>");
+														 "<td class = 'action-" + taskID +"'></td>");
 							}
 
 							var total = total+1;
 
 							$('#taskAll').append(
-													 "<tr id='" + data['tasks'][i].TASKID + "'>" +
+													 "<tr id='" + taskID + "'>" +
 													 status + "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
 													 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 													 "<td align='center'>" + taskStart +"</td>" +
 													 "<td align='center'>" + taskEnd +"</td>" +
 													 "<td align='center'>" + delayDays + "</td>" +
-													 "<td class = 'action-" + data['tasks'][i].TASKID +"'>" +
-													 "<button type='button' class='btn btn-warning btn-sm editBtn'" +
-													 "data-id='" + data['tasks'][i].TASKID + "'><i class='fa fa-flag'></i></button></td>");
+													 "<td class = 'action-" + taskID +"'></td>");
+
+							if(data['tasks'][i].TASKSTATUS != 'Planning')
+								$(".action-" + taskID).append("<button type='button' class='btn btn-warning btn-sm rfcBtn'" +
+							 	"data-id='" + taskID + "'><i class='fa fa-flag'></i></button>");
+
+								// AJAX TO CHECK IF DEPENDENCIES ARE COMPLETE
+								$.ajax({
+								 type:"POST",
+								 url: "<?php echo base_url("index.php/controller/getDependenciesByTaskID"); ?>",
+								 data: {task_ID: taskID},
+								 dataType: 'json',
+								 success:function(dependencyData)
+								 {
+									 var taskID = dependencyData['taskID'].TASKID;
+									 var taskTitle = dependencyData['taskID'].TASKTITLE;
+									 var startDate = moment(dependencyData['taskID'].TASKSTARTDATE).format('MMM DD, YYYY');
+									 var endDate = moment(dependencyData['taskID'].TASKENDDATE).format('MMM DD, YYYY');
+									 var isDelayed = dependencyData['taskID'].currentDate > dependencyData['taskID'].TASKENDDATE;
+
+									 if(dependencyData['dependencies'].length > 0) //if task has pre-requisite tasks
+									 {
+										 var isComplete = 'true';
+										 for (var d = 0; d < dependencyData['dependencies'].length; d++)
+										 {
+											 if(dependencyData['dependencies'][d].TASKSTATUS != 'Complete') // if there is a pre-requisite task that is ongoing
+											 {
+												 isComplete = 'false';
+											 }
+										 }
+
+										 if(isComplete == 'true' ) // if all pre-requisite tasks are complete, task can be marked done
+										 {
+											 $(".action-" + data['tasks'][i].TASKID).append(
+													'<button type="button"' +
+													'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+													'data-target="#modal-done" data-id="' + taskID +
+													'" data-title="' + taskTitle + '"' +
+													'data-delay="' + isDelayed + '" data-start="'+ startDate +
+													'" data-end="'+ endDate +'">' +
+													'<i class="fa fa-check"></i></button>');
+										 }
+										 else
+										 {
+											 $(".action-" + data['tasks'][i].TASKID).append(
+												'<button disabled type="button"' +
+												'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+												'data-target="#modal-done" data-id="' + taskID +
+												'" data-title="' + taskTitle + '"' +
+												'data-delay="' + isDelayed + '" data-start="'+ startDate +
+												'" data-end="'+ endDate +'">' +
+												'<i class="fa fa-check"></i></button>');
+										 }
+
+									 }
+									 else // if task has no prerequisites
+									 {
+										 $('.action-' + dependencyData['taskID'].TASKID).append(
+												'<button type="button"' +
+												'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+												'data-target="#modal-done" data-id="' + taskID +
+												'" data-title="' + taskTitle + '"' +
+												'data-delay="' + isDelayed + '" data-start="'+ startDate +
+												'" data-end="'+ endDate +'">' +
+												'<i class="fa fa-check"></i></button>');
+									 }
+								 },
+								 error:function()
+								 {
+									 alert("There was a problem in checking the task dependencies");
+								 }
+							 }); // end of dependencies ajax
 
 						}
 						$('#totalToDo').html("Total<br><br><b>" + totalToDo + "</b>");
 						$('#totalDelayedToDo').html(totalDelayedToDo);
 						$('#total').html("Total<br><br><b>" + total + "</b>");
 						$('#totalDelayed').html(totalDelayed);
+						$('#totalPlanned').html("Planned<br><br><b>" + totalPlanned + "</b>");
 					}
 
 				},
 				error:function()
 				{
 					alert("There was a problem in retrieving the tasks");
+				},
+				complete:function()
+				{
+					$('#allTaskTable').DataTable({
+						'paging'      : false,
+						'lengthChange': false,
+						'searching'   : true,
+						'ordering'    : true,
+						'info'        : false,
+						'autoWidth'   : false
+					});
+					$('#toDoTable').DataTable({
+						'paging'      : false,
+						'lengthChange': false,
+						'searching'   : true,
+						'ordering'    : true,
+						'info'        : false,
+						'autoWidth'   : false
+					});
 				}
 			});
 
@@ -273,9 +379,16 @@
 				$("#filteredTasks").toggle();
 
 				if($("#allTasks").css("display") == "none")
+				{
 					$("#viewAll").html("<i class='fa fa-eye'></i>");
+					$("#viewAll").attr("title", "View All Tasks");
+				}
 				else
+				{
 					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
+					$("#viewAll").attr("title", "Hide All Tasks");
+				}
+
 			});
 
 			$(document).on("click", ".viewProject", function() {
@@ -285,8 +398,16 @@
 				$("#viewProject").submit();
 			});
 
-			$("body").on("click", ".editBtn", function(e) {
-				alert("Forward to Edit Project");
+			$("body").on("click", ".rfcBtn", function(e) {
+				alert("Forward to RFC");
+				// var $projectID = $(this).attr('data-id');
+				// $("#viewProject").attr("name", "formSubmit");
+				// $("#viewProject").append("<input type='hidden' name='project_ID' value= " + $projectID + ">");
+				// $("#viewProject").submit();
+			});
+
+			$("body").on("click", ".doneBtn", function(e) {
+				alert("Forward to Done Task");
 				// var $projectID = $(this).attr('data-id');
 				// $("#viewProject").attr("name", "formSubmit");
 				// $("#viewProject").append("<input type='hidden' name='project_ID' value= " + $projectID + ">");
