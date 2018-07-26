@@ -317,7 +317,7 @@
 				$("#viewProject").submit();
 			});
 
-			$("body").on("click", ".editBtn", function() {
+			$("body").on("click", ".editBtn", function(e) {
 				alert("Forward to Edit Project");
 				// var $projectID = $(this).attr('data-id');
 				// $("#viewProject").attr("name", "formSubmit");
