@@ -10,8 +10,13 @@
 		    <!-- Content Header (Page header) -->
 		    <section class="content-header">
 		      <h1>
-		        Create a new project
-		        <small>Let's create a new project</small>
+						<?php if (isset($_SESSION['edit'])): ?>
+							Edit project
+			        <small>Let's edit a new project</small>
+						<?php else: ?>
+							Create a new project
+			        <small>Let's create a new project</small>
+						<?php endif; ?>
 		      </h1>
 		    </section>
 
@@ -34,8 +39,13 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-						<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
-							<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
+						<?php if (isset($_SESSION['edit'])): ?>
+							<form role="form" name = "editProject" id = "addProject" action = "editProject" method = "POST">
+								<input type="hidden" name="edit" value="<?php echo $project['PROJECTID']; ?>">
+						<?php else: ?>
+							<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
+						<?php endif; ?>
+							<?php if (isset($_SESSION['templates'])): ?>
 								<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
 							<?php endif;?>
               <div class="box-body">
@@ -80,7 +90,11 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-calendar"></i>
 			                  </div>
-			                  <input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
+												<?php if (isset($_SESSION['edit'])): ?>
+													<input type="text" class="form-control pull-right" id="endDate" name ="endDate" value="<?php echo $project['PROJECTENDDATE']; ?>" required>
+												<?php else: ?>
+													<input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
+												<?php endif; ?>
 			                </div>
 			              </div>
 									</div>
@@ -117,7 +131,13 @@
 
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-success pull-right"><i class="fa fa-forward"></i> Add Main Activities</button>
+                <button type="submit" class="btn btn-success pull-right"><i class="fa fa-forward"></i>
+									<?php if (isset($_SESSION['edit'])): ?>
+										Edit Main Activities
+									<?php else: ?>
+										Add Main Activities
+									<?php endif; ?>
+								</button>
               </div>
             </form>
           </div>
@@ -132,9 +152,15 @@
 
 		<script>
 			$("#myProjects").addClass("active");
-			$("#endDate").prop('disabled', true);
+
+			<?php if (isset($_SESSION['edit'])): ?>
+				$("#endDate").prop('disabled', false);
+			<?php else: ?>
+				$("#endDate").prop('disabled', true);
+			<?php endif; ?>
 
 			var currDate = new Date();
+
 		  $(function ()
 			{
 				//Date picker
@@ -144,6 +170,23 @@
  	       autoclose: true,
 				 orientation: 'auto'
  	     });
+
+			 <?php if (isset($_SESSION['edit'])): ?>
+					 $('body').on('focus',"#endDate", function(){
+
+						 $(this).data('datepicker').setStartDate(new Date($("#startDate").val()));
+
+							$(this).datepicker({
+								format: 'yyyy-mm-dd',
+								 autoclose: true,
+								 orientation: 'auto'
+							});
+
+							var d = $(this).datepicker("getDate");
+
+							console.log("date: " + d);
+					});
+			 <?php endif; ?>
 
 			 $("#startDate").on("change", function() {
 				$("#endDate").prop('disabled', false);

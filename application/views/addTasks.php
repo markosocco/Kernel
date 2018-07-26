@@ -47,7 +47,11 @@
 		              <h3 class="box-title">Enter main activities for this project</h3>
 		            </div>
 		            <!-- /.box-header -->
-								<form id='addTasks' name = 'addTasks' action = 'addTasksToProject' method="POST">
+								<?php if (isset($_SESSION['edit'])): ?>
+									<form id='addTasks' name = 'addTasks' action = 'editMainActivity' method="POST">
+								<?php else: ?>
+									<form id='addTasks' name = 'addTasks' action = 'addTasksToProject' method="POST">
+								<?php endif; ?>
 
 									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
