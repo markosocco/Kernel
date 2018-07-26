@@ -701,20 +701,20 @@
 
 							<form action = 'templateProject' method="POST">
 							</form>
-							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i> Make Project a Template</a>
+							<a name="" class="btn btn-default btn" id="templateProject"><i class="fa fa-window-maximize"></i></a>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST">
 							</form>
-							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i> Use Template</a>
+							<a name="" class="btn btn-default btn" id="useTemplate"><i class="fa fa-window-maximize"></i></a>
 						<?php endif; ?>
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
-							<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i> Park Project</a>
+							<a name="" class="btn btn-default btn" id="parkProject"><i class="fa fa-clock-o"></i></a>
 						<?php endif;?>
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
-							<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i> Continue Project</a>
+							<a name="" class="btn btn-default btn" id="continueProject"><i class="fa fa-clock-o"></i></a>
 						<?php endif;?>
 
 					</div>
