@@ -95,7 +95,7 @@ desired effect
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
-              <span class="label label-success">count</span>
+              <span class="label label-success">1</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Your Tasks</li>
@@ -124,7 +124,7 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">count</span>
+              <span class="label label-warning"><?php echo count($_SESSION['notifications']) ?></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Your Notifications</li>
