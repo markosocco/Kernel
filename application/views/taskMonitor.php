@@ -47,14 +47,14 @@
 											<thead>
 											<tr>
 												<th width="1%"></th>
-												<th class="text-center">Role</th>
-												<th>Responsible</th>
-												<th>Project</th>
-												<th>Task</th>
+												<th width="4%" class="text-center">Role</th>
+												<th width="20%">Responsible</th>
+												<th width="27.5%">Project</th>
+												<th width="27.5%">Task</th>
 												<!-- <th class="text-center">Start Date</th> -->
-												<th class="text-center">End Date</th>
+												<th width="12%" class="text-center">End Date</th>
 												<!-- <th class="text-center">Status</th> -->
-												<th class="text-center">Days Delayed</th>
+												<th width="8%" class="text-center">Days Delayed</th>
 											</tr>
 											</thead>
 											<tbody>
@@ -188,14 +188,14 @@
 											<thead>
 											<tr>
 												<th width="1%"></th>
-												<th class="text-center">Role</th>
-												<th>Responsible</th>
-												<th>Project</th>
-												<th>Task</th>
-												<!-- <th class="text-center">Start Date</th>
-												<th class="text-center">End Date</th> -->
-												<th class="text-center">Actual End Date</th>
-												<th class="text-center">Days Delayed</th>
+												<th width="4%" class="text-center">Role</th>
+												<th width="20%">Responsible</th>
+												<th width="27.5%">Project</th>
+												<th width="27.5%">Task</th>
+												<!-- <th class="text-center">Start Date</th> -->
+												<th width="12%" class="text-center">Actual<br>End Date</th>
+												<!-- <th class="text-center">Status</th> -->
+												<th width="8%" class="text-center">Days Delayed</th>
 											</tr>
 											</thead>
 											<tbody>
