@@ -13,10 +13,6 @@
 		        Create a new project
 		        <small>Let's create a new project</small>
 		      </h1>
-		      <ol class="breadcrumb">
-		        <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-		        <li class="active">New Project</li>
-		      </ol>
 		    </section>
 
 		    <!-- Main content -->

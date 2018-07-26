@@ -23,6 +23,8 @@
 								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Tasks</a>
 						<?php elseif(isset($_SESSION['templates'])): ?>
 								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Templates</a>
+						<?php elseif(isset($_SESSION['monitorTasks'])): ?>
+								<a href="<?php echo base_url("index.php/controller/taskMonitor"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Monitor Tasks</a>
 						<?php else: ?>
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 						<?php endif; ?>
@@ -616,7 +618,8 @@
 				<!-- Main content -->
 				<section class="content container-fluid">
 
-					<h4><i><?php echo $projectProfile['PROJECTDESCRIPTION']; ?></i></h4>
+					<h4>Project Owner: <?php echo $projectProfile['FIRSTNAME']; ?> <?php echo $projectProfile['LASTNAME']; ?></h4>
+					<h4>Description: <?php echo $projectProfile['PROJECTDESCRIPTION']; ?></h4>
 					<div>
 
 						<?php

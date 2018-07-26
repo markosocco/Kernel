@@ -124,6 +124,7 @@ class model extends CI_Model
     DATEDIFF(PROJECTACTUALENDDATE, PROJECTSTARTDATE)+1 as "actualDuration",
     DATEDIFF(CURDATE(), PROJECTENDDATE) as "delayed"');
     $this->db->from('projects');
+    $this->db->join('users', 'users.USERID = projects.users_USERID');
     $this->db->where($condition);
     $query = $this->db->get();
 

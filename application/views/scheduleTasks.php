@@ -26,13 +26,6 @@
 						<?php endif;?>
 
 		      </h1>
-		      <ol class="breadcrumb">
-		        <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-						<li>New Project</li>
-						<li>Main Activity</li>
-						<li>Sub Activity</li>
-						<li class = 'active'>Tasks</li>
-		      </ol>
 		    </section>
 
 		    <!-- Main content -->

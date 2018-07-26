@@ -357,6 +357,8 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			$data['projectCountR'] = $this->model->getProjectCount($_SESSION['departments_DEPARTMENTID']);
+			$data['taskCountR'] = $this->model->getTaskCount($_SESSION['departments_DEPARTMENTID']);
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
 
@@ -1942,7 +1944,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("taskTodo");
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+
+			$this->load->view("taskTodo", $data);
 		}
 	}
 
@@ -1955,7 +1959,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("taskDelegate");
+			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
+
+			$this->load->view("taskDelegate", $data);
 		}
 	}
 
@@ -1968,7 +1974,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("taskMonitor");
+			$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID']);
+
+			$this->load->view("taskMonitor", $data);
 		}
 	}
 
@@ -2241,6 +2249,7 @@ class controller extends CI_Controller
 			$templates =$this->input->post("templates");
 			$dashboard =$this->input->post("dashboard");
 			$templateProjectGantt = $this->input->post("templateProjectGantt");
+			$monitorTasks =$this->input->post("monitorTasks");
 
 			// DASHBOARD
 			if (isset($dashboard))
@@ -2346,6 +2355,12 @@ class controller extends CI_Controller
 				$templateProjectGantt = $this->input->post("templateProjectGantt");
 				$this->session->set_flashdata('templateProjectGantt', $templateProjectGantt);
 			}
+			elseif (isset($monitorTasks))
+			{
+				$templateProjectGantt = $this->input->post("monitorTasks");
+				$this->session->set_flashdata('monitorTasks', $monitorTasks);
+			}
+
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
