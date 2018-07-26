@@ -126,6 +126,7 @@
 
 													<td><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
 													<td><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
+													<td>period</td>
 													<td></td>
 												</tr>
 											</tbody>
@@ -147,12 +148,13 @@
 																		<th width="15%"></th>
 																		<th width="15%"></th>
 																		<th width="10%"></th>
-																		<th width="5%"></th>
+																		<th width="15%"></th>
 																	</tr>
 																</thead>
 															<tbody>
 															<tr>
-																<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																<td></td>
+																<!-- <td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td> -->
 																<td style="padding-left:20px;"><i><?php echo $sValue['TASKTITLE']; ?></i></td>
 																<td><i>
 																	<?php
@@ -196,7 +198,7 @@
 																<?php foreach ($templateTasks as $tKey=> $tTask): ?>
 																	<?php if ($tTask['tasks_TASKPARENT'] == $templateSubActivity[$sKey]['TASKID']): ?>
 																		<tr>
-																			<td></td>
+																			<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																			<td>
 																				<div class="form-group">
 
@@ -206,7 +208,7 @@
 																					<input type="hidden" name="row[]" value="<?php echo $c; ?>">
 																				</div>
 																			</td>
-																			<td style="padding-bottom:15px;">
+																			<td style="padding-top:10px">
 																				<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																					<?php foreach ($departments as $row): ?>
 																						<option></option>
@@ -281,13 +283,13 @@
 
 											<thead>
 				                <tr>
-													<th width="65px"></th>
-													<th width="30%">Task Title</th>
-													<th width="30%">Department</th>
+													<th width="5%"></th>
+													<th width="25%">Task Title</th>
+													<th width="25%">Department</th>
 													<th width="15%">Start Date</th>
 													<th width="15%">Target End Date</th>
-													<th width="65px">Period</th>
-													<th width="65px"></th>
+													<th width="10%">Period</th>
+													<th width="5%"></th>
 				                </tr>
 											</thead>
 
@@ -332,6 +334,7 @@
 
 													<td><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
 													<td><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
+													<td>period</td>
 													<td></td>
 												</tr>
 											</tbody>
@@ -348,17 +351,19 @@
 																<thead>
 																	<tr>
 																		<th width="5%"></th>
-																		<th width="30%"></th>
-																		<th width="30%"></th>
+																		<th width="25%"></th>
+																		<th width="25%"></th>
 																		<th width="15%"></th>
 																		<th width="15%"></th>
+																		<th width="10%"></th>
 																		<th width="5%"></th>
 																	</tr>
 																</thead>
 															<tbody>
 															<tr>
-																<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1"
-																	data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																<td></td>
+																<!-- <td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1"
+																	data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td> -->
 																<td style="padding-left:20px;"><i><?php echo $sValue['TASKTITLE']; ?></i></td>
 																<td><i>
 																	<?php
@@ -395,10 +400,12 @@
 
 																<td><i><?php echo date_format($sdate, "M d, Y"); ?></i></td>
 																<td><i><?php echo date_format($edate, "M d, Y"); ?></i></td>
+																<td>period</td>
 																<td></td>
 															</tr>
 															<tr>
-																<td></td>
+																<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1"
+																	data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																<td>
 																	<div class="form-group">
 
@@ -408,7 +415,7 @@
 																		<input type="hidden" name="row[]" value="<?php echo $c; ?>">
 																	</div>
 																</td>
-																<td style="padding-bottom:15px;">
+																<td style="padding-top:10px">
 																	<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																		<?php foreach ($departments as $row): ?>
 																			<option></option>
@@ -507,7 +514,7 @@
 					 					"<tr id='ma" + mTable + "_s" + (i) +
 										"'><td></td><td><div class ='form-group'> <input type='hidden' name='subActivity_ID[]' value='" +
 										subAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
-										"<td><select id = 'select" + i + "' class='form-control select2' name = '' data-placeholder='Select Departments'> " +
+										"<td style='padding-top:10px'><select id = 'select" + i + "' class='form-control select2' name = '' data-placeholder='Select Departments'> " +
 										"<option></option> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
