@@ -1919,6 +1919,8 @@ class controller extends CI_Controller
 				$data['editUsers'] = $this->model->getAllUsers();
 			}
 
+			$this->session->set_flashdata('edit', $edit);
+
 			$this->load->view('addTasks', $data);
 		}
 
@@ -2106,7 +2108,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$status = 'Planning';
+			$status = 'Drafted';
 		}
 
 		$data = array(
@@ -2702,6 +2704,11 @@ class controller extends CI_Controller
 				}
 			}
 		}
+
+		$status = array(
+			"PROJECTSTATUS" => "Planning");
+
+		$changeStatues = $this->model->updateProjectStatusPlanning($id, $status);
 
 			$data['project'] = $this->model->getProjectByID($id);
 			$data['tasks'] = $this->model->getAllProjectTasks($id);

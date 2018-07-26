@@ -1289,5 +1289,11 @@ class model extends CI_Model
     $this->db->where('PROJECTID', $id);
     $result = $this->db->update('projects', $data);
   }
+
+  public function updateProjectStatusPlanning($id, $status)
+  {
+    $this->db->where('PROJECTID', $id);
+    $result = $this->db->update('projects', $status);
+  }
 }
 ?>
