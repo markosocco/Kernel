@@ -30,6 +30,85 @@
 				<div id = "filteredTasks">
 
 					<div class="row">
+						<!-- COMPLETED -->
+
+						<?php if ($ACItasks != NULL): ?>
+						<div class="col-md-10">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+									<h3 class="box-title">Recently Added</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<table class="table table-hover no-margin">
+											<thead>
+											<tr>
+												<th>Role</th>
+												<th>Responsible</th>
+												<th>Project</th>
+												<th>Task</th>
+												<th class="text-center">Actual End Date</th>
+											</tr>
+											</thead>
+											<tbody>
+
+												<?php foreach($ACItasks as $ACItask):?>
+													<?php
+													$startdate = date_create($ACItask['TASKSTARTDATE']);
+													$enddate = date_create($ACItask['TASKENDDATE']);
+													$diff = date_diff($enddate, $startdate);
+													$period = $diff->format("%a")+1;
+													?>
+
+													<tr class="viewProject" data-id="<?php echo $ACItask['PROJECTID'] ;?>">
+														<?php
+														switch($ACItask['ROLE'])
+														{
+															case '2': $role = "A"; break;
+															case '3': $role = "C"; break;
+															case '4': $role = "I"; break;
+														}
+														;?>
+														<td><?php echo $role;?></td>
+														<td><?php echo $ACItask['FIRSTNAME'];?> <?php echo $ACItask['LASTNAME'];?></td>
+														<td><?php echo $ACItask['PROJECTTITLE'];?></td>
+														<td><?php echo $ACItask['TASKTITLE'];?></td>
+														<td align="center"><?php echo date_format($enddate, 'M d, Y');?></td>
+													</tr>
+												<?php endforeach;?>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php else:?>
+						<div class="col-md-10">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+									<h3 class="box-title">To Do</h3>
+								</div>
+								<div class="box-body">
+									<h4 align="center">You have no Tasks due in 3 days</h4>
+								</div>
+							</div>
+						</div>
+					<?php endif;?>
+					<div class="col-md-2">
+						<div class="box box-danger">
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div class="table-responsive">
+									<h4 align="center"> Total: <br><br><b><?php echo count($ACItasks);?></b></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div> <!-- CLOSING ROW -->
+
+					<div class="row">
 						<!-- ONGOING-->
 
 						<?php if ($ACItasks != NULL): ?>
@@ -303,8 +382,8 @@
 		  <?php require("footer.php"); ?>
 		</div> <!--.wrapper closing div-->
 		<script>
-      $("#ACIACItasks").addClass("active");
-      $("#ACItaskMonitor").addClass("active");
+      $("#tasks").addClass("active");
+      $("#taskMonitor").addClass("active");
 			$("#allTasks").hide();
 
 			$(document).on("click", "#viewAll", function()

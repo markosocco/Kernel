@@ -1959,7 +1959,13 @@ class controller extends CI_Controller
 
 		else
 		{
+			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+
 			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+			$data['projectCount'] = $this->model->getProjectCount($filter);
+			$data['taskCount'] = $this->model->getTaskCount($filter);
 
 			$this->load->view("taskDelegate", $data);
 		}
