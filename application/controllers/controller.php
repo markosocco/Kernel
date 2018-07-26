@@ -364,7 +364,7 @@ class controller extends CI_Controller
 
 			$data['users'] = $this->model->getAllUsers();
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
-			$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID']);
+			$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Ongoing");
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByUser($_SESSION['USERID']);
 			$data['subActivity'] = $this->model->getAllSubActivitiesByUser($_SESSION['USERID']);
 
@@ -1980,7 +1980,11 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID']);
+			$data['allOngoingACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Ongoing");
+			$data['uniqueOngoingACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Ongoing");
+
+			$data['allCompletedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Complete");
+			$data['uniqueCompletedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Complete");
 
 			$this->load->view("taskMonitor", $data);
 		}
@@ -2295,11 +2299,6 @@ class controller extends CI_Controller
 					$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
 					$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 				}
-				$data['departments'] = $this->model->getAllDepartments();
-				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
-				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
-				$data['projectCount'] = $this->model->getProjectCount($filter);
-				$data['taskCount'] = $this->model->getTaskCount($filter);
 			}
 
 			// ARCHIVES
