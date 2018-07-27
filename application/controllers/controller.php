@@ -2752,7 +2752,7 @@ class controller extends CI_Controller
 								$projectDetails = $this->model->getProjectByID($projectID);
 								$projectTitle = $projectDetails['PROJECTTITLE'];
 
-								$userDetails = $this->model->$this->model->getUserByID($deptHead);
+								$userDetails = $this->model->getUserByID($deptHead);
 								$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 								// START: LOG DETAILS
@@ -2767,7 +2767,7 @@ class controller extends CI_Controller
 								$this->model->addToProjectLogs($logData);
 								// END: LOG DETAILS
 
-								// START: Notifications
+								//START: Notifications
 								$details = "You have been tagged to add and delegate tasks in " . $taskTitle . " in " . $projectTitle . ".";
 								$notificationData = array(
 									'users_USERID' => $deptHead,
