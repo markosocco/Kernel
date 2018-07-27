@@ -124,7 +124,21 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning"><?php echo count($_SESSION['notifications']) ?></span>
+              <span class="label label-warning">
+                <?php
+
+                  $counter = 0;
+
+                  foreach ($_SESSION['notifications'] as $notifications) {
+
+                    if($notifications['status'] == 'Unread'){
+                      $counter++;
+                    }
+                  }
+
+                  echo $counter;
+                ?>
+              </span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Your Notifications</li>

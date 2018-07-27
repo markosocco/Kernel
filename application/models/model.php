@@ -1108,7 +1108,7 @@ class model extends CI_Model
 
   public function getAllNotificationsByUser()
   {
-    $condition = "status = 'Unread' AND users_USERID = " . $_SESSION['USERID'];
+    $condition = "users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*');
     $this->db->from('notifications');
     $this->db->where($condition);

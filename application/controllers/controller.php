@@ -2156,6 +2156,14 @@ class controller extends CI_Controller
 			$this->model->addToProjectLogs($logData);
 			// END: LOG DETAILS
 
+			$progressData = array(
+				'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
+				'DATE' => date('Y-m-d'),
+				'PROGRESS' => 0
+			);
+
+			$this->model->insertToProjectWeeklyProgress($progressData);
+
 			$templates = $this->input->post('templates');
 
 			if (isset($templates))
