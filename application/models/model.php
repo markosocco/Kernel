@@ -1224,17 +1224,16 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getOngoingProjectProgressByUser($userID)
+  public function getOngoingProjectProgressByProject($projectID)
   {
+    $condition = "CATEGORY = 3 AND tasks.projects_PROJECTID = " . $projectID;
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "progress"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
-    $this->db->where('CATEGORY = 3 AND projects.PROJECTSTATUS = "Ongoing" AND !(projectenddate < CURDATE()) &&  users_USERID = ' . $userID);
-    $this->db->group_by('projects_PROJECTID');
-    $this->db->order_by('PROJECTENDDATE');
+    $this->db->where($condition);
 
-    return $this->db->get()->result_array();
+    return $this->db->get()->row('progress');
   }
 
   public function addToDependencies($data)
@@ -1297,7 +1296,7 @@ class model extends CI_Model
 
   public function getLatestWeeklyProgress(){
     $condition = "datediff(curdate(), DATE) < 7";
-    $this->db->select('*');
+    $this->db->select('*,  datediff(curdate(), DATE) as "datediff"');
     $this->db->from('projectweeklyprogress');
     $this->db->where($condition);
 

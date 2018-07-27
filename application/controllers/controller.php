@@ -90,7 +90,25 @@ class controller extends CI_Controller
 						// notification for ACI and PO??
 
 				// check for project weekly progress
-				// $this->model->insertToProjectWeeklyProgress($progressData, $currentDate);
+				$data['lastestProgress'] = $this->model->getLatestWeeklyProgress();
+
+				foreach($data['lastestProgress'] as $lastestProgressDetails){
+
+					if($lastestProgressDetails['datediff'] == 7){
+
+						$projectProgress = $this->model->getOngoingProjectProgressByProject($lastestProgressDetails['projects_PROJECTID']);
+
+						echo $projectProgress;
+
+						$progressData = array(
+							'projects_PROJECTID' => $lastestProgressDetails['projects_PROJECTID'],
+							'DATE' => date('Y-m-d'),
+							'PROGRESS' => $projectProgress
+						);
+
+						// $this->model->insertToProjectWeeklyProgress($progressData);
+					}
+				}
 
 // END NAMI
 
