@@ -994,7 +994,7 @@ class controller extends CI_Controller
 
 			}
 		}
-		$this->myTasks();
+		$this->taskDelegate();
 	}
 
 	public function submitRFC()
@@ -2044,6 +2044,7 @@ class controller extends CI_Controller
 			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "2");
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
 

@@ -27,9 +27,10 @@
 					<div class="row">
 						<!-- TO DO -->
 
-						<?php if ($delegateTasksByProject != NULL && $delegateTasksBySubActivity != NULL &&  $delegateTasksByMainActivity != NULL): ?>
-							<?php foreach($delegateTasksByProject as $project):?>
-								<?php if($project['threshold'] >= $project['PROJECTSTARTDATE']):?> <!-- show only activities before the project start date -->
+						<?php
+							$totalToDoProjects=0;
+							$totalToDoTasks=0;
+						?>
 
 						<div class="col-md-10">
 							<div class="box box-danger">
@@ -39,10 +40,9 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 
-									<?php
-										$totalToDoProjects=0;
-										$totalToDoTasks=0;
-									?>
+						<?php if ($delegateTasksByProject != NULL): ?>
+							<?php foreach($delegateTasksByProject as $project):?>
+								<?php if($project['threshold'] <= $project['PROJECTSTARTDATE']):?> <!-- show only activities before the project start date -->
 
 										<?php
 										$startDate = date_create($project['PROJECTSTARTDATE']);
@@ -86,12 +86,12 @@
 																				data-placement="top" title="Edit">
 																					<i class="fa fa-edit"></i>
 																				</button>
-																				<span data-toggle="modal" data-target="#modal-delegate"
+																				<span data-toggle="modal" data-target="#modal-delegate">
+																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $mainActivity['TASKID'];?>"
 																				data-title="<?php echo $mainActivity['TASKTITLE'];?>"
 																				data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
 																				data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
-																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate">
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
@@ -115,13 +115,12 @@
 																					data-placement="top" title="Edit">
 																						<i class="fa fa-edit"></i>
 																					</button>
-																					<span data-toggle="modal" data-target="#modal-delegate"
-																					data-id="<?php echo $subActivity['TASKID'];?>">
+																					<span data-toggle="modal" data-target="#modal-delegate">
 																					<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
-																					data-id="<?php echo $mainActivity['TASKID'];?>"
-																					data-title="<?php echo $mainActivity['TASKTITLE'];?>"
-																					data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
-																					data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																					data-id="<?php echo $subActivity['TASKID'];?>"
+																					data-title="<?php echo $subActivity['TASKTITLE'];?>"
+																					data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
+																					data-end="<?php echo $subActivity['TASKENDDATE'];?>">
 																						<i class="fa fa-users"></i>
 																					</button>
 																					</span>
@@ -140,32 +139,39 @@
 											</div>
 										<?php endif;?>
 									<?php endforeach;?> <!-- END PROJECT -->
+								<?php endif;?>
+
+									<?php if($totalToDoProjects == 0):?>
+
+										<div class="box-body">
+											<h4 align="center">You have no tasks due in 2 days</h4>
+										</div>
+									<?php endif;?>
 
 								</div>
 							</div>
 						</div>
 
-					<div class="col-md-2">
-						<div class="box box-danger">
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<h4 align="center" id="toDoProjects"> Projects <br><br><b><?php echo $totalToDoProjects;?></b></h4>
+						<div class="col-md-2">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center" id="toDoProjects"> Projects <br><br><b><?php echo $totalToDoProjects;?></b></h4>
+									</div>
+								</div>
+							</div>
+
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo $totalToDoTasks;?></b></span></h4>
+									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="box box-danger">
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo $totalToDoTasks;?></b></span></h4>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				<?php endif;?>
 
 					</div> <!-- CLOSING ROW -->
 				</div>
@@ -174,7 +180,11 @@
 					<!-- ALL TASKS -->
 					<div class='row'>
 
-					<?php if ($delegateTasksByProject != NULL && $delegateTasksBySubActivity != NULL &&  $delegateTasksByMainActivity != NULL): ?>
+						<?php
+							$totalToDoProjects=0;
+							$totalToDoTasks=0;
+						?>
+
 					<div class="col-md-10">
 						<div class="box box-danger">
 							<div class="box-header with-border">
@@ -182,12 +192,7 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-
-								<?php
-									$totalToDoProjects=0;
-									$totalToDoTasks=0;
-								?>
-
+								<?php if ($delegateTasksByProject != NULL): ?>
 								<?php foreach($delegateTasksByProject as $project):?>
 
 									<?php
@@ -261,12 +266,12 @@
 																				data-placement="top" title="Edit">
 																					<i class="fa fa-edit"></i>
 																				</button>
-																				<span data-toggle="modal" data-target="#modal-delegate"
+																				<span data-toggle="modal" data-target="#modal-delegate">
+																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $subActivity['TASKID'];?>"
 																				data-title="<?php echo $subActivity['TASKTITLE'];?>"
 																				data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
 																				data-end="<?php echo $subActivity['TASKENDDATE'];?>">
-																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate">
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
@@ -284,6 +289,15 @@
 											</div>
 										</div>
 								<?php endforeach;?> <!-- END PROJECT -->
+
+							<?php endif;?>
+
+								<?php if($totalToDoProjects == 0):?>
+
+									<div class="box-body">
+										<h4 align="center">You have no tasks</h4>
+									</div>
+								<?php endif;?>
 
 							</div>
 						</div>
@@ -309,9 +323,6 @@
 					</div>
 				</div>
 
-			<?php endif;?>
-
-
 				</div>
 
 				<form id='viewProject' action = 'projectGantt' method="POST">
@@ -336,8 +347,8 @@
 									<div class="box-body">
 										<form id="raciForm" action="delegateTask" method="POST">
 
-											<div class="form-group raciDiv" id = "responsibleDiv">
-											<table id="responsibleList" class="table table-bordered table-hover">
+											<div class="form-group raciDiv" id = "deptDiv">
+											<table id="deptList" class="table table-bordered table-hover">
 												<thead>
 												<tr>
 													<th>Department</th>
@@ -356,28 +367,28 @@
 																<td>
 																	<div class="radio">
 																	<label>
-																		<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['DEPARTMENTID'];?>" required>
+																		<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="accountableEmp" value="<?php echo $department['DEPARTMENTID'];?>" required>
+																		<input class = "checkEmp" type="checkbox" name="accountableEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $department['DEPARTMENTID'];?>" required>
+																		<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $department['DEPARTMENTID'];?>" required>
+																		<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
@@ -404,7 +415,7 @@
 												</thead>
 
 												<tbody>
-													<?php foreach($deptEmployees as $employee):?>
+													<?php foreach($wholeDept as $employee):?>
 														<tr>
 															<?php $hasProjects = false;?>
 															<?php foreach($projectCount as $count): ;?>
@@ -430,7 +441,7 @@
 																<?php $hasTasks = 0;?>
 															<?php endif;?>
 
-															<td class='moreInfo'
+															<td class='moreInfo' data-id="<?php echo $employee['USERID'];?>"
 															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
 															data-projectCount = "<?php echo $hasProjects;?>"
 															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -490,14 +501,6 @@
 																<?php $hasTasks = 0;?>
 																<td align="center">0</td>
 															<?php endif;?>
-
-															<!-- <td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
-																data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
-																data-projectCount = "<?php echo $hasProjects;?>"
-																data-taskCount = "<?php echo $hasTasks;?>">
-																<a class="btn moreBtn" data-toggle="modal">
-																<i class="fa fa-info-circle"></i> More Info</a>
-															</td> -->
 														</tr>
 													<?php endforeach;?>
 												</tbody>
@@ -608,6 +611,7 @@
 			 });
 
 			 $("#delegateConfirm").hide();
+			 $("#workloadAssessment").hide();
 
 			 $(".moreInfo").click(function(){
 

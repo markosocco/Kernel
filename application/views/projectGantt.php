@@ -1426,10 +1426,9 @@
 				//
 				// tasks.fill('white');
 
-				chart.splitterPosition(1040);
-				chart.container('container').draw();      // set container and initiate drawing
+				chart.splitterPosition(650);
 				chart.zoomTo("week", 2);
-
+				chart.container('container').draw();      // set container and initiate drawing
 			});
 
 			function dateFormatter (value){
