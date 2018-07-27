@@ -313,7 +313,7 @@
 							if(data['tasks'][i].currentDate > endDate)
 							{
 								var status = "<td class='bg-red'></td>";
-								if(data['tasks'][i].threshold >= endDate && data['tasks'][i].currentDate >= taskStart)
+								if(data['tasks'][i].threshold >= endDate)
 									var totalDelayedToDo = totalDelayedToDo+1;
 								var totalDelayed = totalDelayed+1;
 							}
@@ -330,7 +330,7 @@
 														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>" +
 														 "<td align='center'>" + delayDays + "</td>" +
-														 "<td class = 'action-" + taskID +"'></td>");
+														 "<td class = 'action-" + taskID +"'></td></tr>");
 							}
 
 							var total = total+1;
