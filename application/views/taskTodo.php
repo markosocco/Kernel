@@ -320,7 +320,7 @@
 
 							var taskID = data['tasks'][i].TASKID;
 
-							if(data['tasks'][i].threshold >= endDate && data['tasks'][i].currentDate >= taskStart)
+							if(data['tasks'][i].threshold >= endDate)
 							{
 								var totalToDo = totalToDo+1;
 
