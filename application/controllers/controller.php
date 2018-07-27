@@ -2150,7 +2150,31 @@ class controller extends CI_Controller
 		if ($data)
 		{
 			// TODO PUT ALERT
-			// TODO Nami: put notif and log
+
+			$projectProgressData = array(
+				'projects_PROJECTID' => $data['project']['PROJECTID'],
+				'DATE' => date('Y-m-d'),
+				'PROGRESS' => 0
+			);
+
+			// $this->model->insertToProjectWeeklyProgress($projectProgressData);
+
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+			$projectID = $data['project']['PROJECTID'];
+
+			// START: LOG DETAILS
+			$details = $userName . " created this project.";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $projectID
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
 
 			$templates = $this->input->post('templates');
 
@@ -2717,6 +2741,44 @@ class controller extends CI_Controller
 
 								// ENTER INTO RACI
 								$result = $this->model->addToRaci($data);
+
+								// START OF LOGS/NOTIFS
+								$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+								$taskDetails = $this->model->getTaskByID($a);
+								$taskTitle = $taskDetails['TASKTITLE'];
+
+								$projectID = $taskDetails['projects_PROJECTID'];
+								$projectDetails = $this->model->getProjectByID($projectID);
+								$projectTitle = $projectDetails['PROJECTTITLE'];
+
+								$userDetails = $this->model->$this->model->getUserByID($deptHead);
+								$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+								// START: LOG DETAILS
+								$details = $userName . " has tagged " . $taggedUserName . " to add and delegate tasks to " . $taskTitle . ".";
+
+								$logData = array (
+									'LOGDETAILS' => $details,
+									'TIMESTAMP' => date('Y-m-d H:i:s'),
+									'projects_PROJECTID' => $projectID
+								);
+
+								$this->model->addToProjectLogs($logData);
+								// END: LOG DETAILS
+
+								// START: Notifications
+								$details = "You have been tagged to add and delegate tasks in " . $taskTitle . " in " . $projectTitle . ".";
+								$notificationData = array(
+									'users_USERID' => $deptHead,
+									'DETAILS' => $details,
+									'TIMESTAMP' => date('Y-m-d H:i:s'),
+									'status' => 'Unread'
+								);
+
+								$this->model->addNotification($notificationData);
+								// END: Notification
+
 							}
 							// echo "<br>";
 						}

@@ -22,9 +22,6 @@ $logData = array (
 	'projects_PROJECTID' => $projectID
 );
 
-} // end if approved change dates
-
-
 $this->model->addToProjectLogs($logData);
 // END: LOG DETAILS
 
