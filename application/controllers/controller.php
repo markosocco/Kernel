@@ -75,8 +75,11 @@ class controller extends CI_Controller
 				$notifications = $this->model->getAllNotificationsByUser($sessionData['USERID']);
 				$this->session->set_userdata('notifications', $notifications);
 
-				$currentDate = date('Y-m-d');
+				$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+				$taskCount = $this->model->getTaskCount($filter);
+				$this->session->set_userdata('taskCount', $taskCount);
 
+				$currentDate = date('Y-m-d');
 				$this->model->updateTaskStatus($currentDate);
 				$this->model->updateProjectStatus($currentDate);
 
@@ -2052,7 +2055,7 @@ class controller extends CI_Controller
 			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 			$data['projectCount'] = $this->model->getProjectCount($filter);
-			$data['taskCount'] = $this->model->getTaskCount($filter);
+
 
 			$this->load->view("taskDelegate", $data);
 		}

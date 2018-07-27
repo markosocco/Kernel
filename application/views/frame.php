@@ -95,7 +95,9 @@ desired effect
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
-              <span class="label label-success">1</span>
+              <span class="label label-success"> 1
+                <!-- <?php echo count($_SESSION['taskCount']); ?> -->
+              </span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Your Tasks</li>
