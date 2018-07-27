@@ -10,7 +10,7 @@ $projectID = $taskDetails['projects_PROJECTID'];
 $projectDetails = $this->model->getProjectByID($projectID);
 $projectTitle = $projectDetails['PROJECTTITLE'];
 
-$userDetails = $this->model->$this->model->getUserByID($deptID);
+$userDetails = $this->model->getUserByID($deptID);
 $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 // START: LOG DETAILS
@@ -47,7 +47,7 @@ $projectID = $taskDetails['projects_PROJECTID'];
 $projectDetails = $this->model->getProjectByID($projectID);
 $projectTitle = $projectDetails['PROJECTTITLE'];
 
-$userDetails = $this->model->$this->model->getUserByID($empID);
+$userDetails = $this->model->getUserByID($empID);
 $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 // START: LOG DETAILS
