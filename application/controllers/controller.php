@@ -82,60 +82,18 @@ class controller extends CI_Controller
 
 				redirect('controller/dashboard');
 
-// START
-				// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-				// $data['ongoingProjectofUser'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
-				// $data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
-				//
-				// foreach($data['lastWeekProgress'] as $lastProgress){
-				// 	if($lastProgress['DATEDIFF'] < 5){
-				// 		echo "hello";
-				// 	} else echo "no";
-				// }
+// START NAMI
 
+				// check all delayed tasks
+						// notification for that user
+						// notification for post req na delayed
+						// notification for ACI and PO??
 
-			// // 	$sDate = date_create($data['lastWeekProgress']);
-			// // 	$diff = date_diff($eDate, $sDate, true);
-			// // 	$dateDiff = $diff->format('%R%a');
-			// //
-		  // // $data['dateDiff'] = $dateDiff;
-			//
-			// 	foreach($data['lastWeekProgress'] as $lastProgress){
-			//
-			// 		$lastDate = date_create(strtotime($lastProgress['DATE']));
-			// 		$curDate =  date('Y-m-d'); // date_create($data['lastWeekProgress']);
-			// 		$diff = date_diff($curDate, $lastDate, true);
-			// 		$dateDiff = $diff->format('%d%a');
-			//
-			// 		if($dateDiff < 5) {
-			// 			echo "<script>console.log('yes');</script>";
-			// 		}
-			// 	}
+				// check for project weekly progress
+				// $this->model->insertToProjectWeeklyProgress($progressData, $currentDate);
 
-				// foreach($data['ongoingProjectProgress'] as $projectProgress){
-				// 	foreach($data['ongoingProjectofUser'] as $ongoingProject){
-				// 		if($ongoingProject['PROJECTID'] == $projectProgress['projects_PROJECTID']){
-				//
-				// 			$progress = $projectProgress['projectProgress'];
-				//
-				// 			$notificationData = array(
-				// 				'users_USERID' => $projectOwnerID,
-				// 				'DETAILS' => $details,
-				// 				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				// 				'status' => 'Unread'
-				// 			);
-				// 			$progressData = array(
-				//
-				//
-				//
-				// 			),
-				//
-				// 			$this->model->insertToProjectWeeklyProgress($progressData, $currentDate);
-				// 		}
-				// 	}
-				// 	// $this->model->updateProjectWeeklyProgress($currentDate);
-				// }
-// END
+// END NAMI
+
 				// redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
@@ -3189,8 +3147,25 @@ class controller extends CI_Controller
 				'PROJECTSTATUS' => 'Archived'
 			);
 
-			// TODO NAMI: LOGS
 			$result = $this->model->archiveProject($id, $data);
+
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+			$projectDetails = $this->model->getProjectByID($id);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
+			$details = $userName . " has archived this project.";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $id
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
 
 			if ($result)
 			{
@@ -3218,8 +3193,25 @@ class controller extends CI_Controller
 				'users_USERID' => $_SESSION['USERID']
 			);
 
-			// TODO NAMI: LOGS
 			$result = $this->model->templateProject($data);
+
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+			$projectDetails = $this->model->getProjectByID($id);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
+			$details = $userName . " has made this project a template.";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $id
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
 
 			//
 			if ($result)

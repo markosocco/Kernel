@@ -1198,56 +1198,10 @@
 								// START: Ongoing tasks - baselineEnd is the date today
 								else if($value['TASKACTUALENDDATE'] == NULL){
 									// not delayed
-									if($value['TASKENDDATE'] > date('Y-m-d')){
-										// echo "
-										// {
-										// 	'id': " . $value['TASKID'] . ",
-										// 	'name': '" . $value['TASKTITLE'] . "',
-										// 	'actualStart': '" . $formatted_startDate . "',
-										// 	'actualEnd': '" . $formatted_endDate . "',
-										// 	'responsible': '" . $responsiblePerson  ."',
-										// 	'accountable': '" . $accountablePerson ."',
-										// 	'consulted': '" . $consultedPerson  ."',
-										// 	'informed': '" . $informedPerson  ."',
-										// 	'period': '" . $value['initialTaskDuration'] ."',
-										// 	'parent': '" . $parent . "',
-										// 	'connectTo': '" . $dependency . "',
-										// 	'connectorType': '" . $type . "',
-										// 	'baselineStart': '" . $formatted_actualStartDate . "',
-										// 	'baselineEnd': '" . date('M d, Y') . "',
-										// 	'baseline':{'fill': 'green'},
-										// },";
-										// echo "<script> console.log(" . $value['TASKID'] . "); </script>";
-										// echo "<script> console.log(" . $value['TASKENDDATE'] . "); </script>";
-										// echo "<script> console.log(" . date('Y-m-d'). "); </script>";
-										// echo "<script> console.log('not yet delayed'); </script>";
+									if($value['TASKENDDATE'] > date('Y-m-d')){ // ongoing but not delayed
 										// echo "<script> console.log(''); </script>";
 										$color = "green";
-									} else {
-										// delayed
-										// echo "
-										// {
-										// 	'id': " . $value['TASKID'] . ",
-										// 	'name': '" . $value['TASKTITLE'] . "',
-										// 	'actualStart': '" . $formatted_startDate . "',
-										// 	'actualEnd': '" . $formatted_endDate . "',
-										// 	'actual':{'fill': '#DC401F'},
-										// 	'responsible': '" . $responsiblePerson  ."',
-										// 	'accountable': '" . $accountablePerson ."',
-										// 	'consulted': '" . $consultedPerson  ."',
-										// 	'informed': '" . $informedPerson  ."',
-										// 	'period': '" . $value['initialTaskDuration'] ."',
-										// 	'parent': '" . $parent . "',
-										// 	'connectTo': '" . $dependency . "',
-										// 	'connectorType': '" . $type . "',
-										// 	'baselineStart': '" . $formatted_actualStartDate . "',
-										// 	'baselineEnd': '" . date('M d, Y') . "',
-										// 	'baseline':{'fill': '#DC401F'},
-										// },";
-										// echo "<script> console.log(" . $value['TASKID'] . "); </script>";
-										// echo "<script> console.log(" . $value['TASKENDDATE'] . "); </script>";
-										// echo "<script> console.log(" . date('Y-m-d') . "); </script>";
-										// echo "<script> console.log('delayed'); </script>";
+									} else { // ongoing and delayed
 										// echo "<script> console.log(''); </script>";
 										$color = "#F53006";
 									}
@@ -1420,11 +1374,6 @@
 				columnInformed.title("Informed");
 				columnInformed.setColumnFormat("informed", "text");
 				columnInformed.width(100);
-
-				//get chart timeline link to change color
-				// var tasks = timeLine.tasks();
-				//
-				// tasks.fill('white');
 
 				chart.splitterPosition(650);
 				chart.zoomTo("week", 2);
