@@ -151,7 +151,20 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="<?php echo base_url()."assets/"; ?>#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="user-image" alt="User Image">
+              <?php if ($_SESSION['USERID'] == '4'): ?>
+                <img src="<?php echo base_url()."assets/"; ?>media/mickey.jpg" class="user-image" alt="User Image">
+              <?php elseif ($_SESSION['USERID'] == '9'): ?>
+                <img src="<?php echo base_url()."assets/"; ?>media/donald.png" class="user-image" alt="User Image">
+              <?php elseif ($_SESSION['USERID'] == '45'): ?>
+                <img src="<?php echo base_url()."assets/"; ?>media/goofy.png" class="user-image" alt="User Image">
+              <?php elseif ($_SESSION['USERID'] == '46'): ?>
+                <img src="<?php echo base_url()."assets/"; ?>media/minnie.gif" class="user-image" alt="User Image">
+              <?php elseif ($_SESSION['USERID'] == '25'): ?>
+                <img src="<?php echo base_url()."assets/"; ?>media/winnie.jpg" class="user-image" alt="User Image">
+              <?php else: ?>
+                <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="user-image" alt="User Image">
+              <?php endif; ?>
+
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs"><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></span>
             </a>
