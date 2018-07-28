@@ -521,19 +521,14 @@
 														<td align="center"><?php echo date_format($enddate, 'M d, Y');?></td>
 														<td align="center"><?php echo date_format($actualEndDate, 'M d, Y');?></td>
 
-														<?php if($taskDuration > $delay):?>
-														<?php else:?>
-															<?php $delayedCompletedTasks++;?>
-														<?php endif;?>
-
 														<?php if($delay-$taskDuration <= 0):?>
 															<td align="center">0</td>
 														<?php else:?>
 															<td align="center"><?php echo $delay - $taskDuration;?></td>
+															<?php $delayedCompletedTasks = $delayedCompletedTasks+1;?>
 														<?php endif;?>
 													</tr>
 												<?php endforeach;?>
-
 											</tbody>
 										</table>
 									</div>

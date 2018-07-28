@@ -1269,7 +1269,7 @@ class model extends CI_Model
 
   public function getRaci($id)
   {
-    $condition = "projects.PROJECTID = " . $id . " AND raci.STATUS = 'Current'";
+    $condition = "projects.PROJECTID = '" . $id . "' AND raci.STATUS = 'Current'";
     $this->db->select('raci.*, users.departments_DEPARTMENTID as uDept, tasks.CATEGORY as tCat');
     $this->db->from('raci');
     $this->db->join('tasks', 'raci.tasks_TASKID = tasks.TASKID');
@@ -1281,7 +1281,7 @@ class model extends CI_Model
   }
 
   public function getRACIbyTask($taskID){
-    $condition = "tasks_TASKID = " . $taskID . " AND raci.STATUS = 'Current'";
+    $condition = "tasks_TASKID = '" . $taskID . "' AND raci.STATUS = 'Current'";
     $this->db->select('*');
     $this->db->from('raci');
     $this->db->where($condition);

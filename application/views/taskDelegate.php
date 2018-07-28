@@ -344,7 +344,7 @@
 								<div id="raciDelegate">
 								<!-- <div class="box box-danger"> -->
 									<!-- /.box-header -->
-									<div class="box-body">
+									<div class="box-body" id ='delegateDiv'>
 										<form id="raciForm" action="delegateTask" method="POST">
 
 											<!-- <div class="form-group raciDiv" id = "deptDiv">
@@ -414,9 +414,9 @@
 												</tr>
 												</thead>
 
-												<tbody>
+												<tbody id='assignment'>
 													<!-- EXECUTIVES -->
-													<?php foreach($users as $user):?>
+													<!-- <?php foreach($users as $user):?>
 														<?php if($user['departments_DEPARTMENTID'] == '1'):?>
 														<tr>
 															<td><?php echo $user['FIRSTNAME'] . " " .  $user['LASTNAME'];?></td>
@@ -430,32 +430,32 @@
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="accountableEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	<input class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																</label>
 															</div>
 															</td>
 														</tr>
 														<?php endif;?>
-													<?php endforeach;?>
+													<?php endforeach;?> -->
 
 													<!-- ALL DEPARTMENTS -->
-													<?php foreach($departments as $department):?>
-														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
-															<tr>
+													<!-- <?php foreach($departments as $department):?>
+														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?> -->
+															<!-- <tr>
 																<td><?php echo $department['DEPARTMENTNAME'];?></td>
 																<td class='text-center'>
 																	<div class="radio">
@@ -467,32 +467,32 @@
 																<td class='text-center'>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="accountableEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td class='text-center'>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td class='text-center'>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
-															</tr>
-														<?endif;?>
-													<?php endforeach;?>
+															</tr> -->
+														<!-- <?endif;?>
+													<?php endforeach;?> -->
 
 													<!-- STAFF IN DEPARTMENT -->
-													<tr><td colspan = '7'></td></tr>
+													<!-- <tr><td colspan = '7'></td></tr> -->
 
-													<?php foreach($wholeDept as $employee):?>
+													<!-- <?php foreach($wholeDept as $employee):?>
 														<tr>
 															<?php $hasProjects = false;?>
 															<?php foreach($projectCount as $count): ;?>
@@ -516,9 +516,9 @@
 															<?php endforeach;?>
 															<?php if ($hasTasks <= '0'):?>
 																<?php $hasTasks = 0;?>
-															<?php endif;?>
+															<?php endif;?> -->
 
-															<td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
+															<!-- <td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
 															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
 															data-projectCount = "<?php echo $hasProjects;?>"
 															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
@@ -532,24 +532,24 @@
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="acountableEmp" value="<?php echo $employee['USERID'];?>" required>
+																	<input class = "checkEmp" type="checkbox" name="acountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $employee['USERID'];?>" required>
+																	<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $employee['USERID'];?>" required>
+																	<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
-															</td class='text-center'>
+															</td class='text-center'> -->
 
 															<!-- <?php $hasProjects = false;?>
 															<?php foreach($projectCount as $count): ;?>
@@ -578,8 +578,8 @@
 																<?php $hasTasks = 0;?>
 																<td align="center">0</td>
 															<?php endif;?> -->
-														</tr>
-													<?php endforeach;?>
+														<!-- </tr>
+													<?php endforeach;?> -->
 												</tbody>
 											</table>
 											<p>* Only one department/employee is allowed to be assigned</p>
@@ -686,12 +686,124 @@
 				 else
 					$(".taskDates").append(" day)");
 					$("#confirmDelegateBtn").attr("data-id", $id); //pass data id to confirm button
+
+					// SET INITIAL RACI
+					$.ajax({
+						type:"POST",
+						url: "<?php echo base_url("index.php/controller/getRACIByTaskID"); ?>",
+						data: {taskID: $id},
+						dataType: 'json',
+						success:function(data)
+						{
+							$("#assignment").html();
+							// EXECUTIVES
+							for(u=0; data['users'].length > u; u++)
+							{
+								if(data['users'][u].departments_DEPARTMENTID == '1')
+								{
+									$("#assignment").append(
+										"<tr>" + "<td>" + data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME + "</td>" +
+										"<td class='text-center'> <div class ='radio'>" +
+										"<label>" + "<input class = 'radioEmp' type ='radio' name='responsibleEmp' value='" +
+										data['users'][u].USERID + "' required>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='accountableEmp[]' value='" +
+										data['users'][u].USERID + "'>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='consultedEmp[]' value='" +
+										data['users'][u].USERID + "'>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='informedEmp[]' value='" +
+										data['users'][u].USERID + "'>" +
+										"</label" + "</div>" + "</td>" + "</tr>");
+								}
+							}
+
+							// DEPARTMENTS
+							for(d=0; data['departments'].length > d; d++)
+							{
+								if(data['departments'][d].DEPARTMENTID != '<?php echo $_SESSION['departments_DEPARTMENTID'];?>' &&
+										data['departments'][d].DEPARTMENTID != '1')
+								{
+									$("#assignment").append(
+										"<tr>" + "<td>" + data['departments'][d].DEPARTMENTNAME + "</td>" +
+										"<td class='text-center'> <div class ='radio'>" +
+										"<label>" + "<input class = 'radioEmp' type ='radio' name='responsibleEmp' value='" +
+										data['departments'][d].users_DEPARTMENTHEAD + "' required>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='accountableEmp[]' value='" +
+										data['departments'][d].users_DEPARTMENTHEAD + "'>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='consultedEmp[]' value='" +
+										data['departments'][d].users_DEPARTMENTHEAD + "'>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='informedEmp[]' value='" +
+										data['departments'][d].users_DEPARTMENTHEAD + "'>" +
+										"</label" + "</div>" + "</td>" + "</tr>");
+								}
+							}
+
+							// DEPT EMPLOYEES
+							for(e=0; data['wholeDept'].length > e; e++)
+							{
+								var hasProjects = false;
+								for (p=0; data['projectCount'].length > p; p++)
+								{
+									var hasProjects = false;
+									if(data['projectCount'][p].USERID == data['wholeDept'][e].USERID)
+									{
+										var hasProjects = data['projectCount'][p].projectCount;
+										break;
+									}
+								}
+								if(hasProjects <= '0')
+									hasProjects = 0;
+
+									var hasTasks = false;
+									for (t=0; data['taskCount'].length > t; t++)
+									{
+										var hasTasks = false;
+										if(data['taskCount'][t].USERID == data['wholeDept'][e].USERID)
+										{
+											var hasTasks = data['taskCount'][t].projectCount;
+											break;
+										}
+									}
+									if(hasTasks <= '0')
+										hasTasks = 0;
+
+									$("#assignment").append(
+										"<tr>" + "<td class='clickable moreInfo' data-id='" +
+										data['wholeDept'][e].USERID + "' data-name='" + data['wholeDept'][e].FIRSTNAME + " " +
+										data['wholeDept'][e].LASTNAME + "' data-projectCount='" + hasProjects + "' " +
+										"data-taskCount='" + hasTasks + "'>" + data['wholeDept'][e].FIRSTNAME + " " + data['wholeDept'][e].LASTNAME
+										+ "</td>" +
+										"<td class='text-center'> <div class ='radio'>" +
+										"<label>" + "<input class = 'radioEmp' type ='radio' name='responsibleEmp' value='" +
+										data['wholeDept'][e].USERID + "' required>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='accountableEmp[]' value='" +
+										data['wholeDept'][e].USERID + "'>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='consultedEmp[]' value='" +
+										data['wholeDept'][e].USERID + "'>" +
+										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
+										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='informedEmp[]' value='" +
+										data['wholeDept'][e].USERID + "'>" +
+										"</label" + "</div>" + "</td>" + "</tr>");
+							}
+						},
+						error:function(data)
+						{
+							alert("There was a problem with loading the RACI");
+						}
+					});
 			 });
 
 			 $("#delegateConfirm").hide();
 			 $("#workloadAssessment").hide();
 
-			 $(".moreInfo").click(function(){
+			 $("body").on("click", ".moreInfo", function(){
 
 				 function loadWorkloadTasks($projectID)
 				 {

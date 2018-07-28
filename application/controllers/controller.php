@@ -2158,6 +2158,22 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function getRACIByTaskID()
+	{
+		$taskID = $this->input->post('taskID');
+		$data['raci'] = $this->model->getRACIbyTask($taskID);
+
+		$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+
+		$data['departments'] = $this->model->getAllDepartments();
+		$data['users'] = $this->model->getAllUsers();
+		$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+		$data['projectCount'] = $this->model->getProjectCount($filter);
+		$data['taskCount'] = $this->model->getTaskCount($filter);
+
+		echo json_encode($data);
+	}
+
 	public function notifications()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -2744,6 +2760,8 @@ class controller extends CI_Controller
 					|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
 				case '5': // if PO is logged in
 					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
+				default:
+					$filter = "usertype_USERTYPEID = '3' && REQUESTSTATUS = 'Pending'"; break;
 			}
 
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
