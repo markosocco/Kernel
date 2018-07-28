@@ -73,7 +73,7 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="table-responsive">
-									<h4 align="center" id="totalToDo"> Total <br><br><b>N</b></h4>
+									<h4 align="center" id="totalToDo"> Total <br><br><b>0</b></h4>
 								</div>
 							</div>
 						</div>
@@ -82,7 +82,7 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="table-responsive">
-									<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayedToDo">N</b></span></h4>
+									<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayedToDo">0</b></span></h4>
 								</div>
 							</div>
 						</div>
@@ -99,7 +99,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id="total"> Total <br><br><b>N</b></h4>
+										<h4 align="center" id="total"> Total <br><br><b>0</b></h4>
 									</div>
 								</div>
 							</div>
@@ -110,7 +110,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayed">N</span></b></h4>
+										<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayed">0</span></b></h4>
 									</div>
 								</div>
 							</div>
@@ -121,7 +121,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id="totalPlanned"> Planned <br><br><b>N</b></h4>
+										<h4 align="center" id="totalPlanned"> Planned <br><br><b>0</b></h4>
 									</div>
 								</div>
 							</div>
@@ -158,7 +158,21 @@
 							</div>
 						</div>
 					</div>
-					<?php endif;?>
+				<?php else:?>
+					<div class = 'row'>
+						<div class="col-md-12">
+							<div class="box box-danger">
+								<div class="box-header">
+									<h3 class="box-title">All Tasks</h3>
+								</div>
+								<div class="box-body">
+									<h4 align="center">You have no tasks</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				<?php endif;?>
 				</div>
 
 				<form id='viewProject' action = 'projectGantt' method="POST">
@@ -346,13 +360,13 @@
 
 							var taskID = data['tasks'][i].TASKID;
 
-							if(data['tasks'][i].threshold >= endDate)
+							if(data['tasks'][i].threshold >= endDate && data['tasks'][i].TASKSTATUS == 'Ongoing')
 							{
 								var totalToDo = totalToDo+1;
 
 								$('#taskTable').append(
 														 "<tr id='" + taskID + "'>" +
-														 status + "<td class = 'taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 status + "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
 														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 														 data['tasks'][i].TASKTITLE+"</td>"+
@@ -366,7 +380,7 @@
 
 							$('#taskAll').append(
 													 "<tr id='" + taskID + "'>" +
-													 status + "<td class = 'taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 status + "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 data['tasks'][i].TASKTITLE+"</td>"+
@@ -403,38 +417,32 @@
 
 		 									 if(dependencyData['dependencies'].length > 0) //if task has pre-requisite tasks
 		 									 {
-		 										 var isComplete = 'true';
+		 										 var isComplete = 1;
 		 										 for (var d = 0; d < dependencyData['dependencies'].length; d++)
 		 										 {
 		 											 if(dependencyData['dependencies'][d].TASKSTATUS != 'Complete') // if there is a pre-requisite task that is ongoing
 		 											 {
-		 												 isComplete = 'false';
+		 												 isComplete = 0;
 		 											 }
 		 										 }
-
-		 										 if(isComplete == 'true') // if all pre-requisite tasks are complete, task can be marked done
+		 										 if(isComplete == 1) // if all pre-requisite tasks are complete, task can be marked done
 		 										 {
-		 											 // $(".action-" + data['tasks'][i].TASKID).append(
-		 												// 	'<button type="button"' +
-		 												// 	'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
-		 												// 	'data-target="#modal-done" data-id="' + taskID +
-		 												// 	'" data-title="' + taskTitle + '"' +
-		 												// 	'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 												// 	'" data-end="'+ endDate +'">' +
-		 												// 	'<i class="fa fa-check"></i></button>');
+		 											 $(".action-" + dependencyData['taskID'].TASKID).append(
+		 													'<button type="button"' +
+		 													'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+		 													'data-target="#modal-done" data-id="' + taskID +
+		 													'" data-title="' + taskTitle + '"' +
+		 													'data-delay="' + isDelayed + '" data-start="'+ startDate +
+		 													'" data-end="'+ endDate +'">' +
+		 													'<i class="fa fa-check"></i></button>');
 		 										 }
 												 else
 												 {
-													 $(".action-" + data['tasks'][i].TASKID).append(
- 														 '<button disabled type="button"' +
- 														 'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
- 														 'data-target="#modal-done" data-id="' + taskID +
- 														 '" data-title="' + taskTitle + '"' +
- 														 'data-delay="' + isDelayed + '" data-start="'+ startDate +
- 														 '" data-end="'+ endDate +'">' +
- 														 '<i class="fa fa-check"></i></button>');
+													 $(".action-" + dependencyData['taskID'].TASKID).append(
+														 '<button disabled type="button"' +
+														 'class="btn btn-success btn-sm">' +
+														 '<i class="fa fa-check"></i></button>');
 												 }
-
 		 									 }
 		 									 else // if task has no prerequisites
 		 									 {
@@ -453,6 +461,18 @@
 		 									 alert("There was a problem in checking the task dependencies");
 		 								 }
 		 							 }); // end of dependencies ajax
+							}
+							else
+							{
+								$(".action-" + taskID).append(
+									 '<button disabled type="button"' +
+									 'class="btn btn-warning btn-sm">' +
+									 '<i class="fa fa-flag"></i></button>');
+
+								 $(".action-" + taskID).append(
+									 '<button disabled type="button"' +
+									 'class="btn btn-success btn-sm">' +
+									 '<i class="fa fa-check"></i></button>');
 							}
 						}
 						$('#totalToDo').html("Total<br><br><b>" + totalToDo + "</b>");

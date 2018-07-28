@@ -553,9 +553,6 @@
 					</div>
 				<?php endif;?>
 
-
-
-
 					</div> <!-- All tasks closing row -->
 
 				</div>

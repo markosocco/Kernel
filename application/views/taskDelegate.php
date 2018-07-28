@@ -81,11 +81,11 @@
 																			<td></td>
 																			<td align="center"><?php echo date_format($startdateMain, 'M d, Y');?></td>
 																			<td align="center">
-																				<button type="button" class="btn bg-teal btn-sm editBtn"
+																				<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																				data-id="<?php echo $mainActivity['TASKID'];?>" data-toggle="tooltip"
 																				data-placement="top" title="Edit">
 																					<i class="fa fa-edit"></i>
-																				</button>
+																				</button> -->
 																				<span data-toggle="modal" data-target="#modal-delegate">
 																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $mainActivity['TASKID'];?>"
@@ -110,11 +110,11 @@
 																				<td><?php echo $subActivity['TASKTITLE'];?></td>
 																				<td align="center"><?php echo date_format($startdateSub, 'M d, Y');?></td>
 																				<td align="center">
-																					<button type="button" class="btn bg-teal btn-sm editBtn"
+																					<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																					data-id="<?php echo $subActivity['TASKID'];?>" data-toggle="tooltip"
 																					data-placement="top" title="Edit">
 																						<i class="fa fa-edit"></i>
-																					</button>
+																					</button> -->
 																					<span data-toggle="modal" data-target="#modal-delegate">
 																					<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																					data-id="<?php echo $subActivity['TASKID'];?>"
@@ -232,11 +232,11 @@
 																		<td></td>
 																		<td align="center"><?php echo date_format($startdateMain, 'M d, Y');?></td>
 																		<td align="center">
-																			<button type="button" class="btn bg-teal btn-sm editBtn"
+																			<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																			data-id="<?php echo $mainActivity['TASKID'];?>" data-toggle="tooltip"
 																			data-placement="top" title="Edit">
 																				<i class="fa fa-edit"></i>
-																			</button>
+																			</button> -->
 																			<span data-toggle="modal" data-target="#modal-delegate">
 																			<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																			data-id="<?php echo $mainActivity['TASKID'];?>"
@@ -261,11 +261,11 @@
 																			<td><?php echo $subActivity['TASKTITLE'];?></td>
 																			<td align="center"><?php echo date_format($startdateSub, 'M d, Y');?></td>
 																			<td align="center">
-																				<button type="button" class="btn bg-teal btn-sm editBtn"
+																				<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																				data-id="<?php echo $subActivity['TASKID'];?>" data-toggle="tooltip"
 																				data-placement="top" title="Edit">
 																					<i class="fa fa-edit"></i>
-																				</button>
+																				</button> -->
 																				<span data-toggle="modal" data-target="#modal-delegate">
 																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $subActivity['TASKID'];?>"
@@ -324,12 +324,12 @@
 				</div>
 
 				</div>
+			</div>
+
 
 				<form id='viewProject' action = 'projectGantt' method="POST">
 					<input type ='hidden' name='delegateTask' value='0'>
 				</form>
-
-				<!-- MODALS -->
 
 				<!-- DELEGATE MODAL -->
 				<div class="modal fade" id="modal-delegate">
@@ -347,7 +347,7 @@
 									<div class="box-body">
 										<form id="raciForm" action="delegateTask" method="POST">
 
-											<div class="form-group raciDiv" id = "deptDiv">
+											<!-- <div class="form-group raciDiv" id = "deptDiv">
 											<table id="deptList" class="table table-bordered table-hover">
 												<thead>
 												<tr>
@@ -397,24 +397,101 @@
 													<?php endforeach;?>
 												</tbody>
 											</table>
-											</div>
+											</div> -->
 
 											<!-- TEAM DIV -->
 											<div class="form-group raciDiv" id = "teamDiv">
 											<table id="teamList" class="table table-bordered table-hover">
 												<thead>
 												<tr>
-													<th>Name</th>
-													<th>R</th>
-													<th>A</th>
-													<th>C</th>
-													<th>I</th>
-													<th>No. of Projects (Ongoing & Planned)</th>
-													<th>No. of Tasks (Ongoing & Planned)</th>
+													<th>Department/Employee</th>
+													<th class='text-center'>R*</th>
+													<th class='text-center'>A</th>
+													<th class='text-center'>C</th>
+													<th class='text-center'>I</th>
+													<!-- <th>No. of Projects (Ongoing & Planned)</th>
+													<th>No. of Tasks (Ongoing & Planned)</th> -->
 												</tr>
 												</thead>
 
 												<tbody>
+													<!-- EXECUTIVES -->
+													<?php foreach($users as $user):?>
+														<?php if($user['departments_DEPARTMENTID'] == '1'):?>
+														<tr>
+															<td><?php echo $user['FIRSTNAME'] . " " .  $user['LASTNAME'];?></td>
+															<td class='text-center'>
+																<div class="radio">
+																<label>
+																	<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																</label>
+															</div>
+															</td>
+															<td class='text-center'>
+																<div class="checkbox">
+																<label>
+																	<input class = "checkEmp" type="checkbox" name="accountableEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																</label>
+															</div>
+															</td>
+															<td class='text-center'>
+																<div class="checkbox">
+																<label>
+																	<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																</label>
+															</div>
+															</td>
+															<td class='text-center'>
+																<div class="checkbox">
+																<label>
+																	<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																</label>
+															</div>
+															</td>
+														</tr>
+														<?php endif;?>
+													<?php endforeach;?>
+
+													<!-- ALL DEPARTMENTS -->
+													<?php foreach($departments as $department):?>
+														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
+															<tr>
+																<td><?php echo $department['DEPARTMENTNAME'];?></td>
+																<td class='text-center'>
+																	<div class="radio">
+																	<label>
+																		<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<input class = "checkEmp" type="checkbox" name="accountableEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	</label>
+																</div>
+																</td>
+															</tr>
+														<?endif;?>
+													<?php endforeach;?>
+
+													<!-- STAFF IN DEPARTMENT -->
+													<tr><td colspan = '7'></td></tr>
+
 													<?php foreach($wholeDept as $employee):?>
 														<tr>
 															<?php $hasProjects = false;?>
@@ -441,40 +518,40 @@
 																<?php $hasTasks = 0;?>
 															<?php endif;?>
 
-															<td class='moreInfo' data-id="<?php echo $employee['USERID'];?>"
+															<td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
 															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
 															data-projectCount = "<?php echo $hasProjects;?>"
 															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-															<td>
+															<td class='text-center'>
 																<div class="radio">
 																<label>
 																	<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
-															<td>
+															<td class='text-center'>
 																<div class="checkbox">
 																<label>
 																	<input class = "checkEmp" type="checkbox" name="acountableEmp" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
-															<td>
+															<td class='text-center'>
 																<div class="checkbox">
 																<label>
 																	<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
-															<td>
+															<td class='text-center'>
 																<div class="checkbox">
 																<label>
 																	<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
-															</td>
+															</td class='text-center'>
 
-															<?php $hasProjects = false;?>
+															<!-- <?php $hasProjects = false;?>
 															<?php foreach($projectCount as $count): ;?>
 																<?php $hasProjects = false;?>
 																<?php if ($count['USERID'] == $employee['USERID']):?>
@@ -500,14 +577,14 @@
 															<?php if ($hasTasks <= '0'):?>
 																<?php $hasTasks = 0;?>
 																<td align="center">0</td>
-															<?php endif;?>
+															<?php endif;?> -->
 														</tr>
 													<?php endforeach;?>
 												</tbody>
 											</table>
+											<p>* Only one department/employee is allowed to be assigned</p>
+
 											</div>
-
-
 
 									<!-- /.box-body -->
 								</div>
@@ -549,12 +626,13 @@
 					</div>
 				</div>
 			</div>
-
+		</div>
 
 				<!-- END MODALS -->
 
 			</section>
 		</div>
+
 		  <?php require("footer.php"); ?>
 		</div> <!--.wrapper closing div-->
 		<script>
