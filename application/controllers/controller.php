@@ -416,9 +416,10 @@ class controller extends CI_Controller
 
 					$nextTaskID = $nextTaskDetails['tasks_POSTTASKID'];
 					$postTasksData['users'] = $this->model->getRACIbyTask($nextTaskID);
+					$nextTaskTitle = $nextTaskDetails['TASKTITLE'];
 
 					foreach($postTasksData['users'] as $postTasksDataUsers){
-						$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
+						$details = "Pre-requisite task of " . $nextTaskTitle . " in " . $projectTitle . " has been completed.";
 
 						$notificationData = array(
 							'users_USERID' => $postTasksDataUsers['users_USERID'],
@@ -3601,12 +3602,16 @@ class controller extends CI_Controller
 				$this->load->view("projectDocuments", $data);
 			}
 		}
+	}
 
-		else {
-			echo "didnt work";
-		}
+	public function getAllNotificationsByUser()
+	{
+		$data['notification'] = $this->model->getAllNotificationsByUser();
 
-		// $documentID = $this->model->getProjectByID($id);
+		echo json_encode($data);
+
+		// return $data;
+
 	}
 
 	/******************** MY PROJECTS END ********************/
