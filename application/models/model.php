@@ -1093,9 +1093,9 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getTasks3DaysBeforeDeadline()
+  public function getTasks2DaysBeforeDeadline()
   {
-    $condition = "raci.STATUS = 'Current' AND TASKSTATUS = 'Ongoing' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 3
+    $condition = "raci.STATUS = 'Current' AND TASKSTATUS = 'Ongoing' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 2
     AND DATEDIFF(TASKENDDATE, CURDATE()) >= 0 AND raci.users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS TASKDATEDIFF');
     $this->db->from('tasks');

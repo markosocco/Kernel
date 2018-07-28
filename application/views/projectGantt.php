@@ -612,47 +612,108 @@
 						<li class="active"><?php echo $projectProfile['PROJECTTITLE']; ?></li>
 					</ol>
 
-					<div class="col-md-3 col-sm-6 col-xs-12 pull-right">
-							<div class="box-header with-border" style="text-align:center;">
-								<h3 class="box-title"><?php echo $_SESSION['DEPARTMENTNAME'];?> Performance</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div style="display:inline-block; text-align:center; width:49%;">
-									<div class="circlechart" id="completeness"
-										data-percentage="<?php echo $departmentCompleteness['completeness']?>">
-										Completeness
-									</div>
+					<?php if($projectProfile['PROJECTSTATUS'] != 'Planning'): ?>
+
+						<div class="col-md-3 col-sm-6 col-xs-12 pull-right">
+								<div class="box-header with-border" style="text-align:center;">
+									<h3 class="box-title"><?php echo $_SESSION['DEPARTMENTNAME'];?> Performance</h3>
 								</div>
-								<div style="display:inline-block; text-align:center; width:49%;">
-									<div class="circlechart" id="completeness"
- 									 data-percentage="<?php echo $departmentTimeliness['timeliness']?>">
- 									 Timeliness
- 								 </div>
-							 </div>
-							</div>
-					</div>
-					<!-- /.col -->
-					<div class="col-md-3 col-sm-6 col-xs-12 pull-right" style="border-right: solid 1px #b3b3b3;">
-							<div class="box-header with-border" style="text-align:center;">
-								<h3 class="box-title">My Performance</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div style="display:inline-block; text-align:center; width:49%;">
-									<div class="circlechart" id="completeness"
-										data-percentage="<?php echo $employeeCompleteness['completeness']?>">
-										Completeness
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div style="display:inline-block; text-align:center; width:49%;">
+										<div class="circlechart" id="completeness"
+											data-percentage="<?php
+												if($departmentCompleteness['completeness'] == NULL){
+													echo 0;
+												} else {
+													if($departmentCompleteness['completeness'] == 100.00){
+														echo 100;
+													} elseif ($departmentCompleteness['completeness'] == 0.00) {
+														echo 0;
+	 												} else {
+	 													echo $departmentCompleteness['completeness'];
+	 												}
+	 											}
+ 										 ?> "> Completeness
+										</div>
 									</div>
+									<div style="display:inline-block; text-align:center; width:49%;">
+										<div class="circlechart" id="completeness"
+	 									 data-percentage="<?php
+											 if($departmentTimeliness['timeliness'] == NULL){
+												 echo 0;
+											 } else {
+												 if($departmentTimeliness['timeliness'] == 100.00){
+													 echo 100;
+												 } elseif ($departmentTimeliness['timeliness'] == 0.00) {
+													 echo 0;
+												 } else {
+													 echo $departmentTimeliness['timeliness'];
+												 }
+											 }
+										 ?> "> Timeliness
+	 								 </div>
+								 </div>
 								</div>
-								<div style="display:inline-block; text-align:center; width:49%;">
-									<div class="circlechart" id="completeness"
- 									 data-percentage="<?php echo $employeeTimeliness['timeliness']?>">
- 									 Timeliness
- 								 </div>
-							 </div>
+						</div>
+						<!-- /.col -->
+
+						<?php
+							$isResponsible = FALSE;
+							foreach ($responsible as $r) {
+								if($r['USERID'] == $_SESSION['USERID']){
+									$isResponsible = TRUE;
+									break;
+								}
+							}
+						?>
+
+						<?php if($isResponsible == TRUE): ?>
+							<div class="col-md-3 col-sm-6 col-xs-12 pull-right" style="border-right: solid 1px #b3b3b3;">
+									<div class="box-header with-border" style="text-align:center;">
+										<h3 class="box-title">My Performance</h3>
+									</div>
+									<!-- /.box-header -->
+									<div class="box-body">
+										<div style="display:inline-block; text-align:center; width:49%;">
+											<div class="circlechart" id="completeness"
+												data-percentage="<?php
+													if($employeeCompleteness['completeness'] == NULL){
+														echo 0;
+													} else {
+														if($employeeCompleteness['completeness'] == 100.00){
+															echo 100;
+														} elseif ($employeeCompleteness['completeness'] == 0.00) {
+															echo 0;
+														} else {
+															echo $employeeCompleteness['completeness'];
+														}
+													}
+													?> "> Completeness
+											</div>
+										</div>
+										<div style="display:inline-block; text-align:center; width:49%;">
+											<div class="circlechart" id="completeness"
+		 									 data-percentage="<?php
+											 if($employeeTimeliness['timeliness'] == NULL){
+												 echo 0;
+											 } else {
+												 if($employeeTimeliness['timeliness'] == 100.00){
+													 echo 100;
+												 } elseif ($employeeTimeliness['timeliness'] == 0.00) {
+													 echo 0;
+												 } else {
+													 echo $employeeTimeliness['timeliness'];
+												 }
+											 }
+											 ?> ">Timeliness
+		 								 </div>
+									 </div>
+									</div>
 							</div>
-					</div>
+						<?php endif;?>
+					<?php endif; ?>
+
 					<!-- /.col -->
 				</section>
 

@@ -33,14 +33,36 @@
 							<div class="box-body">
 								<div style="display:inline-block; text-align:center; width:49%;">
 									<div class="circlechart" id="completeness"
-										data-percentage="<?php echo $employeeCompleteness['completeness']?>">
-										Completeness
+										data-percentage="<?php
+											if($employeeCompleteness['completeness'] == NULL){
+												echo 0;
+											} else {
+												if($employeeCompleteness['completeness'] == 100.00){
+													echo 100;
+												} elseif ($employeeCompleteness['completeness'] == 0.00) {
+													echo 0;
+												} else {
+													echo $employeeCompleteness['completeness'];
+												}
+											}
+										?> "> Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
 									<div class="circlechart" id="completeness"
-										data-percentage="<?php echo $employeeTimeliness['timeliness']?>">
-										Timeliness
+										data-percentage="<?php
+											if($employeeTimeliness['timeliness'] == NULL){
+												echo 0;
+											} else {
+												if($employeeTimeliness['timeliness'] == 100.00){
+													echo 100;
+												} elseif ($employeeTimeliness['timeliness'] == 0.00) {
+													echo 0;
+												} else {
+													echo $employeeTimeliness['timeliness'];
+												}
+											}
+										?> ">Timeliness
 									</div>
 								</div>
 							</div>
@@ -56,14 +78,36 @@
 							<div class="box-body">
 								<div style="display:inline-block; text-align:center; width:49%;">
 									<div class="circlechart" id="completeness"
-										data-percentage="<?php echo $departmentCompleteness['completeness']?>">
-										Completeness
+										data-percentage="<?php
+											if($departmentCompleteness['completeness'] == NULL){
+												echo 0;
+											} else {
+												if($departmentCompleteness['completeness'] == 100.00){
+													echo 100;
+												} elseif ($departmentCompleteness['completeness'] == 0.00) {
+													echo 0;
+												} else {
+													echo $departmentCompleteness['completeness'];
+												}
+											}
+										?>"> Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
 									<div class="circlechart" id="completeness"
- 									 data-percentage="<?php echo $departmentTimeliness['timeliness']?>">
- 									 Timeliness
+ 									 data-percentage="<?php
+										 if($departmentTimeliness['timeliness'] == NULL){
+											 echo 0;
+										 } else {
+											 if($departmentTimeliness['timeliness'] == 100.00){
+												 echo 100;
+											 } elseif ($departmentTimeliness['timeliness'] == 0.00) {
+												 echo 0;
+											 } else {
+												 echo $departmentTimeliness['timeliness'];
+											 }
+										 }
+									 ?> "> Timeliness
  								 </div>
 		 					 </div>
 							</div>
@@ -156,11 +200,11 @@
 				<!-- Main row -->
 				<div class="row">
 					<!-- Left col -->
-					<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
+					<?php if($delayedTaskPerUser != NULL || $tasks2DaysBeforeDeadline != NULL): ?>
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Tasks To Do (<?php echo count($delayedTaskPerUser) + count($tasks3DaysBeforeDeadline);?>)</h3>
+								<h3 class="box-title">Tasks To Do (<?php echo count($delayedTaskPerUser) + count($tasks2DaysBeforeDeadline);?>)</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -188,7 +232,7 @@
 													echo "<td> DELAYED </td>";
 												echo "</tr>";
 											}
-											foreach ($tasks3DaysBeforeDeadline as $data)
+											foreach ($tasks2DaysBeforeDeadline as $data)
 											{
 												if($data['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 													$endDate = date_create($data['TASKENDDATE']);
