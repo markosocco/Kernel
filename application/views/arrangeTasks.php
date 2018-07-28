@@ -152,7 +152,6 @@
 																					<option>
 																						<?php echo $row['DEPARTMENTNAME']; ?>
 																					</option>
-
 																				<?php endforeach; ?>
 																			</select>
 																		</td>
@@ -537,6 +536,9 @@
 					var counter = $(this).attr('data-num');
 	 				var diff = new Date($("#end_" + mainAct + "-" + counter).datepicker("getDate") - $("#start_" + mainAct + "-" + counter).datepicker("getDate"));
 	 				var period = (diff/1000/60/60/24)+1;
+
+					console.log("#projectPeriod_" + mainAct + "-" + counter);
+
 	 				if ($("#start_" + mainAct + "-" + counter).val() != "" &&  $("#end_" + mainAct + "-" + counter).val() != "" && period >=1)
 	 				{
 	 					if(period > 1)
