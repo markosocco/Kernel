@@ -414,19 +414,19 @@
 
 		 										 if(isComplete == 'true') // if all pre-requisite tasks are complete, task can be marked done
 		 										 {
-		 											 $(".action-" + data['tasks'][i].TASKID).append(
-		 													'<button type="button"' +
-		 													'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
-		 													'data-target="#modal-done" data-id="' + taskID +
-		 													'" data-title="' + taskTitle + '"' +
-		 													'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 													'" data-end="'+ endDate +'">' +
-		 													'<i class="fa fa-check"></i></button>');
+		 											 // $(".action-" + data['tasks'][i].TASKID).append(
+		 												// 	'<button type="button"' +
+		 												// 	'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+		 												// 	'data-target="#modal-done" data-id="' + taskID +
+		 												// 	'" data-title="' + taskTitle + '"' +
+		 												// 	'data-delay="' + isDelayed + '" data-start="'+ startDate +
+		 												// 	'" data-end="'+ endDate +'">' +
+		 												// 	'<i class="fa fa-check"></i></button>');
 		 										 }
 												 else
 												 {
 													 $(".action-" + data['tasks'][i].TASKID).append(
- 														 '<button type="button"' +
+ 														 '<button disabled type="button"' +
  														 'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
  														 'data-target="#modal-done" data-id="' + taskID +
  														 '" data-title="' + taskTitle + '"' +
@@ -438,7 +438,6 @@
 		 									 }
 		 									 else // if task has no prerequisites
 		 									 {
-												 alert("You can done " + taskTitle);
 		 										 $('.action-' + dependencyData['taskID'].TASKID).append(
 		 												'<button type="button"' +
 		 												'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
