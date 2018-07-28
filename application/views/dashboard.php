@@ -79,7 +79,7 @@
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Projects I'm Working On</h3>
+									<h3 class="box-title">Projects I'm Working On (<?php echo count($ongoingProjects);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -160,7 +160,7 @@
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Deadlines</h3>
+								<h3 class="box-title">Tasks To Do (<?php echo count($delayedTaskPerUser) + count($tasks3DaysBeforeDeadline);?>)</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -220,7 +220,7 @@
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Projects I Need To Edit</h3>
+								<h3 class="box-title">Projects I Need To Edit (<?php echo count($editProjects);?>)</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -269,7 +269,7 @@
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Change Request Approval</h3>
+									<h3 class="box-title">Change Request Approval (<?php echo count($changeRequests);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -340,7 +340,7 @@
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Document Acknowledgement</h3>
+									<h3 class="box-title">Document Acknowledgement (<?php echo count($toAcknowledgeDocuments);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">

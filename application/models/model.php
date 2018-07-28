@@ -156,7 +156,7 @@ class model extends CI_Model
     $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
-    $this->db->where($filter . " && changerequests.users_REQUESTEDBY != '$id'");
+    $this->db->where($filter . " && changerequests.users_REQUESTEDBY != '$id' && changeRequests.REQUESTSTATUS = 'Pending'");
     $query = $this->db->get();
 
     return $query->result_array();
@@ -486,7 +486,7 @@ class model extends CI_Model
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
-    $this->db->order_by('tasks.TASKSTARTDATE');
+    $this->db->order_by('tasks.TASKENDDATE');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
