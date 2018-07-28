@@ -200,11 +200,11 @@
 				<!-- Main row -->
 				<div class="row">
 					<!-- Left col -->
-					<?php if($delayedTaskPerUser != NULL || $tasks3DaysBeforeDeadline != NULL): ?>
+					<?php if($delayedTaskPerUser != NULL || $tasks2DaysBeforeDeadline != NULL): ?>
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Tasks To Do (<?php echo count($delayedTaskPerUser) + count($tasks3DaysBeforeDeadline);?>)</h3>
+								<h3 class="box-title">Tasks To Do (<?php echo count($delayedTaskPerUser) + count($tasks2DaysBeforeDeadline);?>)</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -232,7 +232,7 @@
 													echo "<td> DELAYED </td>";
 												echo "</tr>";
 											}
-											foreach ($tasks3DaysBeforeDeadline as $data)
+											foreach ($tasks2DaysBeforeDeadline as $data)
 											{
 												if($data['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 													$endDate = date_create($data['TASKENDDATE']);
