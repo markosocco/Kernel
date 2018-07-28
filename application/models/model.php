@@ -1082,7 +1082,7 @@ class model extends CI_Model
 
   public function getDelayedTasksByUser()
   {
-    $condition = "raci.STATUS = 'Current' && tasks.TASKENDDATE < CURDATE() AND TASKSTATUS = 'Ongoing' AND raci.users_USERID = " . $_SESSION['USERID'];
+    $condition = "raci.STATUS = 'Current' && tasks.TASKENDDATE < CURDATE() AND TASKSTATUS = 'Ongoing' && CATEGORY = 3 && raci.users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -1096,7 +1096,7 @@ class model extends CI_Model
   public function getTasks2DaysBeforeDeadline()
   {
     $condition = "raci.STATUS = 'Current' AND TASKSTATUS = 'Ongoing' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 2
-    AND DATEDIFF(TASKENDDATE, CURDATE()) >= 0 AND raci.users_USERID = " . $_SESSION['USERID'];
+    AND DATEDIFF(TASKENDDATE, CURDATE()) >= 0 AND CATEGORY = 3 AND raci.users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS TASKDATEDIFF');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -1113,6 +1113,8 @@ class model extends CI_Model
     $this->db->select('*');
     $this->db->from('notifications');
     $this->db->where($condition);
+    $this->db->order_by('TIMESTAMP','ASC');
+
 
     return $this->db->get()->result_array();
   }
