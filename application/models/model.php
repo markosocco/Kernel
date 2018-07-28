@@ -1113,7 +1113,7 @@ class model extends CI_Model
     $this->db->select('*');
     $this->db->from('notifications');
     $this->db->where($condition);
-    $this->db->order_by('TIMESTAMP','ASC');
+    $this->db->order_by('TIMESTAMP','DESC');
 
 
     return $this->db->get()->result_array();
@@ -1298,7 +1298,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function insertToAssessmentProject($data){
+  public function addAssessmentProject($data){
 
     $this->db->insert('assessmentProject', $data);
 
@@ -1306,7 +1306,7 @@ class model extends CI_Model
   }
 
   public function getLatestWeeklyProgress(){
-    $condition = "datediff(curdate(), DATE) < 7";
+    $condition = "datediff(curdate(), DATE) <= 7";
     $this->db->select('*,  datediff(curdate(), DATE) as "datediff"');
     $this->db->from('assessmentProject');
     $this->db->where($condition);

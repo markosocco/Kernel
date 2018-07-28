@@ -153,7 +153,7 @@
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																	{
-																		echo $row['PROGRESS'];
+																		echo $row['COMPLETENESS'];
 																	}
 																} ?>%</h2>
 
