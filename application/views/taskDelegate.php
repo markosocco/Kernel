@@ -81,11 +81,11 @@
 																			<td></td>
 																			<td align="center"><?php echo date_format($startdateMain, 'M d, Y');?></td>
 																			<td align="center">
-																				<button type="button" class="btn bg-teal btn-sm editBtn"
+																				<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																				data-id="<?php echo $mainActivity['TASKID'];?>" data-toggle="tooltip"
 																				data-placement="top" title="Edit">
 																					<i class="fa fa-edit"></i>
-																				</button>
+																				</button> -->
 																				<span data-toggle="modal" data-target="#modal-delegate">
 																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $mainActivity['TASKID'];?>"
@@ -110,11 +110,11 @@
 																				<td><?php echo $subActivity['TASKTITLE'];?></td>
 																				<td align="center"><?php echo date_format($startdateSub, 'M d, Y');?></td>
 																				<td align="center">
-																					<button type="button" class="btn bg-teal btn-sm editBtn"
+																					<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																					data-id="<?php echo $subActivity['TASKID'];?>" data-toggle="tooltip"
 																					data-placement="top" title="Edit">
 																						<i class="fa fa-edit"></i>
-																					</button>
+																					</button> -->
 																					<span data-toggle="modal" data-target="#modal-delegate">
 																					<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																					data-id="<?php echo $subActivity['TASKID'];?>"
@@ -232,11 +232,11 @@
 																		<td></td>
 																		<td align="center"><?php echo date_format($startdateMain, 'M d, Y');?></td>
 																		<td align="center">
-																			<button type="button" class="btn bg-teal btn-sm editBtn"
+																			<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																			data-id="<?php echo $mainActivity['TASKID'];?>" data-toggle="tooltip"
 																			data-placement="top" title="Edit">
 																				<i class="fa fa-edit"></i>
-																			</button>
+																			</button> -->
 																			<span data-toggle="modal" data-target="#modal-delegate">
 																			<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																			data-id="<?php echo $mainActivity['TASKID'];?>"
@@ -261,11 +261,11 @@
 																			<td><?php echo $subActivity['TASKTITLE'];?></td>
 																			<td align="center"><?php echo date_format($startdateSub, 'M d, Y');?></td>
 																			<td align="center">
-																				<button type="button" class="btn bg-teal btn-sm editBtn"
+																				<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
 																				data-id="<?php echo $subActivity['TASKID'];?>" data-toggle="tooltip"
 																				data-placement="top" title="Edit">
 																					<i class="fa fa-edit"></i>
-																				</button>
+																				</button> -->
 																				<span data-toggle="modal" data-target="#modal-delegate">
 																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $subActivity['TASKID'];?>"
@@ -324,12 +324,12 @@
 				</div>
 
 				</div>
+			</div>
+
 
 				<form id='viewProject' action = 'projectGantt' method="POST">
 					<input type ='hidden' name='delegateTask' value='0'>
 				</form>
-
-				<!-- MODALS -->
 
 				<!-- DELEGATE MODAL -->
 				<div class="modal fade" id="modal-delegate">
@@ -507,8 +507,6 @@
 											</table>
 											</div>
 
-
-
 									<!-- /.box-body -->
 								</div>
 							<!-- </div> -->
@@ -549,12 +547,13 @@
 					</div>
 				</div>
 			</div>
-
+		</div>
 
 				<!-- END MODALS -->
 
 			</section>
 		</div>
+
 		  <?php require("footer.php"); ?>
 		</div> <!--.wrapper closing div-->
 		<script>

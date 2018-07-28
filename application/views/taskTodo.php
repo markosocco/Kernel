@@ -346,7 +346,7 @@
 
 							var taskID = data['tasks'][i].TASKID;
 
-							if(data['tasks'][i].threshold >= endDate)
+							if(data['tasks'][i].threshold >= endDate && data['tasks'][i].TASKSTATUS == 'Ongoing')
 							{
 								var totalToDo = totalToDo+1;
 
@@ -403,38 +403,32 @@
 
 		 									 if(dependencyData['dependencies'].length > 0) //if task has pre-requisite tasks
 		 									 {
-		 										 var isComplete = 'true';
+		 										 var isComplete = 1;
 		 										 for (var d = 0; d < dependencyData['dependencies'].length; d++)
 		 										 {
 		 											 if(dependencyData['dependencies'][d].TASKSTATUS != 'Complete') // if there is a pre-requisite task that is ongoing
 		 											 {
-		 												 isComplete = 'false';
+		 												 isComplete = 0;
 		 											 }
 		 										 }
-
-		 										 if(isComplete == 'true') // if all pre-requisite tasks are complete, task can be marked done
+		 										 if(isComplete == 1) // if all pre-requisite tasks are complete, task can be marked done
 		 										 {
-		 											 // $(".action-" + data['tasks'][i].TASKID).append(
-		 												// 	'<button type="button"' +
-		 												// 	'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
-		 												// 	'data-target="#modal-done" data-id="' + taskID +
-		 												// 	'" data-title="' + taskTitle + '"' +
-		 												// 	'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 												// 	'" data-end="'+ endDate +'">' +
-		 												// 	'<i class="fa fa-check"></i></button>');
+		 											 $(".action-" + dependencyData['taskID'].TASKID).append(
+		 													'<button type="button"' +
+		 													'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+		 													'data-target="#modal-done" data-id="' + taskID +
+		 													'" data-title="' + taskTitle + '"' +
+		 													'data-delay="' + isDelayed + '" data-start="'+ startDate +
+		 													'" data-end="'+ endDate +'">' +
+		 													'<i class="fa fa-check"></i></button>');
 		 										 }
 												 else
 												 {
-													 $(".action-" + data['tasks'][i].TASKID).append(
- 														 '<button disabled type="button"' +
- 														 'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
- 														 'data-target="#modal-done" data-id="' + taskID +
- 														 '" data-title="' + taskTitle + '"' +
- 														 'data-delay="' + isDelayed + '" data-start="'+ startDate +
- 														 '" data-end="'+ endDate +'">' +
- 														 '<i class="fa fa-check"></i></button>');
+													 $(".action-" + dependencyData['taskID'].TASKID).append(
+														 '<button disabled type="button"' +
+														 'class="btn btn-success btn-sm">' +
+														 '<i class="fa fa-check"></i></button>');
 												 }
-
 		 									 }
 		 									 else // if task has no prerequisites
 		 									 {
@@ -453,6 +447,18 @@
 		 									 alert("There was a problem in checking the task dependencies");
 		 								 }
 		 							 }); // end of dependencies ajax
+							}
+							else
+							{
+								$(".action-" + taskID).append(
+									 '<button disabled type="button"' +
+									 'class="btn btn-warning btn-sm">' +
+									 '<i class="fa fa-flag"></i></button>');
+
+								 $(".action-" + taskID).append(
+									 '<button disabled type="button"' +
+									 'class="btn btn-success btn-sm">' +
+									 '<i class="fa fa-check"></i></button>');
 							}
 						}
 						$('#totalToDo').html("Total<br><br><b>" + totalToDo + "</b>");
