@@ -243,6 +243,32 @@
 				</div>
 				<!-- END RFC MODAL -->
 
+				<!-- TASK DETAILS MODAL -->
+				<div class="modal fade" id="modal-details" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h2 class="modal-title" id = "taskTitle">Task Title</h2>
+								<h4 id="taskDates">Start Date - End Date (Days)</h4>
+							</div>
+							<div class="modal-body">
+									<h3 id="preReqTitle">Pre-Requisite Tasks</h3>
+									<table class='table' id="preReqTable">
+										<thead>
+											<th>Task</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th>Status</th>
+										</thead>
+										<tbody id='preReqDetails'>
+										</tbody>
+									</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END TASK DETAILS MODAL -->
+
 			</section>
 		</div>
 		  <?php require("footer.php"); ?>
@@ -326,7 +352,10 @@
 
 								$('#taskTable').append(
 														 "<tr id='" + taskID + "'>" +
-														 status + "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+														 status + "<td class = 'taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 data['tasks'][i].TASKTITLE+"</td>"+
 														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>" +
 														 "<td align='center'>" + delayDays + "</td>" +
@@ -337,7 +366,10 @@
 
 							$('#taskAll').append(
 													 "<tr id='" + taskID + "'>" +
-													 status + "<td>" + data['tasks'][i].TASKTITLE+"</td>"+
+													 status + "<td class = 'taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 data['tasks'][i].TASKTITLE+"</td>"+
 													 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 													 "<td align='center'>" + taskStart +"</td>" +
 													 "<td align='center'>" + taskEnd +"</td>" +
@@ -391,10 +423,22 @@
 		 													'" data-end="'+ endDate +'">' +
 		 													'<i class="fa fa-check"></i></button>');
 		 										 }
+												 else
+												 {
+													 $(".action-" + data['tasks'][i].TASKID).append(
+ 														 '<button type="button"' +
+ 														 'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
+ 														 'data-target="#modal-done" data-id="' + taskID +
+ 														 '" data-title="' + taskTitle + '"' +
+ 														 'data-delay="' + isDelayed + '" data-start="'+ startDate +
+ 														 '" data-end="'+ endDate +'">' +
+ 														 '<i class="fa fa-check"></i></button>');
+												 }
 
 		 									 }
 		 									 else // if task has no prerequisites
 		 									 {
+												 alert("You can done " + taskTitle);
 		 										 $('.action-' + dependencyData['taskID'].TASKID).append(
 		 												'<button type="button"' +
 		 												'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
@@ -580,6 +624,102 @@
 		 });
 
 		 // END DONE SCRIPT
+
+		 // START TASK DETAILS
+
+		 $("body").on('click','.taskDetails',function(){
+			 var $id = $(this).attr('data-id');
+			 var $title = $(this).attr('data-title');
+			 var $start = new Date($(this).attr('data-start'));
+			 var $end = new Date($(this).attr('data-end'));
+			 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+			 $("#taskTitle").html($title);
+			 $("#taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+			 if($diff > 1)
+				 $("#taskDates").append(" days)");
+			 else
+				 $("#taskDates").append(" day)");
+
+			// GET DETAILS VIA AJAX
+
+			var taskID = $id;
+
+			$.ajax({
+				type:"POST",
+				url: "<?php echo base_url("index.php/controller/getDependenciesByTaskID"); ?>",
+				data: {task_ID: taskID},
+				dataType: 'json',
+				success:function(preReqData)
+				{
+					console.log(preReqData);
+					if(preReqData['dependencies'].length > 0)
+					{
+						$('#preReqDetails').html("");
+						$('#preReqTitle').html("Pre Requisite Tasks");
+						for(i=0; i<preReqData['dependencies'].length; i++)
+						{
+							if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+							{
+								var taskStart = moment(preReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+								var startDate = preReqData['dependencies'][i].TASKSTARTDATE;
+							}
+							else
+							{
+								var taskStart = moment(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+								var startDate = preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE;
+							}
+
+							if(preReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+							{
+								var taskEnd = moment(preReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
+								var endDate = preReqData['dependencies'][i].TASKENDDATE;
+							}
+							else
+							{
+								var taskEnd = moment(preReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+								var endDate = preReqData['dependencies'][i].TASKADJUSTEDENDDATE;
+							}
+
+							if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE != null && preReqData['dependencies'][i].TASKADJUSTEDENDDATE != null)
+								var taskDuration = parseInt(preReqData['dependencies'][i].adjustedTaskDuration2);
+							if(preReqData['dependencies'][i].TASKSTARTDATE != null && preReqData['dependencies'][i].TASKADJUSTEDENDDATE != null)
+								var taskDuration = parseInt(preReqData['dependencies'][i].adjustedTaskDuration1);
+							else
+								var taskDuration = parseInt(preReqData['dependencies'][i].initialTaskDuration);
+
+							if(preReqData['dependencies'][i].TASKSTATUS == "Complete")
+							{
+								var status = "<i class='fa fa-circle' style='color:green'></i>"
+							}
+							else
+							{
+								var status = "<i class='fa fa-circle' style='color:red'></i>"
+							}
+
+							$('#preReqDetails').append(
+													 "<tr>" + "<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
+													 "<td>" + taskStart+"</td>"+
+													 "<td>" + taskEnd +"</td>" +
+													 "<td>" + status + "</td></tr>");
+					 }
+					 $("#preReqTable").show();
+				 }
+				 else
+				 {
+					 $('#preReqTitle').html("There are no pre requisite tasks");
+					 $("#preReqTable").hide();
+				 }
+				},
+				error:function()
+				{
+					alert(preReqData['tasks'].length);
+
+					alert("There was a problem in retrieving the task details");
+				}
+				});
+		 });
+
+		 // END TASK DETAILS
 		</script>
 	</body>
 </html>
