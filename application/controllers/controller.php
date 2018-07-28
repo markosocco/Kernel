@@ -108,8 +108,7 @@ class controller extends CI_Controller
 							'DATE' => date('Y-m-d'),
 							'COMPLETENESS' => $projectProgress
 						);
-
-						$this->model->insertToAssessmentProject($progressData);
+						$this->model->addAssessmentProject($progressData);
 					}
 				}
 
@@ -2261,7 +2260,7 @@ class controller extends CI_Controller
 				'COMPLETENESS' => 0
 			);
 
-			$this->model->insertToAssessmentProject($progressData);
+			$this->model->addAssessmentProject($progressData);
 
 			$templates = $this->input->post('templates');
 
