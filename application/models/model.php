@@ -1296,9 +1296,9 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function insertToProjectWeeklyProgress($data){
+  public function insertToAssessmentProject($data){
 
-    $this->db->insert('projectWeeklyProgress', $data);
+    $this->db->insert('assessmentProject', $data);
 
     return true;
   }
@@ -1306,7 +1306,7 @@ class model extends CI_Model
   public function getLatestWeeklyProgress(){
     $condition = "datediff(curdate(), DATE) < 7";
     $this->db->select('*,  datediff(curdate(), DATE) as "datediff"');
-    $this->db->from('projectweeklyprogress');
+    $this->db->from('assessmentProject');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();

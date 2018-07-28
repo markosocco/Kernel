@@ -109,7 +109,7 @@ class controller extends CI_Controller
 							'PROGRESS' => $projectProgress
 						);
 
-						// $this->model->insertToProjectWeeklyProgress($progressData);
+						$this->model->insertToAssessmentProject($progressData);
 					}
 				}
 
@@ -2204,7 +2204,7 @@ class controller extends CI_Controller
 				'PROGRESS' => 0
 			);
 
-			$this->model->insertToProjectWeeklyProgress($progressData);
+			$this->model->insertToAssessmentProject($progressData);
 
 			$templates = $this->input->post('templates');
 
