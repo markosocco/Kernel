@@ -2023,6 +2023,22 @@ class controller extends CI_Controller
 			$departmentID = $_SESSION['departments_DEPARTMENTID'];
 
 			$data['ganttData'] = $this->model->getAllProjectTasksByDepartment($id, $departmentID);
+
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+			$data['ganttData'] = $this->model->getAllProjectTasksByDepartment($id, $departmentID);
+			$data['dependencies'] = $this->model->getDependenciesByProject($id);
+			$data['users'] = $this->model->getAllUsers();
+
+			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+			$data['accountable'] = $this->model->getAllAccountableByProject($id);
+			$data['consulted'] = $this->model->getAllConsultedByProject($id);
+			$data['informed'] = $this->model->getAllInformedByProject($id);
+
+			$data['employeeCompleteness'] = $this->model->getCompleteness_EmployeeByProject($_SESSION['USERID'], $id);
+			$data['departmentCompleteness'] = $this->model->getCompleteness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$data['employeeTimeliness'] = $this->model->getTimeliness_EmployeeByProject($_SESSION['USERID'], $id);
+			$data['departmentTimeliness'] = $this->model->getTimeliness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+
 			$this->load->view("teamGantt", $data);
 		}
 	}
