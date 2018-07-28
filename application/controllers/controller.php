@@ -3301,6 +3301,40 @@ class controller extends CI_Controller
 			}
 		}
 
+		public function parkProject()
+		{
+			$id = $this->input->post("project_ID");
+
+			$data = array(
+				'PROJECTSTATUS' => 'Parked'
+			);
+
+			$result = $this->model->parkProject($id, $data);
+
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+			$projectDetails = $this->model->getProjectByID($id);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
+			$details = $userName . " has parked this project.";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $id
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
+
+			if ($result)
+			{
+				$this->myProjects();
+			}
+		}
+
 		public function templateProject()
 		{
 			$id = $this->input->post("project_ID");

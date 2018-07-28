@@ -11,7 +11,7 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div style="margin-bottom:10px">
-					<button id="backBtn" class="btn btn-default btn"><i class="fa fa-arrow-left"></i> Return to Project</button>
+					<button id="backBtn" class="btn btn-default btn"><i class="fa fa-arrow-left"></i></button>
 					<form id="backForm" action = 'projectGantt' method="POST" data-id="<?php echo $projectID; ?>">
 					</form>
 				</div>

@@ -33,6 +33,7 @@ class model extends CI_Model
     $condition = "users.EMAIL =" . "'" . $data['email'] . "'";
     $this->db->select('*');
     $this->db->from('users');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
     $query = $this->db->get();
 
@@ -1243,6 +1244,14 @@ class model extends CI_Model
   }
 
   public function archiveProject($id, $data)
+  {
+    $this->db->where('PROJECTID', $id);
+    $result = $this->db->update('projects', $data);
+
+    return true;
+  }
+
+  public function parkProject($id, $data)
   {
     $this->db->where('PROJECTID', $id);
     $result = $this->db->update('projects', $data);

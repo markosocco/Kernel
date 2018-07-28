@@ -614,7 +614,7 @@
 
 					<div class="col-md-3 col-sm-6 col-xs-12 pull-right">
 							<div class="box-header with-border" style="text-align:center;">
-								<h3 class="box-title" >deptName Performance</h3>
+								<h3 class="box-title"><?php echo $_SESSION['DEPARTMENTNAME'];?> Performance</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -710,6 +710,10 @@
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 							<input type="hidden" name="projectID_logs" value="<?php echo $projectProfile['PROJECTID']; ?>">
+						</form>
+
+						<form name="gantt" action ='parkProject' method="POST" id ="parkProj">
+							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
 
 						<!-- IF USING GET METHOD
@@ -1033,8 +1037,7 @@
 
 			$("#parkProject").click(function() //submitPark
       {
-				$("#prjID").attr("action","parkProject");
-				$("#prjID").submit();
+				$("#parkProj").submit();
       });
 
 			$("#continueProject").click(function() //submitPark

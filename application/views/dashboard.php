@@ -50,7 +50,7 @@
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">deptName Performance</h3>
+								<h3 class="box-title"><?php echo $_SESSION['DEPARTMENTNAME'];?> Performance</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
