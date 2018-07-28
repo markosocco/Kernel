@@ -352,7 +352,7 @@
 
 								$('#taskTable').append(
 														 "<tr id='" + taskID + "'>" +
-														 status + "<td class = 'taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 status + "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
 														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 														 data['tasks'][i].TASKTITLE+"</td>"+
@@ -366,7 +366,7 @@
 
 							$('#taskAll').append(
 													 "<tr id='" + taskID + "'>" +
-													 status + "<td class = 'taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 status + "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 data['tasks'][i].TASKTITLE+"</td>"+
