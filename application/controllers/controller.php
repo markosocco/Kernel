@@ -223,6 +223,10 @@ class controller extends CI_Controller
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
 			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
 			$data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
+			$data['employeeCompleteness'] = $this->model->getCompleteness_Employee($_SESSION['USERID']);
+			$data['departmentCompleteness'] = $this->model->getCompleteness_Department($_SESSION['departments_DEPARTMENTID']);
+			$data['employeeTimeliness'] = $this->model->getTimeliness_Employee($_SESSION['USERID']);
+			$data['departmentTimeliness'] = $this->model->getTimeliness_Department($_SESSION['departments_DEPARTMENTID']);
 
 			$this->load->view("dashboard", $data);
 		}

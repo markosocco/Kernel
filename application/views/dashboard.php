@@ -32,11 +32,17 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div style="display:inline-block; text-align:center; width:49%;">
-									<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+									<div class="circlechart" id="completeness"
+										data-percentage="<?php echo $employeeCompleteness['completeness']?>">
+										Completeness
+									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
-		 						 <div class="circlechart" id="completeness" data-percentage="50.79">Timeliness</div>
-		 					 </div>
+									<div class="circlechart" id="completeness"
+										data-percentage="<?php echo $employeeTimeliness['timeliness']?>">
+										Timeliness
+									</div>
+								</div>
 							</div>
 						</div>
 	        </div>
@@ -49,10 +55,16 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div style="display:inline-block; text-align:center; width:49%;">
-									<div class="circlechart" id="completeness" data-percentage="50.79">Completeness</div>
+									<div class="circlechart" id="completeness"
+										data-percentage="<?php echo $departmentCompleteness['completeness']?>">
+										Completeness
+									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
-		 						 <div class="circlechart" id="completeness" data-percentage="50.79">Timeliness</div>
+									<div class="circlechart" id="completeness"
+ 									 data-percentage="<?php echo $departmentTimeliness['timeliness']?>">
+ 									 Timeliness
+ 								 </div>
 		 					 </div>
 							</div>
 						</div>
