@@ -2073,7 +2073,7 @@ class controller extends CI_Controller
 			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "1");
 			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "2");
 			$data['departments'] = $this->model->getAllDepartments();
-			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+			$data['users'] = $this->model->getAllUsers();
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
