@@ -73,7 +73,7 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="table-responsive">
-									<h4 align="center" id="totalToDo"> Total <br><br><b>N</b></h4>
+									<h4 align="center" id="totalToDo"> Total <br><br><b>0</b></h4>
 								</div>
 							</div>
 						</div>
@@ -82,7 +82,7 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="table-responsive">
-									<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayedToDo">N</b></span></h4>
+									<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayedToDo">0</b></span></h4>
 								</div>
 							</div>
 						</div>
@@ -99,7 +99,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id="total"> Total <br><br><b>N</b></h4>
+										<h4 align="center" id="total"> Total <br><br><b>0</b></h4>
 									</div>
 								</div>
 							</div>
@@ -110,7 +110,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayed">N</span></b></h4>
+										<h4 align="center"> Delayed <br><br><b><span style='color:red' id= "totalDelayed">0</span></b></h4>
 									</div>
 								</div>
 							</div>
@@ -121,7 +121,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id="totalPlanned"> Planned <br><br><b>N</b></h4>
+										<h4 align="center" id="totalPlanned"> Planned <br><br><b>0</b></h4>
 									</div>
 								</div>
 							</div>
@@ -158,7 +158,21 @@
 							</div>
 						</div>
 					</div>
-					<?php endif;?>
+				<?php else:?>
+					<div class = 'row'>
+						<div class="col-md-12">
+							<div class="box box-danger">
+								<div class="box-header">
+									<h3 class="box-title">All Tasks</h3>
+								</div>
+								<div class="box-body">
+									<h4 align="center">You have no tasks</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				<?php endif;?>
 				</div>
 
 				<form id='viewProject' action = 'projectGantt' method="POST">
