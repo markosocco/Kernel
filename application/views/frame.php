@@ -103,7 +103,7 @@ desired effect
               <li class="header">Your Tasks</li>
               <li>
                 <!-- inner menu: contains the actual data -->
-                <ul class="menu">
+                <ul class="menu menuTask">
                   <li><!-- Task item -->
                     <a href="#">
                       <h3>
@@ -124,9 +124,9 @@ desired effect
           <!-- Notifications Menu -->
           <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->
-            <a id="notifCount" href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">
+              <span id="notifCount" class="label label-warning">
                 <?php
 
                   $counter = 0;
@@ -146,9 +146,9 @@ desired effect
               <li class="header">Your Notifications</li>
               <li>
                 <!-- Inner Menu: contains the notifications -->
-                <ul class="menu">
+                <ul class="menu menuNotifs">
                   <?php foreach ($_SESSION['notifications'] as $row): ?>
-                    <li><!-- start notification -->
+                    <li class="notifDetails"><!-- start notification -->
                       <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">
                         <i class="fa fa-users text-aqua"></i> <?php echo $row['DETAILS']; ?>
                       </a>
@@ -251,7 +251,7 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
 
         <!--IF STATEMENTS DEPENDING ON USER TYPE  -->
-        <li id = 'dashboard'><a class="menu" href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
+        <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
         <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
         <?php else:?> <!-- FOR EXECUTIVE LEVEL -->
@@ -283,18 +283,18 @@ desired effect
             </span>
           </a>
           <ul class="treeview-menu">
-            <li id = 'taskDelegate'><a class="menu"  href="<?php echo base_url("index.php/controller/taskDelegate"); ?>"><i class="fa fa-circle-o"></i> Delegate</a></li>
-            <li id = 'taskTodo'><a class="menu" href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-circle-o"></i> To Do</a></li>
-            <li id = 'taskMonitor'><a class="menu" href="<?php echo base_url("index.php/controller/taskMonitor"); ?>"><i class="fa fa-circle-o"></i> Monitor</a></li>
+            <li id = 'taskDelegate'><a  href="<?php echo base_url("index.php/controller/taskDelegate"); ?>"><i class="fa fa-circle-o"></i> Delegate</a></li>
+            <li id = 'taskTodo'><a href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-circle-o"></i> To Do</a></li>
+            <li id = 'taskMonitor'><a href="<?php echo base_url("index.php/controller/taskMonitor"); ?>"><i class="fa fa-circle-o"></i> Monitor</a></li>
           </ul>
         </li>
-        <li id = 'rfc'><a class="menu" href="<?php echo base_url("index.php/controller/rfc"); ?>"><i class="fa fa-flag"></i> <span> Change Requests</span></a></li>
+        <li id = 'rfc'><a href="<?php echo base_url("index.php/controller/rfc"); ?>"><i class="fa fa-flag"></i> <span> Change Requests</span></a></li>
         <!-- <?php //if($_SESSION['usertype_USERTYPEID'] != 2):?> NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <!-- <li id = 'myTeam'><a href="<?php //echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span> My Team</span></a></li> -->
         <?php //endif;?>
         <!-- <li id = 'myCalendar'><a href="<?php echo base_url("index.php/controller/myCalendar"); ?>"><i class="fa fa-calendar"></i><span> My Calendar</span></a></li> -->
-        <li id = 'reports'><a class="menu" href="<?php echo base_url("index.php/controller/reports"); ?>"><i class="fa fa-tachometer"></i><span> Reports</span></a></li>
-        <li id = 'templates'><a class="menu" href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i><span> Templates</span></a></li>
+        <li id = 'reports'><a href="<?php echo base_url("index.php/controller/reports"); ?>"><i class="fa fa-tachometer"></i><span> Reports</span></a></li>
+        <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i><span> Templates</span></a></li>
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Archives</span></a></li>
         <!-- <li id = 'documents'><a href="<?php echo base_url("index.php/controller/documents"); ?>"><i class="fa fa-folder"></i><span> Documents</span></a></li> -->
 
@@ -370,7 +370,7 @@ desired effect
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
-<script>
+  <script>
     function successAlert ()
     {
       $.notify({
@@ -483,55 +483,36 @@ desired effect
         });
       };
 
-      function loadIt() {
-    $.get("<?php echo base_url("index.php/controller/getAllNotificationsByUser"); ?>", function(data) {
-      var jdata = JSON.parse(data);
-      $('#notifCount').html(jdata.note);
-    });
-  }
-  setInterval(loadIt, 5000);
+    function checkNotif() {
+      $.ajax({
+        url: "<?php echo base_url("index.php/controller/getAllNotificationsByUser"); ?>",
+        dataType: "json",
+        success: function(data) {
 
+          if(data['notifications'].length > 0)
+          {
+            var $counter = 0;
 
-    // $.ajax({
-    //   type:"POST",
-    //   url: "<?php echo base_url("index.php/controller/getAllNotificationsByUser"); ?>",
-    //   data: '',
-    //   dataType: 'json',
-    //   success:function(data)
-    //   {
-    //     $('#notifCount').html("");
-    //     // for(p=0; p<data['workloadProjects'].length; p++)
-    //     // {
-    //     //   var $projectID = data['workloadProjects'][p].PROJECTID;
-    //     //   $('#workloadDiv').append("<div class = 'box'>" +
-    //     //            "<div class = 'box-header'>" +
-    //     //              "<h3 class = 'box-title text-blue'> " + data['workloadProjects'][p].PROJECTTITLE + "</h3>" +
-    //     //            "</div>" +
-    //     //            "<div class = 'box-body table-responsive no-padding'>" +
-    //     //              "<table class='table table-hover' id='project_" + $projectID + "'>" +
-    //     //                "<th>Task Name</th>" +
-    //     //                "<th>Start Date</th>" +
-    //     //                "<th>End Date</th>" +
-    //     //                "<th>Status</th>");
-    //     //
-    //     //    loadWorkloadTasks($projectID);
-    //     //
-    //     //    $('#workloadDiv').append("</table>" +
-    //     //                              "</div>" +
-    //     //                            "</div>");
-    //     }
-    //   },
-    //   error:function()
-    //   {
-    //     alert("Failed to retrieve user data.");
-    //   }
-    // });
+            $('#notifCount').html("");
+            $('.menuNotifs').html("");
 
-    // $(".menu").click(function(){
-    //
-    // });
+            for(i = 0; i < data['notifications'].length; i ++){
+              if(data['notifications'][i].status == "Unread"){
+                $counter++;
+              }
 
-</script>
+              var $link = "<?php echo base_url("index.php/controller/taskTodo"); ?>"
+
+              $('.menuNotifs').append("<li><a href = '" + $link + "'><i class='fa fa-users text-aqua'></i>" + data['notifications'][i].DETAILS + "</a></li>");
+
+            }
+            $('#notifCount').html($counter);
+          }
+        }
+        });
+      } setInterval(checkNotif, 300000);
+
+  </script>
 
 </body>
 </html>

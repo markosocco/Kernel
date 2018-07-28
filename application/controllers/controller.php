@@ -3622,7 +3622,10 @@ class controller extends CI_Controller
 
 	public function getAllNotificationsByUser()
 	{
-		$data['notification'] = $this->model->getAllNotificationsByUser();
+		$data['notifications'] = $this->model->getAllNotificationsByUser();
+
+		// $notifications = $this->model->getAllNotificationsByUser($sessionData['USERID']);
+		$this->session->set_userdata('notifications', $data['notifications']);
 
 		echo json_encode($data);
 
