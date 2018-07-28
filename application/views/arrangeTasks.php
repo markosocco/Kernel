@@ -148,6 +148,7 @@
 																		</div></td>
 																		<td>
 																			<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																				<!-- TODO: sticky departments -->
 																				<?php foreach ($departments as $row): ?>
 																					<option>
 																						<?php echo $row['DEPARTMENTNAME']; ?>
@@ -200,13 +201,23 @@
 																	</div></td>
 																	<td>
 																		<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
-																			<?php foreach ($departments as $row): ?>
+																			<?php
+																				foreach ($tasks as $row)
+																				{
+																					if($value['TASKTITLE'] == $row['TASKTITLE'])
+																					{
+																						$depts = array();
 
-																				<option>
-																					<?php echo $row['DEPARTMENTNAME']; ?>
-																				</option>
-
-																			<?php endforeach; ?>
+																						foreach ($departments as $row2)
+																						{
+																							if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																							{
+																								echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																							}
+																						}
+																					}
+																				}
+																			?>
 										                </select>
 																	</td>
 																	<td><div class="form-group">
@@ -336,14 +347,24 @@
 													<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 												</div></td>
 												<td>
-													<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
-														<?php foreach ($departments as $row): ?>
+													<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-key = "<?php echo $key; ?>" data-placeholder="Select Departments">
+														<?php
+															foreach ($tasks as $row)
+															{
+																if($value['TASKTITLE'] == $row['TASKTITLE'])
+																{
+																	$depts = array();
 
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
-
-														<?php endforeach; ?>
+																	foreach ($departments as $row2)
+																	{
+																		if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																		{
+																			echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																		}
+																	}
+																}
+															}
+														?>
 					                </select>
 												</td>
 												<td><div class="form-group">
@@ -419,6 +440,38 @@
 			 var currTable = $(this).attr('data-id');
 			 var mainAct = $(this).attr('data-mainAct');
 			 var counter = parseInt($(this).attr('data-sum'));
+			 var key = $(this).attr('data-key');
+
+			 // foreach ($tasks as $row)
+			 // {
+				//  if($value['TASKTITLE'] == $row['TASKTITLE'])
+				//  {
+				// 	 $depts = array();
+			 //
+				// 	 foreach ($departments as $row2)
+				// 	 {
+				// 		 if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+				// 		 {
+				// 			 echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+				// 		 }
+				// 	 }
+				//  }
+			 // }
+
+			 // $('#table_' + currTable).append("<tr id='table_" +
+				// 					currTable + "_Row_" + (i + 1) +
+				// 					"'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
+				// 					mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
+				// 					"<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
+				// 					'<?php foreach ($tasks as $row):?> <?php if ($value[$key][]) ?> <?php endforeach; ?>' +
+				// 					"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
+				// 					"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
+				// 					"name='taskStartDate[]' id='start_" + mainAct + "-" + counter +"' data-mainAct = '" + mainAct + "' data-num='" + counter +
+				// 					"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
+				// 					"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
+				// 					"name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
+				// 					"' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod_" + mainAct + "-" + counter + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
+				// 					" counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
 
 				 $('#table_' + currTable).append("<tr id='table_" +
 				 						currTable + "_Row_" + (i + 1) +

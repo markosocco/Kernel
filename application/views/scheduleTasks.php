@@ -224,14 +224,25 @@
 																			</td>
 																			<td style="padding-top:10px">
 																				<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
-																					<?php foreach ($departments as $row): ?>
-																						<option></option>
+																					<option></option>
+																					<?php
+																					foreach ($tasks as $row)
+																					{
+																						if($sValue['TASKTITLE'] == $row['TASKTITLE'])
+																						{
+																							$depts = array();
 
-																						<option>
-																							<?php echo $row['DEPARTMENTNAME']; ?>
-																						</option>
-
-																					<?php endforeach; ?>
+																							foreach ($departments as $row2)
+																							{
+																								if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																								{
+																									$depts[] = $row2['DEPARTMENTNAME'];
+																									echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																								}
+																							}
+																						}
+																					}
+																					?>
 																				</select>
 																			</td>
 																			<td>
@@ -445,14 +456,25 @@
 																</td>
 																<td style="padding-top:10px">
 																	<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
-																		<?php foreach ($departments as $row): ?>
-																			<option></option>
+																		<option></option>
+																		<?php
+																		foreach ($tasks as $row)
+																		{
+																			if($sValue['TASKTITLE'] == $row['TASKTITLE'])
+																			{
+																				$depts = array();
 
-																			<option>
-																				<?php echo $row['DEPARTMENTNAME']; ?>
-																			</option>
-
-																		<?php endforeach; ?>
+																				foreach ($departments as $row2)
+																				{
+																					if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																					{
+																						$depts[] = $row2['DEPARTMENTNAME'];
+																						echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																					}
+																				}
+																			}
+																		}
+																		?>
 																	</select>
 																</td>
 																<td>
@@ -543,7 +565,7 @@
 										"'><td></td><td><div class ='form-group'> <input type='hidden' name='subActivity_ID[]' value='" +
 										subAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
 										"<td style='padding-top:10px'><select id = 'select" + i + "' class='form-control select2' name = '' data-placeholder='Select Departments'> " +
-										"<option></option> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+										'<option></option> <?php foreach ($tasks as $row) { if ($sValue['TASKTITLE'] == $row['TASKTITLE']) { foreach ($departments as $row2) { if ($row['USERID'] == $row2['users_DEPARTMENTHEAD']) { echo '<option>' . $row2['DEPARTMENTNAME'] . '</option>'; } } } }?>' +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
 										"name='taskStartDate[]' id='start_" + subAct + "-" + x +"' data-subAct = '" + subAct + "' data-num='" + x +
