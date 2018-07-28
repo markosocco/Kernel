@@ -126,7 +126,14 @@
 
 													<td><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
 													<td><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
-													<td>period</td>
+													<td>
+														<?php
+															if (($dDiff + 1) <= 1)
+																echo ($dDiff + 1) . " day";
+															else
+																echo ($dDiff + 1) . " days";
+														?>
+													</td>
 													<td></td>
 												</tr>
 											</tbody>
@@ -191,7 +198,14 @@
 
 																<td><i><?php echo date_format($sdate, "M d, Y"); ?></i></td>
 																<td><i><?php echo date_format($edate, "M d, Y"); ?></i></td>
-																<td></td>
+																<td>
+																	<?php
+																		if (($dDiff + 1) <= 1)
+																			echo ($dDiff + 1) . " day";
+																		else
+																			echo ($dDiff + 1) . " days";
+																	?>
+																</td>
 															</tr>
 
 															<?php if (isset($templateSubActivity[$sKey])): ?>
@@ -334,7 +348,14 @@
 
 													<td><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
 													<td><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
-													<td>period</td>
+													<td><b>
+														<?php
+															if (($dDiff + 1) <= 1)
+																echo ($dDiff + 1) . " day";
+															else
+																echo ($dDiff + 1) . " days";
+														?>
+													</b></td>
 													<td></td>
 												</tr>
 											</tbody>
@@ -400,7 +421,14 @@
 
 																<td><i><?php echo date_format($sdate, "M d, Y"); ?></i></td>
 																<td><i><?php echo date_format($edate, "M d, Y"); ?></i></td>
-																<td>period</td>
+																<td><i>
+																	<?php
+																		if (($dDiff + 1) <= 1)
+																			echo ($dDiff + 1) . " day";
+																		else
+																			echo ($dDiff + 1) . " days";
+																	?>
+																</i></td>
 																<td></td>
 															</tr>
 															<tr>
@@ -453,7 +481,7 @@
 																</td>
 																<td>
 																	<div class="form-group">
-																		<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-<?php echo $sKey; ?>" type="text" class="form-control period" value="" readonly>
+																		<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
 																	</div>
 																</td>
 																<td></td>
@@ -617,8 +645,14 @@
 				var counter = $(this).attr('data-num');
 				var diff = new Date($("#end_" + subAct + "-" + counter).datepicker("getDate") - $("#start_" + subAct + "-" + counter).datepicker("getDate"));
 				var period = (diff/1000/60/60/24)+1;
+
+				console.log("#start_" + subAct + "-" + counter);
+				console.log("#end_" + subAct + "-" + counter);
+
 				if ($("#start_" + subAct + "-" + counter).val() != "" &&  $("#end_" + subAct + "-" + counter).val() != "" && period >=1)
 				{
+					console.log("#projectPeriod_" + subAct + "-" + counter);
+
 					if(period > 1)
 						$("#projectPeriod_" + subAct + "-" + counter).attr("value", period + " days");
 					else

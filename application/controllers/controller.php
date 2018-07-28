@@ -2129,7 +2129,7 @@ class controller extends CI_Controller
 		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
 		$startDate = $this->input->post('startDate');
 		date_default_timezone_set("Singapore");
-		$currDate = date("mm-dd-YYYY");
+		$currDate = date("Y-m-d");
 
 		if ($currDate >= $startDate)
 		{
@@ -2633,6 +2633,11 @@ class controller extends CI_Controller
 		$data['consulted'] = $this->model->getAllConsultedByProject($id);
 		$data['informed'] = $this->model->getAllInformedByProject($id);
 
+		$data['employeeCompleteness'] = $this->model->getCompleteness_EmployeeByProject($_SESSION['USERID'], $id);
+		$data['departmentCompleteness'] = $this->model->getCompleteness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+		$data['employeeTimeliness'] = $this->model->getTimeliness_EmployeeByProject($_SESSION['USERID'], $id);
+		$data['departmentTimeliness'] = $this->model->getTimeliness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+
 		// foreach ($data['ganttData'] as $key => $value) {
 		// 	echo $value['tasks_TASKID'] . " parent is ";
 		// 	echo $value['tasks_TASKPARENT'] . "<br>";
@@ -2838,8 +2843,21 @@ class controller extends CI_Controller
 			}
 		}
 
-		$status = array(
-			"PROJECTSTATUS" => "Planning");
+		$startDate = $this->model->getProjectByID($id);
+		date_default_timezone_set("Singapore");
+		$currDate = date("Y-m-d");
+
+		if ($currDate >= $startDate['PROJECTSTARTDATE'])
+		{
+			$status = array(
+				"PROJECTSTATUS" => "Ongoing");
+		}
+
+		else
+		{
+			$status = array(
+				"PROJECTSTATUS" => "Planning");
+		}
 
 		$changeStatues = $this->model->updateProjectStatusPlanning($id, $status);
 
