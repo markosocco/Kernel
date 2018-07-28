@@ -416,9 +416,10 @@ class controller extends CI_Controller
 
 					$nextTaskID = $nextTaskDetails['tasks_POSTTASKID'];
 					$postTasksData['users'] = $this->model->getRACIbyTask($nextTaskID);
+					$nextTaskTitle = $nextTaskDetails['TASKTITLE'];
 
 					foreach($postTasksData['users'] as $postTasksDataUsers){
-						$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
+						$details = "Pre-requisite task of " . $nextTaskTitle . " in " . $projectTitle . " has been completed.";
 
 						$notificationData = array(
 							'users_USERID' => $postTasksDataUsers['users_USERID'],
@@ -2022,6 +2023,22 @@ class controller extends CI_Controller
 			$departmentID = $_SESSION['departments_DEPARTMENTID'];
 
 			$data['ganttData'] = $this->model->getAllProjectTasksByDepartment($id, $departmentID);
+
+			$data['projectProfile'] = $this->model->getProjectByID($id);
+			$data['ganttData'] = $this->model->getAllProjectTasksByDepartment($id, $departmentID);
+			$data['dependencies'] = $this->model->getDependenciesByProject($id);
+			$data['users'] = $this->model->getAllUsers();
+
+			$data['responsible'] = $this->model->getAllResponsibleByProject($id);
+			$data['accountable'] = $this->model->getAllAccountableByProject($id);
+			$data['consulted'] = $this->model->getAllConsultedByProject($id);
+			$data['informed'] = $this->model->getAllInformedByProject($id);
+
+			$data['employeeCompleteness'] = $this->model->getCompleteness_EmployeeByProject($_SESSION['USERID'], $id);
+			$data['departmentCompleteness'] = $this->model->getCompleteness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$data['employeeTimeliness'] = $this->model->getTimeliness_EmployeeByProject($_SESSION['USERID'], $id);
+			$data['departmentTimeliness'] = $this->model->getTimeliness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+
 			$this->load->view("teamGantt", $data);
 		}
 	}
@@ -3619,12 +3636,16 @@ class controller extends CI_Controller
 				$this->load->view("projectDocuments", $data);
 			}
 		}
+	}
 
-		else {
-			echo "didnt work";
-		}
+	public function getAllNotificationsByUser()
+	{
+		$data['notification'] = $this->model->getAllNotificationsByUser();
 
-		// $documentID = $this->model->getProjectByID($id);
+		echo json_encode($data);
+
+		// return $data;
+
 	}
 
 	/******************** MY PROJECTS END ********************/

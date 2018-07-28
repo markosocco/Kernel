@@ -10,10 +10,10 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					<div style="margin-bottom:10px">
-						<a href="<?php echo base_url("index.php/controller/myTeam"); ?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to My Team</a>
+						<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
 					</div>
 					<h1><?php echo $projectProfile['PROJECTTITLE']; ?></h1>
-        	</h2>Department Name Here</h2>
+				</h2><?php echo $_SESSION['DEPARTMENTNAME']; ?></h2>
 				</section>
 
 				<!-- Main content -->
@@ -78,6 +78,108 @@
 
 						<?php endif;?>
 
+						<?php if($projectProfile['PROJECTSTATUS'] != 'Planning'): ?>
+
+							<div class="col-md-3 col-sm-6 col-xs-12 pull-right">
+									<div class="box-header with-border" style="text-align:center;">
+										<h3 class="box-title"><?php echo $_SESSION['DEPARTMENTNAME'];?> Performance</h3>
+									</div>
+									<!-- /.box-header -->
+									<div class="box-body">
+										<div style="display:inline-block; text-align:center; width:49%;">
+											<div class="circlechart" id="completeness"
+												data-percentage="<?php
+													if($departmentCompleteness['completeness'] == NULL){
+														echo 0;
+													} else {
+														if($departmentCompleteness['completeness'] == 100.00){
+															echo 100;
+														} elseif ($departmentCompleteness['completeness'] == 0.00) {
+															echo 0;
+		 												} else {
+		 													echo $departmentCompleteness['completeness'];
+		 												}
+		 											}
+	 										 ?> "> Completeness
+											</div>
+										</div>
+										<div style="display:inline-block; text-align:center; width:49%;">
+											<div class="circlechart" id="completeness"
+		 									 data-percentage="<?php
+												 if($departmentTimeliness['timeliness'] == NULL){
+													 echo 0;
+												 } else {
+													 if($departmentTimeliness['timeliness'] == 100.00){
+														 echo 100;
+													 } elseif ($departmentTimeliness['timeliness'] == 0.00) {
+														 echo 0;
+													 } else {
+														 echo $departmentTimeliness['timeliness'];
+													 }
+												 }
+											 ?> "> Timeliness
+		 								 </div>
+									 </div>
+									</div>
+							</div>
+							<!-- /.col -->
+
+							<?php
+								$isResponsible = FALSE;
+								foreach ($responsible as $r) {
+									if($r['USERID'] == $_SESSION['USERID']){
+										$isResponsible = TRUE;
+										break;
+									}
+								}
+							?>
+
+							<?php if($isResponsible == TRUE): ?>
+								<div class="col-md-3 col-sm-6 col-xs-12 pull-right" style="border-right: solid 1px #b3b3b3;">
+										<div class="box-header with-border" style="text-align:center;">
+											<h3 class="box-title">My Performance</h3>
+										</div>
+										<!-- /.box-header -->
+										<div class="box-body">
+											<div style="display:inline-block; text-align:center; width:49%;">
+												<div class="circlechart" id="completeness"
+													data-percentage="<?php
+														if($employeeCompleteness['completeness'] == NULL){
+															echo 0;
+														} else {
+															if($employeeCompleteness['completeness'] == 100.00){
+																echo 100;
+															} elseif ($employeeCompleteness['completeness'] == 0.00) {
+																echo 0;
+															} else {
+																echo $employeeCompleteness['completeness'];
+															}
+														}
+														?> "> Completeness
+												</div>
+											</div>
+											<div style="display:inline-block; text-align:center; width:49%;">
+												<div class="circlechart" id="completeness"
+			 									 data-percentage="<?php
+												 if($employeeTimeliness['timeliness'] == NULL){
+													 echo 0;
+												 } else {
+													 if($employeeTimeliness['timeliness'] == 100.00){
+														 echo 100;
+													 } elseif ($employeeTimeliness['timeliness'] == 0.00) {
+														 echo 0;
+													 } else {
+														 echo $employeeTimeliness['timeliness'];
+													 }
+												 }
+												 ?> ">Timeliness
+			 								 </div>
+										 </div>
+										</div>
+								</div>
+							<?php endif;?>
+						<?php endif; ?>
+
 						<form name="gantt" action ='projectDocuments' method="POST" id ="prjID">
 							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
 							<input type="hidden" name="projectID_logs" value="<?php echo $projectProfile['PROJECTID']; ?>">
@@ -98,6 +200,8 @@
 		</div>
 		<script>
 			$("#myTeam").addClass("active");
+			$('.circlechart').circlechart(); // Initialization
+
 		</script>
 		<script>
 			anychart.onDocumentReady(function (){
@@ -108,24 +212,34 @@
 					foreach ($ganttData as $key => $value) {
 
 						// START: Formatting of TARGET START date
-						$startDate = $value['TASKSTARTDATE'];
-						$formatted_startDate = date('M d, Y', strtotime($startDate));
+						$targetStartDate = $value['TASKSTARTDATE'];
+						$formatted_startDate = date('Y-m-d', strtotime($targetStartDate));
 						// END: Formatting of TARGET START date
 
 						// START: Formatting of TARGET END date
-						$endDate = $value['TASKENDDATE'];
-						$formatted_endDate = date('M d, Y', strtotime($endDate));
+						$targetEndDate = $value['TASKENDDATE'];
+						$formatted_endDate = date('Y-m-d', strtotime($targetEndDate));
 						// END: Formatting of TARGET END date
 
 						// START: Formatting of ACTUAL START date
 						$actualStartDate = $value['TASKACTUALSTARTDATE'];
-						$formatted_actualStartDate = date('M d, Y', strtotime($actualStartDate));
+						$formatted_actualStartDate = date('Y-m-d', strtotime($actualStartDate));
 						// END: Formatting of ACTUAL START date
 
 						// START: Formatting of ACTUAL END date
 						$actualEndDate = $value['TASKACTUALENDDATE'];
-						$formatted_actualEndDate = date('M d, Y', strtotime($actualEndDate));
+						$formatted_actualEndDate = date('Y-m-d', strtotime($actualEndDate));
 						// END: Formatting of ACTUAL END date
+
+						// // START: Formatting of ADJUSTED START date
+						// $adjustedStartDate = $value['TASKADJUSTEDSTARTDATE'];
+						// $formatted_adjustedStartDate = date('Y-m-d', strtotime($adjustedStartDate));
+						// // END: Formatting of ACTUAL END date
+						//
+						// // START: Formatting of ADJUSTED END date
+						// $adjustedEndDate = $value['TASKADJUSTEDENDDATE'];
+						// $formatted_adjustedEndDate = date('Y-m-d', strtotime($adjustedEndDate));
+						// // END: Formatting of ACTUAL END date
 
 						// START: Checks for progress value
 						$progress = '0';
@@ -138,30 +252,28 @@
 						$parent = '0';
 						if($value['tasks_TASKPARENT'] != NULL){
 							$parent = $value['tasks_TASKPARENT'];
-							// echo "<script>console.log(".$parent.");</script>";
 						}
 						// END: Checks for parent
 
-						// START: Checks for period
-						$period = '';
-						if($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] == NULL){
-							$period = $value['initialTaskDuration'];
-						} else if ($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] != NULL){
-							$period = $value['adjustedTaskDuration1'];
-						} else {
-							$period = $value['adjustedTaskDuration2'];
-						}
-						// END: Checks for period
+						// // START: Checks for period
+						// $period = '';
+						// if($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] == NULL){
+						// 	$period = $value['initialTaskDuration'];
+						// } else if ($value['TASKADJUSTEDSTARTDATE'] == NULL && $value['TASKADJUSTEDENDDATE'] != NULL){
+						// 	$period = $value['adjustedTaskDuration1'];
+						// } else {
+						// 	$period = $value['adjustedTaskDuration2'];
+						// }
+						// echo "<script>console.log(".$period.");</script>";
+						// // END: Checks for period
 
 						// START: Checks for dependecies
 						$dependency = '';
 						$type = '';
-						if($dependencies != NULL){
-							foreach ($dependencies as $data) {
-								if($data['PRETASKID'] == $value['TASKID']){
-									$dependency = $data['tasks_POSTTASKID'];
-									$type = 'finish-start';
-								}
+						foreach ($dependencies as $data) {
+							if($data['PRETASKID'] == $value['TASKID']){
+								$dependency = $data['tasks_POSTTASKID'];
+								$type = 'finish-start';
 							}
 						}
 						// END: Checks for dependecies
@@ -202,22 +314,21 @@
 						}
 						// END: Checks for informed
 
-
-
 						//START: CHECKS IF RACI IS EMPTY
-						if($accountable == NULL || $consulted == NULL || $informed == NULL ){
+						if($accountable == NULL || $consulted == NULL || $informed == NULL){
 							echo "
 							{
 								'id': " . $value['TASKID'] . ",
 								'name': '" . $value['TASKTITLE'] . "',
-								'actualStart': '" . $formatted_startDate . "',
-								'actualEnd': '" . $formatted_endDate . "',
+								'actualStart': '" . $formatted_startDate .  "T00:00',
+								'actualEnd': '" . $formatted_endDate . "T13:00',
 								'responsible': '',
 								'accountable': '',
 								'consulted': '',
 								'informed': '',
-								'period': '" . $progress . "',
-								'progressValue': '0%'
+								'period': '" . $value['initialTaskDuration'] . "',
+								'progressValue': '0%',
+								'parent': '" . $parent . "'
 							},";
 						} else { // START: RACI IS NOT EMPTY
 							// START: CHECKS IF MAIN OR SUB
@@ -234,7 +345,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "'
@@ -243,6 +354,14 @@
 
 								// START: Ongoing tasks - baselineEnd is the date today
 								else if($value['TASKACTUALENDDATE'] == NULL){
+									// not delayed
+									if($value['TASKENDDATE'] > date('Y-m-d')){ // ongoing but not delayed
+										// echo "<script> console.log(''); </script>";
+										$color = "green";
+									} else { // ongoing and delayed
+										// echo "<script> console.log(''); </script>";
+										$color = "#F53006";
+									}
 									echo "
 									{
 										'id': " . $value['TASKID'] . ",
@@ -253,12 +372,13 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] ."',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
 										'baselineStart': '" . $formatted_actualStartDate . "',
-										'baselineEnd': '" . date('M d, Y') . "'
+										'baselineEnd': '" . date('M d, Y') . "',
+										'baseline':{'fill': '" .$color. "'},
 									},";
 								} // END: Ongoing tasks - baselineEnd is the date today
 
@@ -274,7 +394,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
@@ -295,7 +415,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -315,12 +435,12 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] . "',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
-										'baselineStart': '" . $formatted_actualStartDate . "',
+										'baselineStart': '" . $formatted_actualStartDate ."',
 										'baselineEnd': '" . date('M d, Y') . "'
 									},";
 								} // END: Ongoing tasks - baselineEnd is the date today
@@ -337,7 +457,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $period . "',
+										'period': '" . $value['initialTaskDuration'] ."',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -350,6 +470,7 @@
 						} // END: CHECKS IF RACI IS EMPTY OR NOT
 					} // END: Foreach
 					?>
+
 				];
 
 				// data tree settings
@@ -360,6 +481,8 @@
 				// data grid getter
 				var dataGrid = chart.dataGrid();
 
+				dataGrid.column(0).labels({hAlign: 'center'});
+
 				// create custom column
 				var columnTitle = dataGrid.column(1);
 				columnTitle.title("Task Name");
@@ -368,19 +491,26 @@
 
 				var columnStartDate = dataGrid.column(2);
 				columnStartDate.title("Target Start Date");
-				columnStartDate.setColumnFormat("actualStart", "dateCommonLog");
+				columnStartDate.labels({hAlign: 'center'});
+				columnStartDate.setColumnFormat("actualStart", {
+					"formatter": dateFormatter
+				});
 				columnStartDate.width(100);
 
 				var columnEndDate = dataGrid.column(3);
 
 				columnEndDate.title("Target End Date");
-				columnEndDate.setColumnFormat("actualEnd", "dateCommonLog");
+				columnEndDate.labels({hAlign: 'center'});
+				columnEndDate.setColumnFormat("actualEnd", {
+					"formatter": dateFormatter
+				});
 				columnEndDate.width(100);
 
 				var columnPeriod = dataGrid.column(4);
 				columnPeriod.title("Period");
 				columnPeriod.setColumnFormat("period", "text");
 				columnPeriod.width(80);
+				columnPeriod.labels({hAlign: 'center'});
 
 				var columnResponsible = dataGrid.column(5);
 				columnResponsible.title("Responsible");
@@ -402,13 +532,22 @@
 				columnInformed.setColumnFormat("informed", "text");
 				columnInformed.width(100);
 
-				//get chart timeline link to change color
-
-				chart.zoomTo("week", 3, "firstDate");
 				chart.splitterPosition(650);
+				chart.zoomTo("week", 2);
 				chart.container('container').draw();      // set container and initiate drawing
-
 			});
+
+			function dateFormatter (value){
+				// var stringDate = strtotime(value);
+				var date = new Date(value);
+				var month = date.toLocaleDateString("en-US", {month: "short"});
+				var day = date.getDate();
+				if(day < 10){
+					day = "0"+day;
+				}
+				var year = date.getFullYear()
+				return month + " " + day + ", " + year;
+			}
 		</script>
 	</body>
 </html>
