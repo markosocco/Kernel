@@ -246,26 +246,26 @@ class controller extends CI_Controller
 				}
 
 				// // check for employee assessment
-				$data['latestAssessmentEmployee'] = $this->model->getLatestAssessmentEmployee();
-
-				foreach($data['latestAssessmentDepartment'] as $latestAssessment){
-
-					$isFound = $this->model->checkAssessmentDepartment($latestAssessment['users_USERID']);
-
-					if(!$isFound){
-
-						$completeness = $this->model->compute_completeness_employee($latestAssessment['users_USERID']);
-						$timeliness = $this->model->compute_timeliness_employee($latestAssessment['users_USERID']);
-
-						$progressData = array(
-							'departments_DEPARTMENTID' => $latestAssessment['users_USERID'],
-							'DATE' => date('Y-m-d'),
-							'COMPLETENESS' => $completeness['completeness'],
-							'TIMELINESS' => $timeliness['timeliness']
-						);
-						$this->model->addAssessmentDepartment($progressData);
-					}
-				}
+				// $data['latestAssessmentEmployee'] = $this->model->getLatestAssessmentEmployee();
+				//
+				// foreach($data['latestAssessmentDepartment'] as $latestAssessment){
+				//
+				// 	$isFound = $this->model->checkAssessmentDepartment($latestAssessment['users_USERID']);
+				//
+				// 	if(!$isFound){
+				//
+				// 		$completeness = $this->model->compute_completeness_employee($latestAssessment['users_USERID']);
+				// 		$timeliness = $this->model->compute_timeliness_employee($latestAssessment['users_USERID']);
+				//
+				// 		$progressData = array(
+				// 			'departments_DEPARTMENTID' => $latestAssessment['users_USERID'],
+				// 			'DATE' => date('Y-m-d'),
+				// 			'COMPLETENESS' => $completeness['completeness'],
+				// 			'TIMELINESS' => $timeliness['timeliness']
+				// 		);
+				// 		$this->model->addAssessmentDepartment($progressData);
+				// 	}
+				// }
 
 				redirect('controller/dashboard');
 

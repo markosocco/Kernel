@@ -503,7 +503,26 @@ desired effect
                 $counter++;
               }
 
-              var $link = "<?php echo base_url("index.php/controller/taskTodo"); ?>"
+              1 - project gantt
+2 - delegate
+3 - to do
+4 - monitor
+5 - project documents
+6 - rfc
+
+              var link = "<?php echo base_url("index.php/controller/dashboard"); ?>";
+              if(data['notifications'][i].TYPE == 1)
+                link = "<?php echo base_url("index.php/controller/projectGantt"); ?>";
+              else if(data['notifications'][i].TYPE == 2)
+                link = "<?php echo base_url("index.php/controller/taskDelegate"); ?>";
+              else if(data['notifications'][i].TYPE == 3)
+                link = "<?php echo base_url("index.php/controller/taskTodo"); ?>";
+              else if(data['notifications'][i].TYPE == 4)
+                link = "<?php echo base_url("index.php/controller/taskMonitor"); ?>";
+              else if(data['notifications'][i].TYPE == 5)
+                link = "<?php echo base_url("index.php/controller/projectDocuments"); ?>";
+              else if(data['notifications'][i].TYPE == 6)
+                link = "<?php echo base_url("index.php/controller/rfc"); ?>";
 
               $('.menuNotifs').append("<li><a href = '" + $link + "'><i class='fa fa-users text-aqua'></i>" + data['notifications'][i].DETAILS + "</a></li>");
 
