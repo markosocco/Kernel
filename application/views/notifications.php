@@ -19,7 +19,35 @@
       <!-- Main content -->
 			<section class="content container-fluid">
         <!-- START HERE -->
-        
+
+				<?php if($notifications == null):?>
+					<h3 class="box-title" style="text-align:center">There are no notifications</h3>
+				<?php else:?>
+
+					<div class="box box-danger">
+						<div class="box-header">
+							<!-- <h3 class="box-title">Generate Reports</h3> -->
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<table id="logsList" class="table table-bordered table-hover">
+								<tbody>
+									<?php
+										foreach ($notification as $n) {
+											echo "<tr>";
+												echo "<td>" . $n['TIMESTAMP'] . "</td>";
+												echo "<td>" . $n['DETAILS'] . "</td>";
+											echo "</tr>";
+										}
+									?>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
+				<?php endif;?>
+
 			</section>
 		</div>
 		  <?php require("footer.php"); ?>

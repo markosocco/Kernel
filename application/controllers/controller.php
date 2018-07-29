@@ -2328,7 +2328,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("notifications");
+			$data['notification'] = $this->model->getAllNotificationsByUser();
+
+			$this->load->view("notifications", $data);
 		}
 	}
 

@@ -512,7 +512,7 @@ desired effect
           }
         }
         });
-      } setInterval(checkNotif, 300000);
+      } setInterval(checkNotif, 5000);
 
   </script>
 

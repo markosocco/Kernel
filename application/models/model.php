@@ -1097,7 +1097,7 @@ class model extends CI_Model
   public function getAllNotificationsByUser()
   {
     $condition = "users_USERID = " . $_SESSION['USERID'];
-    $this->db->select('*, datediff(curdate(), timestamp) as "DATEDIFF"');
+    $this->db->select('notifications.*, datediff(curdate(), timestamp) as "DATEDIFF"');
     $this->db->from('notifications');
     $this->db->where($condition);
     $this->db->order_by('TIMESTAMP','DESC');
