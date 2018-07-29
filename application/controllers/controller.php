@@ -72,7 +72,7 @@ class controller extends CI_Controller
 				$sessionData = $this->model->getUserData($data);
 				$this->session->set_userdata($sessionData);
 
-				$notifications = $this->model->getAllNotificationsByUser($sessionData['USERID']);
+				$notifications = $this->model->getAllNotificationsByUser();
 				$this->session->set_userdata('notifications', $notifications);
 
 				$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
@@ -83,9 +83,70 @@ class controller extends CI_Controller
 				$this->model->updateTaskStatus($currentDate);
 				$this->model->updateProjectStatus($currentDate);
 
-				redirect('controller/dashboard');
+				// getTasks2DaysBeforeDeadline
 
-// START NAMI
+				$data['tasks2DaysBeforeDeadline'] = $this->model->getTasks2DaysBeforeDeadline();
+
+				if($data['tasks2DaysBeforeDeadline'] != NULL){
+
+					foreach($data['tasks2DaysBeforeDeadline'] as $task){
+
+						$deadlineDATEDIFF = $task['DATEDIFF'];
+
+						echo $task['TASKID'] . "<br>";
+
+						foreach($_SESSION['notifications'] as $notif){
+
+							echo "datediff - " . $notif['datediff'] . "<br>";
+
+							if($notif['datediff'] == 0){
+								echo  "meron na <br>";
+							} else {
+								// if($deadlineDATEDIFF  == 2){
+								// 	$details = "Deadline for " . $task['TASKTITLE'] . " in  is in 2 days.";
+								// } else if($deadlineDATEDIFF == 1){
+								// 	$details = "Deadline for " . $task['TASKTITLE'] . " in is tomorrow";
+								// } else if($deadlineDATEDIFF == 0){
+								// 	$details = "Deadline for " . $task['TASKTITLE'] . " in  is today.";
+								// } else {
+								// 	$details = $task['TASKTITLE'] . " for  project is already delayed. Please accomplish immediately.";
+								// }
+								// echo $details . "<br>";
+								echo "wala pa <br>";
+
+							}
+						}
+						// $deadlineDATEDIFF = $tasks['DATEDIFF'];
+						// $projectDetails = $this->model->getProjectByID($task['projects_PROJECTID']);
+						// $projectTitle = $projectDetails['PROJECTTITLE'];
+						//
+						// if($tasks  == 2){
+						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is in 2 days.";
+						// } else if($deadlineDATEDIFF == 1){
+						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is tomorrow";
+						// } else if($deadlineDATEDIFF == 0){
+						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is today.";
+						// } else {
+						// 	$details = $task['TASKTITLE'] . " for " . $projectTitle . " project is already delayed. Please accomplish immediately.";
+						// }
+						//
+						// // START: Notifications
+						// $notificationData = array(
+						// 	'users_USERID' => $task['users_USERID'],
+						// 	'DETAILS' => $details,
+						// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+						// 	'status' => 'Unread',
+						// 	'projects_PROJECTID ' => $task['projects_PROJECTID'],
+						// 	'tasks_TASKID' => $task['TASKID'],
+						// 	'TYPE' => 3
+						// );
+
+						// $this->model->addNotification($notificationData);
+						// END: Notification
+					}
+				}
+
+
 
 				// check all delayed tasks
 						// notification for that user
@@ -93,28 +154,24 @@ class controller extends CI_Controller
 						// notification for ACI and PO??
 
 				// check for project weekly progress
-				$data['lastestProgress'] = $this->model->getLatestWeeklyProgress();
+				$data['latestProgress'] = $this->model->getLatestWeeklyProgress();
 
-				foreach($data['lastestProgress'] as $lastestProgressDetails){
+				foreach($data['latestProgress'] as $latestProgressDetails){
 
-					if($lastestProgressDetails['datediff'] == 7){
+					if($latestProgressDetails['datediff'] == 7){
 
-						$projectProgress = $this->model->getOngoingProjectProgressByProject($lastestProgressDetails['projects_PROJECTID']);
-
-						echo $projectProgress;
+						$projectProgress = $this->model->getOngoingProjectProgressByProject($latestProgressDetails['projects_PROJECTID']);
 
 						$progressData = array(
-							'projects_PROJECTID' => $lastestProgressDetails['projects_PROJECTID'],
+							'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
 							'DATE' => date('Y-m-d'),
 							'COMPLETENESS' => $projectProgress
 						);
-						$this->model->addAssessmentProject($progressData);
+						// $this->model->addAssessmentProject($progressData);
 					}
 				}
 
-// END NAMI
-
-				// redirect('controller/dashboard');
+				redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -3788,6 +3845,14 @@ class controller extends CI_Controller
 	}
 
 	/******************** MY PROJECTS END ********************/
+
+	public function myprojects2(){
+
+		$data['completeness_departments'] = $this->model->getTimeliness_AllDepartments();
+
+
+		$this->load->view("myprojects2", $data);
+	}
 
 	public function gantt2(){
 

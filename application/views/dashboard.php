@@ -153,7 +153,9 @@
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																	{
-																		echo $row['COMPLETENESS'];
+																		if($row['datediff'] < 7){
+																			echo $row['COMPLETENESS'];
+																		}
 																	}
 																} ?>%</h2>
 
@@ -243,7 +245,7 @@
 													echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $data['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
-													echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
+													echo "<td>" . $data['DATEDIFF'] . " day/s before deadline</td>";
 												echo "</tr>";
 											}
 										?>
