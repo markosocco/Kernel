@@ -83,84 +83,122 @@ class controller extends CI_Controller
 				$this->model->updateTaskStatus($currentDate);
 				$this->model->updateProjectStatus($currentDate);
 
-				// getTasks2DaysBeforeDeadline
+				$taskDeadlines = $this->model->getTasks2DaysBeforeDeadline();
 
-				$data['tasks2DaysBeforeDeadline'] = $this->model->getTasks2DaysBeforeDeadline();
+				echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'] . "<br>";
 
-				if($data['tasks2DaysBeforeDeadline'] != NULL){
+				if($taskDeadlines != NULL){
 
-					foreach($data['tasks2DaysBeforeDeadline'] as $task){
+					foreach ($taskDeadlines as $taskWithDeadline) {
 
-						$deadlineDATEDIFF = $task['DATEDIFF'];
-						$projectDetails = $this->model->getProjectByID($task['projects_PROJECTID']);
+						$projectDetails = $this->model->getProjectByID($taskWithDeadline['projects_PROJECTID']);
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
-						echo $_SESSION['USERID'] . "<br>";
+						if($taskWithDeadline['DATEDIFF'] == 2)
+							$details = "Deadline for " . $taskWithDeadline['TASKTITLE'] . " in " . $projectTitle . " is in 2 days.";
+						else if($taskWithDeadline['DATEDIFF'] == 1)
+							$details = "Deadline for " . $taskWithDeadline['TASKTITLE'] . " in " . $projectTitle . " is tomorrow";
+						else if($taskWithDeadline['DATEDIFF'] == 0)
+							$details = "Deadline for " . $taskWithDeadline['TASKTITLE']. " in " . $projectTitle . " is today.";
+						else
+							$details = $taskWithDeadline['TASKTITLE'] .  " in " . $projectTitle . " is already delayed. Please accomplish immediately.";
 
-						echo $task['TASKID'] . "<br>";
+						// for task owner
+						$isFound = $this->model->checkNotification($currentDate, $details, $_SESSION['USERID']);
+						if(!$isFound){
+							// START: Notifications
+							$notificationData = array(
+								'users_USERID' => $taskWithDeadline['TASKOWNER'],
+								'DETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'status' => 'Unread',
+								'tasks_TASKID' => $taskWithDeadline['TASKID'],
+								'projects_PROJECTID' => $taskWithDeadline['projects_PROJECTID'],
+								'TYPE' => '3'
+							);
 
-						if($deadlineDATEDIFF  == 2){
-							$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is in 2 days.";
-						} else if($deadlineDATEDIFF == 1){
-							$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is tomorrow";
-						} else if($deadlineDATEDIFF == 0){
-							$details = "Deadline for " . $task['TASKTITLE']. " in " . $projectTitle . " is today.";
-						} else {
-							$details = $task['TASKTITLE'] .  " in " . $projectTitle . " is already delayed. Please accomplish immediately.";
+							$this->model->addNotification($notificationData);
+							// END: Notification
 						}
 
-						// echo $details . "<br>";
+						if($taskWithDeadline['DATEDIFF'] < 0){
 
+							$details = $taskWithDeadline['TASKTITLE'] . " in " . $projectTitle .  " is delayed.";
 
-						foreach($_SESSION['notifications'] as $notif){
+							// for project owner
+							$isFound = $this->model->checkNotification($currentDate, $details, $taskWithDeadline['PROJECTOWNER']);
+							if(!$isFound){
+								// START: Notifications
+								$notificationData = array(
+									'users_USERID' => $taskWithDeadline['PROJECTOWNER'],
+									'DETAILS' => $details,
+									'TIMESTAMP' => date('Y-m-d H:i:s'),
+									'status' => 'Unread',
+									'tasks_TASKID' => $taskWithDeadline['TASKID'],
+									'projects_PROJECTID' => $taskWithDeadline['projects_PROJECTID'],
+									'TYPE' => '1'
+								);
 
-							echo $notif['DETAILS'] . "<br>";
+								$this->model->addNotification($notificationData);
+								// END: Notification
+							}
 
-							if($notif['DETAILS'] == $details && $notif['datediff'] == 0){
+							// for ACI
+							$data['ACI'] = $this->model->getACIbyTask($taskWithDeadline['TASKID']);
+							if($data['ACI'] != NULL) {
+								foreach($data['ACI'] as $ACIusers){
+									$isFound = $this->model->checkNotification($currentDate, $details, $ACIusers['users_USERID']);
 
-								echo  "meron na <br>";
-							} else {
+									if(!$isFound){
+										// START: Notifications
+										$notificationData = array(
+											'users_USERID' => $ACIusers['users_USERID'],
+											'DETAILS' => $details,
+											'TIMESTAMP' => date('Y-m-d H:i:s'),
+											'status' => 'Unread',
+											'tasks_TASKID' => $taskWithDeadline['TASKID'],
+											'projects_PROJECTID' => $taskWithDeadline['projects_PROJECTID'],
+											'TYPE' => '4'
+										);
+										$this->model->addNotification($notificationData);
+									}
+								}
+							}
 
-								echo "wala pa <br>";
+							// for next task person
+							$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskWithDeadline['TASKID']);
+							if($postTasksData['nextTaskID'] != NULL){
 
+								foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
+
+									$nextTaskID = $nextTaskDetails['tasks_POSTTASKID'];
+									$postTasksData['users'] = $this->model->getRACIbyTask($nextTaskID);
+									$nextTaskTitle = $nextTaskDetails['TASKTITLE'];
+
+									foreach($postTasksData['users'] as $postTasksDataUsers){
+										$details = "Pre-requisite task of " . $nextTaskTitle . " in " . $projectTitle . " is delayed.";
+
+										$isFound = $this->model->checkNotification($currentDate, $details, $postTasksDataUsers['users_USERID']);
+
+										if(!$isFound){
+											// START: Notifications
+											$notificationData = array(
+												'users_USERID' => $postTasksDataUsers['users_USERID'],
+												'DETAILS' => $details,
+												'TIMESTAMP' => date('Y-m-d H:i:s'),
+												'status' => 'Unread',
+												'tasks_TASKID' => $taskWithDeadline['TASKID'],
+												'projects_PROJECTID' => $taskWithDeadline['projects_PROJECTID'],
+												'TYPE' => '4'
+											);
+											$this->model->addNotification($notificationData);
+										}
+									}
+								}
 							}
 						}
-						// $deadlineDATEDIFF = $tasks['DATEDIFF'];
-						// $projectDetails = $this->model->getProjectByID($task['projects_PROJECTID']);
-						// $projectTitle = $projectDetails['PROJECTTITLE'];
-						//
-						// if($tasks  == 2){
-						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is in 2 days.";
-						// } else if($deadlineDATEDIFF == 1){
-						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is tomorrow";
-						// } else if($deadlineDATEDIFF == 0){
-						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is today.";
-						// } else {
-						// 	$details = $task['TASKTITLE'] . " for " . $projectTitle . " project is already delayed. Please accomplish immediately.";
-						// }
-						//
-						// // START: Notifications
-						// $notificationData = array(
-						// 	'users_USERID' => $task['users_USERID'],
-						// 	'DETAILS' => $details,
-						// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
-						// 	'status' => 'Unread',
-						// 	'projects_PROJECTID ' => $task['projects_PROJECTID'],
-						// 	'tasks_TASKID' => $task['TASKID'],
-						// 	'TYPE' => 3
-						// );
-
-						// $this->model->addNotification($notificationData);
-						// END: Notification
 					}
 				}
-
-
-
-				// check all delayed tasks
-						// notification for that user
-						// notification for post req na delayed
-						// notification for ACI and PO??
 
 				// check for project weekly progress
 				$data['latestProgress'] = $this->model->getLatestWeeklyProgress();
