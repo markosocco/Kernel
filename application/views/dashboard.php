@@ -153,7 +153,9 @@
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																	{
-																		echo $row['COMPLETENESS'];
+																		if($row['datediff'] < 7){
+																			echo $row['COMPLETENESS'];
+																		}
 																	}
 																} ?>%</h2>
 
@@ -200,11 +202,11 @@
 				<!-- Main row -->
 				<div class="row">
 					<!-- Left col -->
-					<?php if($delayedTaskPerUser != NULL || $tasks2DaysBeforeDeadline != NULL): ?>
+					<?php if($tasks2DaysBeforeDeadline != NULL): ?>
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Tasks To Do (<?php echo count($delayedTaskPerUser) + count($tasks2DaysBeforeDeadline);?>)</h3>
+								<h3 class="box-title">Tasks To Do (<?php echo count($tasks2DaysBeforeDeadline);?>)</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -218,34 +220,29 @@
 										</thead>
 										<tbody>
 										<?php
-											foreach ($delayedTaskPerUser as $row)
-											{
-												if($row['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-													$endDate = date_create($row['TASKENDDATE']);
-												else
-													$endDate = date_create($row['TASKADJUSTEDENDDATE']);
 
-												echo "<tr class='clickable deadline' style='color:red'>";
-													echo "<td>" . $row['PROJECTTITLE'] . "</td>";
-													echo "<td>" . $row['TASKTITLE'] . "</td>";
-													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
-													echo "<td> DELAYED </td>";
-												echo "</tr>";
-											}
 											foreach ($tasks2DaysBeforeDeadline as $data)
 											{
+
 												if($data['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 													$endDate = date_create($data['TASKENDDATE']);
 												else
 													$endDate = date_create($data['TASKADJUSTEDENDDATE']);
 
+												if($data['DATEDIFF'] < 0){
+													$status = "DELAYED";
+												} else {
+													$status = $data['DATEDIFF'] . " day/s before deadline";
+												}
+
 												echo "<tr class='clickable deadline'>";
 													echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 													echo "<td>" . $data['TASKTITLE'] . "</td>";
 													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
-													echo "<td>" . $data['TASKDATEDIFF'] . " day/s before deadline</td>";
+													echo "<td>" . $status . "</td>";
 												echo "</tr>";
 											}
+
 										?>
 										</tbody>
 									</table>
@@ -401,6 +398,7 @@
 											<tbody>
 												<?php
 													foreach($toAcknowledgeDocuments as $row){
+
 														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
 															echo "<tr class='clickable'>";
 															echo"
@@ -413,7 +411,6 @@
 																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
 																echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 																echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
-
 
 																if($row['ACKNOWLEDGEDDATE'] != ''){
 																	echo "<td align='center'>Acknowledged</td>";

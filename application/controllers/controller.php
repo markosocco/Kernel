@@ -72,7 +72,7 @@ class controller extends CI_Controller
 				$sessionData = $this->model->getUserData($data);
 				$this->session->set_userdata($sessionData);
 
-				$notifications = $this->model->getAllNotificationsByUser($sessionData['USERID']);
+				$notifications = $this->model->getAllNotificationsByUser();
 				$this->session->set_userdata('notifications', $notifications);
 
 				$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
@@ -83,9 +83,79 @@ class controller extends CI_Controller
 				$this->model->updateTaskStatus($currentDate);
 				$this->model->updateProjectStatus($currentDate);
 
-				redirect('controller/dashboard');
+				// getTasks2DaysBeforeDeadline
 
-// START NAMI
+				$data['tasks2DaysBeforeDeadline'] = $this->model->getTasks2DaysBeforeDeadline();
+
+				if($data['tasks2DaysBeforeDeadline'] != NULL){
+
+					foreach($data['tasks2DaysBeforeDeadline'] as $task){
+
+						$deadlineDATEDIFF = $task['DATEDIFF'];
+						$projectDetails = $this->model->getProjectByID($task['projects_PROJECTID']);
+						$projectTitle = $projectDetails['PROJECTTITLE'];
+
+						echo $_SESSION['USERID'] . "<br>";
+
+						echo $task['TASKID'] . "<br>";
+
+						if($deadlineDATEDIFF  == 2){
+							$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is in 2 days.";
+						} else if($deadlineDATEDIFF == 1){
+							$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is tomorrow";
+						} else if($deadlineDATEDIFF == 0){
+							$details = "Deadline for " . $task['TASKTITLE']. " in " . $projectTitle . " is today.";
+						} else {
+							$details = $task['TASKTITLE'] .  " in " . $projectTitle . " is already delayed. Please accomplish immediately.";
+						}
+
+						// echo $details . "<br>";
+
+
+						foreach($_SESSION['notifications'] as $notif){
+
+							echo $notif['DETAILS'] . "<br>";
+
+							if($notif['DETAILS'] == $details && $notif['datediff'] == 0){
+
+								echo  "meron na <br>";
+							} else {
+
+								echo "wala pa <br>";
+
+							}
+						}
+						// $deadlineDATEDIFF = $tasks['DATEDIFF'];
+						// $projectDetails = $this->model->getProjectByID($task['projects_PROJECTID']);
+						// $projectTitle = $projectDetails['PROJECTTITLE'];
+						//
+						// if($tasks  == 2){
+						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is in 2 days.";
+						// } else if($deadlineDATEDIFF == 1){
+						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is tomorrow";
+						// } else if($deadlineDATEDIFF == 0){
+						// 	$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is today.";
+						// } else {
+						// 	$details = $task['TASKTITLE'] . " for " . $projectTitle . " project is already delayed. Please accomplish immediately.";
+						// }
+						//
+						// // START: Notifications
+						// $notificationData = array(
+						// 	'users_USERID' => $task['users_USERID'],
+						// 	'DETAILS' => $details,
+						// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+						// 	'status' => 'Unread',
+						// 	'projects_PROJECTID ' => $task['projects_PROJECTID'],
+						// 	'tasks_TASKID' => $task['TASKID'],
+						// 	'TYPE' => 3
+						// );
+
+						// $this->model->addNotification($notificationData);
+						// END: Notification
+					}
+				}
+
+
 
 				// check all delayed tasks
 						// notification for that user
@@ -93,28 +163,24 @@ class controller extends CI_Controller
 						// notification for ACI and PO??
 
 				// check for project weekly progress
-				$data['lastestProgress'] = $this->model->getLatestWeeklyProgress();
+				$data['latestProgress'] = $this->model->getLatestWeeklyProgress();
 
-				foreach($data['lastestProgress'] as $lastestProgressDetails){
+				foreach($data['latestProgress'] as $latestProgressDetails){
 
-					if($lastestProgressDetails['datediff'] == 7){
+					if($latestProgressDetails['datediff'] == 7){
 
-						$projectProgress = $this->model->getOngoingProjectProgressByProject($lastestProgressDetails['projects_PROJECTID']);
-
-						echo $projectProgress;
+						$projectProgress = $this->model->getOngoingProjectProgressByProject($latestProgressDetails['projects_PROJECTID']);
 
 						$progressData = array(
-							'projects_PROJECTID' => $lastestProgressDetails['projects_PROJECTID'],
+							'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
 							'DATE' => date('Y-m-d'),
 							'COMPLETENESS' => $projectProgress
 						);
-						$this->model->addAssessmentProject($progressData);
+						// $this->model->addAssessmentProject($progressData);
 					}
 				}
 
-// END NAMI
-
-				// redirect('controller/dashboard');
+				redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -201,8 +267,6 @@ class controller extends CI_Controller
 			$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-
-			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 			$data['tasks2DaysBeforeDeadline'] = $this->model->getTasks2DaysBeforeDeadline();
 			$data['toAcknowledgeDocuments'] = $this->model->getAllDocumentAcknowledgementByUser($_SESSION['USERID']);
 
@@ -404,7 +468,8 @@ class controller extends CI_Controller
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread',
 				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $id
+				'tasks_TASKID' => $id,
+				'TYPE' => '1'
 			);
 
 			$this->model->addNotification($notificationData);
@@ -427,7 +492,8 @@ class controller extends CI_Controller
 							'DETAILS' => $details,
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
-							'tasks_TASKID' => $id
+							'tasks_TASKID' => $id,
+							'TYPE' => '1'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -449,7 +515,8 @@ class controller extends CI_Controller
 						'TIMESTAMP' => date('Y-m-d H:i:s'),
 						'status' => 'Unread',
 						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $id
+						'tasks_TASKID' => $id,
+						'TYPE' => '4'
 					);
 					$this->model->addNotification($notificationData);
 				}
@@ -500,10 +567,32 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $id
+					'tasks_TASKID' => $id,
+					'TYPE' => '1'
 				);
 
 				$this->model->addNotification($notificationData);
+
+				// notify next ACI
+				$ACIdata['ACI'] = $this->model->getACIbyTask($id);
+				if($ACIdata['ACI'] != NULL) {
+
+					foreach($ACIdata['ACI'] as $ACIusers){
+
+						$details = $taskTitle . " has been completed by " . $userName . " in " . $projectTitle . ".";
+
+						$notificationData = array(
+							'users_USERID' => $ACIusers['users_USERID'],
+							'DETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'status' => 'Unread',
+							'projects_PROJECTID' => $projectID,
+							'tasks_TASKID' => $id,
+							'TYPE' => '4'
+						);
+						$this->model->addNotification($notificationData);
+					}
+				}
 				// END: Notification
 
 				$mainID = $this->model->getParentTask($parentID['tasks_TASKPARENT']);
@@ -549,10 +638,32 @@ class controller extends CI_Controller
 						'TIMESTAMP' => date('Y-m-d H:i:s'),
 						'status' => 'Unread',
 						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $id
+						'tasks_TASKID' => $id,
+						'TYPE' => '1'
 					);
 
 					$this->model->addNotification($notificationData);
+
+					// notify next ACI
+					$ACIdata['ACI'] = $this->model->getACIbyTask($id);
+					if($ACIdata['ACI'] != NULL) {
+
+						foreach($ACIdata['ACI'] as $ACIusers){
+
+							$details = $taskTitle . " has been completed by " . $userName . " in " . $projectTitle . ".";
+
+							$notificationData = array(
+								'users_USERID' => $ACIusers['users_USERID'],
+								'DETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'status' => 'Unread',
+								'projects_PROJECTID' => $projectID,
+								'tasks_TASKID' => $id,
+								'TYPE' => '4'
+							);
+							$this->model->addNotification($notificationData);
+						}
+					}
 					// END: Notification
 
 					// Check and Complete a Project
@@ -589,6 +700,21 @@ class controller extends CI_Controller
 
 						$projectOwnerID = $projectDetails['users_USERID'];
 
+						$details = $projectTitle . " has been completed and will be archived in 7 days.";
+
+						// notify PO
+						$notificationData = array(
+							'users_USERID' => $projectUsers['users_USERID'],
+							'DETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'status' => 'Unread',
+							'projects_PROJECTID' => $projectID,
+							'TYPE' => '1'
+						);
+
+						$this->model->addNotification($notificationData);
+
+						// notify all people involved in that project
 						$data['projectUsers'] = $this->model->getAllUsersByProject($projectIDs);
 
 						if($data['projectUsers'] != NULL){
@@ -597,11 +723,12 @@ class controller extends CI_Controller
 								$details = $projectTitle . " has been completed and will be archived in 7 days.";
 
 								$notificationData = array(
-									'users_USERID' => $projectOwnerID,
+									'users_USERID' => $projectUsers['users_USERID'],
 									'DETAILS' => $details,
 									'TIMESTAMP' => date('Y-m-d H:i:s'),
 									'status' => 'Unread',
 									'projects_PROJECTID' => $projectID,
+									'TYPE' => '1'
 								);
 
 								$this->model->addNotification($notificationData);
@@ -693,7 +820,8 @@ class controller extends CI_Controller
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread',
 				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $taskID
+				'tasks_TASKID' => $taskID,
+				'TYPE' => '3'
 			);
 
 			$this->model->addNotification($notificationData);
@@ -745,7 +873,8 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID
+					'tasks_TASKID' => $taskID,
+					'TYPE' => '4'
 				);
 
 				$this->model->addNotification($notificationData);
@@ -800,7 +929,8 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID
+					'tasks_TASKID' => $taskID,
+					'TYPE' => '4'
 				);
 
 				$this->model->addNotification($notificationData);
@@ -849,7 +979,8 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID
+					'tasks_TASKID' => $taskID,
+					'TYPE' => '4'
 				);
 
 				$this->model->addNotification($notificationData);
@@ -897,7 +1028,8 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID
+					'tasks_TASKID' => $taskID,
+					'TYPE' => '4'
 				);
 
 				$this->model->addNotification($notificationData);
@@ -946,7 +1078,8 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID
+					'tasks_TASKID' => $taskID,
+					'TYPE' => '4'
 				);
 
 				$this->model->addNotification($notificationData);
@@ -994,7 +1127,8 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID
+					'tasks_TASKID' => $taskID,
+					'TYPE' => '4'
 				);
 
 				$this->model->addNotification($notificationData);
@@ -1043,7 +1177,7 @@ class controller extends CI_Controller
 			// END: LOG DETAILS
 
 			// START: Notifications
-			$details = $userName . " requested a change in performer for " . $taskTitle . ".";
+			$details = $userName . " requested a change in performer for " . $taskTitle . " in " . $projectTitle . ".";
 			$taggedUserID = "";
 
 			if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
@@ -1058,31 +1192,13 @@ class controller extends CI_Controller
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread',
 				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $taskID
+				'tasks_TASKID' => $taskID,
+				'TYPE' => '6'
 			);
 
 			$this->model->addNotification($notificationData);
-
-			// notify next ACI
-			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
-			if($ACIdata['ACI'] != NULL) {
-
-				foreach($ACIdata['ACI'] as $ACIusers){
-
-					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
-
-					$notificationData = array(
-						'users_USERID' => $ACIusers['users_USERID'],
-						'DETAILS' => $details,
-						'TIMESTAMP' => date('Y-m-d H:i:s'),
-						'status' => 'Unread',
-						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $taskID
-					);
-					$this->model->addNotification($notificationData);
-				}
 			// END: Notification
-			}
+
 		}
 		else
 		{
@@ -1136,31 +1252,12 @@ class controller extends CI_Controller
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread',
 				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $taskID
+				'tasks_TASKID' => $taskID,
+				'TYPE' => '6'
 			);
 
 			$this->model->addNotification($notificationData);
-
-			// notify next ACI
-			$aciData['ACI'] = $this->model->getACIbyTask($taskID);
-			if($aciData['ACI'] != NULL) {
-
-				foreach($aciData['ACI'] as $ACIusers){
-
-					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
-
-					$notificationData = array(
-						'users_USERID' => $ACIusers['users_USERID'],
-						'DETAILS' => $details,
-						'TIMESTAMP' => date('Y-m-d H:i:s'),
-						'status' => 'Unread',
-						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $taskID
-					);
-					$this->model->addNotification($notificationData);
-				}
-			}
-		// END: Notification
+			// END: Notification
 		}
 		$this->model->addRFC($data);
 
@@ -1217,7 +1314,8 @@ class controller extends CI_Controller
 			'TIMESTAMP' => date('Y-m-d H:i:s'),
 			'status' => 'Unread',
 			'projects_PROJECTID' => $projectID,
-			'tasks_TASKID' => $taskID
+			'tasks_TASKID' => $taskID,
+			'TYPE' => '6'
 		);
 
 		$this->model->addNotification($notificationData);
@@ -1294,7 +1392,8 @@ class controller extends CI_Controller
 						'TIMESTAMP' => date('Y-m-d H:i:s'),
 						'status' => 'Unread',
 						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $taskID
+						'tasks_TASKID' => $taskID,
+						'TYPE' => '3'
 					);
 
 					$this->model->addNotification($notificationData);
@@ -1347,7 +1446,8 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID
+							'tasks_TASKID' => $taskID,
+							'TYPE' => '4'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -1400,7 +1500,8 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID
+							'tasks_TASKID' => $taskID,
+							'TYPE' => '4'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -1455,7 +1556,8 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID
+							'tasks_TASKID' => $taskID,
+							'TYPE' => '4'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -1508,7 +1610,8 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID
+							'tasks_TASKID' => $taskID,
+							'TYPE' => '4'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -1562,7 +1665,8 @@ class controller extends CI_Controller
 						'TIMESTAMP' => date('Y-m-d H:i:s'),
 						'status' => 'Unread',
 						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $taskID
+						'tasks_TASKID' => $taskID,
+						'TYPE' => '4'
 					);
 
 					$this->model->addNotification($notificationData);
@@ -1611,7 +1715,8 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID
+							'tasks_TASKID' => $taskID,
+							'TYPE' => '4'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -1741,7 +1846,8 @@ class controller extends CI_Controller
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread',
 				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $taskID
+				'tasks_TASKID' => $taskID,
+				'TYPE' => '1'
 			);
 
 			$this->model->addNotification($notificationData);
@@ -1764,7 +1870,8 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $id
+							'tasks_TASKID' => $id,
+							'TYPE' => '1'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -1786,7 +1893,8 @@ class controller extends CI_Controller
 						'TIMESTAMP' => date('Y-m-d H:i:s'),
 						'status' => 'Unread',
 						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $taskID
+						'tasks_TASKID' => $taskID,
+						'TYPE' => '4'
 					);
 					$this->model->addNotification($notificationData);
 				}
@@ -1972,7 +2080,7 @@ class controller extends CI_Controller
 			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
 			// 	'status' => 'Unread',
 			// 'projects_PROJECTID' => $projectID,
-			// 'tasks_TASKID' => $taskID
+			// 'tasks_TASKID' => $taskID, 'TYPE' => '4'
 			// );
 			//
 			// $this->model->addNotification($notificationData);
@@ -2273,7 +2381,8 @@ class controller extends CI_Controller
 			$progressData = array(
 				'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
 				'DATE' => date('Y-m-d'),
-				'COMPLETENESS' => 0
+				'COMPLETENESS' => 0,
+				'TIMELINESS' => 0
 			);
 
 			$this->model->addAssessmentProject($progressData);
@@ -2458,7 +2567,8 @@ class controller extends CI_Controller
 									'TIMESTAMP' => date('Y-m-d H:i:s'),
 									'status' => 'Unread',
 									'projects_PROJECTID' => $projectID,
-									'tasks_TASKID' => $a
+									'tasks_TASKID' => $a,
+									'TYPE' => '3'
 								);
 
 								$this->model->addNotification($notificationData);
@@ -2924,7 +3034,8 @@ class controller extends CI_Controller
 									'TIMESTAMP' => date('Y-m-d H:i:s'),
 									'status' => 'Unread',
 									'projects_PROJECTID' => $projectID,
-									'tasks_TASKID' => $a
+									'tasks_TASKID' => $a,
+									'TYPE' => '2'
 								);
 
 								$this->model->addNotification($notificationData);
@@ -3328,7 +3439,8 @@ class controller extends CI_Controller
 										'TIMESTAMP' => date('Y-m-d H:i:s'),
 										'status' => 'Unread',
 										'projects_PROJECTID' => $projectID,
-										'tasks_TASKID' => $a
+										'tasks_TASKID' => $a,
+										'TYPE' => '3'
 									);
 
 									$this->model->addNotification($notificationData);
@@ -3578,6 +3690,7 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $id,
+							'TYPE' => '5'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -3602,7 +3715,7 @@ class controller extends CI_Controller
 
 				// START: Notification
 				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has uploaded " . $fileName . " and needs your acknowledgement.";
+				$details = $userName . " has uploaded " . $fileName . ".";
 
 				$notificationData = array(
 					'users_USERID' => $userIDByDepartment['users_USERID'],
@@ -3610,6 +3723,7 @@ class controller extends CI_Controller
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
 					'projects_PROJECTID' => $id,
+					'TYPE' => '5'
 				);
 
 				$this->model->addNotification($notificationData);
@@ -3642,6 +3756,7 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $id,
+							'TYPE' => '5'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -3737,6 +3852,14 @@ class controller extends CI_Controller
 	}
 
 	/******************** MY PROJECTS END ********************/
+
+	public function myprojects2(){
+
+		$data['completeness_departments'] = $this->model->getTimeliness_AllDepartments();
+
+
+		$this->load->view("myprojects2", $data);
+	}
 
 	public function gantt2(){
 

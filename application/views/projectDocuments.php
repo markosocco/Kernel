@@ -83,7 +83,6 @@
 
 											foreach ($documentsByProject as $row) {
 												if($row['DOCUMENTSTATUS'] == 'For Acknowledgement'){
-													// echo "<script>alert('".$row['DOCUMENTID']." for Acknowledgement');</script>";
 													echo"
 													<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
 														<input type='hidden' name='project_ID' value='" . $projectProfile['PROJECTID'] . "'>
@@ -246,12 +245,13 @@
 				$("#backForm").submit();
 				});
 
-			$(document).on("click", ".document", function() {
+			$(document).on("click", "#doneConfirm", function() {
+				console.log("clicked");
 				var $id = $(this).attr('data-id');
 				$(".acknowledgeDocument").attr("name", "formSubmit");
 				$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
 				$(".acknowledgeDocument").submit();
-				});
+			});
 
 			$(function () {
 		    $('#documentsTable').DataTable({

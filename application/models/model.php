@@ -1095,9 +1095,9 @@ class model extends CI_Model
 
   public function getTasks2DaysBeforeDeadline()
   {
-    $condition = "raci.STATUS = 'Current' AND TASKSTATUS = 'Ongoing' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 2
-    AND DATEDIFF(TASKENDDATE, CURDATE()) >= 0 AND CATEGORY = 3 AND raci.users_USERID = " . $_SESSION['USERID'];
-    $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS TASKDATEDIFF');
+    $condition = "raci.STATUS = 'Current' AND TASKSTATUS != 'Complete' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 2
+     AND CATEGORY = 3 AND raci.users_USERID = " . $_SESSION['USERID'];
+    $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS "DATEDIFF"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -1110,7 +1110,7 @@ class model extends CI_Model
   public function getAllNotificationsByUser()
   {
     $condition = "users_USERID = " . $_SESSION['USERID'];
-    $this->db->select('*');
+    $this->db->select('*, datediff(curdate(), timestamp) as "datediff"');
     $this->db->from('notifications');
     $this->db->where($condition);
     $this->db->order_by('TIMESTAMP','DESC');
@@ -1439,6 +1439,31 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->row_array();
+  }
+
+  public function getCompletess_AllDepartments(){
+
+  }
+
+  public function getTimeliness_AllDepartments(){
+
+    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && raci.status = 'Current' && role = 1";
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->join('users', 'users_USERID = USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getCompleteness_AllEmployees(){
+
+  }
+
+  public function getTimeliness_AllEmployees(){
+
   }
 }
 ?>
