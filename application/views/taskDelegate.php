@@ -87,7 +87,8 @@
 																					<i class="fa fa-edit"></i>
 																				</button> -->
 																				<span data-toggle="modal" data-target="#modal-delegate">
-																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
+																				<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $mainActivity['TASKID'];?>"
+																				data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $mainActivity['TASKID'];?>"
 																				data-title="<?php echo $mainActivity['TASKTITLE'];?>"
 																				data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
@@ -95,6 +96,25 @@
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
+																				<?php if($mainActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
+																					<span data-toggle="modal" data-target="#modal-accept">
+																					<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																					data-toggle="tooltip" data-placement="top" title="Accept Task"
+																					data-id="<?php echo $mainActivity['TASKID'];?>"
+																					data-title="<?php echo $mainActivity['TASKTITLE'];?>"
+																					data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
+																					data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																						<i class="fa fa-thumbs-up"></i>
+																					</button>
+																					</span>
+																				<?php else:?>
+																					<span data-toggle="modal" data-target="#modal-accept">
+																					<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																					data-toggle="tooltip" data-placement="top" title="Accept Task">
+																						<i class="fa fa-thumbs-up"></i>
+																					</button>
+																					</span>
+																				<?php endif;?>
 																			</td>
 																		</tr>
 																	<?php endif;?>
@@ -116,7 +136,8 @@
 																						<i class="fa fa-edit"></i>
 																					</button> -->
 																					<span data-toggle="modal" data-target="#modal-delegate">
-																					<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
+																					<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $subActivity['TASKID'];?>"
+																					data-toggle="tooltip" data-placement="top" title="Delegate"
 																					data-id="<?php echo $subActivity['TASKID'];?>"
 																					data-title="<?php echo $subActivity['TASKTITLE'];?>"
 																					data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
@@ -124,6 +145,25 @@
 																						<i class="fa fa-users"></i>
 																					</button>
 																					</span>
+																					<?php if($subActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
+																						<span data-toggle="modal" data-target="#modal-accept">
+																						<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																						data-toggle="tooltip" data-placement="top" title="Accept Task"
+																						data-id="<?php echo $subActivity['TASKID'];?>"
+																						data-title="<?php echo $subActivity['TASKTITLE'];?>"
+																						data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
+																						data-end="<?php echo $subActivity['TASKENDDATE'];?>">
+																							<i class="fa fa-thumbs-up"></i>
+																						</button>
+																						</span>
+																					<?php else:?>
+																						<span data-toggle="modal" data-target="#modal-accept">
+																						<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																						data-toggle="tooltip" data-placement="top" title="Accept Task">
+																							<i class="fa fa-thumbs-up"></i>
+																						</button>
+																						</span>
+																					<?php endif;?>
 																				</td>
 																			</tr>
 																		<?php endif;?>
@@ -238,7 +278,8 @@
 																				<i class="fa fa-edit"></i>
 																			</button> -->
 																			<span data-toggle="modal" data-target="#modal-delegate">
-																			<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
+																			<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $mainActivity['TASKID'];?>"
+																			data-toggle="tooltip" data-placement="top" title="Delegate"
 																			data-id="<?php echo $mainActivity['TASKID'];?>"
 																			data-title="<?php echo $mainActivity['TASKTITLE'];?>"
 																			data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
@@ -246,6 +287,25 @@
 																				<i class="fa fa-users"></i>
 																			</button>
 																			</span>
+																			<?php if($mainActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
+																				<span data-toggle="modal" data-target="#modal-accept">
+																				<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																				data-toggle="tooltip" data-placement="top" title="Accept Task"
+																				data-id="<?php echo $mainActivity['TASKID'];?>"
+																				data-title="<?php echo $mainActivity['TASKTITLE'];?>"
+																				data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
+																				data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																					<i class="fa fa-thumbs-up"></i>
+																				</button>
+																				</span>
+																			<?php else:?>
+																				<span data-toggle="modal" data-target="#modal-accept">
+																				<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																				data-toggle="tooltip" data-placement="top" title="Accept Task">
+																					<i class="fa fa-thumbs-up"></i>
+																				</button>
+																				</span>
+																			<?php endif;?>
 																		</td>
 																	</tr>
 																<?php endif;?>
@@ -267,7 +327,8 @@
 																					<i class="fa fa-edit"></i>
 																				</button> -->
 																				<span data-toggle="modal" data-target="#modal-delegate">
-																				<button type="button" class="btn btn-primary btn-sm delegateBtn" data-toggle="tooltip" data-placement="top" title="Delegate"
+																				<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $subActivity['TASKID'];?>"
+																				data-toggle="tooltip" data-placement="top" title="Delegate"
 																				data-id="<?php echo $subActivity['TASKID'];?>"
 																				data-title="<?php echo $subActivity['TASKTITLE'];?>"
 																				data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
@@ -275,6 +336,25 @@
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
+																				<?php if($subActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
+																					<span data-toggle="modal" data-target="#modal-accept">
+																					<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																					data-toggle="tooltip" data-placement="top" title="Accept Task"
+																					data-id="<?php echo $subActivity['TASKID'];?>"
+																					data-title="<?php echo $subActivity['TASKTITLE'];?>"
+																					data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
+																					data-end="<?php echo $subActivity['TASKENDDATE'];?>">
+																						<i class="fa fa-thumbs-up"></i>
+																					</button>
+																					</span>
+																				<?php else:?>
+																					<span data-toggle="modal" data-target="#modal-accept">
+																					<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																					data-toggle="tooltip" data-placement="top" title="Accept Task">
+																						<i class="fa fa-thumbs-up"></i>
+																					</button>
+																					</span>
+																				<?php endif;?>
 																			</td>
 																		</tr>
 																	<?php endif;?>
@@ -367,7 +447,7 @@
 																<td>
 																	<div class="radio">
 																	<label>
-																		<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input class = "radioEmp user" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
@@ -416,83 +496,83 @@
 
 												<tbody id='assignment'>
 													<!-- EXECUTIVES -->
-													<!-- <?php foreach($users as $user):?>
+													<?php foreach($users as $user):?>
 														<?php if($user['departments_DEPARTMENTID'] == '1'):?>
 														<tr>
 															<td><?php echo $user['FIRSTNAME'] . " " .  $user['LASTNAME'];?></td>
 															<td class='text-center'>
 																<div class="radio">
 																<label>
-																	<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	<input id='user<?php echo $user['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $user['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	<input id='user<?php echo $user['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $user['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																	<input id='user<?php echo $user['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $user['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 														</tr>
 														<?php endif;?>
-													<?php endforeach;?> -->
+													<?php endforeach;?>
 
 													<!-- ALL DEPARTMENTS -->
-													<!-- <?php foreach($departments as $department):?>
-														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?> -->
-															<!-- <tr>
+													<?php foreach($departments as $department):?>
+														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
+															<tr>
 																<td><?php echo $department['DEPARTMENTNAME'];?></td>
 																<td class='text-center'>
 																	<div class="radio">
 																	<label>
-																		<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td class='text-center'>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td class='text-center'>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
 																<td class='text-center'>
 																	<div class="checkbox">
 																	<label>
-																		<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
 																	</label>
 																</div>
 																</td>
-															</tr> -->
-														<!-- <?endif;?>
-													<?php endforeach;?> -->
+															</tr>
+														 <?endif;?>
+													<?php endforeach;?>
 
 													<!-- STAFF IN DEPARTMENT -->
-													<!-- <tr><td colspan = '7'></td></tr> -->
+													<tr><td colspan = '7'></td></tr>
 
-													<!-- <?php foreach($wholeDept as $employee):?>
+													<?php foreach($wholeDept as $employee):?>
 														<tr>
 															<?php $hasProjects = false;?>
 															<?php foreach($projectCount as $count): ;?>
@@ -516,40 +596,40 @@
 															<?php endforeach;?>
 															<?php if ($hasTasks <= '0'):?>
 																<?php $hasTasks = 0;?>
-															<?php endif;?> -->
+															<?php endif;?>
 
-															<!-- <td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
+															<td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
 															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
 															data-projectCount = "<?php echo $hasProjects;?>"
 															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
 															<td class='text-center'>
 																<div class="radio">
 																<label>
-																	<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $employee['USERID'];?>" required>
+																	<input id='user<?php echo $employee['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="acountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<input id='user<?php echo $employee['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<input id='user<?php echo $employee['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<input id='user<?php echo $employee['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
 																</label>
 															</div>
-															</td class='text-center'> -->
+															</td class='text-center'>
 
 															<!-- <?php $hasProjects = false;?>
 															<?php foreach($projectCount as $count): ;?>
@@ -578,8 +658,8 @@
 																<?php $hasTasks = 0;?>
 																<td align="center">0</td>
 															<?php endif;?> -->
-														<!-- </tr>
-													<?php endforeach;?> -->
+														 </tr>
+													<?php endforeach;?>
 												</tbody>
 											</table>
 											<p>* Only one department/employee is allowed to be assigned</p>
@@ -628,6 +708,28 @@
 			</div>
 		</div>
 
+		<!-- ACCEPT MODAL -->
+		<div class="modal fade" id="modal-accept" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title" id = "acceptTitle">Task Finished</h2>
+						<h4 id="acceptDates">Start Date - End Date (Days)</h4>
+					</div>
+					<div class="modal-body">
+						<h4 id ="early" style="margin-top:0">Are you sure you want to accept this task?</h4>
+						<form id = "acceptForm" action="acceptTask" method="POST" style="margin-bottom:0;">
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
+								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END ACCEPT MODAL -->
+
 				<!-- END MODALS -->
 
 			</section>
@@ -639,7 +741,6 @@
 			$("#tasks").addClass("active");
 			$("#taskDelegate").addClass("active");
 			$("#allTasks").hide();
-
 
 			$(document).on("click", "#viewAll", function()
 			{
@@ -695,102 +796,13 @@
 						dataType: 'json',
 						success:function(data)
 						{
-							$("#assignment").html();
-							// EXECUTIVES
-							for(u=0; data['users'].length > u; u++)
+							for(x=0; data['raci'].length >x; x++)
 							{
-								if(data['users'][u].departments_DEPARTMENTID == '1')
+								$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('checked', true);
+								if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4') && <?php echo $_SESSION['usertype_USERTYPEID'];?> == '4')
 								{
-									$("#assignment").append(
-										"<tr>" + "<td>" + data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME + "</td>" +
-										"<td class='text-center'> <div class ='radio'>" +
-										"<label>" + "<input class = 'radioEmp' type ='radio' name='responsibleEmp' value='" +
-										data['users'][u].USERID + "' required>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='accountableEmp[]' value='" +
-										data['users'][u].USERID + "'>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='consultedEmp[]' value='" +
-										data['users'][u].USERID + "'>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='informedEmp[]' value='" +
-										data['users'][u].USERID + "'>" +
-										"</label" + "</div>" + "</td>" + "</tr>");
+									$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('disabled', true);
 								}
-							}
-
-							// DEPARTMENTS
-							for(d=0; data['departments'].length > d; d++)
-							{
-								if(data['departments'][d].DEPARTMENTID != '<?php echo $_SESSION['departments_DEPARTMENTID'];?>' &&
-										data['departments'][d].DEPARTMENTID != '1')
-								{
-									$("#assignment").append(
-										"<tr>" + "<td>" + data['departments'][d].DEPARTMENTNAME + "</td>" +
-										"<td class='text-center'> <div class ='radio'>" +
-										"<label>" + "<input class = 'radioEmp' type ='radio' name='responsibleEmp' value='" +
-										data['departments'][d].users_DEPARTMENTHEAD + "' required>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='accountableEmp[]' value='" +
-										data['departments'][d].users_DEPARTMENTHEAD + "'>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='consultedEmp[]' value='" +
-										data['departments'][d].users_DEPARTMENTHEAD + "'>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='informedEmp[]' value='" +
-										data['departments'][d].users_DEPARTMENTHEAD + "'>" +
-										"</label" + "</div>" + "</td>" + "</tr>");
-								}
-							}
-
-							// DEPT EMPLOYEES
-							for(e=0; data['wholeDept'].length > e; e++)
-							{
-								var hasProjects = false;
-								for (p=0; data['projectCount'].length > p; p++)
-								{
-									var hasProjects = false;
-									if(data['projectCount'][p].USERID == data['wholeDept'][e].USERID)
-									{
-										var hasProjects = data['projectCount'][p].projectCount;
-										break;
-									}
-								}
-								if(hasProjects <= '0')
-									hasProjects = 0;
-
-									var hasTasks = false;
-									for (t=0; data['taskCount'].length > t; t++)
-									{
-										var hasTasks = false;
-										if(data['taskCount'][t].USERID == data['wholeDept'][e].USERID)
-										{
-											var hasTasks = data['taskCount'][t].projectCount;
-											break;
-										}
-									}
-									if(hasTasks <= '0')
-										hasTasks = 0;
-
-									$("#assignment").append(
-										"<tr>" + "<td class='clickable moreInfo' data-id='" +
-										data['wholeDept'][e].USERID + "' data-name='" + data['wholeDept'][e].FIRSTNAME + " " +
-										data['wholeDept'][e].LASTNAME + "' data-projectCount='" + hasProjects + "' " +
-										"data-taskCount='" + hasTasks + "'>" + data['wholeDept'][e].FIRSTNAME + " " + data['wholeDept'][e].LASTNAME
-										+ "</td>" +
-										"<td class='text-center'> <div class ='radio'>" +
-										"<label>" + "<input class = 'radioEmp' type ='radio' name='responsibleEmp' value='" +
-										data['wholeDept'][e].USERID + "' required>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='accountableEmp[]' value='" +
-										data['wholeDept'][e].USERID + "'>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='consultedEmp[]' value='" +
-										data['wholeDept'][e].USERID + "'>" +
-										"</label" + "</div>" + "</td>" + "<td class='text-center'> <div class ='checkbox'>" +
-										"<label>" + "<input class = 'checkEmp' type ='checkbox' name='informedEmp[]' value='" +
-										data['wholeDept'][e].USERID + "'>" +
-										"</label" + "</div>" + "</td>" + "</tr>");
 							}
 						},
 						error:function(data)
@@ -894,6 +906,9 @@
 			 });
 
 			 $("#confirmDelegateBtn").on("click", function(){
+				 $(".checkEmp").prop('disabled', false);
+				 $(".radioEmp").prop('disabled', false);
+
 				 var $id = $(this).attr('data-id');
 				 $("#raciForm").attr("name", "formSubmit");
 				 $("#raciForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
@@ -905,6 +920,29 @@
 				$("#raciDelegate").show();
 				$("#delegateConfirm").hide();
 			});
+
+			// ACCEPT SCRIPT
+			$("body").on('click','.acceptBtn',function(){
+			 var $id = $(this).attr('data-id');
+			 var $title = $(this).attr('data-title');
+			 var $start = new Date($(this).attr('data-start'));
+			 var $end = new Date($(this).attr('data-end'));
+			 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+			 $("#acceptTitle").html($title);
+			 $("#acceptDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+			 if($diff > 1)
+				 $("#acceptDates").append(" days)");
+			 else
+				 $("#acceptDates").append(" day)");
+			 $("#acceptConfirm").attr("data-id", $id); //pass data id to confirm button
+		 });
+
+		 $("body").on('click','#acceptConfirm',function(){
+			 var $id = $("#acceptConfirm").attr('data-id');
+			 $("#acceptForm").attr("name", "formSubmit");
+			 $("#acceptForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+		 });
+
 
 		</script>
 	</body>
