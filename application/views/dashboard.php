@@ -401,6 +401,7 @@
 											<tbody>
 												<?php
 													foreach($toAcknowledgeDocuments as $row){
+
 														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
 															echo "<tr class='clickable'>";
 															echo"
@@ -413,7 +414,6 @@
 																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
 																echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 																echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
-
 
 																if($row['ACKNOWLEDGEDDATE'] != ''){
 																	echo "<td align='center'>Acknowledged</td>";
