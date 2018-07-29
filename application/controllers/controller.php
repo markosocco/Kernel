@@ -92,26 +92,35 @@ class controller extends CI_Controller
 					foreach($data['tasks2DaysBeforeDeadline'] as $task){
 
 						$deadlineDATEDIFF = $task['DATEDIFF'];
+						$projectDetails = $this->model->getProjectByID($task['projects_PROJECTID']);
+						$projectTitle = $projectDetails['PROJECTTITLE'];
+
+						echo $_SESSION['USERID'] . "<br>";
 
 						echo $task['TASKID'] . "<br>";
 
+						if($deadlineDATEDIFF  == 2){
+							$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is in 2 days.";
+						} else if($deadlineDATEDIFF == 1){
+							$details = "Deadline for " . $task['TASKTITLE'] . " in " . $projectTitle . " is tomorrow";
+						} else if($deadlineDATEDIFF == 0){
+							$details = "Deadline for " . $task['TASKTITLE']. " in " . $projectTitle . " is today.";
+						} else {
+							$details = $task['TASKTITLE'] .  " in " . $projectTitle . " is already delayed. Please accomplish immediately.";
+						}
+
+						// echo $details . "<br>";
+
+
 						foreach($_SESSION['notifications'] as $notif){
 
-							echo "datediff - " . $notif['datediff'] . "<br>";
+							echo $notif['DETAILS'] . "<br>";
 
-							if($notif['datediff'] == 0){
+							if($notif['DETAILS'] == $details && $notif['datediff'] == 0){
+
 								echo  "meron na <br>";
 							} else {
-								// if($deadlineDATEDIFF  == 2){
-								// 	$details = "Deadline for " . $task['TASKTITLE'] . " in  is in 2 days.";
-								// } else if($deadlineDATEDIFF == 1){
-								// 	$details = "Deadline for " . $task['TASKTITLE'] . " in is tomorrow";
-								// } else if($deadlineDATEDIFF == 0){
-								// 	$details = "Deadline for " . $task['TASKTITLE'] . " in  is today.";
-								// } else {
-								// 	$details = $task['TASKTITLE'] . " for  project is already delayed. Please accomplish immediately.";
-								// }
-								// echo $details . "<br>";
+
 								echo "wala pa <br>";
 
 							}
@@ -258,8 +267,6 @@ class controller extends CI_Controller
 			$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['parkedTeamProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-
-			$data['delayedTaskPerUser'] = $this->model->getDelayedTasksByUser();
 			$data['tasks2DaysBeforeDeadline'] = $this->model->getTasks2DaysBeforeDeadline();
 			$data['toAcknowledgeDocuments'] = $this->model->getAllDocumentAcknowledgementByUser($_SESSION['USERID']);
 
