@@ -84,28 +84,23 @@
 													<td width="27.5%"><b>
 														<?php
 
+															$depts = array();
+
 															foreach ($tasks as $row)
 															{
 																if($value['TASKTITLE'] == $row['TASKTITLE'])
 																{
-																	$depts = array();
-
 																	foreach ($departments as $row2)
 																	{
 																		if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																		{
-																			// $depts[] = $row2['DEPARTMENTNAME'];
-																			echo $row2['DEPARTMENTNAME'] . ", ";
+																			$depts[] = $row2['DEPARTMENTNAME'];
 																		}
 																	}
-
-																	//TODO: Fix implode shit
-																	// foreach ($depts as $x)
-																	// {
-																	// 	echo $x . ", ";
-																	// }
 																}
 															}
+
+														 echo implode(", ", $depts);
 														?>
 													</b></td>
 
@@ -137,7 +132,7 @@
 															<?php foreach ($templateSubActivity as $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
-																		<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																		<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																		<td><div class="form-group">
 
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -148,12 +143,21 @@
 																		</div></td>
 																		<td>
 																			<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
-																				<!-- TODO: sticky departments -->
-																				<?php foreach ($departments as $row): ?>
-																					<option>
-																						<?php echo $row['DEPARTMENTNAME']; ?>
-																					</option>
-																				<?php endforeach; ?>
+																				<?php
+																					foreach ($tasks as $row)
+																					{
+																						if($value['TASKTITLE'] == $row['TASKTITLE'])
+																						{
+																							foreach ($departments as $row2Key => $row2)
+																							{
+																								if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																								{
+																									echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																								}
+																							}
+																						}
+																					}
+																				?>
 																			</select>
 																		</td>
 																		<td><div class="form-group">
@@ -191,7 +195,7 @@
 															<?php else: ?>
 
 																<tr>
-																	<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																	<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 									                <td><div class="form-group">
 
 																		<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -206,9 +210,7 @@
 																				{
 																					if($value['TASKTITLE'] == $row['TASKTITLE'])
 																					{
-																						$depts = array();
-
-																						foreach ($departments as $row2)
+																						foreach ($departments as $row2Key => $row2)
 																						{
 																							if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																							{
@@ -289,28 +291,23 @@
 												<td width="27.5%"><b>
 													<?php
 
+														$depts = array();
+
 														foreach ($tasks as $row)
 														{
 															if($value['TASKTITLE'] == $row['TASKTITLE'])
 															{
-																$depts = array();
-
 																foreach ($departments as $row2)
 																{
 																	if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																	{
-																		// $depts[] = $row2['DEPARTMENTNAME'];
-																		echo $row2['DEPARTMENTNAME'] . ", ";
+																		$depts[] = $row2['DEPARTMENTNAME'];
 																	}
 																}
-
-																//TODO: Fix implode shit
-																// foreach ($depts as $x)
-																// {
-																// 	echo $x . ", ";
-																// }
 															}
 														}
+
+													 echo implode(", ", $depts);
 													?>
 												</b></td>
 
@@ -338,7 +335,7 @@
 												<td width="5%"></td>
 											</tr>
 											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 				                <td><div class="form-group">
 
 													<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -353,9 +350,7 @@
 															{
 																if($value['TASKTITLE'] == $row['TASKTITLE'])
 																{
-																	$depts = array();
-
-																	foreach ($departments as $row2)
+																	foreach ($departments as $row2Key => $row2)
 																	{
 																		if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																		{
@@ -441,44 +436,22 @@
 			 var mainAct = $(this).attr('data-mainAct');
 			 var counter = parseInt($(this).attr('data-sum'));
 			 var key = $(this).attr('data-key');
+			 var depts = $(this).attr('data-dept');
+			 var d = JSON.parse(depts);
 
-			 // foreach ($tasks as $row)
-			 // {
-				//  if($value['TASKTITLE'] == $row['TASKTITLE'])
-				//  {
-				// 	 $depts = array();
-			 //
-				// 	 foreach ($departments as $row2)
-				// 	 {
-				// 		 if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
-				// 		 {
-				// 			 echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
-				// 		 }
-				// 	 }
-				//  }
-			 // }
+			 var department = "";
 
-			 // $('#table_' + currTable).append("<tr id='table_" +
-				// 					currTable + "_Row_" + (i + 1) +
-				// 					"'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
-				// 					mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
-				// 					"<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
-				// 					'<?php foreach ($tasks as $row):?> <?php if ($value[$key][]) ?> <?php endforeach; ?>' +
-				// 					"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
-				// 					"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
-				// 					"name='taskStartDate[]' id='start_" + mainAct + "-" + counter +"' data-mainAct = '" + mainAct + "' data-num='" + counter +
-				// 					"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
-				// 					"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
-				// 					"name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
-				// 					"' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod_" + mainAct + "-" + counter + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
-				// 					" counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
+			 for (var k = 0; k < d.length; k++)
+			 {
+				 department = department + "<option>" + d[k] + "</option>";
+			 }
 
 				 $('#table_' + currTable).append("<tr id='table_" +
 				 						currTable + "_Row_" + (i + 1) +
 										"'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
 										mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
 										"<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
-										"<?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
+										 department +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
 										"name='taskStartDate[]' id='start_" + mainAct + "-" + counter +"' data-mainAct = '" + mainAct + "' data-num='" + counter +
@@ -521,7 +494,6 @@
 				{
 							$("form").attr('action', 'projectGantt');
 							$("form").submit();
-							console.log("hello");
 					});
 
 			 });
