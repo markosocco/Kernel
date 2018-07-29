@@ -1210,16 +1210,28 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getOngoingProjectProgressByProject($projectID)
+  public function getCompleteness_Project($projectID)
   {
     $condition = "CATEGORY = 3 AND tasks.projects_PROJECTID = " . $projectID;
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "progress"');
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "COMPLETENESS"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->where($condition);
 
-    return $this->db->get()->row('progress');
+    return $this->db->get()->row('COMPLETENESS');
+  }
+
+  public function getTimeliness_Project($projectID)
+  {
+    $condition = "CATEGORY = 3 AND tasks.projects_PROJECTID = " . $projectID;
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "TIMELINESS"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->row('TIMELINESS');
   }
 
   public function addToDependencies($data)
@@ -1289,8 +1301,17 @@ class model extends CI_Model
     return true;
   }
 
+  public function checkAssessmentProject(){
+    $condition = "datediff(curdate(), DATE) = 7";
+    $this->db->select('*');
+    $this->db->from('assessmentProject');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   public function getLatestWeeklyProgress(){
-    $condition = "datediff(curdate(), DATE) <= 7";
+    $condition = "datediff(curdate(), DATE) <= 7 && datediff(curdate(), DATE) > 0 ";
     $this->db->select('*,  datediff(curdate(), DATE) as "datediff"');
     $this->db->from('assessmentProject');
     $this->db->where($condition);

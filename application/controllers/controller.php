@@ -205,20 +205,28 @@ class controller extends CI_Controller
 
 				foreach($data['latestProgress'] as $latestProgressDetails){
 
-					if($latestProgressDetails['datediff'] == 7){
+					echo "<br> current project id = " . $latestProgressDetails['projects_PROJECTID'] . "<br><br>";
 
-						$projectProgress = $this->model->getOngoingProjectProgressByProject($latestProgressDetails['projects_PROJECTID']);
+					$isFound = $this->model->checkAssessmentProject();
 
-						$progressData = array(
-							'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
-							'DATE' => date('Y-m-d'),
-							'COMPLETENESS' => $projectProgress
-						);
-						// $this->model->addAssessmentProject($progressData);
+					foreach ($isFound as $value) {
+						if($value['projects_PROJECTID'] == $latestProgressDetails['projects_PROJECTID']){
+
+							$completeness = $this->model->getCompleteness_Project($latestProgressDetails['projects_PROJECTID']);
+							$timeliness = $this->model->getTimeliness_Project($latestProgressDetails['projects_PROJECTID']);
+
+							$progressData = array(
+								'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
+								'DATE' => date('Y-m-d'),
+								'COMPLETENESS' => $completeness,
+								'TIMELINESS' => $timeliness
+							);
+							$this->model->addAssessmentProject($progressData);
+						}
 					}
 				}
 
-				redirect('controller/dashboard');
+				// redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
