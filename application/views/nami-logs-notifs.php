@@ -101,4 +101,5 @@ if($data['ACI'] != NULL) {
 		);
 		$this->model->addNotification($notificationData);
 	}
+
 ?>

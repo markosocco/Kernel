@@ -205,28 +205,69 @@ class controller extends CI_Controller
 
 				foreach($data['latestProgress'] as $latestProgressDetails){
 
-					echo "<br> current project id = " . $latestProgressDetails['projects_PROJECTID'] . "<br><br>";
+					echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
 
-					$isFound = $this->model->checkAssessmentProject();
+					$isFound = $this->model->checkAssessmentProject($latestProgressDetails['projects_PROJECTID']);
 
-					foreach ($isFound as $value) {
-						if($value['projects_PROJECTID'] == $latestProgressDetails['projects_PROJECTID']){
+					if(!$isFound){
+						$completeness = $this->model->compute_completeness_project($latestProgressDetails['projects_PROJECTID']);
+						$timeliness = $this->model->compute_timeliness_project($latestProgressDetails['projects_PROJECTID']);
 
-							$completeness = $this->model->getCompleteness_Project($latestProgressDetails['projects_PROJECTID']);
-							$timeliness = $this->model->getTimeliness_Project($latestProgressDetails['projects_PROJECTID']);
-
-							$progressData = array(
-								'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
-								'DATE' => date('Y-m-d'),
-								'COMPLETENESS' => $completeness,
-								'TIMELINESS' => $timeliness
-							);
-							$this->model->addAssessmentProject($progressData);
-						}
+						$progressData = array(
+							'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
+							'DATE' => date('Y-m-d'),
+							'COMPLETENESS' => $completeness['completeness'],
+							'TIMELINESS' => $timeliness['timeliness']
+						);
+						$this->model->addAssessmentProject($progressData);
 					}
 				}
 
-				// redirect('controller/dashboard');
+				// check for department assessment
+				$data['latestAssessmentDepartment'] = $this->model->getLatestAssessmentDepartment();
+
+				foreach($data['latestAssessmentDepartment'] as $latestAssessment){
+
+					$isFound = $this->model->checkAssessmentDepartment($latestAssessment['departments_DEPARTMENTID']);
+
+					if(!$isFound){
+
+						$completeness = $this->model->compute_completeness_department($latestAssessment['departments_DEPARTMENTID']);
+						$timeliness = $this->model->compute_timeliness_department($latestAssessment['departments_DEPARTMENTID']);
+
+						$progressData = array(
+							'departments_DEPARTMENTID' => $latestAssessment['departments_DEPARTMENTID'],
+							'DATE' => date('Y-m-d'),
+							'COMPLETENESS' => $completeness['completeness'],
+							'TIMELINESS' => $timeliness['timeliness']
+						);
+						$this->model->addAssessmentDepartment($progressData);
+					}
+				}
+
+				// // check for employee assessment
+				$data['latestAssessmentEmployee'] = $this->model->getLatestAssessmentEmployee();
+
+				foreach($data['latestAssessmentDepartment'] as $latestAssessment){
+
+					$isFound = $this->model->checkAssessmentDepartment($latestAssessment['users_USERID']);
+
+					if(!$isFound){
+
+						$completeness = $this->model->compute_completeness_employee($latestAssessment['users_USERID']);
+						$timeliness = $this->model->compute_timeliness_employee($latestAssessment['users_USERID']);
+
+						$progressData = array(
+							'departments_DEPARTMENTID' => $latestAssessment['users_USERID'],
+							'DATE' => date('Y-m-d'),
+							'COMPLETENESS' => $completeness['completeness'],
+							'TIMELINESS' => $timeliness['timeliness']
+						);
+						$this->model->addAssessmentDepartment($progressData);
+					}
+				}
+
+				redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -332,10 +373,10 @@ class controller extends CI_Controller
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
 			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
 			$data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
-			$data['employeeCompleteness'] = $this->model->getCompleteness_Employee($_SESSION['USERID']);
-			$data['departmentCompleteness'] = $this->model->getCompleteness_Department($_SESSION['departments_DEPARTMENTID']);
-			$data['employeeTimeliness'] = $this->model->getTimeliness_Employee($_SESSION['USERID']);
-			$data['departmentTimeliness'] = $this->model->getTimeliness_Department($_SESSION['departments_DEPARTMENTID']);
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employee($_SESSION['USERID']);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_department($_SESSION['departments_DEPARTMENTID']);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employee($_SESSION['USERID']);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_department($_SESSION['departments_DEPARTMENTID']);
 
 			$this->load->view("dashboard", $data);
 		}
@@ -2244,10 +2285,10 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			$data['employeeCompleteness'] = $this->model->getCompleteness_EmployeeByProject($_SESSION['USERID'], $id);
-			$data['departmentCompleteness'] = $this->model->getCompleteness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
-			$data['employeeTimeliness'] = $this->model->getTimeliness_EmployeeByProject($_SESSION['USERID'], $id);
-			$data['departmentTimeliness'] = $this->model->getTimeliness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
 
 			$this->load->view("teamGantt", $data);
 		}
@@ -2794,10 +2835,10 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($id);
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
-			$data['employeeCompleteness'] = $this->model->getCompleteness_EmployeeByProject($_SESSION['USERID'], $id);
-			$data['departmentCompleteness'] = $this->model->getCompleteness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
-			$data['employeeTimeliness'] = $this->model->getTimeliness_EmployeeByProject($_SESSION['USERID'], $id);
-			$data['departmentTimeliness'] = $this->model->getTimeliness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
@@ -2882,10 +2923,10 @@ class controller extends CI_Controller
 		$data['consulted'] = $this->model->getAllConsultedByProject($id);
 		$data['informed'] = $this->model->getAllInformedByProject($id);
 
-		$data['employeeCompleteness'] = $this->model->getCompleteness_EmployeeByProject($_SESSION['USERID'], $id);
-		$data['departmentCompleteness'] = $this->model->getCompleteness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
-		$data['employeeTimeliness'] = $this->model->getTimeliness_EmployeeByProject($_SESSION['USERID'], $id);
-		$data['departmentTimeliness'] = $this->model->getTimeliness_DepartmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+		$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
+		$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+		$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
+		$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
 
 		// foreach ($data['ganttData'] as $key => $value) {
 		// 	echo $value['tasks_TASKID'] . " parent is ";
