@@ -381,7 +381,7 @@
 																</div>
 																</td>
 															</tr>
-														 <?endif;?>
+														 <?php endif;?>
 													<?php endforeach;?>
 
 													<!-- STAFF IN DEPARTMENT -->
