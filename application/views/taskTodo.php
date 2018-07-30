@@ -20,7 +20,7 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 
-				<button id = "viewAll" class="btn btn-default pull-right" title="View All Tasks"><i class="fa fa-eye"></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye" data-toggle='tooltip' data-placement='top' title='All Tasks'></i></button>
 				<br><br>
 
 				<div id = "filteredTasks">
@@ -270,9 +270,9 @@
 									<table class='table' id="preReqTable">
 										<thead>
 											<th>Task</th>
-											<th>Start Date</th>
-											<th>End Date</th>
-											<th>Status</th>
+											<th class="text-center">Start Date</th>
+											<th class="text-center">End Date</th>
+											<th class="text-center">Status</th>
 										</thead>
 										<tbody id='preReqDetails'>
 										</tbody>
@@ -393,13 +393,12 @@
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
 								$(".action-" + taskID).append(
-									 '<button type="button"' +
-									 'class="btn btn-warning btn-sm rfcBtn" data-toggle="modal"' +
-									 ' data-target="#modal-request" data-id="' + taskID +
+									 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
+									 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
 									 '" data-title="' + data['tasks'][i].TASKTITLE +
 									 '" data-start="'+ taskStart +
-									 '" data-end="'+ taskEnd +'">' +
-									 '<i class="fa fa-flag"></i></button>');
+									 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request For Change">' +
+									 '<i class="fa fa-flag"></i></button></span>');
 
 										 // AJAX TO CHECK IF DEPENDENCIES ARE COMPLETE
 		 								$.ajax({
@@ -428,32 +427,30 @@
 		 										 if(isComplete == 1) // if all pre-requisite tasks are complete, task can be marked done
 		 										 {
 		 											 $(".action-" + dependencyData['taskID'].TASKID).append(
-		 													'<button type="button"' +
-		 													'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
-		 													'data-target="#modal-done" data-id="' + taskID +
+		 													'<span data-toggle="modal" data-target="#modal-done"><button type="button"' +
+		 													'class="btn btn-success btn-sm doneBtn" data-id="' + taskID +
 		 													'" data-title="' + taskTitle + '"' +
 		 													'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 													'" data-end="'+ endDate +'">' +
-		 													'<i class="fa fa-check"></i></button>');
+		 													'" data-end="'+ endDate +'" data-toggle="tooltip" data-placement="top" title="Done">' +
+		 													'<i class="fa fa-check"></i></button></span>');
 		 										 }
 												 else
 												 {
 													 $(".action-" + dependencyData['taskID'].TASKID).append(
 														 '<button disabled type="button"' +
 														 'class="btn btn-success btn-sm">' +
-														 '<i class="fa fa-check"></i></button>');
+														 '<i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Pre-req/s have not been accomplished"></i></button>');
 												 }
 		 									 }
 		 									 else // if task has no prerequisites
 		 									 {
 		 										 $('.action-' + dependencyData['taskID'].TASKID).append(
-		 												'<button type="button"' +
-		 												'class="btn btn-success btn-sm doneBtn" data-toggle="modal"' +
-		 												'data-target="#modal-done" data-id="' + taskID +
+		 												'<span data-toggle="modal" data-target="#modal-done"><button type="button"' +
+		 												'class="btn btn-success btn-sm doneBtn" data-id="' + taskID +
 		 												'" data-title="' + taskTitle + '"' +
 		 												'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 												'" data-end="'+ endDate +'">' +
-		 												'<i class="fa fa-check"></i></button>');
+		 												'" data-end="'+ endDate +'" data-toggle="tooltip" data-placement="top" title="Done">' +
+		 												'<i class="fa fa-check"></i></button></span>');
 		 									 }
 		 								 },
 		 								 error:function()
@@ -466,12 +463,12 @@
 							{
 								$(".action-" + taskID).append(
 									 '<button disabled type="button"' +
-									 'class="btn btn-warning btn-sm">' +
+									 'class="btn btn-warning btn-sm"  data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
 									 '<i class="fa fa-flag"></i></button>');
 
 								 $(".action-" + taskID).append(
 									 '<button disabled type="button"' +
-									 'class="btn btn-success btn-sm">' +
+									 'class="btn btn-success btn-sm"  data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
 									 '<i class="fa fa-check"></i></button>');
 							}
 						}
@@ -526,12 +523,12 @@
 
 				if($("#allTasks").css("display") == "none")
 				{
-					$("#viewAll").html("<i class='fa fa-eye'></i>");
+					$("#viewAll").html("<i class='fa fa-eye' data-toggle='tooltip' data-placement='top' title='All Tasks'></i>");
 					$("#viewAll").attr("title", "View All Tasks");
 				}
 				else
 				{
-					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
+					$("#viewAll").html("<i class='fa fa-eye-slash' data-toggle='tooltip' data-placement='top' title='To Do Tasks'></i>");
 					$("#viewAll").attr("title", "Hide All Tasks");
 				}
 
@@ -708,18 +705,18 @@
 
 							if(preReqData['dependencies'][i].TASKSTATUS == "Complete")
 							{
-								var status = "<i class='fa fa-circle' style='color:green'></i>"
+								var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
 							}
 							else
 							{
-								var status = "<i class='fa fa-circle' style='color:red'></i>"
+								var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Not Completed'></i>"
 							}
 
 							$('#preReqDetails').append(
 													 "<tr>" + "<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
-													 "<td>" + taskStart+"</td>"+
-													 "<td>" + taskEnd +"</td>" +
-													 "<td>" + status + "</td></tr>");
+													 "<td align='center'>" + taskStart+"</td>"+
+													 "<td align='center'>" + taskEnd +"</td>" +
+													 "<td align='center'>" + status + "</td></tr>");
 					 }
 					 $("#preReqTable").show();
 				 }

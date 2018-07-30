@@ -19,7 +19,7 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
         <!-- START HERE -->
-				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top" title="View All"><i class="fa fa-eye"></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top" title="All Tasks"><i class="fa fa-eye"></i></button>
 
 				<br><br>
 
@@ -96,25 +96,16 @@
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
-																				<?php if($mainActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
-																					<span data-toggle="modal" data-target="#modal-accept">
-																					<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																					data-toggle="tooltip" data-placement="top" title="Accept Task"
-																					data-id="<?php echo $mainActivity['TASKID'];?>"
-																					data-title="<?php echo $mainActivity['TASKTITLE'];?>"
-																					data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
-																					data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
-																						<i class="fa fa-thumbs-up"></i>
-																					</button>
-																					</span>
-																				<?php else:?>
-																					<span data-toggle="modal" data-target="#modal-accept">
-																					<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																					data-toggle="tooltip" data-placement="top" title="Accept Task">
-																						<i class="fa fa-thumbs-up"></i>
-																					</button>
-																					</span>
-																				<?php endif;?>
+																				<span data-toggle="modal" data-target="#modal-accept">
+																				<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																				data-toggle="tooltip" data-placement="top" title="Accept Task"
+																				data-id="<?php echo $mainActivity['TASKID'];?>"
+																				data-title="<?php echo $mainActivity['TASKTITLE'];?>"
+																				data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
+																				data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																					<i class="fa fa-thumbs-up"></i>
+																				</button>
+																				</span>
 																			</td>
 																		</tr>
 																	<?php endif;?>
@@ -145,25 +136,16 @@
 																						<i class="fa fa-users"></i>
 																					</button>
 																					</span>
-																					<?php if($subActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
-																						<span data-toggle="modal" data-target="#modal-accept">
-																						<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																						data-toggle="tooltip" data-placement="top" title="Accept Task"
-																						data-id="<?php echo $subActivity['TASKID'];?>"
-																						data-title="<?php echo $subActivity['TASKTITLE'];?>"
-																						data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
-																						data-end="<?php echo $subActivity['TASKENDDATE'];?>">
-																							<i class="fa fa-thumbs-up"></i>
-																						</button>
-																						</span>
-																					<?php else:?>
-																						<span data-toggle="modal" data-target="#modal-accept">
-																						<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																						data-toggle="tooltip" data-placement="top" title="Accept Task">
-																							<i class="fa fa-thumbs-up"></i>
-																						</button>
-																						</span>
-																					<?php endif;?>
+																					<span data-toggle="modal" data-target="#modal-accept">
+																					<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																					data-toggle="tooltip" data-placement="top" title="Accept Task"
+																					data-id="<?php echo $subActivity['TASKID'];?>"
+																					data-title="<?php echo $subActivity['TASKTITLE'];?>"
+																					data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
+																					data-end="<?php echo $subActivity['TASKENDDATE'];?>">
+																						<i class="fa fa-thumbs-up"></i>
+																					</button>
+																					</span>
 																				</td>
 																			</tr>
 																		<?php endif;?>
@@ -287,25 +269,16 @@
 																				<i class="fa fa-users"></i>
 																			</button>
 																			</span>
-																			<?php if($mainActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
-																				<span data-toggle="modal" data-target="#modal-accept">
-																				<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																				data-toggle="tooltip" data-placement="top" title="Accept Task"
-																				data-id="<?php echo $mainActivity['TASKID'];?>"
-																				data-title="<?php echo $mainActivity['TASKTITLE'];?>"
-																				data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
-																				data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
-																					<i class="fa fa-thumbs-up"></i>
-																				</button>
-																				</span>
-																			<?php else:?>
-																				<span data-toggle="modal" data-target="#modal-accept">
-																				<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																				data-toggle="tooltip" data-placement="top" title="Accept Task">
-																					<i class="fa fa-thumbs-up"></i>
-																				</button>
-																				</span>
-																			<?php endif;?>
+																			<span data-toggle="modal" data-target="#modal-accept">
+																			<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																			data-toggle="tooltip" data-placement="top" title="Accept Task"
+																			data-id="<?php echo $mainActivity['TASKID'];?>"
+																			data-title="<?php echo $mainActivity['TASKTITLE'];?>"
+																			data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
+																			data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																				<i class="fa fa-thumbs-up"></i>
+																			</button>
+																			</span>
 																		</td>
 																	</tr>
 																<?php endif;?>
@@ -336,25 +309,16 @@
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
-																				<?php if($subActivity['users_USERID'] == $_SESSION['USERID']):?> <!-- IF TASK TO DELEGATE -->
-																					<span data-toggle="modal" data-target="#modal-accept">
-																					<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																					data-toggle="tooltip" data-placement="top" title="Accept Task"
-																					data-id="<?php echo $subActivity['TASKID'];?>"
-																					data-title="<?php echo $subActivity['TASKTITLE'];?>"
-																					data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
-																					data-end="<?php echo $subActivity['TASKENDDATE'];?>">
-																						<i class="fa fa-thumbs-up"></i>
-																					</button>
-																					</span>
-																				<?php else:?>
-																					<span data-toggle="modal" data-target="#modal-accept">
-																					<button disabled type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																					data-toggle="tooltip" data-placement="top" title="Accept Task">
-																						<i class="fa fa-thumbs-up"></i>
-																					</button>
-																					</span>
-																				<?php endif;?>
+																				<span data-toggle="modal" data-target="#modal-accept">
+																				<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																				data-toggle="tooltip" data-placement="top" title="Accept"
+																				data-id="<?php echo $subActivity['TASKID'];?>"
+																				data-title="<?php echo $subActivity['TASKTITLE'];?>"
+																				data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
+																				data-end="<?php echo $subActivity['TASKENDDATE'];?>">
+																					<i class="fa fa-thumbs-up"></i>
+																				</button>
+																				</span>
 																			</td>
 																		</tr>
 																	<?php endif;?>
@@ -426,58 +390,6 @@
 									<!-- /.box-header -->
 									<div class="box-body" id ='delegateDiv'>
 										<form id="raciForm" action="delegateTask" method="POST">
-
-											<!-- <div class="form-group raciDiv" id = "deptDiv">
-											<table id="deptList" class="table table-bordered table-hover">
-												<thead>
-												<tr>
-													<th>Department</th>
-													<th>R</th>
-													<th>A</th>
-													<th>C</th>
-													<th>I</th>
-												</tr>
-												</thead>
-
-												<tbody>
-													<?php foreach($departments as $department):?>
-														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID']):?>
-															<tr>
-																<td><?php echo $department['DEPARTMENTNAME'];?></td>
-																<td>
-																	<div class="radio">
-																	<label>
-																		<input class = "radioEmp user" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
-																	</label>
-																</div>
-																</td>
-																<td>
-																	<div class="checkbox">
-																	<label>
-																		<input class = "checkEmp" type="checkbox" name="accountableEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
-																	</label>
-																</div>
-																</td>
-																<td>
-																	<div class="checkbox">
-																	<label>
-																		<input class = "checkEmp" type="checkbox" name="consultedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
-																	</label>
-																</div>
-																</td>
-																<td>
-																	<div class="checkbox">
-																	<label>
-																		<input class = "checkEmp" type="checkbox" name="informedEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
-																	</label>
-																</div>
-																</td>
-															</tr>
-														<?endif;?>
-													<?php endforeach;?>
-												</tbody>
-											</table>
-											</div> -->
 
 											<!-- TEAM DIV -->
 											<div class="form-group raciDiv" id = "teamDiv">
@@ -748,12 +660,12 @@
 				$("#filteredTasks").toggle();
 				if($("#allTasks").css("display") == "none")
 				{
-					$("#viewAll").html("<i class='fa fa-eye'></i>");
+					$("#viewAll").html("<i class='fa fa-eye' data-toggle='tooltip' data-placement='top' title='All Tasks'></i>");
 					$("#viewAll").attr('title', 'View All');
 				}
 				else
 				{
-					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
+					$("#viewAll").html("<i class='fa fa-eye-slash' data-toggle='tooltip' data-placement='top' title='To Do Tasks'></i>");
 					$("#viewAll").attr('title', 'Filter');
 				}
 			});
