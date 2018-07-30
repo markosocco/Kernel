@@ -388,7 +388,7 @@
 													 "<td align='center'>" + taskStart +"</td>" +
 													 "<td align='center'>" + taskEnd +"</td>" +
 													 "<td align='center'>" + delayDays + "</td>" +
-													 "<td class = 'action-" + taskID +"'></td>");
+													 "<td align='center' class = 'action-" + taskID +"'></td>");
 
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
