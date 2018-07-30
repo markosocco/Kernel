@@ -655,7 +655,7 @@ class model extends CI_Model
 
   public function getAllProjectsToEditByUser($id)
   {
-    $condition = "raci.ROLE = '0' &&  raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Planning' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY != '3'";
+    $condition = "raci.ROLE = '0' &&  raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '3'";
     $this->db->select('*, DATE_ADD(CURDATE(), INTERVAL +2 day) as "threshold", CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -673,9 +673,9 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getAllActivitiesToEditByUser($id, $category)
+  public function getAllActivitiesToEditByUser($id)
   {
-    $condition = "raci.ROLE = '0' && raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Planning' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '$category'";
+    $condition = "raci.ROLE = '0' && raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '3'";
     $this->db->select('*, DATE_ADD(CURDATE(), INTERVAL +2 day) as "threshold", CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",

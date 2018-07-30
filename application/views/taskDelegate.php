@@ -42,7 +42,7 @@
 
 						<?php if ($delegateTasksByProject != NULL): ?>
 							<?php foreach($delegateTasksByProject as $project):?>
-								<?php if($project['threshold'] <= $project['PROJECTSTARTDATE']):?> <!-- show only activities before the project start date -->
+								<?php if($project['threshold'] >= $project['PROJECTSTARTDATE']):?> <!-- show only activities before the project start date -->
 
 										<?php
 										$startDate = date_create($project['PROJECTSTARTDATE']);
