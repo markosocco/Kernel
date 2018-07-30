@@ -37,7 +37,7 @@
 							</thead>
 							<tbody>
 								<?php foreach ($templates as $row): ?>
-									<tr class = 'template' data-id = "<?php echo $row['PROJECTSTATUS']; ?>">
+									<tr class = 'template clickable' data-id = "<?php echo $row['PROJECTSTATUS']; ?>">
 
 										<form action = 'projectGantt' method="POST">
 												<input type ='hidden' name='templates' value='0'>

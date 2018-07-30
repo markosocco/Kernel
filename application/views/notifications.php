@@ -32,9 +32,14 @@
 						<div class="box-body">
 							<table id="logsList" class="table table-bordered table-hover">
 								<tbody>
+									<form action="" method="POST" id="redirectForm"></form>
 									<?php
 										foreach ($notification as $n) {
-											echo "<tr>";
+											echo "<tr class='notification'
+												data-projectID='" . $n['projects_PROJECTID'] . "'
+												data-taskID='" . $n['tasks_TASKID'] . "'
+												data-notifID='" . $n['NOTIFICATIONID'] . "'
+												data-type='" . $n['TYPE'] . "'>";
 												echo "<td>" . $n['TIMESTAMP'] . "</td>";
 												echo "<td>" . $n['DETAILS'] . "</td>";
 											echo "</tr>";
@@ -53,6 +58,23 @@
 		  <?php require("footer.php"); ?>
 		</div> <!--.wrapper closing div-->
 		<script>
+
+			$("body").on('click', '.notification', function() {
+
+				var $projectID = $(this).attr('data-projectID');
+				var $taskID = $(this).attr('data-taskID');
+				var $notifType = $(this).attr('data-type');
+				var $notifID = $(this).attr('data-notifID');
+
+				$("#redirectForm").attr("name", "formSubmit");
+				$("#redirectForm").attr("action", "notifRedirect");
+				$("#redirectForm").append("<input type='hidden' name='projectID' value='" + $projectID + "'>");
+				$("#redirectForm").append("<input type='hidden' name='taskID' value='" + $taskID + "'>");
+				$("#redirectForm").append("<input type='hidden' name='type' value='" + $notifType + "'>");
+				$("#redirectForm").append("<input type='hidden' name='notifID' value='" + $notifID + "'>");
+				$("#redirectForm").submit();
+
+			});
 
 		</script>
 	</body>

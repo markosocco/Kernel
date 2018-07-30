@@ -56,7 +56,7 @@
 										else
 											$type = "Change Date/s";
 									?>
-										<tr class="request" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
+										<tr class="request clickable" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
 
 											<form action = 'projectGantt' method="POST">
 												<input type ='hidden' name='rfc' value='0'>
@@ -127,7 +127,7 @@
 											else
 												$type = "Change Date/s";
 										?>
-											<tr class="userRequest" data-project = "<?php echo $userRequest['PROJECTID']; ?>" data-request = "<?php echo $userRequest['REQUESTID']; ?>">
+											<tr class="userRequest clickable" data-project = "<?php echo $userRequest['PROJECTID']; ?>" data-request = "<?php echo $userRequest['REQUESTID']; ?>">
 
 												<form id = "viewProject" action = 'projectGantt' method="POST">
 													<input type ='hidden' name='userRequest' value='0'>

@@ -39,7 +39,7 @@
 							<tbody>
 
 								<?php foreach ($archives as $a): ?>
-									<tr class="project" data-id = "<?php echo $a['PROJECTID']; ?>">
+									<tr class="project clickable" data-id = "<?php echo $a['PROJECTID']; ?>">
 
 										<form action = 'projectGantt' method="POST">
 												<input type ='hidden' name='archives' value='0'>

@@ -19,7 +19,7 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
         <!-- START HERE -->
-				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top" title="All Tasks"><i class="fa fa-eye"></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="All Tasks"><i class="fa fa-eye"></i></button>
 
 				<br><br>
 
@@ -496,8 +496,16 @@
 							<!-- </div> -->
 
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-								<button type="button" class="btn btn-success delegate" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i></button>
+								<span data-dismiss="modal">
+									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close">
+										<i class="fa fa-close"></i>
+									</button>
+								</span>
+								<span data-toggle="modal" data-target="#modal-delegateConfirm">
+									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="top" title="Confirm Delegate">
+										<i class="fa fa-check"></i>
+									</button>
+								</span>
 							</div>
 						</form>
 						</div>
@@ -513,7 +521,7 @@
 							<div class="modal-body" id = "workloadDiv">
 							</div>
 							<div class="modal-footer">
-								<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
+								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Back"><i class="fa fa-arrow-left"></i></button>
 							</div>
 
 						</div>
@@ -524,8 +532,8 @@
 								<h4>Are you sure you want to delegate this task?</h4>
 							</div>
 							<div class="modal-footer">
-								<button id="backConfirm" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
-								<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+								<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</div>
 					</div>
@@ -545,8 +553,8 @@
 						<h4 id ="early" style="margin-top:0">Are you sure you want to accept this task?</h4>
 						<form id = "acceptForm" action="acceptTask" method="POST" style="margin-bottom:0;">
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
 					</div>
@@ -580,6 +588,16 @@
 				{
 					$("#viewAll").html("<i class='fa fa-eye-slash' data-toggle='tooltip' data-placement='top' title='To Do Tasks'></i>");
 					$("#viewAll").attr('title', 'Filter');
+				}
+			});
+
+			$("body").on("click", function(){ // REMOVE ALL SELECTED IN MODAL
+				if($("#modal-delegate").css("display") == 'none')
+				{
+					$(".radioEmp").prop("checked", false);
+					$(".checkEmp").prop("checked", false);
+					$("#raciDelegate").show();
+					$("#workloadAssessment").hide();
 				}
 			});
 

@@ -149,12 +149,15 @@ desired effect
                 <ul class="menu menuNotifs">
                   <?php foreach ($_SESSION['notifications'] as $row): ?>
 
-                    <form method='POST' class ='notificationForm'> </form>
+                    <form method='POST' class ='notificationForm' action='notifRedirect'> </form>
 
-                    <li class="notifDetails"><!-- start notification -->
-                      <a href="#" data-notifID="<?php echo $row['NOTIFICATIONID']; ?>"
-                                  data-projectID="<?php echo $row['projects_PROJECTID']; ?>"
-                                  data-taskID="<?php echo $row['tasks_TASKID']; ?>">
+                    <!-- start notification -->
+                    <li class="notification"
+                        data-notifID="<?php echo $row['NOTIFICATIONID']; ?>"
+                        data-projectID="<?php echo $row['projects_PROJECTID']; ?>"
+                        data-type="<?php echo $row['TYPE']; ?>"
+                        data-taskID="<?php echo $row['tasks_TASKID']; ?>">
+                      <a href="#">
                         <i class="fa fa-users text-aqua"></i> <?php echo $row['DETAILS']; ?>
                       </a>
                     </li>
@@ -508,55 +511,60 @@ desired effect
                 $counter++;
               }
 
-              var link = "<?php echo base_url("index.php/controller/dashboard"); ?>"
-              if(data['notifications'][i].TYPE == 1)
-                link = "<?php echo base_url("index.php/controller/projectGantt"); ?>"
-              else if(data['notifications'][i].TYPE == 2)
-                link = "<?php echo base_url("index.php/controller/taskDelegate"); ?>"
-              else if(data['notifications'][i].TYPE == 3)
-                link = "<?php echo base_url("index.php/controller/taskTodo"); ?>"
-              else if(data['notifications'][i].TYPE == 4)
-                link = "<?php echo base_url("index.php/controller/taskMonitor"); ?>"
-              else if(data['notifications'][i].TYPE == 5)
-                link = "<?php echo base_url("index.php/controller/projectDocuments"); ?>"
-              else if(data['notifications'][i].TYPE == 6)
-                link = "<?php echo base_url("index.php/controller/rfc"); ?>"
-
               var $notifID = data['notifications'][i].NOTIFICATIONID;
               var $projectID = data['notifications'][i].projects_PROJECTID;
               var $taskID = data['notifications'][i].tasks_TASKID;
+              var $notifType = data['notifications'][i].TYPE;
 
-              $('.menuNotifs').append("<li class='notifDetails'><a = '#' " +
-              "data-notifID = " + $notifID +
-              "data-projectID = " + $projectID +
-              "data-taskID = " + $taskID + "><i class='fa fa-users text-aqua</i>" + data['notifications'][i].DETAILS + "</a></li>");
+              // console.log($projectID);
+              // console.log($taskID);
+              // console.log($notifType);
+              // console.log($notifID);
 
+              $('.menuNotifs').append("<li class='notification' " +
+                "data-notifID='" + $notifID + "' " +
+                "data-projectID='" + $projectID + "' " +
+                "data-taskID='" + $taskID + "' " +
+                "data-type='" + $notifType + "' " + "'><a ='#'><i class='fa fa-users text-aqua'></i>" + data['notifications'][i].DETAILS + "</a></li>");
+
+            //   $('.menuNotifs').append("<li class='notification'><a = '#' " +
+            //   "data-notifID = '" + $notifID +
+            //   "data-Type = '" + $notifType +
+            //   "data-projectID = " + $projectID +
+            //   "data-taskID = " + $taskID + "><i class='fa fa-users text-aqua</i>" + data['notifications'][i].DETAILS + "</a></li>");
+            //
+            // };
             }
+
             $('#notifCount').html($counter);
           }
         }
-        });
-      } setInterval(checkNotif, 50000000);
+      });
+    } setInterval(checkNotif, 50000000);
 
-    $(document).on("click", ".notifDetails", function() {
-			var $notifID = $(this).attr('data-notifID');
-      var $projectID = $(this).attr('data-projectID');
-      var $taskID = $(this).attr('data-taskID');
+      $("body").on('click', '.notification', function() {
 
-      console.log("notif id - " + $notifID);
-      console.log("project id - " + $projectID);
-      console.log("task id - " + $taskID);
+        var $projectID = $(this).attr('data-projectID');
+        var $taskID = $(this).attr('data-taskID');
+        var $notifType = $(this).attr('data-type');
+        var $notifID = $(this).attr('data-notifID');
 
-			// $(".notificationForm").attr("name", "formSubmit");
-			// $(".notificationForm").append("");
-			// $(".notificationForm").submit();
+        console.log($projectID);
+        console.log($taskID);
+        console.log($notifType);
+        console.log($notifID);
 
-      // <input type='hidden' name='project_ID' value='" . $projectProfile['PROJECTID'] . "'>
-      // <input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
-		});
+        $(".notificationForm").attr("name", "formSubmit");
+        $(".notificationForm").append("<input type='hidden' name='projectID' value='" + $projectID + "'>");
+        $(".notificationForm").append("<input type='hidden' name='taskID' value='" + $taskID + "'>");
+        $(".notificationForm").append("<input type='hidden' name='type' value='" + $notifType + "'>");
+        $(".notificationForm").append("<input type='hidden' name='notifID' value='" + $notifID + "'>");
+        $(".notificationForm").submit();
+
+      });
 
     $(function () {
-      $('[data-toggle="tooltip"]').tooltip(){container: 'body'}
+      $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     });
 
   </script>

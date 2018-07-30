@@ -80,8 +80,8 @@ class controller extends CI_Controller
 				$this->session->set_userdata('taskCount', $taskCount);
 
 				$currentDate = date('Y-m-d');
-				$this->model->updateTaskStatus($currentDate);
-				$this->model->updateProjectStatus($currentDate);
+				$this->model->updateTaskStatus();
+				$this->model->updateProjectStatus();
 
 				$taskDeadlines = $this->model->getTasks2DaysBeforeDeadline();
 
@@ -360,14 +360,20 @@ class controller extends CI_Controller
 			// RFC Approval Data
 			$userID = $_SESSION['USERID'];
 			$deptID = $_SESSION['departments_DEPARTMENTID'];
-			if($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
-				$filter = "projects.users_USERID = '$userID'";
-			elseif($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
-				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || projects.users_USERID = '$userID'";
-			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
-				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || projects.users_USERID = '$userID'";
-			else // if admin/executive is logged in
-				$filter = "REQUESTID = '0'";
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '4': // if supervisor is logged in
+					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID' && REQUESTSTATUS = 'Pending')
+						|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '3': // if head is logged in
+					$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID' && REQUESTSTATUS = 'Pending')
+					|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '5': // if PO is logged in
+					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
+				default:
+					$filter = "usertype_USERTYPEID = '3' && REQUESTSTATUS = 'Pending'"; break;
+			}
+
 
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
@@ -1827,7 +1833,7 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next task person
-			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
+			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
 			if($postTasksData['nextTaskID'] != NULL){
 
 				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
@@ -1844,7 +1850,7 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $id,
+							'tasks_TASKID' => $taskID,
 							'TYPE' => '1'
 						);
 
@@ -1854,7 +1860,7 @@ class controller extends CI_Controller
 			}
 
 			// notify ACI
-			$ACIdata['ACI'] = $this->model->getACIbyTask($id);
+			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
 			if($ACIdata['ACI'] != NULL) {
 
 				foreach($ACIdata['ACI'] as $ACIusers){
@@ -2861,6 +2867,99 @@ class controller extends CI_Controller
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
 			$this->load->view("rfc", $data);
+		}
+	}
+
+	public function notifRedirect(){
+
+		$projectID = $this->input->post("projectID");
+		$taskID = $this->input->post("taskID");
+		$type = $this->input->post("type");
+		$notifID = $this->input->post("notifID");
+
+		if ($type == 2){ // taskDelegate
+
+			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+
+			$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects_PROJECTID");
+			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "1");
+			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "2");
+			$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['users'] = $this->model->getAllUsers();
+			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			$data['projectCount'] = $this->model->getProjectCount($filter);
+			$data['taskCount'] = $this->model->getTaskCount($filter);
+
+			$this->load->view("taskDelegate", $data);
+
+		} else if ($type == 3){ //taskTodo
+
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+
+			$this->load->view("taskTodo", $data);
+
+		} else if ($type == 4){ // taskMonitor
+
+			$data['allOngoingACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Ongoing");
+			$data['uniqueOngoingACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Ongoing");
+
+			$data['allCompletedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Complete");
+			$data['uniqueCompletedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Complete");
+
+			$this->load->view("taskMonitor", $data);
+
+		} else if ($type == 5){ // projectDocuments
+
+			$data['projectProfile'] = $this->model->getProjectByID($projectID);
+			$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
+			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($projectID);
+			$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($projectID, $_SESSION['USERID']);
+			$data['users'] = $this->model->getAllUsersByProject($projectID);
+
+			$this->load->view("projectDocuments", $data);
+
+		} else if ($type == 6){ // rfc
+
+			$userID = $_SESSION['USERID'];
+			$deptID = $_SESSION['departments_DEPARTMENTID'];
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '4': // if supervisor is logged in
+					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID' && REQUESTSTATUS = 'Pending')
+						|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '3': // if head is logged in
+					$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID' && REQUESTSTATUS = 'Pending')
+					|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '5': // if PO is logged in
+					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
+				default:
+					$filter = "usertype_USERTYPEID = '3' && REQUESTSTATUS = 'Pending'"; break;
+			}
+
+			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
+			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
+			$this->load->view("rfc", $data);
+
+		} else { // projectGantt
+
+			$data['projectProfile'] = $this->model->getProjectByID($projectID);
+			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+			$data['dependencies'] = $this->model->getDependenciesByProject($projectID);
+			$data['users'] = $this->model->getAllUsers();
+
+			$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
+			$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
+			$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
+			$data['informed'] = $this->model->getAllInformedByProject($projectID);
+
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $projectID);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $projectID);
+
+			$this->load->view("projectGantt", $data);
+
 		}
 	}
 

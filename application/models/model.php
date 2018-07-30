@@ -1162,20 +1162,20 @@ class model extends CI_Model
     return true;
   }
 
-  public function updateTaskStatus($currentDate)
+  public function updateTaskStatus()
   {
-    $condition = "TASKSTARTDATE = CURDATE() AND TASKSTATUS = 'Planning';";
+    $condition = "TASKSTARTDATE <= CURDATE() AND TASKSTATUS = 'Planning';";
     $this->db->set('TASKSTATUS', 'Ongoing');
-    $this->db->set('TASKACTUALSTARTDATE', $currentDate);
+    $this->db->set('TASKACTUALSTARTDATE', 'TASKSTARTDATE');
     $this->db->where($condition);
     $this->db->update('tasks');
   }
 
-  public function updateProjectStatus($currentDate)
+  public function updateProjectStatus()
   {
-    $condition = "PROJECTSTARTDATE = CURDATE() AND PROJECTSTATUS = 'Planning';";
+    $condition = "PROJECTSTARTDATE <= CURDATE() AND PROJECTSTATUS = 'Planning';";
     $this->db->set('PROJECTSTATUS', 'Ongoing');
-    $this->db->set('PROJECTACTUALSTARTDATE', $currentDate);
+    $this->db->set('PROJECTACTUALSTARTDATE', 'PROJECTSTARTDATE');
     $this->db->where($condition);
     $this->db->update('projects');
   }
@@ -1197,6 +1197,7 @@ class model extends CI_Model
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
     $this->db->order_by('tasks.TASKENDDATE','ASC');
 
     return $this->db->get()->result_array();
