@@ -113,8 +113,8 @@
 																	<button type='button' class='btn btn-success'>
 																	<i class='fa fa-download'></i></button></a>
 
-																	<button type='button' class='btn btn-warning document' name='documentButton'
-																		id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge'
+																	<button type='button' class='btn btn-warning document acknowledgeButton' name='documentButton'
+																		data-toggle='modal' data-target='#confirmAcknowledge'
 																		data-docuID ='" . $document['DOCUMENTID'] . "'
 																		data-projectID = '" . $projectProfile['PROJECTID'] . "'
 																		data-docuName = '" . $document['DOCUMENTNAME'] ."'>
@@ -258,7 +258,7 @@
 										<h4>Are you sure you want to acknowledge this document?</h4>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-											<button id = "doneConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+											<button id = "doneConfirm" type="submit" class="btn btn-success" data-docuID="" data-projectID="" data-docuName=""><i class="fa fa-check"></i> Confirm</button></i>
 										</div>
 									</div>
 								</div>
@@ -282,18 +282,7 @@
 				$("#backForm").submit();
 				});
 
-			$(function () {
-		    $('#documentsTable').DataTable({
-		      'paging'      : false,
-		      'lengthChange': false,
-		      'searching'   : true,
-		      'ordering'    : true,
-		      'info'        : false,
-		      'autoWidth'   : false
-		    })
-		  });
-
-			$(document).on("click", "#acknowledgeButton", function() {
+			$(document).on("click", ".acknowledgeButton", function() {
 
 				var $documentID = $(this).attr('data-docuID');
 				var $projectID = $(this).attr('data-projectID');
@@ -311,11 +300,26 @@
 				var $projectID = $(this).attr('data-projectID');
 				var $documentName = $(this).attr('data-docuName');
 
+				console.log($documentID);
+				console.log($projectID);
+				console.log($documentName);
+
 				$("#acknowledgeForm").attr("name", "formSubmit");
 				$("#acknowledgeForm").append("<input type='hidden' name='documentID' value= " + $documentID + ">");
 				$("#acknowledgeForm").append("<input type='hidden' name='projectID' value= " + $projectID + ">");
 				$("#acknowledgeForm").append("<input type='hidden' name='fileName' value= " + $documentName + ">");
 				$("#acknowledgeForm").submit();
+			});
+
+			$(function () {
+				$('#documentsTable').DataTable({
+					'paging'      : false,
+					'lengthChange': false,
+					'searching'   : true,
+					'ordering'    : true,
+					'info'        : false,
+					'autoWidth'   : false
+				})
 			});
 
 		</script>
