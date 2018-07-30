@@ -850,6 +850,23 @@ class controller extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function acceptTask()
+	{
+		$taskID = $this->input->post("task_ID");
+
+		$updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
+
+		$delegateData = array(
+			'ROLE' => '5',
+			'users_USERID' => $_SESSION['USERID'],
+			'tasks_TASKID' => $taskID,
+			'STATUS' => 'Current'
+		);
+		$result = $this->model->addToRaci($delegateData);
+
+		$this->taskDelegate();
+	}
+
 	public function delegateTask()
 	{
 		$taskID = $this->input->post("task_ID");
@@ -863,6 +880,32 @@ class controller extends CI_Controller
 		if($this->input->post("responsibleEmp"))
 		{
 			$responsibleEmp = $this->input->post('responsibleEmp');
+
+			$delegate = $this->model->checkForDelegation($taskID);
+
+			echo "<script>console.log('Delegate: " . $delegate . "');</script>";
+
+			if($delegate == '1')
+			{
+				$updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
+
+				$delegateDataNew = array(
+					'ROLE' => '0',
+					'users_USERID' => $responsibleEmp,
+					'tasks_TASKID' => $taskID,
+					'STATUS' => 'Current'
+				);
+				$result = $this->model->addToRaci($delegateDataNew);
+
+				$delegateData = array(
+					'ROLE' => '5',
+					'users_USERID' => $_SESSION['USERID'],
+					'tasks_TASKID' => $taskID,
+					'STATUS' => 'Current'
+				);
+				$result = $this->model->addToRaci($delegateData);
+			}
+
 			$responsibleData = array(
 				'ROLE' => '1',
 				'users_USERID' => $responsibleEmp,
@@ -913,62 +956,6 @@ class controller extends CI_Controller
 
 			$this->model->addNotification($notificationData);
 			// END: Notification
-		}
-
-		// SAVE ACCOUNTABLE
-		if($this->input->post("accountableDept[]"))
-		{
-			foreach($this->input->post("accountableDept[]") as $deptID)
-			{
-				$accountableData = array(
-					'ROLE' => '2',
-					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-
-				// START OF LOGS/NOTIFS
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-				$taskDetails = $this->model->getTaskByID($taskID);
-				$taskTitle = $taskDetails['TASKTITLE'];
-
-				$projectID = $taskDetails['projects_PROJECTID'];
-				$projectDetails = $this->model->getProjectByID($projectID);
-				$projectTitle = $projectDetails['PROJECTTITLE'];
-
-				$userDetails = $this->model->getUserByID($deptID);
-				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-				// START: LOG DETAILS
-				$details = $userName . " has marked " . $taggedUserName . " as accountable for " . $taskTitle . ".";
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-
-				$this->model->addToProjectLogs($logData);
-				// END: LOG DETAILS
-
-				// START: Notifications
-				$details = "You have been tagged as accountable for " . $taskTitle . " in " . $projectTitle . ".";
-				$notificationData = array(
-					'users_USERID' => $deptID,
-					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'status' => 'Unread',
-					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID,
-					'TYPE' => '4'
-				);
-
-				$this->model->addNotification($notificationData);
-				// END: Notification
-
-				$this->model->addToRaci($accountableData);
-			}
 		}
 
 		if ($this->input->post("accountableEmp[]"))
@@ -1025,56 +1012,6 @@ class controller extends CI_Controller
 			}
 		}
 
-		// SAVE CONSULTED
-		if($this->input->post("consultedDept[]"))
-		{
-			foreach($this->input->post("consultedDept[]") as $deptID)
-			{
-				$consultedData = array(
-					'ROLE' => '3',
-					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($consultedData);
-
-				// START: LOG DETAILS
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$taskDetails = $this->model->getTaskByID($taskID);
-				$taskTitle = $taskDetails['TASKTITLE'];
-				$projectID = $taskDetails['projects_PROJECTID'];
-				$userDetails = $this->model->getUserByID($deptID);
-				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				$details = $userName . " has marked " . $taggedUserName . " as consuled for " . $taskTitle . ".";
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-
-				$this->model->addToProjectLogs($logData);
-				// END: LOG DETAILS
-
-				// START: Notifications
-				$projectDetails = $this->model->getProjectByID($projectID);
-				$projectTitle = $projectDetails['PROJECTTITLE'];
-				$details = "You have been tagged as consulted for " . $taskTitle . " in " . $projectTitle . ".";
-				$notificationData = array(
-					'users_USERID' => $deptID,
-					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'status' => 'Unread',
-					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID,
-					'TYPE' => '4'
-				);
-
-				$this->model->addNotification($notificationData);
-				// END: Notification
-			}
-		}
-
 		if($this->input->post("consultedEmp[]"))
 		{
 			foreach($this->input->post("consultedEmp[]") as $empID)
@@ -1111,56 +1048,6 @@ class controller extends CI_Controller
 				$details = "You have been tagged as consulted for " . $taskTitle . " in " . $projectTitle . ".";
 				$notificationData = array(
 					'users_USERID' => $empID,
-					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'status' => 'Unread',
-					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID,
-					'TYPE' => '4'
-				);
-
-				$this->model->addNotification($notificationData);
-				// END: Notification
-			}
-		}
-
-		// SAVE INFORMED
-		if($this->input->post("informedDept[]"))
-		{
-			foreach($this->input->post("informedDept[]") as $deptID)
-			{
-				$informedData = array(
-					'ROLE' => '4',
-					'users_USERID' => $deptID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($informedData);
-
-				// START: LOG DETAILS
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$taskDetails = $this->model->getTaskByID($taskID);
-				$taskTitle = $taskDetails['TASKTITLE'];
-				$projectID = $taskDetails['projects_PROJECTID'];
-				$userDetails = $this->model->getUserByID($deptID);
-				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				$details = $userName . " has marked " . $taggedUserName . " as informed for " . $taskTitle . ".";
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-
-				$this->model->addToProjectLogs($logData);
-				// END: LOG DETAILS
-
-				// START: Notifications
-				$projectDetails = $this->model->getProjectByID($projectID);
-				$projectTitle = $projectDetails['PROJECTTITLE'];
-				$details = "You have been tagged as informed for " . $taskTitle . " in " . $projectTitle . ".";
-				$notificationData = array(
-					'users_USERID' => $deptID,
 					'DETAILS' => $details,
 					'TIMESTAMP' => date('Y-m-d H:i:s'),
 					'status' => 'Unread',
@@ -2321,8 +2208,7 @@ class controller extends CI_Controller
 			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 
 			$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects.PROJECTID");
-			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
-			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
+			$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['users'] = $this->model->getAllUsers();
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
@@ -2364,6 +2250,14 @@ class controller extends CI_Controller
 		$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 		$data['projectCount'] = $this->model->getProjectCount($filter);
 		$data['taskCount'] = $this->model->getTaskCount($filter);
+
+		echo json_encode($data);
+	}
+
+	public function setDelegationRestriction()
+	{
+		$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects.PROJECTID");
+		$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
 
 		echo json_encode($data);
 	}
