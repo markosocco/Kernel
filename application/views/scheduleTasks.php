@@ -421,18 +421,18 @@
 																<?php
 																	$sdate = date_create($sValue['TASKSTARTDATE']);
 																	$edate = date_create($sValue['TASKENDDATE']);
-																	$diff = date_diff($enddate, $startdate);
-																	$dDiff = intval($diff->format('%d'));
+																	$diff = date_diff($edate, $sdate);
+																	$sDiff = intval($diff->format('%d'));
 																?>
 
 																<td><i><?php echo date_format($sdate, "M d, Y"); ?></i></td>
 																<td><i><?php echo date_format($edate, "M d, Y"); ?></i></td>
 																<td><i>
 																	<?php
-																		if (($dDiff + 1) <= 1)
-																			echo ($dDiff + 1) . " day";
+																		if (($sDiff + 1) <= 1)
+																			echo ($sDiff + 1) . " day";
 																		else
-																			echo ($dDiff + 1) . " days";
+																			echo ($sDiff + 1) . " days";
 																	?>
 																</i></td>
 																<td></td>
