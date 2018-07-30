@@ -78,27 +78,24 @@
   												<td width="25%"><b><?php echo $value['TASKTITLE']; ?></b></td>
   												<td width="25%"><b>
   													<?php
+
+															$mDepts = array();
+
   														foreach ($allTasks as $row)
   														{
   															if($value['TASKTITLE'] == $row['TASKTITLE'])
   															{
-  																$depts = array();
-
   																foreach ($departments as $row2)
   																{
   																	if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
   																	{
-  																		$depts[] = $row2['DEPARTMENTNAME'];
+  																		$mDepts[] = $row2['DEPARTMENTNAME'];
   																	}
-  																}
-
-  																//TODO: Fix implode shit
-  																foreach ($depts as $x)
-  																{
-  																	echo $x . ", ";
   																}
   															}
   														}
+
+															echo implode(", ", $mDepts);
   													?>
   												</b></td>
 
@@ -120,27 +117,24 @@
   															<td style="padding-left:20px;"><i><?php echo $sValue['TASKTITLE']; ?></i></td>
   															<td><i>
   																<?php
+
+																		$sDepts = array();
+
   																	foreach ($allTasks as $row)
   																	{
   																		if($sValue['TASKTITLE'] == $row['TASKTITLE'])
   																		{
-  																			$depts = array();
-
   																			foreach ($departments as $row2)
   																			{
   																				if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
   																				{
-  																					$depts[] = $row2['DEPARTMENTNAME'];
+  																					$sDepts[] = $row2['DEPARTMENTNAME'];
   																				}
-  																			}
-
-  																			//TODO: Fix implode shit
-  																			foreach ($depts as $x)
-  																			{
-  																				echo $x . ", ";
   																			}
   																		}
   																	}
+
+																		echo implode(", ", $sDepts);
   																?>
   															</i></td>
 
@@ -167,27 +161,24 @@
 																		<td>
 																			<!-- DEPARTMENT @TASK LEVEL -->
 																			<?php
+
+																				$tDepts = array();
+
 		  																	foreach ($allTasks as $row)
 		  																	{
 		  																		if($tValue['TASKTITLE'] == $row['TASKTITLE'])
 		  																		{
-		  																			$depts = array();
-
 		  																			foreach ($departments as $row2)
 		  																			{
 		  																				if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 		  																				{
-		  																					$depts[] = $row2['DEPARTMENTNAME'];
+		  																					$tDepts[] = $row2['DEPARTMENTNAME'];
 		  																				}
-		  																			}
-
-		  																			//TODO: Fix implode shit
-		  																			foreach ($depts as $x)
-		  																			{
-		  																				echo $x . ", ";
 		  																			}
 		  																		}
 		  																	}
+
+																				echo implode(", ", $tDepts);
 		  																?>
 																		</td>
 
@@ -212,9 +203,11 @@
 																			<select class="form-control select2" multiple="multiple" name = "dependencies[<?php echo $c; ?>][]" data-placeholder="Select Task">
 																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>
 																						<?php if($gValue['CATEGORY'] == '3'): ?>
-																							<option value ='<?php echo $gValue['TASKID']; ?>'>
-																								<?php echo $gValue['TASKTITLE']; ?>
-																							</option>
+																							<?php if ($gValue['TASKID'] != $tValue['TASKID']): ?>
+																								<option value ='<?php echo $gValue['TASKID']; ?>'>
+																									<?php echo $gValue['TASKTITLE']; ?>
+																								</option>
+																							<?php endif; ?>
 																						<?php endif; ?>
 																					<?php endforeach; ?>
 																			</select>

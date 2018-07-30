@@ -212,7 +212,7 @@ class model extends CI_Model
 
   public function getAllUsersByDepartment($deptID)
   {
-    $condition = "users.departments_DEPARTMENTID = '$deptID'";
+    $condition = "users.departments_DEPARTMENTID = '$deptID' && USERID != '1'";
     $this->db->select('*');
     $this->db->from('users');
     $this->db->where($condition);
@@ -583,7 +583,7 @@ class model extends CI_Model
 
   public function getAllACITasksByUser($id, $status)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1' && raci.ROLE != '0' && raci.ROLE != '5'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -601,7 +601,7 @@ class model extends CI_Model
 
   public function getUniqueACITasksByUser($id, $status)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1' && raci.ROLE != '0' && raci.ROLE != '5'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -690,6 +690,16 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+  }
+
+  public function checkForDelegation($taskID)
+  {
+    $condition = "tasks_TASKID = " . $taskID . " && ROLE = '0' && STATUS = 'Current'";
+    $this->db->select('*');
+    $this->db->from('raci');
+    $this->db->where($condition);
+
+    return $this->db->get()->num_rows();
   }
 
 // GET PRE-REQUISITE ID

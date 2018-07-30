@@ -70,89 +70,40 @@
 															</tr>
 															</thead>
 															<tbody id="taskDelegateToDo">
+																<?php foreach($delegateTasks as $task):?>
+																	<?php $startdate = date_create($task['TASKSTARTDATE']);?>
 
-
-																<?php foreach($delegateTasksByMainActivity as $mainActivity):?>
-																	<?php $startdateMain = date_create($mainActivity['TASKSTARTDATE']);?>
-																	<?php if($mainActivity['projects_PROJECTID'] == $project['projects_PROJECTID']):?>
+																		<?php if($task['projects_PROJECTID'] == $project['PROJECTID']):?>
 																		<?php $totalToDoTasks = $totalToDoTasks+1;?>
-																		<tr class="viewProject" data-id="<?php echo $mainActivity['TASKID'] ;?>">
-																			<td><?php echo $mainActivity['TASKTITLE'];?></td>
+																		<tr class="viewProject" data-id="<?php echo $task['TASKID'] ;?>">
 																			<td></td>
-																			<td align="center"><?php echo date_format($startdateMain, 'M d, Y');?></td>
+																			<td><?php echo $task['TASKTITLE'];?></td>
+																			<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 																			<td align="center">
-																				<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
-																				data-id="<?php echo $mainActivity['TASKID'];?>" data-toggle="tooltip"
-																				data-placement="top" title="Edit">
-																					<i class="fa fa-edit"></i>
-																				</button> -->
 																				<span data-toggle="modal" data-target="#modal-delegate">
-																				<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $mainActivity['TASKID'];?>"
+																				<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $task['TASKID'];?>"
 																				data-toggle="tooltip" data-placement="top" title="Delegate"
-																				data-id="<?php echo $mainActivity['TASKID'];?>"
-																				data-title="<?php echo $mainActivity['TASKTITLE'];?>"
-																				data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
-																				data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																				data-id="<?php echo $task['TASKID'];?>"
+																				data-title="<?php echo $task['TASKTITLE'];?>"
+																				data-start="<?php echo $task['TASKSTARTDATE'];?>"
+																				data-end="<?php echo $task['TASKENDDATE'];?>">
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
 																				<span data-toggle="modal" data-target="#modal-accept">
-																				<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
+																				<button disabled id="taskAccept-<?php echo $task['TASKID'];?>" type="button" class="btn btn-success btn-sm acceptBtn"
 																				data-toggle="tooltip" data-placement="top" title="Accept Task"
-																				data-id="<?php echo $mainActivity['TASKID'];?>"
-																				data-title="<?php echo $mainActivity['TASKTITLE'];?>"
-																				data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
-																				data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																				data-id="<?php echo $task['TASKID'];?>"
+																				data-title="<?php echo $task['TASKTITLE'];?>"
+																				data-start="<?php echo $task['TASKSTARTDATE'];?>"
+																				data-end="<?php echo $task['TASKENDDATE'];?>">
 																					<i class="fa fa-thumbs-up"></i>
 																				</button>
 																				</span>
 																			</td>
 																		</tr>
 																	<?php endif;?>
-
-																	<?php foreach($delegateTasksBySubActivity as $subActivity):?>
-																		<?php $startdateSub = date_create($subActivity['TASKSTARTDATE']);?>
-
-																		<?php if($subActivity['tasks_TASKPARENT'] == $mainActivity['TASKID']):?>
-																			<?php if($subActivity['projects_PROJECTID'] == $project['PROJECTID']):?>
-																			<?php $totalToDoTasks = $totalToDoTasks+1;?>
-																			<tr class="viewProject" data-id="<?php echo $subActivity['TASKID'] ;?>">
-																				<td></td>
-																				<td><?php echo $subActivity['TASKTITLE'];?></td>
-																				<td align="center"><?php echo date_format($startdateSub, 'M d, Y');?></td>
-																				<td align="center">
-																					<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
-																					data-id="<?php echo $subActivity['TASKID'];?>" data-toggle="tooltip"
-																					data-placement="top" title="Edit">
-																						<i class="fa fa-edit"></i>
-																					</button> -->
-																					<span data-toggle="modal" data-target="#modal-delegate">
-																					<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $subActivity['TASKID'];?>"
-																					data-toggle="tooltip" data-placement="top" title="Delegate"
-																					data-id="<?php echo $subActivity['TASKID'];?>"
-																					data-title="<?php echo $subActivity['TASKTITLE'];?>"
-																					data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
-																					data-end="<?php echo $subActivity['TASKENDDATE'];?>">
-																						<i class="fa fa-users"></i>
-																					</button>
-																					</span>
-																					<span data-toggle="modal" data-target="#modal-accept">
-																					<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																					data-toggle="tooltip" data-placement="top" title="Accept Task"
-																					data-id="<?php echo $subActivity['TASKID'];?>"
-																					data-title="<?php echo $subActivity['TASKTITLE'];?>"
-																					data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
-																					data-end="<?php echo $subActivity['TASKENDDATE'];?>">
-																						<i class="fa fa-thumbs-up"></i>
-																					</button>
-																					</span>
-																				</td>
-																			</tr>
-																		<?php endif;?>
-																	<?php endif;?>
-																	<?php endforeach;?> <!-- END SUB ACTIVITY -->
-
-																<?php endforeach;?> <!-- END MAIN ACTIVITY -->
+																<?php endforeach;?> <!-- END SUB ACTIVITY -->
 
 															</tbody>
 														</table>
@@ -166,7 +117,7 @@
 									<?php if($totalToDoProjects == 0):?>
 
 										<div class="box-body">
-											<h4 align="center">You have no tasks due in 2 days</h4>
+											<h4 align="center">You have no tasks to delegate due in 2 days</h4>
 										</div>
 									<?php endif;?>
 
@@ -244,88 +195,40 @@
 														</thead>
 														<tbody id="taskDelegateToDo">
 
+															<?php foreach($delegateTasks as $task):?>
+																<?php $startdate = date_create($task['TASKSTARTDATE']);?>
 
-															<?php foreach($delegateTasksByMainActivity as $mainActivity):?>
-																<?php $startdateMain = date_create($mainActivity['TASKSTARTDATE']);?>
-																<?php if($mainActivity['projects_PROJECTID'] == $project['projects_PROJECTID']):?>
+																	<?php if($task['projects_PROJECTID'] == $project['PROJECTID']):?>
 																	<?php $totalToDoTasks = $totalToDoTasks+1;?>
-																	<tr class="viewProject" data-id="<?php echo $mainActivity['TASKID'] ;?>">
-																		<td><?php echo $mainActivity['TASKTITLE'];?></td>
+																	<tr class="viewProject" data-id="<?php echo $task['TASKID'] ;?>">
 																		<td></td>
-																		<td align="center"><?php echo date_format($startdateMain, 'M d, Y');?></td>
+																		<td><?php echo $task['TASKTITLE'];?></td>
+																		<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 																		<td align="center">
-																			<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
-																			data-id="<?php echo $mainActivity['TASKID'];?>" data-toggle="tooltip"
-																			data-placement="top" title="Edit">
-																				<i class="fa fa-edit"></i>
-																			</button> -->
 																			<span data-toggle="modal" data-target="#modal-delegate">
-																			<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $mainActivity['TASKID'];?>"
+																			<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $task['TASKID'];?>"
 																			data-toggle="tooltip" data-placement="top" title="Delegate"
-																			data-id="<?php echo $mainActivity['TASKID'];?>"
-																			data-title="<?php echo $mainActivity['TASKTITLE'];?>"
-																			data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
-																			data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																			data-id="<?php echo $task['TASKID'];?>"
+																			data-title="<?php echo $task['TASKTITLE'];?>"
+																			data-start="<?php echo $task['TASKSTARTDATE'];?>"
+																			data-end="<?php echo $task['TASKENDDATE'];?>">
 																				<i class="fa fa-users"></i>
 																			</button>
 																			</span>
 																			<span data-toggle="modal" data-target="#modal-accept">
-																			<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																			data-toggle="tooltip" data-placement="top" title="Accept Task"
-																			data-id="<?php echo $mainActivity['TASKID'];?>"
-																			data-title="<?php echo $mainActivity['TASKTITLE'];?>"
-																			data-start="<?php echo $mainActivity['TASKSTARTDATE'];?>"
-																			data-end="<?php echo $mainActivity['TASKENDDATE'];?>">
+																			<button disabled id="taskAccept-<?php echo $task['TASKID'];?>" type="button" class="btn btn-success btn-sm acceptBtn"
+																			data-toggle="tooltip" data-placement="top" title="Accept"
+																			data-id="<?php echo $task['TASKID'];?>"
+																			data-title="<?php echo $task['TASKTITLE'];?>"
+																			data-start="<?php echo $task['TASKSTARTDATE'];?>"
+																			data-end="<?php echo $task['TASKENDDATE'];?>">
 																				<i class="fa fa-thumbs-up"></i>
 																			</button>
 																			</span>
 																		</td>
 																	</tr>
 																<?php endif;?>
-
-																<?php foreach($delegateTasksBySubActivity as $subActivity):?>
-																	<?php $startdateSub = date_create($subActivity['TASKSTARTDATE']);?>
-
-																	<?php if($subActivity['tasks_TASKPARENT'] == $mainActivity['TASKID'] && $subActivity['projects_PROJECTID'] == $mainActivity['projects_PROJECTID']):?>
-																		<?php if($subActivity['projects_PROJECTID'] == $project['PROJECTID']):?>
-																		<?php $totalToDoTasks = $totalToDoTasks+1;?>
-																		<tr class="viewProject" data-id="<?php echo $subActivity['TASKID'] ;?>">
-																			<td></td>
-																			<td><?php echo $subActivity['TASKTITLE'];?></td>
-																			<td align="center"><?php echo date_format($startdateSub, 'M d, Y');?></td>
-																			<td align="center">
-																				<!-- <button type="button" class="btn bg-teal btn-sm editBtn"
-																				data-id="<?php echo $subActivity['TASKID'];?>" data-toggle="tooltip"
-																				data-placement="top" title="Edit">
-																					<i class="fa fa-edit"></i>
-																				</button> -->
-																				<span data-toggle="modal" data-target="#modal-delegate">
-																				<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $subActivity['TASKID'];?>"
-																				data-toggle="tooltip" data-placement="top" title="Delegate"
-																				data-id="<?php echo $subActivity['TASKID'];?>"
-																				data-title="<?php echo $subActivity['TASKTITLE'];?>"
-																				data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
-																				data-end="<?php echo $subActivity['TASKENDDATE'];?>">
-																					<i class="fa fa-users"></i>
-																				</button>
-																				</span>
-																				<span data-toggle="modal" data-target="#modal-accept">
-																				<button type="button" class="btn btn-success btn-sm acceptBtn taskAccept-<?php echo $mainActivity['TASKID'];?>"
-																				data-toggle="tooltip" data-placement="top" title="Accept"
-																				data-id="<?php echo $subActivity['TASKID'];?>"
-																				data-title="<?php echo $subActivity['TASKTITLE'];?>"
-																				data-start="<?php echo $subActivity['TASKSTARTDATE'];?>"
-																				data-end="<?php echo $subActivity['TASKENDDATE'];?>">
-																					<i class="fa fa-thumbs-up"></i>
-																				</button>
-																				</span>
-																			</td>
-																		</tr>
-																	<?php endif;?>
-																<?php endif;?>
-																<?php endforeach;?> <!-- END SUB ACTIVITY -->
-
-															<?php endforeach;?> <!-- END MAIN ACTIVITY -->
+															<?php endforeach;?> <!-- END SUB ACTIVITY -->
 
 														</tbody>
 													</table>
@@ -339,7 +242,7 @@
 								<?php if($totalToDoProjects == 0):?>
 
 									<div class="box-body">
-										<h4 align="center">You have no tasks</h4>
+										<h4 align="center">You have no tasks to delegate</h4>
 									</div>
 								<?php endif;?>
 
@@ -361,7 +264,7 @@
 						<!-- /.box-header -->
 						<div class="box-body">
 							<div class="table-responsive">
-								<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo count($delegateTasksByMainActivity) + count($delegateTasksBySubActivity);?></b></span></h4>
+								<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo count($delegateTasks);?></b></span></h4>
 							</div>
 						</div>
 					</div>
@@ -524,22 +427,32 @@
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input id='user<?php echo $employee['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<?php if($employee['usertype_USERTYPEID'] == '5'):?>
+																		<input disabled id='user<?php echo $employee['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<?php else:?>
+																		<input id='user<?php echo $employee['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<?php endif;?>
 																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input id='user<?php echo $employee['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
-																</label>
+																	<?php if($employee['usertype_USERTYPEID'] == '5'):?>
+																		<input disabled id='user<?php echo $employee['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<?php else:?>
+																		<input id='user<?php echo $employee['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<?php endif;?>																</label>
 															</div>
 															</td>
 															<td class='text-center'>
 																<div class="checkbox">
 																<label>
-																	<input id='user<?php echo $employee['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
-																</label>
+																	<?php if($employee['usertype_USERTYPEID'] == '5'):?>
+																		<input disabled id='user<?php echo $employee['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<?php else:?>
+																		<input id='user<?php echo $employee['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																	<?php endif;?>																	</label>
 															</div>
 															</td class='text-center'>
 
@@ -683,6 +596,44 @@
 				// $("#viewProject").attr("name", "formSubmit");
 				// $("#viewProject").append("<input type='hidden' name='project_ID' value= " + $projectID + ">");
 				// $("#viewProject").submit();
+			});
+
+			// SET BUTTON ABILITY
+			$.ajax({
+				type:"POST",
+				url: "<?php echo base_url("index.php/controller/setDelegationRestriction"); ?>",
+				dataType: 'json',
+				success:function(data)
+				{
+					for(x=0; data['delegateTasks'].length >x; x++)
+					{
+						var $id = data['delegateTasks'][x].TASKID;
+						$.ajax({
+							type:"POST",
+							url: "<?php echo base_url("index.php/controller/getRACIByTaskID"); ?>",
+							data: {taskID: $id},
+							dataType: 'json',
+							success:function(raci)
+							{
+								for(t=0; raci['raci'].length >t; t++)
+								{
+									if(raci['raci'][t].ROLE == '1') //if task has already been delegated, enable the accept button
+									{
+										$("#taskAccept-" + raci['raci'][t].tasks_TASKID).prop('disabled', false);
+									}
+								}
+							},
+							error:function(data)
+							{
+								alert("There was a problem with loading the RACI");
+							}
+						});
+					}
+				},
+				error:function(data)
+				{
+					alert("There was a problem with loading the Delegation Restrictions");
+				}
 			});
 
 			$("body").on('click','.delegateBtn',function(){
@@ -854,7 +805,6 @@
 			 $("#acceptForm").attr("name", "formSubmit");
 			 $("#acceptForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
 		 });
-
 
 		</script>
 	</body>
