@@ -20,7 +20,7 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 
-				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye" data-toggle='tooltip' data-placement='top' title='All Tasks'></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye" data-toggle='tooltip' data-placement='left' title='All Tasks'></i></button>
 				<br><br>
 
 				<div id = "filteredTasks">
@@ -195,8 +195,8 @@
 										<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-										<button id = "doneConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
+										<button type="button" class="btn btn-danger pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 									</div>
 								</form>
 							</div>
@@ -247,8 +247,8 @@
 							</div>
 
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-								<button type="submit" class="btn btn-success" id="rfcSubmit" data-date=""><i class="fa fa-check"></i></button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+								<button type="submit" class="btn btn-success" id="rfcSubmit" data-date="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
 						</div>
