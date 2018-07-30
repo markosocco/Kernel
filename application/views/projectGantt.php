@@ -12,21 +12,21 @@
 					<div style="margin-bottom:10px">
 
 						<?php if(isset($_SESSION['dashboard'])): ?>
-								<a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Dashboard"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Dashboard"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['archives'])): ?>
-								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Archives"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/archives"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Archives"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['changeRequest']) || isset($_SESSION['userRequest'])): ?>
-								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Change Requests"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Change Requests"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['rfc'])): ?>
-								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Change Requests"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/rfc"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Change Requests"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['myTasks'])): ?>
-								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Tasks"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/myTasks"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to My Tasks"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['templates'])): ?>
-								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Templates"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/templates"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Templates"><i class="fa fa-arrow-left"></i></a>
 						<?php elseif(isset($_SESSION['monitorTasks'])): ?>
-								<a href="<?php echo base_url("index.php/controller/taskMonitor"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Monitor Tasks"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/taskMonitor"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Monitor Tasks"><i class="fa fa-arrow-left"></i></a>
 						<?php else: ?>
-								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
+								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 						<?php endif; ?>
 
 					</div>
@@ -156,14 +156,28 @@
 													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
 												</div>
 											</form>
-												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny">
-													<i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Deny"></i></button>
+
+											<span data-toggle="modal" data-target="#modal-deny">
+												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="tooltip" data-placement="right" title="Deny">
+													<i class="fa fa-close"></i>
+												</button>
+											</span>
+
 												<?php if($changeRequest['REQUESTTYPE'] == '1'):?>
-												<button id = "approveRequest" type="button" class="btn btn-success pull-right delegateApprove" style="display:block;" data-id="<?php echo $changeRequest['tasks_REQUESTEDTASK'];?>" data-user="<?php echo $changeRequest['users_REQUESTEDBY'];?>" data-toggle="modal" data-target="#modal-delegate">
-													<i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve & Delegate"></i><i class="fa fa-user" ></i></button>
+													<span data-toggle="modal" data-target="#modal-delegate">
+														<button id = "approveRequest" type="button" class="btn btn-success pull-right delegateApprove" style="display:block;"
+														data-id="<?php echo $changeRequest['tasks_REQUESTEDTASK'];?>" data-user="<?php echo $changeRequest['users_REQUESTEDBY'];?>"
+														data-toggle="tooltip" data-placement="left" title="Approve & Delegate">
+															<i class="fa fa-check"></i><i class="fa fa-user" ></i>
+														</button>
+													</span>
 												<?php else:?>
-												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve">
-													<i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve"></i></button>
+													<span data-toggle="modal" data-target="#modal-approve">
+														<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;"
+														data-toggle="tooltip" data-placement="left" title="Approve">
+															<i class="fa fa-check"></i></i>
+														</button>
+													</span>
 												<?php endif;?>
 										</div>
 										<!-- /.box-body -->
@@ -410,8 +424,8 @@
 								<!-- </div> -->
 
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-									<button type="button" id = "confirmDelegateBtn" class="btn btn-success delegate"><i class="fa fa-check"></i></button>
+									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button type="button" id = "confirmDelegateBtn" class="btn btn-success delegate" data-toggle="tooltip" data-placement="left" title="Confirm Approve & Delegate"><i class="fa fa-check"></i></button>
 								</div>
 							</form>
 							</div>
@@ -427,7 +441,7 @@
 								<div class="modal-body" id = "workloadDiv">
 								</div>
 								<div class="modal-footer">
-									<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
+									<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
 								</div>
 
 							</div>
@@ -465,8 +479,8 @@
 								<div id="denyConfirm">
 									<h4>Are you sure you want to deny this request?</h4>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Deny"><i class="fa fa-close"></i></button>
-										<button id = "confirmDenyBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Confirm Deny"></i></button>
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "confirmDenyBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm Deny"><i class="fa fa-check"></i></button>
 									</div>
 								</div>
 							</div>
@@ -506,8 +520,8 @@
 								<div id="approveConfirm">
 									<h4>Are you sure you want to approve this request?</h4>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Close"></i></button>
-										<button id = "confirmApproveBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve"></i></button>
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "confirmApproveBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Approve"><i class="fa fa-check"></i></button>
 									</div>
 								</div>
 									<!-- /.box-body -->
@@ -735,7 +749,7 @@
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST" style="display:inline-block">
 							</form>
-							<a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use this as Template"><i class="fa fa-window-maximize"></i></a>
+							<a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a>
 						<?php endif; ?>
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
@@ -794,15 +808,12 @@
 			// RFC APPROVAL SCRIPT
 
 			$("body").on("click", function(){ // REMOVE ALL SELECTED IN MODAL
-				if($("#modal-approve").css("display") == 'none')
+				if($("#modal-delegate").css("display") == 'none')
 				{
-					// $(".radioEmp").prop("checked", false);
-					// $(".checkEmp").prop("checked", false);
-					$(".select2").val(null).trigger("change");
-					$("#workloadAssessment").hide();
-					$("#delegateConfirm").hide();
-					$("#approveConfirm").show();
+					$(".radioEmp").prop("checked", false);
+					$(".checkEmp").prop("checked", false);
 					$("#raciDelegate").show();
+					$("#workloadAssessment").hide();
 				}
 			});
 
@@ -890,8 +901,6 @@
 				});
 
 				$("body").on("click", ".moreInfo", function(){
-					alert("clicked");
-
 					function loadWorkloadTasks($projectID)
 					{
 						$.ajax({

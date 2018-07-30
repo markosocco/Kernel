@@ -496,8 +496,16 @@
 							<!-- </div> -->
 
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Close"></i></button>
-								<button type="button" class="btn btn-success delegate" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Confirm Delegate"></i></button>
+								<span data-dismiss="modal">
+									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close">
+										<i class="fa fa-close"></i>
+									</button>
+								</span>
+								<span data-toggle="modal" data-target="#modal-delegateConfirm">
+									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="top" title="Confirm Delegate">
+										<i class="fa fa-check"></i>
+									</button>
+								</span>
 							</div>
 						</form>
 						</div>
@@ -545,7 +553,7 @@
 						<h4 id ="early" style="margin-top:0">Are you sure you want to accept this task?</h4>
 						<form id = "acceptForm" action="acceptTask" method="POST" style="margin-bottom:0;">
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
 								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
@@ -580,6 +588,16 @@
 				{
 					$("#viewAll").html("<i class='fa fa-eye-slash' data-toggle='tooltip' data-placement='top' title='To Do Tasks'></i>");
 					$("#viewAll").attr('title', 'Filter');
+				}
+			});
+
+			$("body").on("click", function(){ // REMOVE ALL SELECTED IN MODAL
+				if($("#modal-delegate").css("display") == 'none')
+				{
+					$(".radioEmp").prop("checked", false);
+					$(".checkEmp").prop("checked", false);
+					$("#raciDelegate").show();
+					$("#workloadAssessment").hide();
 				}
 			});
 
