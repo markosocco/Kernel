@@ -212,7 +212,7 @@ class model extends CI_Model
 
   public function getAllUsersByDepartment($deptID)
   {
-    $condition = "users.departments_DEPARTMENTID = '$deptID'";
+    $condition = "users.departments_DEPARTMENTID = '$deptID' && USERID != '1'";
     $this->db->select('*');
     $this->db->from('users');
     $this->db->where($condition);
@@ -583,7 +583,7 @@ class model extends CI_Model
 
   public function getAllACITasksByUser($id, $status)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1' && raci.ROLE != '0' && raci.ROLE != '5'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -601,7 +601,7 @@ class model extends CI_Model
 
   public function getUniqueACITasksByUser($id, $status)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS = 'Ongoing' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '1' && raci.ROLE != '0' && raci.ROLE != '5'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -690,6 +690,16 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+  }
+
+  public function checkForDelegation($taskID)
+  {
+    $condition = "tasks_TASKID = " . $taskID . " && ROLE = '0' && STATUS = 'Current'";
+    $this->db->select('*');
+    $this->db->from('raci');
+    $this->db->where($condition);
+
+    return $this->db->get()->num_rows();
   }
 
 // GET PRE-REQUISITE ID
@@ -978,6 +988,7 @@ class model extends CI_Model
     return true;
   }
 
+  // FOR PRESIDENT
   public function getAllDocuments()
   {
     $this->db->select('*');
@@ -989,6 +1000,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  // DOCUMENTS IN SPECIFIC PROJECT
   public function getAllDocumentsByProject($projectID)
   {
     $condition = "documents.projects_PROJECTID = " . $projectID;
@@ -1002,17 +1014,23 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-// RETURNS ALL
-  public function getDocumentAcknowledgement($userID)
+  // DOCUMENTS IN SPECIFIC PROJECT THAT NEEDS ACKNOWLEDGEMENT
+  public function getDocumentsForAcknowledgement($projectID, $userID)
   {
-    $condition = "users_ACKNOWLEDGEDBY = " . $userID;
+    $condition = "documents.projects_PROJECTID = " . $projectID . " AND users_ACKNOWLEDGEDBY = " . $userID . " AND users_UPLOADEDBY != " . $userID;
     $this->db->select('*');
-    $this->db->from('documentAcknowledgement');
+    $this->db->from('documents');
+    $this->db->join('projects', 'documents.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('documentAcknowledgement', 'documents.DOCUMENTID = documentAcknowledgement.documents_DOCUMENTID');
+    $this->db->join('users', 'documents.users_UPLOADEDBY = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
+    $this->db->group_by('documents.DOCUMENTID');
 
     return $this->db->get()->result_array();
   }
 
+  // CHECKS FOR DUPLICATE WHEN UPLOADING
   public function getDocumentAcknowledgementID($userID, $documentID)
   {
     $condition = "users_ACKNOWLEDGEDBY = " . $userID . " AND documents_DOCUMENTID = " . $documentID;
@@ -1023,6 +1041,7 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  // DASHBOARD
   public function getAllDocumentAcknowledgementByUser($userID)
   {
     $condition = "ACKNOWLEDGEDDATE = '' && users_ACKNOWLEDGEDBY = " . $userID . " && users_UPLOADEDBY != '$userID'";
