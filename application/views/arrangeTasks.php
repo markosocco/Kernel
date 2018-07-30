@@ -51,6 +51,7 @@
 
 									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
+									<!-- START OF TEMPLATES -->
 								<?php if (isset($_SESSION['templates'])): ?>
 
 									<input type="hidden" name="templates" value="<?php echo $templateProject['PROJECTID']; ?>">
@@ -129,7 +130,7 @@
 												</tr>
 
 														<?php if (isset($templateMainActivity[$key])): ?>
-															<?php foreach ($templateSubActivity as $tSub): ?>
+															<?php foreach ($templateSubActivity as $sKey=> $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
 																		<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
@@ -142,7 +143,7 @@
 																			<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 																		</div></td>
 																		<td>
-																			<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																			<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $sKey; ?>][]" data-placeholder="Select Departments">
 																				<?php
 																					foreach ($tasks as $row)
 																					{
@@ -258,6 +259,7 @@
 										</table>
 										</div>
 									<?php endforeach; ?>
+									<!-- END OF TEMPLATES -->
 
 								<?php else: ?>
 
@@ -463,12 +465,12 @@
 
 					$("#end_" + mainAct + "-" + counter).prop('disabled', true);
 
-				 var newCount = counter + 1;
+				 var counter = counter + 1;
 				 // tot++;
-				 $("a.addButton").attr('counter', newCount);
+				 $("a.addButton").attr('counter', counter);
 
 				  $('.select2').select2();
-					$("#select" + i).attr("name", "department[" + i + "][]");
+					$("#select" + i).attr("name", "department[" + counter + "][]");
 
 				 i++;
 				 x++;
