@@ -66,7 +66,7 @@
   												<th width="25%">Task Title</th>
   												<th width="25%">Department</th>
   												<th width="10%">Start Date</th>
-  												<th width="10%" class="text-center">Target End Date</th>
+  												<th width="10%" class="text-center">Target<br>End Date</th>
   												<th width="30%">Dependency</th>
   			                </tr>
   										</thead>
