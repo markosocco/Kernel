@@ -20,7 +20,7 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 
-				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye" data-toggle='tooltip' data-placement='left' title='All Tasks'></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="All Tasks"><i class="fa fa-eye"></i></button>
 				<br><br>
 
 				<div id = "filteredTasks">
@@ -393,11 +393,11 @@
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
 								$(".action-" + taskID).append(
-									 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
+									 '<span data-toggle="tooltip" data-placement="top" title="Request for Change"><button type="button"' +
 									 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
 									 '" data-title="' + data['tasks'][i].TASKTITLE +
 									 '" data-start="'+ taskStart +
-									 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request For Change">' +
+									 '" data-end="'+ taskEnd +'" data-toggle="modal" data-target="#modal-request">' +
 									 '<i class="fa fa-flag"></i></button></span>');
 
 										 // AJAX TO CHECK IF DEPENDENCIES ARE COMPLETE
@@ -427,11 +427,11 @@
 		 										 if(isComplete == 1) // if all pre-requisite tasks are complete, task can be marked done
 		 										 {
 		 											 $(".action-" + dependencyData['taskID'].TASKID).append(
-		 													'<span data-toggle="modal" data-target="#modal-done"><button type="button"' +
+		 													'<span data-toggle="tooltip" data-placement="top" title="Done"><button type="button"' +
 		 													'class="btn btn-success btn-sm doneBtn" data-id="' + taskID +
 		 													'" data-title="' + taskTitle + '"' +
 		 													'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 													'" data-end="'+ endDate +'" data-toggle="tooltip" data-placement="top" title="Done">' +
+		 													'" data-end="'+ endDate +'" data-toggle="modal" data-target="#modal-done">' +
 		 													'<i class="fa fa-check"></i></button></span>');
 		 										 }
 												 else
@@ -445,11 +445,11 @@
 		 									 else // if task has no prerequisites
 		 									 {
 		 										 $('.action-' + dependencyData['taskID'].TASKID).append(
-		 												'<span data-toggle="modal" data-target="#modal-done"><button type="button"' +
+		 												'<span data-toggle="tooltip" data-placement="top" title="Done"><button type="button"' +
 		 												'class="btn btn-success btn-sm doneBtn" data-id="' + taskID +
 		 												'" data-title="' + taskTitle + '"' +
 		 												'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 												'" data-end="'+ endDate +'" data-toggle="tooltip" data-placement="top" title="Done">' +
+		 												'" data-end="'+ endDate +'" data-toggle="modal" data-target="#modal-done">' +
 		 												'<i class="fa fa-check"></i></button></span>');
 		 									 }
 		 								 },
