@@ -64,7 +64,7 @@
 														<table class="table table-hover no-margin">
 															<thead>
 															<tr>
-																<th colspan='2'>Activity</th>
+																<th colspan='2'>Task</th>
 																<th class="text-center">Start Date</th>
 																<th class="text-center">Action</th>
 															</tr>
@@ -188,7 +188,7 @@
 													<table class="table table-hover no-margin">
 														<thead>
 														<tr>
-															<th colspan='2'>Activity</th>
+															<th colspan='2'>Task</th>
 															<th class="text-center">Start Date</th>
 															<th class="text-center">Action</th>
 														</tr>
