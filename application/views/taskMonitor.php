@@ -359,7 +359,7 @@
 					<div class="row">
 						<!-- ALL-->
 
-						<?php if ($uniqueOngoingACItasks != NULL || $uniqueCompletedACItasks != NULL): ?>
+						<?php if ($uniqueOngoingACItasks != NULL || $uniqueCompletedACItasks != NULL || $uniqueOngoingACItasks != NULL): ?>
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header">
@@ -526,6 +526,88 @@
 														<?php else:?>
 															<td align="center"><?php echo $delay - $taskDuration;?></td>
 															<?php $delayedCompletedTasks = $delayedCompletedTasks+1;?>
+														<?php endif;?>
+													</tr>
+												<?php endforeach;?>
+
+												<?php foreach($uniquePlannedACItasks as $uniquePlannedACItask):?>
+													<?php
+													if($uniquePlannedACItask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+														$endDate = $uniquePlannedACItask['TASKENDDATE'];
+													else
+														$endDate = $uniquePlannedACItask['TASKADJUSTEDENDDATE'];
+
+													if($uniquePlannedACItask['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+														$startDate = $uniquePlannedACItask['TASKSTARTDATE'];
+													else
+														$startDate = $uniquePlannedACItask['TASKADJUSTEDSTARTDATE'];
+
+													if($uniquePlannedACItask['TASKADJUSTEDSTARTDATE'] != null && $uniquePlannedACItask['TASKADJUSTEDENDDATE'] != null)
+														$taskDuration = $uniquePlannedACItask['adjustedTaskDuration2'];
+													elseif($uniquePlannedACItask['TASKSTARTDATE'] != null && $uniquePlannedACItask['TASKADJUSTEDENDDATE'] != null)
+														$taskDuration = $uniquePlannedACItask['adjustedTaskDuration1'];
+													else
+														$taskDuration = $uniquePlannedACItask['initialTaskDuration'];
+
+													$startdate = date_create($startDate);
+													$enddate = date_create($endDate);
+													$curdate = date_create(date('Y-m-d'));
+													$diff = date_diff($startdate, $curdate);
+													$delay = $diff->format("%a")+1;
+													?>
+
+													<tr class="viewProject" data-id="<?php echo $uniquePlannedACItask['PROJECTID'] ;?>">
+
+														<?php
+														$role="";
+														foreach($allPlannedACItasks as $currTask)
+														{
+															if($uniquePlannedACItask['TASKID'] == $currTask['TASKID'])
+															{
+																switch($currTask['ROLE'])
+																{
+																	case '2': $type = "A"; break;
+																	case '3': $type = "C"; break;
+																	case '4': $type = "I"; break;
+																}
+																$role .= $type;
+															}
+														}
+														if($role == null)
+														{
+															switch($uniquePlannedACItask['ROLE'])
+															{
+																case '2': $role = "A"; break;
+																case '3': $role = "C"; break;
+																case '4': $role = "I"; break;
+															}
+														}
+														?>
+														<?php if($uniquePlannedACItask['TASKSTATUS'] == 'Planning'):?>
+															<td class="bg-yellow"></td>
+														<?php endif;?>
+														<?php if($uniquePlannedACItask['TASKSTATUS'] == 'Complete'):?>
+															<td class="bg-teal"></td>
+														<?php endif;?>
+														<?php if($uniquePlannedACItask['TASKSTATUS'] == 'Ongoing'):?>
+															<?php if($taskDuration >= $delay):?>
+																<td class="bg-green"></td>
+															<?php else:?>
+																<td class="bg-red"></td>
+																<?php $delayedTasks++;?>
+															<?php endif;?>
+														<?php endif;?>
+														<td align="center"><?php echo $role;?></td>
+														<td><?php echo $uniquePlannedACItask['FIRSTNAME'];?> <?php echo $uniquePlannedACItask['LASTNAME'];?></td>
+														<td><?php echo $uniquePlannedACItask['PROJECTTITLE'];?></td>
+														<td><?php echo $uniquePlannedACItask['TASKTITLE'];?></td>
+														<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
+														<td align="center"><?php echo date_format($enddate, 'M d, Y');?></td>
+														<td align="center">-</td>
+														<?php if($delay-$taskDuration <= 0):?>
+															<td align="center">0</td>
+														<?php else:?>
+															<td align="center" style="color:red"><?php echo $delay - $taskDuration;?></td>
 														<?php endif;?>
 													</tr>
 												<?php endforeach;?>
