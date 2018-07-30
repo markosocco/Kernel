@@ -7,7 +7,7 @@ function makesvg(percentage, inner_text=""){
   if(percentage < 0){
     classes = "danger-stroke circle-chart__circle--negative";
   } else if(percentage > 0 && percentage <= 30){
-    classes = "warning-stroke";
+    classes = "success-stroke";
   } else{
     classes = "success-stroke";
   }
@@ -22,9 +22,9 @@ function makesvg(percentage, inner_text=""){
   if(inner_text){
     svg += '<text class="circle-chart__subline" x="16.91549431" y="22">'+inner_text+'</text>'
   }
-  
+
   svg += ' </g></svg>';
-  
+
   return svg
 }
 
