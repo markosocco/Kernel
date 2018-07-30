@@ -3887,7 +3887,7 @@ class controller extends CI_Controller
 	{
 		//GET DOCUMENT ID
 		$documentID = $this->input->post("documentID");
-		$projectID = $this->input->post("project_ID");
+		$projectID = $this->input->post("projectID");
 		$dashboard = $this->input->post("fromWhere");
 		$fileName = $this->input->post("fileName");
 
