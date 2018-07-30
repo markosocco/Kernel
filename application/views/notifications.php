@@ -38,6 +38,7 @@
 											echo "<tr class='notification'
 												data-projectID='" . $n['projects_PROJECTID'] . "'
 												data-taskID='" . $n['tasks_TASKID'] . "'
+												data-notifID='" . $n['NOTIFICATIONID'] . "'
 												data-type='" . $n['TYPE'] . "'>";
 												echo "<td>" . $n['TIMESTAMP'] . "</td>";
 												echo "<td>" . $n['DETAILS'] . "</td>";
@@ -63,20 +64,15 @@
 				var $projectID = $(this).attr('data-projectID');
 				var $taskID = $(this).attr('data-taskID');
 				var $notifType = $(this).attr('data-type');
-
-				console.log($projectID);
-				console.log($taskID);
-				console.log("notif type " + $notifType);
-
-				if($notifType == 1){
-					console.log("hello");
-
-				}
+				var $notifID = $(this).attr('data-notifID');
 
 				$("#redirectForm").attr("name", "formSubmit");
+				$("#redirectForm").attr("action", "notifRedirect");
 				$("#redirectForm").append("<input type='hidden' name='projectID' value='" + $projectID + "'>");
 				$("#redirectForm").append("<input type='hidden' name='taskID' value='" + $taskID + "'>");
 				$("#redirectForm").append("<input type='hidden' name='type' value='" + $notifType + "'>");
+				$("#redirectForm").append("<input type='hidden' name='notifID' value='" + $notifID + "'>");
+				$("#redirectForm").submit();
 
 			});
 

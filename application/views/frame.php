@@ -536,24 +536,29 @@ desired effect
           }
         }
         });
-      } setInterval(checkNotif, 50000000);
+      } setInterval(checkNotif, 5000);
 
-    $(document).on("click", ".notifDetails", function() {
-			var $notifID = $(this).attr('data-notifID');
-      var $projectID = $(this).attr('data-projectID');
-      var $taskID = $(this).attr('data-taskID');
+      $("body").on('click', '.notification', function() {
 
-      console.log("notif id - " + $notifID);
-      console.log("project id - " + $projectID);
-      console.log("task id - " + $taskID);
+        var $projectID = $(this).attr('data-projectID');
+        var $taskID = $(this).attr('data-taskID');
+        var $notifType = $(this).attr('data-type');
+        var $notifID = $(this).attr('data-notifID');
 
-			// $(".notificationForm").attr("name", "formSubmit");
-			// $(".notificationForm").append("");
-			// $(".notificationForm").submit();
+        console.log($projectID);
+        console.log($taskID);
+        console.log($notifType);
+        console.log($notifID);
 
-      // <input type='hidden' name='project_ID' value='" . $projectProfile['PROJECTID'] . "'>
-      // <input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
-		});
+        // $("#redirectForm").attr("name", "formSubmit");
+        // $("#redirectForm").attr("action", "notifRedirect");
+        // $("#redirectForm").append("<input type='hidden' name='projectID' value='" + $projectID + "'>");
+        // $("#redirectForm").append("<input type='hidden' name='taskID' value='" + $taskID + "'>");
+        // $("#redirectForm").append("<input type='hidden' name='type' value='" + $notifType + "'>");
+        // $("#redirectForm").append("<input type='hidden' name='notifID' value='" + $notifID + "'>");
+        // $("#redirectForm").submit();
+
+      });
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip({container: 'body'});
