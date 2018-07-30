@@ -84,7 +84,6 @@
 													<td width="27.5%"><b><?php echo $value['TASKTITLE']; ?></b></td>
 													<td width="27.5%"><b>
 														<?php
-
 															$depts = array();
 
 															foreach ($tasks as $row)
@@ -133,14 +132,14 @@
 															<?php foreach ($templateSubActivity as $sKey=> $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
-																		<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																			<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																		<td><div class="form-group">
 
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
 																			<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value="<?php echo $tSub['TASKTITLE'];?>" required>
 
-																			<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+																			<input type="hidden" name="row[]" value="<?php echo $sKey; ?>">
 																		</div></td>
 																		<td>
 																			<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $sKey; ?>][]" data-placeholder="Select Departments">

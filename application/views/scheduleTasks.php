@@ -90,16 +90,17 @@
 
 											<tbody>
 												<tr>
-													<td></td>
-													<td><b><?php echo $value['TASKTITLE']; ?></b></td>
-													<td><b>
+													<td width="5%"></td>
+													<td width="25%"><b><?php echo $value['TASKTITLE']; ?></b></td>
+													<td width="25%"><b>
 														<?php
+
+															$depts = array();
+
 															foreach ($tasks as $row)
 															{
 																if($value['TASKTITLE'] == $row['TASKTITLE'])
 																{
-																	$depts = array();
-
 																	foreach ($departments as $row2)
 																	{
 																		if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
@@ -107,14 +108,10 @@
 																			$depts[] = $row2['DEPARTMENTNAME'];
 																		}
 																	}
-
-																	//TODO: Fix implode shit
-																	foreach ($depts as $x)
-																	{
-																		echo $x . ", ";
-																	}
 																}
 															}
+
+															echo implode(", ", $depts);
 														?>
 													</b></td>
 
@@ -125,8 +122,8 @@
 														$dDiff = intval($diff->format('%d'));
 													?>
 
-													<td><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
-													<td><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
+													<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
+													<td width="15%"><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
 													<td>
 														<?php
 															if (($dDiff + 1) <= 1)
@@ -135,7 +132,7 @@
 																echo ($dDiff + 1) . " days";
 														?>
 													</td>
-													<td></td>
+													<td width="5%"></td>
 												</tr>
 											</tbody>
 											</table>
@@ -166,34 +163,33 @@
 																<td style="padding-left:20px;"><i><?php echo $sValue['TASKTITLE']; ?></i></td>
 																<td><i>
 																	<?php
+
+																		$sDepts = array();
+
 																		foreach ($tasks as $row)
 																		{
 																			if($sValue['TASKTITLE'] == $row['TASKTITLE'])
 																			{
-																				$depts = array();
-
-																				foreach ($departments as $row2)
-																				{
-																					if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
-																					{
-																						$depts[] = $row2['DEPARTMENTNAME'];
-																					}
-																				}
-
-																				//TODO: Fix implode shit
-																				foreach ($depts as $x)
-																				{
-																					echo $x . ", ";
-																				}
+																				echo $sValue['DEPARTMENTNAME'];
+																				// foreach ($departments as $row2)
+																				// {
+																				// 	if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																				// 	{
+																				// 		echo "DEPT " . $row2['DEPARTMENTNAME'];
+																				// 		// $sDepts[] = $row2['DEPARTMENTNAME'];
+																				// 	}
+																				// }
 																			}
 																		}
+
+																		// echo implode(", ", $sDepts);
 																	?>
 																</i></td>
 
 																<?php
 																	$sdate = date_create($sValue['TASKSTARTDATE']);
 																	$edate = date_create($sValue['TASKENDDATE']);
-																	$diff = date_diff($enddate, $startdate);
+																	$diff = date_diff($sdate, $edate);
 																	$dDiff = intval($diff->format('%d'));
 																?>
 
@@ -231,13 +227,10 @@
 																					{
 																						if($sValue['TASKTITLE'] == $row['TASKTITLE'])
 																						{
-																							$depts = array();
-
 																							foreach ($departments as $row2)
 																							{
 																								if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																								{
-																									$depts[] = $row2['DEPARTMENTNAME'];
 																									echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
 																								}
 																							}
