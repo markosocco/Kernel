@@ -60,6 +60,7 @@
 
 								<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
+								<!-- TEMPLATES START -->
 								<?php if (isset($_SESSION['templates'])): ?>
 
 									<?php $c = 0; ?>
@@ -293,6 +294,7 @@
 									<!-- SUB ACT TABLE END -->
 									<?php endforeach; ?>
 
+									<!-- END TEMPLATES -->
 
 								<?php else: ?>
 									<?php $c = 0; ?>
@@ -322,31 +324,27 @@
 
 											<tbody>
 												<tr>
-													<td></td>
-													<td><b><?php echo $value['TASKTITLE']; ?></b></td>
-													<td><b>
+													<td width="5%"></td>
+													<td width="25%"><b><?php echo $value['TASKTITLE']; ?></b></td>
+													<td width="25%"><b>
 														<?php
+															$mDepts = array();
+
 															foreach ($tasks as $row)
 															{
 																if($value['TASKTITLE'] == $row['TASKTITLE'])
 																{
-																	$depts = array();
-
 																	foreach ($departments as $row2)
 																	{
 																		if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																		{
-																			$depts[] = $row2['DEPARTMENTNAME'];
+																			$mDepts[] = $row2['DEPARTMENTNAME'];
 																		}
-																	}
-
-																	//TODO: Fix implode shit
-																	foreach ($depts as $x)
-																	{
-																		echo $x . ", ";
 																	}
 																}
 															}
+
+															echo implode(", ", $mDepts);
 														?>
 													</b></td>
 
@@ -357,9 +355,9 @@
 														$dDiff = intval($diff->format('%d'));
 													?>
 
-													<td><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
-													<td><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
-													<td><b>
+													<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
+													<td width="15%"><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
+													<td width="10%"><b>
 														<?php
 															if (($dDiff + 1) <= 1)
 																echo ($dDiff + 1) . " day";
@@ -367,7 +365,7 @@
 																echo ($dDiff + 1) . " days";
 														?>
 													</b></td>
-													<td></td>
+													<td width="5%"></td>
 												</tr>
 											</tbody>
 											</table>
@@ -399,12 +397,13 @@
 																<td style="padding-left:20px;"><i><?php echo $sValue['TASKTITLE']; ?></i></td>
 																<td><i>
 																	<?php
+
+																		$depts = array();
+
 																		foreach ($tasks as $row)
 																		{
 																			if($sValue['TASKTITLE'] == $row['TASKTITLE'])
 																			{
-																				$depts = array();
-
 																				foreach ($departments as $row2)
 																				{
 																					if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
@@ -412,14 +411,10 @@
 																						$depts[] = $row2['DEPARTMENTNAME'];
 																					}
 																				}
-
-																				//TODO: Fix implode shit
-																				foreach ($depts as $x)
-																				{
-																					echo $x . ", ";
-																				}
 																			}
 																		}
+
+																		echo implode(", ", $depts);
 																	?>
 																</i></td>
 
@@ -443,7 +438,7 @@
 																<td></td>
 															</tr>
 															<tr>
-																<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1"
+																<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" data-dept=<?php echo json_encode($depts); ?> counter="1"
 																	data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																<td>
 																	<div class="form-group">
@@ -462,13 +457,10 @@
 																		{
 																			if($sValue['TASKTITLE'] == $row['TASKTITLE'])
 																			{
-																				$depts = array();
-
 																				foreach ($departments as $row2)
 																				{
 																					if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																					{
-																						$depts[] = $row2['DEPARTMENTNAME'];
 																						echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
 																					}
 																				}
@@ -559,13 +551,22 @@
 			 var tot = $(this).attr('data-subTot');
 			 var subAct = $(this).attr('data-subAct');
 			 var counter = parseInt($(this).attr('data-sum'));
+			 var depts = $(this).attr('data-dept');
+			 var d = JSON.parse(depts);
+
+			 var department = "";
+
+			 for (var k = 0; k < d.length; k++)
+			 {
+				 department = department + "<option>" + d[k] + "</option>";
+			 }
 
 				 $('#ma' + mTable + '_s' + sTable).append(
 					 					"<tr id='ma" + mTable + "_s" + (i) +
 										"'><td></td><td><div class ='form-group'> <input type='hidden' name='subActivity_ID[]' value='" +
 										subAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
 										"<td style='padding-top:10px'><select id = 'select" + i + "' class='form-control select2' name = '' data-placeholder='Select Departments'> " +
-										'<option></option> <?php foreach ($tasks as $row) { if ($sValue['TASKTITLE'] == $row['TASKTITLE']) { foreach ($departments as $row2) { if ($row['USERID'] == $row2['users_DEPARTMENTHEAD']) { echo '<option>' . $row2['DEPARTMENTNAME'] . '</option>'; } } } }?>' +
+										"<option></option>" + department +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
 										"name='taskStartDate[]' id='start_" + subAct + "-" + x +"' data-subAct = '" + subAct + "' data-num='" + x +
