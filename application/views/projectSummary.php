@@ -36,13 +36,13 @@
 									<p>Total number of tasks: <b>200</b></p>
 								</div>
 								<div style="display:inline-block; margin-left: 50px;">
-									<p>Total number of delayed tasks: 20</p>
-									<p>Total number of requests: 75</p>
-									<p>Total number of approved requests: 175</p>
-									<p>Total number of denied requests: 200</p>
+									<p>Total number of delayed tasks: <b>20</b></p>
+									<p>Total number of requests: <b>75</b></p>
+									<p>Total number of approved requests: <b>175</b></p>
+									<p>Total number of denied requests: <b>200</b></p>
 								</div>
 								<div style="display:inline-block; margin-left: 30px;">
-									<p>Total number of documents: 10</p>
+									<p>Total number of documents: <b>10</b></p>
 									<p>WHAT ELSE</p>
 									<p>WHAT ELSE</p>
 									<p>WHAT ELSE</p>
