@@ -155,8 +155,15 @@
 												<div class="form-group">
 													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
 												</div>
-												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny"><i class="fa fa-close"></i></button>
-												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve"><i class="fa fa-check"></i><i class="fa fa-user" ></i></button>
+												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny">
+													<i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Deny"></i></button>
+												<?php if($changeRequest['REQUESTTYPE'] == '1'):?>
+												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve">
+													<i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve & Delegate"></i><i class="fa fa-user" ></i></button>
+												<?php else:?>
+												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve">
+													<i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve"></i></button>
+												<?php endif;?>
 										</div>
 										<!-- /.box-body -->
 										<!-- /.box-footer -->
@@ -195,8 +202,8 @@
 								<div id="denyConfirm">
 									<h4>Are you sure you want to deny this request?</h4>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-										<button id = "confirmDenyBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Deny"><i class="fa fa-close"></i></button>
+										<button id = "confirmDenyBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Confirm Deny"></i></button>
 									</div>
 								</div>
 							</div>
@@ -236,8 +243,8 @@
 								<div id="approveConfirm">
 									<h4>Are you sure you want to approve this request?</h4>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-										<button id = "confirmApproveBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Close"></i></button>
+										<button id = "confirmApproveBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve"></i></button>
 										<?php if ($changeRequest['REQUESTTYPE'] == '1'):?>
 											<button id="delegateBtn" type="button" class="btn btn-success pull-left" style="margin-right: 15%"><i class="fa fa-check"></i></button>
 										<?php endif;?>
@@ -248,8 +255,8 @@
 								<div id="delegateConfirm">
 									<h4>Are you sure you want to delegate this task and approve this request?</h4>
 									<div class="modal-footer">
-										<button id = "backConfirmDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i></button>
-										<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i></button>
+										<button id = "backConfirmDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Close"></i></button>
+										<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Confirm Approve"></i></button>
 									</div>
 								</div>
 
