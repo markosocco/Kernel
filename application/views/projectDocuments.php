@@ -79,15 +79,12 @@
 										</thead>
 										<tbody>
 
+											<form action='acknowledgeDocument' method='POST' id ='acknowledgeForm'> </form>
+
 										<?php
 
 											foreach ($documentsByProject as $row) {
 												if($row['DOCUMENTSTATUS'] == 'For Acknowledgement'){
-													echo"
-													<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
-														<input type='hidden' name='project_ID' value='" . $projectProfile['PROJECTID'] . "'>
-														<input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
-													</form>";
 
 													foreach($documentAcknowledgement as $data){
 														if($row['DOCUMENTID'] == $data['documents_DOCUMENTID'] || $row['users_UPLOADEDBY'] == $_SESSION['USERID']){
@@ -106,8 +103,12 @@
 																		echo "<td align='center'>Acknowledged</td>";
 																	} else {
 																		echo "<td align='center'>
-																		<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'>
-																		<i class='fa fa-eye'></i> Acknowledge</button></td>";
+																		<button type='button' class='btn btn-success document' name='documentButton'
+																		id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge'
+																		data-docuID ='" . $row['DOCUMENTID'] . "'
+																		data-projectID = '" . $projectProfile['PROJECTID'] . "'
+																		data-docuName = '" . $row['DOCUMENTNAME'] ."'>
+																		<i class='fa fa-eye'></i></button></td>";
 																	}
 																}
 															echo "</tr>";
@@ -246,11 +247,11 @@
 				});
 
 			$(document).on("click", "#doneConfirm", function() {
-				console.log("clicked");
 				var $id = $(this).attr('data-id');
-				$(".acknowledgeDocument").attr("name", "formSubmit");
-				$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
-				$(".acknowledgeDocument").submit();
+				// console.log("data-id is " + $id);
+				$("#acknowledgeForm").attr("name", "formSubmit");
+				$("#acknowledgeForm").append("<input type='hidden' name='documentID' value= " + $id + ">");
+				$("#acknowledgeForm").submit();
 			});
 
 			$(function () {
@@ -263,6 +264,18 @@
 		      'autoWidth'   : false
 		    })
 		  });
+
+			$(document).on("click", "#doneConfirm", function() {
+				var $documentID = $("#acknowledgeButton").attr('data-docuID');
+				var $projectID = $("#acknowledgeButton").attr('data-projectID');
+				var $documentName = $("#acknowledgeButton").attr('data-docuName');
+
+				$("#acknowledgeForm").attr("name", "formSubmit");
+				$("#acknowledgeForm").append("<input type='hidden' name='documentID' value= " + $documentID + ">");
+				$("#acknowledgeForm").append("<input type='hidden' name='projectID' value= " + $projectID + ">");
+				$("#acknowledgeForm").append("<input type='hidden' name='fileName' value= " + $documentName + ">");
+				$("#acknowledgeForm").submit();
+			});
 
 		</script>
 	</body>

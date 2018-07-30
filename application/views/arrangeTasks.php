@@ -436,7 +436,7 @@
 
 			 var currTable = $(this).attr('data-id');
 			 var mainAct = $(this).attr('data-mainAct');
-			 var counter = parseInt($(this).attr('data-sum'));
+			 var counter = parseInt($(this).attr('counter'));
 			 var key = $(this).attr('data-key');
 			 var depts = $(this).attr('data-dept');
 			 var d = JSON.parse(depts);
@@ -465,12 +465,11 @@
 
 					$("#end_" + mainAct + "-" + counter).prop('disabled', true);
 
-				 var counter = counter + 1;
-				 // tot++;
-				 $("a.addButton").attr('counter', counter);
-
 				  $('.select2').select2();
-					$("#select" + i).attr("name", "department[" + counter + "][]");
+					$("#select" + i).attr("name", "department[" + i + "][]");
+
+				 counter++;
+ 				 $("a.addButton").attr('counter', counter);
 
 				 i++;
 				 x++;
@@ -558,13 +557,15 @@
 						});
 				});
 
+
+
 				$("body").on("change", ".taskEndDate", function() {
 	 				var mainAct = $(this).attr('data-mainAct');
 					var counter = $(this).attr('data-num');
 	 				var diff = new Date($("#end_" + mainAct + "-" + counter).datepicker("getDate") - $("#start_" + mainAct + "-" + counter).datepicker("getDate"));
 	 				var period = (diff/1000/60/60/24)+1;
 
-					console.log("#projectPeriod_" + mainAct + "-" + counter);
+					// console.log("#projectPeriod_" + mainAct + "-" + counter);
 
 	 				if ($("#start_" + mainAct + "-" + counter).val() != "" &&  $("#end_" + mainAct + "-" + counter).val() != "" && period >=1)
 	 				{
