@@ -80,8 +80,8 @@ class controller extends CI_Controller
 				$this->session->set_userdata('taskCount', $taskCount);
 
 				$currentDate = date('Y-m-d');
-				$this->model->updateTaskStatus($currentDate);
-				$this->model->updateProjectStatus($currentDate);
+				$this->model->updateTaskStatus();
+				$this->model->updateProjectStatus();
 
 				$taskDeadlines = $this->model->getTasks2DaysBeforeDeadline();
 
