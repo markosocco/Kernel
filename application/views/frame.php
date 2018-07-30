@@ -555,6 +555,10 @@ desired effect
       // <input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
 		});
 
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip(){container: 'body'}
+    });
+
   </script>
 
 </body>
