@@ -2321,8 +2321,8 @@ class controller extends CI_Controller
 			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 
 			$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects.PROJECTID");
-			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
-			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
+			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "1");
+			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "2");
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['users'] = $this->model->getAllUsers();
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
@@ -2614,7 +2614,7 @@ class controller extends CI_Controller
 								// echo $value . ", ";
 
 								$data = array(
-										'ROLE' => '0',
+										'ROLE' => '1',
 										'users_USERID' => $deptHead,
 										'tasks_TASKID' => $a,
 										'STATUS' => 'Current'
@@ -2860,7 +2860,7 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['departments'] = $this->model->getAllDepartmentsByProject($id);
 			$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
-			$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+			$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
 			$data['users'] = $this->model->getAllUsersByProject($id);
 
 			$this->load->view("projectDocuments", $data);
@@ -3081,7 +3081,7 @@ class controller extends CI_Controller
 								// echo $value . ", ";
 
 								$data = array(
-										'ROLE' => '0',
+										'ROLE' => '1',
 										'users_USERID' => $deptHead,
 										'tasks_TASKID' => $a,
 										'STATUS' => 'Current'
@@ -3309,7 +3309,7 @@ class controller extends CI_Controller
 									// echo $value . ", ";
 
 									$data = array(
-											'ROLE' => '0',
+											'ROLE' => '1',
 											'users_USERID' => $deptHead,
 											'tasks_TASKID' => $a,
 											'STATUS' => 'Current'
@@ -3486,7 +3486,7 @@ class controller extends CI_Controller
 	 								// echo $value . ", ";
 
 	 								$data = array(
-	 										'ROLE' => '0',
+	 										'ROLE' => '1',
 	 										'users_USERID' => $deptHead,
 	 										'tasks_TASKID' => $a,
 											'STATUS' => 'Current'
@@ -3878,7 +3878,7 @@ class controller extends CI_Controller
 		$data['projectProfile'] = $this->model->getProjectByID($id);
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
-		$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+		$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
 
 		$this->load->view("projectDocuments", $data);
 	}
@@ -3887,7 +3887,7 @@ class controller extends CI_Controller
 	{
 		//GET DOCUMENT ID
 		$documentID = $this->input->post("documentID");
-		$projectID = $this->input->post("projectID");
+		$projectID = $this->input->post("project_ID");
 		$dashboard = $this->input->post("fromWhere");
 		$fileName = $this->input->post("fileName");
 
@@ -3918,7 +3918,7 @@ class controller extends CI_Controller
 				$data['projectProfile'] = $this->model->getProjectByID($projectID);
 				$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
 				$data['documentsByProject'] = $this->model->getAllDocumentsByProject($projectID);
-				$data['documentAcknowledgement'] = $this->model->getDocumentAcknowledgement($_SESSION['USERID']);
+				$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($projectID, $_SESSION['USERID']);
 				$data['users'] = $this->model->getAllUsersByProject($projectID);
 
 				$this->load->view("projectDocuments", $data);

@@ -978,6 +978,7 @@ class model extends CI_Model
     return true;
   }
 
+  // FOR PRESIDENT
   public function getAllDocuments()
   {
     $this->db->select('*');
@@ -989,6 +990,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  // DOCUMENTS IN SPECIFIC PROJECT
   public function getAllDocumentsByProject($projectID)
   {
     $condition = "documents.projects_PROJECTID = " . $projectID;
@@ -1002,17 +1004,23 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-// RETURNS ALL
-  public function getDocumentAcknowledgement($userID)
+  // DOCUMENTS IN SPECIFIC PROJECT THAT NEEDS ACKNOWLEDGEMENT
+  public function getDocumentsForAcknowledgement($projectID, $userID)
   {
-    $condition = "users_ACKNOWLEDGEDBY = " . $userID;
+    $condition = "documents.projects_PROJECTID = " . $projectID . " AND users_ACKNOWLEDGEDBY = " . $userID . " AND users_UPLOADEDBY != " . $userID;
     $this->db->select('*');
-    $this->db->from('documentAcknowledgement');
+    $this->db->from('documents');
+    $this->db->join('projects', 'documents.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('documentAcknowledgement', 'documents.DOCUMENTID = documentAcknowledgement.documents_DOCUMENTID');
+    $this->db->join('users', 'documents.users_UPLOADEDBY = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
+    $this->db->group_by('documents.DOCUMENTID');
 
     return $this->db->get()->result_array();
   }
 
+  // CHECKS FOR DUPLICATE WHEN UPLOADING
   public function getDocumentAcknowledgementID($userID, $documentID)
   {
     $condition = "users_ACKNOWLEDGEDBY = " . $userID . " AND documents_DOCUMENTID = " . $documentID;
@@ -1023,6 +1031,7 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  // DASHBOARD
   public function getAllDocumentAcknowledgementByUser($userID)
   {
     $condition = "ACKNOWLEDGEDDATE = '' && users_ACKNOWLEDGEDBY = " . $userID . " && users_UPLOADEDBY != '$userID'";
