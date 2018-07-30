@@ -10,7 +10,7 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					<div style="margin-bottom:10px">
-						<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Return to My Projects</a>
+						<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 					</div>
 					<h1><?php echo $projectProfile['PROJECTTITLE']; ?></h1>
 				</h2><?php echo $_SESSION['DEPARTMENTNAME']; ?></h2>

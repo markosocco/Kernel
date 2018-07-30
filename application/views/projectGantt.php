@@ -156,7 +156,7 @@
 													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
 												</div>
 												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny"><i class="fa fa-close"></i></button>
-												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve"><i class="fa fa-check" ></i></button>
+												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve"><i class="fa fa-check"></i><i class="fa fa-user" ></i></button>
 										</div>
 										<!-- /.box-body -->
 										<!-- /.box-footer -->
