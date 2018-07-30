@@ -427,7 +427,7 @@
 
 		$(document).ready(function() {
 
-			var i = <?php echo (count($groupedTasks)); ?>;
+		 var i = <?php echo (count($groupedTasks)); ?>;
 		 // var i = 2;
 		 var x = 2;
 
