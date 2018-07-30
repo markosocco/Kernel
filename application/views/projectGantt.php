@@ -778,7 +778,7 @@
 
 							<form action = 'archiveProject' method="POST" style="display:inline-block">
 							</form>
-							<a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a>
+							<span data-toggle="modal" data-target="#confirmArchive"><a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a></span>
 
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
@@ -802,6 +802,27 @@
 
 					</div>
 					<br>
+					<!-- CONFIRM ARCHIVE -->
+					<div class="modal fade" id="confirmArchive" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title">Confirm Project Archiving</h2>
+								</div>
+								<div class="modal-body">
+									<h4>Are you sure you want to archive this project?</h4>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+										<button id = "doneConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+									</div>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
 					<div id="container" style="height: 600px;"></div>
 
 					<!-- </section> -->
