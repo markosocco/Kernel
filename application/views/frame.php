@@ -148,8 +148,13 @@ desired effect
                 <!-- Inner Menu: contains the notifications -->
                 <ul class="menu menuNotifs">
                   <?php foreach ($_SESSION['notifications'] as $row): ?>
+
+                    <form method='POST' class ='notificationForm'> </form>
+
                     <li class="notifDetails"><!-- start notification -->
-                      <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">
+                      <a href="#" data-notifID="<?php echo $row['NOTIFICATIONID']; ?>"
+                                  data-projectID="<?php echo $row['projects_PROJECTID']; ?>"
+                                  data-taskID="<?php echo $row['tasks_TASKID']; ?>">
                         <i class="fa fa-users text-aqua"></i> <?php echo $row['DETAILS']; ?>
                       </a>
                     </li>
@@ -503,35 +508,52 @@ desired effect
                 $counter++;
               }
 
-              1 - project gantt
-2 - delegate
-3 - to do
-4 - monitor
-5 - project documents
-6 - rfc
-
-              var link = "<?php echo base_url("index.php/controller/dashboard"); ?>";
+              var link = "<?php echo base_url("index.php/controller/dashboard"); ?>"
               if(data['notifications'][i].TYPE == 1)
-                link = "<?php echo base_url("index.php/controller/projectGantt"); ?>";
+                link = "<?php echo base_url("index.php/controller/projectGantt"); ?>"
               else if(data['notifications'][i].TYPE == 2)
-                link = "<?php echo base_url("index.php/controller/taskDelegate"); ?>";
+                link = "<?php echo base_url("index.php/controller/taskDelegate"); ?>"
               else if(data['notifications'][i].TYPE == 3)
-                link = "<?php echo base_url("index.php/controller/taskTodo"); ?>";
+                link = "<?php echo base_url("index.php/controller/taskTodo"); ?>"
               else if(data['notifications'][i].TYPE == 4)
-                link = "<?php echo base_url("index.php/controller/taskMonitor"); ?>";
+                link = "<?php echo base_url("index.php/controller/taskMonitor"); ?>"
               else if(data['notifications'][i].TYPE == 5)
-                link = "<?php echo base_url("index.php/controller/projectDocuments"); ?>";
+                link = "<?php echo base_url("index.php/controller/projectDocuments"); ?>"
               else if(data['notifications'][i].TYPE == 6)
-                link = "<?php echo base_url("index.php/controller/rfc"); ?>";
+                link = "<?php echo base_url("index.php/controller/rfc"); ?>"
 
-              $('.menuNotifs').append("<li><a href = '" + $link + "'><i class='fa fa-users text-aqua'></i>" + data['notifications'][i].DETAILS + "</a></li>");
+              var $notifID = data['notifications'][i].NOTIFICATIONID;
+              var $projectID = data['notifications'][i].projects_PROJECTID;
+              var $taskID = data['notifications'][i].tasks_TASKID;
+
+              $('.menuNotifs').append("<li class='notifDetails'><a = '#' " +
+              "data-notifID = " + $notifID +
+              "data-projectID = " + $projectID +
+              "data-taskID = " + $taskID + "><i class='fa fa-users text-aqua</i>" + data['notifications'][i].DETAILS + "</a></li>");
 
             }
             $('#notifCount').html($counter);
           }
         }
         });
-      } setInterval(checkNotif, 5000);
+      } setInterval(checkNotif, 50000000);
+
+    $(document).on("click", ".notifDetails", function() {
+			var $notifID = $(this).attr('data-notifID');
+      var $projectID = $(this).attr('data-projectID');
+      var $taskID = $(this).attr('data-taskID');
+
+      console.log("notif id - " + $notifID);
+      console.log("project id - " + $projectID);
+      console.log("task id - " + $taskID);
+
+			// $(".notificationForm").attr("name", "formSubmit");
+			// $(".notificationForm").append("");
+			// $(".notificationForm").submit();
+
+      // <input type='hidden' name='project_ID' value='" . $projectProfile['PROJECTID'] . "'>
+      // <input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
+		});
 
   </script>
 
