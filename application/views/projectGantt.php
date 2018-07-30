@@ -53,14 +53,26 @@
 												<?php $dateRequested = date_create($changeRequest['REQUESTEDDATE']);
 
 												if($changeRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+												{
 													$startDate = date_create($changeRequest['TASKSTARTDATE']);
+													$start = $changeRequest['TASKSTARTDATE'];
+												}
 												else
+												{
 													$startDate = date_create($changeRequest['TASKADJUSTEDSTARTDATE']);
+													$start = $changeRequest['TASKADJUSTEDSTARTDATE'];
+												}
 
 												if($changeRequest['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+												{
 													$endDate = date_create($changeRequest['TASKENDDATE']);
+													$end = $changeRequest['TASKENDDATE'];
+												}
 												else
+												{
 													$endDate = date_create($changeRequest['TASKADJUSTEDENDDATE']);
+													$end = $changeRequest['TASKADJUSTEDENDDATE'];
+												}
 
 												$newStartDate = date_create($changeRequest['NEWSTARTDATE']);
 												$newEndDate = date_create($changeRequest['NEWENDDATE']);
@@ -98,7 +110,9 @@
 															<label>Project</label>
 															<p><?php echo $changeRequest['PROJECTTITLE'];?></p>
 														</td>
-														<td>
+														<td class="clickable taskPostReqs" data-toggle='modal' data-target='#modal-details'
+														data-id="<?php echo $changeRequest['tasks_REQUESTEDTASK'];?>" data-title="<?php echo $changeRequest['TASKTITLE'];?>"
+														data-start="<?php echo $start;?>" data-end="<?php echo $end;?>">
 															<label>Task Name</label>
 															<p><?php echo $changeRequest['TASKTITLE'];?></p>
 														</td>
@@ -529,6 +543,32 @@
 							</div>
 						</div>
 					</div> <!-- END OF MODAL DIV -->
+
+					<!-- TASK DETAILS MODAL -->
+					<div class="modal fade" id="modal-details" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title" id = "taskTitle">Task Title</h2>
+									<h4 id="taskDates">Start Date - End Date (Days)</h4>
+								</div>
+								<div class="modal-body">
+										<h3 id="postReqTitle">Post-Requisite Tasks</h3>
+										<table class='table' id="postReqTable">
+											<thead>
+												<th>Task</th>
+												<th class="text-center">Start Date</th>
+												<th class="text-center">End Date</th>
+												<th>Responsible</th>
+											</thead>
+											<tbody id='postReqDetails'>
+											</tbody>
+										</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END TASK DETAILS MODAL -->
 
 				<?php endif;?>
 
@@ -984,6 +1024,83 @@
 
 			});
 
+			// START TASK DETAILS
+
+			$("body").on('click','.taskPostReqs',function(){
+				var $id = $(this).attr('data-id');
+				var $title = $(this).attr('data-title');
+				var $start = new Date($(this).attr('data-start'));
+				var $end = new Date($(this).attr('data-end'));
+				var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+				$("#taskTitle").html($title);
+				$("#taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+				if($diff > 1)
+					$("#taskDates").append(" days)");
+				else
+					$("#taskDates").append(" day)");
+
+			 // GET DETAILS VIA AJAX
+
+			 var taskID = $id;
+
+			 $.ajax({
+				 type:"POST",
+				 url: "<?php echo base_url("index.php/controller/getPostDependenciesByTaskID"); ?>",
+				 data: {task_ID: taskID},
+				 dataType: 'json',
+				 success:function(postReqData)
+				 {
+					 console.log(postReqData);
+					 if(postReqData['dependencies'].length > 0)
+					 {
+						 $('#postReqDetails').html("");
+						 $('#postReqTitle').html("Post Requisite Tasks");
+						 for(i=0; i<postReqData['dependencies'].length; i++)
+						 {
+							 if(postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+							 {
+								 var taskStart = moment(postReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+								 var startDate = postReqData['dependencies'][i].TASKSTARTDATE;
+							 }
+							 else
+							 {
+								 var taskStart = moment(postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+								 var startDate = postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE;
+							 }
+
+							 if(postReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+							 {
+								 var taskEnd = moment(postReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
+								 var endDate = postReqData['dependencies'][i].TASKENDDATE;
+							 }
+							 else
+							 {
+								 var taskEnd = moment(postReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+								 var endDate = postReqData['dependencies'][i].TASKADJUSTEDENDDATE;
+							 }
+
+							 $('#postReqDetails').append(
+														"<tr>" + "<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
+														"<td align='center'>" + taskStart+"</td>"+
+														"<td align='center'>" + taskEnd +"</td>" +
+														"<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
+						}
+						$("#postReqTable").show();
+					}
+					else
+					{
+						$('#postReqTitle').html("There are no post requisite tasks");
+						$("#postReqTable").hide();
+					}
+				 },
+				 error:function()
+				 {
+					 alert("There was a problem in retrieving the task details");
+				 }
+				 });
+			});
+
+			// END TASK DETAILS
 		</script>
 
 		<!-- Javascript for Tasks -->

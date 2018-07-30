@@ -856,6 +856,15 @@ class controller extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function getPostDependenciesByTaskID()
+	{
+		$taskID = $this->input->post("task_ID");
+		$data['dependencies'] = $this->model->getPostDependenciesByTaskID($taskID);
+		$data['taskID'] = $this->model->getTaskByID($taskID);
+
+		echo json_encode($data);
+	}
+
 	public function acceptTask()
 	{
 		$taskID = $this->input->post("task_ID");

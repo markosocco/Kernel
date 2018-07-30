@@ -717,7 +717,7 @@ class model extends CI_Model
 
   public function getDependenciesByTaskID($taskID)
   {
-    $condition = "raci.STATUS = 'Current' && dependencies.tasks_POSTTASKID = '$taskID'";
+    $condition = "raci.STATUS = 'Current' && dependencies.tasks_POSTTASKID = '$taskID' && raci.ROLE = '1'";
     $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -729,13 +729,14 @@ class model extends CI_Model
 
   public function getPostDependenciesByTaskID($taskID)
   {
-    $condition = "raci.STATUS = 'Current' && dependencies.PRETASKID = '$taskID'";
+    $condition = "raci.STATUS = 'Current' && dependencies.PRETASKID = '$taskID' && raci.ROLE = '1'";
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.tasks_POSTTASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
