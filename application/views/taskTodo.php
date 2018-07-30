@@ -195,8 +195,8 @@
 										<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-danger pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-										<button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+										<button type="button" class="btn btn-danger pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 									</div>
 								</form>
 							</div>
@@ -247,8 +247,8 @@
 							</div>
 
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-								<button type="submit" class="btn btn-success" id="rfcSubmit" data-date="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+								<button type="submit" class="btn btn-success" id="rfcSubmit" data-date="" data-toggle="tooltip" data-placement="left" title="Submit"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
 						</div>
@@ -393,11 +393,11 @@
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
 								$(".action-" + taskID).append(
-									 '<span data-toggle="tooltip" data-placement="top" title="Request for Change"><button type="button"' +
+									 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
 									 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
 									 '" data-title="' + data['tasks'][i].TASKTITLE +
 									 '" data-start="'+ taskStart +
-									 '" data-end="'+ taskEnd +'" data-toggle="modal" data-target="#modal-request">' +
+									 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
 									 '<i class="fa fa-flag"></i></button></span>');
 
 										 // AJAX TO CHECK IF DEPENDENCIES ARE COMPLETE
@@ -427,29 +427,29 @@
 		 										 if(isComplete == 1) // if all pre-requisite tasks are complete, task can be marked done
 		 										 {
 		 											 $(".action-" + dependencyData['taskID'].TASKID).append(
-		 													'<span data-toggle="tooltip" data-placement="top" title="Done"><button type="button"' +
+		 													'<span data-toggle="modal" data-target="#modal-done"><button type="button"' +
 		 													'class="btn btn-success btn-sm doneBtn" data-id="' + taskID +
 		 													'" data-title="' + taskTitle + '"' +
 		 													'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 													'" data-end="'+ endDate +'" data-toggle="modal" data-target="#modal-done">' +
+		 													'" data-end="'+ endDate +'" data-toggle="tooltip" data-placement="top" title="Done">' +
 		 													'<i class="fa fa-check"></i></button></span>');
 		 										 }
 												 else
 												 {
 													 $(".action-" + dependencyData['taskID'].TASKID).append(
 														 '<button disabled type="button"' +
-														 'class="btn btn-success btn-sm">' +
-														 '<i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Pre-req/s have not been accomplished"></i></button>');
+														 'class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Pre-req/s have not been accomplished">' +
+														 '<i class="fa fa-check"></i></button>');
 												 }
 		 									 }
 		 									 else // if task has no prerequisites
 		 									 {
 		 										 $('.action-' + dependencyData['taskID'].TASKID).append(
-		 												'<span data-toggle="tooltip" data-placement="top" title="Done"><button type="button"' +
+		 												'<span data-toggle="modal" data-target="#modal-done"><button type="button"' +
 		 												'class="btn btn-success btn-sm doneBtn" data-id="' + taskID +
 		 												'" data-title="' + taskTitle + '"' +
 		 												'data-delay="' + isDelayed + '" data-start="'+ startDate +
-		 												'" data-end="'+ endDate +'" data-toggle="modal" data-target="#modal-done">' +
+		 												'" data-end="'+ endDate +'" data-toggle="tooltip" data-placement="top" title="Done">' +
 		 												'<i class="fa fa-check"></i></button></span>');
 		 									 }
 		 								 },
@@ -463,12 +463,12 @@
 							{
 								$(".action-" + taskID).append(
 									 '<button disabled type="button"' +
-									 'class="btn btn-warning btn-sm"  data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
+									 'class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
 									 '<i class="fa fa-flag"></i></button>');
 
 								 $(".action-" + taskID).append(
 									 '<button disabled type="button"' +
-									 'class="btn btn-success btn-sm"  data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
+									 'class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
 									 '<i class="fa fa-check"></i></button>');
 							}
 						}
@@ -523,13 +523,13 @@
 
 				if($("#allTasks").css("display") == "none")
 				{
-					$("#viewAll").html("<i class='fa fa-eye' data-toggle='tooltip' data-placement='top' title='All Tasks'></i>");
-					$("#viewAll").attr("title", "View All Tasks");
+					$("#viewAll").html("<i class='fa fa-eye'></i>");
+					$("#viewAll").attr("title", "All Tasks");
 				}
 				else
 				{
-					$("#viewAll").html("<i class='fa fa-eye-slash' data-toggle='tooltip' data-placement='top' title='To Do Tasks'></i>");
-					$("#viewAll").attr("title", "Hide All Tasks");
+					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
+					$("#viewAll").attr("title", "To Do");
 				}
 
 			});
