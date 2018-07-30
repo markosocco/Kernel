@@ -10,6 +10,9 @@
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
+				<div style="margin-bottom:10px">
+					<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
+				</div>
 				<h1>
 					Project Title - Project Summary
 					<small>What can I improve on the next project?</small>
