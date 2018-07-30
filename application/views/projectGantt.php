@@ -784,20 +784,20 @@
 
 							<form action = 'templateProject' method="POST" style="display:inline-block">
 							</form>
-							<a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a>
+							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST" style="display:inline-block">
 							</form>
-							<a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a>
+							<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
 						<?php endif; ?>
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
-							<a name="" class="btn btn-default btn" id="parkProject" data-toggle="tooltip" data-placement="top" title="Park Project"><i class="fa fa-clock-o"></i></a>
+							<span data-toggle="modal" data-target="#confirmPark"><a name="" class="btn btn-default btn" id="parkProject" data-toggle="tooltip" data-placement="top" title="Park Project"><i class="fa fa-clock-o"></i></a></span>
 						<?php endif;?>
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
-							<a name="" class="btn btn-default btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a>
+							<span data-toggle="modal" data-target="#confirmContinue"><a name="" class="btn btn-default btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a></span>
 						<?php endif;?>
 
 					</div>
@@ -807,13 +807,97 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h2 class="modal-title">Confirm Project Archiving</h2>
+									<h2 class="modal-title">Archive Project</h2>
 								</div>
 								<div class="modal-body">
 									<h4>Are you sure you want to archive this project?</h4>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-										<button id = "doneConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "doneArchive" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+					<!-- CONFIRM PARK -->
+					<div class="modal fade" id="confirmPark" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title">Park Project</h2>
+								</div>
+								<div class="modal-body">
+									<h4>Are you sure you want to park this project?</h4>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "donePark" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+					<!-- CONFIRM USE TEMPLATE -->
+					<div class="modal fade" id="confirmUseTemplate" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title">Use Template</h2>
+								</div>
+								<div class="modal-body">
+									<h4>Are you sure you want use this template?</h4>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "doneUseTemplate" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+					<!-- CONFIRM TEMPLATE -->
+					<div class="modal fade" id="confirmTemplate" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title">Template Project</h2>
+								</div>
+								<div class="modal-body">
+									<h4>Are you sure you want to make this project a template?</h4>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "doneTemplate" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+					<!-- CONFIRM CONTINUE -->
+					<div class="modal fade" id="confirmContinue" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title">Continue Project</h2>
+								</div>
+								<div class="modal-body">
+									<h4>Are you sure you want continue this project?</h4>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "doneContinue" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 									</div>
 								</div>
 							</div>
@@ -832,32 +916,42 @@
 		</div>
 		<script>
 
-		$(document).on("click", "#archiveProject", function() {
+		$(document).on("click", "#doneArchive", function() {
 			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
 			$("form").attr("name", "formSubmit");
 			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
 			$("form").submit();
 			});
 
-			$(document).on("click", "#templateProject", function() {
-				var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-				$("form").attr("name", "formSubmit");
-				$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-				$("form").submit();
-				});
+		$(document).on("click", "#doneTemplate", function() {
+			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+			});
 
-				$(document).on("click", "#useTemplate", function() {
-					var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-					$("form").attr("name", "formSubmit");
-					$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-					$("form").submit();
-					});
+		$(document).on("click", "#doneUseTemplate", function() {
+			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+			});
 
-				$(document).on("click", "#editProject", function() {
-					var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-					$("#editProjectForm").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-					$("#editProjectForm").submit();
-					});
+		$("#donePark").click(function() //submitPark
+    {
+			$("#parkProj").submit();
+    });
+
+		$("#doneContinue").click(function() //submitPark
+    {
+			// INSERT REDIRECT TO EDIT PROJECT
+    });
+
+		$(document).on("click", "#editProject", function() {
+			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+			$("#editProjectForm").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("#editProjectForm").submit();
+			});
 
 			$("#myProjects").addClass("active");
 
@@ -1152,16 +1246,6 @@
       {
 				$("#prjID").attr("action","projectLogs");
 				$("#prjID").submit();
-      });
-
-			$("#parkProject").click(function() //submitPark
-      {
-				$("#parkProj").submit();
-      });
-
-			$("#continueProject").click(function() //submitPark
-      {
-				alert("Continue Project");
       });
 
 		</script>

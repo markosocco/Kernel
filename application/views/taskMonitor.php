@@ -542,20 +542,9 @@
 													else
 														$startDate = $uniquePlannedACItask['TASKADJUSTEDSTARTDATE'];
 
-													if($uniquePlannedACItask['TASKADJUSTEDSTARTDATE'] != null && $uniquePlannedACItask['TASKADJUSTEDENDDATE'] != null)
-														$taskDuration = $uniquePlannedACItask['adjustedTaskDuration2'];
-													elseif($uniquePlannedACItask['TASKSTARTDATE'] != null && $uniquePlannedACItask['TASKADJUSTEDENDDATE'] != null)
-														$taskDuration = $uniquePlannedACItask['adjustedTaskDuration1'];
-													else
-														$taskDuration = $uniquePlannedACItask['initialTaskDuration'];
-
 													$startdate = date_create($startDate);
 													$enddate = date_create($endDate);
-													$curdate = date_create(date('Y-m-d'));
-													$diff = date_diff($startdate, $curdate);
-													$delay = $diff->format("%a")+1;
-													?>
-
+													$curdate = date_create(date('Y-m-d'));?>
 													<tr class="viewProject" data-id="<?php echo $uniquePlannedACItask['PROJECTID'] ;?>">
 
 														<?php
@@ -604,11 +593,7 @@
 														<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 														<td align="center"><?php echo date_format($enddate, 'M d, Y');?></td>
 														<td align="center">-</td>
-														<?php if($delay-$taskDuration <= 0):?>
-															<td align="center">0</td>
-														<?php else:?>
-															<td align="center" style="color:red"><?php echo $delay - $taskDuration;?></td>
-														<?php endif;?>
+														<td align="center">0</td>
 													</tr>
 												<?php endforeach;?>
 											</tbody>
