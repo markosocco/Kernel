@@ -123,7 +123,7 @@
 																$startdate = date_create($templateProject['PROJECTSTARTDATE']);
 																$enddate = date_create($templateProject['PROJECTACTUALENDDATE']);
 																$temp = date_diff($enddate, $startdate);
-																$dFormat = $temp->format('%d');
+																$dFormat = $temp->format('%a');
 																$diff = (int)$dFormat + 1;
 
 																if ($diff >= 1)
@@ -203,7 +203,7 @@
 																	$startdate = date_create($editProject['PROJECTSTARTDATE']);
 																	$enddate = date_create($editProject['PROJECTACTUALENDDATE']);
 																	$temp = date_diff($enddate, $startdate);
-																	$dFormat = $temp->format('%d');
+																	$dFormat = $temp->format('%a');
 																	$diff = (int)$dFormat + 1;
 
 																	if ($diff >= 1)

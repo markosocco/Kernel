@@ -108,7 +108,7 @@
 														$startdate = date_create($value['TASKSTARTDATE']);
 														$enddate = date_create($value['TASKENDDATE']);
 														$diff = date_diff($enddate, $startdate);
-														$dDiff = intval($diff->format('%d'));
+														$dDiff = intval($diff->format('%a'));
 													?>
 
 													<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
@@ -316,7 +316,7 @@
 													$startdate = date_create($value['TASKSTARTDATE']);
 													$enddate = date_create($value['TASKENDDATE']);
 													$diff = date_diff($enddate, $startdate);
-													$dDiff = intval($diff->format('%d'));
+													$dDiff = intval($diff->format('%a'));
 												?>
 
 												<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
