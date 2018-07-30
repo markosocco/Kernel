@@ -2510,7 +2510,7 @@ class controller extends CI_Controller
 								// echo $value . ", ";
 
 								$data = array(
-										'ROLE' => '1',
+										'ROLE' => '0',
 										'users_USERID' => $deptHead,
 										'tasks_TASKID' => $a,
 										'STATUS' => 'Current'
@@ -2977,7 +2977,7 @@ class controller extends CI_Controller
 								// echo $value . ", ";
 
 								$data = array(
-										'ROLE' => '1',
+										'ROLE' => '0',
 										'users_USERID' => $deptHead,
 										'tasks_TASKID' => $a,
 										'STATUS' => 'Current'
@@ -3205,7 +3205,7 @@ class controller extends CI_Controller
 									// echo $value . ", ";
 
 									$data = array(
-											'ROLE' => '1',
+											'ROLE' => '0',
 											'users_USERID' => $deptHead,
 											'tasks_TASKID' => $a,
 											'STATUS' => 'Current'
@@ -3382,7 +3382,7 @@ class controller extends CI_Controller
 	 								// echo $value . ", ";
 
 	 								$data = array(
-	 										'ROLE' => '1',
+	 										'ROLE' => '0',
 	 										'users_USERID' => $deptHead,
 	 										'tasks_TASKID' => $a,
 											'STATUS' => 'Current'
