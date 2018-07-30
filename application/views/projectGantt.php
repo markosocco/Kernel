@@ -155,10 +155,11 @@
 												<div class="form-group">
 													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
 												</div>
+											</form>
 												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="modal" data-target="#modal-deny">
 													<i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Deny"></i></button>
 												<?php if($changeRequest['REQUESTTYPE'] == '1'):?>
-												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve">
+												<button id = "approveRequest" type="button" class="btn btn-success pull-right delegateApprove" style="display:block;" data-id="<?php echo $changeRequest['tasks_REQUESTEDTASK'];?>" data-user="<?php echo $changeRequest['users_REQUESTEDBY'];?>" data-toggle="modal" data-target="#modal-delegate">
 													<i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve & Delegate"></i><i class="fa fa-user" ></i></button>
 												<?php else:?>
 												<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;" data-toggle="modal" data-target="#modal-approve">
@@ -174,6 +175,278 @@
 						<hr style="height:1px; background-color:black">
 					</div>
 					<!-- RFC GANTT END -->
+
+					<!-- DELEGATE MODAL -->
+					<div class="modal fade" id="modal-delegate">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title taskTitle"><?php echo $changeRequest['TASKTITLE'];?></h2>
+									<h4 class="taskDates"><?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>
+										(<?php
+											if($changeRequest['TASKADJUSTEDSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $changeRequest['adjustedTaskDuration2'];
+											elseif($changeRequest['TASKSTARTDATE'] != null && $changeRequest['TASKADJUSTEDENDDATE'] != null)
+												$taskDuration = $changeRequest['adjustedTaskDuration1'];
+											else
+												$taskDuration = $changeRequest['initialTaskDuration'];
+
+										echo $taskDuration;?>
+										<?php if($taskDuration > 1):?>
+											 Days)
+										<?php else:?>
+											Day)
+										<?php endif;?>
+									</h4>
+									<h4>Current Task Responsible: <?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'];?></h4>
+								</div>
+
+								<div class="modal-body">
+									<div id="raciDelegate">
+									<!-- <div class="box box-danger"> -->
+										<!-- /.box-header -->
+										<div class="box-body" id ='delegateDiv'>
+											<form id="raciForm" action="delegateTask" method="POST">
+
+												<!-- TEAM DIV -->
+												<div class="form-group raciDiv" id = "teamDiv">
+												<table id="teamList" class="table table-bordered table-hover">
+													<thead>
+													<tr>
+														<th>Department/Employee</th>
+														<th class='text-center'>R*</th>
+														<th class='text-center'>A</th>
+														<th class='text-center'>C</th>
+														<th class='text-center'>I</th>
+														<!-- <th>No. of Projects (Ongoing & Planned)</th>
+														<th>No. of Tasks (Ongoing & Planned)</th> -->
+													</tr>
+													</thead>
+
+													<tbody id='assignment'>
+														<!-- EXECUTIVES -->
+														<?php foreach($users as $user):?>
+															<?php if($user['departments_DEPARTMENTID'] == '1'):?>
+															<tr>
+																<td><?php echo $user['FIRSTNAME'] . " " .  $user['LASTNAME'];?></td>
+																<td class='text-center'>
+																	<div class="radio">
+																	<label>
+																		<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" required>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<input id='user<?php echo $user['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $user['USERID'];?>" required>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<input id='user<?php echo $user['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $user['USERID'];?>" required>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<input id='user<?php echo $user['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $user['USERID'];?>" required>
+																	</label>
+																</div>
+																</td>
+															</tr>
+															<?php endif;?>
+														<?php endforeach;?>
+
+														<!-- ALL DEPARTMENTS -->
+														<?php foreach($departments as $department):?>
+															<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
+																<tr>
+																	<td><?php echo $department['DEPARTMENTNAME'];?></td>
+																	<td class='text-center'>
+																		<div class="radio">
+																		<label>
+																			<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		</label>
+																	</div>
+																	</td>
+																	<td class='text-center'>
+																		<div class="checkbox">
+																		<label>
+																			<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		</label>
+																	</div>
+																	</td>
+																	<td class='text-center'>
+																		<div class="checkbox">
+																		<label>
+																			<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		</label>
+																	</div>
+																	</td>
+																	<td class='text-center'>
+																		<div class="checkbox">
+																		<label>
+																			<input id='user<?php echo $department['users_DEPARTMENTHEAD'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $department['users_DEPARTMENTHEAD'];?>" required>
+																		</label>
+																	</div>
+																	</td>
+																</tr>
+															 <?php endif;?>
+														<?php endforeach;?>
+
+														<!-- STAFF IN DEPARTMENT -->
+														<tr><td colspan = '7'></td></tr>
+
+														<?php foreach($wholeDept as $employee):?>
+															<tr>
+																<?php $hasProjects = false;?>
+																<?php foreach($projectCount as $count): ;?>
+																	<?php $hasProjects = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<?php $hasProjects = $count['projectCount'];?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if ($hasProjects <= '0'):?>
+																	<?php $hasProjects = 0;?>
+																<?php endif;?>
+
+																<?php $hasTasks = false;?>
+																<?php foreach($taskCount as $count): ;?>
+																	<?php $hasTasks = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<?php $hasTasks = $count['taskCount'];?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if ($hasTasks <= '0'):?>
+																	<?php $hasTasks = 0;?>
+																<?php endif;?>
+
+																<td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
+																data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
+																data-projectCount = "<?php echo $hasProjects;?>"
+																data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
+																<td class='text-center'>
+																	<div class="radio">
+																	<label>
+																		<input id='user<?php echo $employee['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $employee['USERID'];?>" required>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<?php if($employee['usertype_USERTYPEID'] == '5'):?>
+																			<input disabled id='user<?php echo $employee['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																		<?php else:?>
+																			<input id='user<?php echo $employee['USERID'];?>-2' class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																		<?php endif;?>
+																	</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<?php if($employee['usertype_USERTYPEID'] == '5'):?>
+																			<input disabled id='user<?php echo $employee['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																		<?php else:?>
+																			<input id='user<?php echo $employee['USERID'];?>-3' class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																		<?php endif;?>																</label>
+																</div>
+																</td>
+																<td class='text-center'>
+																	<div class="checkbox">
+																	<label>
+																		<?php if($employee['usertype_USERTYPEID'] == '5'):?>
+																			<input disabled id='user<?php echo $employee['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																		<?php else:?>
+																			<input id='user<?php echo $employee['USERID'];?>-4' class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>" required>
+																		<?php endif;?>																	</label>
+																</div>
+																</td class='text-center'>
+
+																<!-- <?php $hasProjects = false;?>
+																<?php foreach($projectCount as $count): ;?>
+																	<?php $hasProjects = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<td align="center"><?php echo $count['projectCount'];?></td>
+																		<?php $hasProjects = $count['projectCount'];?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if ($hasProjects <= '0'):?>
+																	<?php $hasProjects = 0;?>
+																	<td align="center">0</td>
+																<?php endif;?>
+
+																<?php $hasTasks = false;?>
+																<?php foreach($taskCount as $count): ;?>
+																	<?php $hasTasks = false;?>
+																	<?php if ($count['USERID'] == $employee['USERID']):?>
+																		<td align="center"><?php echo $count['taskCount'];?></td>
+																		<?php $hasTasks = $count['taskCount'];?>
+																		<?php break;?>
+																	<?php endif;?>
+																<?php endforeach;?>
+																<?php if ($hasTasks <= '0'):?>
+																	<?php $hasTasks = 0;?>
+																	<td align="center">0</td>
+																<?php endif;?> -->
+															 </tr>
+														<?php endforeach;?>
+													</tbody>
+												</table>
+												<p>* Only one department/employee is allowed to be assigned</p>
+
+												</div>
+
+										<!-- /.box-body -->
+									</div>
+								<!-- </div> -->
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
+									<button type="button" class="btn btn-success delegate" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i></button>
+								</div>
+							</form>
+							</div>
+
+							<!-- WORKLOAD ASSESSMENT -->
+							<div id="workloadAssessment">
+
+								<div class="modal-header">
+									<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
+									<h4 id = "workloadProjects">Total Number of Projects: </h4>
+									<h4 id = "workloadTasks">Total Number of Tasks: </h4>
+								</div>
+								<div class="modal-body" id = "workloadDiv">
+								</div>
+								<div class="modal-footer">
+									<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
+								</div>
+
+							</div>
+
+							<!-- CONFIRM DELEGATE -->
+							<div id="delegateConfirm">
+								<div class="modal-body">
+									<h4>Are you sure you want to delegate this task?</h4>
+								</div>
+								<div class="modal-footer">
+									<button id="backConfirm" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
+									<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END DELEGATE -->
 
 				<!-- CONFIRM DENY MODAL -->
 				<div class="modal fade" id="modal-deny">
@@ -245,362 +518,15 @@
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Close"></i></button>
 										<button id = "confirmApproveBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Approve"></i></button>
-										<?php if ($changeRequest['REQUESTTYPE'] == '1'):?>
-											<button id="delegateBtn" type="button" class="btn btn-success pull-left" style="margin-right: 15%"><i class="fa fa-check"></i></button>
-										<?php endif;?>
 									</div>
 								</div>
-
-								<!-- CONFIRM DELEGATE -->
-								<div id="delegateConfirm">
-									<h4>Are you sure you want to delegate this task and approve this request?</h4>
-									<div class="modal-footer">
-										<button id = "backConfirmDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="Close"></i></button>
-										<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Confirm Approve"></i></button>
-									</div>
-								</div>
-
-								<!-- DELEGATE -->
-
-								<div id="raciDelegate">
-								<div class="box">
-									<div class="box-header" style="display:inline-block">
-										<h3 class="box-title">
-											<div class="btn-group">
-												<button type="button" class="btn btn-default btn-sm raciBtn" id="responsible">Responsible</button>
-												<button type="button" class="btn btn-default btn-sm raciBtn" id="accountable">Accountable</button>
-												<button type="button" class="btn btn-default btn-sm raciBtn" id="consulted">Consulted</button>
-												<button type="button" class="btn btn-default btn-sm raciBtn" id="informed">Informed</button>
-											</div>
-										</h3>
-									</div>
-									<!-- /.box-header -->
-
-									<div class="box-body">
-										<!-- <form id="raciForm" action="delegateTask" method="POST"> -->
-
-										<!-- RESPONSIBLE DIV -->
-										<div class="form-group raciDiv" id = "responsibleDiv">
-										<table id="responsibleList" class="table table-bordered table-hover">
-											<thead>
-											<tr>
-												<th></th>
-												<th>Name</th>
-												<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
-												<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
-												<th></th>
-											</tr>
-											</thead>
-											<tbody>
-												<?php foreach($deptEmployees as $employee):?>
-													<tr>
-														<td><div class="radio">
-															<label>
-																<input class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $employee['USERID'];?>" required>
-															</label>
-														</div></td>
-														<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-														<?php foreach($projectCount as $count): ;?>
-															<?php $hasProjects = false;?>
-															<?php if ($count['USERID'] == $employee['USERID']):?>
-																<td align="center"><?php echo $count['projectCount'];?></td>
-																<?php $hasProjects = $count['projectCount'];?>
-																<?php break;?>
-															<?php endif;?>
-														<?php endforeach;?>
-														<?php if ($hasProjects <= '0'):?>
-															<?php $hasProjects = 0;?>
-															<td align="center">0</td>
-														<?php endif;?>
-
-														<?php foreach($taskCount as $count): ;?>
-															<?php $hasTasks = false;?>
-															<?php if ($count['USERID'] == $employee['USERID']):?>
-																<td align="center"><?php echo $count['taskCount'];?></td>
-																<?php $hasTasks = $count['taskCount'];?>
-																<?php break;?>
-															<?php endif;?>
-														<?php endforeach;?>
-														<?php if ($hasTasks <= '0'):?>
-															<?php $hasTasks = 0;?>
-															<td align="center">0</td>
-														<?php endif;?>
-
-														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
-															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
-															data-projectCount = "<?php echo $hasProjects;?>"
-															data-taskCount = "<?php echo $hasTasks;?>">
-															<a class="btn moreBtn" data-toggle="modal">
-															<i class="fa fa-info-circle"></i> More Info</a>
-														</td>
-													</tr>
-												<?php endforeach;?>
-											</tbody>
-										</table>
-									</div>
-
-									<!-- ACCOUNTABLE DIV -->
-									<div class="form-group raciDiv" id = "accountableDiv">
-										<label>Select Department/s: (optional)</label>
-										<select class="form-control select2" multiple="multiple" name = "accountableDept[]" data-placeholder="Select Departments" style="width:100%">
-
-											<?php foreach ($departments as $row): ?>
-
-												<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
-													<?php echo $row['DEPARTMENTNAME']; ?>
-												</option>
-
-											<?php endforeach; ?>
-										</select>
-										<br><br>
-
-									<table id="accountableList2" class="table table-bordered table-hover">
-										<thead>
-										<tr>
-											<th></th>
-											<th>Name</th>
-											<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
-											<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
-											<th></th>
-										</tr>
-										</thead>
-										<tbody>
-											<?php foreach($wholeDept as $employee):?>
-												<tr>
-													<td><div class="checkbox">
-														<label>
-															<input class = "checkEmp" type="checkbox" name="accountableEmp[]" value="<?php echo $employee['USERID'];?>">
-														</label>
-													</div></td>
-													<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-													<?php foreach($projectCount as $count): ;?>
-														<?php $hasProjects = false;?>
-														<?php if ($count['USERID'] == $employee['USERID']):?>
-															<td align="center"><?php echo $count['projectCount'];?></td>
-															<?php $hasProjects = $count['projectCount'];?>
-															<?php break;?>
-														<?php endif;?>
-													<?php endforeach;?>
-													<?php if ($hasProjects <= '0'):?>
-														<?php $hasProjects = 0;?>
-														<td align="center">0</td>
-													<?php endif;?>
-
-													<?php foreach($taskCount as $count): ;?>
-														<?php $hasTasks = false;?>
-														<?php if ($count['USERID'] == $employee['USERID']):?>
-															<td align="center"><?php echo $count['taskCount'];?></td>
-															<?php $hasTasks = $count['taskCount'];?>
-															<?php break;?>
-														<?php endif;?>
-													<?php endforeach;?>
-													<?php if ($hasTasks <= '0'):?>
-														<?php $hasTasks = 0;?>
-														<td align="center">0</td>
-													<?php endif;?>
-														<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
-															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
-															data-projectCount = "<?php echo $hasProjects;?>"
-															data-taskCount = "<?php echo $hasTasks;?>">
-														<a class="btn moreBtn" data-toggle="modal">
-															<i class="fa fa-info-circle"></i> More Info</a></td>
-												</tr>
-											<?php endforeach;?>
-										</tbody>
-									</table>
-								</div>
-
-								<!-- CONSULTED DIV -->
-								<div class="form-group raciDiv" id = "consultedDiv">
-
-									<label>Select Department/s: (optional)</label>
-									<select class="form-control select2" multiple="multiple" name = "consultedDept[]" data-placeholder="Select Departments" style="width:100%">
-
-										<?php foreach ($departments as $row): ?>
-
-											<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
-												<?php echo $row['DEPARTMENTNAME']; ?>
-											</option>
-
-										<?php endforeach; ?>
-									</select>
-									<br><br>
-
-								<table id="consultedList2" class="table table-bordered table-hover">
-									<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
-										<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
-										<th></th>
-									</tr>
-									</thead>
-									<tbody>
-										<?php foreach($wholeDept as $employee):?>
-											<tr>
-												<td><div class="checkbox">
-													<label>
-														<input class = "checkEmp" type="checkbox" name="consultedEmp[]" value="<?php echo $employee['USERID'];?>">
-													</label>
-												</div></td>
-												<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-												<?php foreach($projectCount as $count): ;?>
-													<?php $hasProjects = false;?>
-													<?php if ($count['USERID'] == $employee['USERID']):?>
-														<td align="center"><?php echo $count['projectCount'];?></td>
-														<?php $hasProjects = $count['projectCount'];?>
-														<?php break;?>
-													<?php endif;?>
-												<?php endforeach;?>
-												<?php if ($hasProjects <= '0'):?>
-													<?php $hasProjects = 0;?>
-													<td align="center">0</td>
-												<?php endif;?>
-
-												<?php foreach($taskCount as $count): ;?>
-													<?php $hasTasks = false;?>
-													<?php if ($count['USERID'] == $employee['USERID']):?>
-														<td align="center"><?php echo $count['taskCount'];?></td>
-														<?php $hasTasks = $count['taskCount'];?>
-														<?php break;?>
-													<?php endif;?>
-												<?php endforeach;?>
-												<?php if ($hasTasks <= '0'):?>
-													<?php $hasTasks = 0;?>
-													<td align="center">0</td>
-												<?php endif;?>
-												<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
-													data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
-													data-projectCount = "<?php echo $hasProjects;?>"
-													data-taskCount = "<?php echo $hasTasks;?>">
-													<a class="btn moreBtn" data-toggle="modal">
-														<i class="fa fa-info-circle"></i> More Info</a></td>
-											</tr>
-										<?php endforeach;?>
-									</tbody>
-								</table>
-							</div>
-
-							<!-- INFORMED DIV -->
-							<div class="form-group raciDiv" id = "informedDiv">
-								<label>Select Department/s: (optional)</label>
-								<select id="nami" class="form-control select2" multiple="multiple" name = "informedDept[]" data-placeholder="Select Departments" style="width:100%">
-
-									<?php foreach ($departments as $row): ?>
-
-										<option value="<?php echo $row['users_DEPARTMENTHEAD']; ?>">
-											<?php echo $row['DEPARTMENTNAME']; ?>
-										</option>
-
-									<?php endforeach; ?>
-								</select>
-								<br><br>
-
-							<table id="informedList2" class="table table-bordered table-hover">
-								<thead>
-								<tr>
-									<th></th>
-									<th>Name</th>
-									<th align="center">No. of Projects <small><br>(Planned & Ongoing)</small></th>
-									<th align="center">No. of Tasks <small><br>(Planned & Ongoing)</small></th>
-									<th></th>
-								</tr>
-								</thead>
-								<tbody>
-									<?php foreach($wholeDept as $employee):?>
-										<tr>
-											<td><div class="checkbox">
-												<label>
-													<input class = "checkEmp" type="checkbox" name="informedEmp[]" value="<?php echo $employee['USERID'];?>">
-												</label>
-											</div></td>
-											<td><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
-											<?php foreach($projectCount as $count): ;?>
-												<?php $hasProjects = false;?>
-												<?php if ($count['USERID'] == $employee['USERID']):?>
-													<td align="center"><?php echo $count['projectCount'];?></td>
-													<?php $hasProjects = $count['projectCount'];?>
-													<?php break;?>
-												<?php endif;?>
-											<?php endforeach;?>
-											<?php if ($hasProjects <= '0'):?>
-												<?php $hasProjects = 0;?>
-												<td align="center">0</td>
-											<?php endif;?>
-
-											<?php foreach($taskCount as $count): ;?>
-												<?php $hasTasks = false;?>
-												<?php if ($count['USERID'] == $employee['USERID']):?>
-													<td align="center"><?php echo $count['taskCount'];?></td>
-													<?php $hasTasks = $count['taskCount'];?>
-													<?php break;?>
-												<?php endif;?>
-											<?php endforeach;?>
-											<?php if ($hasTasks <= '0'):?>
-												<?php $hasTasks = 0;?>
-												<td align="center">0</td>
-											<?php endif;?>
-											<td class="btn moreInfo" data-id="<?php echo $employee['USERID'];?>"
-												data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
-												data-projectCount = "<?php echo $hasProjects;?>"
-												data-taskCount = "<?php echo $hasTasks;?>">
-												<a class="btn moreBtn" data-toggle="modal">
-													<i class="fa fa-info-circle"></i> More Info</a></td>
-										</tr>
-									<?php endforeach;?>
-								</tbody>
-							</table>
-						</div>
-
 									<!-- /.box-body -->
 								</div>
-							</div>
-
-							<div class="modal-footer">
-								<button id="backDelegate" type="button" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
-								<button id = "delegateTask" type="button" class="btn btn-success delegate" data-id="<?php $changeRequest['tasks_REQUESTEDTASK'];?>"><i class="fa fa-check"></i></button>
-							</div>
-						</form>
-						</div>
-
-								<!-- WORKLOAD ASSESSMENT -->
-								<div id="workloadAssessment">
-
-									<div class="modal-header">
-										<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
-										<h4 id = "workloadProjects">Total Number of Projects: </h4>
-										<h4 id = "workloadTasks">Total Number of Tasks: </h4>
-									</div>
-									<div class="modal-body" id = "workloadDiv">
-									</div>
-									<div class="modal-footer">
-										<button type="button" id="backWorkload" class="btn btn-default pull-left"><i class="fa fa-arrow-left"></i></button>
-									</div>
-								</div>
-							</div>
 							</div>
 						</div>
 					</div> <!-- END OF MODAL DIV -->
 
 				<?php endif;?>
-
-
-					<!-- <div class="pull-right" style="text-align:center;">
-						<div class="progress" data-percentage="20">
-                <span class="progress-left">
-                    <span class="progress-bar"></span>
-                </span>
-                <span class="progress-right">
-                    <span class="progress-bar"></span>
-                </span>
-                <div class="progress-value">
-                    <div>
-                        20%<br>
-                        <span>Completed</span>
-                    </div>
-								</div>
-					</div> -->
 
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
@@ -880,20 +806,20 @@
 			$("body").on("click", function(){ // REMOVE ALL SELECTED IN MODAL
 				if($("#modal-approve").css("display") == 'none')
 				{
-					$(".radioEmp").prop("checked", false);
-					$(".checkEmp").prop("checked", false);
+					// $(".radioEmp").prop("checked", false);
+					// $(".checkEmp").prop("checked", false);
 					$(".select2").val(null).trigger("change");
-					$(".raciBtn").removeClass('active');
-					$("#responsible").addClass("active");
-					$(".raciDiv").hide();
 					$("#workloadAssessment").hide();
-					$("#raciDelegate").hide();
 					$("#delegateConfirm").hide();
 					$("#approveConfirm").show();
+					$("#raciDelegate").show();
 				}
 			});
 
 			$(document).on("click", "#confirmDelegateBtn", function() { // approve with delegate
+				$(".checkEmp").prop('disabled', false);
+				$(".radioEmp").prop('disabled', false);
+
 				var $request = $("#approvalForm").attr('data-request');
 				var $project = $("#approvalForm").attr('data-project');
 				var $task = $("#approvalForm").attr('data-task');
@@ -941,29 +867,107 @@
 				$("#approvalForm").submit();
 				});
 
-			$(".moreInfo").click(function(){
-				$("#raciDelegate").hide();
+				$("body").on("click", ".delegateApprove", function(){
+					var $id = $(this).attr('data-id');
+					var $user = $(this).attr('data-user');
 
-				function loadWorkloadTasks($projectID)
-				{
 					$.ajax({
 						type:"POST",
-						url: "<?php echo base_url("index.php/controller/getUserWorkloadTasks"); ?>",
-						data: {userID: $id, projectID: $projectID},
+						url: "<?php echo base_url("index.php/controller/getRACIByTaskID"); ?>",
+						data: {taskID: $id},
 						dataType: 'json',
 						success:function(data)
 						{
-							for(t=0; t<data['workloadTasks'].length; t++)
+							for(x=0; data['raci'].length >x; x++)
 							{
-								var taskStart = moment(data['workloadTasks'][t].TASKSTARTDATE).format('MMM DD, YYYY');
-								var taskEnd = moment(data['workloadTasks'][t].TASKENDDATE).format('MMM DD, YYYY');
+								$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('checked', true);
+								if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4') && <?php echo $_SESSION['usertype_USERTYPEID'];?> == '4')
+								{
+									$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('disabled', true);
+								}
+								if(data['raci'][x].ROLE == '1' && data['raci'][x].users_USERID == $user)
+								{
+									$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('checked', false);
+									$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('disabled', true);
+								}
+							}
+						},
+						error:function(data)
+						{
+							alert("There was a problem with loading the RACI");
+						}
+					});
+				});
 
-								$("#project_" + $projectID).append("<tr>" +
-												 "<td>" + data['workloadTasks'][t].TASKTITLE + "</td>" +
-												 "<td>" + taskStart + "</td>" +
-												 "<td>" + taskEnd + "</td>" +
-												 "<td>" + data['workloadTasks'][t].TASKSTATUS + "</td>" +
-												 "</tr>");
+				$("body").on("click", ".moreInfo", function(){
+					alert("clicked");
+
+					function loadWorkloadTasks($projectID)
+					{
+						$.ajax({
+							type:"POST",
+							url: "<?php echo base_url("index.php/controller/getUserWorkloadTasks"); ?>",
+							data: {userID: $id, projectID: $projectID},
+							dataType: 'json',
+							success:function(data)
+							{
+								for(t=0; t<data['workloadTasks'].length; t++)
+								{
+									var taskStart = moment(data['workloadTasks'][t].TASKSTARTDATE).format('MMM DD, YYYY');
+									var taskEnd = moment(data['workloadTasks'][t].TASKENDDATE).format('MMM DD, YYYY');
+
+									$("#project_" + $projectID).append("<tr>" +
+													 "<td>" + data['workloadTasks'][t].TASKTITLE + "</td>" +
+													 "<td>" + taskStart + "</td>" +
+													 "<td>" + taskEnd + "</td>" +
+													 "<td>" + data['workloadTasks'][t].TASKSTATUS + "</td>" +
+													 "</tr>");
+								}
+							},
+							error:function()
+							{
+								alert("Failed to retrieve user data.");
+							}
+						});
+					 }
+
+					$("#raciDelegate").hide();
+					var $id = $(this).attr('data-id');
+					var $projectCount = $(this).attr('data-projectCount');
+					var $taskCount = $(this).attr('data-taskCount');
+					$("#workloadEmployee").html($(this).attr('data-name'));
+					$("#workloadProjects").html("Total Number of Projects: " + $projectCount);
+					$("#workloadTasks").html("Total Number of Tasks: " + $taskCount);
+					$('#workloadDiv').html("");
+					$("#workloadAssessment").show();
+
+					$.ajax({
+						type:"POST",
+						url: "<?php echo base_url("index.php/controller/getUserWorkloadProjects"); ?>",
+						data: {userID: $id},
+						dataType: 'json',
+						success:function(data)
+						{
+							$('#workloadDiv').html("");
+							for(p=0; p<data['workloadProjects'].length; p++)
+							{
+								var $projectID = data['workloadProjects'][p].PROJECTID;
+								$('#workloadDiv').append("<div class = 'box'>" +
+												 "<div class = 'box-header'>" +
+													 "<h3 class = 'box-title text-blue'> " + data['workloadProjects'][p].PROJECTTITLE + "</h3>" +
+												 "</div>" +
+												 "<div class = 'box-body table-responsive no-padding'>" +
+													 "<table class='table table-hover' id='project_" + $projectID + "'>" +
+														 "<th>Task Name</th>" +
+														 "<th>Start Date</th>" +
+														 "<th>End Date</th>" +
+														 "<th>Status</th>");
+
+								 loadWorkloadTasks($projectID);
+
+								 $('#workloadDiv').append("</table>" +
+																					 "</div>" +
+																				 "</div>");
 							}
 						},
 						error:function()
@@ -971,116 +975,14 @@
 							alert("Failed to retrieve user data.");
 						}
 					});
-				 }
 
-				var $id = $(this).attr('data-id');
-				var $projectCount = $(this).attr('data-projectCount');
-				var $taskCount = $(this).attr('data-taskCount');
-				$("#workloadEmployee").html($(this).attr('data-name'));
-				$("#workloadProjects").html("Total Number of Projects: " + $projectCount);
-				$("#workloadTasks").html("Total Number of Tasks: " + $taskCount);
-				$('#workloadDiv').html("");
-				$("#workloadAssessment").show();
-
-				$.ajax({
-					type:"POST",
-					url: "<?php echo base_url("index.php/controller/getUserWorkloadProjects"); ?>",
-					data: {userID: $id},
-					dataType: 'json',
-					success:function(data)
-					{
-						$('#workloadDiv').html("");
-						for(p=0; p<data['workloadProjects'].length; p++)
-						{
-							var $projectID = data['workloadProjects'][p].PROJECTID;
-							$('#workloadDiv').append("<div class = 'box'>" +
-											 "<div class = 'box-header'>" +
-												 "<h3 class = 'box-title text-blue'> " + data['workloadProjects'][p].PROJECTTITLE + "</h3>" +
-											 "</div>" +
-											 "<div class = 'box-body table-responsive no-padding'>" +
-												 "<table class='table table-hover' id='project_" + $projectID + "'>" +
-													 "<th>Task Name</th>" +
-													 "<th>Start Date</th>" +
-													 "<th>End Date</th>" +
-													 "<th>Status</th>");
-
-							 loadWorkloadTasks($projectID);
-
-							 $('#workloadDiv').append("</table>" +
-																				 "</div>" +
-																			 "</div>");
-						}
-					},
-					error:function()
-					{
-						alert("Failed to retrieve user data.");
-					}
 				});
-
-			});
 
 			$("#backWorkload").click(function(){
 
 				$("#raciDelegate").show();
 				$("#workloadAssessment").hide();
 
-			});
-
-			$("#backDelegate").click(function(){
-
-				$("#approveConfirm").show();
-				$("#raciDelegate").hide();
-				$(".raciDiv").hide();
-				$("#responsibleDiv").show();
-			});
-
-			$("#backConfirmDelegate").click(function(){
-				$(".raciBtn").removeClass('active');
-				$("#responsible").addClass("active");
-				$("#responsibleDiv").show();
-				$("#raciDelegate").show();
-				$("#delegateConfirm").hide();
-			});
-
-			$("#delegateBtn").click(function(){
-				$(".raciBtn").removeClass('active');
-				$("#responsible").addClass("active");
-				$("#responsibleDiv").show();
-				$("#raciDelegate").show();
-				$("#approveConfirm").hide();
-			});
-
-			$("#responsible").on("click", function(){
-				$(".raciBtn").removeClass('active');
-				$(this).addClass("active");
-				$(".raciDiv").hide();
-				$("#responsibleDiv").show();
-			});
-
-			$("#accountable").on("click", function(){
-				$(".raciBtn").removeClass('active');
-				$(this).addClass("active");
-				$(".raciDiv").hide();
-				$("#accountableDiv").show();
-			});
-
-			$("#consulted").on("click", function(){
-				$(".raciBtn").removeClass('active');
-				$(this).addClass("active");
-				$(".raciDiv").hide();
-				$("#consultedDiv").show();
-			});
-
-			$("#informed").on("click", function(){
-				$(".raciBtn").removeClass('active');
-				$(this).addClass("active");
-				$(".raciDiv").hide();
-				$("#informedDiv").show();
-			});
-
-			$("#delegateTask").on("click", function(){
-				$("#delegateConfirm").show();
-				$("#raciDelegate").hide();
 			});
 
 		</script>

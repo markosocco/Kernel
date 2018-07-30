@@ -360,14 +360,20 @@ class controller extends CI_Controller
 			// RFC Approval Data
 			$userID = $_SESSION['USERID'];
 			$deptID = $_SESSION['departments_DEPARTMENTID'];
-			if($_SESSION['usertype_USERTYPEID'] == '5') // if a PO is logged in
-				$filter = "projects.users_USERID = '$userID'";
-			elseif($_SESSION['usertype_USERTYPEID'] == '4') // if supervisor is logged in
-				$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID') || projects.users_USERID = '$userID'";
-			elseif($_SESSION['usertype_USERTYPEID'] == '3') // if head is logged in
-				$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID') || projects.users_USERID = '$userID'";
-			else // if admin/executive is logged in
-				$filter = "REQUESTID = '0'";
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '4': // if supervisor is logged in
+					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID' && REQUESTSTATUS = 'Pending')
+						|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '3': // if head is logged in
+					$filter = "(usertype_USERTYPEID = '4' && users.departments_DEPARTMENTID = '$deptID' && REQUESTSTATUS = 'Pending')
+					|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
+				case '5': // if PO is logged in
+					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
+				default:
+					$filter = "usertype_USERTYPEID = '3' && REQUESTSTATUS = 'Pending'"; break;
+			}
+
 
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
@@ -1827,7 +1833,7 @@ class controller extends CI_Controller
 			$this->model->addNotification($notificationData);
 
 			// notify next task person
-			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
+			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
 			if($postTasksData['nextTaskID'] != NULL){
 
 				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
@@ -1844,7 +1850,7 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $id,
+							'tasks_TASKID' => $taskID,
 							'TYPE' => '1'
 						);
 
@@ -1854,7 +1860,7 @@ class controller extends CI_Controller
 			}
 
 			// notify ACI
-			$ACIdata['ACI'] = $this->model->getACIbyTask($id);
+			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
 			if($ACIdata['ACI'] != NULL) {
 
 				foreach($ACIdata['ACI'] as $ACIusers){
