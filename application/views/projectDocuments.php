@@ -83,74 +83,87 @@
 										<?php
 
 											foreach($documentsByProject as $document){
-												if($document['DOCUMENTSTATUS'] == 'Uploaded' || $document['users_UPLOADEDBY'] == $_SESSION['USERID']){
+												if($document['DOCUMENTSTATUS'] == 'For Acknowledgement'){
 
-													$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
-													<button type='button' class='btn btn-success'>
-													<i class='fa fa-download'></i></button></a>
+													if($document['users_UPLOADEDBY'] == $_SESSION['USERID']){
 
-													<button disabled type='button' class='btn btn-success document' name='documentButton'
-														id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge'
-														data-docuID ='" . $document['DOCUMENTID'] . "'
-														data-projectID = '" . $projectProfile['PROJECTID'] . "'
-														data-docuName = '" . $document['DOCUMENTNAME'] ."'>
-														<i class='fa fa-eye'></i></button>";
+														$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
+														<button type='button' class='btn btn-success'>
+														<i class='fa fa-download'></i></button></a>
 
+														<button disabled type='button' class='btn btn-warning document' name='documentButton'>
+															<i class='fa fa-eye'></i></button>";
+
+															echo "<tr>";
+																echo "<td>" . $document['DOCUMENTNAME'] . "</td>";
+																echo "<td>" . $document['FIRSTNAME'] . " " . $document['LASTNAME'] . "</td>";
+																echo "<td>" . $document['DEPARTMENTNAME'] . "</td>";
+																echo "<td>" . date('M d, Y', strtotime($document['UPLOADEDDATE'])) . "</td>";
+																echo "<td>" . $document['REMARKS'] . "</td>";
+																echo "<td align='center'> " . $buttonAction . " </td>";
+															echo "</tr>";
 
 													} else {
 
-														echo "<script>console.log('current document  id = ". $document['DOCUMENTID'] ."');</script>";
-
-														foreach($documentAcknowledgement as $docuToAcknowledge){
-
-															echo "<script>console.log('current document  to ack id = ". $docuToAcknowledge['documents_DOCUMENTID'] ."');</script>";
-
-															if($document['DOCUMENTID'] == $docuToAcknowledge['documents_DOCUMENTID']){
-
+														foreach ($documentAcknowledgement as $docuToAcknowledge){
+															if($docuToAcknowledge['documents_DOCUMENTID'] == $document['DOCUMENTID']){
 																if($docuToAcknowledge['ACKNOWLEDGEDDATE'] == NULL){
-
-																	echo "<script>console.log('empty ACKNOWLEDGEDDATE = ". $docuToAcknowledge['ACKNOWLEDGEDDATE'] ."');</script>";
 
 																	$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
 																	<button type='button' class='btn btn-success'>
 																	<i class='fa fa-download'></i></button></a>
 
-																	<button type='button' class='btn btn-success document' name='documentButton'
+																	<button type='button' class='btn btn-warning document' name='documentButton'
 																		id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge'
 																		data-docuID ='" . $document['DOCUMENTID'] . "'
 																		data-projectID = '" . $projectProfile['PROJECTID'] . "'
 																		data-docuName = '" . $document['DOCUMENTNAME'] ."'>
 																		<i class='fa fa-eye'></i></button>";
-																		
-																} else {
+																}
 
-																	echo "<script>console.log('not empty ACKNOWLEDGEDDATE = ". $docuToAcknowledge['ACKNOWLEDGEDDATE'] ."');</script>";
+																else {
 
 																	$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
 																	<button type='button' class='btn btn-success'>
 																	<i class='fa fa-download'></i></button></a>
 
-																	<button disabled type='button' class='btn btn-success document' name='documentButton'
-																		id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge'>
+																	<button disabled type='button' class='btn btn-warning document' name='documentButton'>
 																		<i class='fa fa-eye'></i></button>";
+
 																}
 															}
 														}
+														echo "<tr>";
+															echo "<td>" . $document['DOCUMENTNAME'] . "</td>";
+															echo "<td>" . $document['FIRSTNAME'] . " " . $document['LASTNAME'] . "</td>";
+															echo "<td>" . $document['DEPARTMENTNAME'] . "</td>";
+															echo "<td>" . date('M d, Y', strtotime($document['UPLOADEDDATE'])) . "</td>";
+															echo "<td>" . $document['REMARKS'] . "</td>";
+															echo "<td align='center'> " . $buttonAction . " </td>";
+														echo "</tr>";
 													}
 
-
-													echo "<script>console.log('dulo = ". $document['DOCUMENTID'] ."');</script>";
-
-													echo "<tr>";
-														echo "<td>" . $document['DOCUMENTNAME'] . "</td>";
-														echo "<td>" . $document['FIRSTNAME'] . " " . $document['LASTNAME'] . "</td>";
-														echo "<td>" . $document['DEPARTMENTNAME'] . "</td>";
-														echo "<td>" . date('M d, Y', strtotime($document['UPLOADEDDATE'])) . "</td>";
-														echo "<td>" . $document['DOCUMENTID'] . "</td>";
-														echo "<td align='center'> " . $buttonAction . " </td>";
-													echo "</tr>";
-
 												}
+
+												else {
+
+													$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
+													<button type='button' class='btn btn-success'>
+													<i class='fa fa-download'></i></button></a>
+
+													<button disabled type='button' class='btn btn-warning document' name='documentButton'>
+														<i class='fa fa-eye'></i></button>";
+
+														echo "<tr>";
+															echo "<td>" . $document['DOCUMENTNAME'] . "</td>";
+															echo "<td>" . $document['FIRSTNAME'] . " " . $document['LASTNAME'] . "</td>";
+															echo "<td>" . $document['DEPARTMENTNAME'] . "</td>";
+															echo "<td>" . date('M d, Y', strtotime($document['UPLOADEDDATE'])) . "</td>";
+															echo "<td>" . $document['REMARKS'] . "</td>";
+															echo "<td align='center'> " . $buttonAction . " </td>";
+														echo "</tr>";
+												}
+											}
 										?>
 									</tbody>
 		              </table>
@@ -280,16 +293,23 @@
 		    })
 		  });
 
+			$(document).on("click", "#acknowledgeButton", function() {
+
+				var $documentID = $(this).attr('data-docuID');
+				var $projectID = $(this).attr('data-projectID');
+				var $documentName = $(this).attr('data-docuName');
+
+				$("#doneConfirm").attr('data-docuID', $documentID);
+				$("#doneConfirm").attr('data-projectID', $projectID);
+				$("#doneConfirm").attr('data-docuName', $documentName);
+
+			});
+
 			$(document).on("click", "#doneConfirm", function() {
 
-				var $documentID = $("#acknowledgeButton").attr('data-docuID');
-				var $projectID = $("#acknowledgeButton").attr('data-projectID');
-				var $documentName = $("#acknowledgeButton").attr('data-docuName');
-
-				console.log("clicked");
-				console.log("docuID " + $documentID);
-				console.log("$projectID " + $projectID);
-				console.log("$documentName " + $documentName);
+				var $documentID = $(this).attr('data-docuID');
+				var $projectID = $(this).attr('data-projectID');
+				var $documentName = $(this).attr('data-docuName');
 
 				$("#acknowledgeForm").attr("name", "formSubmit");
 				$("#acknowledgeForm").append("<input type='hidden' name='documentID' value= " + $documentID + ">");
