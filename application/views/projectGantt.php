@@ -411,7 +411,7 @@
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i></button>
-									<button type="button" class="btn btn-success delegate" data-toggle="modal" data-target="#modal-delegateConfirm"><i class="fa fa-check"></i></button>
+									<button type="button" id = "confirmDelegateBtn" class="btn btn-success delegate"><i class="fa fa-check"></i></button>
 								</div>
 							</form>
 							</div>
@@ -432,16 +432,6 @@
 
 							</div>
 
-							<!-- CONFIRM DELEGATE -->
-							<div id="delegateConfirm">
-								<div class="modal-body">
-									<h4>Are you sure you want to delegate this task?</h4>
-								</div>
-								<div class="modal-footer">
-									<button id="backConfirm" type="button" class="btn btn-default pull-left"><i class="fa fa-close"></i> Cancel</button>
-									<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -931,7 +921,6 @@
 						});
 					 }
 
-					$("#raciDelegate").hide();
 					var $id = $(this).attr('data-id');
 					var $projectCount = $(this).attr('data-projectCount');
 					var $taskCount = $(this).attr('data-taskCount');
@@ -940,6 +929,7 @@
 					$("#workloadTasks").html("Total Number of Tasks: " + $taskCount);
 					$('#workloadDiv').html("");
 					$("#workloadAssessment").show();
+					$("#raciDelegate").hide();
 
 					$.ajax({
 						type:"POST",

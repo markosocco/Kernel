@@ -20,7 +20,7 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 
-				<button id = "viewAll" class="btn btn-default pull-right"><i class="fa fa-eye"></i></button>
+				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="All Tasks"><i class="fa fa-eye"></i></button>
 
 				<br><br>
 
