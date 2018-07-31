@@ -65,55 +65,57 @@
 
         <br><br>
 
-        <div class="row" id="createProject">
-          <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <a href="<?php echo base_url("index.php/controller/newProject"); ?>">
-            <div class="small-box bg-blue">
-              <div class="inner">
-                <h2>Create</h2>
-                <p>New<br>Project</p>
-              </div>
-              <div class="icon" style="margin-top:25px;">
-                <i class="ion ion-plus"></i>
-              </div>
-
-              <!-- <div class="progress">
-                <div class="progress-bar" style="width: 70%"></div>
-              </div> -->
-            </div>
-            </a>
-          </div>
-          <!-- ./col -->
-
-          <?php if($templates != null):?>
-            <?php foreach($templates as $template):?>
+        <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
+          <div class="row" id="createProject">
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <a class = "templateProj clickable" data-id = "<?php echo $template['PROJECTSTATUS']; ?>">
-              <div class="small-box bg-purple">
+              <a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+              <div class="small-box bg-blue">
                 <div class="inner">
-                  <form id = 'template' action = 'projectGantt'  method="POST">
-                    <input type='hidden' name='myProjects' value= "0">
-                  </form>
-                  <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
-                  <?php
-                    $enddate = date_create($template['PROJECTACTUALENDDATE']);
-                  ;?>
-                  <p>Completed on<b></b><br><i><?php echo date_format($enddate, "F d, Y");?></i></p>
+                  <h2>Create</h2>
+                  <p>New<br>Project</p>
                 </div>
                 <div class="icon" style="margin-top:25px;">
-                  <i class="ion ion-folder"></i>
+                  <i class="ion ion-plus"></i>
                 </div>
+
+                <!-- <div class="progress">
+                  <div class="progress-bar" style="width: 70%"></div>
+                </div> -->
               </div>
               </a>
             </div>
-          <?php endforeach;?>
+            <!-- ./col -->
+
+            <?php if($templates != null):?>
+              <?php foreach($templates as $template):?>
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <a class = "templateProj clickable" data-id = "<?php echo $template['PROJECTSTATUS']; ?>">
+                <div class="small-box bg-purple">
+                  <div class="inner">
+                    <form id = 'template' action = 'projectGantt'  method="POST">
+                      <input type='hidden' name='myProjects' value= "0">
+                    </form>
+                    <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
+                    <?php
+                      $enddate = date_create($template['PROJECTACTUALENDDATE']);
+                    ;?>
+                    <p>Completed on<b></b><br><i><?php echo date_format($enddate, "F d, Y");?></i></p>
+                  </div>
+                  <div class="icon" style="margin-top:25px;">
+                    <i class="ion ion-folder"></i>
+                  </div>
+                </div>
+                </a>
+              </div>
+            <?php endforeach;?>
+          <?php endif;?>
+
+          </div>
+
+          <hr id="hrCreateProject" style="height:1px; background-color:black">
         <?php endif;?>
-
-        </div>
-
-        <hr id="hrCreateProject" style="height:1px; background-color:black">
 
         <!-- PROJECT VIEW -->
         <div id="projectView">
