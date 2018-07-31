@@ -741,7 +741,7 @@
 
 						<?php else:?>
 
-							<h4 style="color:red">
+							<h4><b>
 								<?php if ($current >= $startdate && $current <= $enddate && $projectProfile['PROJECTSTATUS'] == 'Ongoing'):?>
 									<?php echo $projectProfile['remaining'];?>
 									<?php if($projectProfile['remaining'] > 1):?>
@@ -764,7 +764,7 @@
 										day delayed
 									<?php endif;?>
 								<?php endif;?>
-							</h4>
+							</b></h4>
 
 						<?php endif;?>
 
@@ -819,6 +819,18 @@
 
 					</div>
 					<br>
+
+					<!-- LEGEND -->
+					<div>
+						<small style="display: inline-block">Legend:</small>
+						<div style="width: 20px; height: 10px; background-color:#ED6C1F; display:inline-block; margin-left:10px;"></div> Selected
+						<div style="width: 20px; height: 10px; background-color:#465A63; display:inline-block; margin-left:10px;"></div> Parent Target Timeline
+						<div style="width: 20px; height: 10px; background-color:#2278CF; display:inline-block; margin-left:10px;"></div> Task Progress
+						<div style="width: 20px; height: 10px; background-color:#F2331E; display:inline-block; margin-left:10px;"></div> Delayed
+						<div style="width: 20px; height: 10px; background-color:#BBD6F1; display:inline-block; margin-left:10px;"></div> Actual Timeline
+						<div style="width: 20px; height: 10px; background-color:#68B6F3; display:inline-block; margin-left:10px;"></div> Child Target Timeline
+						<div style="width: 20px; height: 10px; background-color:#0C7F12; display:inline-block; margin-left:10px;"></div> Ongoing
+					</div>
 					<!-- CONFIRM ARCHIVE -->
 					<div class="modal fade" id="confirmArchive" tabindex="-1">
 						<div class="modal-dialog">
