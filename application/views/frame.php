@@ -294,7 +294,10 @@ desired effect
             <ul class="treeview-menu">
               <li id = 'taskDelegate'><a class="menu"  href="<?php echo base_url("index.php/controller/taskDelegate"); ?>"><i class="fa fa-circle-o"></i> Delegate</a></li>
               <li id = 'taskTodo'><a class="menu" href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-circle-o"></i> To Do</a></li>
-              <li id = 'taskMonitor'><a class="menu" href="<?php echo base_url("index.php/controller/taskMonitor"); ?>"><i class="fa fa-circle-o"></i> Monitor</a></li>
+              <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
+                <li id = 'monitorProject'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorProject"); ?>"><i class="fa fa-circle-o"></i> Monitor Project</a></li>
+                <li id = 'monitorTeam'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorTeam"); ?>"><i class="fa fa-circle-o"></i> Monitor Team</a></li>
+              <?php endif;?>
             </ul>
           </li>
         <?php else:?>
