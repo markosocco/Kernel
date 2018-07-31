@@ -723,6 +723,7 @@ class model extends CI_Model
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.PRETASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();

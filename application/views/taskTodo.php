@@ -188,7 +188,7 @@
 								<h4 id="doneDates">Start Date - End Date (Days)</h4>
 							</div>
 							<div class="modal-body">
-								<h3 id ="delayed" style="color:red; margin-top:0">Task is Delayed</h3>
+								<h3 id ="delayed" style="color:red; margin-top:0">This task is delayed.</h3>
 								<h4 id ="early" style="margin-top:0">Are you sure this task is done?</h4>
 								<form id = "doneForm" action="doneTask" method="POST" style="margin-bottom:0;">
 									<div class="form-group">
@@ -272,6 +272,7 @@
 											<th>Task</th>
 											<th class="text-center">Start Date</th>
 											<th class="text-center">End Date</th>
+											<th>Responsible</th>
 											<th class="text-center">Status</th>
 										</thead>
 										<tbody id='preReqDetails'>
@@ -724,13 +725,14 @@
 													 "<tr>" + "<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
 													 "<td align='center'>" + taskStart+"</td>"+
 													 "<td align='center'>" + taskEnd +"</td>" +
+													 "<td>" + preReqData['dependencies'][i].FIRSTNAME + " " + preReqData['dependencies'][i].LASTNAME + "</td>" +
 													 "<td align='center'>" + status + "</td></tr>");
 					 }
 					 $("#preReqTable").show();
 				 }
 				 else
 				 {
-					 $('#preReqTitle').html("There are no pre requisite tasks");
+					 $('#preReqTitle').html("There are no pre-requisite tasks");
 					 $("#preReqTable").hide();
 				 }
 				},

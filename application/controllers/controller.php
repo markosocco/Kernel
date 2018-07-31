@@ -377,7 +377,7 @@ class controller extends CI_Controller
 
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
-			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
+			$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
 			$data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
 			$data['employeeCompleteness'] = $this->model->compute_completeness_employee($_SESSION['USERID']);
 			$data['departmentCompleteness'] = $this->model->compute_completeness_department($_SESSION['departments_DEPARTMENTID']);
@@ -2221,11 +2221,15 @@ class controller extends CI_Controller
 
 		else
 		{
+			$dashboard = $this->input->post("dashboard");
+			if (isset($dashboard))
+			{
+				$this->session->set_flashdata('dashboard', $dashboard);
+			}
+
 			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 
 			$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects.PROJECTID");
-			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "1");
-			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "2");
 			$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['users'] = $this->model->getAllUsers();
