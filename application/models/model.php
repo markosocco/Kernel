@@ -205,6 +205,7 @@ class model extends CI_Model
     $condition = $filter;
     $this->db->select('*');
     $this->db->from('users');
+    $this->db->where($condition);
     $query = $this->db->get();
 
     return $query->result_array();
