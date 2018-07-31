@@ -680,7 +680,7 @@
 					if(preReqData['dependencies'].length > 0)
 					{
 						$('#preReqDetails').html("");
-						$('#preReqTitle').html("Pre Requisite Tasks");
+						$('#preReqTitle').html("Pre-requisite Tasks");
 						for(i=0; i<preReqData['dependencies'].length; i++)
 						{
 							if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
@@ -714,11 +714,18 @@
 
 							if(preReqData['dependencies'][i].TASKSTATUS == "Complete")
 							{
-								var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+								var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
 							}
-							else
+							if(preReqData['dependencies'][i].TASKSTATUS == "Planning")
 							{
-								var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Not Completed'></i>"
+								var status = "<i class='fa fa-circle' style='color:yellow' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+							}
+							if(preReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+							{
+								if(preReqData['dependencies'][i].currDate > endDate)
+									var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+								else
+									var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
 							}
 
 							$('#preReqDetails').append(
