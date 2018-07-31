@@ -535,6 +535,7 @@
 			$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $documentID + ">");
 			$(".acknowledgeDocument").append("<input type='hidden' name='projectID' value= " + $projectID + ">");
 			$(".acknowledgeDocument").append("<input type='hidden' name='fileName' value= " + $documentName + ">");
+			$(".acknowledgeDocument").append("<input type='hidden' name='fromWhere' value='dashboard'>");
 			$(".acknowledgeDocument").submit();
 		});
 
