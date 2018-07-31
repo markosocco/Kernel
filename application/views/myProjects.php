@@ -59,7 +59,7 @@
           <button type="button" id = "filterOngoing" class="btn btn-success filter">Ongoing</button>
           <button type="button" id = "filterDelayed" class="btn btn-danger filter">Delayed</button>
           <button type="button" id = "filterPlanned" class="btn btn-warning filter">Planned</button>
-          <button type="button" id = "filterParked" class="btn btn-info filter">Parked</button>
+          <!-- <button type="button" id = "filterParked" class="btn btn-info filter">Parked</button> -->
           <button type="button" id = "filterDrafted" class="btn bg-maroon filter">Draft</button>
         </div>
 
@@ -282,12 +282,12 @@
                 <?php endforeach;?>
               </div>
 
-              <div class = "projectsGrid" id = "parkedProjGrid">
+              <!-- <div class = "projectsGrid" id = "parkedProjGrid">
                 <?php foreach ($parkedProjects as $key=> $value):?>
 
-                  <div class="col-lg-3 col-xs-6">
+                  <div class="col-lg-3 col-xs-6"> -->
                     <!-- small box -->
-                    <a class = "project clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <!-- <a class = "project clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
                     <div class="small-box btn-info">
                       <div class="inner">
 
@@ -311,10 +311,10 @@
                       </div>
                     </div>
                     </a>
-                  </div>
+                  </div> -->
                   <!-- ./col -->
-                <?php endforeach;?>
-              </div>
+                <!-- <?php endforeach;?>
+              </div> -->
 
               <div class = "projectsGrid" id = "draftedProjGrid">
                 <?php foreach ($draftedProjects as $row):?>
@@ -752,7 +752,7 @@
               <div class="box-header" style="display:inline-block">
                 <h3 class="box-title">
                   <a href="<?php echo base_url("index.php/controller/newProject"); ?>">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-upload"></i> Create Project</button>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Create Project</button>
                   </a>
                 </h3>
               </div>

@@ -373,7 +373,7 @@
 														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
 														 "<td align='center'>" + taskEnd +"</td>" +
 														 "<td align='center'>" + delayDays + "</td>" +
-														 "<td class = 'action-" + taskID +"'></td></tr>");
+														 "<td align='center' class = 'action-" + taskID +"'></td></tr>");
 							}
 
 							var total = total+1;
@@ -390,15 +390,23 @@
 													 "<td align='center'>" + delayDays + "</td>" +
 													 "<td align='center' class = 'action-" + taskID +"'></td>");
 
+							 $(".action-" + taskID).append(
+ 								 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
+ 								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
+ 								 '" data-title="' + data['tasks'][i].TASKTITLE +
+ 								 '" data-start="'+ taskStart +
+ 								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
+ 								 '<i class="fa fa-flag"></i></button></span>');
+
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
-								$(".action-" + taskID).append(
-									 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
-									 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
-									 '" data-title="' + data['tasks'][i].TASKTITLE +
-									 '" data-start="'+ taskStart +
-									 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
-									 '<i class="fa fa-flag"></i></button></span>');
+								// $(".action-" + taskID).append(
+								// 	 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
+								// 	 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
+								// 	 '" data-title="' + data['tasks'][i].TASKTITLE +
+								// 	 '" data-start="'+ taskStart +
+								// 	 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
+								// 	 '<i class="fa fa-flag"></i></button></span>');
 
 										 // AJAX TO CHECK IF DEPENDENCIES ARE COMPLETE
 		 								$.ajax({
@@ -461,10 +469,10 @@
 							}
 							else
 							{
-								$(".action-" + taskID).append(
-									 '<button disabled type="button"' +
-									 'class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
-									 '<i class="fa fa-flag"></i></button>');
+								// $(".action-" + taskID).append(
+								// 	 '<button disabled type="button"' +
+								// 	 'class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
+								// 	 '<i class="fa fa-flag"></i></button>');
 
 								 $(".action-" + taskID).append(
 									 '<button disabled type="button"' +

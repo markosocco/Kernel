@@ -204,7 +204,13 @@
 				'searching'   : true,
 				'ordering'    : true,
 				'info'        : false,
-				'autoWidth'   : false
+				'autoWidth'   : false,
+				'order'				: [[ 0, "asc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 1 ],
+					'orderable'	: false
+				} ]
 			});
 
 			$('#userrfcList').DataTable({
@@ -213,7 +219,13 @@
 				'searching'   : true,
 				'ordering'    : true,
 				'info'        : false,
-				'autoWidth'   : false
+				'autoWidth'   : false,
+				'order'				: [[ 0, "asc" ]],
+				'columnDefs'	: [
+				{
+					'targets'		: [ 1 ],
+					'orderable'	: false
+				} ]
 			});
 		});
 		</script>

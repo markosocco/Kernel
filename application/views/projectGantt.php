@@ -169,7 +169,6 @@
 												<div class="form-group">
 													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
 												</div>
-											</form>
 
 											<span data-toggle="modal" data-target="#modal-deny">
 												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="tooltip" data-placement="right" title="Deny">
@@ -432,6 +431,7 @@
 												<p>* Only one department/employee is allowed to be assigned</p>
 
 												</div>
+											</form>
 
 										<!-- /.box-body -->
 									</div>
@@ -770,15 +770,21 @@
 						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
 						<!-- <a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a> -->
 
-						<a name="PROJECTID" class="btn btn-success btn" id="projectDocu" data-toggle="tooltip" data-placement="top" title="View Documents"><i class="fa fa-folder"></i></a>
+						<a name="PROJECTID" class="btn btn-primary btn" id="projectDocu" data-toggle="tooltip" data-placement="top" title="View Documents"><i class="fa fa-folder"></i></a>
 
-						<a name="PROJECTID_logs" class="btn btn-success btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="View Logs"><i class="fa fa-flag"></i></a>
+						<a name="PROJECTID_logs" class="btn btn-primary btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="View Logs"><i class="fa fa-file"></i></a>
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
 
 							<form action = 'archiveProject' method="POST" style="display:inline-block">
 							</form>
 							<span data-toggle="modal" data-target="#confirmArchive"><a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a></span>
+
+							<?php if ($projectProfile['users_USERID'] == $_SESSION['USERID']): ?>
+								<form action = 'projectSummary' method="POST" style="display:inline-block">
+								</form>
+								<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
+							<?php endif; ?>
 
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
@@ -792,9 +798,9 @@
 							<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
 						<?php endif; ?>
 
-						<?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
+						<!-- <?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
 							<span data-toggle="modal" data-target="#confirmPark"><a name="" class="btn btn-default btn" id="parkProject" data-toggle="tooltip" data-placement="top" title="Park Project"><i class="fa fa-clock-o"></i></a></span>
-						<?php endif;?>
+						<?php endif;?> -->
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
 							<span data-toggle="modal" data-target="#confirmContinue"><a name="" class="btn btn-default btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a></span>
@@ -917,6 +923,13 @@
 		<script>
 
 		$(document).on("click", "#doneArchive", function() {
+			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
+			$("form").attr("name", "formSubmit");
+			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("form").submit();
+			});
+
+		$(document).on("click", "#projectSummary", function() {
 			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
 			$("form").attr("name", "formSubmit");
 			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");

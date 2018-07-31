@@ -34,6 +34,10 @@
 
 				<!-- Main content -->
 				<section class="content container-fluid">
+
+					<form action='acknowledgeDocument' method='POST' id ='acknowledgeForm' name=''>
+					</form>
+
 					<!-- <div id="filterButtons">
 						<h5>Arrange by</h5>
 					</div> -->
@@ -44,7 +48,7 @@
 		            <div class="box-header">
 		              <h3 class="box-title">
 										<?php if($projectProfile['PROJECTSTATUS'] != 'Completed' &&  $projectProfile['PROJECTSTATUS'] != 'Archived'):?>
-											<span data-toggle="modal" data-target="#modal-upload"><button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Delegate"><i class="fa fa-upload"></i></button></span>
+											<span data-toggle="modal" data-target="#modal-upload"><button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Upload Document"><i class="fa fa-upload"></i></button></span>
 										<?php endif;?>
 									</h3>
 									<!-- <?php if ($documentsByProject != null):?>
@@ -78,7 +82,7 @@
 										</thead>
 										<tbody>
 
-											<form action='acknowledgeDocument' method='POST' id ='acknowledgeForm'> </form>
+
 
 										<?php
 
@@ -88,10 +92,10 @@
 													if($document['users_UPLOADEDBY'] == $_SESSION['USERID']){
 
 														$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
-														<button type='button' class='btn btn-success'>
+														<button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
 														<i class='fa fa-download'></i></button></a>
 
-														<button disabled type='button' class='btn btn-warning document' name='documentButton'>
+														<button disabled type='button' class='btn btn-warning document' name='documentButton' data-toggle='tooltip' data-placement='top' title='Acknowledge'>
 															<i class='fa fa-eye'></i></button>";
 
 															echo "<tr>";
@@ -110,24 +114,25 @@
 																if($docuToAcknowledge['ACKNOWLEDGEDDATE'] == NULL){
 
 																	$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
-																	<button type='button' class='btn btn-success'>
+																	<button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
 																	<i class='fa fa-download'></i></button></a>
 
+																	<span data-toggle='tooltip' data-placement='top' title='Acknowledge'>
 																	<button type='button' class='btn btn-warning document acknowledgeButton' name='documentButton'
 																		data-toggle='modal' data-target='#confirmAcknowledge'
 																		data-docuID ='" . $document['DOCUMENTID'] . "'
 																		data-projectID = '" . $projectProfile['PROJECTID'] . "'
 																		data-docuName = '" . $document['DOCUMENTNAME'] ."'>
-																		<i class='fa fa-eye'></i></button>";
+																		<i class='fa fa-eye'></i></button></span>";
 																}
 
 																else {
 
 																	$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
-																	<button type='button' class='btn btn-success'>
+																	<button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
 																	<i class='fa fa-download'></i></button></a>
 
-																	<button disabled type='button' class='btn btn-warning document' name='documentButton'>
+																	<button disabled type='button' class='btn btn-warning document' name='documentButton' data-toggle='tooltip' data-placement='top' title='Acknowledge'>
 																		<i class='fa fa-eye'></i></button>";
 
 																}
@@ -148,10 +153,10 @@
 												else {
 
 													$buttonAction = "<a href = '" . $document['DOCUMENTLINK']. "' download>
-													<button type='button' class='btn btn-success'>
+													<button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
 													<i class='fa fa-download'></i></button></a>
 
-													<button disabled type='button' class='btn btn-warning document' name='documentButton'>
+													<button disabled type='button' class='btn btn-warning document' name='documentButton' data-toggle='tooltip' data-placement='top' title='Acknowledge'>
 														<i class='fa fa-eye'></i></button>";
 
 														echo "<tr>";
@@ -236,8 +241,8 @@
 		                </div>
 		              </div>
 		              <div class="modal-footer">
-		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-		                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Upload Document</button>
+		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+		                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 		              </div>
 									</form>
 		            </div>
@@ -257,8 +262,8 @@
 									<div class="modal-body">
 										<h4>Are you sure you want to acknowledge this document?</h4>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-											<button id = "doneConfirm" type="submit" class="btn btn-success" data-docuID="" data-projectID="" data-docuName=""><i class="fa fa-check"></i> Confirm</button></i>
+											<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+											<button id = "doneConfirm" type="submit" class="btn btn-success" data-docuID="" data-projectID="" data-docuName="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button></i>
 										</div>
 									</div>
 								</div>

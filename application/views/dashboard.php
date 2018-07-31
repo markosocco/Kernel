@@ -202,7 +202,6 @@
 				<!-- Main row -->
 				<div class="row">
 					<!-- Left col -->
-					<?php if($tasks2DaysBeforeDeadline != NULL): ?>
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
@@ -219,31 +218,42 @@
 											<th>Status</th>
 										</thead>
 										<tbody>
-										<?php
 
-											foreach ($tasks2DaysBeforeDeadline as $data)
-											{
+											<?php if($tasks2DaysBeforeDeadline != NULL): ?>
+												<?php
 
-												if($data['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-													$endDate = date_create($data['TASKENDDATE']);
-												else
-													$endDate = date_create($data['TASKADJUSTEDENDDATE']);
+													foreach ($tasks2DaysBeforeDeadline as $data)
+													{
 
-												if($data['DATEDIFF'] < 0){
-													$status = "DELAYED";
-												} else {
-													$status = $data['DATEDIFF'] . " day/s before deadline";
-												}
+														if($data['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+															$endDate = date_create($data['TASKENDDATE']);
+														else
+															$endDate = date_create($data['TASKADJUSTEDENDDATE']);
 
-												echo "<tr class='clickable deadline'>";
-													echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
-													echo "<td>" . $data['TASKTITLE'] . "</td>";
-													echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
-													echo "<td>" . $status . "</td>";
-												echo "</tr>";
-											}
+														if($data['DATEDIFF'] < 0){
+															$status = "DELAYED";
+														} else {
+															$status = $data['DATEDIFF'] . " day/s before deadline";
+														}
 
-										?>
+														echo "<tr class='clickable deadline'>";
+															echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
+															echo "<td>" . $data['TASKTITLE'] . "</td>";
+															echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
+															echo "<td>" . $status . "</td>";
+														echo "</tr>";
+													}
+
+												?>
+
+
+
+											<?php else: ?>
+											<tr>
+												<td colspan="4" align="center">No tasks to do</td>
+											</tr>
+
+											<?php endif;?>
 										</tbody>
 									</table>
 								</div>
@@ -254,10 +264,10 @@
 						</div>
 						<!-- /.box -->
 					</div>
-					<?php endif;?>
+
 
 					<!-- Right col -->
-					<?php if ($editProjects != NULL): ?>
+
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
@@ -275,6 +285,7 @@
 										</tr>
 										</thead>
 										<tbody>
+											<?php if ($editProjects != NULL): ?>
 
 											<?php foreach($editProjects as $editProject):?>
 												<?php $startdate = date_create($editProject['PROJECTSTARTDATE']);?>
@@ -286,19 +297,26 @@
 												</tr>
 											<?php endforeach;?>
 
+
+										<?php else: ?>
+										<tr>
+											<td colspan="3" align="center">No Projects to edit</td>
+										</tr>
+										<?php endif;?>
 										</tbody>
 									</table>
 								</div>
 								<!-- /.table-responsive -->
 							</div>
 							<!-- /.box-body -->
+						</div>
 							<!-- /.box-footer -->
 						</div>
 						<!-- /.box -->
-					</div>
+
 
 				</div>
-				<?php endif;?>
+
 
 
 				<?php if($changeRequests != null):?>
@@ -365,10 +383,6 @@
 							<!-- /.box -->
 						</div>
 					</div>
-
-					<div class="row">
-					</div>
-
 					<!-- END APPROVAL TABLE -->
 				<?php endif;?>
 
@@ -416,8 +430,8 @@
 																	echo "<td align='center'>Acknowledged</td>";
 																} else {
 																	echo "<td align='center'>
-																	<button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'>
-																	<i class='fa fa-eye'></i> Acknowledge</button></td>";
+																	<span data-toggle='tooltip' data-placement='top' title='Acknowledge'><button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'>
+																	<i class='fa fa-eye'></i></button></span></td>";
 																}
 															echo "</tr>";
 														}
@@ -435,9 +449,6 @@
 						</div>
 					</div>
 
-					<div class="row">
-					</div>
-
 					<!-- END DOCUMENTS TABLE -->
 				<?php endif;?>
 
@@ -451,8 +462,8 @@
 							<div class="modal-body">
 								<h4>Are you sure you want to acknowledge this document?</h4>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-									<button id = "doneConfirm" type="submit" class="btn btn-success" data-id=""><i class="fa fa-check"></i> Confirm</button>
+									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+									<button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i> </button>
 								</div>
 							</div>
 						</div>
@@ -498,7 +509,7 @@
 		});
 
 		$(document).on("click", ".deadline", function(){
-			window.location.replace("<?php echo base_url("index.php/controller/myTasks") ?>");
+			window.location.replace("<?php echo base_url("index.php/controller/taskTodo") ?>");
 		});
 
 		$(document).ready(function()

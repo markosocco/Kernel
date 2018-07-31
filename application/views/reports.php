@@ -27,11 +27,11 @@
 							<tbody>
 								<tr>
 									<td>Projects Per Department</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsProjectPerDept"); ?>" target="_blank" class="btn btn-success generateBtn"><i class="fa fa-print"></i></a></td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsProjectPerDept"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
 								</tr>
 								<tr>
 									<td>Ongoing Projects</td>
-									<td align="center"><button type="button" class="btn btn-success generateBtn"><i class="fa fa-print"></i></button></td>
+									<td align="center"><button type="button" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></button></td>
 								</tr>
 								<tr>
 									<td>Planned Projects</td>
