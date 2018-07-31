@@ -225,6 +225,7 @@
 								<h4 class="taskDates" id="rfcDates">Start Date - End Date (Days)</h4>
 							</div>
 							<div class="modal-body">
+								<div id = 'request'>
 								<form id = "requestForm" action = "submitRFC" method = "POST" style="margin-bottom:0;">
 									<div class="form-group">
 										<label>Request Type</label>
@@ -259,9 +260,23 @@
 
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-								<button type="submit" class="btn btn-success" id="rfcSubmit" data-date="" data-toggle="tooltip" data-placement="left" title="Submit"><i class="fa fa-check"></i></button>
+								<button type="submit" class="btn btn-success" id="rfcConfirm" data-date="" data-toggle="tooltip" data-placement="left" title="Submit"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
+
+					</div>
+
+						<!-- CONFIRM RFC -->
+						<div id="submitConfirm">
+							<div class="modal-body">
+								<h4>Are you sure you want to submit this request?</h4>
+							</div>
+							<div class="modal-footer">
+								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+								<button id = "rfcSubmit" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+							</div>
+						</div>
+
 						</div>
 						</div>
 					</div>
@@ -593,11 +608,23 @@
 					$("#rfcDates").append(" day)");
 			 });
 
+			 $("#submitConfirm").hide();
+
 			 $("#rfcSubmit").click(function()
 			 {
 				 var $id = $(this).attr('data-id');
 				 $("#requestForm").attr("name", "formSubmit");
 				 $("#requestForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+			 });
+
+			 $("body").on('click','#rfcConfirm',function(){
+				 $("#request").hide();
+				 $("#submitConfirm").show();
+			 });
+
+			 $("body").on('click','#backConfirm',function(){
+				 $("#request").show();
+				 $("#submitConfirm").hide();
 			 });
 
 			 $("body").on('change','#rfcType',function(){
