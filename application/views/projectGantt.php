@@ -610,12 +610,36 @@
 								<div class="box-body">
 									<div style="display:inline-block; text-align:center; width:49%;">
 										<div class="circlechart"
-											data-percentage=""> Completeness
+											data-percentage="<?php
+												if($projectCompleteness['completeness'] == NULL){
+													echo 0;
+												} else {
+													if($projectCompleteness['completeness'] == 100.00){
+														echo 100;
+													} elseif ($projectCompleteness['completeness'] == 0.00) {
+														echo 0;
+													} else {
+														echo $projectCompleteness['completeness'];
+													}
+												}
+												?>"> Completeness
 										</div>
 									</div>
 									<div style="display:inline-block; text-align:center; width:49%;">
 										<div class="circlechart"
-	 									 data-percentage=""> Timeliness
+	 									 data-percentage="<?php
+											 if($projectTimeliness['timeliness'] == NULL){
+												 echo 0;
+											 } else {
+												 if($projectTimeliness['timeliness'] == 100.00){
+													 echo 100;
+												 } elseif ($projectTimeliness['timeliness'] == 0.00) {
+													 echo 0;
+												 } else {
+													 echo $projectTimeliness['timeliness'];
+												 }
+											 }
+											 ?>"> Timeliness
 	 								 </div>
 								 </div>
 								</div>

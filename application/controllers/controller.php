@@ -1901,6 +1901,11 @@ class controller extends CI_Controller
 		$data['informed'] = $this->model->getAllInformedByProject($projectID);
 		// $data['subActivityProgress'] = $this->model->getSubActivityProgress($projectID);
 
+		$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
+		$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
+		$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+		$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+
 		unset($_SESSION['rfc']);
 		$this->session->set_flashdata('changeRequest', 0);
 
@@ -2224,14 +2229,31 @@ class controller extends CI_Controller
 			{
 				$this->session->set_flashdata('dashboard', $dashboard);
 			}
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '2':
+					$filter = "users.usertype_USERTYPEID = '3'";
+					break;
 
-			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+				case '3':
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+
+				case '4':
+					$filter = "(users.usertype_USERTYPEID = '3' &&  users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."')
+					|| users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."' && users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+
+				default:
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+			}
 
 			$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects.PROJECTID");
 			$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['users'] = $this->model->getAllUsers();
-			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			$data['wholeDept'] = $this->model->getAllUsersByUserType($filter);
 			$data['projectCount'] = $this->model->getProjectCount($filter);
 			$data['taskCount'] = $this->model->getTaskCount($filter);
 
@@ -2777,8 +2799,8 @@ class controller extends CI_Controller
 
 			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_project($id);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_project($id);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
@@ -2864,9 +2886,9 @@ class controller extends CI_Controller
 		$data['informed'] = $this->model->getAllInformedByProject($id);
 
 		$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
-		$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
 		$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-		$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+		$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
+		$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
 
 		// foreach ($data['ganttData'] as $key => $value) {
 		// 	echo $value['tasks_TASKID'] . " parent is ";
@@ -2991,10 +3013,10 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
 			$data['informed'] = $this->model->getAllInformedByProject($projectID);
 
-			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $projectID);
-			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $projectID);
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
 
 			$this->load->view("projectGantt", $data);
 
