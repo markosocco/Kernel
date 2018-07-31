@@ -246,8 +246,6 @@
 
 												?>
 
-
-
 											<?php else: ?>
 											<tr>
 												<td colspan="4" align="center">No tasks to do</td>
@@ -305,7 +303,7 @@
 
 										<?php else: ?>
 										<tr>
-											<td colspan="3" align="center">No tasks to delegate</td>
+											<td colspan="4" align="center">No tasks to delegate</td>
 										</tr>
 										<?php endif;?>
 										</tbody>
@@ -408,10 +406,11 @@
 										<table class="table table-hover no-margin" id="requestApproval">
 											<thead>
 											<tr>
-												<th>Document Name</th>
-												<th>Uploaded By</th>
-												<th>Department</th>
-												<th align="center"></th>
+												<th width="30%">Document Name</th>
+												<th width="25%">Project</th>
+												<th width="15%">Uploaded By</th>
+												<th width="15%">Department</th>
+												<th width="15%" class="text-center">Action</th>
 											</tr>
 											</thead>
 											<tbody>
@@ -428,6 +427,7 @@
 																<input type='hidden' name='documentID' value='" . $row['DOCUMENTID'] . "'>
 															</form>";
 																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+																echo "<td></td>";
 																echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 																echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
 
@@ -435,8 +435,10 @@
 																	echo "<td align='center'>Acknowledged</td>";
 																} else {
 																	echo "<td align='center'>
-																	<span data-toggle='tooltip' data-placement='top' title='Acknowledge'><button type='button' class='btn btn-success document' name='documentButton' id='acknowledgeButton' data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'>
-																	<i class='fa fa-eye'></i></button></span></td>";
+																	<a href = ''><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
+																	<i class='fa fa-download'></i></button></a>
+																	<span data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'><button type='button' class='btn btn-warning document' name='documentButton' id='acknowledgeButton' data-toggle='tooltip' data-placement='top' title='Acknowledge'>
+																	<i class='fa fa-check-circle'></i></button></span></td>";
 																}
 															echo "</tr>";
 														}

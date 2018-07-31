@@ -96,7 +96,7 @@
 														<i class='fa fa-download'></i></button></a>
 
 														<button disabled type='button' class='btn btn-warning document' name='documentButton' data-toggle='tooltip' data-placement='top' title='Acknowledge'>
-															<i class='fa fa-eye'></i></button>";
+															<i class='fa fa-check-circle'></i></button>";
 
 															echo "<tr>";
 																echo "<td>" . $document['DOCUMENTNAME'] . "</td>";
