@@ -107,11 +107,14 @@
 										<th>Project</th>
 										<th>Status</th>
 										<th>Approved By</th>
+										<th>Date Approved</th>
 									</tr>
 									</thead>
 									<tbody>
 										<?php foreach($userRequests as $userRequest):
 											$dateRequested = date_create($userRequest['REQUESTEDDATE']);
+											$approvedDate = date_create($userRequest['APPROVEDDATE']);
+
 											if($userRequest['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
 												$startDate = date_create($userRequest['TASKSTARTDATE']);
 											else
@@ -149,8 +152,10 @@
 												<td><?php echo $userRequest['REQUESTSTATUS'];?></td>
 												<?php if($userRequest['REQUESTSTATUS'] == 'Pending'):?>
 													<td align="center">-</td>
+													<td align="center">-</td>
 												<?php else:?>
 													<td><?php echo $userRequest['FIRSTNAME'] . " " .  $userRequest['LASTNAME'] ;?></td>
+													<td><?php echo date_format($approvedDate, "M d, Y");;?></td>
 												<?php endif;?>
 											</tr>
 										<?php endforeach;?>
