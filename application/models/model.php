@@ -1055,6 +1055,7 @@ class model extends CI_Model
     $this->db->join('documents', 'documents_DOCUMENTID = DOCUMENTID');
     $this->db->join('users', 'users_UPLOADEDBY = USERID');
     $this->db->join('departments', 'departments_DEPARTMENTID = DEPARTMENTID');
+    $this->db->join('projects', 'projectID = projects_PROJECTID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();

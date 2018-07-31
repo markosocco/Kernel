@@ -205,7 +205,7 @@
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Tasks To Do (<?php echo count($tasks2DaysBeforeDeadline);?>)</h3>
+								<h3 class="box-title">Tasks I Need To Do(<?php echo count($tasks2DaysBeforeDeadline);?>)</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -331,7 +331,7 @@
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Change Request Approval (<?php echo count($changeRequests);?>)</h3>
+									<h3 class="box-title">Change Requests I Need To Approve (<?php echo count($changeRequests);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -398,7 +398,7 @@
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Document Acknowledgement (<?php echo count($toAcknowledgeDocuments);?>)</h3>
+									<h3 class="box-title">Documents I Need To Acknowledge (<?php echo count($toAcknowledgeDocuments);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -428,7 +428,7 @@
 																echo "<tr class='clickable'>";
 
 																	echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
-																	echo "<td></td>";
+																	echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 																	echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 																	echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
 
