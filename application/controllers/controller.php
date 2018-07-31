@@ -446,9 +446,12 @@ class controller extends CI_Controller
 		{
 			$deptID = $_SESSION['DEPARTMENTID'];
 
+			$filter = null;
+
 			$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
 			$data['projects'] = $this->model->getAllProjects();
-			// $datta['projectCount'] = $this
+			$data['projectCount'] = $this->model->getProjectCount($filter);
+			$data['taskCount'] = $this->model->getTaskCount($filter);
 
 			$this->load->view("monitorTeam", $data);
 		}

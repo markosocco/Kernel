@@ -42,7 +42,13 @@
 											<div class="row">
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
-														<h5 class="description-header">3,200</h5>
+														<h5 class="description-header">
+															<?php foreach ($projectCount as $pCount): ?>
+																<?php if ($row['USERID'] == $pCount['USERID']): ?>
+																	<?php echo $pCount['projectCount']; ?>
+																<?php endif; ?>
+															<?php endforeach; ?>
+														</h5>
 														<span class="description-text">PROJECTS</span>
 													</div>
 													<!-- /.description-block -->
@@ -50,7 +56,13 @@
 												<!-- /.col -->
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
-														<h5 class="description-header">13,000</h5>
+														<h5 class="description-header">
+															<?php foreach ($taskCount as $tCount): ?>
+																<?php if ($row['USERID'] == $tCount['USERID']): ?>
+																	<?php echo $tCount['taskCount']; ?>
+																<?php endif; ?>
+															<?php endforeach; ?>
+														</h5>
 														<span class="description-text">TASKS</span>
 													</div>
 													<!-- /.description-block -->
@@ -83,6 +95,84 @@
 		<script>
 			$("#monitor").addClass("active");
 			$("#monitorTeam").addClass("active");
+
+			$("body").on("click", ".moreInfo", function(){
+
+				function loadWorkloadTasks($projectID)
+				{
+					$.ajax({
+						type:"POST",
+						url: "<?php echo base_url("index.php/controller/getUserWorkloadTasks"); ?>",
+						data: {userID: $id, projectID: $projectID},
+						dataType: 'json',
+						success:function(data)
+						{
+							for(t=0; t<data['workloadTasks'].length; t++)
+							{
+								var taskStart = moment(data['workloadTasks'][t].TASKSTARTDATE).format('MMM DD, YYYY');
+								var taskEnd = moment(data['workloadTasks'][t].TASKENDDATE).format('MMM DD, YYYY');
+
+								$("#project_" + $projectID).append("<tr>" +
+												 "<td>" + data['workloadTasks'][t].TASKTITLE + "</td>" +
+												 "<td>" + taskStart + "</td>" +
+												 "<td>" + taskEnd + "</td>" +
+												 "<td>" + data['workloadTasks'][t].TASKSTATUS + "</td>" +
+												 "</tr>");
+							}
+						},
+						error:function()
+						{
+							alert("Failed to retrieve user data.");
+						}
+					});
+				 }
+
+				$("#raciDelegate").hide();
+				var $id = $(this).attr('data-id');
+				var $projectCount = $(this).attr('data-projectCount');
+				var $taskCount = $(this).attr('data-taskCount');
+				$("#workloadEmployee").html($(this).attr('data-name'));
+				$("#workloadProjects").html("Total Number of Projects: " + $projectCount);
+				$("#workloadTasks").html("Total Number of Tasks: " + $taskCount);
+				$('#workloadDiv').html("");
+				$("#workloadAssessment").show();
+
+				$.ajax({
+					type:"POST",
+					url: "<?php echo base_url("index.php/controller/getUserWorkloadProjects"); ?>",
+					data: {userID: $id},
+					dataType: 'json',
+					success:function(data)
+					{
+						$('#workloadDiv').html("");
+						for(p=0; p<data['workloadProjects'].length; p++)
+						{
+							var $projectID = data['workloadProjects'][p].PROJECTID;
+							$('#workloadDiv').append("<div class = 'box'>" +
+											 "<div class = 'box-header'>" +
+												 "<h3 class = 'box-title text-blue'> " + data['workloadProjects'][p].PROJECTTITLE + "</h3>" +
+											 "</div>" +
+											 "<div class = 'box-body table-responsive no-padding'>" +
+												 "<table class='table table-hover' id='project_" + $projectID + "'>" +
+													 "<th>Task Name</th>" +
+													 "<th>Start Date</th>" +
+													 "<th>End Date</th>" +
+													 "<th>Status</th>");
+
+							 loadWorkloadTasks($projectID);
+
+							 $('#workloadDiv').append("</table>" +
+																				 "</div>" +
+																			 "</div>");
+						}
+					},
+					error:function()
+					{
+						alert("Failed to retrieve user data.");
+					}
+				});
+
+			});
 		</script>
 	</body>
 </html>
