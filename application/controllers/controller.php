@@ -450,8 +450,8 @@ class controller extends CI_Controller
 
 			$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
 			$data['projects'] = $this->model->getAllProjects();
-			$data['projectCount'] = $this->model->getProjectCount($filter);
-			$data['taskCount'] = $this->model->getTaskCount($filter);
+			$data['projectCount'] = $this->model->getProjectCount();
+			$data['taskCount'] = $this->model->getTaskCount();
 
 			$this->load->view("monitorTeam", $data);
 		}
@@ -505,8 +505,8 @@ class controller extends CI_Controller
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 			$data['projectCountR'] = $this->model->getProjectCount($_SESSION['departments_DEPARTMENTID']);
 			$data['taskCountR'] = $this->model->getTaskCount($_SESSION['departments_DEPARTMENTID']);
-			$data['projectCount'] = $this->model->getProjectCount($filter);
-			$data['taskCount'] = $this->model->getTaskCount($filter);
+			$data['projectCount'] = $this->model->getProjectCount();
+			$data['taskCount'] = $this->model->getTaskCount();
 
 			$data['users'] = $this->model->getAllUsers();
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
@@ -1929,11 +1929,11 @@ class controller extends CI_Controller
 		echo json_encode($data);
 	}
 
-	public function getUserWorkloadTasks()
+	public function getUserWorkloadTasksUnique()
 	{
 		$userID = $this->input->post('userID');
 		$projectID = $this->input->post('projectID');
-		$data['workloadTasks'] = $this->model->getWorkloadTasks($userID, $projectID);
+		$data['workloadTasks'] = $this->model->getWorkloadTasksUnique($userID, $projectID);
 
 		echo json_encode($data);
 	}
@@ -2263,8 +2263,8 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['users'] = $this->model->getAllUsers();
 			$data['wholeDept'] = $this->model->getAllUsersByUserType($filter);
-			$data['projectCount'] = $this->model->getProjectCount($filter);
-			$data['taskCount'] = $this->model->getTaskCount($filter);
+			$data['projectCount'] = $this->model->getProjectCount();
+			$data['taskCount'] = $this->model->getTaskCount();
 
 			$this->load->view("taskDelegate", $data);
 		}
@@ -2302,8 +2302,8 @@ class controller extends CI_Controller
 		$data['departments'] = $this->model->getAllDepartments();
 		$data['users'] = $this->model->getAllUsers();
 		$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
-		$data['projectCount'] = $this->model->getProjectCount($filter);
-		$data['taskCount'] = $this->model->getTaskCount($filter);
+		$data['projectCount'] = $this->model->getProjectCount();
+		$data['taskCount'] = $this->model->getTaskCount();
 
 		echo json_encode($data);
 	}
@@ -2725,8 +2725,8 @@ class controller extends CI_Controller
 					$data['departments'] = $this->model->getAllDepartments();
 					$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 					$data['wholeDept'] = $this->model->getAllUsersByUserType($filter);
-					$data['projectCountR'] = $this->model->getProjectCount($filter);
-					$data['taskCountR'] = $this->model->getTaskCount($filter);
+					$data['projectCountR'] = $this->model->getProjectCount();
+					$data['taskCountR'] = $this->model->getTaskCount();
 					$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
 					$data['taskCount'] = $this->model->getTaskCount($data['changeRequest']['departments_DEPARTMENTID']);
 				}
@@ -2768,8 +2768,8 @@ class controller extends CI_Controller
 				$data['departments'] = $this->model->getAllDepartments();
 				$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
 				$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
-				$data['projectCount'] = $this->model->getProjectCount($filter);
-				$data['taskCount'] = $this->model->getTaskCount($filter);
+				$data['projectCount'] = $this->model->getProjectCount();
+				$data['taskCount'] = $this->model->getTaskCount();
 			}
 			elseif (isset($myTasks))
 			{
@@ -2958,8 +2958,8 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['users'] = $this->model->getAllUsers();
 			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
-			$data['projectCount'] = $this->model->getProjectCount($filter);
-			$data['taskCount'] = $this->model->getTaskCount($filter);
+			$data['projectCount'] = $this->model->getProjectCount();
+			$data['taskCount'] = $this->model->getTaskCount();
 
 			$this->load->view("taskDelegate", $data);
 

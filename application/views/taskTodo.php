@@ -199,18 +199,31 @@
 								<h4 id="doneDates">Start Date - End Date (Days)</h4>
 							</div>
 							<div class="modal-body">
-								<h3 id ="delayed" style="color:red; margin-top:0">This task is delayed.</h3>
-								<h4 id ="early" style="margin-top:0">Are you sure this task is done?</h4>
-								<form id = "doneForm" action="doneTask" method="POST" style="margin-bottom:0;">
-									<div class="form-group">
-										<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-danger pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-										<button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
-									</div>
-								</form>
+								<div id="doneDiv">
+									<h3 id ="delayed" style="color:red; margin-top:0">This task is delayed.</h3>
+									<h4 id ="early" style="margin-top:0">Are you sure you have completed this task?</h4>
+									<form id = "doneForm" action="doneTask" method="POST" style="margin-bottom:0;">
+										<div class="form-group">
+											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+											<button id = "doneConfirmBtn" type="button" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+										</div>
+								</div>
+							<!-- CONFIRM RFC -->
+							<div id="doneConfirmDiv">
+								<div class="modal-body">
+									<h4>Are you sure you have completed this task?</h4>
+								</div>
+								<div class="modal-footer">
+									<button id="backConfirmDone" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id = "confirmDone" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+								</div>
 							</div>
+						</form>
+					</div>
+
 						</div>
 					</div>
 				</div>
@@ -673,7 +686,7 @@
 				 $("#doneDates").append(" days)");
 			 else
 				 $("#doneDates").append(" day)");
-			 $("#doneConfirm").attr("data-id", $id); //pass data id to confirm button
+			 $("#doneConfirmBtn").attr("data-id", $id); //pass data id to confirm button
 			 var isDelayed = $(this).attr('data-delay'); // true = delayed
 			 if(isDelayed == 'false')
 			 {
@@ -691,10 +704,22 @@
 			 }
 		 });
 
-		 $("body").on('click','#doneConfirm',function(){
-			 var $id = $("#doneConfirm").attr('data-id');
+		 $("body").on('click','#confirmDone',function(){
+			 var $id = $("#doneConfirmBtn").attr('data-id');
 			 $("#doneForm").attr("name", "formSubmit");
 			 $("#doneForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+		 });
+
+		 $("#doneConfirmDiv").hide();
+
+		 $("body").on('click','#doneConfirmBtn',function(){
+			 $("#doneDiv").hide();
+			 $("#doneConfirmDiv").show();
+		 });
+
+		 $("body").on('click','#backConfirmDone',function(){
+			 $("#doneDiv").show();
+			 $("#doneConfirmDiv").hide();
 		 });
 
 		 // END DONE SCRIPT

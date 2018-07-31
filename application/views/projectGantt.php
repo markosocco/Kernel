@@ -1094,33 +1094,95 @@
 
 				$("body").on("click", ".moreInfo", function(){
 					function loadWorkloadTasks($projectID)
-					{
-						$.ajax({
-							type:"POST",
-							url: "<?php echo base_url("index.php/controller/getUserWorkloadTasks"); ?>",
-							data: {userID: $id, projectID: $projectID},
-							dataType: 'json',
-							success:function(data)
-							{
-								for(t=0; t<data['workloadTasks'].length; t++)
-								{
-									var taskStart = moment(data['workloadTasks'][t].TASKSTARTDATE).format('MMM DD, YYYY');
-									var taskEnd = moment(data['workloadTasks'][t].TASKENDDATE).format('MMM DD, YYYY');
+ 				 {
+ 					 $.ajax({
+ 						 type:"POST",
+ 						 url: "<?php echo base_url("index.php/controller/getUserWorkloadTasksUnique"); ?>",
+ 						 data: {userID: $id, projectID: $projectID},
+ 						 dataType: 'json',
+ 						 success:function(data)
+ 						 {
+ 							 for(x=0; data['workloadTasks'].length > x; x++)
+ 							 {
+ 								 var $taskID = data['workloadTasks'][x].TASKID;
+ 								 $.ajax({
+ 								 	type:"POST",
+ 								 	url: "<?php echo base_url("index.php/controller/getRACIByTaskID"); ?>",
+ 								 	data: {taskID: $taskID},
+ 								 	dataType: 'json',
+ 								 	success:function(data)
+ 								 	{
+ 										var type="";
+ 										var role="";
+ 										if(data['raci'][0].TASKADJUSTEDENDDATE == null) // check if end date has been previously adjusted
+ 										{
+ 											var taskEnd = moment(data['raci'][0].TASKENDDATE).format('MMM DD, YYYY');
+ 											var endDate = data['raci'][0].TASKENDDATE;
+ 										}
+ 										else
+ 										{
+ 											var taskEnd = moment(data['raci'][0].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+ 											var endDate = data['raci'][0].TASKADJUSTEDENDDATE;
+ 										}
 
-									$("#project_" + $projectID).append("<tr>" +
-													 "<td>" + data['workloadTasks'][t].TASKTITLE + "</td>" +
-													 "<td>" + taskStart + "</td>" +
-													 "<td>" + taskEnd + "</td>" +
-													 "<td>" + data['workloadTasks'][t].TASKSTATUS + "</td>" +
-													 "</tr>");
-								}
-							},
-							error:function()
-							{
-								alert("Failed to retrieve user data.");
-							}
-						});
-					 }
+ 										if(data['raci'][0].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+ 											var taskStart = moment(data['raci'][0].TASKSTARTDATE).format('MMM DD, YYYY');
+ 										else
+ 											var taskStart = moment(data['raci'][0].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+
+ 								 		for(t=0; t<data['raci'].length; t++)
+ 								 		{
+ 											if(data['raci'][t].users_USERID == $id)
+ 											{
+ 												switch(data['raci'][t].ROLE)
+ 												{
+ 													case '1': type = "R"; break;
+ 													case '2': type = "A"; break;
+ 													case '3': type = "C"; break;
+ 													case '4': type = "I"; break;
+ 													default: type = ""; break;
+ 												}
+ 												var role = role + type;
+ 											}
+ 										}
+
+ 										if(data['raci'][0].TASKSTATUS == "Complete")
+ 										{
+ 											var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+ 										}
+ 										if(data['raci'][0].TASKSTATUS == "Planning")
+ 										{
+ 											var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+ 										}
+ 										if(data['raci'][0].TASKSTATUS == "Ongoing")
+ 										{
+ 											if(data['raci'][0].currentDate > endDate)
+ 												var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+ 											else
+ 												var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
+ 										}
+
+ 								 			$("#project_" + $projectID).append("<tr>" +
+ 								 							 "<td>" + role + "</td>" +
+ 								 							 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
+ 								 							 "<td>" + taskStart + "</td>" +
+ 								 							 "<td>" + taskEnd + "</td>" +
+ 								 							 "<td align='center'>" + status + "</td>" +
+ 								 							 "</tr>");
+ 								 	},
+ 								 	error:function()
+ 								 	{
+ 								 		alert("Failed to retrieve RACI of task");
+ 								 	}
+ 								 });
+ 							 }
+ 						 },
+ 						 error:function()
+ 						 {
+ 							 alert("Failed to retrieve user data.");
+ 						 }
+ 					 });
+ 					}
 
 					var $id = $(this).attr('data-id');
 					var $projectCount = $(this).attr('data-projectCount');
@@ -1149,10 +1211,11 @@
 												 "</div>" +
 												 "<div class = 'box-body table-responsive no-padding'>" +
 													 "<table class='table table-hover' id='project_" + $projectID + "'>" +
+													 	 "<th></th>" +
 														 "<th>Task Name</th>" +
 														 "<th>Start Date</th>" +
 														 "<th>End Date</th>" +
-														 "<th>Status</th>");
+														 "<th class='text-center'>Status</th>");
 
 								 loadWorkloadTasks($projectID);
 
