@@ -444,7 +444,13 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("monitorTeam");
+			$deptID = $_SESSION['DEPARTMENTID'];
+
+			$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
+			$data['projects'] = $this->model->getAllProjects();
+			// $datta['projectCount'] = $this
+
+			$this->load->view("monitorTeam", $data);
 		}
 	}
 
