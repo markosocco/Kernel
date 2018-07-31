@@ -11,7 +11,9 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div style="margin-bottom:10px">
-					<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
+					<form action = 'projectGantt' id="back" method="POST" style="display:inline-block">
+					</form>
+					<a id ="backToProject" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Project"><i class="fa fa-arrow-left"></i></a>
 				</div>
 				<h1>
 					<?php echo $project['PROJECTTITLE']; ?> - Project Summary
@@ -273,6 +275,13 @@
 		<script>
 		  $("#myProjects").addClass("active");
 			$('.circlechart').circlechart(); // Initialization
+
+			$(document).on("click", "#backToProject", function() {
+				var $id = <?php echo $project['PROJECTID']; ?>;
+				$("#back").attr("name", "formSubmit");
+				$("#back").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+				$("#back").submit();
+				});
 		</script>
 
 	</body>
