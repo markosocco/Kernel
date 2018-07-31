@@ -586,7 +586,8 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'tasks_TASKID' => $id,
-							'TYPE' => '1'
+							'projects_PROJECTID' => $projectID,
+							'TYPE' => '3'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -594,7 +595,7 @@ class controller extends CI_Controller
 				}
 			}
 
-			// notify next ACI
+			// notify ACI
 			$ACIdata['ACI'] = $this->model->getACIbyTask($id);
 			if($ACIdata['ACI'] != NULL) {
 
@@ -2306,7 +2307,17 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("projectSummary");
+			$id = $this->input->get('id');
+
+			// echo $id;
+
+			$data['project'] = $this->model->getProjectByID($id);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
+			$data['tasks'] = $this->model->getAllTasksByID($id);
+			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+
+			$this->load->view("projectSummary", $data);
 		}
 	}
 
@@ -3894,7 +3905,7 @@ class controller extends CI_Controller
 	{
 		//GET DOCUMENT ID
 		$documentID = $this->input->post("documentID");
-		$projectID = $this->input->post("project_ID");
+		$projectID = $this->input->post("projectID");
 		$dashboard = $this->input->post("fromWhere");
 		$fileName = $this->input->post("fileName");
 

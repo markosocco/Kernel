@@ -177,11 +177,11 @@ desired effect
               <!-- The user image in the navbar-->
               <?php if ($_SESSION['USERID'] == '4'): ?>
                 <img src="<?php echo base_url()."assets/"; ?>media/mickey.jpg" class="user-image" alt="User Image">
-              <?php elseif ($_SESSION['USERID'] == '9'): ?>
+              <?php elseif ($_SESSION['USERID'] == '6'): ?>
                 <img src="<?php echo base_url()."assets/"; ?>media/donald.png" class="user-image" alt="User Image">
-              <?php elseif ($_SESSION['USERID'] == '45'): ?>
+              <?php elseif ($_SESSION['USERID'] == '33'): ?>
                 <img src="<?php echo base_url()."assets/"; ?>media/goofy.png" class="user-image" alt="User Image">
-              <?php elseif ($_SESSION['USERID'] == '46'): ?>
+              <?php elseif ($_SESSION['USERID'] == '34'): ?>
                 <img src="<?php echo base_url()."assets/"; ?>media/minnie.gif" class="user-image" alt="User Image">
               <?php elseif ($_SESSION['USERID'] == '25'): ?>
                 <img src="<?php echo base_url()."assets/"; ?>media/winnie.jpg" class="user-image" alt="User Image">

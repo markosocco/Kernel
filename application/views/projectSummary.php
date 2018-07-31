@@ -14,7 +14,7 @@
 					<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 				</div>
 				<h1>
-					Project Title - Project Summary
+					<?php echo $project['PROJECTTITLE']; ?> - Project Summary
 					<small>What can I improve on the next project?</small>
 				</h1>
 			</section>
@@ -30,13 +30,32 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div style="display:inline-block">
-									<p>Completed on: <b>March 21, 1996</b></p>
-									<p>Total number of main activities: <b>75</b></p>
-									<p>Total number of sub activities: <b>175</b></p>
-									<p>Total number of tasks: <b>200</b></p>
+									<?php $date = date_create($project['PROJECTACTUALENDDATE']); ?>
+									<p>Completed on: <b><?php echo date_format($date, "M d, Y"); ?></b></p>
+									<p>Total number of main activities: <b><?php echo count($mainActivity); ?></b></p>
+									<p>Total number of sub activities: <b><?php echo count($subActivity); ?></b></p>
+									<p>Total number of tasks: <b><?php echo count($tasks); ?></b></p>
 								</div>
 								<div style="display:inline-block; margin-left: 50px;">
-									<p>Total number of delayed tasks: <b>20</b></p>
+									<p>Total number of delayed tasks:
+										<b>
+											<!-- TODO: Fix this -->
+											<?php
+
+												$delayCounter = 0;
+
+												foreach ($groupedTasks as $row)
+												{
+													if ($row['TASKACTUALENDDATE'] < $row['TASKENDDATE'])
+													{
+														$delayCounter++;
+													}
+												}
+
+												echo $delayCounter;
+											?>
+										</b>
+									</p>
 									<p>Total number of requests: <b>75</b></p>
 									<p>Total number of approved requests: <b>175</b></p>
 									<p>Total number of denied requests: <b>200</b></p>
