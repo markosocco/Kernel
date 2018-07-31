@@ -75,9 +75,15 @@ class controller extends CI_Controller
 				$notifications = $this->model->getAllNotificationsByUser();
 				$this->session->set_userdata('notifications', $notifications);
 
-				$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+				$filter = "raci.users_USERID= '". $_SESSION['USERID'] ."'";
 				$taskCount = $this->model->getTaskCount($filter);
 				$this->session->set_userdata('taskCount', $taskCount);
+				echo $taskCount[0]['taskCount'] . "<br>";
+
+				// foreach ($taskCount as $tcKey =>$tcRow)
+				// {
+				// 	echo $tcKey . " == " . $tcRow['taskCount'] . "<br>";
+				// }
 
 				$currentDate = date('Y-m-d');
 				$this->model->updateTaskStatus();
@@ -85,7 +91,7 @@ class controller extends CI_Controller
 
 				$taskDeadlines = $this->model->getTasks2DaysBeforeDeadline();
 
-				echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'] . "<br>";
+				// echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'] . "<br>";
 
 				if($taskDeadlines != NULL){
 
@@ -2787,9 +2793,9 @@ class controller extends CI_Controller
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
 			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_project($id);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_project($id);
 
 			$this->load->view("projectGantt", $data);
 			// $this->load->view("gantt2", $data);
