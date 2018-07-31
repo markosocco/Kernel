@@ -776,7 +776,7 @@
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
 
-							<form action = 'archiveProject' method="POST" style="display:inline-block">
+							<form action = 'archiveProject' id="archiveProject" method="POST" style="display:inline-block">
 							</form>
 							<span data-toggle="modal" data-target="#confirmArchive"><a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a></span>
 
@@ -819,7 +819,7 @@
 									<h4>Are you sure you want to archive this project?</h4>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-										<button id = "doneArchive" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+										<button id= "doneArchive" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 									</div>
 								</div>
 							</div>
@@ -924,9 +924,9 @@
 
 		$(document).on("click", "#doneArchive", function() {
 			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-			$("form").attr("name", "formSubmit");
-			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-			$("form").submit();
+			$("#archiveProject").attr("name", "formSubmit");
+			$("#archiveProject").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("#archiveProject").submit();
 			});
 
 		$(document).on("click", "#projectSummary", function() {
