@@ -205,7 +205,7 @@
 					<div class="col-md-6">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Tasks To Do (<?php echo count($tasks2DaysBeforeDeadline);?>)</h3>
+								<h3 class="box-title">Tasks I Need To Do(<?php echo count($tasks2DaysBeforeDeadline);?>)</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -331,7 +331,7 @@
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Change Request Approval (<?php echo count($changeRequests);?>)</h3>
+									<h3 class="box-title">Change Requests I Need To Approve (<?php echo count($changeRequests);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -398,7 +398,7 @@
 						<div class="col-md-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Document Acknowledgement (<?php echo count($toAcknowledgeDocuments);?>)</h3>
+									<h3 class="box-title">Documents I Need To Acknowledge (<?php echo count($toAcknowledgeDocuments);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -414,33 +414,38 @@
 											</tr>
 											</thead>
 											<tbody>
+
+												<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'> </form>
+
 												<?php
+
 													foreach($toAcknowledgeDocuments as $row){
 
 														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
-															echo "<tr class='clickable'>";
-															echo"
-															<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'>
-																<input type='hidden' name='project_ID' value='" . $row['projects_PROJECTID'] . "'>
-																<input type='hidden' name='fromWhere' value='dashboard'>
-																<input type='hidden' name='fileName' value='" . $row['DOCUMENTNAME'] . "'>
-																<input type='hidden' name='documentID' value='" . $row['DOCUMENTID'] . "'>
-															</form>";
-																echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
-																echo "<td></td>";
-																echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
-																echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
 
-																if($row['ACKNOWLEDGEDDATE'] != ''){
-																	echo "<td align='center'>Acknowledged</td>";
-																} else {
+															if($row['ACKNOWLEDGEDDATE'] == ''){
+
+																echo "<tr class='clickable'>";
+
+																	echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+																	echo "<td>" . $row['PROJECTTITLE'] . "</td>";
+																	echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+																	echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+
 																	echo "<td align='center'>
-																	<a href = ''><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
+																	<a href = '" . $row['DOCUMENTLINK'] . "' download><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
 																	<i class='fa fa-download'></i></button></a>
-																	<span data-toggle='modal' data-target='#confirmAcknowledge' data-id ='" . $row['DOCUMENTID'] . "'><button type='button' class='btn btn-warning document' name='documentButton' id='acknowledgeButton' data-toggle='tooltip' data-placement='top' title='Acknowledge'>
-																	<i class='fa fa-check-circle'></i></button></span></td>";
-																}
-															echo "</tr>";
+
+																	<span data-toggle='tooltip' data-placement='top' title='Acknowledge'>
+																	<button type='button' class='btn btn-warning document acknowledgeButton' name='documentButton'
+																		data-toggle='modal' data-target='#confirmAcknowledge'
+																		data-docuID ='" . $row['DOCUMENTID'] . "'
+																		data-projectID = '" . $row['projects_PROJECTID'] . "'
+																		data-docuName = '" . $row['DOCUMENTNAME'] ."'>
+																		<i class='fa fa-check-circle'></i></button></span></td>";
+
+																echo "</tr>";
+															}
 														}
 													}
 												?>
@@ -508,10 +513,29 @@
 			$(".projectForm").submit();
 			});
 
-		$(document).on("click", ".document", function() {
-			var $id = $(this).attr('data-id');
+			$(document).on("click", ".acknowledgeButton", function() {
+
+				var $documentID = $(this).attr('data-docuID');
+				var $projectID = $(this).attr('data-projectID');
+				var $documentName = $(this).attr('data-docuName');
+
+				$("#doneConfirm").attr('data-docuID', $documentID);
+				$("#doneConfirm").attr('data-projectID', $projectID);
+				$("#doneConfirm").attr('data-docuName', $documentName);
+
+			});
+
+		$(document).on("click", "#doneConfirm", function() {
+
+			var $documentID = $(this).attr('data-docuID');
+			var $projectID = $(this).attr('data-projectID');
+			var $documentName = $(this).attr('data-docuName');
+
 			$(".acknowledgeDocument").attr("name", "formSubmit");
-			$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $id + ">");
+			$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $documentID + ">");
+			$(".acknowledgeDocument").append("<input type='hidden' name='projectID' value= " + $projectID + ">");
+			$(".acknowledgeDocument").append("<input type='hidden' name='fileName' value= " + $documentName + ">");
+			$(".acknowledgeDocument").append("<input type='hidden' name='fromWhere' value='dashboard'>");
 			$(".acknowledgeDocument").submit();
 		});
 

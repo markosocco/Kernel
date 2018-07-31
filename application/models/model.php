@@ -224,30 +224,62 @@ class model extends CI_Model
 
   public function getProjectCount($filter)
   {
-    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
-    $this->db->select('users.*, count(distinct projects.PROJECTID) AS "projectCount"');
-    $this->db->from('projects');
-    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
-    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-    $this->db->join('users', 'raci.users_USERID = users.USERID');
-    $this->db->where($condition . " && " . $filter);
-    $this->db->group_by('users.USERID');
+    if ($filter == null)
+    {
+      $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+      $this->db->select('users.*, count(distinct projects.PROJECTID) AS "projectCount"');
+      $this->db->from('projects');
+      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+      $this->db->join('users', 'raci.users_USERID = users.USERID');
+      $this->db->group_by('users.USERID');
 
-    return $this->db->get()->result_array();
+      return $this->db->get()->result_array();
+    }
+
+    else
+    {
+      $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+      $this->db->select('users.*, count(distinct projects.PROJECTID) AS "projectCount"');
+      $this->db->from('projects');
+      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+      $this->db->join('users', 'raci.users_USERID = users.USERID');
+      $this->db->where($condition . " && " . $filter);
+      $this->db->group_by('users.USERID');
+
+      return $this->db->get()->result_array();
+    }
   }
 
   public function getTaskCount($filter)
   {
-    $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
-    $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
-    $this->db->from('projects');
-    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
-    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-    $this->db->join('users', 'raci.users_USERID = users.USERID');
-    $this->db->where($condition . " && " . $filter);
-    $this->db->group_by('users.USERID');
+    if ($filter == null)
+    {
+      $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+      $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
+      $this->db->from('projects');
+      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+      $this->db->join('users', 'raci.users_USERID = users.USERID');
+      $this->db->group_by('users.USERID');
 
-    return $this->db->get()->result_array();
+      return $this->db->get()->result_array();
+    }
+
+    else
+    {
+      $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+      $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
+      $this->db->from('projects');
+      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+      $this->db->join('users', 'raci.users_USERID = users.USERID');
+      $this->db->where($condition . " && " . $filter);
+      $this->db->group_by('users.USERID');
+
+      return $this->db->get()->result_array();
+    }
   }
 
   public function getWorkloadProjects($userID)
@@ -1055,6 +1087,7 @@ class model extends CI_Model
     $this->db->join('documents', 'documents_DOCUMENTID = DOCUMENTID');
     $this->db->join('users', 'users_UPLOADEDBY = USERID');
     $this->db->join('departments', 'departments_DEPARTMENTID = DEPARTMENTID');
+    $this->db->join('projects', 'projectID = projects_PROJECTID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
@@ -1518,5 +1551,16 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  public function getAllProjects()
+  {
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

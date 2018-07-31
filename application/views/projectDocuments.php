@@ -123,7 +123,7 @@
 																		data-docuID ='" . $document['DOCUMENTID'] . "'
 																		data-projectID = '" . $projectProfile['PROJECTID'] . "'
 																		data-docuName = '" . $document['DOCUMENTNAME'] ."'>
-																		<i class='fa fa-eye'></i></button></span>";
+																		<i class='fa fa-check-circle'></i></button></span>";
 																}
 
 																else {

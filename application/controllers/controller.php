@@ -444,7 +444,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("monitorTeam");
+			$deptID = $_SESSION['DEPARTMENTID'];
+
+			$filter = null;
+
+			$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
+			$data['projects'] = $this->model->getAllProjects();
+			$data['projectCount'] = $this->model->getProjectCount($filter);
+			$data['taskCount'] = $this->model->getTaskCount($filter);
+
+			$this->load->view("monitorTeam", $data);
 		}
 	}
 
@@ -2701,20 +2710,21 @@ class controller extends CI_Controller
 							break;
 
 						case '3':
-							$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
+							$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 							break;
 
 						case '4':
-							$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+							$filter = "(users.usertype_USERTYPEID = '3' &&  users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."')
+							|| users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."' && users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 							break;
 
 						default:
-							$filter = "users.departments_DEPARTMENTID = '". $data['changeRequest']['departments_DEPARTMENTID'] ."'";
+							$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 							break;
 					}
 					$data['departments'] = $this->model->getAllDepartments();
 					$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
-					$data['wholeDept'] = $this->model->getAllUsersByDepartment($data['changeRequest']['departments_DEPARTMENTID']);
+					$data['wholeDept'] = $this->model->getAllUsersByUserType($filter);
 					$data['projectCountR'] = $this->model->getProjectCount($filter);
 					$data['taskCountR'] = $this->model->getTaskCount($filter);
 					$data['projectCount'] = $this->model->getProjectCount($data['changeRequest']['departments_DEPARTMENTID']);
