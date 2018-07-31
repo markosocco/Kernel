@@ -2046,7 +2046,7 @@ class controller extends CI_Controller
 			$logData = array (
 				'LOGDETAILS' => $details,
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $projectID
+				'projects_PROJECTID' => $edit
 			);
 
 			$this->model->addToProjectLogs($logData);
@@ -2468,13 +2468,26 @@ class controller extends CI_Controller
 			}
 		}
 
+		date_default_timezone_set("Singapore");
+		$currDate = date("Y-m-d");
+
 		foreach ($title as $key=> $row)
 		{
+			if ($currDate >= $startDates[$key])
+			{
+				$tStatus = 'Ongoing';
+			}
+
+			else
+			{
+				$tStatus = 'Planning';
+			}
+
 			$data = array(
 					'TASKTITLE' => $row,
 					'TASKSTARTDATE' => $startDates[$key],
 					'TASKENDDATE' => $endDates[$key],
-					'TASKSTATUS' => 'Planning',
+					'TASKSTATUS' => $tStatus,
 					'CATEGORY' => '3',
 					'projects_PROJECTID' => $id,
 					'tasks_TASKPARENT' => $parent[$key]
@@ -3033,13 +3046,26 @@ class controller extends CI_Controller
 			}
 		}
 
+		date_default_timezone_set("Singapore");
+		$currDate = date("Y-m-d");
+
 		foreach ($title as $key=> $row)
 		{
+			if ($currDate >= $startDates[$key])
+			{
+				$tStatus = 'Ongoing';
+			}
+
+			else
+			{
+				$tStatus = 'Planning';
+			}
+
 			$data = array(
           'TASKTITLE' => $row,
           'TASKSTARTDATE' => $startDates[$key],
           'TASKENDDATE' => $endDates[$key],
-          'TASKSTATUS' => 'Planning',
+          'TASKSTATUS' => $tStatus,
           'CATEGORY' => '1',
           'projects_PROJECTID' => $id
       );
@@ -3433,13 +3459,26 @@ class controller extends CI_Controller
 		    }
 		  }
 
+			date_default_timezone_set("Singapore");
+			$currDate = date("Y-m-d");
+
 		  foreach ($title as $key=> $row)
 		  {
+				if ($currDate >= $startDates[$key])
+				{
+					$tStatus = 'Ongoing';
+				}
+
+				else
+				{
+					$tStatus = 'Planning';
+				}
+
 	      $data = array(
 	          'TASKTITLE' => $row,
 	          'TASKSTARTDATE' => $startDates[$key],
 	          'TASKENDDATE' => $endDates[$key],
-	          'TASKSTATUS' => 'Planning',
+	          'TASKSTATUS' => $tStatus,
 	          'CATEGORY' => '2',
 	          'projects_PROJECTID' => $id,
 	          'tasks_TASKPARENT' => $parent[$key]
