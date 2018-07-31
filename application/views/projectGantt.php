@@ -593,42 +593,18 @@
 
 						<div class="col-md-3 col-sm-6 col-xs-12 pull-right">
 								<div class="box-header with-border" style="text-align:center;">
-									<h3 class="box-title"><?php echo $_SESSION['DEPARTMENTNAME'];?> Performance</h3>
+									<h3 class="box-title">Project Performance</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div style="display:inline-block; text-align:center; width:49%;">
-										<div class="circlechart" id="completeness"
-											data-percentage="<?php
-												if($departmentCompleteness['completeness'] == NULL){
-													echo 0;
-												} else {
-													if($departmentCompleteness['completeness'] == 100.00){
-														echo 100;
-													} elseif ($departmentCompleteness['completeness'] == 0.00) {
-														echo 0;
-	 												} else {
-	 													echo $departmentCompleteness['completeness'];
-	 												}
-	 											}
- 										 ?> "> Completeness
+										<div class="circlechart"
+											data-percentage=""> Completeness
 										</div>
 									</div>
 									<div style="display:inline-block; text-align:center; width:49%;">
-										<div class="circlechart" id="completeness"
-	 									 data-percentage="<?php
-											 if($departmentTimeliness['timeliness'] == NULL){
-												 echo 0;
-											 } else {
-												 if($departmentTimeliness['timeliness'] == 100.00){
-													 echo 100;
-												 } elseif ($departmentTimeliness['timeliness'] == 0.00) {
-													 echo 0;
-												 } else {
-													 echo $departmentTimeliness['timeliness'];
-												 }
-											 }
-										 ?> "> Timeliness
+										<div class="circlechart"
+	 									 data-percentage=""> Timeliness
 	 								 </div>
 								 </div>
 								</div>
@@ -653,7 +629,7 @@
 									<!-- /.box-header -->
 									<div class="box-body">
 										<div style="display:inline-block; text-align:center; width:49%;">
-											<div class="circlechart" id="completeness"
+											<div class="circlechart"
 												data-percentage="<?php
 													if($employeeCompleteness['completeness'] == NULL){
 														echo 0;
@@ -670,7 +646,7 @@
 											</div>
 										</div>
 										<div style="display:inline-block; text-align:center; width:49%;">
-											<div class="circlechart" id="completeness"
+											<div class="circlechart"
 		 									 data-percentage="<?php
 											 if($employeeTimeliness['timeliness'] == NULL){
 												 echo 0;

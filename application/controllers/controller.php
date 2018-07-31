@@ -377,7 +377,7 @@ class controller extends CI_Controller
 
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
-			$data['editProjects'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID']);
+			$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
 			$data['lastWeekProgress'] = $this->model->getLatestWeeklyProgress();
 			$data['employeeCompleteness'] = $this->model->compute_completeness_employee($_SESSION['USERID']);
 			$data['departmentCompleteness'] = $this->model->compute_completeness_department($_SESSION['departments_DEPARTMENTID']);
@@ -429,7 +429,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function myTeam()
+	public function monitorTeam()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -438,28 +438,20 @@ class controller extends CI_Controller
 
 		else
 		{
-			if ($_SESSION['departments_DEPARTMENTID'] == '1') //ONLY EXECUTIVES CAN VIEW ALL PROJECTS
-			{
-				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
-				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
-				$data['parkedProjects'] = $this->model->getAllParkedProjects();
-				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
-			}
-			else
-			{
-				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
-				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
-				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
-				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
-				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
-			}
+			$this->load->view("monitorTeam");
+		}
+	}
 
-			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+	public function monitorProject()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
 
-			$this->load->view("myTeam", $data);
+		else
+		{
+			$this->load->view("monitorProject");
 		}
 	}
 
@@ -2221,11 +2213,15 @@ class controller extends CI_Controller
 
 		else
 		{
+			$dashboard = $this->input->post("dashboard");
+			if (isset($dashboard))
+			{
+				$this->session->set_flashdata('dashboard', $dashboard);
+			}
+
 			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
 
 			$data['delegateTasksByProject'] = $this->model->getAllProjectsToEditByUser($_SESSION['USERID'], "projects.PROJECTID");
-			$data['delegateTasksByMainActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "1");
-			$data['delegateTasksBySubActivity'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID'], "2");
 			$data['delegateTasks'] = $this->model->getAllActivitiesToEditByUser($_SESSION['USERID']);
 			$data['departments'] = $this->model->getAllDepartments();
 			$data['users'] = $this->model->getAllUsers();

@@ -10,6 +10,12 @@
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
+				<div style="margin-bottom:10px">
+					<?php if(isset($_SESSION['dashboard'])): ?>
+							<a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Dashboard"><i class="fa fa-arrow-left"></i></a>
+					<?php endif;?>
+				</div>
+
 				<h1>
 					Delegate Tasks
 					<small>What tasks are to be done by my team?</small>
@@ -299,7 +305,7 @@
 											<table id="teamList" class="table table-bordered table-hover">
 												<thead>
 												<tr>
-													<th>Department/Employee</th>
+													<th>Department</th>
 													<th class='text-center'>R*</th>
 													<th class='text-center'>A</th>
 													<th class='text-center'>C</th>
@@ -385,7 +391,11 @@
 													<?php endforeach;?>
 
 													<!-- STAFF IN DEPARTMENT -->
-													<tr><td colspan = '7'></td></tr>
+													<thead>
+														<tr>
+															<th colspan='5'>Employee</th>
+														</tr>
+													</thead>
 
 													<?php foreach($wholeDept as $employee):?>
 														<tr>

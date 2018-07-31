@@ -188,7 +188,7 @@
 								<h4 id="doneDates">Start Date - End Date (Days)</h4>
 							</div>
 							<div class="modal-body">
-								<h3 id ="delayed" style="color:red; margin-top:0">Task is Delayed</h3>
+								<h3 id ="delayed" style="color:red; margin-top:0">This task is delayed.</h3>
 								<h4 id ="early" style="margin-top:0">Are you sure this task is done?</h4>
 								<form id = "doneForm" action="doneTask" method="POST" style="margin-bottom:0;">
 									<div class="form-group">
@@ -272,6 +272,7 @@
 											<th>Task</th>
 											<th class="text-center">Start Date</th>
 											<th class="text-center">End Date</th>
+											<th>Responsible</th>
 											<th class="text-center">Status</th>
 										</thead>
 										<tbody id='preReqDetails'>
@@ -679,7 +680,7 @@
 					if(preReqData['dependencies'].length > 0)
 					{
 						$('#preReqDetails').html("");
-						$('#preReqTitle').html("Pre Requisite Tasks");
+						$('#preReqTitle').html("Pre-requisite Tasks");
 						for(i=0; i<preReqData['dependencies'].length; i++)
 						{
 							if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
@@ -713,24 +714,32 @@
 
 							if(preReqData['dependencies'][i].TASKSTATUS == "Complete")
 							{
-								var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+								var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
 							}
-							else
+							if(preReqData['dependencies'][i].TASKSTATUS == "Planning")
 							{
-								var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Not Completed'></i>"
+								var status = "<i class='fa fa-circle' style='color:yellow' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+							}
+							if(preReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+							{
+								if(preReqData['dependencies'][i].currDate > endDate)
+									var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+								else
+									var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
 							}
 
 							$('#preReqDetails').append(
 													 "<tr>" + "<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
 													 "<td align='center'>" + taskStart+"</td>"+
 													 "<td align='center'>" + taskEnd +"</td>" +
+													 "<td>" + preReqData['dependencies'][i].FIRSTNAME + " " + preReqData['dependencies'][i].LASTNAME + "</td>" +
 													 "<td align='center'>" + status + "</td></tr>");
 					 }
 					 $("#preReqTable").show();
 				 }
 				 else
 				 {
-					 $('#preReqTitle').html("There are no pre requisite tasks");
+					 $('#preReqTitle').html("There are no pre-requisite tasks");
 					 $("#preReqTable").hide();
 				 }
 				},

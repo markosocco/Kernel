@@ -719,10 +719,11 @@ class model extends CI_Model
   public function getDependenciesByTaskID($taskID)
   {
     $condition = "raci.STATUS = 'Current' && dependencies.tasks_POSTTASKID = '$taskID' && raci.ROLE = '1'";
-    $this->db->select('*');
+    $this->db->select('*, CURDATE() as "currDate"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('dependencies', 'raci.tasks_TASKID = dependencies.PRETASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
