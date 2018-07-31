@@ -962,6 +962,7 @@ class model extends CI_Model
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
+    $this->db->group_by('TASKID');
 
     return $this->db->get()->result_array();
   }

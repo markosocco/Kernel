@@ -240,7 +240,7 @@
 												<table id="teamList" class="table table-bordered table-hover">
 													<thead>
 													<tr>
-														<th>Department/Employee</th>
+														<th>Department</th>
 														<th class='text-center'>R*</th>
 														<th class='text-center'>A</th>
 														<th class='text-center'>C</th>
@@ -326,7 +326,7 @@
 														<?php endforeach;?>
 
 														<!-- STAFF IN DEPARTMENT -->
-														<tr><td colspan = '7'></td></tr>
+														<thead><tr><th colspan='5'>Employee</th></tr></thead>
 
 														<?php foreach($wholeDept as $employee):?>
 															<tr>
@@ -439,7 +439,7 @@
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-									<button type="button" id = "confirmDelegateBtn" class="btn btn-success delegate" data-toggle="tooltip" data-placement="left" title="Confirm Approve & Delegate"><i class="fa fa-check"></i></button>
+									<button type="button" id = "delegateBtn" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Confirm Approve & Delegate"><i class="fa fa-check"></i></button>
 								</div>
 							</form>
 							</div>
@@ -458,6 +458,17 @@
 									<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
 								</div>
 
+							</div>
+
+							<!-- CONFIRM DELEGATE -->
+							<div id="delegateConfirm">
+								<div class="modal-body">
+									<h4>Are you sure you want to approve and re-delegate this task?</h4>
+								</div>
+								<div class="modal-footer">
+									<button id="backConfirmDelegate" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id = "confirmDelegateBtn" type="submit" class="btn btn-success delegate" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm Approve & Delegate"><i class="fa fa-check"></i></button>
+								</div>
 							</div>
 
 						</div>
@@ -553,7 +564,7 @@
 									<h4 id="taskDates">Start Date - End Date (Days)</h4>
 								</div>
 								<div class="modal-body">
-										<h3 id="postReqTitle">Post-Requisite Tasks</h3>
+										<h3 id="postReqTitle">Post-requisite tasks</h3>
 										<table class='table' id="postReqTable">
 											<thead>
 												<th>Task</th>
@@ -958,6 +969,7 @@
 					$(".checkEmp").prop("checked", false);
 					$("#raciDelegate").show();
 					$("#workloadAssessment").hide();
+					$("#delegateConfirm").hide();
 				}
 			});
 
@@ -1026,7 +1038,7 @@
 							for(x=0; data['raci'].length >x; x++)
 							{
 								$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('checked', true);
-								if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4') && <?php echo $_SESSION['usertype_USERTYPEID'];?> == '4')
+								if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4'))
 								{
 									$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('disabled', true);
 								}
@@ -1128,6 +1140,20 @@
 
 			});
 
+			$("#delegateBtn").click(function(){
+				$("#raciDelegate").hide();
+				$("#workloadAssessment").hide();
+				$("#delegateConfirm").show();
+			});
+
+			$("#backConfirmDelegate").click(function(){
+
+				$("#raciDelegate").show();
+				$("#workloadAssessment").hide();
+				$("#delegateConfirm").hide();
+
+			});
+
 			// START TASK DETAILS
 
 			$("body").on('click','.taskPostReqs',function(){
@@ -1158,7 +1184,7 @@
 					 if(postReqData['dependencies'].length > 0)
 					 {
 						 $('#postReqDetails').html("");
-						 $('#postReqTitle').html("Post Requisite Tasks");
+						 $('#postReqTitle').html("Post-requisite tasks");
 						 for(i=0; i<postReqData['dependencies'].length; i++)
 						 {
 							 if(postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
@@ -1193,7 +1219,7 @@
 					}
 					else
 					{
-						$('#postReqTitle').html("There are no post requisite tasks");
+						$('#postReqTitle').html("There are no post-requisite tasks");
 						$("#postReqTable").hide();
 					}
 				 },
