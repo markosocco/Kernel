@@ -294,10 +294,18 @@ desired effect
             <ul class="treeview-menu">
               <li id = 'taskDelegate'><a class="menu"  href="<?php echo base_url("index.php/controller/taskDelegate"); ?>"><i class="fa fa-circle-o"></i> Delegate</a></li>
               <li id = 'taskTodo'><a class="menu" href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-circle-o"></i> To Do</a></li>
-              <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
-                <li id = 'monitorProject'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorProject"); ?>"><i class="fa fa-circle-o"></i> Monitor Project</a></li>
-                <li id = 'monitorTeam'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorTeam"); ?>"><i class="fa fa-circle-o"></i> Monitor Team</a></li>
-              <?php endif;?>
+            </ul>
+          </li>
+          <li id = 'monitor' class="treeview">
+            <a href=" ">
+              <i class="fa fa-check-square-o"></i><span> Monitor</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li id = 'monitorProject'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorProject"); ?>"><i class="fa fa-circle-o"></i> Project</a></li>
+              <li id = 'monitorTeam'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorTeam"); ?>"><i class="fa fa-circle-o"></i> Team</a></li>
             </ul>
           </li>
         <?php else:?>

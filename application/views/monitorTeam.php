@@ -69,7 +69,6 @@
 							<!-- /.widget-user -->
 						</div>
 						<!-- /.col -->
-
 					</div>
 				</section>
 				<!-- /.content -->
@@ -78,7 +77,7 @@
 		</div>
 		<!-- ./wrapper -->
 		<script>
-			$("#tasks").addClass("active");
+			$("#monitor").addClass("active");
 			$("#monitorTeam").addClass("active");
 		</script>
 	</body>
