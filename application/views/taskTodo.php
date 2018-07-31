@@ -29,7 +29,7 @@
 						<!-- TO DO -->
 
 						<?php if ($tasks != NULL): ?>
-						<div class="col-md-10">
+						<div class="col-md-10" id="taskToDoTable">
 							<div class="box box-danger">
 								<div class="box-header with-border">
 									<h3 class="box-title">To Do</h3>
@@ -56,13 +56,24 @@
 								</div>
 							</div>
 						</div>
-					<?php else:?>
-						<div class="col-md-10">
+
+						<div class="col-md-10" id="emptyToDoTable">
 							<div class="box box-danger">
 								<div class="box-header with-border">
 									<h3 class="box-title">To Do</h3>
 								</div>
-								<div class="box-body">
+								<div class="box-body" id="emptyToDo">
+									<h4 align="center">You have no tasks due in 2 days</h4>
+								</div>
+							</div>
+						</div>
+					<?php else:?>
+						<div class="col-md-10" id="emptyToDoTable">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+									<h3 class="box-title">To Do</h3>
+								</div>
+								<div class="box-body" id="emptyToDo">
 									<h4 align="center">You have no tasks due in 2 days</h4>
 								</div>
 							</div>
@@ -481,6 +492,14 @@
 									 '<i class="fa fa-check"></i></button>');
 							}
 						}
+						if(totalToDo <= 0)
+						{
+							$("#taskToDoTable").hide();
+						}
+						else
+						{
+							$("#emptyToDoTable").hide();
+						}
 						$('#totalToDo').html("Total<br><br><b>" + totalToDo + "</b>");
 						$('#totalDelayedToDo').html(totalDelayedToDo);
 						$('#total').html("Total<br><br><b>" + total + "</b>");
@@ -508,20 +527,23 @@
 							'orderable'	: false
 						} ]
 					});
-					$('#toDoTable').DataTable({
-						'paging'      : false,
-						'lengthChange': false,
-						'searching'   : true,
-						'ordering'    : true,
-						'info'        : false,
-						'autoWidth'   : false,
-						'order'				: [[ 4, "desc" ]],
-						'columnDefs'	: [
-						{
-							'targets'		: [ 0, 5 ],
-							'orderable'	: false
-						} ]
-					});
+					if(totalToDo>=0)
+					{
+						$('#toDoTable').DataTable({
+							'paging'      : false,
+							'lengthChange': false,
+							'searching'   : true,
+							'ordering'    : true,
+							'info'        : false,
+							'autoWidth'   : false,
+							'order'				: [[ 4, "desc" ]],
+							'columnDefs'	: [
+							{
+								'targets'		: [ 0, 5 ],
+								'orderable'	: false
+							} ]
+						});
+					}
 				}
 			});
 
