@@ -429,7 +429,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function myTeam()
+	public function monitorTeam()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -438,28 +438,20 @@ class controller extends CI_Controller
 
 		else
 		{
-			if ($_SESSION['departments_DEPARTMENTID'] == '1') //ONLY EXECUTIVES CAN VIEW ALL PROJECTS
-			{
-				$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-				$data['plannedProjects'] = $this->model->getAllPlannedProjects();
-				$data['delayedProjects'] = $this->model->getAllDelayedProjects();
-				$data['parkedProjects'] = $this->model->getAllParkedProjects();
-				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
-			}
-			else
-			{
-				$data['ongoingProjects'] = $this->model->getAllOngoingProjectsByUser($_SESSION['USERID']);
-				$data['plannedProjects'] = $this->model->getAllPlannedProjectsByUser($_SESSION['USERID']);
-				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
-				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
-				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
-			}
+			$this->load->view("monitorTeam");
+		}
+	}
 
-			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
-			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
+	public function monitorProject()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
 
-			$this->load->view("myTeam", $data);
+		else
+		{
+			$this->load->view("monitorProject");
 		}
 	}
 
@@ -2054,7 +2046,7 @@ class controller extends CI_Controller
 			$logData = array (
 				'LOGDETAILS' => $details,
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $projectID
+				'projects_PROJECTID' => $edit
 			);
 
 			$this->model->addToProjectLogs($logData);
@@ -2476,13 +2468,26 @@ class controller extends CI_Controller
 			}
 		}
 
+		date_default_timezone_set("Singapore");
+		$currDate = date("Y-m-d");
+
 		foreach ($title as $key=> $row)
 		{
+			if ($currDate >= $startDates[$key])
+			{
+				$tStatus = 'Ongoing';
+			}
+
+			else
+			{
+				$tStatus = 'Planning';
+			}
+
 			$data = array(
 					'TASKTITLE' => $row,
 					'TASKSTARTDATE' => $startDates[$key],
 					'TASKENDDATE' => $endDates[$key],
-					'TASKSTATUS' => 'Planning',
+					'TASKSTATUS' => $tStatus,
 					'CATEGORY' => '3',
 					'projects_PROJECTID' => $id,
 					'tasks_TASKPARENT' => $parent[$key]
@@ -3041,13 +3046,26 @@ class controller extends CI_Controller
 			}
 		}
 
+		date_default_timezone_set("Singapore");
+		$currDate = date("Y-m-d");
+
 		foreach ($title as $key=> $row)
 		{
+			if ($currDate >= $startDates[$key])
+			{
+				$tStatus = 'Ongoing';
+			}
+
+			else
+			{
+				$tStatus = 'Planning';
+			}
+
 			$data = array(
           'TASKTITLE' => $row,
           'TASKSTARTDATE' => $startDates[$key],
           'TASKENDDATE' => $endDates[$key],
-          'TASKSTATUS' => 'Planning',
+          'TASKSTATUS' => $tStatus,
           'CATEGORY' => '1',
           'projects_PROJECTID' => $id
       );
@@ -3441,13 +3459,26 @@ class controller extends CI_Controller
 		    }
 		  }
 
+			date_default_timezone_set("Singapore");
+			$currDate = date("Y-m-d");
+
 		  foreach ($title as $key=> $row)
 		  {
+				if ($currDate >= $startDates[$key])
+				{
+					$tStatus = 'Ongoing';
+				}
+
+				else
+				{
+					$tStatus = 'Planning';
+				}
+
 	      $data = array(
 	          'TASKTITLE' => $row,
 	          'TASKSTARTDATE' => $startDates[$key],
 	          'TASKENDDATE' => $endDates[$key],
-	          'TASKSTATUS' => 'Planning',
+	          'TASKSTATUS' => $tStatus,
 	          'CATEGORY' => '2',
 	          'projects_PROJECTID' => $id,
 	          'tasks_TASKPARENT' => $parent[$key]
