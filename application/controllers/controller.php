@@ -2322,7 +2322,11 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsProjectPerDept");
+			$data['allProjects'] = $this->model->getAllProjects();
+			$data['projectCompleteness'] = $this->model->compute_completeness_allProjects();
+			$data['projectTimeliness'] = $this->model->compute_timeliness_allProjects();
+
+			$this->load->view("reportsProjectPerDept", $data);
 		}
 	}
 

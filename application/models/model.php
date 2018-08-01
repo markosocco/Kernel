@@ -1589,6 +1589,30 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  public function compute_completeness_allProjects()
+  {
+    $condition = "CATEGORY = 3";
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function compute_timeliness_allProjects()
+  {
+    $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != ''";
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   // public function compute_completeness_projectByUser()
   // {
   //   $condition = "CATEGORY = 3 AND projects.PROJECTSTATUS = 'Ongoing' AND projects.users_USERID = " . $_SESSION['USERID'];
@@ -1638,8 +1662,6 @@ class model extends CI_Model
     $this->db->where($condition);
     $this->db->group_by("USERID");
     $this->db->order_by("departments.DEPARTMENTNAME");
-
-    return $this->db->get()->result_array();
   }
 
   public function getAllProjectsByUser($id)
