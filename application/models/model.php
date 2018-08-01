@@ -1585,16 +1585,16 @@ class model extends CI_Model
   //   return $this->db->get()->result_array();
   // }
   //
-  // public function getAllProjects()
-  // {
-  //   $this->db->select('*');
-  //   $this->db->from('projects');
-  //   $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-  //   $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
-  //   $this->db->join('users', 'raci.users_userid = users.userid');
-  //   $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
-  //
-  //   return $this->db->get()->result_array();
-  // }
+  public function getAllProjects()
+  {
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

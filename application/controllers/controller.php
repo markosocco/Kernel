@@ -499,6 +499,45 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function monitorMembers()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorMembers");
+		}
+	}
+
+	public function monitorDepartment()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorDepartment");
+		}
+	}
+
+	public function monitorDepartmentDetails()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorDepartmentDetails");
+		}
+	}
+
 	public function monitorProject()
 	{
 		if (!isset($_SESSION['EMAIL']))
