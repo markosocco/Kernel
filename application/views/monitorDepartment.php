@@ -14,8 +14,12 @@
 					<a href="<?php echo base_url("index.php/controller/monitorProject"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 					<br><br>
 					<h1>
-						Project Name
-						<small>(date to date)</small>
+						<?php echo $projectProfile['PROJECTTITLE'];?>
+						<?php
+						$projectStart = date_create($projectProfile['PROJECTSTARTDATE']);
+						$projectEnd = date_create($projectProfile['PROJECTENDDATE']);
+						?>
+						<small>(<?php echo date_format($projectStart, "F d, Y");?> to <?php echo date_format($projectEnd, "F d, Y");?>)</small>
 					</h1>
 
 					<ol class="breadcrumb">
@@ -30,46 +34,102 @@
 						<div class="col-md-4 col-sm-4 col-xs-12">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">Overall Performance</h3>
+									<h3 class="box-title">Project Performance</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
 	                <div style="display:inline-block; text-align:center; width:49%;">
 	                  <div class="circlechart"
-	                    data-percentage=""> Completeness
+	                    data-percentage="<?php
+												if($projectCompleteness['completeness'] == NULL){
+													echo 0;
+												} else {
+													if($projectCompleteness['completeness'] == 100.00){
+														echo 100;
+													} elseif ($projectCompleteness['completeness'] == 0.00) {
+														echo 0;
+													} else {
+														echo $projectCompleteness['completeness'];
+													}
+												}
+												?>"> Completeness
 	                  </div>
 	                </div>
 	                <div style="display:inline-block; text-align:center; width:49%;">
 	                  <div class="circlechart"
-	                   data-percentage=""> Timeliness
+	                   data-percentage="<?php
+											 if($projectTimeliness['timeliness'] == NULL){
+												 echo 0;
+											 } else {
+												 if($projectTimeliness['timeliness'] == 100.00){
+													 echo 100;
+												 } elseif ($projectTimeliness['timeliness'] == 0.00) {
+													 echo 0;
+												 } else {
+													 echo $projectTimeliness['timeliness'];
+												 }
+											 }
+											 ?>"> Timeliness
 	                 </div>
 	               </div>
 	              </div>
 							</div>
 		        </div>
-						<!-- START LOOP HERE -->
-						<div class="col-md-4 col-sm-4 col-xs-12">
-							<div class="box box-danger clickable">
-								<div class="box-header with-border">
-									<h3 class="box-title">deptName Performance</h3>
-								</div>
-								<!-- /.box-header -->
-								<div class="box-body">
-	                <div style="display:inline-block; text-align:center; width:49%;">
-	                  <div class="circlechart"
-	                    data-percentage=""> Completeness
-	                  </div>
-	                </div>
-	                <div style="display:inline-block; text-align:center; width:49%;">
-	                  <div class="circlechart"
-	                   data-percentage=""> Timeliness
-	                 </div>
-	               </div>
-	              </div>
-							</div>
-		        </div>
-						<!-- END LOOP HERE -->
 					</div>
+
+					<form id="deptForm" action = 'monitorDepartmentDetails'  method="POST">
+						<input type='hidden' name='project_ID' value= "<?php echo $projectProfile['PROJECTID'] ;?>">
+					</form>
+
+					<div class='row'>
+						<?php foreach($departments as $department):?>
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<div class="box box-danger clickable dept" data-id="<?php echo $department['DEPARTMENTID'];?>">
+									<div class="box-header with-border">
+										<h3 class="box-title"><?php echo $department['DEPARTMENTNAME'];?> Performance</h3>
+									</div>
+									<!-- /.box-header -->
+									<div class="box-body">
+		                <div style="display:inline-block; text-align:center; width:49%;">
+		                  <div class="circlechart"
+		                    data-percentage="<?php
+													if($department['completeness'] == NULL){
+														echo 0;
+													} else {
+														if($department['completeness'] == 100.00){
+															echo 100;
+														} elseif ($department['completeness'] == 0.00) {
+															echo 0;
+														} else {
+															echo $department['completeness'];
+														}
+													}
+													?>"> Completeness
+		                  </div>
+		                </div>
+		                <div style="display:inline-block; text-align:center; width:49%;">
+		                  <div class="circlechart"
+		                   data-percentage="<?php
+	  										 if($department['timeliness'] == NULL){
+	  											 echo 0;
+	  										 } else {
+	  											 if($department['timeliness'] == 100.00){
+	  												 echo 100;
+	  											 } elseif ($department['timeliness'] == 0.00) {
+	  												 echo 0;
+	  											 } else {
+	  												 echo $department['timeliness'];
+	  											 }
+	  										 }
+	  										 ?>"> Timeliness
+		                 </div>
+		               </div>
+		              </div>
+								</div>
+			        </div>
+						<?php endforeach;?>
+					</div>
+
 				</section>
 				<!-- /.content -->
 			</div>
@@ -80,6 +140,13 @@
 			$("#monitor").addClass("active");
 			$("#monitorProject").addClass("active");
       $('.circlechart').circlechart(); // Initialization
+
+			$(document).on("click", ".dept", function() {
+	      var $id = $(this).attr('data-id');
+	      $("#deptForm").attr("name", "formSubmit");
+	      $("#deptForm").append("<input type='hidden' name='dept_ID' value= " + $id + ">");
+	      $("#deptForm").submit();
+	    });
 		</script>
 	</body>
 </html>

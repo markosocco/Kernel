@@ -10,9 +10,17 @@
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
+
+					<button id="backBtn" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Departments"><i class="fa fa-arrow-left"></i></button>
+					<form id="backForm" action = 'monitorDepartment' method="POST" data-id="<?php echo $projectProfile['PROJECTID']; ?>">
+					</form>
 					<h1>
-						Project Name
-						<small>(date to date)</small>
+						<?php echo $projectProfile['PROJECTTITLE'];?>
+						<?php
+						$projectStart = date_create($projectProfile['PROJECTSTARTDATE']);
+						$projectEnd = date_create($projectProfile['PROJECTENDDATE']);
+						?>
+						<small>(<?php echo date_format($projectStart, "F d, Y");?> to <?php echo date_format($projectEnd, "F d, Y");?>)</small>
 					</h1>
 
 					<ol class="breadcrumb">
@@ -132,6 +140,13 @@
 			$("#monitor").addClass("active");
 			$("#monitorProject").addClass("active");
       $('.circlechart').circlechart(); // Initialization
+
+			$(document).on("click", "#backBtn", function() {
+				var $project = $("#backForm").attr('data-id');
+				$("#backForm").attr("name", "formSubmit");
+				$("#backForm").append("<input type='hidden' name='project_ID' value= " + $project + ">");
+				$("#backForm").submit();
+				});
 		</script>
 	</body>
 </html>

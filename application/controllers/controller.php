@@ -553,7 +553,13 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("monitorDepartment");
+			$projectID = $this->input->post('project_ID');
+			$data['projectProfile'] = $this->model->getProjectByID($projectID);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
+
+			$this->load->view("monitorDepartment", $data);
 		}
 	}
 
@@ -566,7 +572,12 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("monitorDepartmentDetails");
+			$projectID = $this->input->post('project_ID');
+			$deptID = $this->input->post('dept_ID');
+
+			$data['projectProfile'] = $this->model->getProjectByID($projectID);
+
+			$this->load->view("monitorDepartmentDetails", $data);
 		}
 	}
 
