@@ -1596,6 +1596,7 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+<<<<<<< HEAD
 
   public function getAllProjectsByUser($id)
   {
@@ -1611,5 +1612,7 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+=======
+>>>>>>> 3780214f42ba4d52f4f53bdc515167fa698944d4
 }
 ?>

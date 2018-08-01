@@ -90,9 +90,7 @@ class controller extends CI_Controller
 				$this->model->updateProjectStatus($currentDate);
 
 				$allTasks = $this->model->getAllTasksByUser($_SESSION['USERID']);
-				foreach ($allTasks as $tasks){
-					echo $tasks['TASKTITLE'] . "<br>";
-				}
+
 				$this->session->set_userdata('tasks', $allTasks);
 
 
@@ -218,7 +216,7 @@ class controller extends CI_Controller
 
 				foreach($data['latestProgress'] as $latestProgressDetails){
 
-					echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
+					// echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
 
 					$isFound = $this->model->checkAssessmentProject($latestProgressDetails['projects_PROJECTID']);
 
@@ -542,6 +540,32 @@ class controller extends CI_Controller
 			$data['completeness'] = $this->model->compute_completeness_employee($id);
 
 			$this->load->view("monitorMembers", $data);
+		}
+	}
+
+	public function monitorDepartment()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorDepartment");
+		}
+	}
+
+	public function monitorDepartmentDetails()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorDepartmentDetails");
 		}
 	}
 
