@@ -1182,20 +1182,20 @@ class model extends CI_Model
     return true;
   }
 
-  public function updateTaskStatus()
+  public function updateTaskStatus($currentDate)
   {
     $condition = "TASKSTARTDATE <= CURDATE() AND TASKSTATUS = 'Planning';";
     $this->db->set('TASKSTATUS', 'Ongoing');
-    $this->db->set('TASKACTUALSTARTDATE', 'TASKSTARTDATE');
+    $this->db->set('TASKACTUALSTARTDATE', $currentDate);
     $this->db->where($condition);
     $this->db->update('tasks');
   }
 
-  public function updateProjectStatus()
+  public function updateProjectStatus($currentDate)
   {
     $condition = "PROJECTSTARTDATE <= CURDATE() AND PROJECTSTATUS = 'Planning';";
     $this->db->set('PROJECTSTATUS', 'Ongoing');
-    $this->db->set('PROJECTACTUALSTARTDATE', 'PROJECTSTARTDATE');
+    $this->db->set('PROJECTACTUALSTARTDATE', $currentDate);
     $this->db->where($condition);
     $this->db->update('projects');
   }

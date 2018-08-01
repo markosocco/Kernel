@@ -86,8 +86,8 @@ class controller extends CI_Controller
 				$this->session->set_userdata('taskCount', $count);
 
 				$currentDate = date('Y-m-d');
-				$this->model->updateTaskStatus();
-				$this->model->updateProjectStatus();
+				$this->model->updateTaskStatus($currentDate);
+				$this->model->updateProjectStatus($currentDate);
 
 				$allTasks = $this->model->getAllTasksByUser($_SESSION['USERID']);
 				foreach ($allTasks as $tasks){
