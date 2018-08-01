@@ -2378,6 +2378,12 @@ class controller extends CI_Controller
 			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 			$data['tasks'] = $this->model->getAllTasksByID($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
+			$data['documents'] = $this->model->getAllDocumentsByProject($id);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
+			$data['departments'] = $this->model->compute_timeliness_departmentByProject($id);
+
 
 			$this->load->view("projectSummary", $data);
 		}
