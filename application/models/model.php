@@ -1690,5 +1690,41 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+// MONITOR PROJECTS
+
+  public function getAllOwnedProjectsByUser($userID, $status, $orderBy)
+  {
+    $condition = "projects.users_USERID = '$userID' && projects.PROJECTSTATUS = '$status'";
+    $this->db->select('projects.*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "launch",
+    DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "remaining",
+    DATEDIFF(projects.PROJECTACTUALENDDATE, CURDATE()) as "archive"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by($orderBy);
+
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getAllDelayedOwnedProjectsByUser($userID)
+  {
+    $condition = "projects.users_USERID = '$userID' && PROJECTENDDATE < CURDATE() && PROJECTSTATUS = 'Ongoing'";
+    $this->db->select('*, ABS(DATEDIFF(PROJECTENDDATE, CURDATE())) AS "datediff"');
+    $this->db->from('PROJECTS');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
 }
 ?>

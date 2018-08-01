@@ -578,7 +578,15 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("monitorProject");
+			$data['ongoingProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Ongoing", "projects.PROJECTENDDATE");
+			$data['plannedProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Planning", "projects.PROJECTSTARTDATE");
+			$data['delayedProjects'] = $this->model->getAllDelayedOwnedProjectsByUser($_SESSION['USERID']);
+			$data['completedProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Complete", "projects.PROJECTACTUALENDDATE");
+
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+
+			$this->load->view("monitorProject", $data);
 		}
 	}
 

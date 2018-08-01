@@ -62,11 +62,10 @@
 
 	            <div class="row">
 
-	              <!-- <?php if($completedProjects == null && $delayedProjects == null &&
-	                      $ongoingProjects == null && $plannedProjects == null &&
-	                      $parkedProjects == null && $draftedProjects == null):?>
-	                <h3 class = "projects" align="center">There are no projects</h3>
-	              <?php endif;?> -->
+	              <?php if($completedProjects == null && $delayedProjects == null &&
+	                      $ongoingProjects == null && $plannedProjects == null):?>
+	                <h3 class = "projects" align="center">You do not own any project</h3>
+	              <?php endif;?>
 
 	              <div class = "projectsGrid" id = "completedProjGrid">
 	                <?php foreach ($completedProjects as $key=> $value):?>
@@ -78,12 +77,12 @@
 	                      <div class="inner">
 	                        <h2>100%</h2>
 
-	                        <form action = 'projectGantt'  method="POST">
+	                        <form action = 'monitorDepartment'  method="POST">
 	                        </form>
 
 	                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in
-	                          <?php echo $value['datediff'] +1;?>
-	                          <?php if(($value['datediff'] +1) > 1):?>
+	                          <?php echo $value['archive'] +1;?>
+	                          <?php if(($value['archive'] +1) > 1):?>
 	                            days
 	                          <?php else:?>
 	                            day
@@ -120,7 +119,7 @@
 	                              }
 	                            } ?>%</h2>
 
-	                        <form class="gantt" action = 'projectGantt'  method="POST">
+	                        <form class="dept" action = 'monitorDepartment'  method="POST">
 	                        </form>
 
 	                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
@@ -162,12 +161,12 @@
 	                              }
 	                            } ?>%</h2>
 
-	                            <form class="gantt" action = 'projectGantt'  method="POST">
+                          <form class="dept" action = 'monitorDepartment'  method="POST">
 	                        </form>
 
 	                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
-	                          <?php echo $value['datediff'] +1;?>
-	                          <?php if(($value['datediff'] +1) > 1):?>
+	                          <?php echo $value['remaining'] +1;?>
+	                          <?php if(($value['remaining'] +1) > 1):?>
 	                            days remaining
 	                          <?php else:?>
 	                            day remaining
@@ -193,7 +192,7 @@
 	                      <div class="inner">
 	                        <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
 
-	                        <form class="gantt" action = 'projectGantt'  method="POST">
+	                        <form class="dept" action = 'monitorDepartment'  method="POST">
 	                        </form>
 
 	                        <?php //Compute for days remaining
@@ -204,8 +203,8 @@
 	                        // $startdate = date_create($row['PROJECTSTARTDATE']);
 	                        ?>
 	                        <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in
-	                          <?php echo $row['datediff'] +1;?>
-	                          <?php if(($value['datediff'] +1) > 1):?>
+	                          <?php echo $row['launch'] +1;?>
+	                          <?php if(($value['launch'] +1) > 1):?>
 	                            days
 	                          <?php else:?>
 	                            day
@@ -216,67 +215,6 @@
 	                        <i class="ion ion-lightbulb"></i>
 	                      </div>
 	                    </div>
-	                    </a>
-	                  </div>
-	                  <!-- ./col -->
-	                <?php endforeach;?>
-	              </div>
-
-	              <!-- <div class = "projectsGrid" id = "parkedProjGrid">
-	                <?php foreach ($parkedProjects as $key=> $value):?>
-
-	                  <div class="col-lg-3 col-xs-6"> -->
-	                    <!-- small box -->
-	                    <!-- <a class = "project clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
-	                    <div class="small-box btn-info">
-	                      <div class="inner">
-
-	                        <h2>
-	                          <?php
-	                            foreach ($parkedProjectProgress as $row)
-	                            {
-	                              if ($value['PROJECTID'] == $row['projects_PROJECTID'])
-	                              {
-	                                echo $row['projectProgress'];
-	                              }
-	                            } ?>%</h2>
-
-	                        <form class="gantt" action = 'projectGantt'  method="POST">
-	                        </form>
-
-	                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Parked</i></p>
-	                      </div>
-	                      <div class="icon" style="margin-top:25px;">
-	                        <i class="ion ion-clock"></i>
-	                      </div>
-	                    </div>
-	                    </a>
-	                  </div> -->
-	                  <!-- ./col -->
-	                <!-- <?php endforeach;?>
-	              </div> -->
-
-	              <div class = "projectsGrid" id = "draftedProjGrid">
-	                <?php foreach ($draftedProjects as $row):?>
-	                  <div class="col-lg-3 col-xs-6">
-	                    <!-- small box -->
-	                    <a class = "project clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
-	                      <div id="draftBox" class="small-box bg-maroon">
-	                        <div class="inner">
-	                          <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
-
-	                          <form class="gantt" action = 'projectGantt'  method="POST">
-	                          </form>
-
-	                          <?php //Compute for days remaining
-	                          $startdate = date_create($row['PROJECTSTARTDATE']);
-	                          ?>
-	                          <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Draft</i></p>
-	                        </div>
-	                        <div class="icon" style="margin-top:25px;">
-	                          <i class="ion ion-clock"></i>
-	                        </div>
-	                      </div>
 	                    </a>
 	                  </div>
 	                  <!-- ./col -->
@@ -295,6 +233,13 @@
 		<script>
 			$("#monitor").addClass("active");
 			$("#monitorProject").addClass("active");
+
+			$(document).on("click", ".project", function() {
+	      var $id = $(this).attr('data-id');
+	      $(".dept").attr("name", "formSubmit");
+	      $(".dept").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+	      $(".dept").submit();
+	    });
 		</script>
 	</body>
 </html>

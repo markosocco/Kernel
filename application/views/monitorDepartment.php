@@ -10,6 +10,9 @@
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
+
+					<a href="<?php echo base_url("index.php/controller/monitorProject"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
+					<br><br>
 					<h1>
 						Project Name
 						<small>(date to date)</small>
