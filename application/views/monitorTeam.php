@@ -45,7 +45,7 @@
 														<h5 class="description-header">
 															<?php foreach ($projectCount as $pCount): ?>
 																<?php if ($row['USERID'] == $pCount['USERID']): ?>
-																	<?php if ($pCount != 0): ?>
+																	<?php if ($pCount > 0): ?>
 																		<?php echo $pCount['projectCount']; ?>
 																	<?php else: ?>
 																		0
@@ -63,8 +63,9 @@
 														<h5 class="description-header">
 															<?php foreach ($taskCount as $tCount): ?>
 																<?php if ($row['USERID'] == $tCount['USERID']): ?>
-																	<?php if ($tCount != 0): ?>
+																	<?php if ($tCount > 0): ?>
 																		<?php echo $tCount['taskCount']; ?>
+																	<?php else: ?>
 																		0
 																	<?php endif; ?>
 																<?php endif; ?>
