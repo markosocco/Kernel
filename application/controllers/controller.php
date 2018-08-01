@@ -2397,7 +2397,6 @@ class controller extends CI_Controller
 		}
 	}
 
-// NAMI NOTIFS
 	public function addTasks()
 	{
 		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
@@ -2638,7 +2637,7 @@ class controller extends CI_Controller
 								$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 								// START: LOG DETAILS
-								$details = $userName . " has marked " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+								$details = $userName . " has tagged " . $taggedUserName . " to delegate " . $taskTitle . ".";
 
 								$logData = array (
 									'LOGDETAILS' => $details,
@@ -2650,7 +2649,7 @@ class controller extends CI_Controller
 								// END: LOG DETAILS
 
 								//START: Notifications
-								$details = "You have been tagged as responsible " . $taskTitle . " in " . $projectTitle . ".";
+								$details = "A new project has been created. " $userName . " has tagged you to delegate " . $taskTitle . " in " . $projectTitle . ".";
 								$notificationData = array(
 									'users_USERID' => $deptHead,
 									'DETAILS' => $details,
@@ -2658,7 +2657,7 @@ class controller extends CI_Controller
 									'status' => 'Unread',
 									'projects_PROJECTID' => $projectID,
 									'tasks_TASKID' => $a,
-									'TYPE' => '3'
+									'TYPE' => '2'
 								);
 
 								$this->model->addNotification($notificationData);
@@ -3212,7 +3211,7 @@ class controller extends CI_Controller
 								$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 								// START: LOG DETAILS
-								$details = $userName . " has tagged " . $taggedUserName . " to add and delegate tasks to " . $taskTitle . ".";
+								$details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
 
 								$logData = array (
 									'LOGDETAILS' => $details,
@@ -3224,7 +3223,7 @@ class controller extends CI_Controller
 								// END: LOG DETAILS
 
 								//START: Notifications
-								$details = "You have been tagged to add and delegate tasks in " . $taskTitle . " in " . $projectTitle . ".";
+								$details = "A new project has been created. " $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
 								$notificationData = array(
 									'users_USERID' => $deptHead,
 									'DETAILS' => $details,
@@ -3630,7 +3629,7 @@ class controller extends CI_Controller
 									$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 									// START: LOG DETAILS
-									$details = $userName . " has marked " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+									$details = $userName . " has tagged " . $taggedUserName . " to delegate Sub Activity - " . $taskTitle . ".";
 
 									$logData = array (
 										'LOGDETAILS' => $details,
@@ -3642,7 +3641,7 @@ class controller extends CI_Controller
 									// END: LOG DETAILS
 
 									//START: Notifications
-									$details = "You have been tagged as responsible for " . $taskTitle . " in " . $projectTitle . ".";
+									$details = "A new project has been created. " $userName . " has tagged you to delegate Sub Activity - " . $taskTitle . " in " . $projectTitle . ".";
 									$notificationData = array(
 										'users_USERID' => $deptHead,
 										'DETAILS' => $details,
@@ -4063,9 +4062,22 @@ class controller extends CI_Controller
 		$this->session->set_userdata('notifications', $data['notifications']);
 
 		echo json_encode($data);
+	}
 
-		// return $data;
+	public function getAllTasksByUser()
+	{
+		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
+		$count = 0;
+		foreach ($taskCount as $tc){
+			if($tc['USERID'] == $_SESSION['USERID']){
+				$count = $tc['taskCount'];
+			}
+		}
+		$this->session->set_userdata('newTaskCount', $count);
+		$this->session->set_userdata('tasks', $data['tasks']);
+
+		echo json_encode($data);
 	}
 
 	/******************** MY PROJECTS END ********************/
