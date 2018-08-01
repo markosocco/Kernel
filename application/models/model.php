@@ -1535,17 +1535,19 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
-  public function compute_completeness_departmentByProject($deptID, $projectID)
+  public function compute_completeness_departmentByProject($projectID)
   {
-    $condition = "CATEGORY = 3 && raci.status = 'Current' && role = 1 && departments_DEPARTMENTID = " . $deptID . " && projects_PROJECTID = " . $projectID;
-    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    $condition = "CATEGORY = 3 && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
+    $this->db->select('departments.*, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
     $this->db->join('users', 'users_USERID = USERID');
+    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+    $this->db->group_by('departments_DEPARTMENTID');
     $this->db->where($condition);
 
-    return $this->db->get()->row_array();
+    return $this->db->get()->result_array();
   }
 
   public function compute_timeliness_departmentByProject($projectID)
@@ -1558,7 +1560,6 @@ class model extends CI_Model
     $this->db->join('users', 'users_USERID = USERID');
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
     $this->db->group_by('departments_DEPARTMENTID');
-
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
@@ -1588,6 +1589,32 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  // public function compute_completeness_projectByUser()
+  // {
+  //   $condition = "CATEGORY = 3 AND projects.PROJECTSTATUS = 'Ongoing' AND projects.users_USERID = " . $_SESSION['USERID'];
+  //   $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+  //   ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
+  //   $this->db->from('tasks');
+  //   $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+  //   $this->db->group_by('projects_PROJECTID');
+  //   $this->db->where($condition);
+  //
+  //   return $this->db->get()->result_array();
+  // }
+  //
+  // public function compute_timeliness_projectByUser()
+  // {
+  //   $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != '' AND projects.PROJECTSTATUS = 'Ongoing' AND projects.users_USERID = " . $_SESSION['USERID'];
+  //   $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+  //   ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+  //   $this->db->from('tasks');
+  //   $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+  //   $this->db->group_by('projects_PROJECTID');
+  //   $this->db->where($condition);
+  //
+  //   return $this->db->get()->result_array();
+  // }
+  //
   public function getAllProjects()
   {
     $this->db->select('*');
@@ -1600,6 +1627,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+<<<<<<< HEAD
   public function getTeamByProject($id)
   {
     $condition = "raci.STATUS = 'Current' && tasks.projects_PROJECTID = '$id'";
@@ -1611,6 +1639,19 @@ class model extends CI_Model
     $this->db->where($condition);
     $this->db->group_by("USERID");
     $this->db->order_by("departments.DEPARTMENTNAME");
+=======
+  public function getAllProjectsByUser($id)
+  {
+    $condition = "raci.STATUS = 'Current' && USERID = " . $id;
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->where($condition);
+>>>>>>> e2dbcaea501fd774150955a7a6f9999580b01717
 
     return $this->db->get()->result_array();
   }

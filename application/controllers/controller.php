@@ -90,9 +90,7 @@ class controller extends CI_Controller
 				$this->model->updateProjectStatus($currentDate);
 
 				$allTasks = $this->model->getAllTasksByUser($_SESSION['USERID']);
-				foreach ($allTasks as $tasks){
-					echo $tasks['TASKTITLE'] . "<br>";
-				}
+
 				$this->session->set_userdata('tasks', $allTasks);
 
 
@@ -218,7 +216,7 @@ class controller extends CI_Controller
 
 				foreach($data['latestProgress'] as $latestProgressDetails){
 
-					echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
+					// echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
 
 					$isFound = $this->model->checkAssessmentProject($latestProgressDetails['projects_PROJECTID']);
 
@@ -501,6 +499,76 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function monitorMembers()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$id = $this->input->post('employee_ID');
+
+			$data['pCount'] = array();
+			$data['tCount'] = array();
+
+			$projectCount = $this->model->getProjectCount();
+			$taskCount = $this->model->getTaskCount();
+
+			// SET PROJECT COUNT FOR EMPLOYEE
+			foreach ($projectCount as $p)
+			{
+				if ($p['USERID'] == $id)
+				{
+					$data['pCount'][] = $p;
+				}
+			}
+
+			// SET TASK COUNT FOR EMPLOYEE
+			foreach ($taskCount as $t)
+			{
+				if ($t['USERID'] == $id)
+				{
+					$data['tCount'][] = $t;
+				}
+			}
+
+			$data['user'] = $this->model->getUserByID($id);
+			$data['projects'] = $this->model->getAllProjectsByUser($id);
+			$data['timeliness'] = $this->model->compute_timeliness_employee($id);
+			$data['completeness'] = $this->model->compute_completeness_employee($id);
+
+			$this->load->view("monitorMembers", $data);
+		}
+	}
+
+	public function monitorDepartment()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorDepartment");
+		}
+	}
+
+	public function monitorDepartmentDetails()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorDepartmentDetails");
+		}
+	}
+
 	public function monitorProject()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -655,7 +723,6 @@ class controller extends CI_Controller
 				foreach($ACIdata['ACI'] as $ACIusers){
 
 					$details = $userName . " has completed " . $taskTitle . " in " . $projectTitle . ".";
-					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
 					$notificationData = array(
 						'users_USERID' => $ACIusers['users_USERID'],
@@ -2072,6 +2139,7 @@ class controller extends CI_Controller
 		{
 			$id = $this->input->post("project_ID");
 			$edit = $this->input->post("edit");
+			$templates = $this->input->post("templates");
 
 			// TEMPLATES
 			if (isset($id))
@@ -2081,7 +2149,7 @@ class controller extends CI_Controller
 					$this->session->set_flashdata('edit', $edit);
 				}
 
-				else
+				elseif (isset($templates))
 				{
 					$this->session->set_flashdata('templates', $id);
 				}
@@ -2306,9 +2374,21 @@ class controller extends CI_Controller
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
 			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$deptC = $this->model->compute_completeness_departmentByProject($id);
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$deptT = $this->model->compute_timeliness_departmentByProject($id);
+
+			foreach($deptC as $dc){
+				if($dc['DEPARTMENTID'] == $departmentID){
+					$data['departmentCompleteness'] = $dc;
+				}
+			}
+
+			foreach($deptT as $dt){
+				if($dt['DEPARTMENTID'] == $_SESSION['departments_DEPARTMENTID']){
+					$data['departmentTimeliness'] = $dt;
+				}
+			}
 
 			$this->load->view("teamGantt", $data);
 		}
@@ -2553,6 +2633,8 @@ class controller extends CI_Controller
 
 			if (isset($templates))
 			{
+				$this->session->set_flashdata('templates', $templates);
+
 				$data['templateProject'] = $this->model->getProjectByID($templates);
 				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
@@ -3786,6 +3868,8 @@ class controller extends CI_Controller
 
 			if (isset($templates))
 			{
+				$this->session->set_flashdata('templates', $templates);
+
 				$data['templateProject'] = $this->model->getProjectByID($templates);
 				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
@@ -4209,7 +4293,14 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("frame");
+			// $this->load->view("frame");
+			$projectTimeliness = $this->model->compute_timeliness_projectByUser();
+			$projectCompleteness = $this->model->compute_completeness_projectByUser();
+
+			foreach ($projectCompleteness as $project) {
+				echo "project id - " . $project['projects_PROJECTID'] . "<br>";
+				echo "completeness - " . $project['completeness'] . "<br><br>";
+			}
 		}
 	}
 }

@@ -62,7 +62,6 @@
 
 								<!-- TEMPLATES START -->
 								<?php if (isset($_SESSION['templates'])): ?>
-
 									<?php $c = 0; ?>
 
 									<?php foreach ($mainActivity as $key=>$value): ?>
@@ -206,10 +205,11 @@
 															</tr>
 
 															<?php if (isset($templateSubActivity[$sKey])): ?>
+																<?php $x=0; ?>
 																<?php foreach ($templateTasks as $tKey=> $tTask): ?>
 																	<?php if ($tTask['tasks_TASKPARENT'] == $templateSubActivity[$sKey]['TASKID']): ?>
 																		<tr>
-																			<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>"><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																			<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?> ><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																			<td>
 																				<div class="form-group">
 
@@ -245,8 +245,8 @@
 																						<div class="input-group-addon">
 																							<i class="fa fa-calendar"></i>
 																						</div>
-																						<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-0"
-																						data-subAct="<?php echo $sValue['TASKID'];?>" data-num="0"
+																						<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
+																						data-subAct="<?php echo $sValue['TASKID'];?>" data-num="<?php echo $x ?>"
 																						data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
 																						data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
 																					</div>
@@ -258,20 +258,21 @@
 																						<div class="input-group-addon">
 																							<i class="fa fa-calendar"></i>
 																						</div>
-																						<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-0"
-																						data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="0" required>
+																						<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
+																						data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="<?php echo $x; ?>" required>
 																					</div>
 																				</div>
 																			</td>
 																			<td>
 																				<div class="form-group">
-																					<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
+																					<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-<?php echo $x; ?>" type="text" class="form-control period" value="" readonly>
 																				</div>
 																			</td>
 																			<td></td>
 																			<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 																		</tr>
 																	<?php endif; ?>
+																	<?php $x++; ?>
 																<?php endforeach; ?>
 															<?php endif; ?>
 
@@ -469,7 +470,7 @@
 																				<i class="fa fa-calendar"></i>
 																			</div>
 																			<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-0"
-																			data-subAct="<?php echo $sValue['TASKID'];?>" data-num="0"
+																			data-subAct="<?php echo $sValue['TASKID'];?>" data-num="<?php echo $tKey; ?>"
 																			data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
 																			data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
 																		</div>
@@ -623,6 +624,10 @@
 				var counter = $(this).attr('data-num');
 				var newDate = $(this).val();
 
+				console.log("#start_" + subAct + "-" + counter);
+				console.log("#end_" + subAct + "-" + counter);
+				console.log("#projectPeriod_" + subAct + "-" + counter);
+
 			$("#end_" + subAct + "-" + counter).prop('disabled', false);
 			var diff = new Date($("#end_" + subAct + "-" + counter).datepicker("getDate") - $("#start_" + subAct + "-" + counter).datepicker("getDate"));
 			var period = (diff/1000/60/60/24)+1;
@@ -642,9 +647,7 @@
 			var subEnd = $("#start_" + subAct + "-0").attr('data-subEnd' + subAct);
 			$("#end_" + subAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + subAct + "-" + counter).val()));
 			$("#end_" + subAct + "-" + counter).data('datepicker').setEndDate(new Date(subEnd));
-			$("#end_" + subAct + "-" + counter).data('datepicker').setDate(new Date($("#start_" + subAct + "-" + counter).val()));
-			$("#end_" + subAct + "-" + counter).val("");
-			$("#projectPeriod_" + subAct + "-" + counter).attr("value", "");
+
 
 			});
 

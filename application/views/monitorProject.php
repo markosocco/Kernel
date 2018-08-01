@@ -11,7 +11,7 @@
 				<section class="content-header">
 					<h1>
 						Monitor Project
-						<small>What's happening to my projects?</small>
+						<small>What's happening to projects I'm spearheading?</small>
 					</h1>
 
 					<ol class="breadcrumb">

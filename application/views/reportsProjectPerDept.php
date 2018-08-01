@@ -29,8 +29,8 @@
     <!-- title row -->
     <div class="reportHeader viewCenter">
       <h2>Projects Per Department</h2>
-      <h4>Prepared By: firstName lastName</h4>
-      <h4>Prepared On: DATE AND TIME HERE</h4>
+      <h4>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></h4>
+      <h4>Prepared On: <?php echo date('F d, Y'); ?></h4>
     </div>
     <div class="reportBody viewCenter">
       <!-- LOOP START HERE -->
@@ -49,6 +49,7 @@
                 <th width="15%">Target End Date</th>
                 <th width="15%">Status</th>
                 <th width="10%">Completeness</th>
+                <th width="10%">Timeliness</th>
               </tr>
             </thead>
             <tbody>

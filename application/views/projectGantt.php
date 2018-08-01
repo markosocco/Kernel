@@ -805,6 +805,7 @@
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST" style="display:inline-block">
+								<input type="hidden" name="templates" value="<?php echo $projectProfile['PROJECTID']; ?>">
 							</form>
 							<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
 						<?php endif; ?>
