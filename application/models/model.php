@@ -1505,17 +1505,19 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
-  public function compute_completeness_departmentByProject($deptID, $projectID)
+  public function compute_completeness_departmentByProject($projectID)
   {
-    $condition = "CATEGORY = 3 && raci.status = 'Current' && role = 1 && departments_DEPARTMENTID = " . $deptID . " && projects_PROJECTID = " . $projectID;
-    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    $condition = "CATEGORY = 3 && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
+    $this->db->select('departments.*, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
     $this->db->join('users', 'users_USERID = USERID');
+    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+    $this->db->group_by('departments_DEPARTMENTID');
     $this->db->where($condition);
 
-    return $this->db->get()->row_array();
+    return $this->db->get()->result_array();
   }
 
   public function compute_timeliness_departmentByProject($projectID)
@@ -1528,7 +1530,6 @@ class model extends CI_Model
     $this->db->join('users', 'users_USERID = USERID');
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
     $this->db->group_by('departments_DEPARTMENTID');
-
     $this->db->where($condition);
 
     return $this->db->get()->result_array();

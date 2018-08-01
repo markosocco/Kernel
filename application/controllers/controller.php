@@ -2306,9 +2306,21 @@ class controller extends CI_Controller
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
 			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$deptC = $this->model->compute_completeness_departmentByProject($id);
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$deptT = $this->model->compute_timeliness_departmentByProject($id);
+
+			foreach($deptC as $dc){
+				if($dc['DEPARTMENTID'] == $departmentID){
+					$data['departmentCompleteness'] = $dc;
+				}
+			}
+
+			foreach($deptT as $dt){
+				if($dt['DEPARTMENTID'] == $_SESSION['departments_DEPARTMENTID']){
+					$data['departmentTimeliness'] = $dt;
+				}
+			}
 
 			$this->load->view("teamGantt", $data);
 		}
