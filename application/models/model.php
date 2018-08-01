@@ -1627,7 +1627,6 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-<<<<<<< HEAD
   public function getTeamByProject($id)
   {
     $condition = "raci.STATUS = 'Current' && tasks.projects_PROJECTID = '$id'";
@@ -1639,8 +1638,9 @@ class model extends CI_Model
     $this->db->where($condition);
     $this->db->group_by("USERID");
     $this->db->order_by("departments.DEPARTMENTNAME");
-=======
-  public function getAllProjectsByUser($id)
+  }
+  
+    public function getAllProjectsByUser($id)
   {
     $condition = "raci.STATUS = 'Current' && USERID = " . $id;
     $this->db->select('*');
@@ -1651,7 +1651,6 @@ class model extends CI_Model
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
     $this->db->group_by('projects.PROJECTID');
     $this->db->where($condition);
->>>>>>> e2dbcaea501fd774150955a7a6f9999580b01717
 
     return $this->db->get()->result_array();
   }
