@@ -95,7 +95,7 @@ desired effect
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
-              <span class="label label-success">
+              <span id="taskCount" class="label label-success">
                 <?php echo $_SESSION['taskCount']; ?>
               </span>
             </a>
@@ -547,52 +547,72 @@ desired effect
               var $taskID = data['notifications'][i].tasks_TASKID;
               var $notifType = data['notifications'][i].TYPE;
 
-              // console.log($projectID);
-              // console.log($taskID);
-              // console.log($notifType);
-              // console.log($notifID);
-
               $('.menuNotifs').append("<li class='notification' " +
                 "data-notifID='" + $notifID + "' " +
                 "data-projectID='" + $projectID + "' " +
                 "data-taskID='" + $taskID + "' " +
                 "data-type='" + $notifType + "' " + "'><a ='#'><i class='fa fa-users text-aqua'></i>" + data['notifications'][i].DETAILS + "</a></li>");
-
-            //   $('.menuNotifs').append("<li class='notification'><a = '#' " +
-            //   "data-notifID = '" + $notifID +
-            //   "data-Type = '" + $notifType +
-            //   "data-projectID = " + $projectID +
-            //   "data-taskID = " + $taskID + "><i class='fa fa-users text-aqua</i>" + data['notifications'][i].DETAILS + "</a></li>");
-            //
-            // };
             }
 
             $('#notifCount').html($counter);
           }
         }
       });
-    } setInterval(checkNotif, 50000000);
+    } setInterval(checkNotif, 10000);
 
-      $("body").on('click', '.notification', function() {
+    $("body").on('click', '.notification', function() {
 
-        var $projectID = $(this).attr('data-projectID');
-        var $taskID = $(this).attr('data-taskID');
-        var $notifType = $(this).attr('data-type');
-        var $notifID = $(this).attr('data-notifID');
+      var $projectID = $(this).attr('data-projectID');
+      var $taskID = $(this).attr('data-taskID');
+      var $notifType = $(this).attr('data-type');
+      var $notifID = $(this).attr('data-notifID');
 
-        console.log($projectID);
-        console.log($taskID);
-        console.log($notifType);
-        console.log($notifID);
+      $(".notificationForm").attr("name", "formSubmit");
+      $(".notificationForm").append("<input type='hidden' name='projectID' value='" + $projectID + "'>");
+      $(".notificationForm").append("<input type='hidden' name='taskID' value='" + $taskID + "'>");
+      $(".notificationForm").append("<input type='hidden' name='type' value='" + $notifType + "'>");
+      $(".notificationForm").append("<input type='hidden' name='notifID' value='" + $notifID + "'>");
+      $(".notificationForm").submit();
 
-        $(".notificationForm").attr("name", "formSubmit");
-        $(".notificationForm").append("<input type='hidden' name='projectID' value='" + $projectID + "'>");
-        $(".notificationForm").append("<input type='hidden' name='taskID' value='" + $taskID + "'>");
-        $(".notificationForm").append("<input type='hidden' name='type' value='" + $notifType + "'>");
-        $(".notificationForm").append("<input type='hidden' name='notifID' value='" + $notifID + "'>");
-        $(".notificationForm").submit();
+    });
 
+    function checkTasks() {
+      $.ajax({
+        url: "<?php echo base_url("index.php/controller/getAllTasksByUser"); ?>",
+        dataType: "json",
+        success: function(data) {
+
+          if(data['allTasks'].length > 0)
+          {
+            var $counter = data['allTasks'].length;
+
+            $('#taskCount').html("");
+            $('.menuTask').html("");
+
+            $link = "<?php echo base_url("index.php/controller/taskTodo"); ?>"
+
+            for(i = 0; i < $counter; i++){
+
+              var date = new Date(data['allTasks'][i].TASKENDDATE);
+      				var month = date.toLocaleDateString("en-US", {month: "short"});
+      				var day = date.getDate();
+      				if(day < 10){
+      					day = "0"+day;
+      				}
+      				var year = date.getFullYear()
+      				var formattedDate =  month + " " + day + ", " + year;
+
+              $('.menuTask').append("<li><a href='" + $link + "'><h3>" +
+                    data['allTasks'][i].TASKTITLE +
+                  "<small class='pull-right'>" + formattedDate +
+                  "</small></h3></a></li>");
+            }
+
+            $('#taskCount').html($counter);
+          }
+        }
       });
+    } setInterval(checkTasks, 10000);
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip({container: 'body'});

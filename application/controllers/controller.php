@@ -4066,16 +4066,17 @@ class controller extends CI_Controller
 
 	public function getAllTasksByUser()
 	{
-		$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+		$data['allTasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
-		$count = 0;
-		foreach ($taskCount as $tc){
-			if($tc['USERID'] == $_SESSION['USERID']){
-				$count = $tc['taskCount'];
-			}
-		}
-		$this->session->set_userdata('newTaskCount', $count);
-		$this->session->set_userdata('tasks', $data['tasks']);
+		// $count = 0;
+		// foreach ($taskCount as $tc){
+		// 	if($tc['USERID'] == $_SESSION['USERID']){
+		// 		$count = $tc['taskCount'];
+		// 	}
+		// }
+		// $this->session->set_userdata('newTaskCount', $count);
+
+		$this->session->set_userdata('allTasks', $data['allTasks']);
 
 		echo json_encode($data);
 	}
