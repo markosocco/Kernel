@@ -138,10 +138,10 @@
 
 											<!-- MAIN ACTIVITY TABLE END  -->
 
+
 												<?php foreach ($subActivity as $sKey => $sValue): ?>
-
+													<?php $x=0; ?>
 													<!-- SUB ACT TABLE START -->
-
 														<?php if ($sValue['tasks_TASKPARENT'] == $value['TASKID']): ?>
 															<table class="table table-hover" id = "ma<?php echo $key; ?>_s<?php echo $sKey; ?>">
 																<thead>
@@ -170,18 +170,8 @@
 																			if($sValue['TASKTITLE'] == $row['TASKTITLE'])
 																			{
 																				echo $sValue['DEPARTMENTNAME'];
-																				// foreach ($departments as $row2)
-																				// {
-																				// 	if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
-																				// 	{
-																				// 		echo "DEPT " . $row2['DEPARTMENTNAME'];
-																				// 		// $sDepts[] = $row2['DEPARTMENTNAME'];
-																				// 	}
-																				// }
 																			}
 																		}
-
-																		// echo implode(", ", $sDepts);
 																	?>
 																</i></td>
 
@@ -205,7 +195,6 @@
 															</tr>
 
 															<?php if (isset($templateSubActivity[$sKey])): ?>
-																<?php $x=0; ?>
 																<?php foreach ($templateTasks as $tKey=> $tTask): ?>
 																	<?php if ($tTask['tasks_TASKPARENT'] == $templateSubActivity[$sKey]['TASKID']): ?>
 																		<tr>
@@ -271,21 +260,21 @@
 																			<td></td>
 																			<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 																		</tr>
+																		<?php $x++; ?>
 																	<?php endif; ?>
-																	<?php $x++; ?>
 																<?php endforeach; ?>
+																<!-- END OF TASKS -->
 															<?php endif; ?>
-
 														</tbody>
 													</table>
-
 													<?php $c++; ?>
-
 													<?php endif; ?>
 												<?php endforeach; ?>
 			            </div>
 
 									<!-- SUB ACT TABLE END -->
+
+									<!-- <?php $x = 0; ?> -->
 									<?php endforeach; ?>
 
 									<!-- END TEMPLATES -->
