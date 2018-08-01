@@ -3015,6 +3015,15 @@ class controller extends CI_Controller
 		$type = $this->input->post("type");
 		$notifID = $this->input->post("notifID");
 
+		$statusArray = array(
+				"status" => "Read"
+		);
+
+		$this->model->updateNotification($notifID, $statusArray);
+
+		$data['notifications'] = $this->model->getAllNotificationsByUser();
+		$this->session->set_userdata('notifications', $data['notifications']);
+
 		if ($type == 2){ // taskDelegate
 
 			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
@@ -3091,10 +3100,10 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
 			$data['informed'] = $this->model->getAllInformedByProject($projectID);
 
-			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
-			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
-			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 
 			$this->load->view("projectGantt", $data);
 
@@ -4110,15 +4119,6 @@ class controller extends CI_Controller
 		$this->session->set_userdata('allTasks', $data['allTasks']);
 
 		echo json_encode($data);
-	}
-
-	public function updateNotification(){
-		// $status = array(
-		// 		"PROJECTSTATUS" => "Planning");
-		// }
-		//
-		// // $changeStatues = $this->model->updateProjectStatusPlanning($id, $status);
-
 	}
 
 	/******************** MY PROJECTS END ********************/
