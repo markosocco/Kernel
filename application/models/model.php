@@ -1639,8 +1639,8 @@ class model extends CI_Model
     $this->db->group_by("USERID");
     $this->db->order_by("departments.DEPARTMENTNAME");
   }
-  
-    public function getAllProjectsByUser($id)
+
+  public function getAllProjectsByUser($id)
   {
     $condition = "raci.STATUS = 'Current' && USERID = " . $id;
     $this->db->select('*');
