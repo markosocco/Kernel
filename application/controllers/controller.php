@@ -3899,18 +3899,21 @@ class controller extends CI_Controller
 				$details = $userName . " has uploaded " . $fileName . ".";
 
 				foreach($allUsers as $user){
+					if($user['users_USERID'] != $_SESSION['USERID']){
 
-					$notificationData = array(
-						'users_USERID' => $user['users_USERID'],
-						'DETAILS' => $details,
-						'TIMESTAMP' => date('Y-m-d H:i:s'),
-						'status' => 'Unread',
-						'projects_PROJECTID' => $id,
-						'TYPE' => '5'
-					);
+						$notificationData = array(
+							'users_USERID' => $user['users_USERID'],
+							'DETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'status' => 'Unread',
+							'projects_PROJECTID' => $id,
+							'TYPE' => '5'
+						);
 
-					$this->model->addNotification($notificationData);
-					// END: Notification
+						$this->model->addNotification($notificationData);
+						// END: Notification
+
+					}
 				}
 			} // END: DOESN'T NEED ACKNOWLEDGMENT
 
