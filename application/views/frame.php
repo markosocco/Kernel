@@ -161,21 +161,39 @@ desired effect
               <li class="header">Your Notifications</li>
               <li>
                 <!-- Inner Menu: contains the notifications -->
-                <ul class="menu menuNotifs">
+                <!-- MARKO CHANGE COLOR HERE -->
+                <ul class="menu menuNotifs" style="background-color:#d6d2d2;">
                   <?php foreach ($_SESSION['notifications'] as $row): ?>
 
                     <form method='POST' class ='notificationForm' action='notifRedirect'> </form>
 
                     <!-- start notification -->
-                    <li class="notification"
-                        data-notifID="<?php echo $row['NOTIFICATIONID']; ?>"
-                        data-projectID="<?php echo $row['projects_PROJECTID']; ?>"
-                        data-type="<?php echo $row['TYPE']; ?>"
-                        data-taskID="<?php echo $row['tasks_TASKID']; ?>">
-                      <a href="#">
-                        <i class="fa fa-users text-aqua"></i> <?php echo $row['DETAILS']; ?>
-                      </a>
-                    </li>
+                    <?php if($row['STATUS'] = 'Read'): ?>
+                    <!-- MARKO CHANGE COLOR HERE -->
+                      <li class="notification" style="background-color:#ededed;"
+                          data-notifID="<?php echo $row['NOTIFICATIONID']; ?>"
+                          data-projectID="<?php echo $row['projects_PROJECTID']; ?>"
+                          data-type="<?php echo $row['TYPE']; ?>"
+                          data-taskID="<?php echo $row['tasks_TASKID']; ?>">
+                        <a href="#">
+                          <i class="fa fa-users text-aqua"></i> <?php echo $row['DETAILS']; ?>
+                        </a>
+                      </li>
+
+                    <?php else:?>
+
+                      <li class="notification"
+                          data-notifID="<?php echo $row['NOTIFICATIONID']; ?>"
+                          data-projectID="<?php echo $row['projects_PROJECTID']; ?>"
+                          data-type="<?php echo $row['TYPE']; ?>"
+                          data-taskID="<?php echo $row['tasks_TASKID']; ?>">
+                        <a href="#">
+                          <i class="fa fa-users text-aqua"></i> <?php echo $row['DETAILS']; ?>
+                        </a>
+                      </li>
+
+                    <?php endif;?>
+
                   <?php endforeach; ?>
                   <!-- end notification -->
                 </ul>
@@ -533,6 +551,8 @@ desired effect
           if(data['notifications'].length > 0)
           {
             var $counter = 0;
+            // MARKO CHANGE COLOR HERE
+            var $color = "";
 
             $('#notifCount').html("");
             $('.menuNotifs').html("");
@@ -540,6 +560,10 @@ desired effect
             for(i = 0; i < data['notifications'].length; i ++){
               if(data['notifications'][i].status == "Unread"){
                 $counter++;
+                // MARKO CHANGE COLOR HERE
+                $color = "#d6d2d2";
+              } else {
+                $color = "#ededed";
               }
 
               var $notifID = data['notifications'][i].NOTIFICATIONID;
@@ -547,7 +571,7 @@ desired effect
               var $taskID = data['notifications'][i].tasks_TASKID;
               var $notifType = data['notifications'][i].TYPE;
 
-              $('.menuNotifs').append("<li class='notification' " +
+              $('.menuNotifs').append("<li class='notification' style='background-color:" + $color + ";'" +
                 "data-notifID='" + $notifID + "' " +
                 "data-projectID='" + $projectID + "' " +
                 "data-taskID='" + $taskID + "' " +
