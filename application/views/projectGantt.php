@@ -781,9 +781,9 @@
 						<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
 						<!-- <a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a> -->
 
-						<a name="PROJECTID" class="btn btn-primary btn" id="projectDocu" data-toggle="tooltip" data-placement="top" title="View Documents"><i class="fa fa-folder"></i></a>
+						<a name="PROJECTID" class="btn btn-primary btn" id="projectDocu" data-toggle="tooltip" data-placement="top" title="Documents"><i class="glyphicon glyphicon-folder-open"></i></a>
 
-						<a name="PROJECTID_logs" class="btn btn-primary btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="View Logs"><i class="fa fa-file"></i></a>
+						<a name="PROJECTID_logs" class="btn btn-primary btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="Logs"><i class="fa fa-list"></i></a>
 
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
 

@@ -60,7 +60,7 @@
           <button type="button" id = "filterDelayed" class="btn btn-danger filter">Delayed</button>
           <button type="button" id = "filterPlanned" class="btn btn-warning filter">Planned</button>
           <!-- <button type="button" id = "filterParked" class="btn btn-info filter">Parked</button> -->
-          <button type="button" id = "filterDrafted" class="btn bg-maroon filter">Draft</button>
+          <!-- <button type="button" id = "filterDrafted" class="btn bg-maroon filter">Draft</button> -->
         </div>
 
         <br><br>
@@ -318,11 +318,11 @@
                 <!-- <?php endforeach;?>
               </div> -->
 
-              <div class = "projectsGrid" id = "draftedProjGrid">
+              <!-- <div class = "projectsGrid" id = "draftedProjGrid">
                 <?php foreach ($draftedProjects as $row):?>
-                  <div class="col-lg-3 col-xs-6">
+                  <div class="col-lg-3 col-xs-6"> -->
                     <!-- small box -->
-                    <a class = "project clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
+                    <!-- <a class = "project clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
                       <div id="draftBox" class="small-box bg-maroon">
                         <div class="inner">
                           <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -340,10 +340,10 @@
                         </div>
                       </div>
                     </a>
-                  </div>
+                  </div> -->
                   <!-- ./col -->
-                <?php endforeach;?>
-              </div>
+                <!-- <?php endforeach;?>
+              </div> -->
 
             </div>
           </div>
@@ -469,7 +469,7 @@
                       </tr>
                     <?php endforeach;?>
 
-                    <?php foreach ($parkedProjects as $key=> $value):?>
+                    <!-- <?php foreach ($parkedProjects as $key=> $value):?>
 
                       <?php // to fix date format
                         $parkedStart = date_create($value['PROJECTSTARTDATE']);
@@ -515,7 +515,7 @@
                         <td><?php echo date_format($draftedEnd, "M d, Y");?></td>
                         <td>0.00%</td>
                       </tr>
-                    <?php endforeach;?>
+                    <?php endforeach;?> -->
                   </tbody>
                 </table>
               </div>
@@ -684,12 +684,12 @@
   							<?php endforeach;?>
               </div>
 
-              <div class = "teamGrid" id = "parkedTeamGrid">
+              <!-- <div class = "teamGrid" id = "parkedTeamGrid">
   							<?php foreach ($parkedProjects as $key=> $value):?>
 
-  								<div class="col-lg-3 col-xs-6">
+  								<div class="col-lg-3 col-xs-6"> -->
   									<!-- small box -->
-  									<a class = "myTeam clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+  									<!-- <a class = "myTeam clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
   									<div class="small-box btn-info">
   										<div class="inner">
 
@@ -714,16 +714,16 @@
   										</div>
   									</div>
   								</a>
-  								</div>
+  								</div> -->
   								<!-- ./col -->
-  							<?php endforeach;?>
+  							<!-- <?php endforeach;?>
               </div>
 
               <div class = "teamGrid" id = "draftedTeamGrid">
   							<?php foreach ($draftedProjects as $row):?>
-  								<div class="col-lg-3 col-xs-6">
+  								<div class="col-lg-3 col-xs-6"> -->
   									<!-- small box -->
-  									<a class = "myTeam clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
+  									<!-- <a class = "myTeam clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
   									<div id="draftBox" class="small-box bg-maroon">
   										<div class="inner">
   											<h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
@@ -741,10 +741,10 @@
   										</div>
   									</div>
   								</a>
-  								</div>
+  								</div> -->
   								<!-- ./col -->
-  							<?php endforeach;?>
-              </div>
+  							<!-- <?php endforeach;?>
+              </div> -->
 
 						</div>
           </div>
@@ -869,7 +869,7 @@
                   </tr>
                 <?php endforeach;?>
 
-                <?php foreach ($parkedProjects as $key=> $value):?>
+                <!-- <?php foreach ($parkedProjects as $key=> $value):?>
 
                   <?php // to fix date format
                     $parkedStart = date_create($value['PROJECTSTARTDATE']);
@@ -915,7 +915,7 @@
                     <td><?php echo date_format($draftedEnd, "M d, Y");?></td>
                     <td>0.00%</td>
                   </tr>
-                <?php endforeach;?>
+                <?php endforeach;?> -->
 
                   </tbody>
                 </table>

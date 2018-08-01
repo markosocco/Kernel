@@ -25,9 +25,13 @@
 				<section class="content container-fluid">
 					<!-- START HERE -->
 						<div class="row">
+
+							<form id = 'employeeDrillDown' action = 'projectGantt'  method="POST">
+							</form>
+
 							<?php foreach ($staff as $key => $row): ?>
 								<?php if ($row['USERID'] != $_SESSION['USERID']): ?>
-								<div class="col-md-4">
+								<div class="col-md-4 employee clickable" data-id="<?php echo $row['USERID']; ?>">
 									<!-- Widget: user widget style 1 -->
 									<div class="box box-widget widget-user">
 										<!-- Add the bg color to the header using any of the bg-* classes -->
@@ -43,11 +47,16 @@
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php foreach ($projectCount as $pCount): ?>
-																<?php if ($row['USERID'] == $pCount['USERID']): ?>
-																	<?php echo $pCount['projectCount']; ?>
-																<?php endif; ?>
-															<?php endforeach; ?></h5>
+															<?php if (in_array($row['USERID'], $pCountStaff)): ?>
+																<?php foreach ($projectCount as $pCount): ?>
+																 <?php if ($row['USERID'] == $pCount['USERID']): ?>
+																	 <?php echo $pCount['projectCount']; ?>
+																 <?php endif; ?>
+															 <?php endforeach; ?>
+															<?php else: ?>
+																0
+															<?php endif; ?>
+														</h5>
 														<span class="description-text">PROJECTS</span>
 													</div>
 													<!-- /.description-block -->
@@ -56,11 +65,15 @@
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php foreach ($taskCount as $tCount): ?>
-																<?php if ($row['USERID'] == $tCount['USERID']): ?>
-																	<?php echo $tCount['taskCount']; ?>
-																<?php endif; ?>
-															<?php endforeach; ?>
+															<?php if (in_array($row['USERID'], $tCountStaff)): ?>
+																<?php foreach ($taskCount as $tCount): ?>
+																 <?php if ($row['USERID'] == $tCount['USERID']): ?>
+																	 <?php echo $tCount['taskCount']; ?>
+																 <?php endif; ?>
+															 <?php endforeach; ?>
+															<?php else: ?>
+																0
+															<?php endif; ?>
 														</h5>
 														<span class="description-text">TASKS</span>
 													</div>
@@ -69,8 +82,14 @@
 												<!-- /.col -->
 												<div class="col-sm-4">
 													<div class="description-block">
-														<h5 class="description-header">35</h5>
-														<span class="description-text">PERFORMANCE</span>
+														<h5 class="description-header">
+															<?php foreach ($performance as $p): ?>
+																<?php if ($p['USERID'] == $row['USERID']): ?>
+																	<?php echo $p['timeliness'] . "%"; ?>
+																<?php endif; ?>
+															<?php endforeach; ?>
+														</h5>
+														<span class="description-text">TIMELINESS</span>
 													</div>
 													<!-- /.description-block -->
 												</div>
@@ -94,6 +113,16 @@
 		<script>
 			$("#monitor").addClass("active");
 			$("#monitorTeam").addClass("active");
+
+			$(document).on("click", ".employee", function() {
+	      var $id = $(this).attr('data-id');
+	      $("#employeeDrillDown").attr("name", "formSubmit");
+	      $("#employeeDrillDown").append("<input type='hidden' name='employee_ID' value= " + $id + ">");
+	      $("#employeeDrillDown").submit();
+
+				console.log($id);
+	    });
+
 		</script>
 	</body>
 </html>
