@@ -897,6 +897,45 @@ class controller extends CI_Controller
 		);
 		$result = $this->model->addToRaci($delegateData);
 
+		// START OF LOGS/NOTIFS
+		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+		$taskDetails = $this->model->getTaskByID($taskID);
+		$taskTitle = $taskDetails['TASKTITLE'];
+
+		$projectID = $taskDetails['projects_PROJECTID'];
+		$projectDetails = $this->model->getProjectByID($projectID);
+		$projectTitle = $projectDetails['PROJECTTITLE'];
+
+		// START: LOG DETAILS
+		$details = $userName . " has accepted the responsibility for " . $taskTitle . ".";
+
+		$logData = array (
+			'LOGDETAILS' => $details,
+			'TIMESTAMP' => date('Y-m-d H:i:s'),
+			'projects_PROJECTID' => $projectID
+		);
+
+		$this->model->addToProjectLogs($logData);
+		// END: LOG DETAILS
+
+		$taskRACI = $this->db->getRACIbyTask($taskID);
+		foreach($taskRACI as $raci){
+
+			if($raci['ROLE'] != 5){
+				// START: Notifications
+				$details = $userName . " has accepted the responsibility for " . $taskTitle . " in " . $projectTitle . ".";
+				$notificationData = array(
+					'users_USERID' => $raci['users_USERID'],
+					'DETAILS' => $details,
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
+					'status' => 'Unread'
+				);
+
+				$this->model->addNotification($notificationData);
+				// END: Notification
+			}
+		}
 		$this->taskDelegate();
 	}
 
@@ -4068,17 +4107,18 @@ class controller extends CI_Controller
 	{
 		$data['allTasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
-		// $count = 0;
-		// foreach ($taskCount as $tc){
-		// 	if($tc['USERID'] == $_SESSION['USERID']){
-		// 		$count = $tc['taskCount'];
-		// 	}
-		// }
-		// $this->session->set_userdata('newTaskCount', $count);
-
 		$this->session->set_userdata('allTasks', $data['allTasks']);
 
 		echo json_encode($data);
+	}
+
+	public function updateNotification(){
+		// $status = array(
+		// 		"PROJECTSTATUS" => "Planning");
+		// }
+		//
+		// // $changeStatues = $this->model->updateProjectStatusPlanning($id, $status);
+
 	}
 
 	/******************** MY PROJECTS END ********************/

@@ -1250,6 +1250,14 @@ class model extends CI_Model
     return true;
   }
 
+  public function updateNotification($notificationID, $notificationStatus)
+  {
+    $this->db->where('NOTIFICATIONID', $notificationID);
+    $this->db->update('notifications', $notificationStatus);
+
+    return true;
+  }
+
   public function addToDependencies($data)
   {
     $this->db->insert('dependencies', $data);
