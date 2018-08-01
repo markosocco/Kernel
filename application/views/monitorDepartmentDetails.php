@@ -31,12 +31,98 @@
 				<!-- Main content -->
 				<section class="content container-fluid">
 					<!-- START HERE -->
+
+					<div class = 'row'>
+						<?php
+						$completed = 0;
+						$planned = 0;
+						$ongoing = 0;
+						$delayed = 0;
+						?>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center" id="total"> Total <br><br><b><?php echo count ($tasks);?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<?php foreach($tasks as $task)
+							if($task['TASKSTATUS'] == 'Complete')
+								$completed++;
+							elseif($task['TASKSTATUS'] == 'Planning')
+								$planned++;
+							elseif($task['TASKSTATUS'] == 'Ongoing')
+							{
+								$ongoing++;
+
+								if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+									$endDate = $task['TASKENDDATE'];
+								else
+									$endDate = $task['TASKADJUSTEDENDDATE'];
+
+								if($endDate < $task['currDate'])
+									$delayed++;
+
+							}
+						?>
+
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center"> Delayed <br><br><b><span style='color:red'><?php echo $delayed ;?></span></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center"> Ongoing <br><br><b><?php echo $ongoing ;?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center"> Planned <br><br><b><?php echo $planned ;?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center"> Completed <br><br><b><?php echo $completed ;?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
           <div class="box box-danger">
             <div class="box-header with-border">
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered">
+              <table class="table table-bordered responsive">
                 <thead>
                   <tr>
                     <th width="30%">Task</th>
@@ -48,14 +134,31 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-toggle='modal' data-target='#taskDetails'>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+									<?php foreach($tasks as $task):?>
+										<?php
+										if($task['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+											$startDate = date_create($task['TASKSTARTDATE']);
+										else
+											$startDate = date_create($task['TASKADJUSTEDSTARTDATE']);
+
+										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+											$endDate = date_create($task['TASKENDDATE']);
+										else
+											$endDate = date_create($task['TASKADJUSTEDENDDATE']);
+										?>
+                  <tr class="clickable" data-toggle='modal' data-target='#taskDetails'>
+                    <td><?php echo $task['TASKTITLE'];?></td>
+                    <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
+                    <td><?php echo date_format($startDate, "M d, Y");?></td>
+                    <td><?php echo date_format($endDate, "M d, Y");?></td>
+										<?php if ($endDate < $task['currDate']):?>
+											<td>Delayed</td>
+										<?php else:?>
+	                    <td><?php echo $task['TASKSTATUS'];?></td>
+										<?php endif;?>
                     <td align="center"></td>
                   </tr>
+								<?php endforeach;?>
                 </tbody>
               </table>
             </div>

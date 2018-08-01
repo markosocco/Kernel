@@ -998,7 +998,7 @@ class model extends CI_Model
   public function getAllProjectTasksByDepartment($projectID, $departmentID)
   {
     $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " AND departments_DEPARTMENTID = " . $departmentID;
-    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
     $this->db->from('tasks');
@@ -1007,6 +1007,7 @@ class model extends CI_Model
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
     $this->db->group_by('TASKID');
+    $this->db->order_by('TASKENDDATE');
 
     return $this->db->get()->result_array();
   }

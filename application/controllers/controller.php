@@ -576,6 +576,7 @@ class controller extends CI_Controller
 			$deptID = $this->input->post('dept_ID');
 
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
+			$data['tasks'] = $this->model->getAllProjectTasksByDepartment($projectID, $deptID);
 
 			$this->load->view("monitorDepartmentDetails", $data);
 		}
