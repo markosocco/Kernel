@@ -36,18 +36,29 @@
       <!-- LOOP START HERE -->
       <div class="box box-danger">
         <div class="box-header with-border">
-          <h3 class="box-title pull-left"><b>DeptName</b></h3>
-          <h3 class="box-title pull-right"><b>10 Projects</b></h3>
+          <h3 class="box-title pull-left"><b>DeptName Department</b></h3>
+          <h3 class="box-title pull-right">10 Projects</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body ">
+        <div class="box-body">
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Project Name</th>
+                <th width="45%">Project</th>
+                <th width="15%">Target Start Date</th>
+                <th width="15%">Target End Date</th>
+                <th width="15%">Status</th>
+                <th width="10%">Completeness</th>
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>10.78%</td>
+              </tr>
             </tbody>
           </table>
         </div>
