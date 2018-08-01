@@ -343,7 +343,7 @@
 												<th class="text-center">Request Type</th>
 												<th>Project</th>
 												<th>Task</th>
-												<th>Requester</th>
+												<th>Requested By</th>
 											</tr>
 											</thead>
 											<tbody>

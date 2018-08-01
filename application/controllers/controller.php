@@ -723,7 +723,6 @@ class controller extends CI_Controller
 				foreach($ACIdata['ACI'] as $ACIusers){
 
 					$details = $userName . " has completed " . $taskTitle . " in " . $projectTitle . ".";
-					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
 					$notificationData = array(
 						'users_USERID' => $ACIusers['users_USERID'],
@@ -2540,7 +2539,11 @@ class controller extends CI_Controller
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
 			$data['departments'] = $this->model->compute_timeliness_departmentByProject($id);
-
+			$data['team'] = $this->model->getTeamByProject($id);
+			$data['users'] = $this->model->getAllUsers();
+			$data['allDepartments'] = $this->model->getAllDepartments();
+			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($id);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($id);
 
 			$this->load->view("projectSummary", $data);
 		}

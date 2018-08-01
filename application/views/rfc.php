@@ -31,7 +31,7 @@
 								<tr>
 									<th width="10%">Date Requested</th>
 									<th class="text-center">Type</th>
-									<th width="15%">Requester</th>
+									<th width="15%">Requested By</th>
 									<th>Task Name</th>
 									<th width="10%">Start Date</th>
 									<th width="11%">Target End Date</th>
@@ -106,7 +106,7 @@
 										<th width="11%">Target End Date</th>
 										<th>Project</th>
 										<th>Status</th>
-										<th>Approved By</th>
+										<th>Reviewed By</th>
 										<th>Date Approved</th>
 									</tr>
 									</thead>
