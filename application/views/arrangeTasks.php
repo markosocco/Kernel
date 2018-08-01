@@ -542,6 +542,9 @@
 				var mainEnd = $("#start_" + mainAct + "-0").attr('data-mainEnd' + mainAct);
 				$("#end_" + mainAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + mainAct + "-" + counter).val()));
 				$("#end_" + mainAct + "-" + counter).data('datepicker').setEndDate(new Date(mainEnd));
+				$("#end_" + mainAct + "-" + counter).data('datepicker').setDate(new Date($("#start_" + mainAct + "-" + counter).val()));
+				$("#end_" + mainAct + "-" + counter).val("");
+				$("#projectPeriod_" + mainAct + "-" + counter).attr("value", "");
 
  			 });
 
@@ -555,8 +558,6 @@
 							 orientation: 'auto'
 						});
 				});
-
-
 
 				$("body").on("change", ".taskEndDate", function() {
 	 				var mainAct = $(this).attr('data-mainAct');

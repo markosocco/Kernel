@@ -642,6 +642,9 @@
 			var subEnd = $("#start_" + subAct + "-0").attr('data-subEnd' + subAct);
 			$("#end_" + subAct + "-" + counter).data('datepicker').setStartDate(new Date($("#start_" + subAct + "-" + counter).val()));
 			$("#end_" + subAct + "-" + counter).data('datepicker').setEndDate(new Date(subEnd));
+			$("#end_" + subAct + "-" + counter).data('datepicker').setDate(new Date($("#start_" + subAct + "-" + counter).val()));
+			$("#end_" + subAct + "-" + counter).val("");
+			$("#projectPeriod_" + subAct + "-" + counter).attr("value", "");
 
 			});
 
