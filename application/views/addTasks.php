@@ -66,12 +66,12 @@
 		            <div class="box-body table-responsive no-padding">
 		              <table class="table table-hover" id="table">
 		                <tr>
-											<th width="30%">Main Activity Name</th>
-											<th width="30%">Department</th>
+											<th width="27.5%">Main Activity Name</th>
+											<th width="27.5%">Department</th>
 											<th width="15%">Start Date</th>
 											<th width="15%">Target End Date</th>
 											<th width="10%">Period</th>
-											<th></th>
+											<th width="5%"></th>
 		                </tr>
 
 		                <?php if (isset($_SESSION['templates'])): ?>
@@ -141,7 +141,7 @@
 														</div>
 													</td>
 													<td class='btn'>
-														<a id = "del<?php echo $key; ?>" class='btn delButton' data-id = "<?php echo $key; ?>"><i class='glyphicon glyphicon-trash'></i></a>
+														<!-- <a id = "del<?php echo $key; ?>" class='btn delButton' data-id = "<?php echo $key; ?>"><i class='glyphicon glyphicon-trash'></i></a> -->
 													</td>
 												<!-- <td class="btn"><a class="btn delButton"></a></td> -->
 												</tr>

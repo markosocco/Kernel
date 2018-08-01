@@ -403,7 +403,7 @@
 								<div class="box-footer">
 									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Add Main Activities</button>
 									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Add Tasks</button>
-									<button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-fast-forward"></i> Generate Gantt Chart</button>
+									<!-- <button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-fast-forward"></i> Generate Gantt Chart</button> -->
 								</div>
 								</form>
 		          </div>
