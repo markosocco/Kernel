@@ -313,7 +313,7 @@ desired effect
           </li>
           <li id = 'monitor' class="treeview">
             <a href=" ">
-              <i class="fa fa-check-square-o"></i><span> Monitor</span>
+              <i class="fa fa-desktop"></i><span> Monitor</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
