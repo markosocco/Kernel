@@ -4162,7 +4162,14 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("frame");
+			// $this->load->view("frame");
+			$projectTimeliness = $this->model->compute_timeliness_projectByUser();
+			$projectCompleteness = $this->model->compute_completeness_projectByUser();
+
+			foreach ($projectCompleteness as $project) {
+				echo "project id - " . $project['projects_PROJECTID'] . "<br>";
+				echo "completeness - " . $project['completeness'] . "<br><br>";
+			}
 		}
 	}
 }

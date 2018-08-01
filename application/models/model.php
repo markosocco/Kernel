@@ -1542,16 +1542,42 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
-  public function getAllProjects()
-  {
-    $this->db->select('*');
-    $this->db->from('projects');
-    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
-    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
-    $this->db->join('users', 'raci.users_userid = users.userid');
-    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
-
-    return $this->db->get()->result_array();
-  }
+  // public function compute_completeness_projectByUser()
+  // {
+  //   $condition = "CATEGORY = 3 AND projects.PROJECTSTATUS = 'Ongoing' AND projects.users_USERID = " . $_SESSION['USERID'];
+  //   $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+  //   ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
+  //   $this->db->from('tasks');
+  //   $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+  //   $this->db->group_by('projects_PROJECTID');
+  //   $this->db->where($condition);
+  //
+  //   return $this->db->get()->result_array();
+  // }
+  //
+  // public function compute_timeliness_projectByUser()
+  // {
+  //   $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != '' AND projects.PROJECTSTATUS = 'Ongoing' AND projects.users_USERID = " . $_SESSION['USERID'];
+  //   $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+  //   ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+  //   $this->db->from('tasks');
+  //   $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+  //   $this->db->group_by('projects_PROJECTID');
+  //   $this->db->where($condition);
+  //
+  //   return $this->db->get()->result_array();
+  // }
+  //
+  // public function getAllProjects()
+  // {
+  //   $this->db->select('*');
+  //   $this->db->from('projects');
+  //   $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+  //   $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+  //   $this->db->join('users', 'raci.users_userid = users.userid');
+  //   $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+  //
+  //   return $this->db->get()->result_array();
+  // }
 }
 ?>
