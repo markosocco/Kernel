@@ -559,9 +559,10 @@ class controller extends CI_Controller
 			$projectOwnerID = $projectDetails['users_USERID'];
 
 			// START: Notifications
-			$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
 			// notify project owner
+			$details = $userName . " has completed " . $taskTitle . " in " . $projectTitle . ".";
+
 			$notificationData = array(
 				'users_USERID' => $projectOwnerID,
 				'DETAILS' => $details,
@@ -585,6 +586,7 @@ class controller extends CI_Controller
 					$nextTaskTitle = $nextTaskDetails['TASKTITLE'];
 
 					foreach($postTasksData['users'] as $postTasksDataUsers){
+
 						$details = "Pre-requisite task of " . $nextTaskTitle . " in " . $projectTitle . " has been completed.";
 
 						$notificationData = array(
@@ -608,6 +610,7 @@ class controller extends CI_Controller
 
 				foreach($ACIdata['ACI'] as $ACIusers){
 
+					$details = $userName . " has completed " . $taskTitle . " in " . $projectTitle . ".";
 					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
 					$notificationData = array(
@@ -674,13 +677,13 @@ class controller extends CI_Controller
 
 				$this->model->addNotification($notificationData);
 
-				// notify next ACI
+				// notify ACI
 				$ACIdata['ACI'] = $this->model->getACIbyTask($id);
 				if($ACIdata['ACI'] != NULL) {
 
 					foreach($ACIdata['ACI'] as $ACIusers){
 
-						$details = $taskTitle . " has been completed by " . $userName . " in " . $projectTitle . ".";
+						$details = "Sub Activity - " . $taskTitle . " has been completed in " . $projectTitle . ".";
 
 						$notificationData = array(
 							'users_USERID' => $ACIusers['users_USERID'],
@@ -731,7 +734,7 @@ class controller extends CI_Controller
 					$projectOwnerID = $projectDetails['users_USERID'];
 
 					// START: Notifications
-					$details = "Main Activity - " . $taskTitle . " has been completed by " . $userName . " in " . $projectTitle . ".";
+					$details = "Main Activity - " . $taskTitle . " has been completed in " . $projectTitle . ".";
 
 					$notificationData = array(
 						'users_USERID' => $projectOwnerID,
@@ -751,7 +754,7 @@ class controller extends CI_Controller
 
 						foreach($ACIdata['ACI'] as $ACIusers){
 
-							$details = $taskTitle . " has been completed by " . $userName . " in " . $projectTitle . ".";
+							$details = "Main Activity - " . $taskTitle . " has been completed in " . $projectTitle . ".";
 
 							$notificationData = array(
 								'users_USERID' => $ACIusers['users_USERID'],
@@ -906,8 +909,6 @@ class controller extends CI_Controller
 
 			$delegate = $this->model->checkForDelegation($taskID);
 
-			echo "<script>console.log('Delegate: " . $delegate . "');</script>";
-
 			if($delegate == '1')
 			{
 				$updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
@@ -951,7 +952,7 @@ class controller extends CI_Controller
 			$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 			// START: LOG DETAILS
-			$details = $userName . " has marked " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+			$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
 
 			$logData = array (
 				'LOGDETAILS' => $details,
@@ -962,10 +963,9 @@ class controller extends CI_Controller
 			$this->model->addToProjectLogs($logData);
 			// END: LOG DETAILS
 
+
 			// START: Notifications
-			$projectDetails = $this->model->getProjectByID($projectID);
-			$projectTitle = $projectDetails['PROJECTTITLE'];
-			$details = "You have been tagged as responsible for " . $taskTitle . " in " . $projectTitle . ".";
+			$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
 
 			$notificationData = array(
 				'users_USERID' => $this->input->post('responsibleEmp'),
@@ -1007,7 +1007,7 @@ class controller extends CI_Controller
 				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 				// START: LOG DETAILS
-				$details = $userName . " has marked " . $taggedUserName . " as accountable for " . $taskTitle . ".";
+				$details = $userName . " has tagged " . $taggedUserName . " as accountable for " . $taskTitle . ".";
 
 				$logData = array (
 					'LOGDETAILS' => $details,
@@ -1019,7 +1019,7 @@ class controller extends CI_Controller
 				// END: LOG DETAILS
 
 				// START: Notifications
-				$details = "You have been tagged as accountable for " . $taskTitle . " in " . $projectTitle . ".";
+				$details =  $userName . " has tagged you accountable for " . $taskTitle . " in " . $projectTitle . ".";
 				$notificationData = array(
 					'users_USERID' => $empID,
 					'DETAILS' => $details,
@@ -1054,7 +1054,7 @@ class controller extends CI_Controller
 				$projectID = $taskDetails['projects_PROJECTID'];
 				$userDetails = $this->model->getUserByID($empID);
 				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				$details = $userName . " has marked " . $taggedUserName . " as consulted for " . $taskTitle . ".";
+				$details = $userName . " has tagged " . $taggedUserName . " as consulted for " . $taskTitle . ".";
 
 				$logData = array (
 					'LOGDETAILS' => $details,
@@ -1068,7 +1068,8 @@ class controller extends CI_Controller
 				// START: Notifications
 				$projectDetails = $this->model->getProjectByID($projectID);
 				$projectTitle = $projectDetails['PROJECTTITLE'];
-				$details = "You have been tagged as consulted for " . $taskTitle . " in " . $projectTitle . ".";
+
+				$details =  $userName . " has tagged you consulted for " . $taskTitle . " in " . $projectTitle . ".";
 				$notificationData = array(
 					'users_USERID' => $empID,
 					'DETAILS' => $details,
@@ -1103,7 +1104,7 @@ class controller extends CI_Controller
 				$projectID = $taskDetails['projects_PROJECTID'];
 				$userDetails = $this->model->getUserByID($empID);
 				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				$details = $userName . " has marked " . $taggedUserName . " as informed for " . $taskTitle . ".";
+				$details = $userName . " has tagged " . $taggedUserName . " as informed for " . $taskTitle . ".";
 
 				$logData = array (
 					'LOGDETAILS' => $details,
@@ -1117,7 +1118,9 @@ class controller extends CI_Controller
 				// START: Notifications
 				$projectDetails = $this->model->getProjectByID($projectID);
 				$projectTitle = $projectDetails['PROJECTTITLE'];
-				$details = "You have been tagged as informed for " . $taskTitle . " in " . $projectTitle . ".";
+
+				$details =  $userName . " has tagged you informed for " . $taskTitle . " in " . $projectTitle . ".";
+
 				$notificationData = array(
 					'users_USERID' => $empID,
 					'DETAILS' => $details,
@@ -1174,7 +1177,8 @@ class controller extends CI_Controller
 			// END: LOG DETAILS
 
 			// START: Notifications
-			$details = $userName . " requested a change in performer for " . $taskTitle . " in " . $projectTitle . ".";
+			$details =  "A change in performer was requested by " . $userName . " for " . $taskTitle . " in " . $projectTitle . ".";
+
 			$taggedUserID = "";
 
 			if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
@@ -1234,7 +1238,7 @@ class controller extends CI_Controller
 			// END: LOG DETAILS
 
 			// START: Notifications
-			$details = $userName . " requested a change in date/s for " . $taskTitle . ".";
+			$details =  "A change in dates was requested by " . $userName . " for " . $taskTitle . " in " . $projectTitle . ".";
 			$taggedUserID = "";
 
 			if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
@@ -1303,7 +1307,7 @@ class controller extends CI_Controller
 		// END: LOG DETAILS
 
 		// START: Notifications
-		$details = $userName . " has " . $status . " change request for " . $taskTitle . ".";
+		$details = $userName . " has " . $status . " your change request for " . $taskTitle . ".";
 
 		$notificationData = array(
 			'users_USERID' => $requestorID,
@@ -1369,7 +1373,7 @@ class controller extends CI_Controller
 					$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 					// START: LOG DETAILS
-					$details = $userName . " has delegated " . $taskTitle . " to " . $taggedUserName;
+					$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
 
 					$logData = array (
 						'LOGDETAILS' => $details,
@@ -1381,7 +1385,8 @@ class controller extends CI_Controller
 					// END: LOG DETAILS
 
 					// START: Notifications
-					$details = $taskTitle . " for " . $projectTitle . " has been assigned to you.";
+					$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+					$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
 
 					$notificationData = array(
 						'users_USERID' => $responsibleEmp,
@@ -1478,7 +1483,9 @@ class controller extends CI_Controller
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
-						$details = $userName . " has marked " . $taggedUserName . " as accountable for " . $taskTitle . ".";
+						$details = $userName . " has tagged " . $taggedUserName . " as accountable for " . $taskTitle . ".";
+						$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
+
 
 						$logData = array (
 							'LOGDETAILS' => $details,
@@ -1490,7 +1497,8 @@ class controller extends CI_Controller
 						// END: LOG DETAILS
 
 						// START: Notifications
-						$details = "You have been tagged as accountable for " . $taskTitle . " in " . $projectTitle . ".";
+						$details =  $userName . " has tagged you accountable for " . $taskTitle . " in " . $projectTitle . ".";
+
 						$notificationData = array(
 							'users_USERID' => $empID,
 							'DETAILS' => $details,
@@ -1588,7 +1596,7 @@ class controller extends CI_Controller
 						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 						// START: LOG DETAILS
-						$details = $userName . " has marked " . $taggedUserName . " as consulted for " . $taskTitle . ".";
+						$details = $userName . " has tagged " . $taggedUserName . " as consulted for " . $taskTitle . ".";
 
 						$logData = array (
 							'LOGDETAILS' => $details,
@@ -1600,7 +1608,8 @@ class controller extends CI_Controller
 						// END: LOG DETAILS
 
 						// START: Notifications
-						$details = "You have been tagged as consulted for " . $taskTitle . " in " . $projectTitle . ".";
+						$details =  $userName . " has tagged you consulted for " . $taskTitle . " in " . $projectTitle . ".";
+
 						$notificationData = array(
 							'users_USERID' => $empID,
 							'DETAILS' => $details,
@@ -1693,7 +1702,7 @@ class controller extends CI_Controller
 						$projectTitle = $projectDetails['PROJECTTITLE'];
 
 						// START: LOG DETAILS
-						$details = $userName . " has marked " . $taggedUserName . " as informed for " . $taskTitle . ".";
+						$details = $userName . " has tagged " . $taggedUserName . " as informed for " . $taskTitle . ".";
 
 						$logData = array (
 							'LOGDETAILS' => $details,
@@ -1705,7 +1714,7 @@ class controller extends CI_Controller
 						// END: LOG DETAILS
 
 						// START: Notifications
-						$details = "You have been tagged as informed for " . $taskTitle . " in " . $projectTitle . ".";
+						$details =  $userName . " has tagged you informed for " . $taskTitle . " in " . $projectTitle . ".";
 						$notificationData = array(
 							'users_USERID' => $empID,
 							'DETAILS' => $details,
@@ -2368,6 +2377,7 @@ class controller extends CI_Controller
 		}
 	}
 
+// NAMI NOTIFS
 	public function addTasks()
 	{
 		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
