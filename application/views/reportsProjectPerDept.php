@@ -49,6 +49,7 @@
                 <th width="15%">Target End Date</th>
                 <th width="15%">Status</th>
                 <th width="10%">Completeness</th>
+                <th width="10%">Timeliness</th>
               </tr>
             </thead>
             <tbody>
