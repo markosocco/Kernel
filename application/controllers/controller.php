@@ -508,7 +508,38 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("monitorMembers");
+			$id = $this->input->post('employee_ID');
+
+			$data['pCount'] = array();
+			$data['tCount'] = array();
+
+			$projectCount = $this->model->getProjectCount();
+			$taskCount = $this->model->getTaskCount();
+
+			// SET PROJECT COUNT FOR EMPLOYEE
+			foreach ($projectCount as $p)
+			{
+				if ($p['USERID'] == $id)
+				{
+					$data['pCount'][] = $p;
+				}
+			}
+
+			// SET TASK COUNT FOR EMPLOYEE
+			foreach ($taskCount as $t)
+			{
+				if ($t['USERID'] == $id)
+				{
+					$data['tCount'][] = $t;
+				}
+			}
+
+			$data['user'] = $this->model->getUserByID($id);
+			$data['projects'] = $this->model->getAllProjectsByUser($id);
+			$data['timeliness'] = $this->model->compute_timeliness_employee($id);
+			$data['completeness'] = $this->model->compute_completeness_employee($id);
+
+			$this->load->view("monitorMembers", $data);
 		}
 	}
 
@@ -2108,6 +2139,7 @@ class controller extends CI_Controller
 		{
 			$id = $this->input->post("project_ID");
 			$edit = $this->input->post("edit");
+			$templates = $this->input->post("templates");
 
 			// TEMPLATES
 			if (isset($id))
@@ -2117,7 +2149,7 @@ class controller extends CI_Controller
 					$this->session->set_flashdata('edit', $edit);
 				}
 
-				else
+				elseif (isset($templates))
 				{
 					$this->session->set_flashdata('templates', $id);
 				}
@@ -2597,6 +2629,8 @@ class controller extends CI_Controller
 
 			if (isset($templates))
 			{
+				$this->session->set_flashdata('templates', $templates);
+
 				$data['templateProject'] = $this->model->getProjectByID($templates);
 				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
@@ -3830,6 +3864,8 @@ class controller extends CI_Controller
 
 			if (isset($templates))
 			{
+				$this->session->set_flashdata('templates', $templates);
+
 				$data['templateProject'] = $this->model->getProjectByID($templates);
 				$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);

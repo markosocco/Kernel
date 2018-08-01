@@ -28,12 +28,12 @@
               <div class="box-body">
                 <div style="display:inline-block; text-align:center; width:49%;">
                   <div class="circlechart"
-                    data-percentage=""> Completeness
+                    data-percentage="<?php echo $completeness['completeness']; ?>"> Completeness
                   </div>
                 </div>
                 <div style="display:inline-block; text-align:center; width:49%;">
                   <div class="circlechart"
-                   data-percentage=""> Timeliness
+                   data-percentage="<?php echo $timeliness['timeliness']; ?>"> Timeliness
                  </div>
                </div>
               </div>
@@ -43,10 +43,22 @@
 				<!-- Main content -->
 				<section class="content container-fluid">
 					<!-- START HERE -->
-          <h3>firstName lastName</h3>
-          <h4>Position Here</h4>
-          <h4>Number of Projects:</h4>
-          <h4>Number of tasks:</h4>
+          <h3><?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME']; ?></h3>
+          <h4><?php echo $user['POSITION']; ?></h4>
+          <h4>Number of Projects:
+						<?php foreach ($pCount as $p): ?>
+							<?php  if ($p['USERID'] == $user['USERID']): ?>
+								<?php echo $p['projectCount']; ?>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</h4>
+          <h4>Number of tasks:
+						<?php foreach ($tCount as $t): ?>
+							<?php  if ($t['USERID'] == $user['USERID']): ?>
+								<?php echo $t['taskCount']; ?>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</h4>
 
           <br><br>
           <div class="box box-danger">
@@ -55,31 +67,33 @@
             <!-- /.box-header -->
             <div class="box-body">
               <!-- START LOOP HERE -->
-              <h4>Project Name Here</h4>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th width="25%">Task</th>
-                    <th width="10%">Start Date</th>
-                    <th width="10%">Target<br>End Date</th>
-                    <th width="10%">Status</th>
-                    <th class="text-center" width="15%">A</th>
-                    <th class="text-center" width="15%">C</th>
-                    <th class="text-center" width="15%">I</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr data-toggle='modal' data-target='#taskDetails'>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+              <?php foreach ($projects as $row): ?>
+								<h4><?php echo $row['PROJECTTITLE']; ?></h4>
+	              <table class="table table-bordered">
+	                <thead>
+	                  <tr>
+	                    <th width="25%">Task</th>
+	                    <th width="10%">Start Date</th>
+	                    <th width="10%">Target<br>End Date</th>
+	                    <th width="10%">Status</th>
+	                    <th class="text-center" width="15%">A</th>
+	                    <th class="text-center" width="15%">C</th>
+	                    <th class="text-center" width="15%">I</th>
+	                  </tr>
+	                </thead>
+	                <tbody>
+	                  <tr data-toggle='modal' data-target='#taskDetails'>
+	                    <td></td>
+	                    <td></td>
+	                    <td></td>
+	                    <td></td>
+	                    <td></td>
+	                    <td></td>
+	                    <td></td>
+	                  </tr>
+	                </tbody>
+	              </table>
+							<?php endforeach; ?>
               <!-- END LOOP HERE -->
             </div>
             <!-- /.box-body -->

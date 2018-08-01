@@ -26,7 +26,7 @@
 					<!-- START HERE -->
 						<div class="row">
 
-							<form id = 'employeeDrillDown' action = 'projectGantt'  method="POST">
+							<form id = 'employeeDrillDown' action = 'monitorMembers'  method="POST">
 							</form>
 
 							<?php foreach ($staff as $key => $row): ?>
