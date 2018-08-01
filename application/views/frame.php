@@ -96,7 +96,7 @@ desired effect
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
               <span class="label label-success">
-                <?php echo count($_SESSION['taskCount']); ?>
+                <?php echo $_SESSION['taskCount']; ?>
               </span>
             </a>
             <ul class="dropdown-menu">
