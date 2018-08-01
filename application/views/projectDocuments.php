@@ -123,7 +123,7 @@
 																		data-docuID ='" . $document['DOCUMENTID'] . "'
 																		data-projectID = '" . $projectProfile['PROJECTID'] . "'
 																		data-docuName = '" . $document['DOCUMENTNAME'] ."'>
-																		<i class='fa fa-check-circle'></i></button></span>";
+																		<i class='fa fa-eye'></i></button></span>";
 																}
 
 																else {
@@ -191,6 +191,7 @@
 		              <div class="modal-header">
 		                <h4 class="modal-title">Upload a Document</h4>
 		              </div>
+									<div id="uploadDiv">
 		              <div class="modal-body">
 										<p><b>Upload this document for</b></p>
 										<div class="row">
@@ -242,9 +243,21 @@
 		              </div>
 		              <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-		                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+		                <button  id="uploadConfirm" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 		              </div>
 									</form>
+								</div>
+
+								<!-- CONFIRM DELEGATE -->
+								<div id="confirmUpload">
+									<div class="modal-body">
+										<h4>Are you sure you want to upload this document?</h4>
+									</div>
+									<div class="modal-footer">
+										<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "confirmUploadBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+								</div>
 		            </div>
 		            <!-- /.modal-content -->
 		          </div>
@@ -279,6 +292,19 @@
 		<script>
 			$("#myProjects").addClass("active");
 			$('.select2').select2();
+
+			$("#confirmUpload").hide();
+
+
+			$("body").on('click','#uploadConfirm',function(){
+				$("#uploadDiv").hide();
+				$("#confirmUpload").show();
+			});
+
+				$("#confirmUploadBtn").click(function()
+				{
+					$("form_open_multipart").submit();
+				});
 
 			$(document).on("click", "#backBtn", function() {
 				var $project = $("#backForm").attr('data-id');
