@@ -501,6 +501,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function monitorMembers()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("monitorMembers");
+		}
+	}
+
 	public function monitorProject()
 	{
 		if (!isset($_SESSION['EMAIL']))
