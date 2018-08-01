@@ -2649,7 +2649,7 @@ class controller extends CI_Controller
 								// END: LOG DETAILS
 
 								//START: Notifications
-								$details = "A new project has been created. " $userName . " has tagged you to delegate " . $taskTitle . " in " . $projectTitle . ".";
+								$details = "A new project has been created. " .  $userName . " has tagged you to delegate " . $taskTitle . " in " . $projectTitle . ".";
 								$notificationData = array(
 									'users_USERID' => $deptHead,
 									'DETAILS' => $details,
@@ -3223,7 +3223,7 @@ class controller extends CI_Controller
 								// END: LOG DETAILS
 
 								//START: Notifications
-								$details = "A new project has been created. " $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
+								$details = "A new project has been created. " . $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
 								$notificationData = array(
 									'users_USERID' => $deptHead,
 									'DETAILS' => $details,
@@ -3641,7 +3641,7 @@ class controller extends CI_Controller
 									// END: LOG DETAILS
 
 									//START: Notifications
-									$details = "A new project has been created. " $userName . " has tagged you to delegate Sub Activity - " . $taskTitle . " in " . $projectTitle . ".";
+									$details = "A new project has been created. " . $userName . " has tagged you to delegate Sub Activity - " . $taskTitle . " in " . $projectTitle . ".";
 									$notificationData = array(
 										'users_USERID' => $deptHead,
 										'DETAILS' => $details,
