@@ -47,14 +47,14 @@
 					<!-- START HERE -->
           <h3><?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME']; ?></h3>
           <h4><?php echo $user['POSITION']; ?></h4>
-          <h4>Number of Projects:
+          <h4>Number of ongoing projects:
 						<?php foreach ($pCount as $p): ?>
 							<?php  if ($p['USERID'] == $user['USERID']): ?>
 								<?php echo $p['projectCount']; ?>
 							<?php endif; ?>
 						<?php endforeach; ?>
 					</h4>
-          <h4>Number of tasks:
+          <h4>Number of ongoing tasks:
 						<?php foreach ($tCount as $t): ?>
 							<?php  if ($t['USERID'] == $user['USERID']): ?>
 								<?php echo $t['taskCount']; ?>
@@ -84,15 +84,19 @@
 	                  </tr>
 	                </thead>
 	                <tbody>
-	                  <tr data-toggle='modal' data-target='#taskDetails'>
-	                    <td></td>
-	                    <td></td>
-	                    <td></td>
-	                    <td></td>
-	                    <td></td>
-	                    <td></td>
-	                    <td></td>
-	                  </tr>
+	                  <?php foreach ($tasks as $t): ?>
+											<?php if ($row['PROJECTID'] == $t['PROJECTID']): ?>
+												<tr data-toggle='modal' data-target='#taskDetails'>
+			                    <td><?php echo $t['TASKTITLE']; ?></td>
+			                    <td><?php echo $t['TASKSTARTDATE']; ?></td>
+			                    <td><?php echo $t['TASKENDDATE']; ?></td>
+			                    <td><?php echo $t['TASKSTATUS']; ?></td>
+			                    <td><?php  ?></td>
+			                    <td></td>
+			                    <td></td>
+			                  </tr>
+											<?php endif; ?>
+										<?php endforeach; ?>
 	                </tbody>
 	              </table>
 							<?php endforeach; ?>
