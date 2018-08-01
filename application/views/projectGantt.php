@@ -1452,28 +1452,75 @@
 						// END: Checks for responsible
 
 						// START: Checks for accountable
-						$accountablePerson = '';
+						$accountablePeople = '';
+						$accountableArray = array();
+
 						foreach ($accountable as $a) {
+
 							if($a['tasks_TASKID'] == $value['TASKID']){
-								$accountablePerson = $a['FIRSTNAME'] . " " . $a['LASTNAME'];
+								$accountablePeople = $a['FIRSTNAME'] . " " . $a['LASTNAME'];
+								array_push($accountableArray, $accountablePeople);
+							}
+						}
+						$accountableCount = count($accountableArray);
+						$accountablePerson = '';
+						$counter == 0;
+
+						if($accountableCount != 0){
+
+							$accountablePerson = $accountableArray[0];
+
+							for($i = 1; $i < $accountableCount; $i++){
+								$accountablePerson .= (", " . $accountableArray[$i]);
 							}
 						}
 						// END: Checks for accountable
 
 						// START: Checks for consulted
-						$consultedPerson = '';
+						$consultedPeople = '';
+						$consultedArray = array();
+
 						foreach ($consulted as $c) {
+
 							if($c['tasks_TASKID'] == $value['TASKID']){
-								$consultedPerson = $c['FIRSTNAME'] . " " . $c['LASTNAME'];
+								$consultedPeople = $c['FIRSTNAME'] . " " . $c['LASTNAME'];
+								array_push($consultedArray, $consultedPeople);
+							}
+						}
+						$consultedCount = count($consultedArray);
+						$consultedPerson = '';
+						$counter == 0;
+
+						if($consultedCount != 0){
+							$consultedPerson = $consultedArray[0];
+
+							for($i = 1; $i < $consultedCount; $i++){
+								$consultedPerson .= (", " . $consultedArray[$i]);
 							}
 						}
 						// END: Checks for consulted
 
 						// START: Checks for informed
-						$informedPerson = '';
+						$informedPeople = '';
+						$informedArray = array();
+
 						foreach ($informed as $i) {
+
 							if($i['tasks_TASKID'] == $value['TASKID']){
-								$informedPerson = $c['FIRSTNAME'] . " " . $i['LASTNAME'];
+								$informedPeople = $i['FIRSTNAME'] . " " . $i['LASTNAME'];
+								array_push($informedArray, $informedPeople);
+							}
+						}
+						$informedCount = count($informedArray);
+						$informedPerson = '';
+						$counter == 0;
+
+						if($informedCount != 0){
+
+							$informedPerson = $informedArray[0];
+
+							for($i = 0; $i < $informedCount; $i++){
+								$informedPerson .= (", " . $informedArray[$i]);
 							}
 						}
 						// END: Checks for informed
