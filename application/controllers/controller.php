@@ -692,7 +692,6 @@ class controller extends CI_Controller
 				foreach($ACIdata['ACI'] as $ACIusers){
 
 					$details = $userName . " has completed " . $taskTitle . " in " . $projectTitle . ".";
-					$details = $taskTitle . " has been marked as done by " . $userName . " in " . $projectTitle . ".";
 
 					$notificationData = array(
 						'users_USERID' => $ACIusers['users_USERID'],
