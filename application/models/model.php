@@ -262,6 +262,20 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getTaskCountByProjectByRole($id)
+  {
+    $condition = "projects.PROJECTID = '$id' && raci.ROLE != '0' && raci.ROLE != '5' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+    $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+    $this->db->group_by('users.USERID');
+
+    return $this->db->get()->result_array();
+  }
+
   public function getWorkloadProjects($userID)
   {
     $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.users_USERID = '$userID' && raci.ROLE != '0' && raci.ROLE != '5' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
@@ -963,10 +977,12 @@ class model extends CI_Model
 
   public function getAllTasksByID($id)
   {
-    $condition = "raci.STATUS = 'Current' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 3";
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 3";
     $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
-    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial"');
     $this->db->from('tasks');
     $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -1467,6 +1483,20 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  public function compute_timeliness_employeesByProject($projectID)
+  {
+    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
+    $this->db->select('users.USERID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->join('users', 'users_USERID = USERID');
+    $this->db->group_by("USERID");
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   public function compute_timeliness_employeeByProject($userID, $projectID)
   {
     $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && users_USERID = " . $userID . " && projects_PROJECTID = " . $projectID;
@@ -1566,6 +1596,21 @@ class model extends CI_Model
     $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
     $this->db->join('users', 'raci.users_userid = users.userid');
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getTeamByProject($id)
+  {
+    $condition = "raci.STATUS = 'Current' && tasks.projects_PROJECTID = '$id'";
+    $this->db->select('users.*, departments.DEPARTMENTNAME');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+    $this->db->where($condition);
+    $this->db->group_by("USERID");
+    $this->db->order_by("departments.DEPARTMENTNAME");
 
     return $this->db->get()->result_array();
   }
