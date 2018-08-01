@@ -536,6 +536,7 @@ class controller extends CI_Controller
 
 			$data['user'] = $this->model->getUserByID($id);
 			$data['projects'] = $this->model->getAllProjectsByUser($id);
+			$data['tasks'] = $this->model->getAllTasksForAllOngoingProjects($id);
 			$data['timeliness'] = $this->model->compute_timeliness_employee($id);
 			$data['completeness'] = $this->model->compute_completeness_employee($id);
 
