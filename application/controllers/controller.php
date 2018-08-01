@@ -453,12 +453,49 @@ class controller extends CI_Controller
 		{
 			$deptID = $_SESSION['DEPARTMENTID'];
 
-			$filter = null;
+			$data['performance'] = array();
+			$data['tCountStaff'] = array();
+			$data['pCountStaff'] = array();
 
 			$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
 			$data['projects'] = $this->model->getAllProjects();
 			$data['projectCount'] = $this->model->getProjectCount();
 			$data['taskCount'] = $this->model->getTaskCount();
+
+			foreach ($data['staff'] as $row)
+			{
+				$data['performance'][] = $this->model->compute_timeliness_employee($row['USERID']);
+			}
+
+			// SAVES USER IDS WITH TASKS INTO ARRAY
+			foreach ($data['taskCount'] as $row2)
+			{
+				$data['tCountStaff'][] = $row2['USERID'];
+			}
+
+			// CHECKS IF STAFF HAS TASK, SAVES INTO ARRAY
+			foreach ($data['staff'] as $s)
+			{
+				if (in_array($s['USERID'], $data['tCountStaff']))
+				{
+					$data['tCountStaff'][] = $s['USERID'];
+ 				}
+			}
+
+			// SAVES USER IDS WITH PROJECTS INTO ARRAY
+			foreach ($data['projectCount'] as $row2)
+			{
+				$data['pCountStaff'][] = $row2['USERID'];
+			}
+
+			// CHECKS IF STAFF HAS PROJECTS, SAVES INTO ARRAY
+			foreach ($data['staff'] as $s)
+			{
+				if (in_array($s['USERID'], $data['pCountStaff']))
+				{
+					$data['pCountStaff'][] = $s['USERID'];
+ 				}
+			}
 
 			$this->load->view("monitorTeam", $data);
 		}
@@ -897,6 +934,45 @@ class controller extends CI_Controller
 		);
 		$result = $this->model->addToRaci($delegateData);
 
+		// START OF LOGS/NOTIFS
+		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+		$taskDetails = $this->model->getTaskByID($taskID);
+		$taskTitle = $taskDetails['TASKTITLE'];
+
+		$projectID = $taskDetails['projects_PROJECTID'];
+		$projectDetails = $this->model->getProjectByID($projectID);
+		$projectTitle = $projectDetails['PROJECTTITLE'];
+
+		// START: LOG DETAILS
+		$details = $userName . " has accepted the responsibility for " . $taskTitle . ".";
+
+		$logData = array (
+			'LOGDETAILS' => $details,
+			'TIMESTAMP' => date('Y-m-d H:i:s'),
+			'projects_PROJECTID' => $projectID
+		);
+
+		$this->model->addToProjectLogs($logData);
+		// END: LOG DETAILS
+
+		$taskRACI = $this->db->getRACIbyTask($taskID);
+		foreach($taskRACI as $raci){
+
+			if($raci['ROLE'] != 5){
+				// START: Notifications
+				$details = $userName . " has accepted the responsibility for " . $taskTitle . " in " . $projectTitle . ".";
+				$notificationData = array(
+					'users_USERID' => $raci['users_USERID'],
+					'DETAILS' => $details,
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
+					'status' => 'Unread'
+				);
+
+				$this->model->addNotification($notificationData);
+				// END: Notification
+			}
+		}
 		$this->taskDelegate();
 	}
 
@@ -2982,6 +3058,15 @@ class controller extends CI_Controller
 		$type = $this->input->post("type");
 		$notifID = $this->input->post("notifID");
 
+		$statusArray = array(
+				"status" => "Read"
+		);
+
+		$this->model->updateNotification($notifID, $statusArray);
+
+		$data['notifications'] = $this->model->getAllNotificationsByUser();
+		$this->session->set_userdata('notifications', $data['notifications']);
+
 		if ($type == 2){ // taskDelegate
 
 			$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
@@ -3058,10 +3143,10 @@ class controller extends CI_Controller
 			$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
 			$data['informed'] = $this->model->getAllInformedByProject($projectID);
 
-			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
-			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
-			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 
 			$this->load->view("projectGantt", $data);
 
@@ -4073,14 +4158,6 @@ class controller extends CI_Controller
 	public function getAllTasksByUser()
 	{
 		$data['allTasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
-
-		// $count = 0;
-		// foreach ($taskCount as $tc){
-		// 	if($tc['USERID'] == $_SESSION['USERID']){
-		// 		$count = $tc['taskCount'];
-		// 	}
-		// }
-		// $this->session->set_userdata('newTaskCount', $count);
 
 		$this->session->set_userdata('allTasks', $data['allTasks']);
 
