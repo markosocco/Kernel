@@ -2169,6 +2169,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function reportsProjectPerDept()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsProjectPerDept");
+		}
+	}
+
 	public function projectLogs()
 	{
 		if (!isset($_SESSION['EMAIL']))

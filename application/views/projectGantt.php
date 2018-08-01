@@ -821,7 +821,7 @@
 					<br>
 
 					<!-- LEGEND -->
-					<div>
+					<div style="margin-bottom:10px">
 						<small style="display: inline-block">Legend:</small>
 						<div style="width: 20px; height: 10px; background-color:#ED6C1F; display:inline-block; margin-left:10px;"></div> Selected
 						<div style="width: 20px; height: 10px; background-color:#465A63; display:inline-block; margin-left:10px;"></div> Parent Target Timeline
@@ -831,6 +831,7 @@
 						<div style="width: 20px; height: 10px; background-color:#68B6F3; display:inline-block; margin-left:10px;"></div> Child Target Timeline
 						<div style="width: 20px; height: 10px; background-color:#0C7F12; display:inline-block; margin-left:10px;"></div> Ongoing
 					</div>
+
 					<!-- CONFIRM ARCHIVE -->
 					<div class="modal fade" id="confirmArchive" tabindex="-1">
 						<div class="modal-dialog">
