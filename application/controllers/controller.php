@@ -75,19 +75,26 @@ class controller extends CI_Controller
 				$notifications = $this->model->getAllNotificationsByUser();
 				$this->session->set_userdata('notifications', $notifications);
 
-				$filter = "raci.users_USERID= '". $_SESSION['USERID'] ."'";
-				$taskCount = $this->model->getTaskCount($filter);
-				$this->session->set_userdata('taskCount', $taskCount);
-				echo $taskCount[0]['taskCount'] . "<br>";
+				$taskCount = $this->model->getTaskCount();
 
-				// foreach ($taskCount as $tcKey =>$tcRow)
-				// {
-				// 	echo $tcKey . " == " . $tcRow['taskCount'] . "<br>";
-				// }
+				$count = 0;
+				foreach ($taskCount as $tc){
+					if($tc['USERID'] == $_SESSION['USERID']){
+						$count = $tc['taskCount'];
+					}
+				}
+				$this->session->set_userdata('taskCount', $count);
 
 				$currentDate = date('Y-m-d');
 				$this->model->updateTaskStatus();
 				$this->model->updateProjectStatus();
+
+				$allTasks = $this->model->getAllTasksByUser($_SESSION['USERID']);
+				foreach ($allTasks as $tasks){
+					echo $tasks['TASKTITLE'] . "<br>";
+				}
+				$this->session->set_userdata('tasks', $allTasks);
+
 
 				$taskDeadlines = $this->model->getTasks2DaysBeforeDeadline();
 

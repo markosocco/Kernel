@@ -104,19 +104,34 @@ desired effect
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu menuTask">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Task 1.2.3-Buy a Ferrari
-                        <small class="pull-right">Mar 21, 1996</small>
-                      </h3>
-                    </a>
-                  </li>
-                  <!-- end task item -->
+
+                  <?php if($_SESSION['tasks'] != NULL):?>
+                    <?php foreach($_SESSION['tasks'] as $task) :?>
+
+                      <li><!-- Task item -->
+                        <a href="#">
+                          <h3>
+                            <?php echo $task['TASKTITLE']; ?>
+                            <small class="pull-right">
+                              <?php
+                                if($task['TASKADJUSTEDENDDATE'] != ''){
+                                  $endDate = date_create($task['TASKADJUSTEDENDDATE']);
+                                } else {
+                                  $endDate = date_create($task['TASKENDDATE']);
+                                }
+                                echo date_format($endDate, "F d, Y");
+                              ?>
+                            </small>
+                          </h3>
+                        </a>
+                      </li>
+
+                    <?php endforeach; ?>
+                  <?php endif; ?>
                 </ul>
               </li>
               <li class="footer">
-                <a href="#">View all tasks</a>
+                <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">View all tasks</a>
               </li>
             </ul>
           </li>
