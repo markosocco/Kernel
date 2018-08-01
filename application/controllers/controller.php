@@ -2319,9 +2319,21 @@ class controller extends CI_Controller
 			$data['informed'] = $this->model->getAllInformedByProject($id);
 
 			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$deptC = $this->model->compute_completeness_departmentByProject($id);
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $id);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($_SESSION['departments_DEPARTMENTID'], $id);
+			$deptT = $this->model->compute_timeliness_departmentByProject($id);
+
+			foreach($deptC as $dc){
+				if($dc['DEPARTMENTID'] == $departmentID){
+					$data['departmentCompleteness'] = $dc;
+				}
+			}
+
+			foreach($deptT as $dt){
+				if($dt['DEPARTMENTID'] == $_SESSION['departments_DEPARTMENTID']){
+					$data['departmentTimeliness'] = $dt;
+				}
+			}
 
 			$this->load->view("teamGantt", $data);
 		}
@@ -2467,6 +2479,12 @@ class controller extends CI_Controller
 			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 			$data['tasks'] = $this->model->getAllTasksByID($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
+			$data['documents'] = $this->model->getAllDocumentsByProject($id);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
+			$data['departments'] = $this->model->compute_timeliness_departmentByProject($id);
+
 
 			$this->load->view("projectSummary", $data);
 		}
@@ -4212,7 +4230,14 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("frame");
+			// $this->load->view("frame");
+			$projectTimeliness = $this->model->compute_timeliness_projectByUser();
+			$projectCompleteness = $this->model->compute_completeness_projectByUser();
+
+			foreach ($projectCompleteness as $project) {
+				echo "project id - " . $project['projects_PROJECTID'] . "<br>";
+				echo "completeness - " . $project['completeness'] . "<br><br>";
+			}
 		}
 	}
 }
