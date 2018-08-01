@@ -109,7 +109,7 @@ desired effect
                     <?php foreach($_SESSION['tasks'] as $task) :?>
 
                       <li><!-- Task item -->
-                        <a href="#">
+                        <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">
                           <h3>
                             <?php echo $task['TASKTITLE']; ?>
                             <small class="pull-right">
