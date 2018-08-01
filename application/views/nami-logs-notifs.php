@@ -436,6 +436,32 @@ if($data['ACI'] != NULL) {
 	</body>
 </html>
 
+<!-- /.box-header -->
+<div class="box-body">
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th width="35%">Project</th>
+				<th width="15%">Target Start Date</th>
+				<th width="15%">Target End Date</th>
+				<th width="15%">Status</th>
+				<th width="10%">Completeness</th>
+				<th width="10%">Timeliness</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>10.78%</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- /.box-body -->
+
 $userID = $_SESSION['USERID'];
 $deptID = $_SESSION['departments_DEPARTMENTID'];
 switch($_SESSION['usertype_USERTYPEID'])

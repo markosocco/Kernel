@@ -34,41 +34,16 @@
     </div>
     <div class="reportBody viewCenter">
       <!-- LOOP START HERE -->
-      <?php foreach($allProjects as $project); ?>
-        <? if($$project['DEPARTMENTNAME'] == 'Facilities Administration'):?>
+      <?php foreach($allProjects as $project): ?>
+        <? if($project['DEPARTMENTNAME'] == 'Facilities Administration'):?>
         <div class="box box-danger">
           <div class="box-header with-border">
-            <h3 class="box-title pull-left"><b>DeptName Department</b></h3>
-            <h3 class="box-title pull-right">10 Projects</h3>
+            <h3 class="box-title pull-left"><b>Facilities Administration</b></h3>
           </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th width="35%">Project</th>
-                  <th width="15%">Target Start Date</th>
-                  <th width="15%">Target End Date</th>
-                  <th width="15%">Status</th>
-                  <th width="10%">Completeness</th>
-                  <th width="10%">Timeliness</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>10.78%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- /.box-body -->
         </div>
         <!-- LOOP END HERE -->
-      <?php endforeach(); ?>
+        <?php endif; ?>
+      <?php endforeach; ?>
     <div class="reportFooter viewCenter">
       <p>***END OF REPORT***</p>
     </div>

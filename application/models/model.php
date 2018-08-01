@@ -1692,5 +1692,17 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function getAllProjectsByDepartment($departmentID)
+  {
+    $condition = "departments_DEPARTMENTID = " . $departmentID;
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('users', 'projects.users_userid = users.userid');
+    $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>
