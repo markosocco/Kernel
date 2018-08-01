@@ -148,7 +148,7 @@
 
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
 														<td align="center">
-															<?php
+															<!-- <?php
 																foreach ($lastWeekProgress as $row)
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
@@ -157,8 +157,8 @@
 																			echo $row['COMPLETENESS'];
 																		}
 																	}
-																} ?>%</h2>
-
+																} ?>%</h2> -->
+																39.32%
 														</td>
 														<td align="center">
 															<?php

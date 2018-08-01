@@ -3892,23 +3892,26 @@ class controller extends CI_Controller
 				);
 
 				$this->model->uploadDocument($uploadData);
+				$allUsers = $this->model->getAllUsersByProject($id);
 
 				// START: Notification
 				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
 				$details = $userName . " has uploaded " . $fileName . ".";
 
-				$notificationData = array(
-					'users_USERID' => $userIDByDepartment['users_USERID'],
-					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'status' => 'Unread',
-					'projects_PROJECTID' => $id,
-					'TYPE' => '5'
-				);
+				foreach($allUsers as $user){
 
-				$this->model->addNotification($notificationData);
-				// END: Notification
+					$notificationData = array(
+						'users_USERID' => $user['users_USERID'],
+						'DETAILS' => $details,
+						'TIMESTAMP' => date('Y-m-d H:i:s'),
+						'status' => 'Unread',
+						'projects_PROJECTID' => $id,
+						'TYPE' => '5'
+					);
 
+					$this->model->addNotification($notificationData);
+					// END: Notification
+				}
 			} // END: DOESN'T NEED ACKNOWLEDGMENT
 
 			// START: GET ALL USERS THAT WERE SELECTED
@@ -3967,9 +3970,10 @@ class controller extends CI_Controller
 
 		$this->session->set_flashdata('projectID', $id);
 		$data['projectProfile'] = $this->model->getProjectByID($id);
-		$data['departments'] = $this->model->getAllDepartments();
+		$data['departments'] = $this->model->getAllDepartmentsByProject($id);
 		$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
 		$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
+		$data['users'] = $this->model->getAllUsersByProject($id);
 
 		$this->load->view("projectDocuments", $data);
 	}
