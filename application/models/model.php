@@ -1773,7 +1773,6 @@ class model extends CI_Model
     return $query->result_array();
   }
 
-<<<<<<< HEAD
   public function getAllACI()
   {
     $condition = "raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
@@ -1783,7 +1782,10 @@ class model extends CI_Model
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->where($condition);
-=======
+
+    return $this->db->get()->result_array();
+  }
+  
   public function getAllTasksByProject($projectID)
   {
     $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " && tasks.CATEGORY = '3'";
@@ -1797,12 +1799,10 @@ class model extends CI_Model
     $this->db->where($condition);
     $this->db->group_by('tasks.TASKID');
     $this->db->order_by('TASKENDDATE');
->>>>>>> 7ae264d450e8411311a950c7ca0efbd57d33435e
 
     return $this->db->get()->result_array();
   }
 
-<<<<<<< HEAD
   public function getAllUsersBySupervisor($id)
   {
     $condition = "users_SUPERVISORS = " . $id;
@@ -1812,7 +1812,7 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-=======
+
   public function getAllDepartmentTasksByProject($projectID, $departmentID)
   {
     $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " && departments_DEPARTMENTID = " . $departmentID . " && tasks.CATEGORY = '3'";
@@ -1829,7 +1829,5 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
-
->>>>>>> 7ae264d450e8411311a950c7ca0efbd57d33435e
 }
 ?>
