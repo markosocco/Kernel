@@ -148,17 +148,22 @@
 
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
 														<td align="center">
-															<!-- <?php
+															<?php
 																foreach ($lastWeekProgress as $row)
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																	{
 																		if($row['datediff'] < 7){
-																			echo $row['COMPLETENESS'];
-																		}
+							 											 if($row['COMPLETENESS'] == 100.00){
+							 												 echo 100;
+							 											 } elseif ($row['COMPLETENESS'] == 0.00) {
+							 												 echo 0;
+							 											 } else {
+							 												 echo $row['COMPLETENESS'];
+							 											 }
+							 										 }
 																	}
-																} ?>%</h2> -->
-																39.32%
+																} ?>%</h2>
 														</td>
 														<td align="center">
 															<?php
@@ -166,7 +171,13 @@
 			                          {
 			                            if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 			                            {
-			                              echo $row['projectProgress'];
+																		if($row['projectProgress'] == 100.00){
+																			echo 100;
+																		} elseif ($row['projectProgress'] == 0.00) {
+																			echo 0;
+																		} else {
+																			echo $row['projectProgress'];
+																		}
 			                            }
 			                          } ?>%
 														</td>
