@@ -81,8 +81,8 @@
 	                        </form>
 
 	                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in
-	                          <?php echo $value['archive'] +1;?>
-	                          <?php if(($value['archive'] +1) > 1):?>
+	                          <?php echo $value['datediff'] +1;?>
+	                          <?php if(($value['datediff'] +1) > 1):?>
 	                            days
 	                          <?php else:?>
 	                            day
@@ -165,8 +165,8 @@
 	                        </form>
 
 	                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
-	                          <?php echo $value['remaining'] +1;?>
-	                          <?php if(($value['remaining'] +1) > 1):?>
+	                          <?php echo $value['datediff'] +1;?>
+	                          <?php if(($value['datediff'] +1) > 1):?>
 	                            days remaining
 	                          <?php else:?>
 	                            day remaining
@@ -203,8 +203,8 @@
 	                        // $startdate = date_create($row['PROJECTSTARTDATE']);
 	                        ?>
 	                        <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in
-	                          <?php echo $row['launch'] +1;?>
-	                          <?php if(($value['launch'] +1) > 1):?>
+	                          <?php echo $row['datediff'] +1;?>
+	                          <?php if(($value['datediff'] +1) > 1):?>
 	                            days
 	                          <?php else:?>
 	                            day

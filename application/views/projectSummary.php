@@ -25,10 +25,10 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
 				<div class="row">
-					<div class="col-md-9 col-sm-6 col-xs-12">
+					<div class="col-md-12 col-sm-6 col-xs-12">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Details</h3>
+								<h3 class="box-title">Statistics</h3>
 							</div>
 
 							<!-- /.box-header -->
@@ -45,7 +45,7 @@
 									<p>Total number of documents: <b><?php echo count($documents);?></b></p>
 								</div>
 
-								<div style="display:inline-block; margin-left: 50px;">
+								<div style="display:inline-block; margin-left:;">
 									<p>Total number of main activities: <b><?php echo count($mainActivity); ?></b></p>
 									<p>Total number of sub activities: <b><?php echo count($subActivity); ?></b></p>
 									<p>Total number of tasks: <b><?php echo count($tasks); ?></b></p>
@@ -72,7 +72,7 @@
 									<p>Total number of early tasks:<b> <?php echo $earlyCounter;?></b></p>
 								</div>
 
-								<div style="display:inline-block; margin-left: 50px;">
+								<div style="display:inline-block; margin-left:">
 									<p>Total number of requests: <b><?php echo count($changeRequests);?></b></p>
 									<?php
 
@@ -99,42 +99,26 @@
 									?>
 									<p style="text-indent:5%">Change Performer: <b><?php echo $performerCounter;?></b></p>
 									<p style="text-indent:5%">Change End Date: <b><?php echo $dateCounter;?></b></p>
+								</div>
+								<div style="display:inline-block;">
 									<p>Total number of approved requests: <b><?php echo $approvedCounter;?></b></p>
 									<p>Total number of denied requests: <b><?php echo $deniedCounter;?></b></p>
 									<p>Total number of missed requests: <b><?php echo $pendingCounter;?></b></p>
 								</div>
-
 							</div>
 						</div>
-
 					</div>
 	        <!-- /.col -->
+
+				</div>
+
+				<div class="row">
 					<div class="col-md-3 col-sm-3 col-xs-12">
 						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Project Performance</h3>
 							</div>
 							<!-- /.box-header -->
-
-							<!-- <div class="box-body">
-								<div style="text-align:center;">
-									<div class="circlechart"
-										data-percentage="<?php
-											if($projectCompleteness['completeness'] == NULL){
-												echo 0;
-											} else {
-												if($projectCompleteness['completeness'] == 100.00){
-													echo 100;
-												} elseif ($projectCompleteness['completeness'] == 0.00) {
-													echo 0;
-												} else {
-													echo $projectCompleteness['completeness'];
-												}
-											}
-											?>"> Completeness
-									</div>
-								</div>
-							</div> -->
 
 							<div class="box-body">
 								<div style="text-align:center;">
