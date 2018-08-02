@@ -30,12 +30,36 @@
               <div class="box-body">
                 <div style="display:inline-block; text-align:center; width:49%;">
                   <div class="circlechart"
-                    data-percentage="<?php echo $completeness['completeness']; ?>"> Completeness
+                    data-percentage="<?php
+											if($completeness['completeness'] == NULL){
+												echo 0;
+											} else {
+												if($completeness['completeness'] == 100.00){
+													echo 100;
+												} elseif ($completeness['completeness'] == 0.00) {
+													echo 0;
+												} else {
+													echo $completeness['completeness'];
+												}
+											}
+											?>"> Completeness
                   </div>
                 </div>
                 <div style="display:inline-block; text-align:center; width:49%;">
                   <div class="circlechart"
-                   data-percentage="<?php echo $timeliness['timeliness']; ?>"> Timeliness
+                   data-percentage="<?php
+										 if($timeliness['timeliness'] == NULL){
+											 echo 0;
+										 } else {
+											 if($timeliness['timeliness'] == 100.00){
+												 echo 100;
+											 } elseif ($timeliness['timeliness'] == 0.00) {
+												 echo 0;
+											 } else {
+												 echo $timeliness['timeliness'];
+											 }
+										 }
+										 ?>"> Timeliness
                  </div>
                </div>
               </div>
@@ -74,26 +98,74 @@
 	              <table class="table table-bordered">
 	                <thead>
 	                  <tr>
-	                    <th width="25%">Task</th>
+											<th width=".5%"></th>
+	                    <th width="27%">Task</th>
 	                    <th width="10%">Start Date</th>
 	                    <th width="10%">Target<br>End Date</th>
-	                    <th width="10%">Status</th>
-	                    <th class="text-center" width="15%">A</th>
-	                    <th class="text-center" width="15%">C</th>
-	                    <th class="text-center" width="15%">I</th>
+	                    <th class="text-center" width="17.5%">A</th>
+	                    <th class="text-center" width="17.5%">C</th>
+	                    <th class="text-center" width="17.5%">I</th>
 	                  </tr>
 	                </thead>
 	                <tbody>
 	                  <?php foreach ($tasks as $t): ?>
 											<?php if ($row['PROJECTID'] == $t['PROJECTID']): ?>
-												<tr data-toggle='modal' data-target='#taskDetails'>
-			                    <td><?php echo $t['TASKTITLE']; ?></td>
-			                    <td><?php echo $t['TASKSTARTDATE']; ?></td>
-			                    <td><?php echo $t['TASKENDDATE']; ?></td>
-			                    <td><?php echo $t['TASKSTATUS']; ?></td>
-			                    <td><?php  ?></td>
-			                    <td></td>
-			                    <td></td>
+												<tr data-toggle='modal' data-target='#taskDetails' class='clickable'>
+													<?php if ($t['TASKSTATUS'] == 'Ongoing'): ?>
+														<td class="bg-green"></td>
+													<?php elseif ($t['TASKSTATUS'] == 'Delayed'): ?>
+														<td class="bg-red"></td>
+													<?php elseif ($t['TASKSTATUS'] == 'Planning'): ?>
+														<td class="bg-yellow"></td>
+													<?php elseif ($t['TASKSTATUS'] == 'Complete'): ?>
+														<td class="bg-teal"></td>
+													<?php else: ?>
+														<td></td>
+													<?php endif; ?>
+													<!-- <td></td> -->
+													<td><?php echo $t['TASKTITLE']; ?></td>
+
+													<?php
+														if($t['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+															$endDate = $t['TASKENDDATE'];
+														else
+															$endDate = $t['TASKADJUSTEDENDDATE'];
+
+														if($t['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+															$startDate = $t['TASKSTARTDATE'];
+														else
+															$startDate = $t['TASKADJUSTEDSTARTDATE'];
+													?>
+
+			                    <td><?php echo date_format(date_create($startDate), "M d, Y"); ?></td>
+			                    <td><?php echo date_format(date_create($endDate), "M d, Y"); ?></td>
+			                    <td>
+														<?php foreach ($raci as $raciRow): ?>
+															<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
+																<?php if ($raciRow['ROLE'] == '2'): ?>
+																	<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+																<?php endif; ?>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													</td>
+			                    <td>
+														<?php foreach ($raci as $raciRow): ?>
+															<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
+																<?php if ($raciRow['ROLE'] == '3'): ?>
+																	<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+																<?php endif; ?>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													</td>
+			                    <td>
+														<?php foreach ($raci as $raciRow): ?>
+															<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
+																<?php if ($raciRow['ROLE'] == '4'): ?>
+																	<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+																<?php endif; ?>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													</td>
 			                  </tr>
 											<?php endif; ?>
 										<?php endforeach; ?>
@@ -164,8 +236,8 @@
                   </table>
 
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-                    <button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i> </button>
+                    <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+                    <button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i> </button> -->
                   </div>
                 </div>
               </div>

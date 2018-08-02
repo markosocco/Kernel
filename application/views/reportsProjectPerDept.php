@@ -34,16 +34,15 @@
     </div>
     <div class="reportBody viewCenter">
       <!-- LOOP START HERE -->
-      <?php foreach($allProjects as $project): ?>
-        <? if($project['DEPARTMENTNAME'] == 'Facilities Administration'):?>
+
+      <?php foreach ($departments as $dept): ?>
         <div class="box box-danger">
           <div class="box-header with-border">
-            <h3 class="box-title pull-left"><b>Facilities Administration</b></h3>
+            <h3 class="box-title pull-left"><b><?php echo $dept['DEPARTMENTNAME']; ?></b></h3>
           </div>
         </div>
-        <!-- LOOP END HERE -->
-        <?php endif; ?>
       <?php endforeach; ?>
+
     <div class="reportFooter viewCenter">
       <p>***END OF REPORT***</p>
     </div>
