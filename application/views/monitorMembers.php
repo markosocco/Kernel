@@ -22,7 +22,7 @@
 						<!-- <li class="active">Here</li> -->
 					</ol>
 
-          <div class="col-md-4 col-sm-6 col-xs-12 pull-right">
+					<div class="col-md-4 col-sm-6 col-xs-12 pull-right">
               <div class="box-header with-border" style="text-align:center;">
                 <h3 class="box-title">Performance</h3>
               </div>
@@ -71,7 +71,46 @@
 					<!-- START HERE -->
           <h3><?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME']; ?></h3>
           <h4><?php echo $user['POSITION']; ?></h4>
-          <h4>Number of ongoing projects:
+
+					<div class = 'row'>
+
+						<?php $projCount = 0;?>
+						<?php foreach ($pCount as $p): ?>
+						<?php  if ($p['USERID'] == $user['USERID']): ?>
+							<?php $projCount = $p['projectCount']; ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+
+					<?php $taskCount = 0;?>
+					<?php foreach ($tCount as $t): ?>
+					<?php  if ($t['USERID'] == $user['USERID']): ?>
+						<?php $taskCount =  $t['taskCount']; ?>
+					<?php endif; ?>
+				<?php endforeach; ?>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center" id="total"> Ongoing Projects <br><br><b><?php echo $projCount;?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center"> Ongoing Tasks <br><br><b><?php echo $taskCount;?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+          <!-- <h4>Number of ongoing projects:
 						<?php foreach ($pCount as $p): ?>
 							<?php  if ($p['USERID'] == $user['USERID']): ?>
 								<?php echo $p['projectCount']; ?>
@@ -84,9 +123,8 @@
 								<?php echo $t['taskCount']; ?>
 							<?php endif; ?>
 						<?php endforeach; ?>
-					</h4>
+					</h4> -->
 
-          <br><br>
           <div class="box box-danger">
             <div class="box-header with-border">
             </div>
