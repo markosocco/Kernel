@@ -978,11 +978,13 @@ class model extends CI_Model
   public function getAllTasksByID($id)
   {
     $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 3";
-    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
     ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
-    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial"');
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay",');
     $this->db->from('tasks');
     $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -1664,6 +1666,8 @@ class model extends CI_Model
     $this->db->where($condition);
     $this->db->group_by("USERID");
     $this->db->order_by("departments.DEPARTMENTNAME");
+
+    return $this->db->get()->result_array();
   }
 
   public function getAllProjectsByUser($id)
@@ -1709,18 +1713,45 @@ class model extends CI_Model
 
 // MONITOR PROJECTS
 
-  public function getAllOwnedProjectsByUser($userID, $status, $orderBy)
+  public function getAllCompletedOwnedProjectsByUser($userID)
   {
-    $condition = "projects.users_USERID = '$userID' && projects.PROJECTSTATUS = '$status'";
-    $this->db->select('projects.*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "launch",
-    DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "remaining",
-    DATEDIFF(projects.PROJECTACTUALENDDATE, CURDATE()) as "archive"');
+    $condition = "PROJECTSTATUS = 'Complete' && users_USERID = " . $userID;
+    $this->db->select('*, ((7-datediff(PROJECTACTUALENDDATE, curdate()))-1) as "datediff"');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getAllPlannedOwnedProjectsByUser($userID)
+  {
+    $condition = "projects.users_USERID = '$userID' && projects.PROJECTSTATUS = 'Planning'";
+    $this->db->select('projects.*, DATEDIFF(projects.PROJECTSTARTDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
     $this->db->where($condition);
     $this->db->group_by('projects.PROJECTID');
-    $this->db->order_by($orderBy);
+    $this->db->order_by('projects.PROJECTSTARTDATE');
+
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getAllOngoingOwnedProjectsByUser($userID)
+  {
+    $condition = "projects.users_USERID = '$userID' && projects.PROJECTSTARTDATE <= CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing'";
+    $this->db->select('projects.*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
 
     $query = $this->db->get();
 
@@ -1740,6 +1771,40 @@ class model extends CI_Model
     $query = $this->db->get();
 
     return $query->result_array();
+  }
+
+  public function getAllTasksByProject($projectID)
+  {
+    $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " && tasks.CATEGORY = '3'";
+    $this->db->select('*, CURDATE() as "currDate",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+    $this->db->order_by('TASKENDDATE');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllDepartmentTasksByProject($projectID, $departmentID)
+  {
+    $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " && departments_DEPARTMENTID = " . $departmentID . " && tasks.CATEGORY = '3'";
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('TASKID');
+    $this->db->order_by('TASKENDDATE');
+
+    return $this->db->get()->result_array();
   }
 
 }

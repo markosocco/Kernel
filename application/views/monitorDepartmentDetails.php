@@ -67,7 +67,6 @@
 
 								if($endDate < $task['currDate'])
 									$delayed++;
-
 							}
 						?>
 
@@ -99,7 +98,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Planned <br><br><b><?php echo $planned ;?></b></h4>
+										<h4 align="center"> Completed <br><br><b><?php echo $completed ;?></b></h4>
 									</div>
 								</div>
 							</div>
@@ -110,11 +109,12 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Completed <br><br><b><?php echo $completed ;?></b></h4>
+										<h4 align="center"> Planned <br><br><b><?php echo $planned ;?></b></h4>
 									</div>
 								</div>
 							</div>
 						</div>
+
 					</div>
 
           <div class="box box-danger">
@@ -125,12 +125,11 @@
               <table class="table table-bordered responsive">
                 <thead>
                   <tr>
-                    <th width="30%">Task</th>
-                    <th width="20%">Performer</th>
-                    <th width="10%">Start Date</th>
-                    <th width="10%">Target<br>End Date</th>
-                    <th width="5%">Status</th>
-                    <th width="5%">Progress</th>
+										<th width='.5%'></th>
+                    <th width="50%">Task</th>
+                    <th width="29.5%">Responsible</th>
+                    <th width="10%" class='text-center'>Start Date</th>
+                    <th width="10%" class='text-center'>Target<br>End Date</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,21 +141,24 @@
 											$startDate = date_create($task['TASKADJUSTEDSTARTDATE']);
 
 										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-											$endDate = date_create($task['TASKENDDATE']);
+											$endDate = $task['TASKENDDATE'];
 										else
-											$endDate = date_create($task['TASKADJUSTEDENDDATE']);
+											$endDate = $task['TASKADJUSTEDENDDATE'];
 										?>
                   <tr class="clickable" data-toggle='modal' data-target='#taskDetails'>
-                    <td><?php echo $task['TASKTITLE'];?></td>
-                    <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
-                    <td><?php echo date_format($startDate, "M d, Y");?></td>
-                    <td><?php echo date_format($endDate, "M d, Y");?></td>
-										<?php if ($endDate < $task['currDate']):?>
-											<td>Delayed</td>
-										<?php else:?>
-	                    <td><?php echo $task['TASKSTATUS'];?></td>
+										<?php if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
+											<td class='bg-red'></td>
+										<?php elseif($endDate >= $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
+											<td class='bg-green'></td>
+										<?php elseif($task['TASKSTATUS'] == 'Complete'):?>
+											<td class='bg-teal'></td>
+										<?php elseif($task['TASKSTATUS'] == 'Planning'):?>
+											<td class='bg-yellow'></td>
 										<?php endif;?>
-                    <td align="center"></td>
+										<td><?php echo $task['TASKTITLE'];?></td>
+                    <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
+                    <td align='center'><?php echo date_format($startDate, "M d, Y");?></td>
+                    <td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
                   </tr>
 								<?php endforeach;?>
                 </tbody>
@@ -165,7 +167,7 @@
             <!-- /.box-body -->
           </div>
 
-          <!-- Task Detail Modal -->
+          <!-- Task Details Modal -->
           <div class="modal fade" id="taskDetails" tabindex="-1">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -221,11 +223,6 @@
                       </tr>
                     </tbody>
                   </table>
-
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-                    <button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i> </button>
-                  </div>
                 </div>
               </div>
               <!-- /.modal-content -->

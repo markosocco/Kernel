@@ -558,6 +558,7 @@ class controller extends CI_Controller
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
 
 			$this->load->view("monitorDepartment", $data);
 		}
@@ -576,7 +577,7 @@ class controller extends CI_Controller
 			$deptID = $this->input->post('dept_ID');
 
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
-			$data['tasks'] = $this->model->getAllProjectTasksByDepartment($projectID, $deptID);
+			$data['tasks'] = $this->model->getAllDepartmentTasksByProject($projectID, $deptID);
 
 			$this->load->view("monitorDepartmentDetails", $data);
 		}
@@ -591,10 +592,10 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['ongoingProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Ongoing", "projects.PROJECTENDDATE");
-			$data['plannedProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Planning", "projects.PROJECTSTARTDATE");
+			$data['ongoingProjects'] = $this->model->getAllOngoingOwnedProjectsByUser($_SESSION['USERID']);
+			$data['plannedProjects'] = $this->model->getAllPlannedOwnedProjectsByUser($_SESSION['USERID']);
 			$data['delayedProjects'] = $this->model->getAllDelayedOwnedProjectsByUser($_SESSION['USERID']);
-			$data['completedProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Complete", "projects.PROJECTACTUALENDDATE");
+			$data['completedProjects'] = $this->model->getAllCompletedOwnedProjectsByUser($_SESSION['USERID']);
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
