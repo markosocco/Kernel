@@ -25,7 +25,7 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
 				<div class="row">
-					<div class="col-md-12 col-sm-6 col-xs-12">
+					<div class="col-md-9 col-sm-6 col-xs-12">
 						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h3 class="box-title">Statistics</h3>
@@ -33,86 +33,94 @@
 
 							<!-- /.box-header -->
 							<div class="box-body">
+								<table>
+									<tbody>
+										<?php
+										$actualenddate = date_create($project['PROJECTACTUALENDDATE']);
+										?>
+										<?php
 
-								<div style="display:inline-block;">
-									<?php
-									$actualenddate = date_create($project['PROJECTACTUALENDDATE']);
-									?>
-									<p>Date of Completion: <b><?php echo date_format($actualenddate, "F d, Y"); ?></b></p>
-									<p>Total number of days: <b><?php echo $project['actualDuration']; ?></b></p>
-									<p>Departments involved: <b><?php echo count($departments);?></b></p>
-									<p>People involved: <b><?php echo count($team);?></b></p>
-									<p>Total number of documents: <b><?php echo count($documents);?></b></p>
-								</div>
+											$delayCounter = 0;
+											$earlyCounter = 0;
 
-								<div style="display:inline-block; margin-left:;">
-									<p>Total number of main activities: <b><?php echo count($mainActivity); ?></b></p>
-									<p>Total number of sub activities: <b><?php echo count($subActivity); ?></b></p>
-									<p>Total number of tasks: <b><?php echo count($tasks); ?></b></p>
-									<?php
+											foreach ($groupedTasks as $row)
+											{
+												if($row['TASKADJUSTEDENDDATE'] == null)
+													$endDate = $row['TASKENDDATE'];
+												else
+													$endDate = $row['TASKADJUSTEDENDDATE'];
 
-										$delayCounter = 0;
-										$earlyCounter = 0;
+												if ($row['TASKACTUALENDDATE'] < $endDate)
+													$earlyCounter++;
 
-										foreach ($groupedTasks as $row)
-										{
-											if($row['TASKADJUSTEDENDDATE'] == null)
-												$endDate = $row['TASKENDDATE'];
-											else
-												$endDate = $row['TASKADJUSTEDENDDATE'];
+												if ($row['TASKACTUALENDDATE'] > $endDate)
+													$delayCounter++;
+											}
+										?>
+										<?php
 
-											if ($row['TASKACTUALENDDATE'] < $endDate)
-												$earlyCounter++;
+											$approvedCounter = 0;
+											$deniedCounter = 0;
+											$pendingCounter = 0;
+											$dateCounter = 0;
+											$performerCounter = 0;
 
-											if ($row['TASKACTUALENDDATE'] > $endDate)
-												$delayCounter++;
-										}
-									?>
-									<p>Total number of delayed tasks:<b> <?php echo $delayCounter;?></b></p>
-									<p>Total number of early tasks:<b> <?php echo $earlyCounter;?></b></p>
-								</div>
+											foreach ($changeRequests as $request)
+											{
+												if($request['REQUESTSTATUS'] == 'Approved' )
+													$approvedCounter++;
+												if($request['REQUESTSTATUS'] == 'Denied' )
+													$deniedCounter++;
+												if($request['REQUESTSTATUS'] == 'Pending' )
+													$pendingCounter++;
 
-								<div style="display:inline-block; margin-left:">
-									<p>Total number of requests: <b><?php echo count($changeRequests);?></b></p>
-									<?php
-
-										$approvedCounter = 0;
-										$deniedCounter = 0;
-										$pendingCounter = 0;
-										$dateCounter = 0;
-										$performerCounter = 0;
-
-										foreach ($changeRequests as $request)
-										{
-											if($request['REQUESTSTATUS'] == 'Approved' )
-												$approvedCounter++;
-											if($request['REQUESTSTATUS'] == 'Denied' )
-												$deniedCounter++;
-											if($request['REQUESTSTATUS'] == 'Pending' )
-												$pendingCounter++;
-
-											if($request['REQUESTTYPE'] == '1' )
-												$performerCounter++;
-											else
-												$dateCounter++;
-										}
-									?>
-									<p style="text-indent:5%">Change Performer: <b><?php echo $performerCounter;?></b></p>
-									<p style="text-indent:5%">Change End Date: <b><?php echo $dateCounter;?></b></p>
-								</div>
-								<div style="display:inline-block;">
-									<p>Total number of approved requests: <b><?php echo $approvedCounter;?></b></p>
-									<p>Total number of denied requests: <b><?php echo $deniedCounter;?></b></p>
-									<p>Total number of missed requests: <b><?php echo $pendingCounter;?></b></p>
-								</div>
+												if($request['REQUESTTYPE'] == '1' )
+													$performerCounter++;
+												else
+													$dateCounter++;
+											}
+										?>
+										<tr>
+											<th width="25.33%"></th>
+											<th width="25.33%"></th>
+											<th width="25.33%"></th>
+										</tr>
+										<tr>
+											<td><p>Date of Completion: <b><?php echo date_format($actualenddate, "F d, Y"); ?></b></p></td>
+											<td><p>Total number of main activities: <b><?php echo count($mainActivity); ?></b></p></td>
+											<td><p>Total number of requests: <b><?php echo count($changeRequests);?></b></p></td>
+										</tr>
+										<tr>
+											<td><p>Total number of days: <b><?php echo $project['actualDuration']; ?></b></p></td>
+											<td><p>Total number of sub activities: <b><?php echo count($subActivity); ?></b></p></td>
+											<td><p style="text-indent:5%">Change Performer: <b><?php echo $performerCounter;?></b></p></td>
+										</tr>
+										<tr>
+											<td><p>Departments involved: <b><?php echo count($departments);?></b></p></td>
+											<td><p>Total number of tasks: <b><?php echo count($tasks); ?></b></p></td>
+											<td><p style="text-indent:5%">Change End Date: <b><?php echo $dateCounter;?></b></p></td>
+										</tr>
+										<tr>
+											<td><p>People involved: <b><?php echo count($team);?></b></p></td>
+											<td><p>Total number of delayed tasks:<b> <?php echo $delayCounter;?></b></p></td>
+											<td><p>Total number of approved requests: <b><?php echo $approvedCounter;?></b></p></td>
+										</tr>
+										<tr>
+											<td><p>Total number of documents: <b><?php echo count($documents);?></b></p></td>
+											<td><p>Total number of early tasks:<b> <?php echo $earlyCounter;?></b></p></td>
+											<td><p>Total number of denied requests: <b><?php echo $deniedCounter;?></b></p></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td></td>
+											<td><p>Total number of missed requests: <b><?php echo $pendingCounter;?></b></p></td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
 	        <!-- /.col -->
-
-				</div>
-
-				<div class="row">
 					<div class="col-md-3 col-sm-3 col-xs-12">
 						<div class="box box-danger">
 							<div class="box-header with-border">
@@ -142,6 +150,10 @@
 						</div>
 					</div>
 	        <!-- /.col -->
+				</div>
+
+				<div class="row">
+
 				</div>
 
 				<!-- ALL DEPARTMENTS INVOLVED IN THE PROJECT -->
