@@ -110,20 +110,6 @@
 							</div>
 						</div>
 					</div>
-          <!-- <h4>Number of ongoing projects:
-						<?php foreach ($pCount as $p): ?>
-							<?php  if ($p['USERID'] == $user['USERID']): ?>
-								<?php echo $p['projectCount']; ?>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					</h4>
-          <h4>Number of ongoing tasks:
-						<?php foreach ($tCount as $t): ?>
-							<?php  if ($t['USERID'] == $user['USERID']): ?>
-								<?php echo $t['taskCount']; ?>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					</h4> -->
 
           <div class="box box-danger">
             <div class="box-header with-border">
@@ -148,7 +134,7 @@
 	                <tbody>
 	                  <?php foreach ($tasks as $t): ?>
 											<?php if ($row['PROJECTID'] == $t['PROJECTID']): ?>
-												<tr data-toggle='modal' data-target='#taskDetails' class='clickable'>
+												<tr data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>">
 													<?php if ($t['TASKSTATUS'] == 'Ongoing'): ?>
 														<td class="bg-green"></td>
 													<?php elseif ($t['TASKSTATUS'] == 'Delayed'): ?>
@@ -215,75 +201,51 @@
             <!-- /.box-body -->
           </div>
 
-          <!-- Task Detail Modal -->
-          <div class="modal fade" id="taskDetails" tabindex="-1">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h2 class="modal-title">Task Name here</h2>
-                  <h3 class="modal-title">Project Name here</h3>
-                </div>
-                <div class="modal-body">
-                  <h4>Delegate History</h4>
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th width="25%">Delagated By</th>
-                        <th width="25%">Accountable</th>
-                        <th width="25%">Consulted</th>
-                        <th width="25%">Informed</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <!-- IF NULL -->
-                      <tr>
-                        <td colspan="4" align="center">No history</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <h4>RFC History</h4>
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th width="20%">Type</th>
-                        <th width="20%">Requested By</th>
-                        <th width="20%">Approved By</th>
-                        <th width="20%">Request Date</th>
-                        <th width="20%">Approved Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <!-- IF NULL -->
-                      <tr>
-                        <td colspan="5" align="center">No History</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-                    <button id = "doneConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i> </button> -->
-                  </div>
-                </div>
-              </div>
-              <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-          </div>
-          <!-- /.modal -->
+					<!-- Task Details Modal -->
+					<div class="modal fade" id="taskDetails" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title" id='taskTitle'>Task Name here</h2>
+									<h4 id="taskDates">Start Date - End Date (Days)</h4>
+								</div>
+								<div class="modal-body">
+									<!-- <h4>Task Delegation</h4>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th width="20%">Delagated By</th>
+												<th width="20%">Responsible</th>
+												<th width="20%">Accountable</th>
+												<th width="20%">Consulted</th>
+												<th width="20%">Informed</th>
+											</tr>
+										</thead>
+										<tbody id="delegationHistory">
+										</tbody>
+									</table> -->
+									<h4>Change Requests</h4>
+									<table class="table table-bordered">
+										<thead id="rfcHeader">
+											<tr>
+												<th width="20%" class='text-center'>Type</th>
+												<th width="20%">Requested By</th>
+												<th width="20%">Date Requested</th>
+												<th width="20%" class='text-center'>Status</th>
+												<th width="20%">Reviewed By</th>
+												<th width="20%">Date Reviewed</th>
+											</tr>
+										</thead>
+										<tbody id="rfcHistory">
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
 				</section>
 				<!-- /.content -->
 			</div>
@@ -294,6 +256,126 @@
 			$("#monitor").addClass("active");
 			$("#monitorTeam").addClass("active");
       $('.circlechart').circlechart(); // Initialization
+
+			$(document).on("click", ".task", function(){
+				var $taskID = $(this).attr('data-id');
+
+				$.ajax({
+					type:"POST",
+					url: "<?php echo base_url("index.php/controller/loadTaskHistory"); ?>",
+					data: {task_ID: $taskID},
+					dataType: 'json',
+					success:function(data)
+					{
+						$("#taskTitle").html(data['task'].TASKTITLE);
+
+						if(data['task'].TASKADJUSTEDSTARTDATE == null)
+							var startDate = data['task'].TASKSTARTDATE;
+						else
+							var startDate = data['task'].TASKADJUSTEDSTARTDATE;
+
+						if(data['task'].TASKADJUSTEDENDDATE == null)
+							var endDate = data['task'].TASKENDDATE;
+						else
+							var endDate = data['task'].TASKADJUSTEDENDDATE;
+
+						var diff = ((new Date(endDate) - new Date(startDate))/ 1000 / 60 / 60 / 24)+1;
+
+						$("#taskDates").html(moment(startDate).format('MMMM DD, YYYY') + " - " + moment(endDate).format('MMMM DD, YYYY') + " (" + diff);
+	 				 	if(diff > 1)
+	 						$("#taskDates").append(" days)");
+	 				 	else
+	 						$("#taskDates").append(" day)");
+
+						// TASK DELEGATION
+						// $("#delegationHistory").html("");
+						// var isDelegated = 'false';
+						// for(rh=0; rh < data['raciHistory'].length; rh++)
+						// {
+						// 	if(isDelegated == 'false' && data['raciHistory'][rh].ROLE == '0')
+						// 	{
+						// 		isDelegated = 'true';
+						// 		$("#delegationHistory").append(
+						// 			"<tr>" + "<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '1')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '2')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '3')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '4')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '4' && data['raciHistory'][rh+1].ROLE == '5')
+						// 	{
+						// 		isDelegated = 'false';
+						// 		$("#delegationHistory").append("<tr>");
+						// 	}
+						// }
+
+						// RFC HISTORY
+						if(data['changeRequests'].length <= 0)
+						{
+							$("#rfcHistory").html("<h4 colspan='5' align='center'>No history</h4>")
+							$("#rfcHeader").hide();
+						}
+						else
+						{
+							$("#rfcHistory").html("");
+							$("#rfcHeader").show();
+
+							for(r=0; r < data['changeRequests'].length; r++)
+							{
+								if(data['changeRequests'][r].REQUESTTYPE == '1')
+									var type = "<i class='fa fa-user-times'></i>";
+								else
+									var type = "<i class='fa fa-calendar'></i>";
+
+								var approver="-";
+								for(u=0; u < data['users'].length; u++)
+								{
+									if(data['changeRequests'][r].users_REQUESTEDBY == data['users'][u].USERID)
+										var requester = data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME;
+
+									if(data['changeRequests'][r].users_APPROVEDBY == data['users'][u].USERID)
+										var approver = data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME;
+								}
+
+								$("#rfcHistory").append(
+									"<tr>" +
+									"<td align='center'>" + type + "</td>" +
+									"<td>" + requester + "</td>" +
+									"<td>" + moment(data['changeRequests'][r].REQUESTEDDATE).format('MMM DD, YYYY') + "</td>" +
+									"<td align='center'>" + data['changeRequests'][r].REQUESTSTATUS + "</td>" +
+									"<td>" + approver + "</td>" +
+									"<td>" + moment(data['changeRequests'][r].APPROVEDDATE).format('MMM DD, YYYY') + "</td>" +
+									"</tr>");
+							}
+						}
+					},
+					error:function(data)
+					{
+						alert("There was a problem with loading the change requests");
+					}
+				});
+			});
 		</script>
 	</body>
 </html>
