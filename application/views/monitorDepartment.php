@@ -75,6 +75,74 @@
 	              </div>
 							</div>
 		        </div>
+
+						<div class="col-md-8 col-sm- col-xs-12">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+
+									<?php $delayCount = 0?>
+
+									<?php foreach($tasks as $task)
+										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+											$endDate = $task['TASKENDDATE'];
+										else
+											$endDate = $task['TASKADJUSTEDENDDATE'];
+
+											$currentDate = date("Y-m-d");
+											date_default_timezone_set("Singapore");
+
+										if($task['TASKSTATUS'] == 'Ongoing' && $currentDate > $endDate)
+											$delayCount++;
+									?>
+
+									<h3 class="box-title">Delayed Tasks</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<?php if($delayCount == 0 && $tasks != null):?>
+									<table class="table table-bordered responsive">
+		                <thead>
+		                  <tr>
+		                    <th width="50%">Task</th>
+		                    <th width="20%">Responsible</th>
+												<th width="20%">Department</th>
+		                    <th width="15%" class="text-center">Target<br>End Date</th>
+												<th width"5%" class='text-center'>Days Delayed</th>
+		                  </tr>
+		                </thead>
+		                <tbody>
+											<?php foreach($tasks as $task):?>
+												<?php
+												if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+												{
+													$endDate = $task['TASKENDDATE'];
+													$delay = $task['initialDelay'];
+												}
+												else
+												{
+													$endDate = $task['TASKADJUSTEDENDDATE'];
+													$delay = $task['adjustedDelay'];
+												}
+												?>
+
+											<?php if($task['TASKSTATUS'] == 'Ongoing' && $task['currDate'] > $endDate):?>
+			                  <tr data-toggle='modal' data-target='#taskDetails'>
+			                    <td><?php echo $task['TASKTITLE'];?></td>
+			                    <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
+													<td><?php echo $task['DEPARTMENTNAME'];?></td>
+			                    <td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
+			                    <td align="center"><span style="color:red"><?php echo $delay;?></span></td>
+			                  </tr>
+											<?php endif;?>
+										<?php endforeach;?>
+		                </tbody>
+		              </table>
+								<?php else:?>
+									<h4 align="center">There are no delayed tasks</h4>
+								<?php endif;?>
+	              </div>
+							</div>
+		        </div>
 					</div>
 
 					<form id="deptForm" action = 'monitorDepartmentDetails'  method="POST">

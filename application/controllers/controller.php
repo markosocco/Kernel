@@ -455,7 +455,18 @@ class controller extends CI_Controller
 			$data['tCountStaff'] = array();
 			$data['pCountStaff'] = array();
 
-			$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
+			if ($_SESSION['usertype_USERTYPEID'] == 3)
+			{
+				// echo "head";
+				$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
+			}
+
+			elseif ($_SESSION['usertype_USERTYPEID'] == 4)
+			{
+				// echo "sup";
+				$data['staff'] = $this->model->getAllUsersBySupervisor($_SESSION['USERID']);
+			}
+
 			$data['projects'] = $this->model->getAllProjects();
 			$data['projectCount'] = $this->model->getProjectCount();
 			$data['taskCount'] = $this->model->getTaskCount();
@@ -539,6 +550,7 @@ class controller extends CI_Controller
 			$data['tasks'] = $this->model->getAllTasksForAllOngoingProjects($id);
 			$data['timeliness'] = $this->model->compute_timeliness_employee($id);
 			$data['completeness'] = $this->model->compute_completeness_employee($id);
+			$data['raci'] = $this->model->getAllACI();
 
 			$this->load->view("monitorMembers", $data);
 		}
@@ -558,6 +570,7 @@ class controller extends CI_Controller
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
 
 			$this->load->view("monitorDepartment", $data);
 		}
@@ -576,7 +589,7 @@ class controller extends CI_Controller
 			$deptID = $this->input->post('dept_ID');
 
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
-			$data['tasks'] = $this->model->getAllProjectTasksByDepartment($projectID, $deptID);
+			$data['tasks'] = $this->model->getAllDepartmentTasksByProject($projectID, $deptID);
 
 			$this->load->view("monitorDepartmentDetails", $data);
 		}
@@ -591,10 +604,10 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['ongoingProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Ongoing", "projects.PROJECTENDDATE");
-			$data['plannedProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Planning", "projects.PROJECTSTARTDATE");
+			$data['ongoingProjects'] = $this->model->getAllOngoingOwnedProjectsByUser($_SESSION['USERID']);
+			$data['plannedProjects'] = $this->model->getAllPlannedOwnedProjectsByUser($_SESSION['USERID']);
 			$data['delayedProjects'] = $this->model->getAllDelayedOwnedProjectsByUser($_SESSION['USERID']);
-			$data['completedProjects'] = $this->model->getAllOwnedProjectsByUser($_SESSION['USERID'], "Complete", "projects.PROJECTACTUALENDDATE");
+			$data['completedProjects'] = $this->model->getAllCompletedOwnedProjectsByUser($_SESSION['USERID']);
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
@@ -2344,6 +2357,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjects();
+			$data['departments'] = $this->model->getAllDepartments();
 			$data['projectCompleteness'] = $this->model->compute_completeness_allProjects();
 			$data['projectTimeliness'] = $this->model->compute_timeliness_allProjects();
 
