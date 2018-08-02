@@ -459,7 +459,7 @@
 																				<i class="fa fa-calendar"></i>
 																			</div>
 																			<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-0"
-																			data-subAct="<?php echo $sValue['TASKID'];?>" data-num="<?php echo $tKey; ?>"
+																			data-subAct="<?php echo $sValue['TASKID'];?>" data-num="0"
 																			data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
 																			data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
 																		</div>
