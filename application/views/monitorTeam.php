@@ -85,7 +85,15 @@
 														<h5 class="description-header">
 															<?php foreach ($performance as $p): ?>
 																<?php if ($p['USERID'] == $row['USERID']): ?>
-																	<?php echo $p['timeliness'] . "%"; ?>
+																	<?php if ($p['timeliness'] == NULL): ?>
+																		0%
+																	<?php elseif ($p['timeliness'] == 100.00): ?>
+																		100%
+																	<?php elseif ($p['timeliness'] == 0.00): ?>
+																		0%
+																	<?php else: ?>
+																		<?php echo $p['timeliness'] . "%"; ?>
+																	<?php endif; ?>
 																<?php endif; ?>
 															<?php endforeach; ?>
 														</h5>

@@ -1742,5 +1742,27 @@ class model extends CI_Model
     return $query->result_array();
   }
 
+  public function getAllACI()
+  {
+    $condition = "raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllUsersBySupervisor($id)
+  {
+    $condition = "users_SUPERVISORS = " . $id;
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>
