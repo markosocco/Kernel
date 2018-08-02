@@ -211,50 +211,50 @@ class controller extends CI_Controller
 					}
 				}
 
-				// check for project weekly progress
-				$data['latestProgress'] = $this->model->getLatestWeeklyProgress();
+				// // check for project weekly progress
+				// $data['latestProgress'] = $this->model->getLatestWeeklyProgress();
+				//
+				// foreach($data['latestProgress'] as $latestProgressDetails){
+				//
+				// 	// echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
+				//
+				// 	$isFound = $this->model->checkAssessmentProject($latestProgressDetails['projects_PROJECTID']);
+				//
+				// 	if(!$isFound){
+				// 		$completeness = $this->model->compute_completeness_project($latestProgressDetails['projects_PROJECTID']);
+				// 		$timeliness = $this->model->compute_timeliness_project($latestProgressDetails['projects_PROJECTID']);
+				//
+				// 		$progressData = array(
+				// 			'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
+				// 			'DATE' => date('Y-m-d'),
+				// 			'COMPLETENESS' => $completeness['completeness'],
+				// 			'TIMELINESS' => $timeliness['timeliness']
+				// 		);
+				// 		$this->model->addAssessmentProject($progressData);
+				// 	}
+				// }
 
-				foreach($data['latestProgress'] as $latestProgressDetails){
-
-					// echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
-
-					$isFound = $this->model->checkAssessmentProject($latestProgressDetails['projects_PROJECTID']);
-
-					if(!$isFound){
-						$completeness = $this->model->compute_completeness_project($latestProgressDetails['projects_PROJECTID']);
-						$timeliness = $this->model->compute_timeliness_project($latestProgressDetails['projects_PROJECTID']);
-
-						$progressData = array(
-							'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
-							'DATE' => date('Y-m-d'),
-							'COMPLETENESS' => $completeness['completeness'],
-							'TIMELINESS' => $timeliness['timeliness']
-						);
-						$this->model->addAssessmentProject($progressData);
-					}
-				}
-
-				// check for department assessment
-				$data['latestAssessmentDepartment'] = $this->model->getLatestAssessmentDepartment();
-
-				foreach($data['latestAssessmentDepartment'] as $latestAssessment){
-
-					$isFound = $this->model->checkAssessmentDepartment($latestAssessment['departments_DEPARTMENTID']);
-
-					if(!$isFound){
-
-						$completeness = $this->model->compute_completeness_department($latestAssessment['departments_DEPARTMENTID']);
-						$timeliness = $this->model->compute_timeliness_department($latestAssessment['departments_DEPARTMENTID']);
-
-						$progressData = array(
-							'departments_DEPARTMENTID' => $latestAssessment['departments_DEPARTMENTID'],
-							'DATE' => date('Y-m-d'),
-							'COMPLETENESS' => $completeness['completeness'],
-							'TIMELINESS' => $timeliness['timeliness']
-						);
-						$this->model->addAssessmentDepartment($progressData);
-					}
-				}
+				// // check for department assessment
+				// $data['latestAssessmentDepartment'] = $this->model->getLatestAssessmentDepartment();
+				//
+				// foreach($data['latestAssessmentDepartment'] as $latestAssessment){
+				//
+				// 	$isFound = $this->model->checkAssessmentDepartment($latestAssessment['departments_DEPARTMENTID']);
+				//
+				// 	if(!$isFound){
+				//
+				// 		$completeness = $this->model->compute_completeness_department($latestAssessment['departments_DEPARTMENTID']);
+				// 		$timeliness = $this->model->compute_timeliness_department($latestAssessment['departments_DEPARTMENTID']);
+				//
+				// 		$progressData = array(
+				// 			'departments_DEPARTMENTID' => $latestAssessment['departments_DEPARTMENTID'],
+				// 			'DATE' => date('Y-m-d'),
+				// 			'COMPLETENESS' => $completeness['completeness'],
+				// 			'TIMELINESS' => $timeliness['timeliness']
+				// 		);
+				// 		$this->model->addAssessmentDepartment($progressData);
+				// 	}
+				// }
 
 				// // check for employee assessment
 				// $data['latestAssessmentEmployee'] = $this->model->getLatestAssessmentEmployee();
