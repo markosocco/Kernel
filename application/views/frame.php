@@ -636,7 +636,7 @@ desired effect
           }
         }
       });
-    } setInterval(checkTasks, 10000);
+    } setInterval(checkTasks, 150000);
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip({container: 'body'});
