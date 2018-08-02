@@ -569,8 +569,22 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+			// $data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
 			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
 			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
+
+			// foreach($data['departments'] as $d)
+			// {
+			// 	echo " == " . $d['DEPARTMENTNAME'] . " == <br>";
+			//
+			// 	foreach ($data['departmentsPerf'] as $p)
+			// 	{
+			// 		if ($d['DEPARTMENTID'] == $p['DEPARTMENTID'])
+			// 		{
+			// 			echo $p['timeliness'] . "<br>";
+			// 		}
+			// 	}
+			// }
 
 			$this->load->view("monitorDepartment", $data);
 		}
@@ -590,6 +604,7 @@ class controller extends CI_Controller
 
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
 			$data['tasks'] = $this->model->getAllDepartmentTasksByProject($projectID, $deptID);
+			$data['raci'] = $this->model->getAllACI();
 
 			$this->load->view("monitorDepartmentDetails", $data);
 		}
@@ -991,6 +1006,17 @@ class controller extends CI_Controller
 		$this->taskTodo();
 	}
 
+	public function loadTaskHistory()
+	{
+		$taskID = $this->input->post("task_ID");
+		$data['task'] = $this->model->getTaskByID($taskID);
+		$data['raciHistory'] = $this->model->getAllRACIbyTask($taskID);
+		$data['changeRequests'] = $this->model->getChangeRequestsByTask($taskID);
+		$data['users'] = $this->model->getAllUsers();
+
+		echo json_encode($data);
+	}
+
 	public function loadTasks()
 	{
 		$data['users'] = $this->model->getAllUsers();
@@ -1057,7 +1083,7 @@ class controller extends CI_Controller
 		$this->model->addToProjectLogs($logData);
 		// END: LOG DETAILS
 
-		$taskRACI = $this->db->getRACIbyTask($taskID);
+		$taskRACI = $this->model->getRACIbyTask($taskID);
 		foreach($taskRACI as $raci){
 
 			if($raci['ROLE'] != 5){
@@ -2571,7 +2597,7 @@ class controller extends CI_Controller
 			$data['project'] = $this->model->getProjectByID($id);
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
-			$data['tasks'] = $this->model->getAllTasksByID($id);
+			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
 			$data['documents'] = $this->model->getAllDocumentsByProject($id);

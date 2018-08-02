@@ -126,10 +126,13 @@
                 <thead>
                   <tr>
 										<th width='.5%'></th>
-                    <th width="50%">Task</th>
-                    <th width="29.5%">Responsible</th>
-                    <th width="10%" class='text-center'>Start Date</th>
-                    <th width="10%" class='text-center'>Target<br>End Date</th>
+                    <th width="23.5%">Task</th>
+										<th width="8%" class='text-center'>Start Date</th>
+										<th width="8%" class='text-center'>Target<br>End Date</th>
+                    <th width="15%">Responsible</th>
+										<th width="15%">Accountable</th>
+										<th width="15%">Consulted</th>
+										<th width="15%">Informed</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -145,7 +148,7 @@
 										else
 											$endDate = $task['TASKADJUSTEDENDDATE'];
 										?>
-                  <tr class="clickable" data-toggle='modal' data-target='#taskDetails'>
+                  <tr class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-toggle='modal' data-target='#taskDetails'>
 										<?php if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
 											<td class='bg-red'></td>
 										<?php elseif($endDate >= $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
@@ -156,9 +159,36 @@
 											<td class='bg-yellow'></td>
 										<?php endif;?>
 										<td><?php echo $task['TASKTITLE'];?></td>
+										<td align='center'><?php echo date_format($startDate, "M d, Y");?></td>
+										<td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
                     <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
-                    <td align='center'><?php echo date_format($startDate, "M d, Y");?></td>
-                    <td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
+										<td>
+											<?php foreach ($raci as $raciRow): ?>
+												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+													<?php if ($raciRow['ROLE'] == '2'): ?>
+														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+													<?php endif; ?>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</td>
+										<td>
+											<?php foreach ($raci as $raciRow): ?>
+												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+													<?php if ($raciRow['ROLE'] == '3'): ?>
+														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+													<?php endif; ?>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</td>
+										<td>
+											<?php foreach ($raci as $raciRow): ?>
+												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+													<?php if ($raciRow['ROLE'] == '4'): ?>
+														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+													<?php endif; ?>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</td>
                   </tr>
 								<?php endforeach;?>
                 </tbody>
@@ -172,55 +202,37 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h2 class="modal-title">Task Name here</h2>
+                  <h2 class="modal-title" id='taskTitle'>Task Name here</h2>
+									<h4 id="taskDates">Start Date - End Date (Days)</h4>
                 </div>
                 <div class="modal-body">
-                  <h4>Delegate History</h4>
+                  <!-- <h4>Task Delegation</h4>
                   <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th width="25%">Delagated By</th>
-                        <th width="25%">Accountable</th>
-                        <th width="25%">Consulted</th>
-                        <th width="25%">Informed</th>
+                        <th width="20%">Delagated By</th>
+												<th width="20%">Responsible</th>
+                        <th width="20%">Accountable</th>
+                        <th width="20%">Consulted</th>
+                        <th width="20%">Informed</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <!-- IF NULL -->
-                      <tr>
-                        <td colspan="4" align="center">No history</td>
-                      </tr>
+                    <tbody id="delegationHistory">
                     </tbody>
-                  </table>
-                  <h4>RFC History</h4>
+                  </table> -->
+                  <h4>Change Requests</h4>
                   <table class="table table-bordered">
-                    <thead>
+                    <thead id="rfcHeader">
                       <tr>
-                        <th width="20%">Type</th>
+                        <th width="20%" class='text-center'>Type</th>
                         <th width="20%">Requested By</th>
-                        <th width="20%">Approved By</th>
-                        <th width="20%">Request Date</th>
-                        <th width="20%">Approved Date</th>
+												<th width="20%">Date Requested</th>
+												<th width="20%" class='text-center'>Status</th>
+                        <th width="20%">Reviewed By</th>
+                        <th width="20%">Date Reviewed</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <!-- IF NULL -->
-                      <tr>
-                        <td colspan="5" align="center">No History</td>
-                      </tr>
+                    <tbody id="rfcHistory">
                     </tbody>
                   </table>
                 </div>
@@ -247,6 +259,126 @@
 				$("#backForm").append("<input type='hidden' name='project_ID' value= " + $project + ">");
 				$("#backForm").submit();
 				});
+
+			$(document).on("click", ".task", function(){
+				var $taskID = $(this).attr('data-id');
+
+				$.ajax({
+					type:"POST",
+					url: "<?php echo base_url("index.php/controller/loadTaskHistory"); ?>",
+					data: {task_ID: $taskID},
+					dataType: 'json',
+					success:function(data)
+					{
+						$("#taskTitle").html(data['task'].TASKTITLE);
+
+						if(data['task'].TASKADJUSTEDSTARTDATE == null)
+							var startDate = data['task'].TASKSTARTDATE;
+						else
+							var startDate = data['task'].TASKADJUSTEDSTARTDATE;
+
+						if(data['task'].TASKADJUSTEDENDDATE == null)
+							var endDate = data['task'].TASKENDDATE;
+						else
+							var endDate = data['task'].TASKADJUSTEDENDDATE;
+
+						var diff = ((new Date(endDate) - new Date(startDate))/ 1000 / 60 / 60 / 24)+1;
+
+						$("#taskDates").html(moment(startDate).format('MMMM DD, YYYY') + " - " + moment(endDate).format('MMMM DD, YYYY') + " (" + diff);
+	 				 	if(diff > 1)
+	 						$("#taskDates").append(" days)");
+	 				 	else
+	 						$("#taskDates").append(" day)");
+
+						// TASK DELEGATION
+						// $("#delegationHistory").html("");
+						// var isDelegated = 'false';
+						// for(rh=0; rh < data['raciHistory'].length; rh++)
+						// {
+						// 	if(isDelegated == 'false' && data['raciHistory'][rh].ROLE == '0')
+						// 	{
+						// 		isDelegated = 'true';
+						// 		$("#delegationHistory").append(
+						// 			"<tr>" + "<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '1')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '2')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '3')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '4')
+						// 	{
+						// 		$("#delegationHistory").append(
+						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
+						// 	}
+						//
+						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '4' && data['raciHistory'][rh+1].ROLE == '5')
+						// 	{
+						// 		isDelegated = 'false';
+						// 		$("#delegationHistory").append("<tr>");
+						// 	}
+						// }
+
+						// RFC HISTORY
+						if(data['changeRequests'].length <= 0)
+						{
+							$("#rfcHistory").html("<h4 colspan='5' align='center'>No history</h4>")
+							$("#rfcHeader").hide();
+						}
+						else
+						{
+							$("#rfcHistory").html("");
+							$("#rfcHeader").show();
+
+							for(r=0; r < data['changeRequests'].length; r++)
+							{
+								if(data['changeRequests'][r].REQUESTTYPE == '1')
+									var type = "<i class='fa fa-user-times'></i>";
+								else
+									var type = "<i class='fa fa-calendar'></i>";
+
+								var approver="-";
+								for(u=0; u < data['users'].length; u++)
+								{
+									if(data['changeRequests'][r].users_REQUESTEDBY == data['users'][u].USERID)
+										var requester = data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME;
+
+									if(data['changeRequests'][r].users_APPROVEDBY == data['users'][u].USERID)
+										var approver = data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME;
+								}
+
+								$("#rfcHistory").append(
+									"<tr>" +
+									"<td align='center'>" + type + "</td>" +
+									"<td>" + requester + "</td>" +
+									"<td>" + moment(data['changeRequests'][r].REQUESTEDDATE).format('MMM DD, YYYY') + "</td>" +
+									"<td align='center'>" + data['changeRequests'][r].REQUESTSTATUS + "</td>" +
+									"<td>" + approver + "</td>" +
+									"<td>" + moment(data['changeRequests'][r].APPROVEDDATE).format('MMM DD, YYYY') + "</td>" +
+									"</tr>");
+							}
+						}
+					},
+					error:function(data)
+					{
+						alert("There was a problem with loading the change requests");
+					}
+				});
+			});
 		</script>
 	</body>
 </html>

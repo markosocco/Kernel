@@ -204,6 +204,19 @@ class model extends CI_Model
     return $query->row_array();
   }
 
+  public function getChangeRequestsByTask($id)
+  {
+    $this->db->select('*');
+    $this->db->from('changerequests');
+    $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
+    $this->db->where("tasks_REQUESTEDTASK = '$id'");
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
   public function getAllUsers()
   {
     $this->db->select('*, ' . $_SESSION['usertype_USERTYPEID'] . ' as "userType"');
@@ -1338,6 +1351,16 @@ class model extends CI_Model
     $this->db->join('users', ' raci.users_USERID = users.USERID');
     $this->db->join('tasks', 'raci.tasks_TASKID = tasks.TASKID');
     $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllRACIbyTask($taskID){
+    $condition = "tasks_TASKID = '" . $taskID . "'";
+    $this->db->from('raci');
+    $this->db->join('users', ' raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+    $this->db->order_by("RACIID");
 
     return $this->db->get()->result_array();
   }
