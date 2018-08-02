@@ -165,12 +165,12 @@ desired effect
                 <ul class="menu menuNotifs" style="background-color:#d6d2d2;">
                   <?php foreach ($_SESSION['notifications'] as $row): ?>
 
-                    <form method='POST' class ='notificationForm' action='notifRedirect'> </form>
+                    <form method='POST' class ='notificationForm' action='notifRedirect' style="height:0;weight:0;padding:0;margin:0;"> </form>
 
                     <!-- start notification -->
                     <?php if($row['STATUS'] = 'Read'): ?>
                     <!-- MARKO CHANGE COLOR HERE -->
-                      <li class="notification" style="background-color:#ededed;"
+                      <li class="notification" style="background-color:#ffffff;"
                           data-notifID="<?php echo $row['NOTIFICATIONID']; ?>"
                           data-projectID="<?php echo $row['projects_PROJECTID']; ?>"
                           data-type="<?php echo $row['TYPE']; ?>"
@@ -561,9 +561,9 @@ desired effect
               if(data['notifications'][i].status == "Unread"){
                 $counter++;
                 // MARKO CHANGE COLOR HERE
-                $color = "#d6d2d2";
+                $color = "#F5FFFA";
               } else {
-                $color = "#ededed";
+                $color = "#ffffff";
               }
 
               var $notifID = data['notifications'][i].NOTIFICATIONID;

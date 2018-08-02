@@ -32,11 +32,11 @@
 		    <section class="content container-fluid">
 					<div class="container-fluid">
 					  <ul class="list-unstyled multi-steps">
-					    <li>Project Details</li>
+					    <li>Input Project Details</li>
 					    <li class="is-active">Add Main Activities</li>
 					    <li>Add Sub Activities</li>
 					    <li>Add Tasks</li>
-					    <li>Add Dependencies</li>
+					    <li>Identify Dependencies</li>
 					  </ul>
 					</div>
 					<br>
