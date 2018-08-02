@@ -244,6 +244,7 @@
 				</div>
 
 				<!-- DELAYED TASKS -->
+				<?php if($changeRequests != null):?>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="box box-danger">
@@ -297,8 +298,25 @@
 	        </div>
 	        <!-- /.col -->
 				</div>
+			<?php else:?>
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="box box-danger">
+							<div class="box-header with-border">
+								<h3 class="box-title">Delayed Tasks</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<h4 align="center">There were no delayed task</h4>
+							</div>
+						</div>
+					</div>
+					<!-- /.col -->
+				</div>
+			<?php endif;?>
 
 				<!-- EARLY TASKS -->
+				<?php if($tasks != null):?>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="box box-danger">
@@ -353,6 +371,22 @@
 	        </div>
 	        <!-- /.col -->
 				</div>
+				<?php else:?>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+									<h3 class="box-title">Early Tasks</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<h4 align="center">There are no early tasks</h4>
+								</div>
+							</div>
+						</div>
+						<!-- /.col -->
+					</div>
+				<?php endif;?>
 
 				<!-- Requests -->
 				<?php if($changeRequests != null):?>
@@ -445,7 +479,7 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<h4 align="center">There are no change requests</h4>
+								<h4 align="center">There were no change requests</h4>
 							</div>
 						</div>
 	        </div>
