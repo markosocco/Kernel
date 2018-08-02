@@ -2892,7 +2892,7 @@ class controller extends CI_Controller
 		$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 		$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 		$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
-		$data['tasks'] = $this->model->getAllTasksByID($id);
+		$data['tasks'] = $this->model->getAllTasksByIDRole0($id);
 		$data['users'] = $this->model->getAllUsers();
 		$data['departments'] = $this->model->getAllDepartments();
 
