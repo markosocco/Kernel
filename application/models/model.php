@@ -1664,6 +1664,8 @@ class model extends CI_Model
     $this->db->where($condition);
     $this->db->group_by("USERID");
     $this->db->order_by("departments.DEPARTMENTNAME");
+
+    return $this->db->get()->result_array();
   }
 
   public function getAllProjectsByUser($id)
