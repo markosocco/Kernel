@@ -28,20 +28,49 @@
   <section>
     <!-- title row -->
     <div class="reportHeader viewCenter">
-      <h2>Projects Per Department</h2>
-      <h4>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></h4>
-      <h4>Prepared On: <?php echo date('F d, Y'); ?></h4>
+      <h2>Planned Projects</h2>
+      <h5>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></h5>
+      <h5>Prepared On: <?php echo date('F d, Y'); ?></h5>
     </div>
-    <div class="reportBody viewCenter">
+    <div class="reportBody">
       <!-- LOOP START HERE -->
 
-      <?php foreach ($departments as $dept): ?>
         <div class="box box-danger">
           <div class="box-header with-border">
-            <h3 class="box-title pull-left"><b><?php echo $dept['DEPARTMENTNAME']; ?></b></h3>
+            <!-- <h3 class="box-title pull-left"><b><?php echo $dept['DEPARTMENTNAME']; ?></b></h3> -->
           </div>
+          <table id="rfcList" class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <th>Project</th>
+              <th class='text-center'>Start Date</th>
+              <th class='text-center'>Target End Date</th>
+              <th class='text-center'>Days Before Launch</th>
+            </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($plannedProjects as $project): ?>
+
+                <?php
+                  $startDate = date_create($project['PROJECTSTARTDATE']);
+                  $endDate = date_create($project['PROJECTENDDATE']);
+                ?>
+
+                <tr>
+                  <td><?php echo $project['PROJECTTITLE'];?></td>
+                  <td align="center"><?php echo date_format($startDate, "M d, Y");?></td>
+                  <td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
+                  <td align="center"><?php echo $project['datediff']; ?></td>
+                  <!-- <td>Total Tasks</td>
+                  <td>Departments</td>
+                  <td>Team Size</td> -->
+
+                </tr>
+              <?php endforeach;?>
+
+            </tbody>
+          </table>
         </div>
-      <?php endforeach; ?>
 
     <div class="reportFooter viewCenter">
       <p>***END OF REPORT***</p>
