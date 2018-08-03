@@ -2373,6 +2373,8 @@ class controller extends CI_Controller
 		}
 	}
 
+	// REPORTS STARTS
+
 	public function reportsProjectPerDept()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -2390,6 +2392,24 @@ class controller extends CI_Controller
 			$this->load->view("reportsProjectPerDept", $data);
 		}
 	}
+
+	public function reportsOngoingProjects()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
+			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			
+			$this->load->view("reportsOngoingProjects", $data);
+		}
+	}
+
+	// REPORTS END
 
 	public function projectLogs()
 	{

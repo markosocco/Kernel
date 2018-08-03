@@ -530,7 +530,7 @@ class model extends CI_Model
 
   public function getOngoingProjectProgress()
 	{
-		$this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+		$this->db->select('projects.*, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
 		ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL))*(100 / COUNT(taskid))), 2) AS "projectProgress"');
 		$this->db->from('tasks');
 		$this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
