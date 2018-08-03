@@ -2404,12 +2404,28 @@ class controller extends CI_Controller
 		{
 			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-			
+
 			$this->load->view("reportsOngoingProjects", $data);
 		}
 	}
 
+	public function reportsPlannedProjects()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+
+			$this->load->view("reportsPlannedProjects", $data);
+		}
+	}
+
 	// REPORTS END
+
 
 	public function projectLogs()
 	{
