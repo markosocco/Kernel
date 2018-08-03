@@ -2391,6 +2391,21 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function reportsPlannedProjects()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
+
+			$this->load->view("reportsPlannedProjects", $data);
+		}
+	}
+
 	public function projectLogs()
 	{
 		if (!isset($_SESSION['EMAIL']))
