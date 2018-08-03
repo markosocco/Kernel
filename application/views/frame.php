@@ -582,7 +582,7 @@ desired effect
           }
         }
       });
-    } setInterval(checkNotif, 10000);
+    } setInterval(checkNotif, 150000);
 
     $("body").on('click', '.notification', function() {
 

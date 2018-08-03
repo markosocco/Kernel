@@ -2219,7 +2219,7 @@ class controller extends CI_Controller
 				$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 				$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 				$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
-				$data['tasks'] = $this->model->getAllTasksByID($id);
+				$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
 
 				$this->load->view("newProject", $data);
 			}
@@ -2315,7 +2315,7 @@ class controller extends CI_Controller
 				$data['editGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($edit);
 				$data['editMainActivity'] = $this->model->getAllMainActivitiesByID($edit);
 				$data['editSubActivity'] = $this->model->getAllSubActivitiesByID($edit);
-				$data['editTasks'] = $this->model->getAllTasksByID($edit);
+				$data['editTasks'] = $this->model->getAllTasksByIDRole1($edit);
 				$data['editRaci'] = $this->model->getRaci($edit);
 				$data['editUsers'] = $this->model->getAllUsers();
 			}
@@ -2705,7 +2705,7 @@ class controller extends CI_Controller
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
 				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
 				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
 				$data['templateRaci'] = $this->model->getRaci($templates);
 				$data['templateUsers'] = $this->model->getAllUsers();
 			}
@@ -3529,7 +3529,7 @@ class controller extends CI_Controller
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
 				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
 				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
 				$data['templateRaci'] = $this->model->getRaci($templates);
 				$data['templateUsers'] = $this->model->getAllUsers();
 			}
@@ -3712,7 +3712,7 @@ class controller extends CI_Controller
 					$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
 					$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
 					$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-					$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+					$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
 					$data['templateRaci'] = $this->model->getRaci($templates);
 					$data['templateUsers'] = $this->model->getAllUsers();
 				}
@@ -3940,7 +3940,7 @@ class controller extends CI_Controller
 				$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
 				$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
 				$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-				$data['templateTasks'] = $this->model->getAllTasksByID($templates);
+				$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
 				$data['templateRaci'] = $this->model->getRaci($templates);
 				$data['templateUsers'] = $this->model->getAllUsers();
 			}
