@@ -45,11 +45,12 @@
               <th>Project</th>
               <th class='text-center'>Start Date</th>
               <th class='text-center'>Target End Date</th>
+              <th class='text-center'>Days Remaining</th>
               <th class='text-center'>Progress</th>
-              <th class='text-center'>Total Tasks</th>
+              <!-- <th class='text-center'>Total Tasks</th>
               <th class='text-center'>Delayed Tasks</th>
               <th class='text-center'>Departments</th>
-              <th class='text-center'>Team Size</th>
+              <th class='text-center'>Team Size</th> -->
             </tr>
             </thead>
             <tbody>
@@ -71,8 +72,8 @@
                   <td><?php echo $project['PROJECTTITLE'];?></td>
                   <td align="center"><?php echo date_format($startDate, "M d, Y");?></td>
                   <td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
+                  <td align="center"><?php echo $project['datediff'];?></td>
                   <td align="center"><?php echo $projProgress;?>%</td>
-
 
                 </tr>
               <?php endforeach;?>
