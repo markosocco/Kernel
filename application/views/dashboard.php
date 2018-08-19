@@ -275,58 +275,60 @@
 					</div>
 
 
-					<!-- Right col -->
+					<?php if ($_SESSION['usertype_USERTYPEID'] != 5): ?>
+						<!-- Right col -->
 
-					<div class="col-md-6">
-						<div class="box box-danger">
-							<div class="box-header with-border">
-								<h3 class="box-title">Tasks I Need To Delegate (<?php echo count($delegateTasks);?>)</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<table class="table table-hover no-margin" id="projWeeklyProgress">
-										<thead>
-										<tr>
-											<th>Project</th>
-											<th>Task</th>
-											<th class="text-center">Start Date</th>
-											<th class="text-center">Days Until Launch</th>
-										</tr>
-										</thead>
-										<tbody>
-											<?php if ($delegateTasks != NULL): ?>
-
-											<?php foreach($delegateTasks as $delegateTask):?>
-												<?php $startdate = date_create($delegateTask['TASKSTARTDATE']);?>
-
-												<tr class="clickable delegate" data-id="<?php echo $delegateTask['TASKID'];?>">
-													<td><?php echo $delegateTask['PROJECTTITLE'];?></td>
-													<td><?php echo $delegateTask['TASKTITLE'];?></td>
-													<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
-													<td align="center"><?php echo $delegateTask['launching'];?></td>
-												</tr>
-											<?php endforeach;?>
-
-											<form class='delegateTaskClick' action = 'taskDelegate' method="POST">
-												<input type ='hidden' name='dashboard' value='0'>
-											</form>
-
-										<?php else: ?>
-										<tr>
-											<td colspan="4" align="center">No tasks to delegate</td>
-										</tr>
-										<?php endif;?>
-										</tbody>
-									</table>
+						<div class="col-md-6">
+							<div class="box box-danger">
+								<div class="box-header with-border">
+									<h3 class="box-title">Tasks I Need To Delegate (<?php echo count($delegateTasks);?>)</h3>
 								</div>
-								<!-- /.table-responsive -->
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<table class="table table-hover no-margin" id="projWeeklyProgress">
+											<thead>
+											<tr>
+												<th>Project</th>
+												<th>Task</th>
+												<th class="text-center">Start Date</th>
+												<th class="text-center">Days Until Launch</th>
+											</tr>
+											</thead>
+											<tbody>
+												<?php if ($delegateTasks != NULL): ?>
+
+												<?php foreach($delegateTasks as $delegateTask):?>
+													<?php $startdate = date_create($delegateTask['TASKSTARTDATE']);?>
+
+													<tr class="clickable delegate" data-id="<?php echo $delegateTask['TASKID'];?>">
+														<td><?php echo $delegateTask['PROJECTTITLE'];?></td>
+														<td><?php echo $delegateTask['TASKTITLE'];?></td>
+														<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
+														<td align="center"><?php echo $delegateTask['launching'];?></td>
+													</tr>
+												<?php endforeach;?>
+
+												<form class='delegateTaskClick' action = 'taskDelegate' method="POST">
+													<input type ='hidden' name='dashboard' value='0'>
+												</form>
+
+											<?php else: ?>
+											<tr>
+												<td colspan="4" align="center">No tasks to delegate</td>
+											</tr>
+											<?php endif;?>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.table-responsive -->
+								</div>
+								<!-- /.box-body -->
 							</div>
-							<!-- /.box-body -->
-						</div>
-							<!-- /.box-footer -->
-						</div>
-						<!-- /.box -->
+								<!-- /.box-footer -->
+							</div>
+							<!-- /.box -->
+					<?php endif; ?>
 
 
 				</div>
