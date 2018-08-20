@@ -240,7 +240,7 @@
 												<table id="teamList" class="table table-bordered table-hover">
 													<thead>
 													<tr>
-														<th>Department</th>
+														<th>Executive</th>
 														<th class='text-center'>R*</th>
 														<th class='text-center'>A</th>
 														<th class='text-center'>C</th>
@@ -259,7 +259,7 @@
 																<td class='text-center'>
 																	<div class="radio">
 																	<label>
-																		<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" required>
+																		<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" disabled>
 																	</label>
 																</div>
 																</td>
@@ -287,6 +287,12 @@
 															</tr>
 															<?php endif;?>
 														<?php endforeach;?>
+
+														<thead>
+															<tr>
+																<th colspan='5'>Department</th>
+															</tr>
+														</thead>
 
 														<!-- ALL DEPARTMENTS -->
 														<?php foreach($departments as $department):?>
