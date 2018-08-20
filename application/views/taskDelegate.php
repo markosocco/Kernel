@@ -41,7 +41,7 @@
 						<div class="col-md-10">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">To Do</h3>
+									<h3 class="box-title">To Delegate</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -145,7 +145,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo $totalToDoTasks;?></b></span></h4>
+										<h4 align="center" id ="toDoTasks"> Tasks <br><br><b><?php echo $totalToDoTasks;?></b></span></h4>
 									</div>
 								</div>
 							</div>
@@ -167,7 +167,7 @@
 					<div class="col-md-10">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">All Activities</h3>
+								<h3 class="box-title">All Tasks</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -270,7 +270,7 @@
 						<!-- /.box-header -->
 						<div class="box-body">
 							<div class="table-responsive">
-								<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo count($delegateTasks);?></b></span></h4>
+								<h4 align="center" id ="toDoTasks"> Tasks <br><br><b><?php echo count($delegateTasks);?></b></span></h4>
 							</div>
 						</div>
 					</div>
