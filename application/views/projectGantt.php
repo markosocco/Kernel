@@ -797,11 +797,9 @@
 							</form>
 							<span data-toggle="modal" data-target="#confirmArchive"><a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a></span>
 
-							<?php if ($projectProfile['users_USERID'] == $_SESSION['USERID']): ?>
-								<form action = 'projectSummary' method="POST" style="display:inline-block">
-								</form>
-								<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
-							<?php endif; ?>
+							<form action = 'projectSummary' method="POST" style="display:inline-block">
+							</form>
+							<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
 
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
@@ -809,11 +807,20 @@
 							</form>
 							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
 
+							<form action = 'projectSummary' method="POST" style="display:inline-block">
+							</form>
+							<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
+
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST" style="display:inline-block">
 								<input type="hidden" name="templates" value="<?php echo $projectProfile['PROJECTID']; ?>">
 							</form>
 							<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
+
+							<form action = 'projectSummary' method="POST" style="display:inline-block">
+							</form>
+							<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
+
 						<?php endif; ?>
 
 						<!-- <?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
