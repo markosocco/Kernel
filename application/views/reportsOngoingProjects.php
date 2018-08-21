@@ -43,10 +43,14 @@
             <thead>
             <tr>
               <th>Project</th>
+              <th>Details</th>
               <th class='text-center'>Start Date</th>
               <th class='text-center'>Target End Date</th>
-              <th class='text-center'>Days Remaining</th>
-              <th class='text-center'>Progress</th>
+              <th class='text-center'>Project Owner</th>
+              <th class='text-center'>Completeness</th>
+              <th class='text-center'>Timeliness</th>
+              <th class='text-center'>Status</th>
+              <th class='text-center'>Remaining</th>
               <!-- <th class='text-center'>Total Tasks</th>
               <th class='text-center'>Delayed Tasks</th>
               <th class='text-center'>Departments</th>
@@ -54,30 +58,225 @@
             </tr>
             </thead>
             <tbody>
-              <?php foreach ($ongoingProjects as $project): ?>
+              <?php //foreach ($ongoingProjects as $project): ?>
 
                 <?php
 
-                $startDate = date_create($project['PROJECTSTARTDATE']);
-                $endDate = date_create($project['PROJECTENDDATE']);
-
-                foreach($ongoingProjectProgress as $progress)
-                {
-                  if($progress['PROJECTID'] == $project['PROJECTID'])
-                    $projProgress = $progress['projectProgress'];
-                }
+                // $startDate = date_create($project['PROJECTSTARTDATE']);
+                // $endDate = date_create($project['PROJECTENDDATE']);
+                //
+                // foreach($ongoingProjectProgress as $progress)
+                // {
+                //   if($progress['PROJECTID'] == $project['PROJECTID'])
+                //     $projProgress = $progress['projectProgress'];
+                // }
               ?>
 
-                <tr>
+                <!-- <tr>
                   <td><?php echo $project['PROJECTTITLE'];?></td>
                   <td align="center"><?php echo date_format($startDate, "M d, Y");?></td>
                   <td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
                   <td align="center"><?php echo $project['datediff'];?></td>
                   <td align="center"><?php echo $projProgress;?>%</td>
 
-                </tr>
-              <?php endforeach;?>
-
+                </tr> -->
+              <?php //endforeach;?>
+              <tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>May 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Jun 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>May 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Jun 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr><tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>May 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Jun 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr><tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>May 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Jun 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>May 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Jun 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>May 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Jun 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Mickey Mouse</td>
+                <td align="center">34%</td>
+                <td align="center">100%</td>
+                <td>Ongoing</td>
+                <td align="center">6 days</td>
+              </tr>
             </tbody>
           </table>
         </div>

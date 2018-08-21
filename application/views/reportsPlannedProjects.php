@@ -43,31 +43,104 @@
             <thead>
             <tr>
               <th>Project</th>
+              <th>Details</th>
               <th class='text-center'>Start Date</th>
               <th class='text-center'>Target End Date</th>
+              <th class='text-center'>Project Owner</th>
               <th class='text-center'>Days Before Launch</th>
             </tr>
             </thead>
             <tbody>
-              <?php foreach ($plannedProjects as $project): ?>
+              <?php //foreach ($plannedProjects as $project): ?>
 
                 <?php
-                  $startDate = date_create($project['PROJECTSTARTDATE']);
-                  $endDate = date_create($project['PROJECTENDDATE']);
+                  // $startDate = date_create($project['PROJECTSTARTDATE']);
+                  // $endDate = date_create($project['PROJECTENDDATE']);
                 ?>
 
-                <tr>
+                <!-- <tr>
                   <td><?php echo $project['PROJECTTITLE'];?></td>
                   <td align="center"><?php echo date_format($startDate, "M d, Y");?></td>
                   <td align="center"><?php echo date_format($endDate, "M d, Y");?></td>
-                  <td align="center"><?php echo $project['datediff']; ?></td>
+                  <td align="center"><?php echo $project['datediff']; ?></td> -->
                   <!-- <td>Total Tasks</td>
                   <td>Departments</td>
                   <td>Team Size</td> -->
 
-                </tr>
-              <?php endforeach;?>
-
+                <!-- </tr> -->
+              <?php //endforeach;?>
+              <tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Andrew</td>
+                <td>1st branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Bloemen</td>
+                <td>2nd branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
+              <tr>
+                <td>Store Opening - DLSU Pericos</td>
+                <td>3rd branch in DLSU</td>
+                <td>Apr 1, 2018</td>
+                <td>Aug 28, 2018</td>
+                <td>Donald Duck</td>
+                <td align="center">14 days</td>
+              </tr>
             </tbody>
           </table>
         </div>

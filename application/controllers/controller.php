@@ -29,7 +29,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view('contact');
+			$this->load->view('login');
 		}
 	}
 
@@ -2424,6 +2424,83 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function reportsParkedProjects()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsParkedProjects");
+		}
+	}
+
+	public function reportsProjectPerformance()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsProjectPerformance");
+		}
+	}
+
+	public function reportsEmployeesPerformancePerProject()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsEmployeesPerformancePerProject");
+		}
+	}
+
+	public function reportsEmployeesPerformancePerEmployee()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsEmployeesPerformancePerEmployee");
+		}
+	}
+
+	public function reportsDepartmentalPerformancePerDepartment()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsDepartmentalPerformancePerDepartment");
+		}
+	}
+
+	public function reportsDepartmentalPerformancePerProject()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsDepartmentalPerformancePerProject");
+		}
+	}
 	// REPORTS END
 
 

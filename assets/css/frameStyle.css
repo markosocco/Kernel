@@ -16,7 +16,6 @@
   cursor: pointer;
 }
 
-
 /* STEP PROGRESS */
 .multi-steps > li.is-active:before, .multi-steps > li.is-active ~ li:before {
   content: counter(stepNum);
@@ -81,4 +80,35 @@
 .multi-steps > li.is-active ~ li:before {
   background-color: #ededed;
   border-color: #ededed;
+}
+
+@-webkit-keyframes flash {
+  from { background-color: #D53D2B; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes flash {
+  from { background-color: #D53D2B; }
+  to { background-color: inherit; }
+}
+@-o-keyframes flash {
+  from { background-color: #D53D2B; }
+  to { background-color: inherit; }
+}
+@keyframes flash {
+  from { background-color: #D53D2B; }
+  to { background-color: inherit; }
+}
+.flash {
+  -webkit-animation: flash 1.5s infinite; /* Safari 4+ */
+  -moz-animation:    flash 1.5s infinite; /* Fx 5+ */
+  -o-animation:      flash 1.5s infinite; /* Opera 12+ */
+  animation:         flash 1.5s infinite; /* IE 10+ */
+}
+
+#today
+{
+  text-align: center;
+  color: lightgray;
+  margin-top: 55%;
+  bottom: 0px;
 }

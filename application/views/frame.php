@@ -371,6 +371,11 @@ desired effect
         </li> -->
       </ul>
       <!-- /.sidebar-menu -->
+      <!-- Date Today -->
+      <div id="today">
+        <p>Today is Wed Aug 22 2018</p>
+      </div>
+      <!-- /. Date Today -->
     </section>
     <!-- /.sidebar -->
   </aside>
