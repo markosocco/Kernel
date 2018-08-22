@@ -84,7 +84,7 @@ desired effect
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
-      <a href="<?php echo base_url()."assets/"; ?>#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <a href="<?php echo base_url()."assets/"; ?>#" class="sidebar-toggle" data-toggle="push-menu" role="button" id="collapse">
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- Navbar Right Menu -->
@@ -373,7 +373,8 @@ desired effect
       <!-- /.sidebar-menu -->
       <!-- Date Today -->
       <div id="today">
-        <p>Today is Wed Aug 22 2018</p>
+        <?php $dateToday = date('D F d, Y');?>
+        <p>Today is <br><span style="color:yellow"><?php echo $dateToday;?></span></p>
       </div>
       <!-- /. Date Today -->
     </section>
@@ -647,6 +648,11 @@ desired effect
     $(function () {
       $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     });
+
+    $("body").on('click', '#collapse', function() {
+      $("#today").toggle();
+    });
+
 
   </script>
 
