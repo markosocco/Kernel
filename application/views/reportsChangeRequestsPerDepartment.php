@@ -44,7 +44,7 @@
             <thead>
               <tr>
                 <th>Request Date</th>
-                <th>Type</th>
+                <th width='5%'>Type</th>
                 <th>Requester</th>
                 <th>Reason</th>
                 <th>Task</th>
@@ -53,12 +53,12 @@
                 <th>Project</th>
                 <th>Status</th>
                 <th>Reviewed By</th>
-                <th class='text-center'>Reviewed On</th>
+                <th class='text-center' width="5%">Reviewed On</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>March 21, 2018</td>
+                <td>Mar 21, 2018</td>
                 <td>Change Performer</td>
                 <td>Winnie the Pooh</td>
                 <td>Not my function</td>
@@ -68,10 +68,10 @@
                 <td>Store Opening - DLSU Andrew</td>
                 <td>Denied</td>
                 <td>Mickey Mouse</td>
-                <td class='text-center'>March 22, 2018</td>
+                <td class='text-center'>Mar 22, 2018</td>
               </tr>
               <tr>
-                <td>March 29, 2018</td>
+                <td>Mar 29, 2018</td>
                 <td>Change Date</td>
                 <td>Piglet the Pig</td>
                 <td>Leave of Absence</td>
@@ -81,7 +81,7 @@
                 <td>Store Opening - DLSU Bloemen</td>
                 <td>Denied</td>
                 <td>Mickey Mouse</td>
-                <td class='text-center'>March 29, 2018</td>
+                <td class='text-center'>Mar 29, 2018</td>
               </tr>
             </tbody>
           </table>

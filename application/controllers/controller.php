@@ -2501,6 +2501,45 @@ class controller extends CI_Controller
 			$this->load->view("reportsDepartmentalPerformancePerProject");
 		}
 	}
+
+	public function reportsChangeRequestsPerEmployee()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsChangeRequestsPerEmployee");
+		}
+	}
+
+	public function reportsChangeRequestsPerDepartment()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsChangeRequestsPerDepartment");
+		}
+	}
+
+	public function reportsChangeRequestsPerProject()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('contact');
+		}
+
+		else
+		{
+			$this->load->view("reportsChangeRequestsPerProject");
+		}
+	}
 	// REPORTS END
 
 

@@ -63,8 +63,9 @@
             </thead>
             <tbody>
               <tr>
-                <td>March 21, 2018</td>
+                <td>Mar 21, 2018</td>
                 <td>Change Performer</td>
+                <td>Winnie</td>
                 <td>Marketing</td>
                 <td>Not my function</td>
                 <td>Task 2.3.4.5.6</td>
@@ -72,11 +73,12 @@
                 <td class='text-center'>Apr 5, 2018</td>
                 <td>Denied</td>
                 <td>Mickey Mouse</td>
-                <td class='text-center'>March 22, 2018</td>
+                <td class='text-center'>Mar 22, 2018</td>
               </tr>
               <tr>
-                <td>March 29, 2018</td>
+                <td>Mar 29, 2018</td>
                 <td>Change Date</td>
+                <td>Winnie</td>
                 <td>Marketing</td>
                 <td>Leave of Absence</td>
                 <td>Task 2.3.4.5.6</td>
@@ -84,11 +86,12 @@
                 <td class='text-center'>Apr 5, 2018</td>
                 <td>Denied</td>
                 <td>Mickey Mouse</td>
-                <td class='text-center'>March 29, 2018</td>
+                <td class='text-center'>Mar 29, 2018</td>
               </tr>
               <tr>
-                <td>March 21, 2018</td>
+                <td>Mar 21, 2018</td>
                 <td>Change Performer</td>
+                <td>Winnie</td>
                 <td>Marketing</td>
                 <td>Not my function</td>
                 <td>Task 2.3.4.5.6</td>
@@ -96,11 +99,12 @@
                 <td class='text-center'>Apr 5, 2018</td>
                 <td>Denied</td>
                 <td>Mickey Mouse</td>
-                <td class='text-center'>March 22, 2018</td>
+                <td class='text-center'>Mar 22, 2018</td>
               </tr>
               <tr>
-                <td>March 29, 2018</td>
+                <td>Mar 29, 2018</td>
                 <td>Change Date</td>
+                <td>Winnie</td>
                 <td>Marketing</td>
                 <td>Leave of Absence</td>
                 <td>Task 2.3.4.5.6</td>
@@ -108,55 +112,7 @@
                 <td class='text-center'>Apr 5, 2018</td>
                 <td>Denied</td>
                 <td>Mickey Mouse</td>
-                <td class='text-center'>March 29, 2018</td>
-              </tr>
-              <tr>
-                <td>March 21, 2018</td>
-                <td>Change Performer</td>
-                <td>Marketing</td>
-                <td>Not my function</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>March 22, 2018</td>
-              </tr>
-              <tr>
-                <td>March 29, 2018</td>
-                <td>Change Date</td>
-                <td>Marketing</td>
-                <td>Leave of Absence</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>March 29, 2018</td>
-              </tr>
-              <tr>
-                <td>March 21, 2018</td>
-                <td>Change Performer</td>
-                <td>Marketing</td>
-                <td>Not my function</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>March 22, 2018</td>
-              </tr>
-              <tr>
-                <td>March 29, 2018</td>
-                <td>Change Date</td>
-                <td>Marketing</td>
-                <td>Leave of Absence</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>March 29, 2018</td>
+                <td class='text-center'>Mar 29, 2018</td>
               </tr>
             </tbody>
           </table>
