@@ -805,7 +805,7 @@
 
 							<form action = 'templateProject' method="POST" style="display:inline-block">
 							</form>
-							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
+							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template Project"><i class="fa fa-window-maximize"></i></a></span>
 
 							<form action = 'projectSummary' method="POST" style="display:inline-block">
 							</form>
@@ -1561,7 +1561,9 @@
 								'informed': '',
 								'period': '" . $value['initialTaskDuration'] . "',
 								'progressValue': '0%',
-								'parent': '" . $parent . "'
+								'parent': '" . $parent . "',
+								'connectTo': '" . $dependency . "',
+								'connectorType': '" . $type . "'
 							},";
 						} else { // START: RACI IS NOT EMPTY
 							// START: CHECKS IF MAIN OR SUB

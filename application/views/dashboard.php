@@ -155,15 +155,17 @@
 																	{
 																		if($row['datediff'] < 7){
 							 											 if($row['COMPLETENESS'] == 100.00){
-							 												 echo 100;
+							 												 echo "100%";
 							 											 } elseif ($row['COMPLETENESS'] == 0.00) {
-							 												 echo 0;
+							 												 echo "0%";
+																		 } elseif ($row['COMPLETENESS'] == NULL) {
+							 												 echo "-";
 							 											 } else {
-							 												 echo $row['COMPLETENESS'];
+							 												 echo $row['COMPLETENESS'] . "%";
 							 											 }
 							 										 }
 																	}
-																} ?>%</h2>
+																} ?></h2>
 														</td>
 														<td align="center">
 															<?php
@@ -243,8 +245,10 @@
 
 														if($data['DATEDIFF'] < 0){
 															$status = "DELAYED";
+															$color = 'red';
 														} else {
 															$status = $data['DATEDIFF'] . " day/s before deadline";
+															$color = 'black';
 														}
 
 														echo "<tr class='clickable deadline'>";
