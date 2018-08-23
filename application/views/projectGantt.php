@@ -805,11 +805,9 @@
 
 							<form action = 'templateProject' method="POST" style="display:inline-block">
 							</form>
-<<<<<<< HEAD
-							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template Project"><i class="fa fa-window-maximize"></i></a></span>
-=======
+
 							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
->>>>>>> 2043ea7b8f7826b17bf9d92b56a81e9949abc384
+
 
 							<form action = 'projectSummary' method="POST" style="display:inline-block">
 							</form>
