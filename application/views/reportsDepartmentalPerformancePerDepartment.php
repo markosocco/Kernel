@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Report - Employee Performance per Employee</title>
+  <title>Report - Departmental Performance per Department</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -28,7 +28,7 @@
   <section>
     <!-- title row -->
     <div class="reportHeader viewCenter">
-      <h2>Mickey Mouse Performance on Projects</h2>
+      <h2>Marketing Department Performance on Projects</h2>
       <h5>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></h5>
       <h5>Prepared On: <?php echo date('F d, Y'); ?></h5>
     </div>
@@ -37,10 +37,9 @@
 
         <div class="box box-danger">
           <div class="box-header with-border">
-            <h5>Department: Marketing</h5>
-            <h5>Total Ongoing Projects: 2</h5>
+            <h5>Department Head: Mickey Mouse</h5>
+            <h5>Total Number of Ongoing Projects: 5</h5>
           </div>
-
           <table id="rfcList" class="table table-bordered table-hover">
             <thead>
               <tr style="background:lightgray"><th colspan='9'>Project: Store Opening (August 23, 2017 - October 20, 2017)</th></tr>

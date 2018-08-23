@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Report - Employees Performance on Store Opening - DLSU Andrew</title>
+  <title>Report - Department Performance on Store Opening - DLSU Andrew</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -28,7 +28,7 @@
   <section>
     <!-- title row -->
     <div class="reportHeader viewCenter">
-      <h2>Employees Performance on Store Opening - DLSU Andrew</h2>
+      <h2>Department Performance on Store Opening - DLSU Andrew</h2>
       <h5>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></h5>
       <h5>Prepared On: <?php echo date('F d, Y'); ?></h5>
     </div>
@@ -37,16 +37,18 @@
 
         <div class="box box-danger">
           <div class="box-header with-border">
-            <h5>Details: 1st branch in DLSU</h5>
             <h5>Owner: Mickey Mouse</h5>
+            <h5>Details: 1st branch in DLSU</h5>
             <h5>Start Date: Apr 1, 2018</h5>
             <h5>Target End Date: Aug 28, 2018</h5>
+            <h5>Status: Ongoing</h5>
+            <h5>Remaining: 6 days</h5>
           </div>
           <table id="rfcList" class="table table-bordered table-hover">
             <thead>
               <tr>
-                <th>Employee</th>
                 <th>Department</th>
+                <th>Department Head</th>
                 <th class='text-center'>Planned</th>
                 <th class='text-center'>Delayed</th>
                 <th class='text-center'>Ongoing</th>
@@ -58,8 +60,8 @@
             </thead>
             <tbody>
               <tr>
-                <td>Spongebob Squarepants</td>
-                <td>Finance</td>
+                <td>Marketing</td>
+                <td>Mickey Mouse</td>
                 <td align="center">23</td>
                 <td align="center">0</td>
                 <td align="center">2</td>
@@ -69,8 +71,8 @@
                 <td align="center">40%</td>
               </tr>
               <tr>
-                <td>Patrick Star</td>
-                <td>Store Operations</td>
+                <td>Procurement</td>
+                <td>Donald Duck</td>
                 <td align="center">23</td>
                 <td align="center">0</td>
                 <td align="center">2</td>
@@ -80,8 +82,8 @@
                 <td align="center">40%</td>
               </tr>
               <tr>
-                <td>Mr Krabs</td>
                 <td>HR</td>
+                <td>Tiger the Tiger</td>
                 <td align="center">23</td>
                 <td align="center">0</td>
                 <td align="center">2</td>
@@ -91,8 +93,8 @@
                 <td align="center">40%</td>
               </tr>
               <tr>
-                <td>Spongebob Squarepants</td>
-                <td>Finance</td>
+                <td>Marketing</td>
+                <td>Mickey Mouse</td>
                 <td align="center">23</td>
                 <td align="center">0</td>
                 <td align="center">2</td>
@@ -102,8 +104,8 @@
                 <td align="center">40%</td>
               </tr>
               <tr>
-                <td>Patrick Star</td>
-                <td>Store Operations</td>
+                <td>Procurement</td>
+                <td>Donald Duck</td>
                 <td align="center">23</td>
                 <td align="center">0</td>
                 <td align="center">2</td>
@@ -113,41 +115,8 @@
                 <td align="center">40%</td>
               </tr>
               <tr>
-                <td>Mr Krabs</td>
                 <td>HR</td>
-                <td align="center">23</td>
-                <td align="center">0</td>
-                <td align="center">2</td>
-                <td align="center">17</td>
-                <td align="center">42</td>
-                <td align="center">100%</td>
-                <td align="center">40%</td>
-              </tr>
-              <tr>
-                <td>Spongebob Squarepants</td>
-                <td>Finance</td>
-                <td align="center">23</td>
-                <td align="center">0</td>
-                <td align="center">2</td>
-                <td align="center">17</td>
-                <td align="center">42</td>
-                <td align="center">100%</td>
-                <td align="center">40%</td>
-              </tr>
-              <tr>
-                <td>Patrick Star</td>
-                <td>Store Operations</td>
-                <td align="center">23</td>
-                <td align="center">0</td>
-                <td align="center">2</td>
-                <td align="center">17</td>
-                <td align="center">42</td>
-                <td align="center">100%</td>
-                <td align="center">40%</td>
-              </tr>
-              <tr>
-                <td>Mr Krabs</td>
-                <td>HR</td>
+                <td>Tiger the Tiger</td>
                 <td align="center">23</td>
                 <td align="center">0</td>
                 <td align="center">2</td>

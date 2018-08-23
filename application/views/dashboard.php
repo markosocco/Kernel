@@ -247,7 +247,7 @@
 															$status = $data['DATEDIFF'] . " day/s before deadline";
 														}
 
-														echo "<tr class='clickable deadline flash'>";
+														echo "<tr class='clickable deadline' style='background:#ff8080'>";
 															echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 															echo "<td>" . $data['TASKTITLE'] . "</td>";
 															echo "<td>" . date_format($endDate, "M d, Y") . "</td>";

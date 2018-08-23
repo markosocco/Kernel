@@ -247,7 +247,7 @@
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsParkedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<a href="<?php echo base_url("index.php/controller/reportsChangeRequestsPerProject"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
 								</div>
 							</div>
 						</div>
@@ -276,7 +276,7 @@
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsParkedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<a href="<?php echo base_url("index.php/controller/reportsChangeRequestsPerEmployee"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
 								</div>
 							</div>
 						</div>
@@ -308,7 +308,7 @@
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsParkedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<a href="<?php echo base_url("index.php/controller/reportsChangeRequestsPerDepartment"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
 								</div>
 							</div>
 						</div>
