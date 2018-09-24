@@ -329,6 +329,9 @@
 										</tbody>
 									</table>
 							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -422,10 +425,19 @@
 														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 														 data['tasks'][i].TASKTITLE+"</td>"+
-														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
-														 "<td align='center'>" + taskEnd +"</td>" +
-														 "<td align='center'>" + delayDays + "</td>" +
-														 "<td align='center' class = 'action-" + taskID +"'></td></tr>");
+														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 data['tasks'][i].PROJECTTITLE+"</td>"+
+														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 taskEnd+"</td>" +
+														 "<td align = 'center' class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 delayDays+"</td>" +
+														 "<td align='center' class = 'action-" + taskID +"'></td>" +"</tr>");
 							}
 
 							var total = total+1;
@@ -436,10 +448,22 @@
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 data['tasks'][i].TASKTITLE+"</td>"+
-													 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
-													 "<td align='center'>" + taskStart +"</td>" +
-													 "<td align='center'>" + taskEnd +"</td>" +
-													 "<td align='center'>" + delayDays + "</td>" +
+													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 data['tasks'][i].PROJECTTITLE+"</td>"+
+													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 taskStart+"</td>" +
+													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 taskEnd+"</td>" +
+													 "<td align = 'center' class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 delayDays+"</td>" +
 													 "<td align='center' class = 'action-" + taskID +"'></td>");
 
 							if(data['tasks'][i].threshold >= endDate)

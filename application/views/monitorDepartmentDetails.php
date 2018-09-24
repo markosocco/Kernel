@@ -129,10 +129,10 @@
                     <th width="23.5%">Task</th>
 										<th width="8%" class='text-center'>Start Date</th>
 										<th width="8%" class='text-center'>Target<br>End Date</th>
-                    <th width="15%">Responsible</th>
-										<th width="15%">Accountable</th>
-										<th width="15%">Consulted</th>
-										<th width="15%">Informed</th>
+                    <th width="15%" class="text-center">R</th>
+										<th width="15%" class="text-center">A</th>
+										<th width="15%" class="text-center">C</th>
+										<th width="15%" class="text-center">I</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -236,6 +236,9 @@
                     </tbody>
                   </table>
                 </div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+								</div>
               </div>
               <!-- /.modal-content -->
             </div>

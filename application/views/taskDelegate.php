@@ -513,12 +513,12 @@
 
 							<div class="modal-footer">
 								<span data-dismiss="modal">
-									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close">
+									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close">
 										<i class="fa fa-close"></i>
 									</button>
 								</span>
 								<span data-toggle="modal" data-target="#modal-delegateConfirm">
-									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="top" title="Confirm Delegate">
+									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="left" title="Confirm Delegate">
 										<i class="fa fa-check"></i>
 									</button>
 								</span>
@@ -531,13 +531,29 @@
 
 							<div class="modal-header">
 								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
-								<h4 id = "workloadProjects">Total Number of Projects: </h4>
-								<h4 id = "workloadTasks">Total Number of Tasks: </h4>
+								<table class="table">
+									<tbody>
+										<tr>
+											<td><h5 id = "workloadProjects">Total Projects: </h5></td>
+											<td><h5 id = "workloadDelayed">Delayed Tasks: </h5></td>
+										</tr>
+										<tr>
+											<td><h5 id = "workloadTasks">Total Tasks: </h5></td>
+											<td><h5 id = "workloadOngoing">OngoingTasks: </h5></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td><h5 id = "workloadPlanned">Planned Tasks: </h5></td>
+										</tr>
+									<tbody>
+								</table>
+
+
 							</div>
 							<div class="modal-body" id = "workloadDiv">
 							</div>
 							<div class="modal-footer">
-								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Back"><i class="fa fa-arrow-left"></i></button>
+								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
 							</div>
 
 						</div>
@@ -548,8 +564,8 @@
 								<h4>Are you sure you want to delegate this task?</h4>
 							</div>
 							<div class="modal-footer">
-								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-								<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+								<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</div>
 					</div>
@@ -569,8 +585,8 @@
 						<h4 id ="early" style="margin-top:0">Are you sure you want to accept this task?</h4>
 						<form id = "acceptForm" action="acceptTask" method="POST" style="margin-bottom:0;">
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
 					</div>
@@ -769,26 +785,30 @@
 
 										if(data['raci'][0].TASKSTATUS == "Complete")
 										{
-											var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+											var status = "<td class='bg-teal'></td>";
+											// var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
 										}
 										if(data['raci'][0].TASKSTATUS == "Planning")
 										{
-											var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+											var status = "<td class='bg-orange'></td>";
+											// var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
 										}
 										if(data['raci'][0].TASKSTATUS == "Ongoing")
 										{
 											if(data['raci'][0].currentDate > endDate)
-												var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+											var status = "<td class='bg-red'></td>";
+												// var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
 											else
-												var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
+											var status = "<td class='bg-green'></td>";
+												// var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
 										}
 
 								 			$("#project_" + $projectID).append("<tr>" +
+															 status +
 								 							 "<td>" + role + "</td>" +
 								 							 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
 								 							 "<td>" + taskStart + "</td>" +
 								 							 "<td>" + taskEnd + "</td>" +
-								 							 "<td align='center'>" + status + "</td>" +
 								 							 "</tr>");
 								 	},
 								 	error:function()
@@ -810,8 +830,8 @@
 				 var $projectCount = $(this).attr('data-projectCount');
 				 var $taskCount = $(this).attr('data-taskCount');
 				 $("#workloadEmployee").html($(this).attr('data-name'));
-				 $("#workloadProjects").html("Total Number of Projects: " + $projectCount);
-				 $("#workloadTasks").html("Total Number of Tasks: " + $taskCount);
+				 $("#workloadProjects").html("Total Projects: " + $projectCount);
+				 $("#workloadTasks").html("Total Tasks: " + $taskCount);
 				 $('#workloadDiv').html("");
 				 $("#workloadAssessment").show();
 
@@ -832,11 +852,11 @@
 												"</div>" +
 												"<div class = 'box-body table-responsive no-padding'>" +
 													"<table class='table table-hover' id='project_" + $projectID + "'>" +
-														"<th></th>" +
+													"<th width='1%'></th>" +
+													"<th width='1%'></th>" +
 														"<th>Task Name</th>" +
 														"<th>Start Date</th>" +
-														"<th>End Date</th>" +
-														"<th class='text-center'>Status</th>");
+														"<th>End Date</th>");
 
 								loadWorkloadTasks($projectID);
 

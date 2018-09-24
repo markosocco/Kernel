@@ -240,6 +240,9 @@
 										</tbody>
 									</table>
 								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+								</div>
 							</div>
 							<!-- /.modal-content -->
 						</div>

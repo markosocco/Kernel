@@ -34,9 +34,12 @@
 								<div style="display:inline-block; text-align:center; width:49%;">
 									<div class="circlechart" id="completeness"
 										data-percentage="<?php
-											if($employeeCompleteness['completeness'] == NULL){
+											if($employeeCompleteness['completeness'] == NULL)
+											{
 												echo 0;
-											} else {
+											}
+											else
+											{
 												if($employeeCompleteness['completeness'] == 100.00){
 													echo 100;
 												} elseif ($employeeCompleteness['completeness'] == 0.00) {

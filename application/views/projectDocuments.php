@@ -10,7 +10,7 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					<div style="margin-bottom:10px">
-						<button id="backBtn" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Return to Project"><i class="fa fa-arrow-left"></i></button>
+						<button id="backBtn" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Project"><i class="fa fa-arrow-left"></i></button>
 						<form id="backForm" action = 'projectGantt' method="POST" data-id="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
 
@@ -48,7 +48,7 @@
 		            <div class="box-header">
 		              <h3 class="box-title">
 										<?php if($projectProfile['PROJECTSTATUS'] != 'Completed' &&  $projectProfile['PROJECTSTATUS'] != 'Archived'):?>
-											<span data-toggle="modal" data-target="#modal-upload"><button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Upload Document"><i class="fa fa-upload"></i></button></span>
+											<span data-toggle="modal" data-target="#modal-upload"><button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Upload Document"><i class="fa fa-upload"></i></button></span>
 										<?php endif;?>
 									</h3>
 									<!-- <?php if ($documentsByProject != null):?>
