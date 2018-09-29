@@ -87,8 +87,17 @@ desired effect
       <a href="<?php echo base_url()."assets/"; ?>#" class="sidebar-toggle" data-toggle="push-menu" role="button" id="collapse">
         <span class="sr-only">Toggle navigation</span>
       </a>
+
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
+        <ul>
+          <li>
+            <div style="display:inline-block; padding: 10px; margin:0">
+              <?php $dateToday = date('D F d, Y');?>
+              <span style="color:white"><?php echo $dateToday;?></span>
+            </div>
+          </li>
+        </ul>
         <ul class="nav navbar-nav">
 
           <!-- Tasks: style can be found in dropdown.less -->
@@ -372,10 +381,7 @@ desired effect
       </ul>
       <!-- /.sidebar-menu -->
       <!-- Date Today -->
-      <div id="today">
-        <?php $dateToday = date('D F d, Y');?>
-        <p>Today is <br><span style="color:yellow"><?php echo $dateToday;?></span></p>
-      </div>
+
       <!-- /. Date Today -->
     </section>
     <!-- /.sidebar -->
