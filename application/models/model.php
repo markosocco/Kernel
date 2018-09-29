@@ -1256,7 +1256,7 @@ class model extends CI_Model
   public function getTasks2DaysBeforeDeadline()
   {
     $condition = "raci.STATUS = 'Current' AND TASKSTATUS != 'Complete' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 2
-     AND CATEGORY = 3 AND raci.users_USERID = " . $_SESSION['USERID'] . " AND projects.PROJECTSTATUS = 'Ongoing' AND projects.PROJECTSTATUS = 'Planned'";
+     AND CATEGORY = 3 AND raci.users_USERID = " . $_SESSION['USERID'] . " AND raci.ROLE = 1";
     $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS "DATEDIFF", raci.users_USERID AS "TASKOWNER", projects.users_USERID AS "PROJECTOWNER"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
