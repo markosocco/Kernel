@@ -265,19 +265,20 @@ desired effect
       <div class="user-panel">
         <div class="pull-left image">
           <?php if ($_SESSION['USERID'] == '4'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/mickey.jpg" class="user-image" alt="User Image">
+            <img src="<?php echo base_url()."assets/"; ?>media/mickey.jpg" class="img-circle" alt="User Image">
           <?php elseif ($_SESSION['USERID'] == '6'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/donald.png" class="user-image" alt="User Image">
+            <img src="<?php echo base_url()."assets/"; ?>media/donald.png" class="img-circle" alt="User Image">
           <?php elseif ($_SESSION['USERID'] == '33'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/goofy.png" class="user-image" alt="User Image">
+            <img src="<?php echo base_url()."assets/"; ?>media/goofy.png" class="img-circle" alt="User Image">
           <?php elseif ($_SESSION['USERID'] == '34'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/minnie.gif" class="user-image" alt="User Image">
+            <img src="<?php echo base_url()."assets/"; ?>media/minnie.gif" class="img-circle" alt="User Image">
           <?php elseif ($_SESSION['USERID'] == '25'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/winnie.jpg" class="user-image" alt="User Image">
+            <img src="<?php echo base_url()."assets/"; ?>media/winnie.jpg" class="img-circle" alt="User Image">
           <?php else: ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="user-image" alt="User Image">
+            <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="img-circle" alt="User Image">
           <?php endif; ?>
         </div>
+
         <div class="pull-left info">
           <p><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></p>
           <!-- Status -->
