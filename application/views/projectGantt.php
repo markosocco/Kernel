@@ -801,13 +801,13 @@
 
 							<form action = 'templateProject' method="POST" style="display:inline-block">
 							</form>
-							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
+							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST" style="display:inline-block">
 								<input type="hidden" name="templates" value="<?php echo $projectProfile['PROJECTID']; ?>">
 							</form>
-							<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
+							<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-primary btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
 						<?php endif; ?>
 
 						<!-- <?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
@@ -815,7 +815,7 @@
 						<?php endif;?> -->
 
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
-							<span data-toggle="modal" data-target="#confirmContinue"><a name="" class="btn btn-default btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a></span>
+							<span data-toggle="modal" data-target="#confirmContinue"><a name="" class="btn btn-primary btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a></span>
 						<?php endif;?>
 
 					</div>

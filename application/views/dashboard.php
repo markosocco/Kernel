@@ -251,7 +251,7 @@
 															echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 															echo "<td>" . $data['TASKTITLE'] . "</td>";
 															echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
-															echo "<td>" . $status . "</td>";
+															echo "<td style='color:red'><b>" . $status . "</b></td>";
 														echo "</tr>";
 													}
 
