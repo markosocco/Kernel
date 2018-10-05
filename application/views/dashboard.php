@@ -60,7 +60,7 @@
 													echo $employeeCompleteness['completeness'];
 												}
 											}
-										?> "> Completeness
+										?>">Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
@@ -77,7 +77,7 @@
 													echo $employeeTimeliness['timeliness'];
 												}
 											}
-										?> ">Timeliness
+										?>">Timeliness
 									</div>
 								</div>
 							</div>
@@ -105,7 +105,7 @@
 													echo $departmentCompleteness['completeness'];
 												}
 											}
-										?>"> Completeness
+										?>">Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
@@ -122,7 +122,7 @@
 												 echo $departmentTimeliness['timeliness'];
 											 }
 										 }
-									 ?> "> Timeliness
+									 ?>">Timeliness
  								 </div>
 		 					 </div>
 							</div>
@@ -136,7 +136,7 @@
 				<?php if($ongoingProjects != null):?>
 					<div class="row">
 						<div class="col-md-12">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:35%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Projects I'm Working On (<?php echo count($ongoingProjects);?>)</h3>
 								</div>
@@ -229,7 +229,7 @@
 				<div class="row">
 					<!-- Left col -->
 					<div class="col-md-6">
-						<div class="box box-danger">
+						<div class="box box-danger" style="height:45%; overflow-y: scroll">
 							<div class="box-header with-border">
 								<h3 class="box-title">Tasks I Need To Do(<?php echo count($tasks2DaysBeforeDeadline);?>)</h3>
 							</div>
@@ -296,7 +296,7 @@
 						<!-- Right col -->
 
 						<div class="col-md-6">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Tasks I Need To Delegate (<?php echo count($delegateTasks);?>)</h3>
 								</div>
@@ -359,7 +359,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Change Requests I Need To Approve (<?php echo count($changeRequests);?>)</h3>
 								</div>
@@ -426,7 +426,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Documents I Need To Acknowledge (<?php echo count($toAcknowledgeDocuments);?>)</h3>
 								</div>
