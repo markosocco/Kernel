@@ -242,11 +242,11 @@
 								<div class="table-responsive">
 									<table class="table table-hover no-margin" id="logsList">
 										<thead>
-											<!-- <th width="1%"></th> -->
+											<th width="1%"></th>
 											<th>Project</th>
 											<th>Task</th>
 											<th>Task End Date</th>
-											<th>Status</th>
+											<!-- <th>Status</th> -->
 										</thead>
 										<tbody>
 
@@ -259,16 +259,18 @@
 														else
 															$endDate = date_create($data['TASKADJUSTEDENDDATE']);
 														if($data['DATEDIFF'] < 0){
-															$status = "DELAYED";
+															// $status = "DELAYED";
+															$color = "bg-red";
 														} else {
-															$status = $data['DATEDIFF'] . " day/s before deadline";
+															// $status = $data['DATEDIFF'] . " day/s before deadline";
+															$color = "bg-green";
 														}
 														echo "<tr class='clickable deadline'>";
-															// echo "<td class='bg-red'></td>";
+															echo "<td class='" . $color . "'></td>";
 															echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 															echo "<td>" . $data['TASKTITLE'] . "</td>";
 															echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
-															echo "<td style='color:red'><b>" . $status . "</b></td>";
+															// echo "<td style='color:red'><b>" . $status . "</b></td>";
 														echo "</tr>";
 													}
 												?>
