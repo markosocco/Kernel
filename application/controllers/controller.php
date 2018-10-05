@@ -29,7 +29,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 	}
 
@@ -343,7 +343,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -412,7 +412,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -453,7 +453,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -523,7 +523,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -569,7 +569,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -603,7 +603,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -623,7 +623,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -644,7 +644,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2171,7 +2171,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2186,7 +2186,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2202,7 +2202,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2338,7 +2338,7 @@ class controller extends CI_Controller
 		else
 		{
 			// TODO PUT ALERT
-			redirect('controller/contact');
+			redirect('controller/restrictedAccess');
 		}
 	}
 
@@ -2346,7 +2346,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2359,7 +2359,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2374,7 +2374,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2389,7 +2389,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2407,7 +2407,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2423,7 +2423,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2438,7 +2438,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2451,7 +2451,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2464,7 +2464,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2477,7 +2477,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2490,7 +2490,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2503,7 +2503,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2516,7 +2516,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2529,7 +2529,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2542,7 +2542,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2557,7 +2557,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2575,7 +2575,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2625,7 +2625,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2640,7 +2640,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2686,7 +2686,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2732,7 +2732,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2747,7 +2747,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2781,7 +2781,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -2878,7 +2878,7 @@ class controller extends CI_Controller
 		else
 		{
 			// TODO PUT ALERT
-			redirect('controller/contact');
+			redirect('controller/restrictedAccess');
 		}
 	}
 
@@ -3100,7 +3100,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -3247,7 +3247,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -3339,7 +3339,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
@@ -4517,7 +4517,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('contact');
+			$this->load->view('restrictedAccess');
 		}
 
 		else
