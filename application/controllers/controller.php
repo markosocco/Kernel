@@ -2813,7 +2813,8 @@ class controller extends CI_Controller
 				'PROJECTENDDATE' => $this->input->post('endDate'),
 				'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
 				'PROJECTSTATUS' => $status,
-				'users_USERID' => $_SESSION['USERID']
+				'users_USERID' => $_SESSION['USERID'],
+				'DATECREATED' => $currDate
 		);
 
 		$sDate = date_create($startDate);
