@@ -12,6 +12,11 @@
 				<h1>
 					Welcome, <b><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?>!</b>
 				</h1>
+				
+				<ol class="breadcrumb">
+          <?php $dateToday = date('F d, Y | l');?>
+          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
+        </ol>
 			</section>
 
 			<section class="content container-fluid">

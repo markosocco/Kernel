@@ -15,13 +15,12 @@
 					</h1>
 
 					<ol class="breadcrumb">
-						<li class ="active"><a href="<?php echo base_url("index.php/controller/monitorProject"); ?>"><i class="fa fa-dashboard"></i> Monitor Team</a></li>
-						<!-- <li class="active">Here</li> -->
-					</ol>
-
+	          <?php $dateToday = date('F d, Y | l');?>
+	          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
+	        </ol>
 				</section>
 				<!-- Main content -->
-				<section class="content container-fluid">
+				<section class="content container-fluid" style="padding-top:20px">
 					<!-- TOGGLE MY PROJECT -->
 	        <!-- <div id = "divGridListMyProjects" class="pull-right">
 	          <a href="#" id = "buttonListProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="List View"><i class="fa fa-th-list"></i>
@@ -43,17 +42,17 @@
 	        </div> -->
 
 					<!-- SORT/LEGEND -->
-	        <!-- <div>
+					<div>
 	          <button type="button" id = "filterAll" class="btn btn-default filter">All</button>
 	          <button type="button" id = "filterCompleted" class="btn bg-teal filter">Completed</button>
 	          <button type="button" id = "filterOngoing" class="btn btn-success filter">Ongoing</button>
 	          <button type="button" id = "filterDelayed" class="btn btn-danger filter">Delayed</button>
-	          <button type="button" id = "filterPlanned" class="btn btn-warning filter">Planned</button> -->
+	          <button type="button" id = "filterPlanned" class="btn btn-warning filter">Planned</button>
 	          <!-- <button type="button" id = "filterParked" class="btn btn-info filter">Parked</button> -->
-	          <!-- <button type="button" id = "filterDrafted" class="btn bg-maroon filter">Draft</button>
+	          <!-- <button type="button" id = "filterDrafted" class="btn bg-maroon filter">Draft</button> -->
 	        </div>
 
-	        <br><br> -->
+	        <br><br>
 
 	        <!-- PROJECT VIEW -->
 	        <div id="projectView">

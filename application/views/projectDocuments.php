@@ -25,11 +25,11 @@
 						Documents
 						<small><?php echo $projectProfile['PROJECTTITLE']; ?> (<?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y");?>)</small>
 					</h1>
+
 					<ol class="breadcrumb">
-						<li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-						<!-- <li class="active">Here</li> -->
-						<li class='active'>Documents</li>
-					</ol>
+	          <?php $dateToday = date('F d, Y | l');?>
+	          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
+	        </ol>
 				</section>
 
 				<!-- Main content -->

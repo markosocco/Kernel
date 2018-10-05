@@ -20,6 +20,11 @@
 					<!-- <small>What can I improve on the next project?</small> -->
 					<small>What happened to this project?</small>
 				</h1>
+
+				<ol class="breadcrumb">
+          <?php $dateToday = date('F d, Y | l');?>
+          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
+        </ol>
 			</section>
 
 			<!-- Main content -->

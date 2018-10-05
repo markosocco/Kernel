@@ -16,10 +16,9 @@
 					</h1>
 
 					<ol class="breadcrumb">
-						<li class ="active"><a href="<?php echo base_url("index.php/controller/monitorTeam"); ?>"><i class="fa fa-dashboard"></i> My Team</a></li>
-						<!-- <li class="active">Here</li> -->
+						<?php $dateToday = date('F d, Y | l');?>
+						<p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
 					</ol>
-
 				</section>
 				<!-- Main content -->
 				<section class="content container-fluid">

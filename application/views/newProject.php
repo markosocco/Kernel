@@ -18,6 +18,11 @@
 			        <small>Let's create a new project</small>
 						<?php endif; ?>
 		      </h1>
+
+					<ol class="breadcrumb">
+	          <?php $dateToday = date('F d, Y | l');?>
+	          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
+	        </ol>
 		    </section>
 
 		    <!-- Main content -->

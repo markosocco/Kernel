@@ -23,7 +23,8 @@
         </h1>
 
         <ol class="breadcrumb">
-          <li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
+          <?php $dateToday = date('F d, Y | l');?>
+          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
         </ol>
       </section>
 

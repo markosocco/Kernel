@@ -18,10 +18,9 @@
 					</h1>
 
 					<ol class="breadcrumb">
-						<li class ="active"><a href="<?php echo base_url("index.php/controller/monitorMembers"); ?>"><i class="fa fa-dashboard"></i> My Team</a></li>
-						<!-- <li class="active">Here</li> -->
+						<?php $dateToday = date('F d, Y | l');?>
+						<p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
 					</ol>
-
 					<div class="col-md-4 col-sm-6 col-xs-12 pull-right">
               <div class="box-header with-border" style="text-align:center;">
                 <h3 class="box-title">Performance</h3>

@@ -24,6 +24,11 @@
 					Project Logs
 					<small><?php echo $projectProfile['PROJECTTITLE']; ?> (<?php echo date_format($startdate, "F d, Y") . " - " . date_format($enddate, "F d, Y");?>)</small>
 				</h1>
+
+				<ol class="breadcrumb">
+          <?php $dateToday = date('F d, Y | l');?>
+          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
+        </ol>
 			</section>
 
 			<!-- Main content -->

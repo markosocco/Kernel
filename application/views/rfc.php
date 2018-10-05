@@ -14,6 +14,11 @@
 					Change Requests
 					<small>What do I think needs changing?</small>
 				</h1>
+
+				<ol class="breadcrumb">
+          <?php $dateToday = date('F d, Y | l');?>
+          <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
+        </ol>
 			</section>
 
 			<!-- Main content -->
