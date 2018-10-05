@@ -317,7 +317,7 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h2 class="modal-title" id = "taskTitle">Task Title</h2>
+								<h2 class="modal-title" id = "taskName">Task Title</h2>
 								<h4 id="taskDates">Start Date - End Date (Days)</h4>
 							</div>
 							<div class="modal-body">
@@ -792,7 +792,7 @@
 			 var $start = new Date($(this).attr('data-start'));
 			 var $end = new Date($(this).attr('data-end'));
 			 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
-			 $("#taskTitle").html($title);
+			 $("#taskName").html($title);
 			 $("#taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
 			 if($diff > 1)
 				 $("#taskDates").append(" days)");
