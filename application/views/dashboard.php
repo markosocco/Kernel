@@ -350,10 +350,6 @@
 
 				</div>
 
-
-
-				<?php if($changeRequests != null):?>
-
 					<!-- APPROVAL TABLE -->
 					<!-- Main row -->
 					<div class="row">
@@ -377,34 +373,45 @@
 											</tr>
 											</thead>
 											<tbody>
-												<?php foreach($changeRequests as $changeRequest):
-													$dateRequested = date_create($changeRequest['REQUESTEDDATE']);
-													// if($changeRequest['REQUESTTYPE'] == 1)
-													// 	$type = "Change Performer";
-													// else
-													// 	$type = "Change Date/s";
-												?>
-													<tr class="request clickable" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
+												<?php if($changeRequests != null):?>
+													<?php foreach($changeRequests as $changeRequest):
+														$dateRequested = date_create($changeRequest['REQUESTEDDATE']);
+														// if($changeRequest['REQUESTTYPE'] == 1)
+														// 	$type = "Change Performer";
+														// else
+														// 	$type = "Change Date/s";
+													?>
+														<tr class="request clickable" data-project = "<?php echo $changeRequest['PROJECTID']; ?>" data-request = "<?php echo $changeRequest['REQUESTID']; ?>">
 
-														<form class='changeRequestApproval' action = 'projectGantt' method="POST">
-															<input type ='hidden' name='dashboard' value='0'>
-															<input type ='hidden' name='rfc' value='0'>
-														</form>
+															<form class='changeRequestApproval' action = 'projectGantt' method="POST">
+																<input type ='hidden' name='dashboard' value='0'>
+																<input type ='hidden' name='rfc' value='0'>
+															</form>
 
-														<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
-														<!-- <td><?php echo $type;?></td> -->
-														<td align="center">
-															<?php if($changeRequest['REQUESTTYPE'] == 1):?>
-																<i class="fa fa-user-times"></i>
-															<?php else:?>
-																<i class="fa fa-calendar"></i>
-															<?php endif;?>
-														</td>
-														<td><?php echo $changeRequest['PROJECTTITLE'];?></td>
-														<td><?php echo $changeRequest['TASKTITLE'];?></td>
-														<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
-													</tr>
+															<td><?php echo date_format($dateRequested, "M d, Y"); ?></td>
+															<!-- <td><?php echo $type;?></td> -->
+															<td align="center">
+																<?php if($changeRequest['REQUESTTYPE'] == 1):?>
+																	<i class="fa fa-user-times"></i>
+																<?php else:?>
+																	<i class="fa fa-calendar"></i>
+																<?php endif;?>
+															</td>
+															<td><?php echo $changeRequest['PROJECTTITLE'];?></td>
+															<td><?php echo $changeRequest['TASKTITLE'];?></td>
+															<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
+														</tr>
 												<?php endforeach;?>
+
+											<?php else: ?>
+												<tr>
+													<td colspan='5' class='text-center'>
+														There are no change requests
+													</td>
+												</tr>
+
+											<? endif; ?>
+
 											</tbody>
 										</table>
 									</div>
@@ -417,8 +424,6 @@
 						</div>
 					</div>
 					<!-- END APPROVAL TABLE -->
-				<?php endif;?>
-
 
 					<!-- Main row -->
 					<div class="row">
