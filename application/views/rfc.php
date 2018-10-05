@@ -34,12 +34,12 @@
 							<table id="rfcList" class="table table-bordered table-hover">
 								<thead>
 								<tr>
-									<th width="10%">Date Requested</th>
-									<th class="text-center">Type</th>
+									<th width="10%" class="text-center">Date Requested</th>
+									<th class="text-center" width="1%">Type</th>
 									<th width="15%">Requested By</th>
 									<th>Task</th>
-									<th width="10%">Start Date</th>
-									<th width="11%">Target End Date</th>
+									<th width="10%" class="text-center">Start Date</th>
+									<th width="11%" class="text-center">Target End Date</th>
 									<th>Project</th>
 								</tr>
 								</thead>
@@ -104,15 +104,15 @@
 								<table id="userrfcList" class="table table-bordered table-hover">
 									<thead>
 									<tr>
-										<th width="10%">Date Requested</th>
+										<th width="10%" class="text-center">Date Requested</th>
 										<th class="text-center">Type</th>
 										<th>Task</th>
-										<th width="10%">Start Date</th>
-										<th width="11%">Target End Date</th>
+										<th width="10%" class="text-center">Start Date</th>
+										<th width="11%" class="text-center">Target End Date</th>
 										<th>Project</th>
-										<th>Status</th>
+										<th class="text-center">Status</th>
 										<th>Reviewed By</th>
-										<th>Date Reviewed</th>
+										<th class="text-center">Date Reviewed</th>
 									</tr>
 									</thead>
 									<tbody>

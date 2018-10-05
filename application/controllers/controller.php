@@ -329,6 +329,11 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function restrictedAccess()
+	{
+		$this->load->view('restrictedAccess');
+	}
+
 	public function contact()
 	{
 		$this->load->view('contact');

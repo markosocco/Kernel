@@ -3,14 +3,14 @@
 		<title>Kernel - Log In</title>
 		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/loginStyle.css")?>">
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
-		<!-- Bootstrap Notify -->
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
+		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/font-awesome/css/font-awesome.min.css">
 	</head>
 	<body>
 
 		<div id = mainContainer>
 
-			<img class="" id = "logo"  src = "<?php echo base_url("/assets/media/tei.png")?>">
+			<img class="animated zoomIn" id = "logo"  src = "<?php echo base_url("/assets/media/tei.png")?>">
 			<h3 id="formHeader">KERNEL:<br>PROJECT MANAGEMENT</h3>
 
 			<div id = "login" class = "loginElements">
@@ -21,13 +21,38 @@
 				</form>
 			</div>
 
-			<p>Unable to Log In? <a href = "<?php echo base_url("index.php/controller/contact"); ?>" id="resetPass">Reset Password</a></p>
+			<p>Unable to Log In? <span id="requestLogin" data-toggle='modal' data-target='#modal-cantLogin'><u>Request from Admin</u></span></p>
 		</div>
 
 		<footer>
 			<p>&copy; 2018 <a href="http://www.ilovetaters.com">Taters Enterprises Inc</a>. All rights reserved.</p>
 			<!-- <p>© 2018 Team Lowkey, Inc. All Rights Reserved</p> -->
 		</footer>
+
+		<!-- CANT LOGIN MODAL -->
+		<div class="modal fade" id="modal-cantLogin" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header" style="text-align: left">
+		        <h2 class="modal-title">Can't Log In?</h2>
+		      </div>
+		      <div class="modal-body">
+						<h4>Provide us your email and we will send your credentials to your email.</h4>
+						<h4>Please be sure to provide your corporate email (@tatersgroup.com).</h4>
+
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+							<input type="email" class="form-control" placeholder="Email">
+						</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+		        <button type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- CANT LOGIN MODAL -->
 
 		<!-- jQuery 3 -->
 		<script src="<?php echo base_url()."assets/"; ?>bower_components/jquery/dist/jquery.min.js"></script>
