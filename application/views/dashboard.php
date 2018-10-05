@@ -60,7 +60,7 @@
 													echo $employeeCompleteness['completeness'];
 												}
 											}
-										?> "> Completeness
+										?>">Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
@@ -77,7 +77,7 @@
 													echo $employeeTimeliness['timeliness'];
 												}
 											}
-										?> ">Timeliness
+										?>">Timeliness
 									</div>
 								</div>
 							</div>
@@ -105,7 +105,7 @@
 													echo $departmentCompleteness['completeness'];
 												}
 											}
-										?>"> Completeness
+										?>">Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
@@ -122,7 +122,7 @@
 												 echo $departmentTimeliness['timeliness'];
 											 }
 										 }
-									 ?> "> Timeliness
+									 ?>">Timeliness
  								 </div>
 		 					 </div>
 							</div>
@@ -136,7 +136,7 @@
 				<?php if($ongoingProjects != null):?>
 					<div class="row">
 						<div class="col-md-12">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:35%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Projects I'm Working On (<?php echo count($ongoingProjects);?>)</h3>
 								</div>
@@ -177,12 +177,8 @@
 							 												 echo $row['COMPLETENESS'];
 							 											 }
 							 										 }
-
-																  echo "% </h2>"; }
-																 else {
-																	 echo "- </h2>";
-																 }
-																} ?>
+																	}
+																} ?>%</h2>
 														</td>
 														<td align="center">
 															<?php
@@ -233,7 +229,7 @@
 				<div class="row">
 					<!-- Left col -->
 					<div class="col-md-6">
-						<div class="box box-danger">
+						<div class="box box-danger" style="height:45%; overflow-y: scroll">
 							<div class="box-header with-border">
 								<h3 class="box-title">Tasks I Need To Do(<?php echo count($tasks2DaysBeforeDeadline);?>)</h3>
 							</div>
@@ -252,21 +248,17 @@
 
 											<?php if($tasks2DaysBeforeDeadline != NULL): ?>
 												<?php
-
 													foreach ($tasks2DaysBeforeDeadline as $data)
 													{
-
 														if($data['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 															$endDate = date_create($data['TASKENDDATE']);
 														else
 															$endDate = date_create($data['TASKADJUSTEDENDDATE']);
-
 														if($data['DATEDIFF'] < 0){
 															$status = "DELAYED";
 														} else {
 															$status = $data['DATEDIFF'] . " day/s before deadline";
 														}
-
 														echo "<tr class='clickable deadline'>";
 															// echo "<td class='bg-red'></td>";
 															echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
@@ -275,7 +267,6 @@
 															echo "<td style='color:red'><b>" . $status . "</b></td>";
 														echo "</tr>";
 													}
-
 												?>
 
 											<?php else: ?>
@@ -300,7 +291,7 @@
 						<!-- Right col -->
 
 						<div class="col-md-6">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Tasks I Need To Delegate (<?php echo count($delegateTasks);?>)</h3>
 								</div>
@@ -363,7 +354,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Change Requests I Need To Approve (<?php echo count($changeRequests);?>)</h3>
 								</div>
@@ -430,7 +421,7 @@
 					<div class="row">
 						<!-- Left col -->
 						<div class="col-md-12">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 									<h3 class="box-title">Documents I Need To Acknowledge (<?php echo count($toAcknowledgeDocuments);?>)</h3>
 								</div>
@@ -452,24 +443,17 @@
 												<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'> </form>
 
 												<?php
-
 													foreach($toAcknowledgeDocuments as $row){
-
 														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
-
 															if($row['ACKNOWLEDGEDDATE'] == ''){
-
 																echo "<tr class='clickable'>";
-
 																	echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
 																	echo "<td>" . $row['PROJECTTITLE'] . "</td>";
 																	echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
 																	echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
-
 																	echo "<td align='center'>
 																	<a href = '" . $row['DOCUMENTLINK'] . "' download><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
 																	<i class='fa fa-download'></i></button></a>
-
 																	<span data-toggle='tooltip' data-placement='top' title='Acknowledge'>
 																	<button type='button' class='btn btn-warning document acknowledgeButton' name='documentButton'
 																		data-toggle='modal' data-target='#confirmAcknowledge'
@@ -477,7 +461,6 @@
 																		data-projectID = '" . $row['projects_PROJECTID'] . "'
 																		data-docuName = '" . $row['DOCUMENTNAME'] ."'>
 																		<i class='fa fa-check-circle'></i></button></span></td>";
-
 																echo "</tr>";
 															}
 														}
@@ -530,7 +513,6 @@
 	<script>
 		$("#dashboard").addClass("active");
 		$('.circlechart').circlechart(); // Initialization
-
 		$(document).on("click", ".request", function() {
 			var $project = $(this).attr('data-project');
 			var $request = $(this).attr('data-request');
@@ -539,32 +521,24 @@
 			$(".changeRequestApproval").append("<input type='hidden' name='request_ID' value= " + $request + ">");
 			$(".changeRequestApproval").submit();
 			});
-
 		$(document).on("click", ".projects", function() {
 			var $project = $(this).attr('data-id');
 			$(".projectForm").attr("name", "formSubmit");
 			$(".projectForm").append("<input type='hidden' name='project_ID' value= " + $project + ">");
 			$(".projectForm").submit();
 			});
-
 			$(document).on("click", ".acknowledgeButton", function() {
-
 				var $documentID = $(this).attr('data-docuID');
 				var $projectID = $(this).attr('data-projectID');
 				var $documentName = $(this).attr('data-docuName');
-
 				$("#doneConfirm").attr('data-docuID', $documentID);
 				$("#doneConfirm").attr('data-projectID', $projectID);
 				$("#doneConfirm").attr('data-docuName', $documentName);
-
 			});
-
 		$(document).on("click", "#doneConfirm", function() {
-
 			var $documentID = $(this).attr('data-docuID');
 			var $projectID = $(this).attr('data-projectID');
 			var $documentName = $(this).attr('data-docuName');
-
 			$(".acknowledgeDocument").attr("name", "formSubmit");
 			$(".acknowledgeDocument").append("<input type='hidden' name='documentID' value= " + $documentID + ">");
 			$(".acknowledgeDocument").append("<input type='hidden' name='projectID' value= " + $projectID + ">");
@@ -572,30 +546,24 @@
 			$(".acknowledgeDocument").append("<input type='hidden' name='fromWhere' value='dashboard'>");
 			$(".acknowledgeDocument").submit();
 		});
-
 		$(document).on("click", ".deadline", function(){
 			window.location.replace("<?php echo base_url("index.php/controller/taskTodo") ?>");
 		});
-
 		$(document).on("click", ".delegate", function(){
 			$(".delegateTaskClick").attr("name", "formSubmit");
 			$(".delegateTaskClick").submit();
 		});
-
 		$(document).ready(function()
 		{
 			$("#success").click(function(){
 				successAlert();
 			});
-
 			$("#danger").click(function(){
 				dangerAlert();
 			});
-
 			$("#warning").click(function(){
 				warningAlert();
 			});
-
 			$("#info").click(function(){
 				infoAlert();
 			});
