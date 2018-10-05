@@ -41,7 +41,7 @@
         </div>
 
         <div id="divShowMyTeam" class="pull-right">
-          <a href="#" id = "showMyTeam" class="btn btn-default btn"><i class="fa fa-users" data-toggle="tooltip" data-placement="top" title="My Team"></i></a>
+          <a href="#" id = "showMyTeam" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="My Team"><i class="fa fa-users" ></i></a>
         </div>
 
         <!-- TOGGLE MY TEAM -->
@@ -51,7 +51,7 @@
         </div>
 
         <div id="divShowMyProjects" class="pull-right">
-          <a href="#" id = "showMyProjects" class="btn btn-default btn"><i class="fa fa-briefcase" data-toggle="tooltip" data-placement="top" title="My Projects"></i></a>
+          <a href="#" id = "showMyProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="My Projects"><i class="fa fa-briefcase"></i></a>
         </div>
 
         <div> <!-- SORT/LEGEND -->
