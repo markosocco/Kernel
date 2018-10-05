@@ -42,7 +42,34 @@
 		<?php if (isset($_SESSION['alertMessage'])): ?>
 				$(document).ready(function()
 				{
-					dangerAlert();
+					<?php if (isset($_SESSION['danger'])): ?>
+						$(document).ready(function()
+						{
+							dangerAlert();
+						});
+
+					<?php elseif (isset($_SESSION['success'])): ?>
+
+						$(document).ready(function()
+						{
+							successAlert();
+						});
+
+					<?php elseif (isset($_SESSION['info'])): ?>
+
+						$(document).ready(function()
+						{
+							infoAlert();
+						});
+
+					<?php elseif (isset($_SESSION['warning'])): ?>
+
+						$(document).ready(function()
+						{
+							warningAlert();
+						});
+
+					<?php endif; ?>
 				});
 		<?php endif; ?>
 
@@ -107,7 +134,7 @@
 	      $.notify({
 	        // options
 	        icon: 'fa fa-warning',
-	        message: ' Hello Warning World'
+	        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
 	        },{
 	        // settings
 	        type: 'warning',
@@ -135,7 +162,7 @@
 	      $.notify({
 	        // options
 	        icon: 'fa fa-info',
-	        message: ' Hello Info World'
+	        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
 	        },{
 	        // settings
 	        type: 'info',

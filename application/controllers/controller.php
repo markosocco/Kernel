@@ -318,10 +318,12 @@ class controller extends CI_Controller
 			else
 			{
 				$email = $this->input->post('email');
+				$this->session->set_flashdata('stickyemail', $email);
 
 				// ALERTS
-				$this->session->set_flashdata('stickyemail', $email);
+				$this->session->set_flashdata('success', 'alert');
 				$this->session->set_flashdata('alertMessage', 'Email or Password is incorrect');
+
 				redirect('controller/login');
 			}
 		}
