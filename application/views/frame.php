@@ -241,7 +241,7 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="<?php echo base_url("index.php/controller/changePassword"); ?>" class="btn btn-default btn-flat" data-toggle='modal' data-target='#modal-changePassword'>Change Password</a>
+                  <a class="btn btn-default btn-flat" data-toggle='modal' data-target='#modal-changePassword'>Change Password</a>
                 </div>
                 <div class="pull-right">
                   <a href="<?php echo base_url()."index.php/controller/logout"; ?>" class="btn btn-default btn-flat">Sign out</a>
@@ -393,14 +393,15 @@ desired effect
       </div>
       <div class="modal-body" style="text-align:center">
         <div style="text-align:left; display:inline-block">
+          <form name="changePassword" action="changePassword" method="POST">
           <label for="oldPass" class="control-label"><span style="color:red">*</span>Old Password</label>
-          <input type="password" class="form-control" id="oldPass" placeholder="Enter Old Password" style="width:100%">
+          <input type="password" class="form-control" name="oldPass" id="oldPass" placeholder="Enter Old Password" style="width:100%" required>
           <br>
           <label for="newPass" class="control-label"><span style="color:red">*</span>New Password</label>
-          <input type="password" class="form-control" id="newPass" placeholder="Enter New Password" style="width:100%">
+          <input type="password" class="form-control" name="newPass" id="newPass" placeholder="Enter New Password" style="width:100%" required>
           <br>
           <label for="confirmPass" class="control-label"><span style="color:red">*</span>Confirm New Password</label>
-          <input type="password" class="form-control" id="confirmPass" placeholder="Confirm New Password" style="width:100%">
+          <input type="password" class="form-control" name="confirmPass" id="confirmPass" placeholder="Confirm New Password" style="width:100%" required>
           <p><span style="color:red">*</span><small>Required</small></p>
           <!-- <button id="submitChangePass" type="button" class="btn btn-success" style="width:100%">Submit</button> -->
         </div>
@@ -408,6 +409,7 @@ desired effect
       <div class="modal-footer">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
         <button type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+      </form>
       </div>
     </div>
   </div>
@@ -461,6 +463,42 @@ desired effect
      Both of these plugins are recommended to enhance the
      user experience. -->
   <script>
+
+  // ALERTS
+  <?php if (isset($_SESSION['alertMessage'])): ?>
+      $(document).ready(function()
+      {
+        <?php if (isset($_SESSION['danger'])): ?>
+          $(document).ready(function()
+          {
+            dangerAlert();
+          });
+
+        <?php elseif (isset($_SESSION['success'])): ?>
+
+          $(document).ready(function()
+          {
+            successAlert();
+          });
+
+        <?php elseif (isset($_SESSION['info'])): ?>
+
+          $(document).ready(function()
+          {
+            infoAlert();
+          });
+
+        <?php elseif (isset($_SESSION['warning'])): ?>
+
+          $(document).ready(function()
+          {
+            warningAlert();
+          });
+
+        <?php endif; ?>
+      });
+  <?php endif; ?>
+
     function successAlert ()
     {
       $.notify({
@@ -501,8 +539,8 @@ desired effect
         offset: 20,
         delay: 5000,
         placement: {
-          from: "bottom",
-          align: "right"
+          from: "top",
+          align: "center"
         },
         animate: {
           enter: 'animated fadeInDownBig',

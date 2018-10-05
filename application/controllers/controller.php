@@ -4512,6 +4512,72 @@ class controller extends CI_Controller
 		$this->load->view("gantt2", $data);
 	}
 
+	public function changePassword()
+	{
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('oldPass', 'Old Password', 'required'); // check if match with current password
+		$this->form_validation->set_rules('newPass', 'New Password', 'required');
+
+		$oldPass = $this->input->post('oldPass');
+		$newPass = $this->input->post('newPass');
+		$checker = $this->model->samePassword($oldPass);
+
+		if(!$checker)
+		{
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Current Password is Incorrect');
+			redirect('controller/dashboard');
+		}
+
+		else
+		{
+			$this->form_validation->set_rules('confirmPass', 'Confirm Password', 'required|matches[newPass]'); //check na dapat same with new pass
+
+			if ($this->form_validation->run() == FALSE)
+			{
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', ' Passwords do not match');
+				redirect('controller/dashboard');
+			}
+
+			else
+			{
+				$this->form_validation->set_rules('newPass', 'New Password', 'required|min_length[8]');
+
+				if ($this->form_validation->run() == FALSE)
+				{
+					$this->session->set_flashdata('danger', 'alert');
+					$this->session->set_flashdata('alertMessage', ' Password too short');
+					redirect('controller/dashboard');
+				}
+
+				else
+				{
+					$data = array(
+						'PASSWORD' => $newPass
+					);
+
+					$result = $this->model->updatePassword($data);
+
+					if ($result)
+					{
+						$this->session->set_flashdata('success', 'alert');
+						$this->session->set_flashdata('alertMessage', ' Password changed');
+						redirect('controller/dashboard');
+					}
+
+					else
+					{
+						$this->session->set_flashdata('danger', 'alert');
+						$this->session->set_flashdata('alertMessage', ' Error in changing password');
+						redirect('controller/dashboard');
+					}
+				}
+			}
+		}
+	}
+
 // DELETE THIS AFTER
 	public function frame()
 	{

@@ -1893,5 +1893,33 @@ class model extends CI_Model
       return false;
     }
   }
+
+  public function samePassword($oldPass)
+  {
+    $condition = "USERID = " . $_SESSION['USERID'];
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $query = $this->db->get();
+    $currPassword = $query->row("PASSWORD");
+
+    if ($oldPass == $currPassword)
+    {
+      return true;
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
+  public function updatePassword($data)
+  {
+    $this->db->where('USERID', $_SESSION['USERID']);
+    $this->db->update('users', $data);
+
+    return true;
+  }
 }
 ?>
