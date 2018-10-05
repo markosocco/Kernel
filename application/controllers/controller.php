@@ -2193,7 +2193,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function newProject()
+	public function addProjectDetails()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2226,12 +2226,12 @@ class controller extends CI_Controller
 				$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 				$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
 
-				$this->load->view("newProject", $data);
+				$this->load->view("addProjectDetails", $data);
 			}
 
 			else
 			{
-				$this->load->view("newProject");
+				$this->load->view("addProjectDetails");
 			}
 		}
 	}
@@ -2327,7 +2327,7 @@ class controller extends CI_Controller
 
 			$this->session->set_flashdata('edit', $edit);
 
-			$this->load->view('addTasks', $data);
+			$this->load->view('addMainActivities', $data);
 		}
 
 		else
@@ -2785,7 +2785,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function addTasks()
+	public function addMainActivities()
 	{
 		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
 		$startDate = $this->input->post('startDate');
@@ -2867,7 +2867,7 @@ class controller extends CI_Controller
 				$data['templateUsers'] = $this->model->getAllUsers();
 			}
 
-			$this->load->view('addTasks', $data);
+			$this->load->view('addMainActivities', $data);
 		}
 
 		else
@@ -2878,7 +2878,7 @@ class controller extends CI_Controller
 	}
 
 // DELETE THIS MAYBE??
-	public function scheduleTasks()
+	public function addTasks()
 	{
 		$id = $this->input->post('project_ID');
 
@@ -3694,7 +3694,7 @@ class controller extends CI_Controller
 			}
 
 			// $this->output->enable_profile(TRUE);
-			$this->load->view('arrangeTasks', $data);
+			$this->load->view('addSubActivities', $data);
 		}
 
 		public function editMainActivity()
@@ -3877,11 +3877,11 @@ class controller extends CI_Controller
 				}
 
 				// $this->output->enable_profile(TRUE);
-				// $this->load->view('arrangeTasks', $data);
+				// $this->load->view('addSubActivities', $data);
 			}
 
 		// ADDS SUB ACTIVITIES TO MAIN ACTIVITIES OF PROJECT
-		public function arrangeTasks()
+		public function addSubActivities()
 		{
 		  $id = $this->input->post('project_ID');
 
@@ -4106,7 +4106,7 @@ class controller extends CI_Controller
 
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');
-		  $this->load->view("scheduleTasks", $data);
+		  $this->load->view("addTasks", $data);
 		}
 
 		public function archiveProject()

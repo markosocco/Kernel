@@ -12,7 +12,7 @@
 				<h1>
 					Welcome, <b><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?>!</b>
 				</h1>
-				
+
 				<ol class="breadcrumb">
           <?php $dateToday = date('F d, Y | l');?>
           <p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
@@ -238,6 +238,7 @@
 								<div class="table-responsive">
 									<table class="table table-hover no-margin" id="logsList">
 										<thead>
+											<!-- <th width="1%"></th> -->
 											<th>Project</th>
 											<th>Task</th>
 											<th>Task End Date</th>
@@ -263,6 +264,7 @@
 														}
 
 														echo "<tr class='clickable deadline'>";
+															// echo "<td class='bg-red'></td>";
 															echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 															echo "<td>" . $data['TASKTITLE'] . "</td>";
 															echo "<td>" . date_format($endDate, "M d, Y") . "</td>";

@@ -48,7 +48,7 @@
 							<form role="form" name = "editProject" id = "addProject" action = "editProject" method = "POST">
 								<input type="hidden" name="edit" value="<?php echo $project['PROJECTID']; ?>">
 						<?php else: ?>
-							<form role="form" name = "addProject" id = "addProject" action = "addTasks" method = "POST">
+							<form role="form" name = "addProject" id = "addProject" action = "addMainActivities" method = "POST">
 						<?php endif; ?>
 							<?php if (isset($_SESSION['templates'])): ?>
 								<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
