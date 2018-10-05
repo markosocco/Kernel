@@ -146,7 +146,7 @@
 										<table class="table table-hover no-margin" id="projWeeklyProgress">
 											<thead>
 											<tr>
-												<th>Name</th>
+												<th>Project</th>
 												<th class="text-center">Last Week's Progress</th>
 												<th class="text-center">Current Progress</th>
 												<th class="text-center">Target End Date</th>
@@ -436,7 +436,7 @@
 										<table class="table table-hover no-margin" id="requestApproval">
 											<thead>
 											<tr>
-												<th width="30%">Document Name</th>
+												<th width="30%">Document</th>
 												<th width="25%">Project</th>
 												<th width="15%">Uploaded By</th>
 												<th width="15%">Department</th>
