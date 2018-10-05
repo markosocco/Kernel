@@ -35,8 +35,8 @@
 						<table id="templateList" class="table table-bordered table-hover">
 							<thead>
 							<tr>
-								<th>Project Title</th>
-								<th>Project Owner</th>
+								<th>Project</th>
+								<th>Owner</th>
 								<th>Period</th>
 							</tr>
 							</thead>
