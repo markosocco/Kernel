@@ -4193,7 +4193,7 @@ class controller extends CI_Controller
 				'PROJECTSTARTDATE' => $project['PROJECTSTARTDATE'],
 				'PROJECTENDDATE' => $project['PROJECTACTUALENDDATE'],
 				'PROJECTDESCRIPTION' => $project['PROJECTDESCRIPTION'],
-				'PROJECTSTATUS' => $id,
+				'projects_PROJECTID' => $id,
 				'users_USERID' => $_SESSION['USERID']
 			);
 
