@@ -55,7 +55,7 @@
 							<?php endif;?>
               <div class="box-body">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Project Title</label>
+                  <label>Project Title</label>
 									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" value ="<?php echo $project['PROJECTTITLE']; ?>" required>
 									<?php else: ?>

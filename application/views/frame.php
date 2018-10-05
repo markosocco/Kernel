@@ -391,22 +391,23 @@ desired effect
       <div class="modal-header">
         <h2 class="modal-title" id = "taskTitle">Change Password</h2>
       </div>
-      <div class="modal-body">
-        <form name = "changePassForm" id = "changePassForm" action = "changePassword" method = "POST">
-          <ul>
-            <li><label><span style="color:#984B43">*</span>Enter Old Password</label></li>
-            <li><input type = "password" name = "oldPass" required></li>
-            <li><label><span style="color:#984B43">*</span>Enter New Password</label></li>
-            <li><input type = "password" name = "newPass" required></li>
-            <li><label><span style="color:#984B43">*</span>Confirm New Password</label></li>
-            <li><input type = "password" name = "confirmPass" required></li>
-            <p><span style="color:#984B43">*</span>Required Fields<p>
-            <li><input type = "button" name = "submitChangePass" id = "submitChangePass" value = "CHANGE PASSWORD"></li>
-          </ul>
-        </form>
+      <div class="modal-body" style="text-align:center">
+        <div style="text-align:left; display:inline-block">
+          <label for="oldPass" class="control-label"><span style="color:red">*</span>Old Password</label>
+          <input type="password" class="form-control" id="oldPass" placeholder="Enter Old Password" style="width:100%">
+          <br>
+          <label for="newPass" class="control-label"><span style="color:red">*</span>New Password</label>
+          <input type="password" class="form-control" id="newPass" placeholder="Enter New Password" style="width:100%">
+          <br>
+          <label for="confirmPass" class="control-label"><span style="color:red">*</span>Confirm New Password</label>
+          <input type="password" class="form-control" id="confirmPass" placeholder="Confirm New Password" style="width:100%">
+          <p><span style="color:red">*</span><small>Required</small></p>
+          <!-- <button id="submitChangePass" type="button" class="btn btn-success" style="width:100%">Submit</button> -->
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+        <button type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
       </div>
     </div>
   </div>
