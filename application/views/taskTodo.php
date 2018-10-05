@@ -357,6 +357,7 @@
 					var totalDelayedToDo=0;
 					var total=0;
 					var totalDelayed=0;
+					var totalOngoing=0;
 					var totalPlanned=0;
 
 					if(data['tasks'].length > 0)
@@ -468,19 +469,21 @@
  								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
  								 '<i class="fa fa-flag"></i></button></span>');
 							}
-							// else
-							// {
-							// 	$(".action-" + taskID).append(
- 							// 	 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
- 							// 	 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
- 							// 	 '" data-title="' + data['tasks'][i].TASKTITLE +
- 							// 	 '" data-start="'+ taskStart +
- 							// 	 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
- 							// 	 '<i class="fa fa-flag"></i></button></span>');
-							// }
+							else
+							{
+								$(".action-" + taskID).append(
+ 								 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
+ 								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
+ 								 '" data-title="' + data['tasks'][i].TASKTITLE +
+ 								 '" data-start="'+ taskStart +
+ 								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
+ 								 '<i class="fa fa-flag"></i></button></span>');
+							}
 
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
+								var totalOngoing = totalOngoing+1;
+
 								// $(".action-" + taskID).append(
 								// 	 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
 								// 	 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
@@ -573,6 +576,7 @@
 						$('#totalDelayedToDo').html(totalDelayedToDo);
 						$('#total').html("Total<br><br><b>" + total + "</b>");
 						$('#totalDelayed').html(totalDelayed);
+						$('#totalOngoing').html("Ongoing<br><br><b>" + totalOngoing + "</b>");
 						$('#totalPlanned').html("Planned<br><br><b>" + totalPlanned + "</b>");
 					}
 				},
