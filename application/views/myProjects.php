@@ -92,7 +92,7 @@
               <?php foreach($templates as $template):?>
               <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
-                <a class = "templateProj clickable" data-id = "<?php echo $template['PROJECTSTATUS']; ?>">
+                <a class = "templateProj clickable" data-id = "<?php echo $template['projects_PROJECTID']; ?>">
                 <div class="small-box bg-purple">
                   <div class="inner">
                     <form id = 'template' action = 'projectGantt'  method="POST">
@@ -260,10 +260,10 @@
                         </form>
 
                         <?php //Compute for days remaining
-          							if($row['projectadjustedstartdate'] == "") // check if start date has been previously adjusted
+          							if($row['PROJECTADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
           								$startdate = date_create($row['PROJECTSTARTDATE']);
           							else
-          								$startdate = date_create($row['projectadjustedstartdate']);
+          								$startdate = date_create($row['PROJECTADJUSTEDSTARTDATE']);
                         // $startdate = date_create($row['PROJECTSTARTDATE']);
                         ?>
                         <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in

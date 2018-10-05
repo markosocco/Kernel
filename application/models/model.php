@@ -522,7 +522,7 @@ class model extends CI_Model
   {
     $this->db->select('templates.*, projects.PROJECTACTUALSTARTDATE, projects.PROJECTACTUALENDDATE, users.FIRSTNAME, users.LASTNAME');
     $this->db->from('templates');
-    $this->db->join('projects', 'templates.PROJECTSTATUS = projects.PROJECTID');
+    $this->db->join('projects', 'templates.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'projects.users_USERID = users.USERID');
 
     return $this->db->get()->result_array();
@@ -1876,7 +1876,7 @@ class model extends CI_Model
 
   public function checkIfTemplate($id)
   {
-    $condition = "PROJECTSTATUS = " . $id;
+    $condition = "projects_PROJECTID = " . $id;
     $this->db->select('*');
     $this->db->from('templates');
     $this->db->where($condition);
