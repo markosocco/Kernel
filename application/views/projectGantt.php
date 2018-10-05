@@ -587,7 +587,7 @@
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
 							<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
 
-								<form id="editProjectForm" action = 'newProject'  method="POST" style="display:inline-block">
+								<form id="editProjectForm" action = 'addProjectDetails'  method="POST" style="display:inline-block">
 									<input type='hidden' name='edit' value='<?php echo $projectProfile['PROJECTID'];?>'>
 								</form>
 
@@ -806,7 +806,7 @@
 							<?php endif; ?>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
-							<form action = 'newProject' method="POST" style="display:inline-block">
+							<form action = 'addProjectDetails' method="POST" style="display:inline-block">
 								<input type="hidden" name="templates" value="<?php echo $projectProfile['PROJECTID']; ?>">
 							</form>
 							<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-primary btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
