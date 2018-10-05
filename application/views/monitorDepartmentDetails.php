@@ -129,10 +129,10 @@
                     <th width="23.5%">Task</th>
 										<th width="8%" class='text-center'>Start Date</th>
 										<th width="8%" class='text-center'>Target<br>End Date</th>
-                    <th width="15%">R</th>
-										<th width="15%">A</th>
-										<th width="15%">C</th>
-										<th width="15%">I</th>
+                    <th width="15%" class='text-center'>R</th>
+										<th width="15%" class='text-center'>A</th>
+										<th width="15%" class='text-center'>C</th>
+										<th width="15%" class='text-center'>I</th>
                   </tr>
                 </thead>
                 <tbody>

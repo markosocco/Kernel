@@ -123,8 +123,8 @@
 	                  <tr>
 											<th width=".5%"></th>
 	                    <th width="27%">Task</th>
-	                    <th width="10%">Start Date</th>
-	                    <th width="10%">Target<br>End Date</th>
+	                    <th width="10%" class="text-center">Start Date</th>
+	                    <th width="10%" class="text-center">Target<br>End Date</th>
 	                    <th class="text-center" width="17.5%">A</th>
 	                    <th class="text-center" width="17.5%">C</th>
 	                    <th class="text-center" width="17.5%">I</th>
