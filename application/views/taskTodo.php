@@ -45,7 +45,7 @@
 										<table class="table table-hover no-margin" id="toDoTable">
 											<thead>
 											<tr>
-												<th width=".5%"></th>
+												<th width="1%"></th>
 												<th>Task</th>
 												<th>Project</th>
 												<th class="text-center">End Date</th>
@@ -168,7 +168,7 @@
 										<table class="table table-hover no-margin" id = "allTaskTable">
 											<thead>
 											<tr>
-												<th width=".5%"></th>
+												<th width="1%"></th>
 												<th>Task</th>
 												<th>Project</th>
 												<th class="text-center">Start Date</th>
@@ -324,7 +324,7 @@
 									<h3 id="preReqTitle">Pre-Requisite Tasks</h3>
 									<table class='table' id="preReqTable">
 										<thead>
-											<th width=".5%"></th>
+											<th width="1%"></th>
 											<th>Task</th>
 											<th class="text-center">Start Date</th>
 											<th class="text-center">End Date</th>
@@ -362,6 +362,7 @@
 					var totalDelayedToDo=0;
 					var total=0;
 					var totalDelayed=0;
+					var totalOngoing=0;
 					var totalPlanned=0;
 
 					if(data['tasks'].length > 0)
@@ -427,13 +428,26 @@
 								$('#taskTable').append(
 														 "<tr id='" + taskID + "'>" +
 														 status + "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
-														 " data-id='" + taskID + "' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 														 data['tasks'][i].TASKTITLE+"</td>"+
-														 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
-														 "<td align='center'>" + taskEnd +"</td>" +
-														 "<td align='center'>" + delayDays + "</td>" +
-														 "<td align='center' class = 'action-" + taskID +"'></td></tr>");
+														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 data['tasks'][i].PROJECTTITLE+"</td>"+
+														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 taskStart+"</td>" +
+														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 taskEnd+"</td>" +
+														 "<td align = 'center' class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+														 delayDays+"</td>" +
+														 "<td align='center' class = 'action-" + taskID +"'></td>");
 							}
 
 							var total = total+1;
@@ -473,19 +487,21 @@
  								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
  								 '<i class="fa fa-flag"></i></button></span>');
 							}
-							// else
-							// {
-							// 	$(".action-" + taskID).append(
- 							// 	 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
- 							// 	 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
- 							// 	 '" data-title="' + data['tasks'][i].TASKTITLE +
- 							// 	 '" data-start="'+ taskStart +
- 							// 	 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
- 							// 	 '<i class="fa fa-flag"></i></button></span>');
-							// }
+							else
+							{
+								$(".action-" + taskID).append(
+ 								 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
+ 								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
+ 								 '" data-title="' + data['tasks'][i].TASKTITLE +
+ 								 '" data-start="'+ taskStart +
+ 								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
+ 								 '<i class="fa fa-flag"></i></button></span>');
+							}
 
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
+								var totalOngoing = totalOngoing+1;
+
 								// $(".action-" + taskID).append(
 								// 	 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
 								// 	 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
@@ -578,6 +594,7 @@
 						$('#totalDelayedToDo').html(totalDelayedToDo);
 						$('#total').html("Total<br><br><b>" + total + "</b>");
 						$('#totalDelayed').html(totalDelayed);
+						$('#totalOngoing').html("Ongoing<br><br><b>" + totalOngoing + "</b>");
 						$('#totalPlanned').html("Planned<br><br><b>" + totalPlanned + "</b>");
 					}
 				},

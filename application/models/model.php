@@ -1873,5 +1873,25 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function checkIfTemplate($id)
+  {
+    $condition = "PROJECTSTATUS = " . $id;
+    $this->db->select('*');
+    $this->db->from('templates');
+    $this->db->where($condition);
+    $this->db->limit(1);
+    $query = $this->db->get();
+
+    if ($query->num_rows() == 1)
+    {
+      return true;
+    }
+
+    else
+    {
+      return false;
+    }
+  }
 }
 ?>
