@@ -177,7 +177,7 @@
 												</div>
 
 											<span data-toggle="modal" data-target="#modal-deny">
-												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="tooltip" data-placement="right" title="Deny">
+												<button id = "denyRequest" type="button" class="btn btn-default pull-left" style="display:block" data-toggle="tooltip" data-placement="right" title="Deny">
 													<i class="fa fa-close"></i>
 												</button>
 											</span>
