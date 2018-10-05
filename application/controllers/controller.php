@@ -2187,6 +2187,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['archives'] = $this->model->getAllProjectArchives();
+			$data['templates'] = $this->model->getAllTemplates();
 
 			$this->load->view("archives", $data);
 		}
