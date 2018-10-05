@@ -278,6 +278,7 @@ class controller extends CI_Controller
 				// 	}
 				// }
 
+				$this->session->set_flashdata('alertMessage', 'Successful Login');
 				redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
@@ -318,8 +319,9 @@ class controller extends CI_Controller
 			{
 				$email = $this->input->post('email');
 
+				// ALERTS
 				$this->session->set_flashdata('stickyemail', $email);
-				$this->session->set_flashdata('danger', 'email or Password is incorrect');
+				$this->session->set_flashdata('alertMessage', 'Email or Password is incorrect');
 				redirect('controller/login');
 			}
 		}

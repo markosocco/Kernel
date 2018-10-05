@@ -436,7 +436,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-check',
-        message: ' Hello Success World'
+        message: '<?php echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'success',

@@ -15,6 +15,16 @@
 			</section>
 
 			<section class="content container-fluid">
+
+				<!-- ALERTS -->
+				<!-- <?php if (isset($_SESSION['alertMessage'])): ?>
+					<script>
+					$(document).ready(function()
+					{
+						successAlert();
+					});
+					</script>
+				<?php endif; ?> -->
 				<!-- <div>
 					<button id="success" type="button" class="btn btn-success">Test Success</button>
 					<button id="warning" type="button" class="btn btn-warning">Test Warning</button>
