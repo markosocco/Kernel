@@ -374,101 +374,113 @@
 
                   <tbody>
 
-                    <?php foreach ($completedProjects as $key=> $value):?>
+                    <tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-                      <?php // to fix date format
-                        $completedStart = date_create($value['PROJECTSTARTDATE']);
-                        $completedEnd = date_create($value['PROJECTENDDATE']);
-                      ?>
+                      <?php foreach ($completedProjects as $key=> $value):?>
 
-                      <tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                        <?php // to fix date format
+                          $completedStart = date_create($value['PROJECTSTARTDATE']);
+                          $completedEnd = date_create($value['PROJECTENDDATE']);
+                        ?>
 
-                        <form class="gantt" action = 'projectGantt'  method="POST">
-                        </form>
-
-                        <td class="bg-teal"></td>
-                        <td><?php echo $value['PROJECTTITLE']; ?></td>
-                        <td><?php echo date_format($completedStart, "M d, Y");?></td>
-                        <td><?php echo date_format($completedEnd, "M d, Y");?></td>
-                        <td>100%</td>
-                      </tr>
-                    <?php endforeach;?>
-
-                    <?php foreach ($delayedProjects as $key=> $value):?>
-
-                      <?php // to fix date format
-                        $delayedStart = date_create($value['PROJECTSTARTDATE']);
-                        $delayedEnd = date_create($value['PROJECTENDDATE']);
-                      ?>
-
-                        <tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                        <tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                           <form class="gantt" action = 'projectGantt'  method="POST">
                           </form>
 
-                          <td class="bg-red"></td>
+                          <td class="bg-teal"></td>
                           <td><?php echo $value['PROJECTTITLE']; ?></td>
-                          <td><?php echo date_format($delayedStart, "M d, Y");?></td>
-                          <td><?php echo date_format($delayedEnd, "M d, Y");?></td>
+                          <td><?php echo date_format($completedStart, "M d, Y");?></td>
+                          <td><?php echo date_format($completedEnd, "M d, Y");?></td>
+                          <td>100%</td>
+                        </tr>
+                      <?php endforeach;?>
+                    </tr>
+
+                    <tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                      <?php foreach ($delayedProjects as $key=> $value):?>
+
+                        <?php // to fix date format
+                          $delayedStart = date_create($value['PROJECTSTARTDATE']);
+                          $delayedEnd = date_create($value['PROJECTENDDATE']);
+                        ?>
+
+                          <tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                            <form class="gantt" action = 'projectGantt'  method="POST">
+                            </form>
+
+                            <td class="bg-red"></td>
+                            <td><?php echo $value['PROJECTTITLE']; ?></td>
+                            <td><?php echo date_format($delayedStart, "M d, Y");?></td>
+                            <td><?php echo date_format($delayedEnd, "M d, Y");?></td>
+                            <td>
+                            <?php
+                              foreach ($delayedProjectProgress as $row)
+                              {
+                                if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+                                {
+                                  echo $row['projectProgress'];
+                                }
+                              } ?>%</td>
+                        </tr>
+                      <?php endforeach;?>
+                    </tr>
+
+                    <tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                      <?php foreach ($ongoingProjects as $key=> $value):?>
+
+                        <?php // to fix date format
+                          $ongoingStart = date_create($value['PROJECTSTARTDATE']);
+                          $ongoingEnd = date_create($value['PROJECTENDDATE']);
+                        ?>
+
+                        <tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                          <form class="gantt" action = 'projectGantt'  method="POST">
+                          </form>
+
+                          <td class="bg-green"></td>
+                          <td><?php echo $value['PROJECTTITLE']; ?></td>
+                          <td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+                          <td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
                           <td>
                           <?php
-                            foreach ($delayedProjectProgress as $row)
+                            foreach ($ongoingProjectProgress as $row)
                             {
                               if ($value['PROJECTID'] == $row['projects_PROJECTID'])
                               {
                                 echo $row['projectProgress'];
                               }
                             } ?>%</td>
-                      </tr>
-                    <?php endforeach;?>
+                        </tr>
+                      <?php endforeach;?>
+                    </tr>
 
-                    <?php foreach ($ongoingProjects as $key=> $value):?>
+                    <tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-                      <?php // to fix date format
-                        $ongoingStart = date_create($value['PROJECTSTARTDATE']);
-                        $ongoingEnd = date_create($value['PROJECTENDDATE']);
-                      ?>
+                      <?php foreach ($plannedProjects as $row):?>
 
-                      <tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                        <?php // to fix date format
+                          $plannedStart = date_create($row['PROJECTSTARTDATE']);
+                          $plannedEnd = date_create($row['PROJECTENDDATE']);
+                        ?>
 
-                        <form class="gantt" action = 'projectGantt'  method="POST">
-                        </form>
+                        <tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-                        <td class="bg-green"></td>
-                        <td><?php echo $value['PROJECTTITLE']; ?></td>
-                        <td><?php echo date_format($ongoingStart, "M d, Y");?></td>
-                        <td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-                        <td>
-                        <?php
-                          foreach ($ongoingProjectProgress as $row)
-                          {
-                            if ($value['PROJECTID'] == $row['projects_PROJECTID'])
-                            {
-                              echo $row['projectProgress'];
-                            }
-                          } ?>%</td>
-                      </tr>
-                    <?php endforeach;?>
+                          <form class="gantt" action = 'projectGantt'  method="POST">
+                          </form>
 
-                    <?php foreach ($plannedProjects as $row):?>
-
-                      <?php // to fix date format
-                        $plannedStart = date_create($row['PROJECTSTARTDATE']);
-                        $plannedEnd = date_create($row['PROJECTENDDATE']);
-                      ?>
-
-                      <tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
-
-                        <form class="gantt" action = 'projectGantt'  method="POST">
-                        </form>
-
-                        <td class="bg-yellow"></td>
-                        <td><?php echo $row['PROJECTTITLE']; ?></td>
-                        <td><?php echo date_format($plannedStart, "M d, Y");?></td>
-                        <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-                        <td>0.00%</td>
-                      </tr>
-                    <?php endforeach;?>
+                          <td class="bg-yellow"></td>
+                          <td><?php echo $row['PROJECTTITLE']; ?></td>
+                          <td><?php echo date_format($plannedStart, "M d, Y");?></td>
+                          <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
+                          <td>0.00%</td>
+                        </tr>
+                      <?php endforeach;?>
+                    </tr>
 
                     <!-- <?php foreach ($parkedProjects as $key=> $value):?>
 
@@ -774,45 +786,82 @@
 
                   <tbody>
 
-                    <?php foreach ($completedProjects as $key=> $value):?>
+                    <tr class="myTeam completedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                      <?php foreach ($completedProjects as $key=> $value):?>
+
+                          <?php // to fix date format
+                            $completedStart = date_create($value['PROJECTSTARTDATE']);
+                            $completedEnd = date_create($value['PROJECTENDDATE']);
+                          ?>
+
+                        <tr class="myTeam completedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                          <form class="teamgantt" action = 'teamGantt'  method="POST">
+                          </form>
+
+                          <td class="bg-teal"></td>
+                          <td><?php echo $value['PROJECTTITLE']; ?></td>
+                          <td><?php echo date_format($completedStart, "M d, Y");?></td>
+                          <td><?php echo date_format($completedEnd, "M d, Y");?></td>
+                          <td>100%</td>
+                        </tr>
+                      <?php endforeach;?>
+                    </tr>
+
+                    <tr class="myTeam delayedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                      <?php foreach ($delayedProjects as $key=> $value):?>
 
                         <?php // to fix date format
-                          $completedStart = date_create($value['PROJECTSTARTDATE']);
-                          $completedEnd = date_create($value['PROJECTENDDATE']);
+                          $delayedStart = date_create($value['PROJECTSTARTDATE']);
+                          $delayedEnd = date_create($value['PROJECTENDDATE']);
                         ?>
 
-                      <tr class="myTeam completedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+                      <tr class="myTeam delayedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
                         </form>
 
-                        <td class="bg-teal"></td>
+                        <td class="bg-red"></td>
                         <td><?php echo $value['PROJECTTITLE']; ?></td>
-                        <td><?php echo date_format($completedStart, "M d, Y");?></td>
-                        <td><?php echo date_format($completedEnd, "M d, Y");?></td>
-                        <td>100%</td>
+                        <td><?php echo date_format($delayedStart, "M d, Y");?></td>
+                        <td><?php echo date_format($delayedEnd, "M d, Y");?></td>
+                        <td>
+                          <?php
+                            foreach ($delayedTeamProjectProgress as $row)
+                            {
+                              if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+                              {
+                                echo $row['projectProgress'];
+                              }
+                            } ?>%</td>
                       </tr>
                     <?php endforeach;?>
+                  </tr>
 
-                    <?php foreach ($delayedProjects as $key=> $value):?>
+
+                  <tr class="myTeam ongoingTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+                    <?php foreach ($ongoingProjects as $key=> $value):?>
 
                       <?php // to fix date format
-                        $delayedStart = date_create($value['PROJECTSTARTDATE']);
-                        $delayedEnd = date_create($value['PROJECTENDDATE']);
+                        $ongoingStart = date_create($value['PROJECTSTARTDATE']);
+                        $ongoingEnd = date_create($value['PROJECTENDDATE']);
                       ?>
 
-                    <tr class="myTeam delayedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="myTeam ongoingTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
 
                       <form class="teamgantt" action = 'teamGantt'  method="POST">
                       </form>
 
-                      <td class="bg-red"></td>
+                      <td class="bg-green"></td>
                       <td><?php echo $value['PROJECTTITLE']; ?></td>
-                      <td><?php echo date_format($delayedStart, "M d, Y");?></td>
-                      <td><?php echo date_format($delayedEnd, "M d, Y");?></td>
+                      <td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+                      <td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
                       <td>
                         <?php
-                          foreach ($delayedTeamProjectProgress as $row)
+                          foreach ($ongoingTeamProjectProgress as $row)
                           {
                             if ($value['PROJECTID'] == $row['projects_PROJECTID'])
                             {
@@ -821,54 +870,30 @@
                           } ?>%</td>
                     </tr>
                   <?php endforeach;?>
+                </tr>
 
-                  <?php foreach ($ongoingProjects as $key=> $value):?>
+                <tr class="myTeam plannedTeamList clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
+
+                  <?php foreach ($plannedProjects as $row):?>
 
                     <?php // to fix date format
-                      $ongoingStart = date_create($value['PROJECTSTARTDATE']);
-                      $ongoingEnd = date_create($value['PROJECTENDDATE']);
+                      $plannedStart = date_create($row['PROJECTSTARTDATE']);
+                      $plannedEnd = date_create($row['PROJECTENDDATE']);
                     ?>
 
-                  <tr class="myTeam ongoingTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="myTeam plannedTeamList clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-                    <form class="teamgantt" action = 'teamGantt'  method="POST">
-                    </form>
+                      <form class="teamgantt" action = 'teamGantt'  method="POST">
+                      </form>
 
-                    <td class="bg-green"></td>
-                    <td><?php echo $value['PROJECTTITLE']; ?></td>
-                    <td><?php echo date_format($ongoingStart, "M d, Y");?></td>
-                    <td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-                    <td>
-                      <?php
-                        foreach ($ongoingTeamProjectProgress as $row)
-                        {
-                          if ($value['PROJECTID'] == $row['projects_PROJECTID'])
-                          {
-                            echo $row['projectProgress'];
-                          }
-                        } ?>%</td>
-                  </tr>
-                <?php endforeach;?>
-
-                <?php foreach ($plannedProjects as $row):?>
-
-                  <?php // to fix date format
-                    $plannedStart = date_create($row['PROJECTSTARTDATE']);
-                    $plannedEnd = date_create($row['PROJECTENDDATE']);
-                  ?>
-
-                  <tr class="myTeam plannedTeamList clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
-
-                    <form class="teamgantt" action = 'teamGantt'  method="POST">
-                    </form>
-
-                    <td class="bg-yellow"></td>
-                    <td><?php echo $row['PROJECTTITLE']; ?></td>
-                    <td><?php echo date_format($plannedStart, "M d, Y");?></td>
-                    <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-                    <td>0.00%</td>
-                  </tr>
-                <?php endforeach;?>
+                      <td class="bg-yellow"></td>
+                      <td><?php echo $row['PROJECTTITLE']; ?></td>
+                      <td><?php echo date_format($plannedStart, "M d, Y");?></td>
+                      <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
+                      <td>0.00%</td>
+                    </tr>
+                  <?php endforeach;?>
+                </tr>
 
                 <!-- <?php foreach ($parkedProjects as $key=> $value):?>
 
@@ -1153,7 +1178,13 @@
         if(filter == 'all')
           $(".myTeam").show();
         else
+        {
+          if($.trim( $('.' + filter + 'TeamList').text() ).length == 0) // check if empty
+          {
+            $("." + filter + "TeamList").html("<td class = 'emptyProjects' colspan='5' align='center'> There are no " + filter + " projects</td>");
+          }
           $("." + filter + "TeamList").show();
+        }
       }
       else if($("#teamView").css("display") == 'none' && $("#myProjectsListView").css("display") == 'none')
       {
@@ -1177,7 +1208,13 @@
         if(filter == 'all')
           $(".project").show();
         else
+        {
+          if($.trim( $('.' + filter + 'ProjList').text() ).length == 0) // check if empty
+          {
+            $("." + filter + "ProjList").html("<td class = 'emptyProjects' colspan='5' align='center'> There are no " + filter + " projects</td>");
+          }
           $("." + filter + "ProjList").show();
+        }
       }
     }
 

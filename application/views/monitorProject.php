@@ -227,53 +227,60 @@
 
 										<tbody>
 
-											<?php foreach ($completedProjects as $key=> $value):?>
+											<tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+												<?php foreach ($completedProjects as $key=> $value):?>
 
-												<?php // to fix date format
-													$completedStart = date_create($value['PROJECTSTARTDATE']);
-													$completedEnd = date_create($value['PROJECTENDDATE']);
-												?>
+													<?php // to fix date format
+														$completedStart = date_create($value['PROJECTSTARTDATE']);
+														$completedEnd = date_create($value['PROJECTENDDATE']);
+													?>
 
-												<tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
-
-													<form class="gantt" action = 'projectGantt'  method="POST">
-													</form>
-
-													<td class="bg-teal"></td>
-													<td><?php echo $value['PROJECTTITLE']; ?></td>
-													<td><?php echo date_format($completedStart, "M d, Y");?></td>
-													<td><?php echo date_format($completedEnd, "M d, Y");?></td>
-													<td>100%</td>
-												</tr>
-											<?php endforeach;?>
-
-											<?php foreach ($delayedProjects as $key=> $value):?>
-
-												<?php // to fix date format
-													$delayedStart = date_create($value['PROJECTSTARTDATE']);
-													$delayedEnd = date_create($value['PROJECTENDDATE']);
-												?>
-
-													<tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+													<tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 														<form class="gantt" action = 'projectGantt'  method="POST">
 														</form>
 
-														<td class="bg-red"></td>
+														<td class="bg-teal"></td>
 														<td><?php echo $value['PROJECTTITLE']; ?></td>
-														<td><?php echo date_format($delayedStart, "M d, Y");?></td>
-														<td><?php echo date_format($delayedEnd, "M d, Y");?></td>
-														<td>
-														<?php
-															foreach ($delayedProjectProgress as $row)
-															{
-																if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+														<td><?php echo date_format($completedStart, "M d, Y");?></td>
+														<td><?php echo date_format($completedEnd, "M d, Y");?></td>
+														<td>100%</td>
+													</tr>
+												<?php endforeach;?>
+											</tr>
+
+											<tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+												<?php foreach ($delayedProjects as $key=> $value):?>
+
+													<?php // to fix date format
+														$delayedStart = date_create($value['PROJECTSTARTDATE']);
+														$delayedEnd = date_create($value['PROJECTENDDATE']);
+													?>
+
+														<tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+															<form class="gantt" action = 'projectGantt'  method="POST">
+															</form>
+
+															<td class="bg-red"></td>
+															<td><?php echo $value['PROJECTTITLE']; ?></td>
+															<td><?php echo date_format($delayedStart, "M d, Y");?></td>
+															<td><?php echo date_format($delayedEnd, "M d, Y");?></td>
+															<td>
+															<?php
+																foreach ($delayedProjectProgress as $row)
 																{
-																	echo $row['projectProgress'];
-																}
-															} ?>%</td>
-												</tr>
-											<?php endforeach;?>
+																	if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+																	{
+																		echo $row['projectProgress'];
+																	}
+																} ?>%</td>
+													</tr>
+												<?php endforeach;?>
+											</tr>
+
+											<tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
 
 											<?php foreach ($ongoingProjects as $key=> $value):?>
 
@@ -282,46 +289,51 @@
 													$ongoingEnd = date_create($value['PROJECTENDDATE']);
 												?>
 
-												<tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+													<tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
 
-													<form class="gantt" action = 'projectGantt'  method="POST">
-													</form>
+														<form class="gantt" action = 'projectGantt'  method="POST">
+														</form>
 
-													<td class="bg-green"></td>
-													<td><?php echo $value['PROJECTTITLE']; ?></td>
-													<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
-													<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-													<td>
-													<?php
-														foreach ($ongoingProjectProgress as $row)
-														{
-															if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+														<td class="bg-green"></td>
+														<td><?php echo $value['PROJECTTITLE']; ?></td>
+														<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+														<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+														<td>
+														<?php
+															foreach ($ongoingProjectProgress as $row)
 															{
-																echo $row['projectProgress'];
-															}
-														} ?>%</td>
-												</tr>
-											<?php endforeach;?>
+																if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+																{
+																	echo $row['projectProgress'];
+																}
+															} ?>%</td>
+													</tr>
+												<?php endforeach;?>
+											</tr>
 
-											<?php foreach ($plannedProjects as $row):?>
+											<tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
+												<?php foreach ($plannedProjects as $row):?>
 
-												<?php // to fix date format
-													$plannedStart = date_create($row['PROJECTSTARTDATE']);
-													$plannedEnd = date_create($row['PROJECTENDDATE']);
-												?>
+													<tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
 
-												<tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
+													<?php // to fix date format
+														$plannedStart = date_create($row['PROJECTSTARTDATE']);
+														$plannedEnd = date_create($row['PROJECTENDDATE']);
+													?>
 
-													<form class="gantt" action = 'projectGantt'  method="POST">
-													</form>
 
-													<td class="bg-yellow"></td>
-													<td><?php echo $row['PROJECTTITLE']; ?></td>
-													<td><?php echo date_format($plannedStart, "M d, Y");?></td>
-													<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-													<td>0.00%</td>
-												</tr>
-											<?php endforeach;?>
+														<form class="gantt" action = 'projectGantt'  method="POST">
+														</form>
+
+														<td class="bg-yellow"></td>
+														<td><?php echo $row['PROJECTTITLE']; ?></td>
+														<td><?php echo date_format($plannedStart, "M d, Y");?></td>
+														<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
+														<td>0.00%</td>
+													</tr>
+												<?php endforeach;?>
+											</tr>
+
 
 											<!-- <?php foreach ($parkedProjects as $key=> $value):?>
 
@@ -450,11 +462,14 @@
 
 	        if(filter == 'all')
 	          $(".project").show();
-	        else //if($.trim( $('#' + filter + 'ProjList').text() ) == null) // check if empty
-					// {
-					// 	$('.' + filter + 'ProjList').html("<h3 class = 'emptyProjects' align = 'center'>There are no " + filter + " projects</h3>");
-					// }
-					$("." + filter + "ProjList").show();
+	        else
+					{
+						if($.trim( $('.' + filter + 'ProjList').text() ).length == 0) // check if empty
+						{
+							$("." + filter + "ProjList").html("<td class = 'emptyProjects' colspan='5' align='center'> There are no " + filter + " projects</td>");
+						}
+						$("." + filter + "ProjList").show();
+					}
 	      }
 			}
 
