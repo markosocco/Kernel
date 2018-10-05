@@ -129,10 +129,10 @@
                     <th width="23.5%">Task</th>
 										<th width="8%" class='text-center'>Start Date</th>
 										<th width="8%" class='text-center'>Target<br>End Date</th>
-                    <th width="15%">Responsible</th>
-										<th width="15%">Accountable</th>
-										<th width="15%">Consulted</th>
-										<th width="15%">Informed</th>
+                    <th width="15%">R</th>
+										<th width="15%">A</th>
+										<th width="15%">C</th>
+										<th width="15%">I</th>
                   </tr>
                 </thead>
                 <tbody>
