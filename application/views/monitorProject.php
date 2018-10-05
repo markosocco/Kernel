@@ -23,8 +23,8 @@
 				<section class="content container-fluid" style="padding-top:20px">
 					<!-- TOGGLE MY PROJECT -->
 	        <div id = "divGridListMyProjects" class="pull-right">
-	          <a href="#" id = "buttonListProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="List View"><i class="fa fa-th-list"></i>
-	          <a href="#" id = "buttonGridProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="top" title="Grid View"><i class="fa fa-th-large"></i></a>
+	          <a href="#" id = "buttonListProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="left" title="List View"><i class="fa fa-th-list"></i></a>
+	          <a href="#" id = "buttonGridProjects" class="btn btn-default btn" data-toggle="tooltip" data-placement="left" title="Grid View"><i class="fa fa-th-large"></i></a>
 	        </div>
 
 					<!-- SORT/LEGEND -->
@@ -205,10 +205,180 @@
 	                  <!-- ./col -->
 	                <?php endforeach;?>
 	              </div>
-
 	            </div>
 	          </div>
 	          <!-- ./myProjectsGridView -->
+
+						<!-- LIST VIEW -->
+						<div id="myProjectsListView">
+							<div class="box">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<table id="projectList" class="table table-bordered table-hover">
+										<thead>
+											<tr>
+												<th width="1%"></th>
+												<th>Project Title</th>
+												<th>Start Date</th>
+												<th>Target End Date</th>
+												<th>Progress</th>
+											</tr>
+										</thead>
+
+										<tbody>
+
+											<?php foreach ($completedProjects as $key=> $value):?>
+
+												<?php // to fix date format
+													$completedStart = date_create($value['PROJECTSTARTDATE']);
+													$completedEnd = date_create($value['PROJECTENDDATE']);
+												?>
+
+												<tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+													<form class="gantt" action = 'projectGantt'  method="POST">
+													</form>
+
+													<td class="bg-teal"></td>
+													<td><?php echo $value['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($completedStart, "M d, Y");?></td>
+													<td><?php echo date_format($completedEnd, "M d, Y");?></td>
+													<td>100%</td>
+												</tr>
+											<?php endforeach;?>
+
+											<?php foreach ($delayedProjects as $key=> $value):?>
+
+												<?php // to fix date format
+													$delayedStart = date_create($value['PROJECTSTARTDATE']);
+													$delayedEnd = date_create($value['PROJECTENDDATE']);
+												?>
+
+													<tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+														<form class="gantt" action = 'projectGantt'  method="POST">
+														</form>
+
+														<td class="bg-red"></td>
+														<td><?php echo $value['PROJECTTITLE']; ?></td>
+														<td><?php echo date_format($delayedStart, "M d, Y");?></td>
+														<td><?php echo date_format($delayedEnd, "M d, Y");?></td>
+														<td>
+														<?php
+															foreach ($delayedProjectProgress as $row)
+															{
+																if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+																{
+																	echo $row['projectProgress'];
+																}
+															} ?>%</td>
+												</tr>
+											<?php endforeach;?>
+
+											<?php foreach ($ongoingProjects as $key=> $value):?>
+
+												<?php // to fix date format
+													$ongoingStart = date_create($value['PROJECTSTARTDATE']);
+													$ongoingEnd = date_create($value['PROJECTENDDATE']);
+												?>
+
+												<tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+													<form class="gantt" action = 'projectGantt'  method="POST">
+													</form>
+
+													<td class="bg-green"></td>
+													<td><?php echo $value['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($ongoingStart, "M d, Y");?></td>
+													<td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+													<td>
+													<?php
+														foreach ($ongoingProjectProgress as $row)
+														{
+															if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+															{
+																echo $row['projectProgress'];
+															}
+														} ?>%</td>
+												</tr>
+											<?php endforeach;?>
+
+											<?php foreach ($plannedProjects as $row):?>
+
+												<?php // to fix date format
+													$plannedStart = date_create($row['PROJECTSTARTDATE']);
+													$plannedEnd = date_create($row['PROJECTENDDATE']);
+												?>
+
+												<tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
+
+													<form class="gantt" action = 'projectGantt'  method="POST">
+													</form>
+
+													<td class="bg-yellow"></td>
+													<td><?php echo $row['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($plannedStart, "M d, Y");?></td>
+													<td><?php echo date_format($plannedEnd, "M d, Y");?></td>
+													<td>0.00%</td>
+												</tr>
+											<?php endforeach;?>
+
+											<!-- <?php foreach ($parkedProjects as $key=> $value):?>
+
+												<?php // to fix date format
+													$parkedStart = date_create($value['PROJECTSTARTDATE']);
+													$parkedEnd = date_create($value['PROJECTENDDATE']);
+												?>
+
+												<tr class="project parkedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+													<form class="gantt" action = 'projectGantt'  method="POST">
+													</form>
+
+													<td class="btn-info"></td>
+													<td><?php echo $value['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($parkedStart, "M d, Y");?></td>
+													<td><?php echo date_format($parkedEnd, "M d, Y");?></td>
+													<td>
+														<?php
+															foreach ($parkedProjectProgress as $row)
+															{
+																if ($value['PROJECTID'] == $row['projects_PROJECTID'])
+																{
+																	echo $row['projectProgress'];
+																}
+															} ?>%</td>
+												</tr>
+											<?php endforeach;?>
+
+											<?php foreach ($draftedProjects as $key=> $value):?>
+
+												<?php // to fix date format
+													$draftedStart = date_create($value['PROJECTSTARTDATE']);
+													$draftedEnd = date_create($value['PROJECTENDDATE']);
+												?>
+
+												<tr class="project draftedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+
+													<form class="gantt" action = 'projectGantt'  method="POST">
+													</form>
+
+													<td class="bg-maroon"></td>
+													<td><?php echo $value['PROJECTTITLE']; ?></td>
+													<td><?php echo date_format($draftedStart, "M d, Y");?></td>
+													<td><?php echo date_format($draftedEnd, "M d, Y");?></td>
+													<td>0.00%</td>
+												</tr>
+											<?php endforeach;?> -->
+										</tbody>
+									</table>
+								</div>
+								<!-- /.box-body -->
+							</div>
+							<!-- /.box -->
+						</div>
+						<!-- /.myProjectListView -->
+					<!-- END OF LIST VIEW -->
 				</section>
 				<!-- /.content -->
 			</div>
@@ -218,6 +388,9 @@
 		<script>
 			$("#monitor").addClass("active");
 			$("#monitorProject").addClass("active");
+			$("#buttonGridProjects").hide();
+			$("#myProjectsListView").hide();
+
 
 			$(document).on("click", ".project", function() {
 	      var $id = $(this).attr('data-id');
@@ -225,6 +398,85 @@
 	      $(".dept").append("<input type='hidden' name='project_ID' value= " + $id + ">");
 	      $(".dept").submit();
 	    });
+
+			$("#filterAll").addClass('active');
+
+			// FILTER
+			$(document).on("click", ".filter", function(e) {
+				$(".filter").removeClass('active');
+				$(this).addClass('active');
+
+				filterProjects(e.target.id);
+
+			});
+
+			function filterProjects(selectedFilter)
+			{
+
+				if(selectedFilter == "filterAll")
+					$(".emptyProjects").hide();
+				else
+					$(".emptyProjects").show();
+
+				switch(selectedFilter)
+				{
+					case "filterAll": var filter = 'all'; break;
+					case "filterCompleted": var filter = 'completed'; break;
+					case "filterDelayed": var filter = 'delayed'; break;
+					case "filterOngoing": var filter = 'ongoing'; break;
+					case "filterPlanned": var filter = 'planned'; break;
+					case "filterParked": var filter = 'parked'; break;
+					case "filterDrafted": var filter = 'drafted'; break;
+				}
+
+				if($("#myProjectsListView").css("display") == 'none')
+	      {
+	        // alert("My Projects in Grid View");
+	        $(".projectsGrid").hide();
+
+	        if(filter == 'all')
+	          $(".projectsGrid").show();
+	        else
+	        {
+	          if($.trim( $('#' + filter + 'ProjGrid').text() ).length == 0) // check if empty
+	            $('#' + filter + 'ProjGrid').html("<h3 class = 'emptyProjects' align = 'center'>There are no " + filter + " projects</h3>");
+	          $('#' + filter + 'ProjGrid').show();
+	        }
+	      }
+				else
+	      {
+	        // alert("My Projects in List View");
+	        $(".project").hide();
+
+	        if(filter == 'all')
+	          $(".project").show();
+	        else //if($.trim( $('#' + filter + 'ProjList').text() ) == null) // check if empty
+					// {
+					// 	$('.' + filter + 'ProjList').html("<h3 class = 'emptyProjects' align = 'center'>There are no " + filter + " projects</h3>");
+					// }
+					$("." + filter + "ProjList").show();
+	      }
+			}
+
+			// TOGGLE GRID AND LIST
+			$("#buttonListProjects").on("click", function(){
+	      $("#myProjectsListView").show();
+	      $("#myProjectsGridView").hide();
+
+				$("#buttonGridProjects").show();
+				$("#buttonListProjects").hide();
+			});
+
+			$("#buttonGridProjects").on("click", function(){
+				$("#myProjectsGridView").show();
+				$("#myProjectsListView").hide();
+
+				$("#buttonListProjects").show();
+				$("#buttonGridProjects").hide();
+			});
+
+
+
 		</script>
 	</body>
 </html>
