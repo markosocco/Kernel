@@ -4543,7 +4543,7 @@ class controller extends CI_Controller
 
 			else
 			{
-				$this->form_validation->set_rules('newPass', 'New Password', 'required|min_length[8]');
+				$this->form_validation->set_rules('newPass', 'New Password', 'required|min_length[6]');
 
 				if ($this->form_validation->run() == FALSE)
 				{
