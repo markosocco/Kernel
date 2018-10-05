@@ -985,6 +985,14 @@
 					</div>
 					<!-- /.modal -->
 
+
+					<input type="button" value="+" onclick="chart.zoomIn();">
+					<input type="button" value="-" onclick="chart.zoomOut();">
+					<input type="button" value="Fit All" onclick="chart.fitAll();">
+					<input type="button" value="Day" onclick="chart.zoomTo('day', 1);">
+					<input type="button" value="Week" onclick="chart.zoomTo('week', 1);">
+					<input type="button" value="Month" onclick="chart.zoomTo('month', '1')">
+
 					<div id="container" style="height: 600px;"></div>
 
 					<!-- </section> -->
@@ -1420,6 +1428,7 @@
 		<script>
 
 		// PROJECT GANTT START
+			var chart;
 			anychart.onDocumentReady(function (){
 
 				var rawData = [
@@ -1591,7 +1600,9 @@
 								'informed': '',
 								'period': '" . $value['initialTaskDuration'] . "',
 								'progressValue': '0%',
-								'parent': '" . $parent . "'
+								'parent': '" . $parent . "',
+								'connectTo': '" . $dependency . "',
+								'connectorType': '" . $type . "'
 							},";
 						} else { // START: RACI IS NOT EMPTY
 							// START: CHECKS IF MAIN OR SUB
@@ -1738,7 +1749,7 @@
 
 				// data tree settings
 				var treeData = anychart.data.tree(rawData, "as-table");
-				var chart = anychart.ganttProject();      // chart type
+				chart = anychart.ganttProject();      // chart type
 				chart.data(treeData);                     // chart data
 
 				// data grid getter
@@ -1796,7 +1807,7 @@
 				columnInformed.width(100);
 
 				chart.splitterPosition(650);
-				chart.zoomTo("week", 2);
+				// chart.zoomTo("week", 2);
 				chart.container('container').draw();      // set container and initiate drawing
 			});
 
