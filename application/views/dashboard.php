@@ -178,10 +178,9 @@
 							 											 }
 							 										 }
 
-																  echo "% </h2>"; }
-																 else {
-																	 echo "- </h2>";
-																 }
+																  echo "% </h2>";
+																}
+
 																} ?>
 														</td>
 														<td align="center">
@@ -421,8 +420,6 @@
 				<?php endif;?>
 
 
-				<?php if($toAcknowledgeDocuments != NULL):?>
-					<!-- MARKO - Docu-->
 					<!-- Main row -->
 					<div class="row">
 						<!-- Left col -->
@@ -449,29 +446,39 @@
 												<form action='acknowledgeDocument' method='POST' class ='acknowledgeDocument'> </form>
 
 												<?php
-													foreach($toAcknowledgeDocuments as $row){
-														if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
-															if($row['ACKNOWLEDGEDDATE'] == ''){
-																echo "<tr class='clickable'>";
-																	echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
-																	echo "<td>" . $row['PROJECTTITLE'] . "</td>";
-																	echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
-																	echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
-																	echo "<td align='center'>
-																	<a href = '" . $row['DOCUMENTLINK'] . "' download><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
-																	<i class='fa fa-download'></i></button></a>
-																	<span data-toggle='tooltip' data-placement='top' title='Acknowledge'>
-																	<button type='button' class='btn btn-warning document acknowledgeButton' name='documentButton'
-																		data-toggle='modal' data-target='#confirmAcknowledge'
-																		data-docuID ='" . $row['DOCUMENTID'] . "'
-																		data-projectID = '" . $row['projects_PROJECTID'] . "'
-																		data-docuName = '" . $row['DOCUMENTNAME'] ."'>
-																		<i class='fa fa-check-circle'></i></button></span></td>";
-																echo "</tr>";
+													if($toAcknowledgeDocuments != NULL){
+														foreach($toAcknowledgeDocuments as $row){
+															if($row['users_UPLOADEDBY'] != $_SESSION['USERID']){
+																if($row['ACKNOWLEDGEDDATE'] == ''){
+																	echo "<tr class='clickable'>";
+																		echo "<td>" . $row['DOCUMENTNAME'] . "</td>";
+																		echo "<td>" . $row['PROJECTTITLE'] . "</td>";
+																		echo "<td>" . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "</td>";
+																		echo "<td>" . $row['DEPARTMENTNAME'] . "</td>";
+																		echo "<td align='center'>
+																		<a href = '" . $row['DOCUMENTLINK'] . "' download><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='top' title='Download'>
+																		<i class='fa fa-download'></i></button></a>
+																		<span data-toggle='tooltip' data-placement='top' title='Acknowledge'>
+																		<button type='button' class='btn btn-warning document acknowledgeButton' name='documentButton'
+																			data-toggle='modal' data-target='#confirmAcknowledge'
+																			data-docuID ='" . $row['DOCUMENTID'] . "'
+																			data-projectID = '" . $row['projects_PROJECTID'] . "'
+																			data-docuName = '" . $row['DOCUMENTNAME'] ."'>
+																			<i class='fa fa-check-circle'></i></button></span></td>";
+																	echo "</tr>";
+																}
 															}
 														}
 													}
-												?>
+													else{
+														echo "<tr>";
+															echo "<td colspan='5' class='text-center'>";
+																echo "There are no documents to acknowledge";
+															echo "</td>";
+														echo "</tr>";
+													}
+
+											?>
 											</tbody>
 										</table>
 									</div>
@@ -483,9 +490,7 @@
 							<!-- /.box -->
 						</div>
 					</div>
-
 					<!-- END DOCUMENTS TABLE -->
-				<?php endif;?>
 
 				<!-- CONFIRM ACKNOWLEDGEMENT -->
 				<div class="modal fade" id="confirmAcknowledge" tabindex="-1">
