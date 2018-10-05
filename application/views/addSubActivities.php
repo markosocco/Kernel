@@ -137,7 +137,7 @@
 															<?php foreach ($templateSubActivity as $sKey=> $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
-																			<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																			<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>>' <i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																		<td><div class="form-group">
 
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -200,7 +200,7 @@
 															<?php else: ?>
 
 																<tr>
-																	<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																	<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>>'<i class="glyphicon glyphicon-plus-sign"></i></a></td>
 									                <td><div class="form-group">
 
 																		<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -341,7 +341,7 @@
 												<td width="5%"></td>
 											</tr>
 											<tr>
-												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept=<?php echo json_encode($depts); ?>><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+												<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 				                <td><div class="form-group">
 
 													<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">

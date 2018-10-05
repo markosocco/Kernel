@@ -2914,10 +2914,10 @@ class controller extends CI_Controller
 				case 'Procurement':
 					$proHead = $row['users_DEPARTMENTHEAD'];
 					break;
-				case 'HR':
+				case 'Human Resource':
 					$hrHead = $row['users_DEPARTMENTHEAD'];
 					break;
-				case 'MIS':
+				case 'Management Information System':
 					$misHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'Store Operations':
@@ -2992,10 +2992,10 @@ class controller extends CI_Controller
 									case 'Procurement':
 										$deptHead = $proHead;
 										break;
-									case 'HR':
+									case 'Human Resource':
 										$deptHead = $hrHead;
 										break;
-									case 'MIS':
+									case 'Management Information System':
 										$deptHead = $misHead;
 										break;
 									case 'Store Operations':
@@ -3504,10 +3504,10 @@ class controller extends CI_Controller
 				case 'Procurement':
 					$proHead = $row['users_DEPARTMENTHEAD'];
 					break;
-				case 'HR':
+				case 'Human Resource':
 					$hrHead = $row['users_DEPARTMENTHEAD'];
 					break;
-				case 'MIS':
+				case 'Management Information System':
 					$misHead = $row['users_DEPARTMENTHEAD'];
 					break;
 				case 'Store Operations':
@@ -3577,10 +3577,10 @@ class controller extends CI_Controller
 									case 'Procurement':
 										$deptHead = $proHead;
 										break;
-									case 'HR':
+									case 'Human Resource':
 										$deptHead = $hrHead;
 										break;
-									case 'MIS':
+									case 'Management Information System':
 										$deptHead = $misHead;
 										break;
 									case 'Store Operations':
@@ -3738,10 +3738,10 @@ class controller extends CI_Controller
 					case 'Procurement':
 						$proHead = $row['users_DEPARTMENTHEAD'];
 						break;
-					case 'HR':
+					case 'Human Resource':
 						$hrHead = $row['users_DEPARTMENTHEAD'];
 						break;
-					case 'MIS':
+					case 'Management Information System':
 						$misHead = $row['users_DEPARTMENTHEAD'];
 						break;
 					case 'Store Operations':
@@ -3805,10 +3805,10 @@ class controller extends CI_Controller
 										case 'Procurement':
 											$deptHead = $proHead;
 											break;
-										case 'HR':
+										case 'Human Resource':
 											$deptHead = $hrHead;
 											break;
-										case 'MIS':
+										case 'Management Information System':
 											$deptHead = $misHead;
 											break;
 										case 'Store Operations':
@@ -3917,10 +3917,10 @@ class controller extends CI_Controller
 		      case 'Procurement':
 		        $proHead = $row['users_DEPARTMENTHEAD'];
 		        break;
-		      case 'HR':
+		      case 'Human Resource':
 		        $hrHead = $row['users_DEPARTMENTHEAD'];
 		        break;
-		      case 'MIS':
+		      case 'Management Information System':
 		        $misHead = $row['users_DEPARTMENTHEAD'];
 		        break;
 		      case 'Store Operations':
@@ -3995,10 +3995,10 @@ class controller extends CI_Controller
 	 									case 'Procurement':
 	 										$deptHead = $proHead;
 	 										break;
-	 									case 'HR':
+	 									case 'Human Resource':
 	 										$deptHead = $hrHead;
 	 										break;
-	 									case 'MIS':
+	 									case 'Management Information System':
 	 										$deptHead = $misHead;
 	 										break;
 	 									case 'Store Operations':
