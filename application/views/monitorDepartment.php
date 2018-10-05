@@ -77,7 +77,7 @@
 		        </div>
 
 						<div class="col-md-8 col-sm- col-xs-12">
-							<div class="box box-danger">
+							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 
 									<?php $delayCount = 0?>
@@ -104,7 +104,7 @@
 		                <thead>
 		                  <tr>
 		                    <th width="50%">Task</th>
-		                    <th width="20%">Responsible</th>
+		                    <th width="20%" class="text-center">R</th>
 												<th width="20%">Department</th>
 		                    <th width="15%" class="text-center">Target<br>End Date</th>
 												<th width"5%" class='text-center'>Days Delayed</th>

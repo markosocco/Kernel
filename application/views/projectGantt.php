@@ -730,14 +730,14 @@
 						<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived' || $projectProfile['PROJECTSTATUS'] == 'Complete'):?>
 							<?php $actualEnd = date_create($projectProfile['PROJECTACTUALENDDATE']);?>
 
-							<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?>
+							<h4><b>Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?>
 								(<?php echo $projectProfile['actualDuration'];?>
 								<?php if($projectProfile['actualDuration'] > 1):?>
 									days)
 								<?php else:?>
 									day)
 								<?php endif;?>
-							</h4>
+							</b></h4>
 
 						<?php else:?>
 

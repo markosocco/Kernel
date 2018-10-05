@@ -241,7 +241,7 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="<?php echo base_url("index.php/controller/changePassword"); ?>" class="btn btn-default btn-flat">Change Password</a>
+                  <a href="<?php echo base_url("index.php/controller/changePassword"); ?>" class="btn btn-default btn-flat" data-toggle='modal' data-target='#modal-changePassword'>Change Password</a>
                 </div>
                 <div class="pull-right">
                   <a href="<?php echo base_url()."index.php/controller/logout"; ?>" class="btn btn-default btn-flat">Sign out</a>
@@ -383,6 +383,35 @@ desired effect
   <div class="control-sidebar-bg"></div>
 <!-- </div> -->
 <!-- ./wrapper -->
+
+<!-- CHANGE PASSOWRD MODAL -->
+<div class="modal fade" id="modal-changePassword" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id = "taskTitle">Change Password</h2>
+      </div>
+      <div class="modal-body">
+        <form name = "changePassForm" id = "changePassForm" action = "changePassword" method = "POST">
+          <ul>
+            <li><label><span style="color:#984B43">*</span>Enter Old Password</label></li>
+            <li><input type = "password" name = "oldPass" required></li>
+            <li><label><span style="color:#984B43">*</span>Enter New Password</label></li>
+            <li><input type = "password" name = "newPass" required></li>
+            <li><label><span style="color:#984B43">*</span>Confirm New Password</label></li>
+            <li><input type = "password" name = "confirmPass" required></li>
+            <p><span style="color:#984B43">*</span>Required Fields<p>
+            <li><input type = "button" name = "submitChangePass" id = "submitChangePass" value = "CHANGE PASSWORD"></li>
+          </ul>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- CHANGE PASSWORD MODAL -->
 
 <!-- REQUIRED JS SCRIPTS -->
 
