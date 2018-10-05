@@ -46,7 +46,7 @@
 						<div class="col-md-10">
 							<div class="box box-danger">
 								<div class="box-header with-border">
-									<h3 class="box-title">To Do</h3>
+									<h3 class="box-title">To Delegate</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
@@ -103,7 +103,7 @@
 																				</span>
 																				<span data-toggle="modal" data-target="#modal-accept">
 																				<button disabled id="taskAccept-<?php echo $task['TASKID'];?>" type="button" class="btn btn-success btn-sm acceptBtn"
-																				data-toggle="tooltip" data-placement="top" title="Accept Task"
+																				data-toggle="tooltip" data-placement="top" title="Accept"
 																				data-id="<?php echo $task['TASKID'];?>"
 																				data-title="<?php echo $task['TASKTITLE'];?>"
 																				data-start="<?php echo $task['TASKSTARTDATE'];?>"
@@ -597,7 +597,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h2 class="modal-title" id = "acceptTitle">Task Finished</h2>
+						<h2 class="modal-title" id = "acceptTitle">Accept Task</h2>
 						<h4 id="acceptDates">Start Date - End Date (Days)</h4>
 					</div>
 					<div class="modal-body">

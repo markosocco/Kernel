@@ -177,7 +177,7 @@
 												</div>
 
 											<span data-toggle="modal" data-target="#modal-deny">
-												<button id = "denyRequest" type="button" class="btn btn-default pull-left" style="display:block" data-toggle="tooltip" data-placement="right" title="Deny">
+												<button id = "denyRequest" type="button" class="btn btn-danger pull-left" style="display:block" data-toggle="tooltip" data-placement="right" title="Deny">
 													<i class="fa fa-close"></i>
 												</button>
 											</span>
@@ -265,7 +265,7 @@
 																<td class='text-center'>
 																	<div class="radio">
 																	<label>
-																		<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" required>
+																		<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" disabled>
 																	</label>
 																</div>
 																</td>
@@ -602,7 +602,7 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h2 class="modal-title" id = "taskTitle">Task Title</h2>
+									<h2 class="modal-title" id = "taskName">Task Title</h2>
 									<h4 id="taskDates">Start Date - End Date (Days)</h4>
 								</div>
 								<div class="modal-body">
@@ -1130,7 +1130,7 @@
 							for(x=0; data['raci'].length >x; x++)
 							{
 								$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('checked', true);
-								if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4'))
+								if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4') && <?php echo $_SESSION['usertype_USERTYPEID'];?> == '4')
 								{
 									$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('disabled', true);
 								}
@@ -1321,7 +1321,7 @@
 				var $start = new Date($(this).attr('data-start'));
 				var $end = new Date($(this).attr('data-end'));
 				var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
-				$("#taskTitle").html($title);
+				$("#taskName").html($title);
 				$("#taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
 				if($diff > 1)
 					$("#taskDates").append(" days)");
