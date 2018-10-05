@@ -264,7 +264,7 @@ class model extends CI_Model
   public function getTaskCount()
   {
     $condition = "projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && raci.ROLE != '0' && raci.ROLE != '5' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
-    $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
+    $this->db->select('users.*,tasks.TASKSTATUS, (tasks.TASKENDDATE - tasks.TASKSTARTDATE) as "delay", count(distinct tasks.TASKID) AS "taskCount"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');

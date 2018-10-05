@@ -457,7 +457,7 @@
 							</div>
 
 							<!-- WORKLOAD ASSESSMENT -->
-							<!-- <div id="workloadAssessment">
+							<div id="workloadAssessment">
 
 								<div class="modal-header">
 									<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
@@ -470,9 +470,9 @@
 									<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
 								</div>
 
-							</div> -->
+							</div>
 
-							<div id="workloadAssessment">
+							<!-- <div id="workloadAssessment">
 
 								<div class="modal-header">
 									<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
@@ -500,7 +500,7 @@
 									<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
 								</div>
 
-							</div>
+							</div> -->
 
 							<!-- CONFIRM DELEGATE -->
 							<div id="delegateConfirm">
