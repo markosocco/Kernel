@@ -52,7 +52,7 @@
 		              <h3 class="box-title">Enter sub activities for this project</h3>
 		            </div>
 		            <!-- /.box-header -->
-								<form id='arrangeTasks' name = 'arrangeTasks' action = '<?php echo base_url('index.php/controller/arrangeTasks');?>' method="POST">
+								<form id='arrangeTasks' name = 'addSubActivities' action = '<?php echo base_url('index.php/controller/addSubActivities');?>' method="POST">
 
 									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
@@ -407,7 +407,7 @@
 		            <!-- /.box-body -->
 								<div class="box-footer">
 									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Add Main Activities</button>
-									<button type="submit" class="btn btn-success pull-right" id="scheduleTasks"><i class="fa fa-forward"></i> Add Tasks</button>
+									<button type="submit" class="btn btn-success pull-right" id="addTasks"><i class="fa fa-forward"></i> Add Tasks</button>
 									<!-- <button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-fast-forward"></i> Generate Gantt Chart</button> -->
 								</div>
 								</form>

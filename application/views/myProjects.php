@@ -70,7 +70,7 @@
           <div class="row" id="createProject">
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+              <a href="<?php echo base_url("index.php/controller/addProjectDetails"); ?>">
               <div class="small-box bg-blue">
                 <div class="inner">
                   <h2>Create</h2>
@@ -354,7 +354,7 @@
             <div class="box">
               <div class="box-header" style="display:inline-block">
                 <h3 class="box-title">
-                  <a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+                  <a href="<?php echo base_url("index.php/controller/addProjectDetails"); ?>">
                     <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Create Project</button>
                   </a>
                 </h3>
@@ -754,7 +754,7 @@
             <div class="box">
               <div class="box-header" style="display:inline-block">
                 <h3 class="box-title">
-                  <a href="<?php echo base_url("index.php/controller/newProject"); ?>">
+                  <a href="<?php echo base_url("index.php/controller/addProjectDetails"); ?>">
                     <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Create Project</button>
                   </a>
                 </h3>
