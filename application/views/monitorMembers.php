@@ -92,7 +92,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id="total"> Ongoing Projects <br><b><?php echo $projCount;?></b></h4>
+										<h4 align="center" id="total"> Ongoing Projects <br><br><b><?php echo $projCount;?></b></h4>
 									</div>
 								</div>
 							</div>

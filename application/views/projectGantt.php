@@ -29,6 +29,12 @@
 								<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 						<?php endif; ?>
 
+						<?php if(isset($_SESSION['changeRequest']) || isset($_SESSION['userRequest']) || isset($_SESSION['rfc'])): ?>
+							<script>$("#rfc").addClass("active");</script>
+						<?php else:?>
+							<script>$("#myProjects").addClass("active");</script>
+						<?php endif;?>
+
 					</div>
 
 				<?php if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])): ?>
@@ -240,7 +246,7 @@
 												<table id="teamList" class="table table-bordered table-hover">
 													<thead>
 													<tr>
-														<th>Department</th>
+														<th>Executive</th>
 														<th class='text-center'>R*</th>
 														<th class='text-center'>A</th>
 														<th class='text-center'>C</th>
@@ -287,6 +293,12 @@
 															</tr>
 															<?php endif;?>
 														<?php endforeach;?>
+
+														<thead>
+															<tr>
+																<th colspan='5'>Department</th>
+															</tr>
+														</thead>
 
 														<!-- ALL DEPARTMENTS -->
 														<?php foreach($departments as $department):?>
@@ -445,12 +457,42 @@
 							</div>
 
 							<!-- WORKLOAD ASSESSMENT -->
-							<div id="workloadAssessment">
+							<!-- <div id="workloadAssessment">
 
 								<div class="modal-header">
 									<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
 									<h4 id = "workloadProjects">Total Number of Projects: </h4>
 									<h4 id = "workloadTasks">Total Number of Tasks: </h4>
+								</div>
+								<div class="modal-body" id = "workloadDiv">
+								</div>
+								<div class="modal-footer">
+									<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
+								</div>
+
+							</div> -->
+
+							<div id="workloadAssessment">
+
+								<div class="modal-header">
+									<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
+									<table class="table">
+										<tbody>
+											<tr>
+												<td><h5 id = "workloadProjects">Total Projects: </h5></td>
+												<td><h5 id = "workloadDelayed">Delayed Tasks: </h5></td>
+											</tr>
+											<tr>
+												<td><h5 id = "workloadTasks">Total Tasks: </h5></td>
+												<td><h5 id = "workloadOngoing">OngoingTasks: </h5></td>
+											</tr>
+											<tr>
+												<td></td>
+												<td><h5 id = "workloadPlanned">Planned Tasks: </h5></td>
+											</tr>
+										<tbody>
+									</table>
+
 								</div>
 								<div class="modal-body" id = "workloadDiv">
 								</div>
@@ -575,6 +617,9 @@
 											<tbody id='postReqDetails'>
 											</tbody>
 										</table>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
 								</div>
 							</div>
 						</div>
@@ -993,7 +1038,7 @@
 			$("#editProjectForm").submit();
 			});
 
-			$("#myProjects").addClass("active");
+			// $("#myProjects").addClass("active");
 
 			// $("#projectDocu").click(function()
 			// {
@@ -1150,29 +1195,33 @@
  											}
  										}
 
- 										if(data['raci'][0].TASKSTATUS == "Complete")
- 										{
- 											var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
- 										}
- 										if(data['raci'][0].TASKSTATUS == "Planning")
- 										{
- 											var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
- 										}
- 										if(data['raci'][0].TASKSTATUS == "Ongoing")
- 										{
- 											if(data['raci'][0].currentDate > endDate)
- 												var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
- 											else
- 												var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
- 										}
+										if(data['raci'][0].TASKSTATUS == "Complete")
+										{
+											var status = "<td class='bg-teal'></td>";
+											// var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+										}
+										if(data['raci'][0].TASKSTATUS == "Planning")
+										{
+											var status = "<td class='bg-orange'></td>";
+											// var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+										}
+										if(data['raci'][0].TASKSTATUS == "Ongoing")
+										{
+											if(data['raci'][0].currentDate > endDate)
+											var status = "<td class='bg-red'></td>";
+												// var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+											else
+											var status = "<td class='bg-green'></td>";
+												// var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
+										}
 
- 								 			$("#project_" + $projectID).append("<tr>" +
- 								 							 "<td>" + role + "</td>" +
- 								 							 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
- 								 							 "<td>" + taskStart + "</td>" +
- 								 							 "<td>" + taskEnd + "</td>" +
- 								 							 "<td align='center'>" + status + "</td>" +
- 								 							 "</tr>");
+										$("#project_" + $projectID).append("<tr>" +
+														 status +
+														 "<td>" + role + "</td>" +
+														 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
+														 "<td>" + taskStart + "</td>" +
+														 "<td>" + taskEnd + "</td>" +
+														 "</tr>");
  								 	},
  								 	error:function()
  								 	{
@@ -1215,11 +1264,11 @@
 												 "</div>" +
 												 "<div class = 'box-body table-responsive no-padding'>" +
 													 "<table class='table table-hover' id='project_" + $projectID + "'>" +
-													 	 "<th></th>" +
-														 "<th>Task Name</th>" +
-														 "<th>Start Date</th>" +
-														 "<th>End Date</th>" +
-														 "<th class='text-center'>Status</th>");
+													 "<th width='1%'></th>" +
+													"<th width='1%'></th>" +
+														"<th>Task Name</th>" +
+														"<th>Start Date</th>" +
+														"<th>End Date</th>");
 
 								 loadWorkloadTasks($projectID);
 

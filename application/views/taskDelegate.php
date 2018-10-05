@@ -53,7 +53,7 @@
 
 						<?php if ($delegateTasksByProject != NULL): ?>
 							<?php foreach($delegateTasksByProject as $project):?>
-								<?php if($project['threshold'] >= $project['PROJECTSTARTDATE']):?> <!-- show only activities before the project start date -->
+								<?php if($project['threshold'] >= $project['PROJECTSTARTDATE']):?> <!-- show only tasks before the project start date -->
 
 										<?php
 										$startDate = date_create($project['PROJECTSTARTDATE']);
@@ -150,7 +150,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo $totalToDoTasks;?></b></span></h4>
+										<h4 align="center" id ="toDoTasks"> Tasks <br><br><b><?php echo $totalToDoTasks;?></b></span></h4>
 									</div>
 								</div>
 							</div>
@@ -172,7 +172,7 @@
 					<div class="col-md-10">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">All Activities</h3>
+								<h3 class="box-title">All Tasks</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -275,7 +275,7 @@
 						<!-- /.box-header -->
 						<div class="box-body">
 							<div class="table-responsive">
-								<h4 align="center" id ="toDoTasks"> Activities <br><br><b><?php echo count($delegateTasks);?></b></span></h4>
+								<h4 align="center" id ="toDoTasks"> Tasks <br><br><b><?php echo count($delegateTasks);?></b></span></h4>
 							</div>
 						</div>
 					</div>
@@ -310,7 +310,7 @@
 											<table id="teamList" class="table table-bordered table-hover">
 												<thead>
 												<tr>
-													<th>Department</th>
+													<th>Executive</th>
 													<th class='text-center'>R*</th>
 													<th class='text-center'>A</th>
 													<th class='text-center'>C</th>
@@ -329,7 +329,7 @@
 															<td class='text-center'>
 																<div class="radio">
 																<label>
-																	<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" required>
+																	<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" disabled>
 																</label>
 															</div>
 															</td>
@@ -357,6 +357,12 @@
 														</tr>
 														<?php endif;?>
 													<?php endforeach;?>
+
+													<thead>
+														<tr>
+															<th colspan='5'>Department</th>
+														</tr>
+													</thead>
 
 													<!-- ALL DEPARTMENTS -->
 													<?php foreach($departments as $department):?>
@@ -526,7 +532,7 @@
 						</div>
 
 						<!-- WORKLOAD ASSESSMENT -->
-						<div id="workloadAssessment">
+						<!-- <div id="workloadAssessment">
 
 							<div class="modal-header">
 								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
@@ -539,6 +545,36 @@
 								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Back"><i class="fa fa-arrow-left"></i></button>
 							</div>
 
+						</div> -->
+
+						<div id="workloadAssessment">
+
+							<div class="modal-header">
+								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
+								<table class="table">
+									<tbody>
+										<tr>
+											<td><h5 id = "workloadProjects">Total Projects: </h5></td>
+											<td><h5 id = "workloadDelayed">Delayed Tasks: </h5></td>
+										</tr>
+										<tr>
+											<td><h5 id = "workloadTasks">Total Tasks: </h5></td>
+											<td><h5 id = "workloadOngoing">Ongoing Tasks: </h5></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td><h5 id = "workloadPlanned">Planned Tasks: </h5></td>
+										</tr>
+									<tbody>
+								</table>
+
+							</div>
+							<div class="modal-body" id = "workloadDiv">
+							</div>
+							<div class="modal-footer">
+								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
+							</div>
+
 						</div>
 
 						<!-- CONFIRM DELEGATE -->
@@ -547,8 +583,8 @@
 								<h4>Are you sure you want to delegate this task?</h4>
 							</div>
 							<div class="modal-footer">
-								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-								<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+								<button id = "confirmDelegateBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</div>
 					</div>
@@ -568,8 +604,8 @@
 						<h4 id ="early" style="margin-top:0">Are you sure you want to accept this task?</h4>
 						<form id = "acceptForm" action="acceptTask" method="POST" style="margin-bottom:0;">
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+								<button id = "acceptConfirm" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</form>
 					</div>
@@ -768,27 +804,31 @@
 
 										if(data['raci'][0].TASKSTATUS == "Complete")
 										{
-											var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+											var status = "<td class='bg-teal'></td>";
+											// var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
 										}
 										if(data['raci'][0].TASKSTATUS == "Planning")
 										{
-											var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+											var status = "<td class='bg-orange'></td>";
+											// var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
 										}
 										if(data['raci'][0].TASKSTATUS == "Ongoing")
 										{
 											if(data['raci'][0].currentDate > endDate)
-												var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+											var status = "<td class='bg-red'></td>";
+												// var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
 											else
-												var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
+											var status = "<td class='bg-green'></td>";
+												// var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
 										}
 
-								 			$("#project_" + $projectID).append("<tr>" +
-								 							 "<td>" + role + "</td>" +
-								 							 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
-								 							 "<td>" + taskStart + "</td>" +
-								 							 "<td>" + taskEnd + "</td>" +
-								 							 "<td align='center'>" + status + "</td>" +
-								 							 "</tr>");
+										$("#project_" + $projectID).append("<tr>" +
+														 status +
+														 "<td>" + role + "</td>" +
+														 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
+														 "<td>" + taskStart + "</td>" +
+														 "<td>" + taskEnd + "</td>" +
+														 "</tr>");
 								 	},
 								 	error:function()
 								 	{
@@ -831,11 +871,11 @@
 												"</div>" +
 												"<div class = 'box-body table-responsive no-padding'>" +
 													"<table class='table table-hover' id='project_" + $projectID + "'>" +
-														"<th></th>" +
+													"<th width='1%'></th>" +
+													"<th width='1%'></th>" +
 														"<th>Task Name</th>" +
 														"<th>Start Date</th>" +
-														"<th>End Date</th>" +
-														"<th class='text-center'>Status</th>");
+														"<th>End Date</th>");
 
 								loadWorkloadTasks($projectID);
 
