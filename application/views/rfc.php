@@ -26,7 +26,7 @@
 				<?php if($changeRequests != null):?>
 					<div class="box box-danger">
 						<div class="box-header">
-							<h3 class="box-title">Pending Requests For Approval</h3>
+							<h3 class="box-title">Requests I Need To Approve</h3>
 						</div>
 						<!-- /.box-header -->
 
@@ -78,8 +78,8 @@
 											</td>
 											<td><?php echo $changeRequest['FIRSTNAME'] . " " .  $changeRequest['LASTNAME'] ;?></td>
 											<td><?php echo $changeRequest['TASKTITLE'];?></td>
-											<td><?php echo date_format($startDate, "M d, Y"); ?></td>
-											<td><?php echo date_format($endDate, "M d, Y"); ?></td>
+											<td class="text-center"><?php echo date_format($startDate, "M d, Y"); ?></td>
+											<td class="text-center"><?php echo date_format($endDate, "M d, Y"); ?></td>
 											<td><?php echo $changeRequest['PROJECTTITLE'];?></td>
 										</tr>
 									<?php endforeach;?>
@@ -96,7 +96,7 @@
 					<?php if($userRequests != null):?>
 						<div class="box box-danger">
 							<div class="box-header">
-								<h3 class="box-title">Requests Sent</h3>
+								<h3 class="box-title">Requests I Sent</h3>
 							</div>
 							<!-- /.box-header -->
 
@@ -151,16 +151,16 @@
 													<!-- <?php echo $type;?> -->
 												</td>
 												<td><?php echo $userRequest['TASKTITLE'];?></td>
-												<td><?php echo date_format($startDate, "M d, Y"); ?></td>
-												<td><?php echo date_format($endDate, "M d, Y"); ?></td>
+												<td align="center"><?php echo date_format($startDate, "M d, Y"); ?></td>
+												<td align="center"><?php echo date_format($endDate, "M d, Y"); ?></td>
 												<td><?php echo $userRequest['PROJECTTITLE'];?></td>
-												<td><?php echo $userRequest['REQUESTSTATUS'];?></td>
+												<td align="center"><?php echo $userRequest['REQUESTSTATUS'];?></td>
 												<?php if($userRequest['REQUESTSTATUS'] == 'Pending'):?>
 													<td align="center">-</td>
 													<td align="center">-</td>
 												<?php else:?>
 													<td><?php echo $userRequest['FIRSTNAME'] . " " .  $userRequest['LASTNAME'] ;?></td>
-													<td><?php echo date_format($approvedDate, "M d, Y");;?></td>
+													<td align="center"><?php echo date_format($approvedDate, "M d, Y");;?></td>
 												<?php endif;?>
 											</tr>
 										<?php endforeach;?>
