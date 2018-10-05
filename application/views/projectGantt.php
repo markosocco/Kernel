@@ -799,9 +799,11 @@
 
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
-							<form action = 'templateProject' method="POST" style="display:inline-block">
-							</form>
-							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
+							<?php if (!$isTemplate): ?>
+								<form action = 'templateProject' method="POST" style="display:inline-block">
+								</form>
+								<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
+							<?php endif; ?>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
 							<form action = 'newProject' method="POST" style="display:inline-block">

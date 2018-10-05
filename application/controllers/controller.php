@@ -2187,7 +2187,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['archives'] = $this->model->getAllProjectArchives();
-			$data['templates'] = $this->model->getAllTemplates();
+			// $data['templates'] = $this->model->getAllTemplates();
 
 			$this->load->view("archives", $data);
 		}
@@ -3109,6 +3109,8 @@ class controller extends CI_Controller
 			$dashboard =$this->input->post("dashboard");
 			$templateProjectGantt = $this->input->post("templateProjectGantt");
 			$monitorTasks =$this->input->post("monitorTasks");
+
+			$data['isTemplate'] = $this->model->checkIfTemplate($id);
 
 			// DASHBOARD
 			if (isset($dashboard))
