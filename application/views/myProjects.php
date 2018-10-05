@@ -374,7 +374,7 @@
 
                   <tbody>
 
-                    <tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="project completedProjList">
 
                       <?php foreach ($completedProjects as $key=> $value):?>
 
@@ -397,7 +397,7 @@
                       <?php endforeach;?>
                     </tr>
 
-                    <tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="project delayedProjList">
 
                       <?php foreach ($delayedProjects as $key=> $value):?>
 
@@ -428,7 +428,7 @@
                       <?php endforeach;?>
                     </tr>
 
-                    <tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="project ongoingProjList">
 
                       <?php foreach ($ongoingProjects as $key=> $value):?>
 
@@ -459,7 +459,7 @@
                       <?php endforeach;?>
                     </tr>
 
-                    <tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
+                    <tr class="project plannedProjList">
 
                       <?php foreach ($plannedProjects as $row):?>
 
@@ -786,7 +786,7 @@
 
                   <tbody>
 
-                    <tr class="myTeam completedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="myTeam completedTeamList clickable">
 
                       <?php foreach ($completedProjects as $key=> $value):?>
 
@@ -809,7 +809,7 @@
                       <?php endforeach;?>
                     </tr>
 
-                    <tr class="myTeam delayedTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+                    <tr class="myTeam delayedTeamList clickable">
 
                       <?php foreach ($delayedProjects as $key=> $value):?>
 
@@ -841,7 +841,7 @@
                   </tr>
 
 
-                  <tr class="myTeam ongoingTeamList clickable" data-id = "<?php echo $value['PROJECTID']; ?>">
+                  <tr class="myTeam ongoingTeamList clickable">
 
                     <?php foreach ($ongoingProjects as $key=> $value):?>
 
@@ -872,7 +872,7 @@
                   <?php endforeach;?>
                 </tr>
 
-                <tr class="myTeam plannedTeamList clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
+                <tr class="myTeam plannedTeamList clickable">
 
                   <?php foreach ($plannedProjects as $row):?>
 

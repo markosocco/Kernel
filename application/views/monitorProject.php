@@ -227,7 +227,7 @@
 
 										<tbody>
 
-											<tr class="project completedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+											<tr class="project completedProjList">
 												<?php foreach ($completedProjects as $key=> $value):?>
 
 													<?php // to fix date format
@@ -249,7 +249,7 @@
 												<?php endforeach;?>
 											</tr>
 
-											<tr class="project delayedProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+											<tr class="project delayedProjList">
 
 												<?php foreach ($delayedProjects as $key=> $value):?>
 
@@ -280,7 +280,7 @@
 												<?php endforeach;?>
 											</tr>
 
-											<tr class="project ongoingProjList" data-id = "<?php echo $value['PROJECTID']; ?>">
+											<tr class="project ongoingProjList">
 
 											<?php foreach ($ongoingProjects as $key=> $value):?>
 
@@ -311,7 +311,7 @@
 												<?php endforeach;?>
 											</tr>
 
-											<tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
+											<tr class="project plannedProjList">
 												<?php foreach ($plannedProjects as $row):?>
 
 													<tr class="project plannedProjList" data-id = "<?php echo $row['PROJECTID']; ?>">
