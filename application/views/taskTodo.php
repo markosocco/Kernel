@@ -336,7 +336,7 @@
 									</table>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+								<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
 							</div>
 						</div>
 					</div>
@@ -435,11 +435,7 @@
 														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 														 data['tasks'][i].PROJECTTITLE+"</td>"+
-														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
-														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
-														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
-														 taskStart+"</td>" +
-														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+														 "<td class = 'clickable taskDetails text-center' data-toggle='modal' data-target='#modal-details'" +
 														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 														 taskEnd+"</td>" +
@@ -462,15 +458,15 @@
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 data['tasks'][i].PROJECTTITLE+"</td>"+
-													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "<td class = 'clickable taskDetails text-center' data-toggle='modal' data-target='#modal-details'" +
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 taskStart+"</td>" +
-													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "<td class = 'clickable taskDetails text-center' data-toggle='modal' data-target='#modal-details'" +
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 taskEnd+"</td>" +
-													 "<td align = 'center' class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "<td align = 'center' class = 'clickable taskDetails text-center' data-toggle='modal' data-target='#modal-details'" +
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 delayDays+"</td>" +
