@@ -195,10 +195,10 @@
 	                        </form>
 
 	                        <?php //Compute for days remaining
-	          							if($row['PROJECTADJUSTEDSTATDATE'] == "") // check if start date has been previously adjusted
+	          							if($row['projectadjustedstartdate'] == "") // check if start date has been previously adjusted
 	          								$startdate = date_create($row['PROJECTSTARTDATE']);
 	          							else
-	          								$startdate = date_create($row['PROJECTADJUSTEDSTATDATE']);
+	          								$startdate = date_create($row['projectadjustedstartdate']);
 	                        // $startdate = date_create($row['PROJECTSTARTDATE']);
 	                        ?>
 	                        <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in
