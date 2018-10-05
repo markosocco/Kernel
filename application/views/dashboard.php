@@ -177,8 +177,12 @@
 							 												 echo $row['COMPLETENESS'];
 							 											 }
 							 										 }
-																	}
-																} ?>%</h2>
+
+																  echo "% </h2>"; }
+																 else {
+																	 echo "- </h2>";
+																 }
+																} ?>
 														</td>
 														<td align="center">
 															<?php
