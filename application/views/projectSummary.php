@@ -244,7 +244,7 @@
 				</div>
 
 				<!-- DELAYED TASKS -->
-				<?php if($changeRequests != null):?>
+				<?php if($tasks != null):?>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="box box-danger">
@@ -380,7 +380,7 @@
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
-									<h4 align="center">There are no early tasks</h4>
+									<h4 align="center">There were no early tasks</h4>
 								</div>
 							</div>
 						</div>

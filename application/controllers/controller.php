@@ -278,6 +278,7 @@ class controller extends CI_Controller
 				// 	}
 				// }
 
+				$this->session->set_flashdata('alertMessage', 'Successful Login');
 				redirect('controller/dashboard');
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
@@ -317,9 +318,12 @@ class controller extends CI_Controller
 			else
 			{
 				$email = $this->input->post('email');
-
 				$this->session->set_flashdata('stickyemail', $email);
-				$this->session->set_flashdata('danger', 'email or Password is incorrect');
+
+				// ALERTS
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', 'Email or Password is incorrect');
+
 				redirect('controller/login');
 			}
 		}
@@ -2183,6 +2187,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['archives'] = $this->model->getAllProjectArchives();
+			$data['templates'] = $this->model->getAllTemplates();
 
 			$this->load->view("archives", $data);
 		}

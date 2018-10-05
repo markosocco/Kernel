@@ -436,7 +436,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-check',
-        message: ' Hello Success World'
+        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'success',
@@ -464,7 +464,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-ban',
-        message: ' Hello Danger World'
+        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'danger',
@@ -492,7 +492,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-warning',
-        message: ' Hello Warning World'
+        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'warning',
@@ -520,7 +520,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-info',
-        message: ' Hello Info World'
+        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'info',

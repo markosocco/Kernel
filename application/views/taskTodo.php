@@ -132,6 +132,17 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
+										<h4 align="center" id="totalOngoing"> Ongoing <br><br><b>0</b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
 										<h4 align="center" id="totalPlanned"> Planned <br><br><b>0</b></h4>
 									</div>
 								</div>
@@ -308,15 +319,19 @@
 									<h3 id="preReqTitle">Pre-Requisite Tasks</h3>
 									<table class='table' id="preReqTable">
 										<thead>
+											<th width=".5%"></th>
 											<th>Task</th>
 											<th class="text-center">Start Date</th>
 											<th class="text-center">End Date</th>
 											<th>Responsible</th>
-											<th class="text-center">Status</th>
+											<!-- <th class="text-center">Status</th> -->
 										</thead>
 										<tbody id='preReqDetails'>
 										</tbody>
 									</table>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
 							</div>
 						</div>
 					</div>
@@ -342,6 +357,7 @@
 					var totalDelayedToDo=0;
 					var total=0;
 					var totalDelayed=0;
+					var totalOngoing=0;
 					var totalPlanned=0;
 
 					if(data['tasks'].length > 0)
@@ -424,22 +440,50 @@
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 data['tasks'][i].TASKTITLE+"</td>"+
-													 "<td>" + data['tasks'][i].PROJECTTITLE+"</td>"+
-													 "<td align='center'>" + taskStart +"</td>" +
-													 "<td align='center'>" + taskEnd +"</td>" +
-													 "<td align='center'>" + delayDays + "</td>" +
+													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 data['tasks'][i].PROJECTTITLE+"</td>"+
+													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 taskStart+"</td>" +
+													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 taskEnd+"</td>" +
+													 "<td align = 'center' class = 'clickable taskDetails' data-toggle='modal' data-target='#modal-details'" +
+													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
+													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
+													 delayDays+"</td>" +
 													 "<td align='center' class = 'action-" + taskID +"'></td>");
 
-							 $(".action-" + taskID).append(
+
+						 if(data['tasks'][i].threshold >= endDate) //if delayed
+							{
+								$(".action-" + taskID).append(
+ 								 '<span data-toggle="modal" data-target="#modal-request"><button disabled type="button"' +
+ 								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
+ 								 '" data-title="' + data['tasks'][i].TASKTITLE +
+ 								 '" data-start="'+ taskStart +
+ 								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
+ 								 '<i class="fa fa-flag"></i></button></span>');
+							}
+							else
+							{
+								$(".action-" + taskID).append(
  								 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
  								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
  								 '" data-title="' + data['tasks'][i].TASKTITLE +
  								 '" data-start="'+ taskStart +
  								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
  								 '<i class="fa fa-flag"></i></button></span>');
+							}
 
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
+								var totalOngoing = totalOngoing+1;
+
 								// $(".action-" + taskID).append(
 								// 	 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
 								// 	 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
@@ -532,6 +576,7 @@
 						$('#totalDelayedToDo').html(totalDelayedToDo);
 						$('#total').html("Total<br><br><b>" + total + "</b>");
 						$('#totalDelayed').html(totalDelayed);
+						$('#totalOngoing').html("Ongoing<br><br><b>" + totalOngoing + "</b>");
 						$('#totalPlanned').html("Planned<br><br><b>" + totalPlanned + "</b>");
 					}
 				},
