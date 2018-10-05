@@ -630,14 +630,14 @@
 
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE']; ?>
-							<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
+							<!-- <?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
 
 								<form id="editProjectForm" action = 'addProjectDetails'  method="POST" style="display:inline-block">
 									<input type='hidden' name='edit' value='<?php echo $projectProfile['PROJECTID'];?>'>
 								</form>
 
 								<a id="editProject" data-id="<?php echo $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
-							<?php endif; ?>
+							<?php endif; ?> -->
 					</h1>
 
 					<ol class="breadcrumb">
@@ -1597,7 +1597,7 @@
 								'accountable': '',
 								'consulted': '',
 								'informed': '',
-								'period': '" . $value['initialTaskDuration'] . "',
+								'period': '" . $value['initialTaskDuration'] . " days',
 								'progressValue': '0%',
 								'parent': '" . $parent . "',
 								'connectTo': '" . $dependency . "',
@@ -1618,7 +1618,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] . "',
+										'period': '" . $value['initialTaskDuration'] . " days',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "'
@@ -1645,7 +1645,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] ."',
+										'period': '" . $value['initialTaskDuration'] ." days',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
@@ -1667,7 +1667,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] . "',
+										'period': '" . $value['initialTaskDuration'] . " days',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
@@ -1688,7 +1688,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] . "',
+										'period': '" . $value['initialTaskDuration'] . " days',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1708,7 +1708,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] . "',
+										'period': '" . $value['initialTaskDuration'] . " days',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
@@ -1730,7 +1730,7 @@
 										'accountable': '" . $accountablePerson ."',
 										'consulted': '" . $consultedPerson  ."',
 										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] ."',
+										'period': '" . $value['initialTaskDuration'] ." days',
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
