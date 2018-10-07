@@ -836,12 +836,6 @@
 							</form>
 							<span data-toggle="modal" data-target="#confirmArchive"><a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a></span>
 
-							<?php if ($projectProfile['users_USERID'] == $_SESSION['USERID']): ?>
-								<form action = 'projectSummary' method="POST" style="display:inline-block">
-								</form>
-								<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
-							<?php endif; ?>
-
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
 							<?php if (!$isTemplate): ?>
@@ -864,6 +858,13 @@
 						<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
 							<span data-toggle="modal" data-target="#confirmContinue"><a name="" class="btn btn-primary btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a></span>
 						<?php endif;?>
+
+						<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete' || $projectProfile['PROJECTSTATUS'] == 'Archived' || isset($_SESSION['templateProjectGantt'])): ?>
+							<form action = 'projectSummary' id="projectSummary" method="POST" style="display:inline-block">
+								<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
+							</form>
+							<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
+						<?php endif; ?>
 
 					</div>
 					<br>
@@ -1010,9 +1011,9 @@
 
 		$(document).on("click", "#projectSummary", function() {
 			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-			$("form").attr("name", "formSubmit");
-			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-			$("form").submit();
+			// $("form").attr("name", "formSubmit");
+			// $("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("#projectSummary").submit();
 			});
 
 		$(document).on("click", "#doneTemplate", function() {
