@@ -423,6 +423,7 @@
 															<?php endif;?>
 
 															<?php $hasTasks = false;?>
+
 															<?php foreach($taskCount as $count): ;?>
 																<?php $hasTasks = false;?>
 																<?php if ($count['USERID'] == $employee['USERID']):?>
@@ -532,7 +533,7 @@
 						</div>
 
 						<!-- WORKLOAD ASSESSMENT -->
-						<!-- <div id="workloadAssessment">
+						<div id="workloadAssessment">
 
 							<div class="modal-header">
 								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
@@ -545,9 +546,9 @@
 								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Back"><i class="fa fa-arrow-left"></i></button>
 							</div>
 
-						</div> -->
+						</div>
 
-						<div id="workloadAssessment">
+						<!-- <div id="workloadAssessment">
 
 							<div class="modal-header">
 								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
@@ -575,7 +576,7 @@
 								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
 							</div>
 
-						</div>
+						</div> -->
 
 						<!-- CONFIRM DELEGATE -->
 						<div id="delegateConfirm">
@@ -849,8 +850,8 @@
 				 var $projectCount = $(this).attr('data-projectCount');
 				 var $taskCount = $(this).attr('data-taskCount');
 				 $("#workloadEmployee").html($(this).attr('data-name'));
-				 $("#workloadProjects").html("Total Number of Projects: " + $projectCount);
-				 $("#workloadTasks").html("Total Number of Tasks: " + $taskCount);
+				 $("#workloadProjects").html("Total Projects: " + $projectCount);
+				 $("#workloadTasks").html("Total Tasks: " + $taskCount);
 				 $('#workloadDiv').html("");
 				 $("#workloadAssessment").show();
 

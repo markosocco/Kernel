@@ -146,11 +146,12 @@
 										<table class="table table-hover no-margin" id="projWeeklyProgress">
 											<thead>
 											<tr>
+												<th width='1%'></th>
 												<th>Project</th>
 												<th class="text-center">Last Week's Progress</th>
 												<th class="text-center">Current Progress</th>
 												<th class="text-center">Target End Date</th>
-												<th class="text-center">Days Remaining</th>
+												<th class="text-center">Days Left</th>
 											</tr>
 											</thead>
 											<tbody>
@@ -161,6 +162,12 @@
 															<input type ='hidden' name='dashboard' value='0'>
 														</form>
 
+														<?php if($ongoingProject['datediff'] >= 0):?>
+															<td class = 'bg-green'></td>
+														<?php else:?>
+															<td class = 'bg-red'></td>
+														<?php endif;?>
+														
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
 														<td align="center">
 															<?php
@@ -244,8 +251,8 @@
 											<th width="1%"></th>
 											<th>Project</th>
 											<th>Task</th>
-											<th>Task End Date</th>
-											<!-- <th>Status</th> -->
+											<th class = 'text-center'>Task End Date</th>
+											<th class = 'text-center'>Status</th>
 										</thead>
 										<tbody>
 
@@ -258,18 +265,21 @@
 														else
 															$endDate = date_create($data['TASKADJUSTEDENDDATE']);
 														if($data['DATEDIFF'] < 0){
-															// $status = "DELAYED";
+															$status = "<td style='color:red' class = 'text-center'><b>DELAYED</b></td>";
 															$color = "bg-red";
 														} else {
-															// $status = $data['DATEDIFF'] . " day/s before deadline";
+															if($data['DATEDIFF'] > 1)
+																$status = "<td class = 'text-center'>" . $data['DATEDIFF'] . " days left</td>";
+															else
+																$status = "<td class = 'text-center'>" . $data['DATEDIFF'] . " day left</td>";
 															$color = "bg-green";
 														}
 														echo "<tr class='clickable deadline'>";
 															echo "<td class='" . $color . "'></td>";
 															echo "<td class='projectLink'>" . $data['PROJECTTITLE'] . "</td>";
 															echo "<td>" . $data['TASKTITLE'] . "</td>";
-															echo "<td>" . date_format($endDate, "M d, Y") . "</td>";
-															// echo "<td style='color:red'><b>" . $status . "</b></td>";
+															echo "<td class = 'text-center'>" . date_format($endDate, "M d, Y") . "</td>";
+															echo $status;
 														echo "</tr>";
 													}
 												?>
@@ -306,10 +316,11 @@
 										<table class="table table-hover no-margin" id="projWeeklyProgress">
 											<thead>
 											<tr>
+												<th width = '1%'></th>
 												<th>Project</th>
 												<th>Task</th>
 												<th class="text-center">Start Date</th>
-												<th class="text-center">Days Until Launch</th>
+												<!-- <th class="text-center">Days Until Launch</th> -->
 											</tr>
 											</thead>
 											<tbody>
@@ -319,10 +330,17 @@
 													<?php $startdate = date_create($delegateTask['TASKSTARTDATE']);?>
 
 													<tr class="clickable delegate" data-id="<?php echo $delegateTask['TASKID'];?>">
+														<?php if($delegateTask['TASKSTATUS'] == "Planning"):?>
+															<td class = 'bg-yellow'></td>
+														<?php elseif($delegateTask['TASKSTATUS'] == "Ongoing" && $delegateTask['currentDate'] <= $delegateTask['TASKSTARTDATE']):?>
+															<td class = 'bg-green'></td>
+														<?php else:?>
+															<td class = 'bg-red'></td>
+														<?php endif;?>
 														<td><?php echo $delegateTask['PROJECTTITLE'];?></td>
 														<td><?php echo $delegateTask['TASKTITLE'];?></td>
 														<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
-														<td align="center"><?php echo $delegateTask['launching'];?></td>
+														<!-- <td align="center"><?php echo $delegateTask['launching'];?></td> -->
 													</tr>
 												<?php endforeach;?>
 

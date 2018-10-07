@@ -202,7 +202,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h2 class="modal-title" id='taskTitle'>Task Name here</h2>
+                  <h2 class="modal-title" id='taskName'>Task Name here</h2>
 									<h4 id="taskDates">Start Date - End Date (Days)</h4>
                 </div>
                 <div class="modal-body">
@@ -270,7 +270,7 @@
 					dataType: 'json',
 					success:function(data)
 					{
-						$("#taskTitle").html(data['task'].TASKTITLE);
+						$("#taskName").html(data['task'].TASKTITLE);
 
 						if(data['task'].TASKADJUSTEDSTARTDATE == null)
 							var startDate = data['task'].TASKSTARTDATE;
