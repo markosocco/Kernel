@@ -105,7 +105,7 @@
 		                  <tr>
 		                    <th width="50%">Task</th>
 		                    <th width="20%">Responsible</th>
-												<th width="20%">Department</th>
+												<th width="10%" class ='text-center'>Dept</th>
 		                    <th width="15%" class="text-center">Target<br>End Date</th>
 												<th width"5%" class='text-center'>Days Delayed</th>
 		                  </tr>
@@ -129,9 +129,9 @@
 			                  <tr data-toggle='modal' data-target='#taskDetails'>
 			                    <td><?php echo $task['TASKTITLE'];?></td>
 			                    <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
-													<td><?php echo $task['DEPARTMENTNAME'];?></td>
+													<td align = 'center'><?php echo $task['DEPT'];?></td>
 			                    <td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
-			                    <td align="center"><span style="color:red"><?php echo $delay;?></span></td>
+			                    <td align="center"><b><span style="color:red"><?php echo $delay;?></span></b></td>
 			                  </tr>
 											<?php endif;?>
 										<?php endforeach;?>
