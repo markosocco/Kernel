@@ -134,10 +134,19 @@
 												</tr>
 
 														<?php if (isset($templateMainActivity[$key])): ?>
+
+															<?php $subCounter = 0; ?>
+
 															<?php foreach ($templateSubActivity as $sKey=> $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
+
+																		<?php if ($subCounter == 0): ?>
 																			<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="<?php echo count($groupedTasks); ?>" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'> <i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																		<?php else: ?>
+																			<td></td>
+																		<?php endif; ?>
+
 																		<td><div class="form-group">
 
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -170,8 +179,8 @@
 																				<div class="input-group-addon">
 																					<i class="fa fa-calendar"></i>
 																				</div>
-																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-<?php echo $sKey; ?>"
-																				data-mainAct="<?php echo $value['TASKID'];?>" data-num="<?php echo $sKey; ?>"
+																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-<?php echo $subCounter; ?>"
+																				data-mainAct="<?php echo $value['TASKID'];?>" data-num="<?php echo $subCounter; ?>"
 																				data-mainStart<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKSTARTDATE']; ?>"
 																				data-mainEnd<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKENDDATE']; ?>" required>
 																			</div>
@@ -182,8 +191,8 @@
 																					<div class="input-group-addon">
 																						<i class="fa fa-calendar"></i>
 																					</div>
-																					<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $value['TASKID'];?>-<?php echo $sKey; ?>"
-																					data-mainAct="<?php echo $value['TASKID']; ?>" data-num="<?php echo $sKey; ?>" required>
+																					<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $value['TASKID'];?>-<?php echo $subCounter; ?>"
+																					data-mainAct="<?php echo $value['TASKID']; ?>" data-num="<?php echo $subCounter; ?>" required>
 																				</div>
 																			</div></td>
 																			<td>
@@ -194,6 +203,7 @@
 																			<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 																			<td></td>
 																	</tr>
+																	<?php $subCounter = $subCounter + 1; ?>
 																	<?php endif; ?>
 																<?php endforeach; ?>
 
