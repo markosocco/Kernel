@@ -167,7 +167,7 @@
 														<?php else:?>
 															<td class = 'bg-red'></td>
 														<?php endif;?>
-														
+
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
 														<td align="center">
 															<?php
@@ -230,8 +230,6 @@
 						</div>
 					</div>
 					<?php endif;?>
-
-
 				<!-- END MANAGE TABLE -->
 
 				<!-- TASK TABLE -->
@@ -428,7 +426,7 @@
 													</td>
 												</tr>
 
-											<? endif; ?>
+											<?php endif; ?>
 
 											</tbody>
 										</table>
