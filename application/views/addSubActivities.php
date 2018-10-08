@@ -137,7 +137,7 @@
 															<?php foreach ($templateSubActivity as $sKey=> $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
-																			<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'> <i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																			<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="<?php echo count($groupedTasks); ?>" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'> <i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																		<td><div class="form-group">
 
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
@@ -171,7 +171,7 @@
 																					<i class="fa fa-calendar"></i>
 																				</div>
 																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-<?php echo $sKey; ?>"
-																				data-mainAct="<?php echo $value['TASKID'];?>" data-num="0"
+																				data-mainAct="<?php echo $value['TASKID'];?>" data-num="<?php echo $sKey; ?>"
 																				data-mainStart<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKSTARTDATE']; ?>"
 																				data-mainEnd<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKENDDATE']; ?>" required>
 																			</div>
@@ -183,7 +183,7 @@
 																						<i class="fa fa-calendar"></i>
 																					</div>
 																					<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $value['TASKID'];?>-<?php echo $sKey; ?>"
-																					data-mainAct="<?php echo $value['TASKID']; ?>" data-num="0" required>
+																					data-mainAct="<?php echo $value['TASKID']; ?>" data-num="<?php echo $sKey; ?>" required>
 																				</div>
 																			</div></td>
 																			<td>

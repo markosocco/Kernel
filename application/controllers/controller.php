@@ -2755,13 +2755,13 @@ class controller extends CI_Controller
 			$id = $this->input->post('project_ID');
 			$templateProjSummary = $this->input->post('templateProjSummary');
 
-			if (isset($templateProjSummary))
-			{
-				echo $templateProjSummary;
-			}
-			else {
-				echo "hello";
-			}
+			// if (isset($templateProjSummary))
+			// {
+			// 	echo $templateProjSummary;
+			// }
+			// else {
+			// 	echo "hello";
+			// }
 
 			$data['project'] = $this->model->getProjectByID($id);
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
@@ -2779,7 +2779,7 @@ class controller extends CI_Controller
 			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($id);
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($id);
 
-			// $this->load->view("projectSummary", $data);
+			$this->load->view("projectSummary", $data);
 		}
 	}
 
