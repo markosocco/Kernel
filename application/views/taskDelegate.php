@@ -75,7 +75,8 @@
 														<table class="table table-hover no-margin">
 															<thead>
 															<tr>
-																<th colspan='2'>Task</th>
+																<th width = '1%'></th>
+																<th width='40%'>Task</th>
 																<th class="text-center">Start Date</th>
 																<th class="text-center">Action</th>
 															</tr>
@@ -87,7 +88,13 @@
 																		<?php if($task['projects_PROJECTID'] == $project['PROJECTID']):?>
 																		<?php $totalToDoTasks = $totalToDoTasks+1;?>
 																		<tr class="viewProject" data-id="<?php echo $task['TASKID'] ;?>">
-																			<td></td>
+																			<?php if($task['TASKSTATUS'] == "Planning"):?>
+																				<td class = 'bg-yellow'></td>
+																			<?php elseif($task['TASKSTATUS'] == "Ongoing" && $task['currentDate'] <= $task['TASKSTARTDATE']):?>
+																				<td class = 'bg-green'></td>
+																			<?php else:?>
+																				<td class = 'bg-red'></td>
+																			<?php endif;?>
 																			<td><?php echo $task['TASKTITLE'];?></td>
 																			<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 																			<td align="center">
@@ -199,7 +206,8 @@
 													<table class="table table-hover no-margin">
 														<thead>
 														<tr>
-															<th colspan='2'>Task</th>
+															<th width='1%'></th>
+															<th width='40%'>Task</th>
 															<th class="text-center">Start Date</th>
 															<th class="text-center">Action</th>
 														</tr>
@@ -212,8 +220,13 @@
 																	<?php if($task['projects_PROJECTID'] == $project['PROJECTID']):?>
 																	<?php $totalToDoTasks = $totalToDoTasks+1;?>
 																	<tr class="viewProject" data-id="<?php echo $task['TASKID'] ;?>">
-																		<td></td>
-																		<td><?php echo $task['TASKTITLE'];?></td>
+																		<?php if($task['TASKSTATUS'] == "Planning"):?>
+																			<td class = 'bg-yellow'></td>
+																		<?php elseif($task['TASKSTATUS'] == "Ongoing" && $task['currentDate'] <= $task['TASKSTARTDATE']):?>
+																			<td class = 'bg-green'></td>
+																		<?php else:?>
+																			<td class = 'bg-red'></td>
+																		<?php endif;?>																		<td><?php echo $task['TASKTITLE'];?></td>
 																		<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 																		<td align="center">
 																			<span data-toggle="modal" data-target="#modal-delegate">

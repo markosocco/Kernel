@@ -34,11 +34,11 @@
 						<table id="archiveList" class="table table-bordered table-hover">
 							<thead>
 							<tr>
-								<th>Project</th>
+								<th width="35%">Project</th>
 								<th>Owner</th>
-								<th>Start Date</th>
-								<th>Target End Date</th>
-								<th>Actual End Date</th>
+								<th width = "15%" class='text-center'>Start Date</th>
+								<th width = "15%" class='text-center'>Target End Date</th>
+								<th width = "15%" class='text-center'>Actual End Date</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -58,9 +58,9 @@
 
 										<td><?php echo $a['PROJECTTITLE']; ?></td>
 										<td><?php echo $a['FIRSTNAME'] . " " . $a['LASTNAME']; ?></td>
-										<td><?php echo date_format($start, "M d, Y"); ?></td>
-										<td><?php echo date_format($end, "M d, Y"); ?></td>
-										<td><?php echo date_format($actualEnd, "M d, Y"); ?></td>
+										<td class='text-center'><?php echo date_format($start, "M d, Y"); ?></td>
+										<td class='text-center'><?php echo date_format($end, "M d, Y"); ?></td>
+										<td class='text-center'><?php echo date_format($actualEnd, "M d, Y"); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>

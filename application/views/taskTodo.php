@@ -301,7 +301,7 @@
 							</div>
 							<div class="modal-footer">
 								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-								<button id="rfcSubmit" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+								<button id="rfcSubmit" type="submit" class="btn btn-success" data-id="" data-end="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</div>
 					</form>
@@ -476,12 +476,12 @@
 						 if(data['tasks'][i].threshold >= endDate) //if delayed
 							{
 								$(".action-" + taskID).append(
- 								 '<span data-toggle="modal" data-target="#modal-request"><button disabled type="button"' +
+								 '<button disabled type="button"' +
  								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
  								 '" data-title="' + data['tasks'][i].TASKTITLE +
  								 '" data-start="'+ taskStart +
  								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
- 								 '<i class="fa fa-flag"></i></button></span>');
+								 '<i class="fa fa-flag"></i></button>');
 							}
 							else
 							{
@@ -634,6 +634,7 @@
 				}
 			});
 
+
 			$(document).on("click", "#viewAll", function()
 			{
 				$("#allTasks").toggle();
@@ -671,6 +672,7 @@
 				 var $end = new Date($(this).attr('data-end'));
 				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 				 $("#rfcSubmit").attr("data-id", $id); //pass data id to confirm button
+				 $("#rfcSubmit").attr("data-end", moment($start).format('YYYY-M-D')); //pass data id to confirm button
 				 $("#rfcSubmit").attr("data-date", $date); //pass data date boolean to confirm button
 				 $("#rfcTitle").html($title);
 				 $("#rfcDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
@@ -691,8 +693,18 @@
 			 });
 
 			 $("body").on('click','#rfcConfirm',function(){
-				 $("#request").hide();
-				 $("#submitConfirm").show();
+				 if($("#rfcType").val() == null)
+				 {
+					 alert("Please choose a request type"); //insert in line error message
+				 }
+				 else if(!$("#rfcReason").val().match(/^[0-9a-zA-Z]+$/) || $("#endDate").val() == "")
+				 {
+					 alert("Please complete the form"); //insert in line error message
+				 }
+				 else {
+					 $("#request").hide();
+  				 $("#submitConfirm").show();
+				 }
 			 });
 
 			 $("body").on('click','#backConfirm',function(){
@@ -726,6 +738,14 @@
 						 $(".end").show();
 						 $("#endDate").attr("required", true);
 					 }
+
+					 //Date picker
+					 $('#endDate').datepicker({
+							format: 'yyyy-mm-dd',
+							startDate: $('#rfcSubmit').attr('data-end'),
+							autoclose: true,
+							orientation: 'auto'
+						});
 				 }
 			 });
 
@@ -773,8 +793,13 @@
 		 $("#doneConfirmDiv").hide();
 
 		 $("body").on('click','#doneConfirmBtn',function(){
-			 $("#doneDiv").hide();
-			 $("#doneConfirmDiv").show();
+			 if(!$("#remarks").val().match(/^[0-9a-zA-Z]+$/)){
+				 alert("Please enter remarks"); //insert in line error message
+			 }
+			 else {
+				 $("#doneDiv").hide();
+				 $("#doneConfirmDiv").show();
+			 }
 		 });
 
 		 $("body").on('click','#backConfirmDone',function(){
@@ -887,6 +912,7 @@
 		 });
 
 		 // END TASK DETAILS
+
 		</script>
 	</body>
 </html>

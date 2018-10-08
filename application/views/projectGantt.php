@@ -841,7 +841,7 @@
 							<?php if (!$isTemplate): ?>
 								<form action = 'templateProject' method="POST" style="display:inline-block">
 								</form>
-								<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
+								<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Save as Template"><i class="fa fa-window-maximize"></i></a></span>
 							<?php endif; ?>
 
 						<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
@@ -954,7 +954,7 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h2 class="modal-title">Template Project</h2>
+									<h2 class="modal-title">Save Project as Template</h2>
 								</div>
 								<div class="modal-body">
 									<h4>Are you sure you want to make this project a template?</h4>

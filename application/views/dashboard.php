@@ -249,8 +249,8 @@
 											<th width="1%"></th>
 											<th>Project</th>
 											<th>Task</th>
-											<th class = 'text-center'>Task End Date</th>
-											<th class = 'text-center'>Status</th>
+											<th width = '16%' class = 'text-center'>End Date</th>
+											<th width = '15%' class = 'text-center'>Status</th>
 										</thead>
 										<tbody>
 
