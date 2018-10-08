@@ -321,8 +321,8 @@ class controller extends CI_Controller
 				$this->session->set_flashdata('stickyemail', $email);
 
 				// ALERTS
-				$this->session->set_flashdata('success', 'alert');
-				$this->session->set_flashdata('alertMessage', 'Email or Password is incorrect');
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', 'Email and password does not match');
 
 				redirect('controller/login');
 			}

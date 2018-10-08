@@ -37,7 +37,7 @@
 													echo $departmentCompleteness['completeness'];
 												}
 											}
-									 ?> "> Completeness
+									 ?>">Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
@@ -54,7 +54,7 @@
 												 echo $departmentTimeliness['timeliness'];
 											 }
 										 }
-									 ?> "> Timeliness
+									 ?>">Timeliness
 								 </div>
 							 </div>
 							</div>
@@ -92,7 +92,7 @@
 														echo $employeeCompleteness['completeness'];
 													}
 												}
-												?> "> Completeness
+												?>">Completeness
 										</div>
 									</div>
 									<div style="display:inline-block; text-align:center; width:49%;">
@@ -109,7 +109,7 @@
 												 echo $employeeTimeliness['timeliness'];
 											 }
 										 }
-										 ?> ">Timeliness
+										 ?>">Timeliness
 									 </div>
 								 </div>
 								</div>

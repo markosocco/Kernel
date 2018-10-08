@@ -148,7 +148,7 @@
 												 echo $projectTimeliness['timeliness'];
 											 }
 										 }
-										 ?>"> Timeliness
+										 ?>">Timeliness
 									</div>
 								</div>
 							</div>
@@ -186,7 +186,7 @@
  												 echo $department['timeliness'];
  											 }
  										 }
- 										 ?>"> Timeliness</div>
+ 										 ?>">Timeliness</div>
 			 					 </div>
 								</div>
 							</div>

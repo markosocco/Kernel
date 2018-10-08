@@ -84,7 +84,7 @@ desired effect
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
-      <a href="<?php echo base_url()."assets/"; ?>#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <a href="<?php echo base_url()."assets/"; ?>" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
 
@@ -96,7 +96,7 @@ desired effect
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
               <span id="taskCount" class="label label-success">
-                <?php echo $_SESSION['taskCount']; ?>
+                <?php echo $_SESSION['taskCount'];?>
               </span>
             </a>
             <ul class="dropdown-menu">
@@ -393,17 +393,27 @@ desired effect
       </div>
       <div class="modal-body" style="text-align:center">
         <div style="text-align:left; display:inline-block">
-          <form name="changePassword" action="changePassword" method="POST">
-          <label for="oldPass" class="control-label"><span style="color:red">*</span>Old Password</label>
-          <input type="password" class="form-control" name="oldPass" id="oldPass" placeholder="Enter Old Password" style="width:100%" required>
-          <br>
-          <label for="newPass" class="control-label"><span style="color:red">*</span>New Password</label>
-          <input type="password" class="form-control" name="newPass" id="newPass" placeholder="Enter New Password" style="width:100%" required>
-          <br>
-          <label for="confirmPass" class="control-label"><span style="color:red">*</span>Confirm New Password</label>
-          <input type="password" class="form-control" name="confirmPass" id="confirmPass" placeholder="Confirm New Password" style="width:100%" required>
+          <p style="color:red"><b>Your new password is new</b></p>
+          <form name="changePassword" class="form-horizontal" action="changePassword" method="POST">
+          <div class="form-group">
+            <label for="oldPass" class="col-sm-6 control-label"><span style="color:red">*</span>Old Password</label>
+            <div class="col-sm-6">
+              <input type="password" class="form-control" name="oldPass" id="oldPass" placeholder="Enter Old Password" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newPass" class="col-sm-6 control-label"><span style="color:red">*</span>New Password</label>
+            <div class="col-sm-6">
+              <input type="password" class="form-control" name="newPass" id="newPass" placeholder="Enter New Password" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPass" class="col-sm-6 control-label"><span style="color:red">*</span>Confirm New Password</label>
+            <div class="col-sm-6">
+              <input type="password" class="form-control" name="confirmPass" id="confirmPass" placeholder="Confirm New Password" required>
+            </div>
+          </div>
           <p><span style="color:red">*</span><small>Required</small></p>
-          <!-- <button id="submitChangePass" type="button" class="btn btn-success" style="width:100%">Submit</button> -->
         </div>
       </div>
       <div class="modal-footer">
@@ -504,7 +514,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-check',
-        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'success',
@@ -532,11 +542,11 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-ban',
-        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'danger',
-        offset: 20,
+        offset: 60,
         delay: 5000,
         placement: {
           from: "top",
@@ -560,7 +570,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-warning',
-        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'warning',
@@ -588,7 +598,7 @@ desired effect
       $.notify({
         // options
         icon: 'fa fa-info',
-        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
         },{
         // settings
         type: 'info',

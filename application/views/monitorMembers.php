@@ -41,7 +41,7 @@
 													echo $completeness['completeness'];
 												}
 											}
-											?>"> Completeness
+											?>">Completeness
                   </div>
                 </div>
                 <div style="display:inline-block; text-align:center; width:49%;">
@@ -58,7 +58,7 @@
 												 echo $timeliness['timeliness'];
 											 }
 										 }
-										 ?>"> Timeliness
+										 ?>">Timeliness
                  </div>
                </div>
               </div>

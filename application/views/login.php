@@ -1,10 +1,20 @@
 <html>
 	<head>
 		<title>Kernel - Log In</title>
-		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/loginStyle.css")?>">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<!-- Bootstrap 3.3.7 -->
+		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href = "<?php echo base_url("/assets/css/loginStyle.css")?>">
+
+		<!-- Google Font -->
+	  <link rel="stylesheet"
+	        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	</head>
 	<body>
 
@@ -103,7 +113,7 @@
 	      $.notify({
 	        // options
 	        icon: 'fa fa-check',
-	        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+	        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
 	        },{
 	        // settings
 	        type: 'success',
@@ -131,12 +141,12 @@
 	      $.notify({
 	        // options
 	        icon: 'fa fa-ban',
-	        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+	        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
 	        },{
 	        // settings
 	        type: 'danger',
 	        offset: 20,
-	        delay: 0,
+	        delay: 5000,
 	        placement: {
 	          from: "top",
 	          align: "center"
@@ -159,7 +169,7 @@
 	      $.notify({
 	        // options
 	        icon: 'fa fa-warning',
-	        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+	        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
 	        },{
 	        // settings
 	        type: 'warning',
@@ -187,7 +197,7 @@
 	      $.notify({
 	        // options
 	        icon: 'fa fa-info',
-	        message: '<?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
+	        message: ' <?php if (isset($_SESSION['alertMessage'])) echo $_SESSION['alertMessage']; ?>'
 	        },{
 	        // settings
 	        type: 'info',

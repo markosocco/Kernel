@@ -170,7 +170,7 @@
 																				<div class="input-group-addon">
 																					<i class="fa fa-calendar"></i>
 																				</div>
-																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-0"
+																				<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $value['TASKID'];?>-<?php echo $sKey; ?>"
 																				data-mainAct="<?php echo $value['TASKID'];?>" data-num="0"
 																				data-mainStart<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKSTARTDATE']; ?>"
 																				data-mainEnd<?php echo $value['TASKID']; ?> = "<?php echo $value['TASKENDDATE']; ?>" required>
@@ -182,8 +182,8 @@
 																					<div class="input-group-addon">
 																						<i class="fa fa-calendar"></i>
 																					</div>
-																					<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $tSub['TASKID'];?>-0"
-																					data-mainAct="<?php echo $tSub['TASKID']; ?>" data-num="0" required>
+																					<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $value['TASKID'];?>-<?php echo $sKey; ?>"
+																					data-mainAct="<?php echo $value['TASKID']; ?>" data-num="0" required>
 																				</div>
 																			</div></td>
 																			<td>
