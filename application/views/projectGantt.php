@@ -839,7 +839,7 @@
 						<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
 							<?php if (!$isTemplate): ?>
-								<form action = 'templateProject' method="POST" style="display:inline-block">
+								<form id="templateProject" action = 'templateProject' method="POST" style="display:inline-block">
 								</form>
 								<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Save as Template"><i class="fa fa-window-maximize"></i></a></span>
 							<?php endif; ?>
@@ -1023,9 +1023,9 @@
 
 		$(document).on("click", "#doneTemplate", function() {
 			var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-			$("form").attr("name", "formSubmit");
-			$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-			$("form").submit();
+			$("#templateProject").attr("name", "formSubmit");
+			$("#templateProject").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+			$("#templateProject").submit();
 			});
 
 		$(document).on("click", "#doneUseTemplate", function() {
