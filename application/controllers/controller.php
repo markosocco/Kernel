@@ -75,13 +75,12 @@ class controller extends CI_Controller
 				$notifications = $this->model->getAllNotificationsByUser();
 				$this->session->set_userdata('notifications', $notifications);
 
-				$taskCount = $this->model->getTaskCount();
+				$tasks = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
 				$count = 0;
-				foreach ($taskCount as $tc){
-					if($tc['USERID'] == $_SESSION['USERID']){
-						$count = $tc['taskCount'];
-					}
+				foreach ($tasks as $taskCount){
+					$count++;
+					// $count = count($taskCount);
 				}
 				$this->session->set_userdata('taskCount', $count);
 
