@@ -67,7 +67,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-red sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini fixed">
 <div class="wrapper">
 
   <!-- Main Header -->

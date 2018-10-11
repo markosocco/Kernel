@@ -3,7 +3,7 @@
 		<title>Kernel - Project Logs</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectLogsStyle.css")?>"> -->
 	</head>
-	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
+	<body class="hold-transition skin-red sidebar-mini sidebar-collapse fixed">
 
 		<?php require("frame.php"); ?>
 
