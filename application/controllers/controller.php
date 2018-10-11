@@ -80,8 +80,8 @@ class controller extends CI_Controller
 				$count = 0;
 				foreach ($tasks as $taskCount){
 					$count++;
-					// $count = count($taskCount);
 				}
+
 				$this->session->set_userdata('taskCount', $count);
 
 				$currentDate = date('Y-m-d');

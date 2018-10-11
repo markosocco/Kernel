@@ -1,9 +1,9 @@
 <html>
 <head>
-	<title>Kernel - <?php echo  $projectProfile['PROJECTTITLE'];?></title>
+	<title>Kernel Gantt 2- <?php echo  $projectProfile['PROJECTTITLE'];?></title>
 	<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectGanttStyle.css")?>">
 </head>
-<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
+<body class="hold-transition skin-red sidebar-mini sidebar-collapse fixed">
 	<?php require("frame.php"); ?>
 
 		<div class="content-wrapper">
@@ -28,6 +28,12 @@
 					<?php else: ?>
 							<a href="<?php echo base_url("index.php/controller/myProjects"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 					<?php endif; ?>
+
+					<?php if(isset($_SESSION['changeRequest']) || isset($_SESSION['userRequest']) || isset($_SESSION['rfc'])): ?>
+						<script>$("#rfc").addClass("active");</script>
+					<?php else:?>
+						<script>$("#myProjects").addClass("active");</script>
+					<?php endif;?>
 
 				</div>
 
@@ -240,7 +246,7 @@
 											<table id="teamList" class="table table-bordered table-hover">
 												<thead>
 												<tr>
-													<th>Department</th>
+													<th>Executive</th>
 													<th class='text-center'>R*</th>
 													<th class='text-center'>A</th>
 													<th class='text-center'>C</th>
@@ -259,7 +265,7 @@
 															<td class='text-center'>
 																<div class="radio">
 																<label>
-																	<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" required>
+																	<input id='user<?php echo $user['USERID'];?>-1' class = "radioEmp" type="radio" name="responsibleEmp" value="<?php echo $user['USERID'];?>" disabled>
 																</label>
 															</div>
 															</td>
@@ -287,6 +293,12 @@
 														</tr>
 														<?php endif;?>
 													<?php endforeach;?>
+
+													<thead>
+														<tr>
+															<th colspan='5'>Department</th>
+														</tr>
+													</thead>
 
 													<!-- ALL DEPARTMENTS -->
 													<?php foreach($departments as $department):?>
@@ -460,6 +472,36 @@
 
 						</div>
 
+						<!-- <div id="workloadAssessment">
+
+							<div class="modal-header">
+								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
+								<table class="table">
+									<tbody>
+										<tr>
+											<td><h5 id = "workloadProjects">Total Projects: </h5></td>
+											<td><h5 id = "workloadDelayed">Delayed Tasks: </h5></td>
+										</tr>
+										<tr>
+											<td><h5 id = "workloadTasks">Total Tasks: </h5></td>
+											<td><h5 id = "workloadOngoing">OngoingTasks: </h5></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td><h5 id = "workloadPlanned">Planned Tasks: </h5></td>
+										</tr>
+									<tbody>
+								</table>
+
+							</div>
+							<div class="modal-body" id = "workloadDiv">
+							</div>
+							<div class="modal-footer">
+								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
+							</div>
+
+						</div> -->
+
 						<!-- CONFIRM DELEGATE -->
 						<div id="delegateConfirm">
 							<div class="modal-body">
@@ -560,7 +602,7 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h2 class="modal-title" id = "taskTitle">Task Title</h2>
+								<h2 class="modal-title" id = "taskName">Task Title</h2>
 								<h4 id="taskDates">Start Date - End Date (Days)</h4>
 							</div>
 							<div class="modal-body">
@@ -576,6 +618,9 @@
 										</tbody>
 									</table>
 							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -585,19 +630,19 @@
 
 				<h1>
 					<?php echo $projectProfile['PROJECTTITLE']; ?>
-						<?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
+						<!-- <?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
 
-							<form id="editProjectForm" action = 'newProject'  method="POST" style="display:inline-block">
+							<form id="editProjectForm" action = 'addProjectDetails'  method="POST" style="display:inline-block">
 								<input type='hidden' name='edit' value='<?php echo $projectProfile['PROJECTID'];?>'>
 							</form>
 
 							<a id="editProject" data-id="<?php echo $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
-						<?php endif; ?>
+						<?php endif; ?> -->
 				</h1>
 
 				<ol class="breadcrumb">
-					<li class ="active"><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-dashboard"></i> My Projects</a></li>
-					<li class="active"><?php echo $projectProfile['PROJECTTITLE']; ?></li>
+					<?php $dateToday = date('F d, Y | l');?>
+					<p><i class="fa fa-calendar"></i> <b><?php echo $dateToday;?></b></p>
 				</ol>
 
 				<?php if($projectProfile['PROJECTSTATUS'] != 'Planning'): ?>
@@ -622,7 +667,7 @@
 													echo $projectCompleteness['completeness'];
 												}
 											}
-											?>"> Completeness
+											?>">Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">
@@ -639,7 +684,7 @@
 												 echo $projectTimeliness['timeliness'];
 											 }
 										 }
-										 ?>"> Timeliness
+										 ?>">Timeliness
 								 </div>
 							 </div>
 							</div>
@@ -677,7 +722,7 @@
 														echo $employeeCompleteness['completeness'];
 													}
 												}
-												?> "> Completeness
+												?>">Completeness
 										</div>
 									</div>
 									<div style="display:inline-block; text-align:center; width:49%;">
@@ -694,7 +739,7 @@
 												 echo $employeeTimeliness['timeliness'];
 											 }
 										 }
-										 ?> ">Timeliness
+										 ?>">Timeliness
 									 </div>
 								 </div>
 								</div>
@@ -730,14 +775,14 @@
 					<?php if ($projectProfile['PROJECTSTATUS'] == 'Archived' || $projectProfile['PROJECTSTATUS'] == 'Complete'):?>
 						<?php $actualEnd = date_create($projectProfile['PROJECTACTUALENDDATE']);?>
 
-						<h4 style="color:red">Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?>
+						<h4><b>Actual Duration: <?php echo date_format($startdate, "F d, Y"); ?> to <?php echo date_format($actualEnd, "F d, Y"); ?>
 							(<?php echo $projectProfile['actualDuration'];?>
 							<?php if($projectProfile['actualDuration'] > 1):?>
 								days)
 							<?php else:?>
 								day)
 							<?php endif;?>
-						</h4>
+						</b></h4>
 
 					<?php else:?>
 
@@ -781,9 +826,9 @@
 					<a href="<?php echo base_url("index.php/controller/projectDocuments/?id=") . $projectProfile['PROJECTID']; ?>" name="PROJECTID" class="btn btn-success btn-xs" id="projectDocu"><i class="fa fa-folder"></i> View Documents</a> -->
 					<!-- <a href="<?php echo base_url("index.php/controller/projectLogs/?id=") . $projectProfile['PROJECTID']; ?>"class="btn btn-default btn-xs"><i class="fa fa-flag"></i> View Logs</a> -->
 
-					<a name="PROJECTID" class="btn btn-primary btn" id="projectDocu" data-toggle="tooltip" data-placement="top" title="View Documents"><i class="fa fa-folder"></i></a>
+					<a name="PROJECTID" class="btn btn-primary btn" id="projectDocu" data-toggle="tooltip" data-placement="top" title="Documents"><i class="glyphicon glyphicon-folder-open"></i></a>
 
-					<a name="PROJECTID_logs" class="btn btn-primary btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="View Logs"><i class="fa fa-file"></i></a>
+					<a name="PROJECTID_logs" class="btn btn-primary btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="Logs"><i class="fa fa-list"></i></a>
 
 					<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
 
@@ -791,22 +836,19 @@
 						</form>
 						<span data-toggle="modal" data-target="#confirmArchive"><a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a></span>
 
-						<?php if ($projectProfile['users_USERID'] == $_SESSION['USERID']): ?>
-							<form action = 'projectSummary' method="POST" style="display:inline-block">
-							</form>
-							<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
-						<?php endif; ?>
-
 					<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
 
-						<form action = 'templateProject' method="POST" style="display:inline-block">
-						</form>
-						<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-default btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Template this Project"><i class="fa fa-window-maximize"></i></a></span>
+						<?php if (!$isTemplate): ?>
+							<form id="templateProject" action = 'templateProject' method="POST" style="display:inline-block">
+							</form>
+							<span data-toggle="modal" data-target="#confirmTemplate"><a name="" class="btn btn-primary btn" id="templateProject" data-toggle="tooltip" data-placement="top" title="Save as Template"><i class="fa fa-window-maximize"></i></a></span>
+						<?php endif; ?>
 
 					<?php elseif (isset($_SESSION['templates']) || isset($_SESSION['templateProjectGantt'])): ?>
-						<form action = 'newProject' method="POST" style="display:inline-block">
+						<form id="useTemplateForm" action = 'addProjectDetails' method="POST" style="display:inline-block">
+							<input type="hidden" name="templates" value="<?php echo $projectProfile['PROJECTID']; ?>">
 						</form>
-						<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-default btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
+						<span data-toggle="modal" data-target="#confirmUseTemplate"><a name="" class="btn btn-primary btn" id="useTemplate" data-toggle="tooltip" data-placement="top" title="Use Template"><i class="fa fa-window-maximize"></i></a></span>
 					<?php endif; ?>
 
 					<!-- <?php if($projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
@@ -814,14 +856,26 @@
 					<?php endif;?> -->
 
 					<?php if($projectProfile['PROJECTSTATUS'] == 'Parked'): ?>
-						<span data-toggle="modal" data-target="#confirmContinue"><a name="" class="btn btn-default btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a></span>
+						<span data-toggle="modal" data-target="#confirmContinue"><a name="" class="btn btn-primary btn" id="continueProject" data-toggle="tooltip" data-placement="top" title="Continue Project"><i class="fa fa-clock-o"></i></a></span>
 					<?php endif;?>
+
+					<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete' || $projectProfile['PROJECTSTATUS'] == 'Archived' || isset($_SESSION['templateProjectGantt'])): ?>
+						<form action = 'projectSummary' id="projectSummary" method="POST" style="display:inline-block">
+
+							<?php if (isset($_SESSION['templateProjectGantt'])): ?>
+								<input type="hidden" name="templateProjSummary" value="templateProjSummary">
+							<?php endif; ?>
+
+							<input type="hidden" name="project_ID" value="<?php echo $projectProfile['PROJECTID']; ?>">
+						</form>
+						<a name="" class="btn btn-primary btn" id="projectSummary" data-toggle="tooltip" data-placement="top" title="Project Summary"><i class="fa fa-bar-chart"></i></a>
+					<?php endif; ?>
 
 				</div>
 				<br>
 
 				<!-- LEGEND -->
-				<div>
+				<div style="margin-bottom:10px">
 					<small style="display: inline-block">Legend:</small>
 					<div style="width: 20px; height: 10px; background-color:#ED6C1F; display:inline-block; margin-left:10px;"></div> Selected
 					<div style="width: 20px; height: 10px; background-color:#465A63; display:inline-block; margin-left:10px;"></div> Parent Target Timeline
@@ -831,6 +885,7 @@
 					<div style="width: 20px; height: 10px; background-color:#68B6F3; display:inline-block; margin-left:10px;"></div> Child Target Timeline
 					<div style="width: 20px; height: 10px; background-color:#0C7F12; display:inline-block; margin-left:10px;"></div> Ongoing
 				</div>
+
 				<!-- CONFIRM ARCHIVE -->
 				<div class="modal fade" id="confirmArchive" tabindex="-1">
 					<div class="modal-dialog">
@@ -899,7 +954,7 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h2 class="modal-title">Template Project</h2>
+								<h2 class="modal-title">Save Project as Template</h2>
 							</div>
 							<div class="modal-body">
 								<h4>Are you sure you want to make this project a template?</h4>
@@ -936,6 +991,13 @@
 				</div>
 				<!-- /.modal -->
 
+				<input type="button" value="-" onclick="chart.zoomOut();">
+				<input type="button" value="+" onclick="chart.zoomIn();">
+				<input type="button" value="Fit All" onclick="chart.fitAll();">
+				<!-- <input type="button" value="Day" onclick="chart.zoomTo('day', 1);"> -->
+				<input type="button" value="Week" onclick="chart.zoomTo('week', 1);">
+				<input type="button" value="Month" onclick="chart.zoomTo('month', '1')">
+
 				<div id="container" style="height: 600px;"></div>
 
 				<!-- </section> -->
@@ -954,23 +1016,23 @@
 
 	$(document).on("click", "#projectSummary", function() {
 		var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-		$("form").attr("name", "formSubmit");
-		$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-		$("form").submit();
+		// $("form").attr("name", "formSubmit");
+		// $("#projectSummary").append("<input type='hidden' name='templateProjSummary' value='templateProjSummary'>");
+		$("#projectSummary").submit();
 		});
 
 	$(document).on("click", "#doneTemplate", function() {
 		var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-		$("form").attr("name", "formSubmit");
-		$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-		$("form").submit();
+		$("#templateProject").attr("name", "formSubmit");
+		$("#templateProject").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+		$("#templateProject").submit();
 		});
 
 	$(document).on("click", "#doneUseTemplate", function() {
 		var $id = <?php echo $projectProfile['PROJECTID']; ?>;
-		$("form").attr("name", "formSubmit");
-		$("form").append("<input type='hidden' name='project_ID' value= " + $id + ">");
-		$("form").submit();
+		$("#useTemplateForm").attr("name", "formSubmit");
+		$("#useTemplateForm").append("<input type='hidden' name='project_ID' value= " + $id + ">");
+		$("#useTemplateForm").submit();
 		});
 
 	$("#donePark").click(function() //submitPark
@@ -989,7 +1051,7 @@
 		$("#editProjectForm").submit();
 		});
 
-		$("#myProjects").addClass("active");
+		// $("#myProjects").addClass("active");
 
 		// $("#projectDocu").click(function()
 		// {
@@ -1074,7 +1136,7 @@
 						for(x=0; data['raci'].length >x; x++)
 						{
 							$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('checked', true);
-							if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4'))
+							if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4') && <?php echo $_SESSION['usertype_USERTYPEID'];?> == '4')
 							{
 								$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('disabled', true);
 							}
@@ -1148,27 +1210,31 @@
 
 									if(data['raci'][0].TASKSTATUS == "Complete")
 									{
-										var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+										var status = "<td class='bg-teal'></td>";
+										// var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
 									}
 									if(data['raci'][0].TASKSTATUS == "Planning")
 									{
-										var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+										var status = "<td class='bg-orange'></td>";
+										// var status = "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
 									}
 									if(data['raci'][0].TASKSTATUS == "Ongoing")
 									{
 										if(data['raci'][0].currentDate > endDate)
-											var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+										var status = "<td class='bg-red'></td>";
+											// var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
 										else
-											var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
+										var status = "<td class='bg-green'></td>";
+											// var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
 									}
 
-										$("#project_" + $projectID).append("<tr>" +
-														 "<td>" + role + "</td>" +
-														 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
-														 "<td>" + taskStart + "</td>" +
-														 "<td>" + taskEnd + "</td>" +
-														 "<td align='center'>" + status + "</td>" +
-														 "</tr>");
+									$("#project_" + $projectID).append("<tr>" +
+													 status +
+													 "<td>" + role + "</td>" +
+													 "<td>" + data['raci'][0].TASKTITLE + "</td>" +
+													 "<td>" + taskStart + "</td>" +
+													 "<td>" + taskEnd + "</td>" +
+													 "</tr>");
 								},
 								error:function()
 								{
@@ -1211,11 +1277,11 @@
 											 "</div>" +
 											 "<div class = 'box-body table-responsive no-padding'>" +
 												 "<table class='table table-hover' id='project_" + $projectID + "'>" +
-													 "<th></th>" +
-													 "<th>Task Name</th>" +
-													 "<th>Start Date</th>" +
-													 "<th>End Date</th>" +
-													 "<th class='text-center'>Status</th>");
+												 "<th width='1%'></th>" +
+												"<th width='1%'></th>" +
+													"<th>Task Name</th>" +
+													"<th>Start Date</th>" +
+													"<th>End Date</th>");
 
 							 loadWorkloadTasks($projectID);
 
@@ -1261,7 +1327,7 @@
 			var $start = new Date($(this).attr('data-start'));
 			var $end = new Date($(this).attr('data-end'));
 			var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
-			$("#taskTitle").html($title);
+			$("#taskName").html($title);
 			$("#taskDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
 			if($diff > 1)
 				$("#taskDates").append(" days)");
@@ -1367,6 +1433,7 @@
 	<script>
 
 	// PROJECT GANTT START
+		var chart;
 		anychart.onDocumentReady(function (){
 
 			var rawData = [
@@ -1532,13 +1599,16 @@
 							'name': '" . $value['TASKTITLE'] . "',
 							'actualStart': '" . $formatted_startDate .  "T00:00',
 							'actualEnd': '" . $formatted_endDate . "T13:00',
+							'actualEnd':{'fill': 'Orange'},
 							'responsible': '',
 							'accountable': '',
 							'consulted': '',
 							'informed': '',
-							'period': '" . $value['initialTaskDuration'] . "',
+							'period': '" . $value['initialTaskDuration'] . " days',
 							'progressValue': '0%',
-							'parent': '" . $parent . "'
+							'parent': '" . $parent . "',
+							'connectTo': '" . $dependency . "',
+							'connectorType': '" . $type . "'
 						},";
 					} else { // START: RACI IS NOT EMPTY
 						// START: CHECKS IF MAIN OR SUB
@@ -1551,11 +1621,12 @@
 									'name': '" . $value['TASKTITLE'] . "',
 									'actualStart': '" . $formatted_startDate . "',
 									'actualEnd': '" . $formatted_endDate . "',
+									'actual':{'fill': 'Orange'},
 									'responsible': '" . $responsiblePerson  ."',
 									'accountable': '" . $accountablePerson ."',
 									'consulted': '" . $consultedPerson  ."',
 									'informed': '" . $informedPerson  ."',
-									'period': '" . $value['initialTaskDuration'] . "',
+									'period': '" . $value['initialTaskDuration'] . " days',
 									'parent': '" . $parent . "',
 									'connectTo': '" . $dependency . "',
 									'connectorType': '" . $type . "'
@@ -1566,51 +1637,87 @@
 							else if($value['TASKACTUALENDDATE'] == NULL){
 								// not delayed
 								if($value['TASKENDDATE'] > date('Y-m-d')){ // ongoing but not delayed
-									// echo "<script> console.log(''); </script>";
-									$color = "green";
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'actual':{'fill': '#006600'},
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] ." days',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+									},";
 								} else { // ongoing and delayed
-									// echo "<script> console.log(''); </script>";
-									$color = "#F53006";
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'actual':{'fill': '#006600'},
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] ." days',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_endDate . "',
+										'baselineEnd': '" . date('M d, Y') . "',
+										'baseline':{'fill': 'Red'},
+									},";
 								}
-								echo "
-								{
-									'id': " . $value['TASKID'] . ",
-									'name': '" . $value['TASKTITLE'] . "',
-									'actualStart': '" . $formatted_startDate . "',
-									'actualEnd': '" . $formatted_endDate . "',
-									'responsible': '" . $responsiblePerson  ."',
-									'accountable': '" . $accountablePerson ."',
-									'consulted': '" . $consultedPerson  ."',
-									'informed': '" . $informedPerson  ."',
-									'period': '" . $value['initialTaskDuration'] ."',
-									'parent': '" . $parent . "',
-									'connectTo': '" . $dependency . "',
-									'connectorType': '" . $type . "',
-									'baselineStart': '" . $formatted_actualStartDate . "',
-									'baselineEnd': '" . date('M d, Y') . "',
-									'baseline':{'fill': '" .$color. "'},
-								},";
+
 							} // END: Ongoing tasks - baselineEnd is the date today
 
 							// START: Completed tasks - baselineStart and baselineEnd are present
 							else {
-								echo "
-								{
-									'id': " . $value['TASKID'] . ",
-									'name': '" . $value['TASKTITLE'] . "',
-									'actualStart': '" . $formatted_startDate . "',
-									'actualEnd': '" . $formatted_endDate . "',
-									'responsible': '" . $responsiblePerson  ."',
-									'accountable': '" . $accountablePerson ."',
-									'consulted': '" . $consultedPerson  ."',
-									'informed': '" . $informedPerson  ."',
-									'period': '" . $value['initialTaskDuration'] . "',
-									'parent': '" . $parent . "',
-									'connectTo': '" . $dependency . "',
-									'connectorType': '" . $type . "',
-									'baselineStart': '" . $formatted_actualStartDate . "',
-									'baselineEnd': '" . $formatted_actualEndDate . "'
-								},";
+								if($formatted_endDate >= $formatted_actualEndDate){ // Completed but not delayed
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] . " days',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+									},";
+
+								} else { // Completed but delayed
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] ." days',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_endDate . "',
+										'baselineEnd': '" . $formatted_actualEndDate . "',
+										'baseline':{'fill': 'Red'},
+									},";
+
+								}
+
 							} // END: Completed tasks - baselineStart and baselineEnd are present
 
 						} else { // START: IF TASK
@@ -1621,11 +1728,12 @@
 									'name': '" . $value['TASKTITLE'] . "',
 									'actualStart': '" . $formatted_startDate . "',
 									'actualEnd': '" . $formatted_endDate . "',
+									'actual':{'fill': 'Orange'},
 									'responsible': '" . $responsiblePerson  ."',
 									'accountable': '" . $accountablePerson ."',
 									'consulted': '" . $consultedPerson  ."',
 									'informed': '" . $informedPerson  ."',
-									'period': '" . $value['initialTaskDuration'] . "',
+									'period': '" . $value['initialTaskDuration'] . " days',
 									'progressValue': '" . $progress . "%',
 									'parent': '" . $parent . "',
 									'connectTo': '" . $dependency . "',
@@ -1635,46 +1743,90 @@
 
 							// START: Ongoing tasks - baselineEnd is the date today
 							else if($value['TASKACTUALENDDATE'] == NULL){
-								echo "
-								{
-									'id': " . $value['TASKID'] . ",
-									'name': '" . $value['TASKTITLE'] . "',
-									'actualStart': '" . $formatted_startDate . "',
-									'actualEnd': '" . $formatted_endDate . "',
-									'responsible': '" . $responsiblePerson  ."',
-									'accountable': '" . $accountablePerson ."',
-									'consulted': '" . $consultedPerson  ."',
-									'informed': '" . $informedPerson  ."',
-									'period': '" . $value['initialTaskDuration'] . "',
-									'progressValue': '" . $progress . "%',
-									'parent': '" . $parent . "',
-									'connectTo': '" . $dependency . "',
-									'connectorType': '" . $type . "',
-									'baselineStart': '" . $formatted_actualStartDate ."',
-									'baselineEnd': '" . date('M d, Y') . "'
-								},";
+								if($value['TASKENDDATE'] > date('Y-m-d')) { // ongoing task but NOT delayed
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'actual':{'fill': '#006600'},
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] . " days',
+										'progressValue': '" . $progress . "%',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+									},";
+								} else { // ongoing task but delayed
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'actual':{'fill': '#006600'},
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] . " days',
+										'progressValue': '" . $progress . "%',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_endDate ."',
+										'baselineEnd': '" . date('M d, Y') . "',
+										'baseline':{'fill': 'Red'},
+									},";
+								} // end: ongoing task but delayed
+
 							} // END: Ongoing tasks - baselineEnd is the date today
 
 							// START: Completed tasks - baselineStart and baselineEnd are present
 							else {
-								echo "
-								{
-									'id': " . $value['TASKID'] . ",
-									'name': '" . $value['TASKTITLE'] . "',
-									'actualStart': '" . $formatted_startDate . "',
-									'actualEnd': '" . $formatted_endDate . "',
-									'responsible': '" . $responsiblePerson  ."',
-									'accountable': '" . $accountablePerson ."',
-									'consulted': '" . $consultedPerson  ."',
-									'informed': '" . $informedPerson  ."',
-									'period': '" . $value['initialTaskDuration'] ."',
-									'progressValue': '" . $progress . "%',
-									'parent': '" . $parent . "',
-									'connectTo': '" . $dependency . "',
-									'connectorType': '" . $type . "',
-									'baselineStart': '" . $formatted_actualStartDate . "',
-									'baselineEnd': '" . $formatted_actualEndDate . "'
-								},";
+								if($formatted_endDate >= $formatted_actualEndDate){ // Completed but not delayed
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] ." days',
+										'progressValue': '" . $progress . "%',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+									},";
+
+								} else { // Completed but delayed
+									echo "
+									{
+										'id': " . $value['TASKID'] . ",
+										'name': '" . $value['TASKTITLE'] . "',
+										'actualStart': '" . $formatted_startDate . "',
+										'actualEnd': '" . $formatted_endDate . "',
+										'responsible': '" . $responsiblePerson  ."',
+										'accountable': '" . $accountablePerson ."',
+										'consulted': '" . $consultedPerson  ."',
+										'informed': '" . $informedPerson  ."',
+										'period': '" . $value['initialTaskDuration'] ." days',
+										'progressValue': '" . $progress . "%',
+										'parent': '" . $parent . "',
+										'connectTo': '" . $dependency . "',
+										'connectorType': '" . $type . "',
+										'baselineStart': '" . $formatted_endDate . "',
+										'baselineEnd': '" . $formatted_actualEndDate . "',
+										'baseline':{'fill': 'Red'},
+									},";
+
+								} // END: completed but delayed
 							} // END: Completed tasks - baselineStart and baselineEnd are present
 						} // END: CHECKS FOR CATEGORY
 					} // END: CHECKS IF RACI IS EMPTY OR NOT
@@ -1685,8 +1837,23 @@
 
 			// data tree settings
 			var treeData = anychart.data.tree(rawData, "as-table");
-			var chart = anychart.ganttProject();      // chart type
-			chart.data(treeData);                     // chart data
+			chart = anychart.ganttProject();      // chart type
+			chart.data(treeData);                 // chart data
+
+			var tl = chart.getTimeline();
+			tl.lineMarker(0).value("current");
+
+			var groupingTasks = tl.groupingTasks();
+			var progress = groupingTasks.progress();
+    	progress.normal({fill: '#66b2b2'});
+
+			var elements = tl.elements();
+			var selected = elements.selected();
+			selected.fill('');
+
+			var tasks = tl.tasks();
+			var taskProgress = tasks.progress();
+			taskProgress.normal({fill: '#66b2b2'});
 
 			// data grid getter
 			var dataGrid = chart.dataGrid();
@@ -1743,8 +1910,10 @@
 			columnInformed.width(100);
 
 			chart.splitterPosition(650);
-			chart.zoomTo("week", 2);
 			chart.container('container').draw();      // set container and initiate drawing
+			chart.zoomTo('month', 1);
+			// chart.zoomTo(Date.UTC(2018,07,02), Date.UTC(2018,09,22));
+
 		});
 
 		function dateFormatter (value){
