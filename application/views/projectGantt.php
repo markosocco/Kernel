@@ -1588,7 +1588,6 @@
 					// START: Check for task involved
 					$marker = '""';
 					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
-						// echo "console.log( " .  $changeRequest['TASKID'] . " );";
 						if($changeRequest['TASKID'] == $value['TASKID']){
 							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
 						}
@@ -1878,11 +1877,12 @@
 			var columnTitle = dataGrid.column(1);
 			columnTitle.title("Task Name");
 			columnTitle.setColumnFormat("name", "text");
-			// columnTitle.labelsOverrider(labelTextSettingsOverrider)
-			// 	.labels()
-      // 	.format(function() {
-      //   	return this.name;
-      // 	});
+			columnTitle.width(140);
+                // .labelsOverrider(labelTextSettingsOverrider)
+                // .labels()
+                // .format(function () {
+                //     return this.name;
+                // });
 			columnTitle.width(300);
 
 			var columnStartDate = dataGrid.column(2);
@@ -1966,23 +1966,21 @@
 		}
 
 		// function labelTextSettingsOverrider(label, item) {
-		// 	switch (item.get('status')) {
-		//     case 'online':
-		//       label.fontColor('green')
-		//         .fontWeight('bold');
-		//       break;
-		//     case 'maintenance':
-		//       label.fontColor('orange')
-		//         .fontWeight('bold');
-		//       break;
-		//     case 'offline':
-		//       label.fontColor('red')
-		//         .fontWeight('bold');
-		//       break;
-		//   }
+		// 	var taskTitle = item.get('name');
+		// 	var rfcTaskTitle = '';
+		//
+		// 	<?php
+		// 		foreach ($ganttData as $key => $value){
+		// 			if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
+		// 				if($changeRequest['TASKID'] == $value['TASKID']){
+		// 					echo " var rfcTaskTitle = " . $value['TASKTITLE'] . ";";
+		// 				}
+		// 			}
+		// 		}
+		// 	?>
+		//
+		// 	console.log("rfc task title" + rfcTaskTitle);
 		// }
-
-
 
 	</script>
 </body>
