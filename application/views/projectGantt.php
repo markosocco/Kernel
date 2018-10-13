@@ -1599,11 +1599,6 @@
 							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
 						}
 					}
-
-					// if(){
-					// 	$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
-					// }
-
 					// END: Check for task involved
 
 					//START: CHECKS IF RACI IS EMPTY
@@ -1915,29 +1910,47 @@
 			columnPeriod.labels({hAlign: 'center'});
 
 			var columnResponsible = dataGrid.column(5);
-			columnResponsible.title("Responsible");
+			columnResponsible.title("R");
 			columnResponsible.setColumnFormat("responsible", "text");
 			columnResponsible.width(100);
 
 			var columnAccountable = dataGrid.column(6);
 			columnAccountable.title("Accountable");
-			columnAccountable.setColumnFormat("accountable", "text");
+			columnAccountable.setColumnFormat("A", "text");
 			columnAccountable.width(100);
 
 			var columnConsulted = dataGrid.column(7);
 			columnConsulted.title("Consulted");
-			columnConsulted.setColumnFormat("consulted", "text");
+			columnConsulted.setColumnFormat("C", "text");
 			columnConsulted.width(100);
 
 			var columnInformed = dataGrid.column(9);
 			columnInformed.title("Informed");
-			columnInformed.setColumnFormat("informed", "text");
+			columnInformed.setColumnFormat("I", "text");
 			columnInformed.width(100);
 
 			chart.splitterPosition(650);
 			chart.container('container').draw();      // set container and initiate drawing
 			// chart.zoomTo(Date.now());
-			chart.zoomTo("month", 1);
+			// chart.zoomTo('month', 1);";
+
+			<?php $count = 0; foreach ($ganttData as $key => $value){ $count++; } ?>
+
+			<?php
+				foreach ($ganttData as $key => $value){
+					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
+						if($changeRequest['TASKID'] == $value['TASKID']){
+							if($count == $value['TASKID']){
+								echo "chart.zoomTo('month', 1, " . $formatted_startDate . ");";
+							} else {
+								echo "chart.fitToTask('" . $value['TASKID'] . "');";
+							}
+						}
+					} else {
+						echo "chart.fitAll();";
+					}
+				}
+			?>
 
 		});
 
