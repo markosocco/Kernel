@@ -1915,18 +1915,18 @@
 			columnResponsible.width(100);
 
 			var columnAccountable = dataGrid.column(6);
-			columnAccountable.title("Accountable");
-			columnAccountable.setColumnFormat("A", "text");
+			columnAccountable.title("A");
+			columnAccountable.setColumnFormat("accountable", "text");
 			columnAccountable.width(100);
 
 			var columnConsulted = dataGrid.column(7);
-			columnConsulted.title("Consulted");
-			columnConsulted.setColumnFormat("C", "text");
+			columnConsulted.title("C");
+			columnConsulted.setColumnFormat("consulted", "text");
 			columnConsulted.width(100);
 
 			var columnInformed = dataGrid.column(9);
-			columnInformed.title("Informed");
-			columnInformed.setColumnFormat("I", "text");
+			columnInformed.title("I");
+			columnInformed.setColumnFormat("informed", "text");
 			columnInformed.width(100);
 
 			chart.splitterPosition(650);
@@ -1941,7 +1941,7 @@
 					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
 						if($changeRequest['TASKID'] == $value['TASKID']){
 							if($count == $value['TASKID']){
-								echo "chart.zoomTo('month', 1, " . $formatted_startDate . ");";
+								echo "chart.zoomTo('day', 7, 'last-date');";
 							} else {
 								echo "chart.fitToTask('" . $value['TASKID'] . "');";
 							}
