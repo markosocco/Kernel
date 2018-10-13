@@ -259,7 +259,7 @@
 									<div class="form-group">
 										<label>Request Type</label>
 										<select class="form-control" id="rfcType" name="rfcType">
-											<option disabled selected value> -- Select Request Type -- </option>
+											<option disabled selected value="0"> -- Select Request Type -- </option>
 											<option value="1">Change Task Performer</option>
 											<option value="2">Change Task Dates</option>
 										</select>
@@ -288,7 +288,7 @@
 							</div>
 
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+								<button type="button" class="btn btn-default pull-left" id="rfcClose" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
 								<button type="button" class="btn btn-success" id="rfcConfirm" data-date="" data-toggle="tooltip" data-placement="left" title="Submit"><i class="fa fa-check"></i></button>
 							</div>
 
@@ -684,6 +684,13 @@
 
 			 $("#submitConfirm").hide();
 
+			 $("body").on('click','#rfcClose',function(){
+				 $("#rfcType").val("0");
+				 $("#rfcForm").hide();
+				 $("#rfcReason").val("");
+				 $("#endDate").val("")
+			 });
+
 			 $("#rfcSubmit").click(function()
 			 {
 				 var $id = $(this).attr('data-id');
@@ -697,7 +704,7 @@
 				 {
 					 alert("Please choose a request type"); //insert in line error message
 				 }
-				 else if(!$("#rfcReason").val().match(/^[0-9a-zA-Z]+$/) || $("#endDate").val() == "")
+				 else if(!$("#rfcReason").val().match(/^[0-9a-zA-Z]+$/) || ($("#rfcType").val() == '2' && $("#endDate").val() == ""))
 				 {
 					 alert("Please complete the form"); //insert in line error message
 				 }
