@@ -1594,7 +1594,10 @@
 					// START: Check for task involved
 					$marker = '""';
 					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
-						echo "console.log( " .  $changeRequest['TASKID'] . " );";
+						// echo "console.log( " .  $changeRequest['TASKID'] . " );";
+						if($changeRequest['TASKID'] == $value['TASKID']){
+							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
+						}
 					}
 
 					// if(){
