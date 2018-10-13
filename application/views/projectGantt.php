@@ -133,32 +133,26 @@
 												</tr>
 
 												<tr>
-													<td colspan='4'>
+													<?php if($changeRequest['REQUESTTYPE'] == '2'):?>
+														<td colspan='2'>
+													<?php else:?>
+														<td colspan='4'>
+													<?php endif;?>
 														<label>Reason</label>
 														<p><?php echo $changeRequest['REASON'];?></p>
 													</td>
-												</tr>
 
-												<?php if($changeRequest['REQUESTTYPE'] == '2'):?>
-													<tr>
-														<td colspan='2'>
-															<label>Requested Start Date</label>
-															<?php if($changeRequest['NEWSTARTDATE'] != ""):?>
-																<p><?php echo date_format($newStartDate, "F d, Y");?></p>
-															<?php else:?>
-																<p>-</p>
-															<?php endif;?>
-														</td>
-														<td colspan='2'>
-															<label>Requested End Date</label>
-															<?php if($changeRequest['NEWENDDATE'] != ""):?>
-																<p><?php echo date_format($newEndDate, "F d, Y");?></p>
-															<?php else:?>
-																<p>-</p>
-															<?php endif;?>
-														</td>
-													</tr>
-												<?php endif;?>
+													<?php if($changeRequest['REQUESTTYPE'] == '2'):?>
+													<td colspan='2'>
+														<label>Requested End Date</label>
+														<?php if($changeRequest['NEWENDDATE'] != ""):?>
+															<p><?php echo date_format($newEndDate, "F d, Y");?></p>
+														<?php else:?>
+															<p>-</p>
+														<?php endif;?>
+													</td>
+													<?php endif;?>
+												</tr>
 
 											</table>
 									</div>
@@ -1884,6 +1878,11 @@
 			var columnTitle = dataGrid.column(1);
 			columnTitle.title("Task Name");
 			columnTitle.setColumnFormat("name", "text");
+			// columnTitle.labelsOverrider(labelTextSettingsOverrider)
+			// 	.labels()
+      // 	.format(function() {
+      //   	return this.name;
+      // 	});
 			columnTitle.width(300);
 
 			var columnStartDate = dataGrid.column(2);
@@ -1931,8 +1930,6 @@
 
 			chart.splitterPosition(650);
 			chart.container('container').draw();      // set container and initiate drawing
-			// chart.zoomTo(Date.now());
-			// chart.zoomTo('month', 1);";
 
 			<?php $count = 0; foreach ($ganttData as $key => $value){ $count++; } ?>
 
@@ -1948,6 +1945,8 @@
 						}
 					} else {
 						echo "chart.fitAll();";
+						// chart.zoomTo(Date.now());
+						// chart.zoomTo('month', 1);";
 					}
 				}
 			?>
@@ -1965,6 +1964,25 @@
 			var year = date.getFullYear()
 			return month + " " + day + ", " + year;
 		}
+
+		// function labelTextSettingsOverrider(label, item) {
+		// 	switch (item.get('status')) {
+		//     case 'online':
+		//       label.fontColor('green')
+		//         .fontWeight('bold');
+		//       break;
+		//     case 'maintenance':
+		//       label.fontColor('orange')
+		//         .fontWeight('bold');
+		//       break;
+		//     case 'offline':
+		//       label.fontColor('red')
+		//         .fontWeight('bold');
+		//       break;
+		//   }
+		// }
+
+
 
 	</script>
 </body>
