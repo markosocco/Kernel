@@ -87,7 +87,6 @@
 														<div class="form-group">
 															<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $tMain['TASKTITLE']; ?>" required>
 															<input type="hidden" name="row[]" value="<?php echo $key; ?>">
-															<input type="hidden" name="templateTaskParent[]" value="<?php echo $tMain['TASKID']; ?>">
 														</div>
 													</td>
 													<td>

@@ -152,8 +152,8 @@
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
 																			<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value="<?php echo $tSub['TASKTITLE'];?>" required>
+
 																			<input type="hidden" name="row[]" value="<?php echo $sKey; ?>">
-																			<input type="hidden" name="templateTaskParent[]" value="<?php echo $tSub['TASKID']; ?>">
 																		</div></td>
 																		<td>
 																			<select class="form-control select2" multiple="multiple" name = "department[<?php echo $sKey; ?>][]" data-placeholder="Select Departments">

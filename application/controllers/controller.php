@@ -3489,7 +3489,6 @@ class controller extends CI_Controller
 		$endDates = $this->input->post('taskEndDate');
 		$department = $this->input->post("department");
 		$rowNum = $this->input->post('row');
-		$templateTaskParent = $this->input->post('templateTaskParent');
 
 		$addedTask = array();
 
@@ -3548,8 +3547,7 @@ class controller extends CI_Controller
           'TASKENDDATE' => $endDates[$key],
           'TASKSTATUS' => $tStatus,
           'CATEGORY' => '1',
-          'projects_PROJECTID' => $id,
-					'templateTaskParent' => $templateTaskParent[$key]
+          'projects_PROJECTID' => $id
       );
 
       $addedTask[] = $this->model->addTasksToProject($data);
@@ -3905,7 +3903,6 @@ class controller extends CI_Controller
 		  $endDates = $this->input->post('taskEndDate');
 			$department = $this->input->post("department");
 			$rowNum = $this->input->post('row');
-			$templateTaskParent = $this->input->post('templateTaskParent');
 
 			$addedTask = array();
 
@@ -3964,8 +3961,7 @@ class controller extends CI_Controller
 	          'TASKSTATUS' => $tStatus,
 	          'CATEGORY' => '2',
 	          'projects_PROJECTID' => $id,
-	          'tasks_TASKPARENT' => $parent[$key],
-						'templateTaskParent' => $templateTaskParent[$key]
+	          'tasks_TASKPARENT' => $parent[$key]
 	      );
 
 				// SAVES ALL ADDED TASKS INTO AN ARRAY
