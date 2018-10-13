@@ -1591,6 +1591,18 @@
 					}
 					// END: Checks for informed
 
+					// START: Check for task involved
+					$marker = '""';
+					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
+						echo "console.log( " .  $changeRequest['TASKID'] . " );";
+					}
+
+					// if(){
+					// 	$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
+					// }
+
+					// END: Check for task involved
+
 					//START: CHECKS IF RACI IS EMPTY
 					if($accountable == NULL || $consulted == NULL || $informed == NULL){
 						echo "
@@ -1608,7 +1620,9 @@
 							'progressValue': '0%',
 							'parent': '" . $parent . "',
 							'connectTo': '" . $dependency . "',
-							'connectorType': '" . $type . "'
+							'connectorType': '" . $type . "',
+							'markers': " . $marker . ",
+
 						},";
 					} else { // START: RACI IS NOT EMPTY
 						// START: CHECKS IF MAIN OR SUB
@@ -1629,7 +1643,8 @@
 									'period': '" . $value['initialTaskDuration'] . " days',
 									'parent': '" . $parent . "',
 									'connectTo': '" . $dependency . "',
-									'connectorType': '" . $type . "'
+									'connectorType': '" . $type . "',
+									'markers': " . $marker . ",
 								},";
 							} // END: Planning - no baseline since task have not yet started
 
@@ -1652,6 +1667,7 @@
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
+										'markers': " . $marker . ",
 									},";
 								} else { // ongoing and delayed
 									echo "
@@ -1672,12 +1688,13 @@
 										'baselineStart': '" . $formatted_endDate . "',
 										'baselineEnd': '" . date('M d, Y') . "',
 										'baseline':{'fill': 'Red'},
+										'markers': " . $marker . ",
 									},";
 								}
 
 							} // END: Ongoing tasks - baselineEnd is the date today
 
-							// START: Completed tasks - baselineStart and baselineEnd are present
+							// START: Completed parent - baselineStart and baselineEnd are present
 							else {
 								if($formatted_endDate >= $formatted_actualEndDate){ // Completed but not delayed
 									echo "
@@ -1694,6 +1711,7 @@
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
+										'markers': " . $marker . ",
 									},";
 
 								} else { // Completed but delayed
@@ -1714,6 +1732,7 @@
 										'baselineStart': '" . $formatted_endDate . "',
 										'baselineEnd': '" . $formatted_actualEndDate . "',
 										'baseline':{'fill': 'Red'},
+										'markers': " . $marker . ",
 									},";
 
 								}
@@ -1737,7 +1756,8 @@
 									'progressValue': '" . $progress . "%',
 									'parent': '" . $parent . "',
 									'connectTo': '" . $dependency . "',
-									'connectorType': '" . $type . "'
+									'connectorType': '" . $type . "',
+									'markers': " . $marker . ",
 								},";
 							} // END: Planning - no baseline since task have not yet started
 
@@ -1759,6 +1779,7 @@
 										'progressValue': '" . $progress . "%',
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
+										'markers': " . $marker . ",
 									},";
 								} else { // ongoing task but delayed
 									echo "
@@ -1780,6 +1801,7 @@
 										'baselineStart': '" . $formatted_endDate ."',
 										'baselineEnd': '" . date('M d, Y') . "',
 										'baseline':{'fill': 'Red'},
+										'markers': '" . $marker . "',
 									},";
 								} // end: ongoing task but delayed
 
@@ -1847,9 +1869,9 @@
 			var progress = groupingTasks.progress();
     	progress.normal({fill: '#66b2b2'});
 
-			var elements = tl.elements();
-			var selected = elements.selected();
-			selected.fill('');
+			// var elements = tl.elements();
+			// var selected = elements.selected();
+			chart.getTimeline().elements().selected().stroke('#aaaacc').fill('');
 
 			var tasks = tl.tasks();
 			var taskProgress = tasks.progress();
@@ -1911,8 +1933,8 @@
 
 			chart.splitterPosition(650);
 			chart.container('container').draw();      // set container and initiate drawing
-			chart.zoomTo('month', 1);
-			// chart.zoomTo(Date.UTC(2018,07,02), Date.UTC(2018,09,22));
+			// chart.zoomTo(Date.now());
+			chart.zoomTo("month", 1);
 
 		});
 
