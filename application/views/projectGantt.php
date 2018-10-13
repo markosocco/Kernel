@@ -302,7 +302,7 @@
 
 													<!-- ALL DEPARTMENTS -->
 													<?php foreach($departments as $department):?>
-														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
+														<?php if($department['DEPARTMENTID'] != $changeRequest['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
 															<tr>
 																<td><?php echo $department['DEPARTMENTNAME'];?></td>
 																<td class='text-center'>
