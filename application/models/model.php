@@ -1921,5 +1921,17 @@ class model extends CI_Model
 
     return true;
   }
+
+  public function getSubActivityTaskID($id)
+  {
+    $condition = "raci.STATUS = 'Current' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 2";
+    $this->db->select('TASKID');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

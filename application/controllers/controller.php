@@ -3489,6 +3489,7 @@ class controller extends CI_Controller
 		$endDates = $this->input->post('taskEndDate');
 		$department = $this->input->post("department");
 		$rowNum = $this->input->post('row');
+		$templateTaskID = $this->input->post('templateTaskID');
 
 		$addedTask = array();
 
@@ -3541,14 +3542,30 @@ class controller extends CI_Controller
 				$tStatus = 'Planning';
 			}
 
-			$data = array(
-          'TASKTITLE' => $row,
-          'TASKSTARTDATE' => $startDates[$key],
-          'TASKENDDATE' => $endDates[$key],
-          'TASKSTATUS' => $tStatus,
-          'CATEGORY' => '1',
-          'projects_PROJECTID' => $id
-      );
+			if (isset($templateTaskID[$key]))
+			{
+				$data = array(
+	          'TASKTITLE' => $row,
+	          'TASKSTARTDATE' => $startDates[$key],
+	          'TASKENDDATE' => $endDates[$key],
+	          'TASKSTATUS' => $tStatus,
+	          'CATEGORY' => '1',
+	          'projects_PROJECTID' => $id,
+						'TEMPLATETASKID' => $templateTaskID[$key]
+	      );
+			}
+
+			else
+			{
+				$data = array(
+	          'TASKTITLE' => $row,
+	          'TASKSTARTDATE' => $startDates[$key],
+	          'TASKENDDATE' => $endDates[$key],
+	          'TASKSTATUS' => $tStatus,
+	          'CATEGORY' => '1',
+	          'projects_PROJECTID' => $id
+	      );
+			}
 
       $addedTask[] = $this->model->addTasksToProject($data);
 		}
@@ -3903,6 +3920,7 @@ class controller extends CI_Controller
 		  $endDates = $this->input->post('taskEndDate');
 			$department = $this->input->post("department");
 			$rowNum = $this->input->post('row');
+			$templateTaskID = $this->input->post('templateTaskID');
 
 			$addedTask = array();
 
@@ -3954,15 +3972,32 @@ class controller extends CI_Controller
 					$tStatus = 'Planning';
 				}
 
-	      $data = array(
-	          'TASKTITLE' => $row,
-	          'TASKSTARTDATE' => $startDates[$key],
-	          'TASKENDDATE' => $endDates[$key],
-	          'TASKSTATUS' => $tStatus,
-	          'CATEGORY' => '2',
-	          'projects_PROJECTID' => $id,
-	          'tasks_TASKPARENT' => $parent[$key]
-	      );
+				if (isset($templateTaskID[$key]))
+				{
+					$data = array(
+		          'TASKTITLE' => $row,
+		          'TASKSTARTDATE' => $startDates[$key],
+		          'TASKENDDATE' => $endDates[$key],
+		          'TASKSTATUS' => $tStatus,
+		          'CATEGORY' => '2',
+		          'projects_PROJECTID' => $id,
+		          'tasks_TASKPARENT' => $parent[$key],
+							'TEMPLATETASKID' => $templateTaskID[$key]
+		      );
+				}
+
+				else
+				{
+					$data = array(
+		          'TASKTITLE' => $row,
+		          'TASKSTARTDATE' => $startDates[$key],
+		          'TASKENDDATE' => $endDates[$key],
+		          'TASKSTATUS' => $tStatus,
+		          'CATEGORY' => '2',
+		          'projects_PROJECTID' => $id,
+		          'tasks_TASKPARENT' => $parent[$key]
+		      );
+				}
 
 				// SAVES ALL ADDED TASKS INTO AN ARRAY
 	      $addedTask[] = $this->model->addTasksToProject($data);
@@ -4114,7 +4149,13 @@ class controller extends CI_Controller
 				$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
 				$data['templateRaci'] = $this->model->getRaci($templates);
 				$data['templateUsers'] = $this->model->getAllUsers();
+				$data['templateSubActTaskID'] = $this->model->getSubActivityTaskID($templates);
 			}
+
+			// foreach ($data['templateSubActTaskID'] as $row)
+			// {
+			// 	echo $row['TASKID'] . "<br>";
+			// }
 
 		  // $this->load->view("dashboard", $data);
 		  // redirect('controller/projectGantt');

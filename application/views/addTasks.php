@@ -206,11 +206,9 @@
 																</td>
 															</tr>
 
-															<?php if (isset($templateSubActivity[$sKey])): ?>
-
-																<?php foreach ($templateTasks as $tKey=> $tTask): ?>
-																	<?php if (isset($templateTasks[$sKey])): ?>
-																		<?php if ($tTask['tasks_TASKPARENT'] == $templateSubActivity[$sKey]['TASKID']): ?>
+																<?php if (in_array($sValue['TEMPLATETASKID'], array_column($templateSubActTaskID, 'TASKID'))): ?>
+																	<?php foreach ($templateTasks as $tKey => $tTask): ?>
+																		<?php if ($tTask['tasks_TASKPARENT'] == $sValue['TEMPLATETASKID']): ?>
 																			<tr>
 																				<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>' ><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																				<td>
@@ -218,7 +216,7 @@
 
 																						<input type="hidden" name="subActivity_ID[]" value="<?php echo $sValue['TASKID']; ?>">
 
-																						<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $tTask['TASKTITLE']; ?>" required>
+																						<input type="text" class="form-control" name = "title[]" value="<?php echo $tTask['TASKTITLE'] ?>" required>
 																						<input type="hidden" name="row[]" value="<?php echo $c; ?>">
 																					</div>
 																				</td>
@@ -274,80 +272,77 @@
 																				<td></td>
 																				<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 																			</tr>
-																			<?php $x++; ?>
 																		<?php endif; ?>
-																	<?php endif; ?>
-																<?php endforeach; ?>
+																	<?php endforeach; ?>
+
+																<?php else: ?>
+																	<tr>
+																	  <td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>' ><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																	  <td>
+																	    <div class="form-group">
+
+																	      <input type="hidden" name="subActivity_ID[]" value="<?php echo $sValue['TASKID']; ?>">
+
+																	      <input type="text" class="form-control" placeholder="Enter Task Name" name = "title[]" required>
+																	      <input type="hidden" name="row[]" value="<?php echo $c; ?>">
+																	    </div>
+																	  </td>
+																	  <td style="padding-top:10px">
+																	    <select class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
+																	      <option></option>
+																	      <?php
+																	      foreach ($tasks as $row)
+																	      {
+																	        if($sValue['TASKTITLE'] == $row['TASKTITLE'])
+																	        {
+																	          foreach ($departments as $row2)
+																	          {
+																	            if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																	            {
+																	              echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																	            }
+																	          }
+																	        }
+																	      }
+																	      ?>
+																	    </select>
+																	  </td>
+																	  <td>
+																	    <div class="form-group">
+																	      <div class="input-group date">
+																	        <div class="input-group-addon">
+																	          <i class="fa fa-calendar"></i>
+																	        </div>
+																	        <input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
+																	        data-subAct="<?php echo $sValue['TASKID'];?>" data-num="<?php echo $x ?>"
+																	        data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
+																	        data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
+																	      </div>
+																	    </div>
+																	  </td>
+																	  <td>
+																	    <div class="form-group">
+																	      <div class="input-group date">
+																	        <div class="input-group-addon">
+																	          <i class="fa fa-calendar"></i>
+																	        </div>
+																	        <input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
+																	        data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="<?php echo $x; ?>" required>
+																	      </div>
+																	    </div>
+																	  </td>
+																	  <td>
+																	    <div class="form-group">
+																	      <input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-<?php echo $x; ?>" type="text" class="form-control period" value="" readonly>
+																	    </div>
+																	  </td>
+																	  <td></td>
+																	  <!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
+																	</tr>
+																	<?php $x++; ?>
+																<?php endif; ?>
 
 
-														<?php else: ?>
-
-															<tr>
-																<td class="btn" id="addRow"><a class="btn addButton" data-subTot="<?php echo count($subActivity); ?>" data-mTable = "<?php echo $key; ?>" data-sTable="<?php echo $sKey; ?>" data-subAct="<?php echo $sValue['TASKID']; ?>" counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>' ><i class="glyphicon glyphicon-plus-sign"></i></a></td>
-																<td>
-																	<div class="form-group">
-
-																		<input type="hidden" name="subActivity_ID[]" value="<?php echo $sValue['TASKID']; ?>">
-
-																		<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-																		<input type="hidden" name="row[]" value="<?php echo $c; ?>">
-																	</div>
-																</td>
-																<td style="padding-top:10px">
-																	<select class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
-																		<option></option>
-																		<?php
-																		foreach ($tasks as $row)
-																		{
-																			if($sValue['TASKTITLE'] == $row['TASKTITLE'])
-																			{
-																				foreach ($departments as $row2)
-																				{
-																					if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
-																					{
-																						echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
-																					}
-																				}
-																			}
-																		}
-																		?>
-																	</select>
-																</td>
-																<td>
-																	<div class="form-group">
-																		<div class="input-group date">
-																			<div class="input-group-addon">
-																				<i class="fa fa-calendar"></i>
-																			</div>
-																			<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
-																			data-subAct="<?php echo $sValue['TASKID'];?>" data-num="<?php echo $x ?>"
-																			data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
-																			data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
-																		</div>
-																	</div>
-																</td>
-																<td>
-																	<div class="form-group">
-																		<div class="input-group date">
-																			<div class="input-group-addon">
-																				<i class="fa fa-calendar"></i>
-																			</div>
-																			<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
-																			data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="<?php echo $x; ?>" required>
-																		</div>
-																	</div>
-																</td>
-																<td>
-																	<div class="form-group">
-																		<input id = "projectPeriod_<?php echo $sValue['TASKID']; ?>-<?php echo $x; ?>" type="text" class="form-control period" value="" readonly>
-																	</div>
-																</td>
-																<td></td>
-																<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
-															</tr>
-															<?php $x++; ?>
-
-														<?php endif; ?>
 														</tbody>
 													</table>
 													<?php $c++; ?>
