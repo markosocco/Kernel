@@ -1549,22 +1549,6 @@ class controller extends CI_Controller
 			$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
 			$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
 
-			// if(!$this->input->post("responsibleEmp") && !$this->input->post("accountableDept[]") &&
-			// 		!$this->input->post("accountableEmp[]") && !$this->input->post("consultedDept[]") &&
-			// 		!$this->input->post("consultedEmp[]") && !$this->input->post("informedDept[]") &&
-			// 		!$this->input->post("informedEmp[]")) // return to approver in tasks
-			// {
-			// 	$responsibleData = array(
-			// 		'ROLE' => '1',
-			// 		'users_USERID' => $_SESSION['USERID'],
-			// 		'tasks_TASKID' =>	$taskID,
-			// 		'STATUS' => 'Current'
-			// 	);
-			// 	$result = $this->model->addToRaci($responsibleData);
-			//
-			// }
-			// else
-			// {
 				// SAVE/UPDATE RESPONSIBLE
 				if($this->input->post("responsibleEmp"))
 				{
@@ -1620,61 +1604,7 @@ class controller extends CI_Controller
 					// END: Notification
 				}
 
-				// // SAVE ACCOUNTABLE
-				// if($this->input->post("accountableDept[]"))
-				// {
-				// 	foreach($this->input->post("accountableDept[]") as $deptID)
-				// 	{
-				// 		$accountableData = array(
-				// 			'ROLE' => '2',
-				// 			'users_USERID' => $deptID,
-				// 			'tasks_TASKID' =>	$taskID,
-				// 			'STATUS' => 'Current'
-				// 		);
-				// 		$this->model->addToRaci($accountableData);
-				//
-				// 		// START OF LOGS/NOTIFS
-				// 		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				//
-				// 		$taskDetails = $this->model->getTaskByID($taskID);
-				// 		$taskTitle = $taskDetails['TASKTITLE'];
-				//
-				// 		$projectID = $taskDetails['projects_PROJECTID'];
-				// 		$projectDetails = $this->model->getProjectByID($projectID);
-				// 		$projectTitle = $projectDetails['PROJECTTITLE'];
-				//
-				// 		$userDetails = $this->model->getUserByID($deptID);
-				// 		$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				//
-				// 		// START: LOG DETAILS
-				// 		$details = $userName . " has marked " . $taggedUserName . " as accountable for " . $taskTitle . ".";
-				//
-				// 		$logData = array (
-				// 			'LOGDETAILS' => $details,
-				// 			'TIMESTAMP' => date('Y-m-d H:i:s'),
-				// 			'projects_PROJECTID' => $projectID
-				// 		);
-				//
-				// 		$this->model->addToProjectLogs($logData);
-				// 		// END: LOG DETAILS
-				//
-				// 		// START: Notifications
-				// 		$details = "You have been tagged as accountable for " . $taskTitle . " in " . $projectTitle . ".";
-				// 		$notificationData = array(
-				// 			'users_USERID' => $deptID,
-				// 			'DETAILS' => $details,
-				// 			'TIMESTAMP' => date('Y-m-d H:i:s'),
-				// 			'status' => 'Unread',
-				// 			'projects_PROJECTID' => $projectID,
-				// 			'tasks_TASKID' => $taskID,
-				// 			'TYPE' => '4'
-				// 		);
-				//
-				// 		$this->model->addNotification($notificationData);
-				// 		// END: Notification
-				// 	}
-				// }
-
+				// SAVE ACCOUNTABLE
 				if ($this->input->post("accountableEmp[]"))
 				{
 					foreach($this->input->post("accountableEmp[]") as $empID)
@@ -1704,7 +1634,6 @@ class controller extends CI_Controller
 						$details = $userName . " has tagged " . $taggedUserName . " as accountable for " . $taskTitle . ".";
 						$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
 
-
 						$logData = array (
 							'LOGDETAILS' => $details,
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
@@ -1733,61 +1662,7 @@ class controller extends CI_Controller
 					}
 				}
 
-				// // SAVE CONSULTED
-				// if($this->input->post("consultedDept[]"))
-				// {
-				// 	foreach($this->input->post("consultedDept[]") as $deptID)
-				// 	{
-				// 		$consultedData = array(
-				// 			'ROLE' => '3',
-				// 			'users_USERID' => $deptID,
-				// 			'tasks_TASKID' =>	$taskID,
-				// 			'STATUS' => 'Current'
-				// 		);
-				// 		$this->model->addToRaci($consultedData);
-				//
-				// 		// START OF LOGS/NOTIFS
-				// 		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				//
-				// 		$taskDetails = $this->model->getTaskByID($taskID);
-				// 		$taskTitle = $taskDetails['TASKTITLE'];
-				//
-				// 		$projectID = $taskDetails['projects_PROJECTID'];
-				// 		$projectDetails = $this->model->getProjectByID($projectID);
-				// 		$projectTitle = $projectDetails['PROJECTTITLE'];
-				//
-				// 		$userDetails = $this->model->getUserByID($deptID);
-				// 		$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				//
-				// 		// START: LOG DETAILS
-				// 		$details = $userName . " has marked " . $taggedUserName . " as consulted for " . $taskTitle . ".";
-				//
-				// 		$logData = array (
-				// 			'LOGDETAILS' => $details,
-				// 			'TIMESTAMP' => date('Y-m-d H:i:s'),
-				// 			'projects_PROJECTID' => $projectID
-				// 		);
-				//
-				// 		$this->model->addToProjectLogs($logData);
-				// 		// END: LOG DETAILS
-				//
-				// 		// START: Notifications
-				// 		$details = "You have been tagged as consulted for " . $taskTitle . " in " . $projectTitle . ".";
-				// 		$notificationData = array(
-				// 			'users_USERID' => $deptID,
-				// 			'DETAILS' => $details,
-				// 			'TIMESTAMP' => date('Y-m-d H:i:s'),
-				// 			'status' => 'Unread',
-				// 			'projects_PROJECTID' => $projectID,
-				// 			'tasks_TASKID' => $taskID,
-				// 			'TYPE' => '4'
-				// 		);
-				//
-				// 		$this->model->addNotification($notificationData);
-				// 		// END: Notification
-				// 	}
-				// }
-
+				// SAVE CONSULTED
 				if($this->input->post("consultedEmp[]"))
 				{
 					foreach($this->input->post("consultedEmp[]") as $empID)
@@ -1844,59 +1719,6 @@ class controller extends CI_Controller
 				}
 
 				// SAVE INFORMED
-				// if($this->input->post("informedDept[]"))
-				// {
-				// 	foreach($this->input->post("informedDept[]") as $deptID)
-				// 	{
-				// 		$informedData = array(
-				// 			'ROLE' => '4',
-				// 			'users_USERID' => $deptID,
-				// 			'tasks_TASKID' =>	$taskID,
-				// 			'STATUS' => 'Current'
-				// 		);
-				// 		$this->model->addToRaci($informedData);
-				// 	}
-				// 	// START OF LOGS/NOTIFS
-				// 	$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				//
-				// 	$taskDetails = $this->model->getTaskByID($taskID);
-				// 	$taskTitle = $taskDetails['TASKTITLE'];
-				//
-				// 	$projectID = $taskDetails['projects_PROJECTID'];
-				// 	$projectDetails = $this->model->getProjectByID($projectID);
-				// 	$projectTitle = $projectDetails['PROJECTTITLE'];
-				//
-				// 	$userDetails = $this->model->getUserByID($deptID);
-				// 	$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				//
-				// 	// START: LOG DETAILS
-				// 	$details = $userName . " has marked " . $taggedUserName . " as informed for " . $taskTitle . ".";
-				//
-				// 	$logData = array (
-				// 		'LOGDETAILS' => $details,
-				// 		'TIMESTAMP' => date('Y-m-d H:i:s'),
-				// 		'projects_PROJECTID' => $projectID
-				// 	);
-				//
-				// 	$this->model->addToProjectLogs($logData);
-				// 	// END: LOG DETAILS
-				//
-				// 	// START: Notifications
-				// 	$details = "You have been tagged as informed for " . $taskTitle . " in " . $projectTitle . ".";
-				// 	$notificationData = array(
-				// 		'users_USERID' => $deptID,
-				// 		'DETAILS' => $details,
-				// 		'TIMESTAMP' => date('Y-m-d H:i:s'),
-				// 		'status' => 'Unread',
-				// 		'projects_PROJECTID' => $projectID,
-				// 		'tasks_TASKID' => $taskID,
-				// 		'TYPE' => '4'
-				// 	);
-				//
-				// 	$this->model->addNotification($notificationData);
-				// 	// END: Notification
-				// }
-
 				if($this->input->post("informedEmp[]"))
 				{
 					foreach($this->input->post("informedEmp[]") as $empID)
@@ -1949,94 +1771,16 @@ class controller extends CI_Controller
 				}
 			// }
 		} // end if appoved change Performer
-		else // if approved change dates
+		else // if approved change date
 		{
 			$taskID = $this->input->post("task_ID");
 			$changeRequest = $this->model->getChangeRequestbyID($requestID);
-			$task = $this->model->getTaskByID($taskID);
-			$taskPostReqs = $this->model->getPostDependenciesByTaskID($taskID);
 
-			if($changeRequest['NEWSTARTDATE'] == "")
-			{
-				$taskData = array(
-					'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
-				);
-			}
-			else
-			{
-				$taskData = array(
-					'TASKADJUSTEDSTARTDATE' => $changeRequest['NEWSTARTDATE'],
-					'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
-				);
-			}
+			$taskData = array(
+				'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
+			);
+
 			$this->model->updateTaskDates($taskID, $taskData); //save adjusted dates of requested task
-
-			if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
-			{
-				$postReqsToAdjust = array();
-				$postReqsToAdjust[] = $taskID; // add requested task to array
-				$i = 0; // set counter
-				$endDate = $changeRequest['NEWENDDATE'];
-				while(COUNT($postReqsToAdjust) > 0) // loop while array is not empty/there are postreqs to check
-				{
-					$currTask = $this->model->getTaskByID($postReqsToAdjust[$i]); // get current task data
-					if($currTask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-						$endDate = $currTask['TASKENDDATE'];
-					else
-						$endDate = $currTask['TASKADJUSTEDENDDATE'];
-
-					$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
-					if(COUNT($postReqs) > 0) // if there are post reqs found
-					{
-						foreach($postReqs as $postReq)
-						{
-							if($postReq['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
-								$startDate = $postReq['TASKSTARTDATE'];
-							else
-								$startDate = $postReq['TASKADJUSTEDSTARTDATE'];
-
-							if($endDate >= $startDate) //check if currTasks's end date will exceed the postreq's start date
-							{
-								if($postReq['TASKADJUSTEDSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
-									$taskDuration = $postReq['adjustedTaskDuration2'];
-								elseif($postReq['TASKSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
-									$taskDuration = $postReq['adjustedTaskDuration1'];
-								else
-									$taskDuration = $postReq['initialTaskDuration'];
-
-								$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
-								$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
-
-								$postTaskData = array(
-									'TASKADJUSTEDSTARTDATE' => $new_start,
-									'TASKADJUSTEDENDDATE' => $new_end
-								);
-								$this->model->updateTaskDates($postReq['TASKID'], $postTaskData); //save adjusted dates
-							}
-							array_push($postReqsToAdjust, $postReq['TASKID']); // save task to array for checking
-						}
-					}
-					unset($postReqsToAdjust[$i]); // remove current task from array
-					$i++; // increase counter
-				}
-			}
-			else // if no post requisite tasks
-			{
-				if($changeRequest['NEWSTARTDATE'] <= 0) // if start date is not requested
-				{
-					$data = array(
-						'TASKADJUSTEDENDDATE' => $changeRequest["NEWENDDATE"]
-					);
-				}
-				else
-				{
-					$data = array(
-						'TASKADJUSTEDSTARTDATE' => $changeRequest["NEWSTARTDATE"],
-						'TASKADJUSTEDENDDATE' => $changeRequest["NEWENDDATE"]
-					);
-				}
-				$this->model->updateTaskDates($taskID, $data);
-			}
 
 			// START OF LOGS/NOTIFS
 			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
@@ -2049,7 +1793,7 @@ class controller extends CI_Controller
 			$projectTitle = $projectDetails['PROJECTTITLE'];
 
 			// START: LOG DETAILS
-			$details = $userName . " has adjusted the dates for " . $taskTitle . ".";
+			$details = $userName . " has adjusted the end date for " . $taskTitle . ".";
 
 			$logData = array (
 				'LOGDETAILS' => $details,
@@ -2061,7 +1805,7 @@ class controller extends CI_Controller
 			// END: LOG DETAILS
 
 			// START: Notifications
-			$details = "Dates for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+			$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
 
 			// notify project owner
 			$notificationData = array(
@@ -2086,7 +1830,7 @@ class controller extends CI_Controller
 					$postTasksData['users'] = $this->model->getRACIbyTask($nextTaskID);
 
 					foreach($postTasksData['users'] as $postTasksDataUsers){
-						$details = "Dates for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+						$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
 
 						$notificationData = array(
 							'users_USERID' => $postTasksDataUsers['users_USERID'],
@@ -2109,7 +1853,7 @@ class controller extends CI_Controller
 
 				foreach($ACIdata['ACI'] as $ACIusers){
 
-					$details = "Dates for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+					$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
 
 					$notificationData = array(
 						'users_USERID' => $ACIusers['users_USERID'],

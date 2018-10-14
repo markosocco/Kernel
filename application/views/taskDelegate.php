@@ -532,12 +532,12 @@
 
 							<div class="modal-footer">
 								<span data-dismiss="modal">
-									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close">
+									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="left" title="Close">
 										<i class="fa fa-close"></i>
 									</button>
 								</span>
 								<span data-toggle="modal" data-target="#modal-delegateConfirm">
-									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="top" title="Confirm Delegate">
+									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="right" title="Confirm Delegate">
 										<i class="fa fa-check"></i>
 									</button>
 								</span>

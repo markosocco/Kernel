@@ -223,7 +223,7 @@
 											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+											<button id = "closeConfirmBtn" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
 											<button id = "doneConfirmBtn" type="button" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 										</div>
 								</div>
@@ -301,7 +301,7 @@
 							</div>
 							<div class="modal-footer">
 								<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-								<button id="rfcSubmit" type="submit" class="btn btn-success" data-id="" data-end="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+								<button id="rfcSubmit" type="submit" class="btn btn-success" data-id="" data-end="" data-projEnd="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 							</div>
 						</div>
 					</form>
@@ -480,7 +480,7 @@
  								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
  								 '" data-title="' + data['tasks'][i].TASKTITLE +
  								 '" data-start="'+ taskStart +
- 								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
+ 								 '" data-end="'+ taskEnd +'" data-projEnd="'+ data['tasks'][i].PROJECTENDDATE +'"data-toggle="tooltip" data-placement="top" title="Request for Change">' +
 								 '<i class="fa fa-flag"></i></button>');
 							}
 							else
@@ -490,7 +490,7 @@
  								 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
  								 '" data-title="' + data['tasks'][i].TASKTITLE +
  								 '" data-start="'+ taskStart +
- 								 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
+ 								 '" data-end="'+ taskEnd +'" data-projEnd="'+ data['tasks'][i].PROJECTENDDATE +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
  								 '<i class="fa fa-flag"></i></button></span>');
 							}
 
@@ -670,9 +670,11 @@
 				 var $title = $(this).attr('data-title');
 				 var $start = new Date($(this).attr('data-start'));
 				 var $end = new Date($(this).attr('data-end'));
+				 var $projEnd = new Date($(this).attr('data-projEnd'));
 				 var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
 				 $("#rfcSubmit").attr("data-id", $id); //pass data id to confirm button
-				 $("#rfcSubmit").attr("data-end", moment($start).format('YYYY-M-D')); //pass data id to confirm button
+				 $("#rfcSubmit").attr("data-end", moment($end).format('YYYY-M-D')); //pass data id to confirm button
+				 $("#rfcSubmit").attr("data-projEnd", moment($projEnd).format('YYYY-M-D')); //pass data id to confirm button
 				 $("#rfcSubmit").attr("data-date", $date); //pass data date boolean to confirm button
 				 $("#rfcTitle").html($title);
 				 $("#rfcDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
@@ -750,6 +752,7 @@
 					 $('#endDate').datepicker({
 							format: 'yyyy-mm-dd',
 							startDate: $('#rfcSubmit').attr('data-end'),
+							endDate: $('#rfcSubmit').attr('data-projEnd'),
 							autoclose: true,
 							orientation: 'auto'
 						});
@@ -761,7 +764,6 @@
 			 // DONE SCRIPT
 
 			$("body").on('click','.doneBtn',function(){
-			 $("#remarks").val("");
 			 var $id = $(this).attr('data-id');
 			 var $title = $(this).attr('data-title');
 			 var $start = new Date($(this).attr('data-start'));
@@ -798,6 +800,10 @@
 		 });
 
 		 $("#doneConfirmDiv").hide();
+
+		 $("body").on('click','#closeConfirmBtn',function(){
+			 $("#remarks").val("");
+		 });
 
 		 $("body").on('click','#doneConfirmBtn',function(){
 			 if(!$("#remarks").val().match(/^[0-9a-zA-Z]+$/)){
@@ -880,26 +886,26 @@
 
 							if(preReqData['dependencies'][i].TASKSTATUS == "Complete")
 							{
-								var status = "<i class='fa fa-circle' style='color:teal' data-toggle='tooltip' data-placement='top' title='Completed'></i>"
+								var status = "<td class='bg-teal'></td>";
 							}
 							if(preReqData['dependencies'][i].TASKSTATUS == "Planning")
 							{
-								var status = "<i class='fa fa-circle' style='color:yellow' data-toggle='tooltip' data-placement='top' title='Planned'></i>"
+								var status = "<td class='bg-yellow'></td>";
 							}
 							if(preReqData['dependencies'][i].TASKSTATUS == "Ongoing")
 							{
 								if(preReqData['dependencies'][i].currDate > endDate)
-									var status = "<i class='fa fa-circle' style='color:red' data-toggle='tooltip' data-placement='top' title='Delayed'></i>"
+									var status = "<td class='bg-red'></td>";
 								else
-									var status = "<i class='fa fa-circle' style='color:green' data-toggle='tooltip' data-placement='top' title='Ongoing'></i>"
+									var status = "<td class='bg-green'></td>";
 							}
 
 							$('#preReqDetails').append(
-													 "<tr>" + "<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
+													 "<tr>" + status +
+													 "<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
 													 "<td align='center'>" + taskStart+"</td>"+
 													 "<td align='center'>" + taskEnd +"</td>" +
-													 "<td>" + preReqData['dependencies'][i].FIRSTNAME + " " + preReqData['dependencies'][i].LASTNAME + "</td>" +
-													 "<td align='center'>" + status + "</td></tr>");
+													 "<td>" + preReqData['dependencies'][i].FIRSTNAME + " " + preReqData['dependencies'][i].LASTNAME + "</td></tr>");
 					 }
 					 $("#preReqTable").show();
 				 }
