@@ -133,32 +133,26 @@
 												</tr>
 
 												<tr>
-													<td colspan='4'>
+													<?php if($changeRequest['REQUESTTYPE'] == '2'):?>
+														<td colspan='2'>
+													<?php else:?>
+														<td colspan='4'>
+													<?php endif;?>
 														<label>Reason</label>
 														<p><?php echo $changeRequest['REASON'];?></p>
 													</td>
-												</tr>
 
-												<?php if($changeRequest['REQUESTTYPE'] == '2'):?>
-													<tr>
-														<td colspan='2'>
-															<label>Requested Start Date</label>
-															<?php if($changeRequest['NEWSTARTDATE'] != ""):?>
-																<p><?php echo date_format($newStartDate, "F d, Y");?></p>
-															<?php else:?>
-																<p>-</p>
-															<?php endif;?>
-														</td>
-														<td colspan='2'>
-															<label>Requested End Date</label>
-															<?php if($changeRequest['NEWENDDATE'] != ""):?>
-																<p><?php echo date_format($newEndDate, "F d, Y");?></p>
-															<?php else:?>
-																<p>-</p>
-															<?php endif;?>
-														</td>
-													</tr>
-												<?php endif;?>
+													<?php if($changeRequest['REQUESTTYPE'] == '2'):?>
+													<td colspan='2'>
+														<label>Requested End Date</label>
+														<?php if($changeRequest['NEWENDDATE'] != ""):?>
+															<p><?php echo date_format($newEndDate, "F d, Y");?></p>
+														<?php else:?>
+															<p>-</p>
+														<?php endif;?>
+													</td>
+													<?php endif;?>
+												</tr>
 
 											</table>
 									</div>
@@ -302,7 +296,7 @@
 
 													<!-- ALL DEPARTMENTS -->
 													<?php foreach($departments as $department):?>
-														<?php if($department['DEPARTMENTID'] != $_SESSION['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
+														<?php if($department['DEPARTMENTID'] != $changeRequest['departments_DEPARTMENTID'] && $department['DEPARTMENTNAME'] != 'Executive'):?>
 															<tr>
 																<td><?php echo $department['DEPARTMENTNAME'];?></td>
 																<td class='text-center'>
@@ -1594,13 +1588,10 @@
 					// START: Check for task involved
 					$marker = '""';
 					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
-						echo "console.log( " .  $changeRequest['TASKID'] . " );";
+						if($changeRequest['TASKID'] == $value['TASKID']){
+							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
+						}
 					}
-
-					// if(){
-					// 	$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
-					// }
-
 					// END: Check for task involved
 
 					//START: CHECKS IF RACI IS EMPTY
@@ -1886,6 +1877,12 @@
 			var columnTitle = dataGrid.column(1);
 			columnTitle.title("Task Name");
 			columnTitle.setColumnFormat("name", "text");
+			columnTitle.width(140);
+                // .labelsOverrider(labelTextSettingsOverrider)
+                // .labels()
+                // .format(function () {
+                //     return this.name;
+                // });
 			columnTitle.width(300);
 
 			var columnStartDate = dataGrid.column(2);
@@ -1912,29 +1909,47 @@
 			columnPeriod.labels({hAlign: 'center'});
 
 			var columnResponsible = dataGrid.column(5);
-			columnResponsible.title("Responsible");
+			columnResponsible.title("R");
 			columnResponsible.setColumnFormat("responsible", "text");
 			columnResponsible.width(100);
 
 			var columnAccountable = dataGrid.column(6);
-			columnAccountable.title("Accountable");
+			columnAccountable.title("A");
 			columnAccountable.setColumnFormat("accountable", "text");
 			columnAccountable.width(100);
 
 			var columnConsulted = dataGrid.column(7);
-			columnConsulted.title("Consulted");
+			columnConsulted.title("C");
 			columnConsulted.setColumnFormat("consulted", "text");
 			columnConsulted.width(100);
 
 			var columnInformed = dataGrid.column(9);
-			columnInformed.title("Informed");
+			columnInformed.title("I");
 			columnInformed.setColumnFormat("informed", "text");
 			columnInformed.width(100);
 
 			chart.splitterPosition(650);
 			chart.container('container').draw();      // set container and initiate drawing
-			// chart.zoomTo(Date.now());
-			chart.zoomTo("month", 1);
+
+			<?php $count = 0; foreach ($ganttData as $key => $value){ $count++; } ?>
+
+			<?php
+				foreach ($ganttData as $key => $value){
+					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
+						if($changeRequest['TASKID'] == $value['TASKID']){
+							if($count == $value['TASKID']){
+								echo "chart.zoomTo('day', 7, 'last-date');";
+							} else {
+								echo "chart.fitToTask('" . $value['TASKID'] . "');";
+							}
+						}
+					} else {
+						echo "chart.fitAll();";
+						// chart.zoomTo(Date.now());
+						// chart.zoomTo('month', 1);";
+					}
+				}
+			?>
 
 		});
 
@@ -1949,6 +1964,23 @@
 			var year = date.getFullYear()
 			return month + " " + day + ", " + year;
 		}
+
+		// function labelTextSettingsOverrider(label, item) {
+		// 	var taskTitle = item.get('name');
+		// 	var rfcTaskTitle = '';
+		//
+		// 	<?php
+		// 		foreach ($ganttData as $key => $value){
+		// 			if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
+		// 				if($changeRequest['TASKID'] == $value['TASKID']){
+		// 					echo " var rfcTaskTitle = " . $value['TASKTITLE'] . ";";
+		// 				}
+		// 			}
+		// 		}
+		// 	?>
+		//
+		// 	console.log("rfc task title" + rfcTaskTitle);
+		// }
 
 	</script>
 </body>

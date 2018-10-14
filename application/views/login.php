@@ -7,10 +7,11 @@
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 		<!-- Bootstrap 3.3.7 -->
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<!-- <link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>animate.css/animate.min.css"/>
 		<link rel="stylesheet" href="<?php echo base_url()."assets/"; ?>bower_components/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href = "<?php echo base_url("/assets/css/loginStyle.css")?>">
+
 
 		<!-- Google Font -->
 	  <link rel="stylesheet"
@@ -47,7 +48,7 @@
 		        <h2 class="modal-title">Can't Log In?</h2>
 		      </div>
 		      <div class="modal-body">
-						<h4>Provide us your email and we will send your credentials to your email.</h4>
+						<h4>Provide us your email and we will send you your credentials.</h4>
 						<h4>Please be sure to provide your corporate email (@tatersgroup.com).</h4>
 
 						<div class="input-group">
@@ -56,8 +57,8 @@
 						</div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
-		        <button type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+		        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+		        <button type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 		      </div>
 		    </div>
 		  </div>
