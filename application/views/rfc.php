@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - Change Requests</title>
-		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/rfcStyle.css")?>">
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/rfcStyle.css")?>"> -->
 	</head>
 	<body>
 

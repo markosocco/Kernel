@@ -267,8 +267,8 @@
                         // $startdate = date_create($row['PROJECTSTARTDATE']);
                         ?>
                         <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in
-                          <?php echo $row['datediff'] +1;?>
-                          <?php if(($value['datediff'] +1) > 1):?>
+                          <?php echo $row['datediff'];?>
+                          <?php if(($row['datediff']) > 1):?>
                             days
                           <?php else:?>
                             day

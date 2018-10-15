@@ -1256,7 +1256,7 @@ class model extends CI_Model
   public function getTasks2DaysBeforeDeadline()
   {
     $condition = "raci.STATUS = 'Current' AND TASKSTATUS != 'Complete' AND DATEDIFF(TASKENDDATE, CURDATE()) <= 2
-     AND CATEGORY = 3 AND raci.users_USERID = " . $_SESSION['USERID'];
+     AND CATEGORY = 3 AND ROLE = 1 AND raci.users_USERID = " . $_SESSION['USERID'];
     $this->db->select('*, DATEDIFF(TASKENDDATE, CURDATE()) AS "DATEDIFF", raci.users_USERID AS "TASKOWNER", projects.users_USERID AS "PROJECTOWNER"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -1920,6 +1920,18 @@ class model extends CI_Model
     $this->db->update('users', $data);
 
     return true;
+  }
+
+  public function getSubActivityTaskID($id)
+  {
+    $condition = "raci.STATUS = 'Current' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 2";
+    $this->db->select('TASKID');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
   }
 }
 ?>

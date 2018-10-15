@@ -108,7 +108,7 @@
 																					<i class="fa fa-users"></i>
 																				</button>
 																				</span>
-																				<span data-toggle="modal" data-target="#modal-accept">
+																				<!-- <span data-toggle="modal" data-target="#modal-accept"> -->
 																				<button disabled id="taskAccept-<?php echo $task['TASKID'];?>" type="button" class="btn btn-success btn-sm acceptBtn"
 																				data-toggle="tooltip" data-placement="top" title="Accept"
 																				data-id="<?php echo $task['TASKID'];?>"
@@ -117,7 +117,7 @@
 																				data-end="<?php echo $task['TASKENDDATE'];?>">
 																					<i class="fa fa-thumbs-up"></i>
 																				</button>
-																				</span>
+																				<!-- </span> -->
 																			</td>
 																		</tr>
 																	<?php endif;?>
@@ -239,7 +239,7 @@
 																				<i class="fa fa-users"></i>
 																			</button>
 																			</span>
-																			<span data-toggle="modal" data-target="#modal-accept">
+																			<!-- <span data-toggle="modal" data-target="#modal-accept"> -->
 																			<button disabled id="taskAccept-<?php echo $task['TASKID'];?>" type="button" class="btn btn-success btn-sm acceptBtn"
 																			data-toggle="tooltip" data-placement="top" title="Accept"
 																			data-id="<?php echo $task['TASKID'];?>"
@@ -248,7 +248,7 @@
 																			data-end="<?php echo $task['TASKENDDATE'];?>">
 																				<i class="fa fa-thumbs-up"></i>
 																			</button>
-																			</span>
+																			<!-- </span> -->
 																		</td>
 																	</tr>
 																<?php endif;?>
@@ -532,12 +532,12 @@
 
 							<div class="modal-footer">
 								<span data-dismiss="modal">
-									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close">
+									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="left" title="Close">
 										<i class="fa fa-close"></i>
 									</button>
 								</span>
 								<span data-toggle="modal" data-target="#modal-delegateConfirm">
-									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="top" title="Confirm Delegate">
+									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="right" title="Confirm Delegate">
 										<i class="fa fa-check"></i>
 									</button>
 								</span>
@@ -936,6 +936,7 @@
 
 			// ACCEPT SCRIPT
 			$("body").on('click','.acceptBtn',function(){
+			 $("#modal-accept").modal('show');
 			 var $id = $(this).attr('data-id');
 			 var $title = $(this).attr('data-title');
 			 var $start = new Date($(this).attr('data-start'));
