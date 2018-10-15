@@ -31,6 +31,7 @@
 			<section class="content container-fluid">
         <!-- START HERE -->
 				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="All Tasks"><i class="fa fa-eye"></i></button>
+				<button id = "viewFiltered" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="To Delegate"><i class="fa fa-eye-slash"></i></button>
 
 				<br><br>
 
@@ -532,12 +533,12 @@
 
 							<div class="modal-footer">
 								<span data-dismiss="modal">
-									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="left" title="Close">
+									<button type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close">
 										<i class="fa fa-close"></i>
 									</button>
 								</span>
 								<span data-toggle="modal" data-target="#modal-delegateConfirm">
-									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="right" title="Confirm Delegate">
+									<button type="button" class="btn btn-success delegate" data-toggle="tooltip" data-placement="left" title="Confirm Delegate">
 										<i class="fa fa-check"></i>
 									</button>
 								</span>
@@ -640,20 +641,24 @@
 			$("#taskDelegate").addClass("active");
 			$("#allTasks").hide();
 
+			$("#viewFiltered").toggle();
+
 			$(document).on("click", "#viewAll", function()
 			{
 				$("#allTasks").toggle();
 				$("#filteredTasks").toggle();
-				if($("#allTasks").css("display") == "none")
-				{
-					$("#viewAll").html("<i class='fa fa-eye' data-toggle='tooltip' data-placement='top' title='All Tasks'></i>");
-					$("#viewAll").attr('title', 'View All');
-				}
-				else
-				{
-					$("#viewAll").html("<i class='fa fa-eye-slash' data-toggle='tooltip' data-placement='top' title='To Do Tasks'></i>");
-					$("#viewAll").attr('title', 'Filter');
-				}
+
+				$("#viewAll").toggle();
+				$("#viewFiltered").toggle();
+			});
+
+			$(document).on("click", "#viewFiltered", function()
+			{
+				$("#allTasks").toggle();
+				$("#filteredTasks").toggle();
+
+				$("#viewAll").toggle();
+				$("#viewFiltered").toggle();
 			});
 
 			$("body").on("click", function(){ // REMOVE ALL SELECTED IN MODAL

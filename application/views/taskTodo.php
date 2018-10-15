@@ -26,6 +26,8 @@
         <!-- START HERE -->
 
 				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="All Tasks"><i class="fa fa-eye"></i></button>
+				<button id = "viewFiltered" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="To Do"><i class="fa fa-eye-slash"></i></button>
+
 				<br><br>
 
 				<div id = "filteredTasks">
@@ -634,23 +636,24 @@
 				}
 			});
 
+			$("#viewFiltered").toggle();
 
 			$(document).on("click", "#viewAll", function()
 			{
 				$("#allTasks").toggle();
 				$("#filteredTasks").toggle();
 
-				if($("#allTasks").css("display") == "none")
-				{
-					$("#viewAll").html("<i class='fa fa-eye'></i>");
-					$("#viewAll").attr("title", "All Tasks");
-				}
-				else
-				{
-					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
-					$("#viewAll").attr("title", "To Do");
-				}
+				$("#viewAll").toggle();
+				$("#viewFiltered").toggle();
+			});
 
+			$(document).on("click", "#viewFiltered", function()
+			{
+				$("#allTasks").toggle();
+				$("#filteredTasks").toggle();
+
+				$("#viewAll").toggle();
+				$("#viewFiltered").toggle();
 			});
 
 			$(document).on("click", ".viewProject", function() {

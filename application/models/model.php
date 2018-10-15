@@ -182,7 +182,7 @@ class model extends CI_Model
     $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('users', 'users.USERID = changerequests.users_APPROVEDBY');
-    $this->db->where("changerequests.users_REQUESTEDBY = '$id' && projects.PROJECTSTATUS = 'Ongoing'");
+    $this->db->where("changerequests.users_REQUESTEDBY = '$id' && (projects.PROJECTSTATUS = 'Ongoing' || projects.PROJECTSTATUS = 'Planning')");
     $query = $this->db->get();
 
     return $query->result_array();
