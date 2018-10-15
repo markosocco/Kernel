@@ -145,6 +145,7 @@
 
 												<?php foreach ($subActivity as $sKey => $sValue): ?>
 													<?php $x=0; ?>
+													<?php $y=0; ?>
 													<!-- SUB ACT TABLE START -->
 														<?php if ($sValue['tasks_TASKPARENT'] == $value['TASKID']): ?>
 															<table class="table table-hover" id = "ma<?php echo $key; ?>_s<?php echo $sKey; ?>">
@@ -246,8 +247,8 @@
 																							<div class="input-group-addon">
 																								<i class="fa fa-calendar"></i>
 																							</div>
-																							<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
-																							data-subAct="<?php echo $sValue['TASKID'];?>" data-num="<?php echo $x ?>"
+																							<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start_<?php echo $sValue['TASKID'];?>-<?php echo $y; ?>"
+																							data-subAct="<?php echo $sValue['TASKID'];?>" data-num="<?php echo $y; ?>"
 																							data-subStart<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKSTARTDATE']; ?>"
 																							data-subEnd<?php echo $sValue['TASKID']; ?> = "<?php echo $sValue['TASKENDDATE']; ?>" required>
 																						</div>
@@ -259,8 +260,8 @@
 																							<div class="input-group-addon">
 																								<i class="fa fa-calendar"></i>
 																							</div>
-																							<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-<?php echo $x; ?>"
-																							data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="<?php echo $x; ?>" required>
+																							<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end_<?php echo $sValue['TASKID'];?>-<?php echo $y; ?>"
+																							data-subAct="<?php echo $sValue['TASKID']; ?>" data-num="<?php echo $y; ?>" required>
 																						</div>
 																					</div>
 																				</td>
@@ -272,6 +273,7 @@
 																				<td></td>
 																				<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 																			</tr>
+																			<?php $y++; ?>
 																		<?php endif; ?>
 																	<?php endforeach; ?>
 
