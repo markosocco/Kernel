@@ -136,13 +136,14 @@
 														<?php if (isset($templateMainActivity[$key])): ?>
 
 															<?php $subCounter = 0; ?>
+															<?php $nonTemplateCounter = 0; ?>
 
 															<?php foreach ($templateSubActivity as $sKey=> $tSub): ?>
 																<?php if($tSub['tasks_TASKPARENT'] == $templateMainActivity[$key]['TASKID']): ?>
 																	<tr>
 
 																		<?php if ($subCounter == 0): ?>
-																			<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="<?php echo count($groupedTasks); ?>" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'> <i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																			<td class="btn" id="addRow"><a class="btn addButton" data-template="true" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="<?php echo count($groupedTasks); ?>" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'> <i class="glyphicon glyphicon-plus-sign"></i></a></td>
 																		<?php else: ?>
 																			<td></td>
 																		<?php endif; ?>
@@ -210,17 +211,17 @@
 															<?php else: ?>
 
 																<tr>
-																	<td class="btn" id="addRow"><a class="btn addButton" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'><i class="glyphicon glyphicon-plus-sign"></i></a></td>
+																	<td class="btn" id="addRow"><a class="btn addButton" data-template="true" data-id="<?php echo $key; ?>" data-mainAct=<?php echo $value['TASKID']; ?> counter="1" data-sum = "<?php echo count($groupedTasks); ?>" data-dept='<?php echo json_encode($depts); ?>'><i class="glyphicon glyphicon-plus-sign"></i></a></td>
 									                <td><div class="form-group">
 
 																		<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
 																		<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
-																		<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+																		<input type="hidden" name="row[]" value="<?php echo (count($templateSubActivity) + $nonTemplateCounter); ?>">
 																		<input type="hidden" name="templateTaskID[]" value="NULL">
 																	</div></td>
 																	<td>
-																		<select class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																		<select class="form-control select2" multiple="multiple" name = "department[<?php echo (count($templateSubActivity) + $nonTemplateCounter); ?>][]" data-placeholder="Select Departments">
 																			<?php
 																				foreach ($tasks as $row)
 																				{
@@ -267,7 +268,7 @@
 																		<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
 																		<td></td>
 																</tr>
-
+																<?php $nonTemplateCounter = $nonTemplateCounter + 1; ?>
 															<?php endif; ?>
 
 											</tbody>
@@ -443,12 +444,14 @@
 
 		$(document).ready(function() {
 
-		 var i = <?php echo (count($groupedTasks)); ?>;
-		 // var i = 2;
-		 var x = 2;
+			var hTemp = <?php if (isset($templateSubActivity)) { echo count($templateSubActivity); } ?>;
+			var h = hTemp + 1;
+			var i = <?php echo (count($groupedTasks)); ?>;
+ 		 	var x = 2;
 
 		 $(document).on("click", "a.addButton", function() {
 
+			 var isTemplate = $(this).attr('data-template');
 			 var currTable = $(this).attr('data-id');
 			 var mainAct = $(this).attr('data-mainAct');
 			 var counter = parseInt($(this).attr('counter'));
@@ -458,36 +461,73 @@
 
 			 var department = "";
 
-			 for (var k = 0; k < d.length; k++)
+			 if (isTemplate)
 			 {
-				 department = department + "<option>" + d[k] + "</option>";
+				 for (var k = 0; k < d.length; k++)
+					{
+						department = department + "<option>" + d[k] + "</option>";
+					}
+
+					$('#table_' + currTable).append("<tr id='table_" +
+										 currTable + "_Row_" + (h + 1) +
+										 "'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
+										 mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + h + "' > <input type='hidden' name='templateTaskID[]' value='NULL'> </div></td>" +
+										 "<td><select id = 'select" + h + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
+											department +
+										 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
+										 "<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
+										 "name='taskStartDate[]' id='start_" + mainAct + "-" + counter +"' data-mainAct = '" + mainAct + "' data-num='" + counter +
+										 "' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
+										 "<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
+										 "name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
+										 "' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod_" + mainAct + "-" + counter + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
+										 " counter = " + x + " data-table = " + (h+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
+
+					 $("#end_" + mainAct + "-" + counter).prop('disabled', true);
+
+					 $('.select2').select2();
+					 $("#select" + h).attr("name", "department[" + h + "][]");
+
+					counter++;
+						$("a.addButton").attr('counter', counter);
+
+					h++;
+					x++;
 			 }
 
-				 $('#table_' + currTable).append("<tr id='table_" +
-				 						currTable + "_Row_" + (i + 1) +
-										"'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
-										mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' > <input type='hidden' name='templateTaskID[]' value='NULL'> </div></td>" +
-										"<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
-										 department +
-										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
-										"<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
-										"name='taskStartDate[]' id='start_" + mainAct + "-" + counter +"' data-mainAct = '" + mainAct + "' data-num='" + counter +
-										"' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
-										"<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
-										"name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
-										"' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod_" + mainAct + "-" + counter + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
-										" counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
+			 else
+			 {
+				 for (var k = 0; k < d.length; k++)
+					{
+						department = department + "<option>" + d[k] + "</option>";
+					}
 
-					$("#end_" + mainAct + "-" + counter).prop('disabled', true);
+					$('#table_' + currTable).append("<tr id='table_" +
+										 currTable + "_Row_" + (i + 1) +
+										 "'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
+										 mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' > <input type='hidden' name='templateTaskID[]' value='NULL'> </div></td>" +
+										 "<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
+											department +
+										 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
+										 "<i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskStartDate' " +
+										 "name='taskStartDate[]' id='start_" + mainAct + "-" + counter +"' data-mainAct = '" + mainAct + "' data-num='" + counter +
+										 "' required></div></div></td> <td><div class='form-group'><div class='input-group date'>" +
+										 "<div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' class='form-control pull-right taskEndDate'" +
+										 "name='taskEndDate[]' id='end_" + mainAct + "-" + counter + "' data-mainAct = '" + mainAct + "' data-num='" + counter +
+										 "' required></div></div></td> <td> <div class = 'form-group'> <input id='projectPeriod_" + mainAct + "-" + counter + "' type ='text' class='form-control' value='' readonly> </div> </td> <td class='btn'><a class='btn delButton' data-id = " + currTable +
+										 " counter = " + x + " data-table = " + (i+1) + "><i class='glyphicon glyphicon-trash'></i></a></td></tr>");
 
-				  $('.select2').select2();
-					$("#select" + i).attr("name", "department[" + i + "][]");
+					 $("#end_" + mainAct + "-" + counter).prop('disabled', true);
 
-				 counter++;
- 				 $("a.addButton").attr('counter', counter);
+					 $('.select2').select2();
+					 $("#select" + i).attr("name", "department[" + i + "][]");
 
-				 i++;
-				 x++;
+					counter++;
+						$("a.addButton").attr('counter', counter);
+
+					i++;
+					x++;
+			 }
 			});
 
 			$(document).on("click", "a.delButton", function() {
