@@ -293,8 +293,13 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
 
         <!--IF STATEMENTS DEPENDING ON USER TYPE  -->
-        <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
-        <?php if($_SESSION['usertype_USERTYPEID'] != 2):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
+        <?php if($_SESSION['usertype_USERTYPEID'] == 1):?>
+          <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboardAdmin"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
+          <li id = 'manageUsers'><a href="<?php echo base_url("index.php/controller/manageUsers"); ?>"><i class="fa fa-users"></i> <span> Manage Users</span></a></li>
+          <li id = 'manageDepartments'><a href="<?php echo base_url("index.php/controller/manageDepartments"); ?>"><i class="fa fa-chain"></i> <span> Manage Departments</span></a></li>
+         <?php endif;?>
+         <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
+        <?php if($_SESSION['usertype_USERTYPEID'] != 2 ):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
           <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
         <?php else:?> <!-- FOR EXECUTIVE LEVEL -->
           <li id = 'projects' class="treeview">
@@ -317,7 +322,7 @@ desired effect
         <?php endif;?>
 
         <!-- <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li> -->
-        <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
+      <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
           <li id = 'tasks' class="treeview">
             <a href=" ">
               <i class="fa fa-check-square-o"></i><span> Tasks</span>
@@ -358,17 +363,6 @@ desired effect
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Archives</span></a></li>
         <!-- <li id = 'documents'><a href="<?php echo base_url("index.php/controller/documents"); ?>"><i class="fa fa-folder"></i><span> Documents</span></a></li> -->
 
-        <!-- <li class="treeview">
-          <a href="<?php echo base_url()."assets/"; ?>#"><i class="fa fa-link"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="<?php echo base_url()."assets/"; ?>#">Link in level 2</a></li>
-            <li><a href="<?php echo base_url()."assets/"; ?>#">Link in level 2</a></li>
-          </ul>
-        </li> -->
       </ul>
       <!-- /.sidebar-menu -->
     </section>

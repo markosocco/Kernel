@@ -2552,6 +2552,44 @@ class controller extends CI_Controller
 	}
 	// REPORTS END
 
+	public function dashboardAdmin()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$this->load->view("dashboardAdmin");
+		}
+	}
+
+	public function manageDepartments()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$this->load->view("manageDepartments");
+		}
+	}
+
+	public function manageUsers()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$this->load->view("manageUsers");
+		}
+	}
 
 	public function projectLogs()
 	{
