@@ -1083,7 +1083,29 @@
 				<input type="button" value="Week" onclick="chart.zoomTo('week', 1);">
 				<input type="button" value="Month" onclick="chart.zoomTo('month', '1')">
 
+				<!-- ANDRE' THIS IS MY MODAL -->
+				<!-- DEPENDENCY MODAL -->
+				<div class="modal fade" id="dependencyModal" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h2 class="modal-title">Dependencies</h2>
+							</div>
+							<div class="modal-body">
+								<h4>TABLE HERE</h4>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+								</div>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- /.modal -->
+
 				<div id="container" style="height: 600px;"></div>
+
 
 				<!-- </section> -->
 			</section>
@@ -1091,6 +1113,8 @@
 		<?php require("footer.php"); ?>
 	</div>
 	<script>
+
+	// $("#dependencyModal").hide();
 
 	$(document).on("click", "#doneArchive", function() {
 		var $id = <?php echo $projectProfile['PROJECTID']; ?>;
@@ -1740,7 +1764,7 @@
 							'name': '" . $value['TASKTITLE'] . "',
 							'actualStart': '" . $formatted_startDate .  "T00:00',
 							'actualEnd': '" . $formatted_endDate . "T13:00',
-							'actualEnd':{'fill': 'Orange'},
+							'actual':{'fill': 'Orange'},
 							'responsible': '',
 							'accountable': '',
 							'consulted': '',
@@ -2000,11 +2024,22 @@
 
 			// var elements = tl.elements();
 			// var selected = elements.selected();
-			chart.getTimeline().elements().selected().stroke('#aaaacc').fill('');
+			chart.getTimeline().elements().selected().fill('').stroke('Red');
+			chart.rowSelectedFill('#FFFFCC');
 
 			var tasks = tl.tasks();
 			var taskProgress = tasks.progress();
 			taskProgress.normal({fill: '#66b2b2'});
+
+			// ANDRE' this is my event listener
+			chart.listen('rowSelect', function(e) {
+
+				// THE FIRST ONE DOESN'T WORK
+        // $("#dependencyModal").show();
+
+				// THIS WORKS
+				e.item.remove();
+    	});
 
 			// data grid getter
 			var dataGrid = chart.dataGrid();
