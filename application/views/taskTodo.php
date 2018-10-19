@@ -327,11 +327,10 @@
 									<table class='table' id="preReqTable">
 										<thead>
 											<th width="1%"></th>
-											<th>Task</th>
-											<th class="text-center">Start Date</th>
-											<th class="text-center">End Date</th>
-											<th>Responsible</th>
-											<!-- <th class="text-center">Status</th> -->
+											<th width="35%">Task</th>
+											<th width="20%" class="text-center">Start Date</th>
+											<th width="20%" class="text-center">End Date</th>
+											<th width="24%">Responsible</th>
 										</thead>
 										<tbody id='preReqDetails'>
 										</tbody>

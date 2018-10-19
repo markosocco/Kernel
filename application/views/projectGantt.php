@@ -37,7 +37,7 @@
 
 				</div>
 
-			<?php if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])): ?>
+			<?php if(isset($_SESSION['rfc']) || isset($_SESSION['userRequest'])): ?>
 
 				<!-- RFC GANTT START -->
 				<div id="rfcGantt">
@@ -162,6 +162,10 @@
 								<!-- /.box -->
 							</div>
 
+						<?php endif;?>
+
+						<?php if(isset($_SESSION['rfc'])):?>
+
 							<div class="col-md-6">
 								<div class="box box-danger">
 									<!-- /.box-header -->
@@ -177,6 +181,12 @@
 										</span>
 
 											<?php if($changeRequest['REQUESTTYPE'] == '1'):?>
+												<span data-toggle="modal" data-target="#modal-rfcPerformerEffect">
+													<button id = "viewRfcPerformerEffect" type="button" class="btn btn-warning center-block" style="display:block" data-toggle="tooltip" data-placement="top" title="RFC Effect">
+														<i class="fa fa-arrows-h"></i>
+													</button>
+												</span>
+
 												<span data-toggle="modal" data-target="#modal-delegate">
 													<button id = "approveRequest" type="button" class="btn btn-success pull-right delegateApprove" style="display:block;"
 													data-id="<?php echo $changeRequest['tasks_REQUESTEDTASK'];?>" data-user="<?php echo $changeRequest['users_REQUESTEDBY'];?>"
@@ -185,6 +195,12 @@
 													</button>
 												</span>
 											<?php else:?>
+												<span data-toggle="modal" data-target="#modal-rfcDateEffect">
+													<button id = "viewRfcDateEffect" type="button" class="btn btn-warning center-block" style="display:block" data-toggle="tooltip" data-placement="top" title="RFC Effect">
+														<i class="fa fa-arrows-h"></i>
+													</button>
+												</span>
+
 												<span data-toggle="modal" data-target="#modal-approve">
 													<button id = "approveRequest" type="button" class="btn btn-success pull-right" style="display:block;"
 													data-toggle="tooltip" data-placement="left" title="Approve">
@@ -198,10 +214,84 @@
 								</div>
 								<!-- /.box -->
 							</div>
+						<?php endif;?>
+						<?php if(isset($_SESSION['rfc']) || isset($_SESSION['userRequest'])): ?>
+
 					</div>
 					<hr style="height:1px; background-color:black">
 				</div>
 				<!-- RFC GANTT END -->
+
+				<!-- RFC EFFECT MODAL (CHANGE DATES)-->
+				<div class="modal fade" id="modal-rfcDateEffect" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h2 class="modal-title"><?php echo $changeRequest['TASKTITLE'];?></h2>
+								<h4 class="rfcEffectDates">Start Date - End Date (Days)</h4>
+							</div>
+							<div class="modal-body">
+									<h4 class = 'text-center'><b>Affected Post Requisite Tasks</b></h4>
+									<table class='table' id="tasksAffectedTable">
+										<thead>
+											<th width="1%"></th>
+											<th width="33%">Task</th>
+											<th width="14%" class="text-center">Start Date</th>
+											<th width="14%" class="text-center">Possible Start Date</th>
+											<th width="14%" class="text-center">End Date</th>
+											<th width="24%">Responsible</th>
+										</thead>
+										<tbody id='tasksAffectedDetails'>
+										</tbody>
+									</table>
+									<br><h4 class = 'text-center'><b>Unaffected Post Requisite Tasks</b></h4>
+									<table class='table' id="tasksUnaffectedTable">
+										<thead>
+											<th width="1%"></th>
+											<th width="35%">Task</th>
+											<th width="20%" class="text-center">Start Date</th>
+											<th width="20%" class="text-center">End Date</th>
+											<th width="24%">Responsible</th>
+										</thead>
+										<tbody id='tasksUnaffectedDetails'>
+										</tbody>
+									</table>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END RFC EFFECT MODAL (CHANGE DATES)-->
+
+				<!-- RFC EFFECT MODAL (CHANGE PERFORMER)-->
+				<div class="modal fade" id="modal-rfcPerformerEffect" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h2 class="modal-title"><?php echo $changeRequest['TASKTITLE'];?></h2>
+								<h4 class="rfcEffectDates">Start Date - End Date (Days)</h4>
+							</div>
+							<div class="modal-body" id="rfEmployeeWorkload">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="box box-danger">
+											<div class="box-header">
+												<h3 class="box-title">Change Request Details</h3>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END RFC EFFECT MODAL (CHANGE PERFORMER)-->
+
 
 				<!-- DELEGATE MODAL -->
 				<div class="modal fade" id="modal-delegate">
@@ -603,10 +693,11 @@
 									<h3 id="postReqTitle">Post-requisite tasks</h3>
 									<table class='table' id="postReqTable">
 										<thead>
-											<th>Task</th>
-											<th class="text-center">Start Date</th>
-											<th class="text-center">End Date</th>
-											<th>Responsible</th>
+											<th width="1%"></th>
+											<th width="35%">Task</th>
+											<th width="20%" class="text-center">Start Date</th>
+											<th width="20%" class="text-center">End Date</th>
+											<th width="24%">Responsible</th>
 										</thead>
 										<tbody id='postReqDetails'>
 										</tbody>
@@ -1313,6 +1404,36 @@
 
 		});
 
+		// START RFC EFFECT (Change Dates)
+		$("body").on('click','#viewRfcDateEffect',function(){
+			var $start = new Date($(".taskPostReqs").attr('data-start'));
+			var $end = new Date($(".taskPostReqs").attr('data-end'));
+			var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+			$(".rfcEffectDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+			if($diff > 1)
+				$(".rfcEffectDates").append(" days)");
+			else
+				$(".rfcEffectDates").append(" day)");
+
+			// AJAX GET TASK POST REQS INFO
+
+		});
+
+		// START RFC EFFECT (Change Performer)
+		$("body").on('click','#viewRfcPerformerEffect',function(){
+			var $start = new Date($(".taskPostReqs").attr('data-start'));
+			var $end = new Date($(".taskPostReqs").attr('data-end'));
+			var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+			$(".rfcEffectDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+			if($diff > 1)
+				$(".rfcEffectDates").append(" days)");
+			else
+				$(".rfcEffectDates").append(" day)");
+
+			// AJAX GET TASK POST REQS INFO
+
+		});
+
 		// START TASK DETAILS
 
 		$("body").on('click','.taskPostReqs',function(){
@@ -1368,8 +1489,25 @@
 							 var endDate = postReqData['dependencies'][i].TASKADJUSTEDENDDATE;
 						 }
 
+						 if(postReqData['dependencies'][i].TASKSTATUS == "Complete")
+						 {
+							 var status = "<td class='bg-teal'></td>";
+						 }
+						 if(postReqData['dependencies'][i].TASKSTATUS == "Planning")
+						 {
+							 var status = "<td class='bg-yellow'></td>";
+						 }
+						 if(postReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+						 {
+							 if(postReqData['dependencies'][i].currDate > endDate)
+								 var status = "<td class='bg-red'></td>";
+							 else
+								 var status = "<td class='bg-green'></td>";
+						 }
+
 						 $('#postReqDetails').append(
-													"<tr>" + "<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
+													"<tr>" + status +
+													"<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
 													"<td align='center'>" + taskStart+"</td>"+
 													"<td align='center'>" + taskEnd +"</td>" +
 													"<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");

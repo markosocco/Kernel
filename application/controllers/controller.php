@@ -2999,6 +2999,8 @@ class controller extends CI_Controller
 			elseif (isset($userRequest))
 			{
 				$userRequest = $this->input->post("userRequest");
+				$requestID = $this->input->post("request_ID");
+				$data['changeRequest'] = $this->model->getChangeRequestbyID($requestID);
 				$this->session->set_flashdata('userRequest', $userRequest);
 			}
 			elseif (isset($templateProjectGantt))
