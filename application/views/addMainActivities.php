@@ -92,12 +92,15 @@
 													</td>
 													<td>
 														<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+															<option>
+																All
+															</option>
 															<?php foreach ($departments as $row): ?>
-
-																<option>
-																	<?php echo $row['DEPARTMENTNAME']; ?>
-																</option>
-
+																<?php if ($row['DEPARTMENTNAME'] != 'Executive'): ?>
+																	<option>
+																		<?php echo $row['DEPARTMENTNAME']; ?>
+																	</option>
+																<?php endif; ?>
 															<?php endforeach; ?>
 														</select>
 													</td>
@@ -172,12 +175,15 @@
 														</td>
 														<td>
 															<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+																<option>
+																	All
+																</option>
 																<?php foreach ($departments as $row): ?>
-
-																	<option>
-																		<?php echo $row['DEPARTMENTNAME']; ?>
-																	</option>
-
+																	<?php if ($row['DEPARTMENTNAME'] != 'Executive'): ?>
+																		<option>
+																			<?php echo $row['DEPARTMENTNAME']; ?>
+																		</option>
+																	<?php endif; ?>
 																<?php endforeach; ?>
 															</select>
 														</td>
@@ -249,13 +255,15 @@
 												</td>
 												<td>
 					                <select id ="select0" class="form-control select2" multiple="multiple" name = "department[0][]" data-placeholder="Select Departments">
-
+														<option>
+															All
+														</option>
 														<?php foreach ($departments as $row): ?>
-
-															<option>
-																<?php echo $row['DEPARTMENTNAME']; ?>
-															</option>
-
+															<?php if ($row['DEPARTMENTNAME'] != 'Executive'): ?>
+																<option>
+																	<?php echo $row['DEPARTMENTNAME']; ?>
+																</option>
+															<?php endif; ?>
 														<?php endforeach; ?>
 					                </select>
 												</td>

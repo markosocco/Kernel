@@ -3373,9 +3373,6 @@ class controller extends CI_Controller
 							{
 								switch ($value)
 								{
-									case 'Executive':
-										$deptHead = $execHead;
-										break;
 									case 'Marketing':
 										$deptHead = $mktHead;
 										break;
@@ -3401,56 +3398,117 @@ class controller extends CI_Controller
 
 								// echo $value . ", ";
 
-								$data = array(
-										'ROLE' => '0',
+								if ($value == 'All')
+								{
+									foreach ($departments as $deptKey => $dept)
+									{
+										if ($dept['DEPARTMENTNAME'] != 'Executive')
+										{
+											$data = array(
+													'ROLE' => '0',
+													'users_USERID' => $dept['users_DEPARTMENTHEAD'],
+													'tasks_TASKID' => $a,
+													'STATUS' => 'Current'
+											);
+
+											// ENTER INTO RACI
+											$result = $this->model->addToRaci($data);
+
+											// START OF LOGS/NOTIFS
+											$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+											$taskDetails = $this->model->getTaskByID($a);
+											$taskTitle = $taskDetails['TASKTITLE'];
+
+											$projectID = $taskDetails['projects_PROJECTID'];
+											$projectDetails = $this->model->getProjectByID($projectID);
+											$projectTitle = $projectDetails['PROJECTTITLE'];
+
+											$userDetails = $this->model->getUserByID($dept['users_DEPARTMENTHEAD']);
+											$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+											// START: LOG DETAILS
+											$details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
+
+											$logData = array (
+												'LOGDETAILS' => $details,
+												'TIMESTAMP' => date('Y-m-d H:i:s'),
+												'projects_PROJECTID' => $projectID
+											);
+
+											$this->model->addToProjectLogs($logData);
+											// END: LOG DETAILS
+
+											//START: Notifications
+											$details = "A new project has been created. " . $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
+											$notificationData = array(
+												'users_USERID' => $dept['users_DEPARTMENTHEAD'],
+												'DETAILS' => $details,
+												'TIMESTAMP' => date('Y-m-d H:i:s'),
+												'status' => 'Unread',
+												'projects_PROJECTID' => $projectID,
+												'tasks_TASKID' => $a,
+												'TYPE' => '2'
+											);
+
+											$this->model->addNotification($notificationData);
+											// END: Notification
+										}
+									}
+								}
+
+								else
+								{
+									$data = array(
+											'ROLE' => '0',
+											'users_USERID' => $deptHead,
+											'tasks_TASKID' => $a,
+											'STATUS' => 'Current'
+									);
+
+									// ENTER INTO RACI
+									$result = $this->model->addToRaci($data);
+
+									// START OF LOGS/NOTIFS
+									$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+									$taskDetails = $this->model->getTaskByID($a);
+									$taskTitle = $taskDetails['TASKTITLE'];
+
+									$projectID = $taskDetails['projects_PROJECTID'];
+									$projectDetails = $this->model->getProjectByID($projectID);
+									$projectTitle = $projectDetails['PROJECTTITLE'];
+
+									$userDetails = $this->model->getUserByID($deptHead);
+									$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+									// START: LOG DETAILS
+									$details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
+
+									$logData = array (
+										'LOGDETAILS' => $details,
+										'TIMESTAMP' => date('Y-m-d H:i:s'),
+										'projects_PROJECTID' => $projectID
+									);
+
+									$this->model->addToProjectLogs($logData);
+									// END: LOG DETAILS
+
+									//START: Notifications
+									$details = "A new project has been created. " . $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
+									$notificationData = array(
 										'users_USERID' => $deptHead,
+										'DETAILS' => $details,
+										'TIMESTAMP' => date('Y-m-d H:i:s'),
+										'status' => 'Unread',
+										'projects_PROJECTID' => $projectID,
 										'tasks_TASKID' => $a,
-										'STATUS' => 'Current'
-								);
+										'TYPE' => '2'
+									);
 
-								// ENTER INTO RACI
-								$result = $this->model->addToRaci($data);
-
-								// START OF LOGS/NOTIFS
-								$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-								$taskDetails = $this->model->getTaskByID($a);
-								$taskTitle = $taskDetails['TASKTITLE'];
-
-								$projectID = $taskDetails['projects_PROJECTID'];
-								$projectDetails = $this->model->getProjectByID($projectID);
-								$projectTitle = $projectDetails['PROJECTTITLE'];
-
-								$userDetails = $this->model->getUserByID($deptHead);
-								$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-								// START: LOG DETAILS
-								$details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
-
-								$logData = array (
-									'LOGDETAILS' => $details,
-									'TIMESTAMP' => date('Y-m-d H:i:s'),
-									'projects_PROJECTID' => $projectID
-								);
-
-								$this->model->addToProjectLogs($logData);
-								// END: LOG DETAILS
-
-								//START: Notifications
-								$details = "A new project has been created. " . $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
-								$notificationData = array(
-									'users_USERID' => $deptHead,
-									'DETAILS' => $details,
-									'TIMESTAMP' => date('Y-m-d H:i:s'),
-									'status' => 'Unread',
-									'projects_PROJECTID' => $projectID,
-									'tasks_TASKID' => $a,
-									'TYPE' => '2'
-								);
-
-								$this->model->addNotification($notificationData);
-								// END: Notification
-
+									$this->model->addNotification($notificationData);
+									// END: Notification
+								}
 							}
 							// echo "<br>";
 						}
