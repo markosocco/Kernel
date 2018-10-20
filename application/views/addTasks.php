@@ -65,8 +65,8 @@
 
 								<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
-								<!-- TEMPLATES START -->
 								<?php if (isset($_SESSION['templates'])): ?>
+									<!-- TEMPLATES START -->
 									<?php $c = 0; ?>
 
 									<?php foreach ($mainActivity as $key=>$value): ?>
@@ -356,9 +356,9 @@
 									<!-- SUB ACT TABLE END -->
 
 									<!-- <?php $x = 0; ?> -->
+										<!-- END TEMPLATES -->
 									<?php endforeach; ?>
 
-									<!-- END TEMPLATES -->
 
 								<?php else: ?>
 									<?php $c = 0; ?>
