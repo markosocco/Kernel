@@ -209,9 +209,11 @@
 																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>
 																						<?php if($gValue['CATEGORY'] == '3'): ?>
 																							<?php if ($gValue['TASKID'] != $tValue['TASKID']): ?>
-																								<option value ='<?php echo $gValue['TASKID']; ?>'>
-																									<?php echo $gValue['TASKTITLE']; ?>
-																								</option>
+																								<?php if ($gValue['TASKSTARTDATE'] < $tValue['TASKENDDATE']): ?>
+																									<option value ='<?php echo $gValue['TASKID']; ?>'>
+																										<?php echo $gValue['TASKTITLE']; ?>
+																									</option>
+																								<?php endif; ?>
 																							<?php endif; ?>
 																						<?php endif; ?>
 																					<?php endforeach; ?>
