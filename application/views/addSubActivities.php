@@ -198,7 +198,27 @@
 																			</div></td>
 																			<td>
 																				<div class="form-group">
-																					<input id = "projectPeriod_<?php echo $tSub['TASKID']; ?>-0" type="text" class="form-control period" value="" readonly>
+
+																					<?php
+																						$startdate = date_create($tSub['TASKSTARTDATE']);
+																						$enddate = date_create($tSub['TASKENDDATE']);
+																						$temp = date_diff($enddate, $startdate);
+																						$dFormat = $temp->format('%a');
+																						$diff = (int)$dFormat + 1;
+
+																						if ($diff >= 1)
+																						{
+																							$period = $diff . " day";
+																						}
+
+																						else
+																						{
+																							$period = $diff . " days";
+																						}
+																					?>
+
+
+																					<input id = "projectPeriod_<?php echo $value['TASKID']; ?>-<?php echo $subCounter; ?>" type="text" class="form-control period" value="<?php echo $period; ?>" readonly>
 																				</div>
 																			</td>
 																			<!-- <td class='btn'><a class='btn delButton' data-id = " + i +"><i class='glyphicon glyphicon-trash'></i></a></td> -->
