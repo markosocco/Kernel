@@ -56,9 +56,9 @@
 
 									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 
-									<!-- START OF TEMPLATES -->
-								<?php if (isset($_SESSION['templates'])): ?>
 
+								<?php if (isset($_SESSION['templates'])): ?>
+									<!-- START OF TEMPLATES -->
 									<input type="hidden" name="templates" value="<?php echo $templateProject['PROJECTID']; ?>">
 
 									<?php foreach ($groupedTasks as $key => $value): ?>
@@ -274,8 +274,8 @@
 											</tbody>
 										</table>
 										</div>
+										<!-- END OF TEMPLATES -->
 									<?php endforeach; ?>
-									<!-- END OF TEMPLATES -->
 
 								<?php else: ?>
 
@@ -337,7 +337,7 @@
 												?>
 
 												<td width="15%"><b><?php echo date_format($startdate, "M d, Y"); ?></b></td>
-												<td width="15%"><b><?php echo date_format($enddate, "M d, Y") ?></b></td>
+												<td width="15%"><b><?php echo date_format($enddate, "M d, Y"); ?></b></td>
 												<td width="10%">
 													<div class="form-group">
 														<b>
@@ -444,10 +444,14 @@
 
 		$(document).ready(function() {
 
-			var hTemp = <?php if (isset($templateSubActivity)) { echo count($templateSubActivity); } ?>;
-			var h = hTemp + 1;
+
 			var i = <?php echo (count($groupedTasks)); ?>;
  		 	var x = 2;
+
+			<?php if (isset($templateSubActivity)): ?>
+				var hTemp = <?php echo count($templateSubActivity); ?>;
+				var h = hTemp + 1;
+			<?php endif; ?>
 
 		 $(document).on("click", "a.addButton", function() {
 
