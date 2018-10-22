@@ -1091,7 +1091,17 @@
 								<h2 class="modal-title">Dependencies</h2>
 							</div>
 							<div class="modal-body">
-								<h4>TABLE HERE</h4>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<td>Pre-requisite Task/s</td>
+											<td>Task</td>
+											<td>Post-requisite Task/s</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
 								</div>
@@ -2032,6 +2042,12 @@
 
 			chart.listen('rowSelect', function(e) {
         $("#dependencyModal").modal('show');
+
+				var taskID = e.item.getID;
+				var stringTaskID = String(taskID);
+
+				alert(stringTaskID);
+
     	});
 
 			// data grid getter
