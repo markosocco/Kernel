@@ -147,8 +147,14 @@
 											$endDate = $task['TASKENDDATE'];
 										else
 											$endDate = $task['TASKADJUSTEDENDDATE'];
+
+										if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing')
+											$delay = "true";
+										else {
+											$delay = "false";
+										}
 										?>
-                  <tr class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-toggle='modal' data-target='#taskDetails'>
+                  <tr class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails">
 										<?php if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
 											<td class='bg-red'></td>
 										<?php elseif($endDate >= $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
@@ -207,12 +213,14 @@
                 </div>
                 <div class="modal-body">
                   <div class="btn-group">
-										<button type="button" id = "tabRACI" class="btn btn-default">RACI</button>
-										<button type="button" id = "tabRFC" class="btn bg-default">RFC</button>
-										<button type="button" id = "tabDelay" class="btn btn-default">Delay</button>
-										<button type="button" id = "tabDependency" class="btn btn-default">Dependencies</button>
+										<button type="button" id = "tabDependency" class="btn btn-default tabDetails">Dependencies</button>
+										<button type="button" id = "tabRACI" class="btn btn-default tabDetails">RACI</button>
+										<button type="button" id = "tabRFC" class="btn btn-default tabDetails">RFC</button>
+										<button type="button" id = "tabDelay" class="btn btn-default tabDetails">Delay</button>
 									</div>
-                  <div id="divRACI">
+									<br><br>
+
+                  <div id="divRACI" class="divDetails">
 										<table class="table table-bordered">
 											<thead id="raciHeader">
 												<tr>
@@ -226,48 +234,69 @@
 											</tbody>
 										</table>
 									</div>
-									<div id="divRFC">
+
+									<div id="divRFC" class="divDetails">
 										<table class="table table-bordered">
 											<thead id="rfcHeader">
 	                      <tr>
-	                        <th width="20%" class='text-center'>Type</th>
+	                        <th width="1%" class='text-center'>Type</th>
 	                        <th width="20%">Requested By</th>
-													<th width="20%">Date Requested</th>
-													<th width="20%" class='text-center'>Status</th>
+													<th width="20%" class='text-center'>Date Requested</th>
+													<th width="18%" class='text-center'>Status</th>
 	                        <th width="20%">Reviewed By</th>
-	                        <th width="20%">Date Reviewed</th>
+	                        <th width="20%" class='text-center'>Date Reviewed</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody id="rfcHistory">
 	                    </tbody>
                   	</table>
 									</div>
-									<div id="divDelay">
+
+									<div id="divDelay" class="divDetails">
 										<table class="table table-bordered">
-											<thead id="affectedDelayHeader">
-	                      <tr>
-	                        <th>Affected Post-Requisites</th>
-	                      </tr>
+											<thead>
+												<th colspan = '5'>Affected Post-Requisites</th>
+												<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
+												<tr id="affectedDelayHeader">
+													<th width="1%"></th>
+													<th width="35%">Task</th>
+													<th width="20%" class="text-center">Start Date</th>
+													<th width="20%" class="text-center">End Date</th>
+													<th width="24%">Responsible</th>
+												</tr>
 	                    </thead>
 	                    <tbody id="affectedDelayHistory">
 	                    </tbody>
                   	</table>
 
 										<table class="table table-bordered">
-											<thead id="unaffectedDelayHeader">
-	                      <tr>
-													<th>Unaffected Post-Requisites</th>
-	                      </tr>
+											<thead>
+												<th colspan = '5'>Unaffected Post-Requisites</th>
+												<tr class='text-center'><td id="unaffectedTitle" colspan='5'></td></tr>
+												<tr id="unaffectedDelayHeader">
+													<th width="1%"></th>
+													<th width="35%">Task</th>
+													<th width="20%" class="text-center">Start Date</th>
+													<th width="20%" class="text-center">End Date</th>
+													<th width="24%">Responsible</th>
+												</tr>
 	                    </thead>
 	                    <tbody id="unaffectedDelayHistory">
 	                    </tbody>
                   	</table>
 									</div>
-									<div id="divDependency">
+
+									<div id="divDependency" class="divDetails">
 										<table class="table table-bordered">
-											<thead id="dependencyPreHeader">
-	                      <tr>
-													<th>Pre-Requisites</th>
+											<thead>
+												<th colspan = '5'>Pre-Requisites</th>
+												<tr class='text-center'><td id="preReqTitle" colspan='5'></td></tr>
+	                      <tr id="dependencyPreHeader">
+													<th width="1%"></th>
+													<th width="35%">Task</th>
+													<th width="20%" class="text-center">Start Date</th>
+													<th width="20%" class="text-center">End Date</th>
+													<th width="24%">Responsible</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody id="dependencyPreBody">
@@ -275,28 +304,38 @@
                   	</table>
 
 										<table class="table table-bordered">
-											<thead id="dependencyPostHeader">
-	                      <tr>
-													<th>Post-Requisites</th>
-	                      </tr>
+											<thead>
+												<th colspan = '5'>Post-Requisites</th>
+												<tr class='text-center'><td id="postReqTitle" colspan='5'></td></tr>
+												<tr id="dependencyPostHeader">
+													<th width="1%"></th>
+													<th width="35%">Task</th>
+													<th width="20%" class="text-center">Start Date</th>
+													<th width="20%" class="text-center">End Date</th>
+													<th width="24%">Responsible</th>
+												</tr>
 	                    </thead>
 	                    <tbody id="dependencyPostBody">
 	                    </tbody>
                   	</table>
 									</div>
+
                 </div>
+								<!-- /.modal-body -->
               </div>
               <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
           </div>
           <!-- /.modal -->
+
 				</section>
 				<!-- /.content -->
 			</div>
 			<?php require("footer.php"); ?>
 		</div>
 		<!-- ./wrapper -->
+
 		<script>
 			$("#monitor").addClass("active");
 			$("#monitorProject").addClass("active");
@@ -310,7 +349,19 @@
 				});
 
 			$(document).on("click", ".task", function(){
+				$(".divDetails").hide();
+				$(".tabDetails").removeClass('active');
+				$("#tabDependency").addClass("active");
+				$("#divDependency").show();
+
 				var $taskID = $(this).attr('data-id');
+				var $isDelayed = $(this).attr('data-delay');
+
+				if($isDelayed == 'true'){
+					$("#tabDelay").show();
+				} else {
+					$("#tabDelay").hide();
+				}
 
 				$.ajax({
 					type:"POST",
@@ -385,7 +436,7 @@
 						// RFC HISTORY
 						if(data['changeRequests'].length <= 0)
 						{
-							$("#rfcHistory").html("<h4 colspan='5' align='center'>No history</h4>")
+							$("#rfcHistory").html("<h4 colspan='5' align='center'>There is no change request history</h4>")
 							$("#rfcHeader").hide();
 						}
 						else
@@ -414,10 +465,10 @@
 									"<tr>" +
 									"<td align='center'>" + type + "</td>" +
 									"<td>" + requester + "</td>" +
-									"<td>" + moment(data['changeRequests'][r].REQUESTEDDATE).format('MMM DD, YYYY') + "</td>" +
+									"<td align='center'>" + moment(data['changeRequests'][r].REQUESTEDDATE).format('MMM DD, YYYY') + "</td>" +
 									"<td align='center'>" + data['changeRequests'][r].REQUESTSTATUS + "</td>" +
 									"<td>" + approver + "</td>" +
-									"<td>" + moment(data['changeRequests'][r].APPROVEDDATE).format('MMM DD, YYYY') + "</td>" +
+									"<td align='center'>" + moment(data['changeRequests'][r].APPROVEDDATE).format('MMM DD, YYYY') + "</td>" +
 									"</tr>");
 							}
 						}
@@ -427,7 +478,200 @@
 						alert("There was a problem with loading the change requests");
 					}
 				});
+
+				// PRE-REQUISITES
+				$.ajax({
+					type:"POST",
+					url: "<?php echo base_url("index.php/controller/getDependenciesByTaskID"); ?>",
+					data: {task_ID: $taskID},
+					dataType: 'json',
+					success:function(preReqData)
+					{
+						if(preReqData['dependencies'].length > 0)
+						{
+							$('#dependencyPreBody').html("");
+							$('#preReqTitle').html("");
+							$("#preReqTitle").hide();
+							for(i=0; i<preReqData['dependencies'].length; i++)
+							{
+								if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+								{
+									var taskStart = moment(preReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+									var startDate = preReqData['dependencies'][i].TASKSTARTDATE;
+								}
+								else
+								{
+									var taskStart = moment(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+									var startDate = preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE;
+								}
+
+								if(preReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+								{
+									var taskEnd = moment(preReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
+									var endDate = preReqData['dependencies'][i].TASKENDDATE;
+								}
+								else
+								{
+									var taskEnd = moment(preReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+									var endDate = preReqData['dependencies'][i].TASKADJUSTEDENDDATE;
+								}
+
+								if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE != null && preReqData['dependencies'][i].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(preReqData['dependencies'][i].adjustedTaskDuration2);
+								if(preReqData['dependencies'][i].TASKSTARTDATE != null && preReqData['dependencies'][i].TASKADJUSTEDENDDATE != null)
+									var taskDuration = parseInt(preReqData['dependencies'][i].adjustedTaskDuration1);
+								else
+									var taskDuration = parseInt(preReqData['dependencies'][i].initialTaskDuration);
+
+								if(preReqData['dependencies'][i].TASKSTATUS == "Complete")
+								{
+									var status = "<td class='bg-teal'></td>";
+								}
+								if(preReqData['dependencies'][i].TASKSTATUS == "Planning")
+								{
+									var status = "<td class='bg-yellow'></td>";
+								}
+								if(preReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+								{
+									if(preReqData['dependencies'][i].currDate > endDate)
+										var status = "<td class='bg-red'></td>";
+									else
+										var status = "<td class='bg-green'></td>";
+								}
+
+								$('#dependencyPreBody').append(
+														 "<tr>" + status +
+														 "<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
+														 "<td align='center'>" + taskStart+"</td>"+
+														 "<td align='center'>" + taskEnd +"</td>" +
+														 "<td>" + preReqData['dependencies'][i].FIRSTNAME + " " + preReqData['dependencies'][i].LASTNAME + "</td></tr>");
+						 }
+						 $("#dependencyPreHeader").show();
+					 }
+					 else
+					 {
+						 $('#preReqTitle').html("There are no pre-requisite tasks");
+						 $('#dependencyPreBody').html("");
+						 $("#dependencyPreHeader").hide();
+						 $("#preReqTitle").show();
+					 }
+					},
+					error:function()
+					{
+						alert("There was a problem in retrieving the task details");
+					}
+					});
+
+				// POST REQUISITES
+				$.ajax({
+	 			 type:"POST",
+	 			 url: "<?php echo base_url("index.php/controller/getPostDependenciesByTaskID"); ?>",
+	 			 data: {task_ID: $taskID},
+	 			 dataType: 'json',
+	 			 success:function(postReqData)
+	 			 {
+	 				 if(postReqData['dependencies'].length > 0)
+	 				 {
+	 					 $('#dependencyPostBody').html("");
+						 $("#postReqTitle").hide();
+	 					 for(i=0; i<postReqData['dependencies'].length; i++)
+	 					 {
+	 						 if(postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
+	 						 {
+	 							 var taskStart = moment(postReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+	 							 var startDate = postReqData['dependencies'][i].TASKSTARTDATE;
+	 						 }
+	 						 else
+	 						 {
+	 							 var taskStart = moment(postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
+	 							 var startDate = postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE;
+	 						 }
+
+	 						 if(postReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+	 						 {
+	 							 var taskEnd = moment(postReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
+	 							 var endDate = postReqData['dependencies'][i].TASKENDDATE;
+	 						 }
+	 						 else
+	 						 {
+	 							 var taskEnd = moment(postReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+	 							 var endDate = postReqData['dependencies'][i].TASKADJUSTEDENDDATE;
+	 						 }
+
+	 						 if(postReqData['dependencies'][i].TASKSTATUS == "Complete")
+	 						 {
+	 							 var status = "<td class='bg-teal'></td>";
+	 						 }
+	 						 if(postReqData['dependencies'][i].TASKSTATUS == "Planning")
+	 						 {
+	 							 var status = "<td class='bg-yellow'></td>";
+	 						 }
+	 						 if(postReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+	 						 {
+	 							 if(postReqData['dependencies'][i].currDate > endDate)
+	 								 var status = "<td class='bg-red'></td>";
+	 							 else
+	 								 var status = "<td class='bg-green'></td>";
+	 						 }
+
+	 						 $('#dependencyPostBody').append(
+	 													"<tr>" + status +
+	 													"<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
+	 													"<td align='center'>" + taskStart+"</td>"+
+	 													"<td align='center'>" + taskEnd +"</td>" +
+	 													"<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
+	 					}
+	 					$("#dependencyPostHeader").show();
+	 				}
+	 				else
+	 				{
+	 					$('#postReqTitle').html("There are no post-requisite tasks");
+	 					$("#dependencyPostHeader").hide();
+						$('#dependencyPostBody').html("");
+						$("#postReqTitle").show();
+	 				}
+	 			 },
+	 			 error:function()
+	 			 {
+	 				 alert("There was a problem in retrieving the task details");
+	 			 }
+	 			 });
 			});
+
+			// TASK DETAILS
+			// $(".divDetails").hide();
+			// $(".tabDetails").removeClass('active');
+			// $("#tabDependency").addClass("active");
+			// $("#divDependency").show();
+
+			$(document).on("click", "#tabDependency", function(){
+				$(".divDetails").hide();
+				$(".tabDetails").removeClass('active');
+				$(this).addClass('active')
+				$("#divDependency").show();
+			});
+
+			$(document).on("click", "#tabRACI", function(){
+				$(".divDetails").hide();
+				$(".tabDetails").removeClass('active');
+				$(this).addClass('active')
+				$("#divRACI").show();
+			});
+
+			$(document).on("click", "#tabRFC", function(){
+				$(".divDetails").hide();
+				$(".tabDetails").removeClass('active');
+				$(this).addClass('active')
+				$("#divRFC").show();
+			});
+
+			$(document).on("click", "#tabDelay", function(){
+				$(".divDetails").hide();
+				$(".tabDetails").removeClass('active');
+				$(this).addClass('active')
+				$("#divDelay").show();
+			});
+
 		</script>
 	</body>
 </html>
