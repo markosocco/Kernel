@@ -143,6 +143,7 @@
 										Add Main Activities
 									<?php endif; ?>
 								</button>
+								<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-uploadExcel" style="margin-right: 2%"><i class="fa fa-file-excel-o"></i> Import from Spreadsheet</button>
               </div>
             </form>
           </div>
@@ -150,6 +151,44 @@
 		    </section>
 		    <!-- /.content -->
 		  </div>
+
+			<div class="modal fade" id="modal-uploadExcel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Upload Project from a File</h4>
+						</div>
+						<div id="uploadDiv">
+						<div class="modal-body">
+							<a href="#">Download the Template here</a>
+							<div class="form-group">
+								<label for="uploadDoc">Select an Excel file to upload</label>
+								<input type="file" id="upload" name="document">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+							<button  id="uploadConfirm" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+						</div>
+						</form>
+					</div>
+
+					<!-- CONFIRM UPLOAD -->
+					<div id="confirmUpload">
+						<div class="modal-body">
+							<h4>Are you sure you want to upload this project?</h4>
+						</div>
+						<div class="modal-footer">
+							<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+							<button id = "confirmUploadBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+						</div>
+					</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
 			<?php include_once("footer.php"); ?>
 
 		</div>
@@ -157,6 +196,20 @@
 
 		<script>
 			$("#myProjects").addClass("active");
+
+			$("#confirmUpload").hide();
+
+
+			$("body").on('click','#uploadConfirm',function()
+			{
+				$("#uploadDiv").hide();
+				$("#confirmUpload").show();
+			});
+
+			$("#confirmUploadBtn").click(function()
+			{
+				$("form_open_multipart").submit();
+			});
 
 			<?php if (isset($_SESSION['edit'])): ?>
 				$("#endDate").prop('disabled', false);

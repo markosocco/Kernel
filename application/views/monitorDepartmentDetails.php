@@ -206,35 +206,84 @@
 									<h4 id="taskDates">Start Date - End Date (Days)</h4>
                 </div>
                 <div class="modal-body">
-                  <!-- <h4>Task Delegation</h4>
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th width="20%">Delagated By</th>
-												<th width="20%">Responsible</th>
-                        <th width="20%">Accountable</th>
-                        <th width="20%">Consulted</th>
-                        <th width="20%">Informed</th>
-                      </tr>
-                    </thead>
-                    <tbody id="delegationHistory">
-                    </tbody>
-                  </table> -->
-                  <h4>Change Requests</h4>
-                  <table class="table table-bordered">
-                    <thead id="rfcHeader">
-                      <tr>
-                        <th width="20%" class='text-center'>Type</th>
-                        <th width="20%">Requested By</th>
-												<th width="20%">Date Requested</th>
-												<th width="20%" class='text-center'>Status</th>
-                        <th width="20%">Reviewed By</th>
-                        <th width="20%">Date Reviewed</th>
-                      </tr>
-                    </thead>
-                    <tbody id="rfcHistory">
-                    </tbody>
-                  </table>
+                  <div class="btn-group">
+										<button type="button" id = "tabRACI" class="btn btn-default">RACI</button>
+										<button type="button" id = "tabRFC" class="btn bg-default">RFC</button>
+										<button type="button" id = "tabDelay" class="btn btn-default">Delay</button>
+										<button type="button" id = "tabDependency" class="btn btn-default">Dependencies</button>
+									</div>
+                  <div id="divRACI">
+										<table class="table table-bordered">
+											<thead id="raciHeader">
+												<tr>
+													<th width="25%" class='text-center'>R</th>
+													<th width="25%" class='text-center'>A</th>
+													<th width="25%" class='text-center'>C</th>
+													<th width="25%" class='text-center'>I</th>
+												</tr>
+											</thead>
+											<tbody id="raciHistory">
+											</tbody>
+										</table>
+									</div>
+									<div id="divRFC">
+										<table class="table table-bordered">
+											<thead id="rfcHeader">
+	                      <tr>
+	                        <th width="20%" class='text-center'>Type</th>
+	                        <th width="20%">Requested By</th>
+													<th width="20%">Date Requested</th>
+													<th width="20%" class='text-center'>Status</th>
+	                        <th width="20%">Reviewed By</th>
+	                        <th width="20%">Date Reviewed</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody id="rfcHistory">
+	                    </tbody>
+                  	</table>
+									</div>
+									<div id="divDelay">
+										<table class="table table-bordered">
+											<thead id="affectedDelayHeader">
+	                      <tr>
+	                        <th>Affected Post-Requisites</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody id="affectedDelayHistory">
+	                    </tbody>
+                  	</table>
+
+										<table class="table table-bordered">
+											<thead id="unaffectedDelayHeader">
+	                      <tr>
+													<th>Unaffected Post-Requisites</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody id="unaffectedDelayHistory">
+	                    </tbody>
+                  	</table>
+									</div>
+									<div id="divDependency">
+										<table class="table table-bordered">
+											<thead id="dependencyPreHeader">
+	                      <tr>
+													<th>Pre-Requisites</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody id="dependencyPreBody">
+	                    </tbody>
+                  	</table>
+
+										<table class="table table-bordered">
+											<thead id="dependencyPostHeader">
+	                      <tr>
+													<th>Post-Requisites</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody id="dependencyPostBody">
+	                    </tbody>
+                  	</table>
+									</div>
                 </div>
               </div>
               <!-- /.modal-content -->

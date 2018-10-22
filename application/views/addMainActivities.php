@@ -323,7 +323,6 @@
 											Add Sub Activities
 										<?php endif; ?>
 									</button>
-									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 25%"><i class="fa fa-file-excel-o"></i> Import Spreadsheet File</button> -->
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-window-maximize"></i> Use a Template</button> -->
 									<!-- <button type="button" class="btn btn-primary pull-right" style="margin-right: 5%">Save</button> -->
 								</div>
