@@ -232,7 +232,23 @@
                   <div id="divRACI" class="divDetails">
 										<table class="table table-bordered">
 											<thead id="raciHeader">
+												<th colspan = '4'>Current</th>
 												<tr>
+													<th width="25%" class='text-center'>R</th>
+													<th width="25%" class='text-center'>A</th>
+													<th width="25%" class='text-center'>C</th>
+													<th width="25%" class='text-center'>I</th>
+												</tr>
+											</thead>
+											<tbody id="raciCurrentTable">
+											</tbody>
+										</table>
+
+										<table class="table table-bordered">
+											<thead>
+												<th colspan = '4'>History</th>
+												<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
+												<tr id="raciHeader2">
 													<th width="25%" class='text-center'>R</th>
 													<th width="25%" class='text-center'>A</th>
 													<th width="25%" class='text-center'>C</th>
@@ -447,7 +463,9 @@
 						// }
 
 						// TASK DELEGATION
+						$("#raciCurrentTable").html("");
 						$("#raciHistoryTable").html("");
+						$('#raciHistoryTitle').hide();
 
 						if(data['raciHistory'][0].ROLE == "5"){
 							var start = 1;
@@ -456,15 +474,40 @@
 							var start = 0;
 						}
 
+						var current = true;
+
 						for(rh=start; rh < data['raciHistory'].length; rh+=4)
 						{
-							$("#raciHistoryTable").append(
-								"<tr><td>" + data['raciHistory'][rh+3].FIRSTNAME + " " + data['raciHistory'][rh+3].LASTNAME + "</td>" +
-								"<td>" + data['raciHistory'][rh+2].FIRSTNAME + " " + data['raciHistory'][rh+2].LASTNAME + "</td>" +
-								"<td>" + data['raciHistory'][rh+1].FIRSTNAME + " " + data['raciHistory'][rh+1].LASTNAME + "</td>" +
-								"<td>" + data['raciHistory'][rh].FIRSTNAME + " " + data['raciHistory'][rh].LASTNAME + "</td></tr>");
-							if(data['raciHistory'][rh+4].ROLE == '0' || data['raciHistory'][rh+4].ROLE == null)
+							if(current)
+							{
+								$("#raciCurrentTable").append(
+									"<tr><td>" + data['raciHistory'][rh+3].FIRSTNAME + " " + data['raciHistory'][rh+3].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+2].FIRSTNAME + " " + data['raciHistory'][rh+2].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+1].FIRSTNAME + " " + data['raciHistory'][rh+1].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh].FIRSTNAME + " " + data['raciHistory'][rh].LASTNAME + "</td></tr>");
+							}
+							else {
+								$("#raciHistoryTable").append(
+									"<tr><td>" + data['raciHistory'][rh+3].FIRSTNAME + " " + data['raciHistory'][rh+3].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+2].FIRSTNAME + " " + data['raciHistory'][rh+2].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+1].FIRSTNAME + " " + data['raciHistory'][rh+1].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh].FIRSTNAME + " " + data['raciHistory'][rh].LASTNAME + "</td></tr>");
+							}
+
+							if(data['raciHistory'][rh+4].ROLE == '0' || data['raciHistory'][rh+4].ROLE == null){
 								break;
+							}
+							else {
+								current = false;
+								$('#raciHeader2').show();
+							}
+						}
+
+						if(data['raciHistory'].length < 10)
+						{
+							$('#raciHistoryTitle').html("There is no RACI assignment history");
+							$('#raciHeader2').hide();
+							$('#raciHistoryTitle').show();
 						}
 
 						// RFC HISTORY
