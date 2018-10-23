@@ -1987,6 +1987,7 @@
 										'parent': '" . $parent . "',
 										'connectTo': '" . $dependency . "',
 										'connectorType': '" . $type . "',
+										'markers': '" . $marker . "',
 									},";
 
 								} else { // Completed but delayed
@@ -2008,6 +2009,7 @@
 										'baselineStart': '" . $formatted_endDate . "',
 										'baselineEnd': '" . $formatted_actualEndDate . "',
 										'baseline':{'fill': 'Red'},
+										'markers': '" . $marker . "',
 									},";
 
 								} // END: completed but delayed
@@ -2040,13 +2042,20 @@
 			var taskProgress = tasks.progress();
 			taskProgress.normal({fill: '#66b2b2'});
 
-			chart.listen('rowSelect', function(e) {
-        $("#dependencyModal").modal('show');
+			chart.listen('rowClick', function(e) {
 
-				var taskID = e.item.getID;
-				var stringTaskID = String(taskID);
+				var taskID = e.item.get('id');
 
-				alert(stringTaskID);
+				// if parent (no modal)
+				if (e.elementType === 'tasks'){
+					e.preventDefault();
+				} else {
+					$("#dependencyModal").modal('show');
+				}
+
+				alert(e.item.get('id'));
+				console.log(e);
+
 
     	});
 
