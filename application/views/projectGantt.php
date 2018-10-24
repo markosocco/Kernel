@@ -960,7 +960,7 @@
 				<br>
 
 				<!-- LEGEND -->
-				<div style="margin-bottom:10px">
+				<!-- <div style="margin-bottom:10px">
 					<small style="display: inline-block">Legend:</small>
 					<div style="width: 20px; height: 10px; background-color:#ED6C1F; display:inline-block; margin-left:10px;"></div> Selected
 					<div style="width: 20px; height: 10px; background-color:#465A63; display:inline-block; margin-left:10px;"></div> Parent Target Timeline
@@ -969,7 +969,7 @@
 					<div style="width: 20px; height: 10px; background-color:#BBD6F1; display:inline-block; margin-left:10px;"></div> Actual Timeline
 					<div style="width: 20px; height: 10px; background-color:#68B6F3; display:inline-block; margin-left:10px;"></div> Child Target Timeline
 					<div style="width: 20px; height: 10px; background-color:#0C7F12; display:inline-block; margin-left:10px;"></div> Ongoing
-				</div>
+				</div> -->
 
 				<!-- CONFIRM ARCHIVE -->
 				<div class="modal fade" id="confirmArchive" tabindex="-1">
@@ -1076,12 +1076,12 @@
 				</div>
 				<!-- /.modal -->
 
-				<input type="button" value="-" onclick="chart.zoomOut();">
-				<input type="button" value="+" onclick="chart.zoomIn();">
-				<input type="button" value="Fit All" onclick="chart.fitAll();">
+				<input type="button" class="btn btn-primary btn-sm" value="-" onclick="chart.zoomOut();">
+				<input type="button" class="btn btn-primary btn-sm" value="+" onclick="chart.zoomIn();">
+				<input type="button" class="btn btn-primary btn-sm" value="Fit All" onclick="chart.fitAll();">
 				<!-- <input type="button" value="Day" onclick="chart.zoomTo('day', 1);"> -->
-				<input type="button" value="Week" onclick="chart.zoomTo('week', 1);">
-				<input type="button" value="Month" onclick="chart.zoomTo('month', '1')">
+				<input type="button" class="btn btn-primary btn-sm" value="Week" onclick="chart.zoomTo('week', 1);">
+				<input type="button" class="btn btn-primary btn-sm" value="Month" onclick="chart.zoomTo('month', '1')">
 
 				<!-- DEPENDENCY MODAL -->
 				<div class="modal fade" id="dependencyModal" tabindex="-1">
@@ -1113,7 +1113,9 @@
 				</div>
 				<!-- /.modal -->
 
-				<div id="container" style="height: 600px;"></div>
+				<div id="container" style="height: 600px;">
+					<br>
+				</div>
 
 
 				<!-- </section> -->
