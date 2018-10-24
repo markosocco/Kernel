@@ -1361,7 +1361,7 @@ class model extends CI_Model
     $this->db->from('raci');
     $this->db->join('users', ' raci.users_USERID = users.USERID');
     $this->db->where($condition);
-    $this->db->order_by("RACIID");
+    $this->db->order_by("RACIID", 'DESC');
 
     return $this->db->get()->result_array();
   }

@@ -167,7 +167,16 @@
 										<td><?php echo $task['TASKTITLE'];?></td>
 										<td align='center'><?php echo date_format($startDate, "M d, Y");?></td>
 										<td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
-                    <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
+                    <!-- <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td> -->
+										<td>
+											<?php foreach ($raci as $raciRow): ?>
+												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+													<?php if ($raciRow['ROLE'] == '1'): ?>
+														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+													<?php endif; ?>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</td>
 										<td>
 											<?php foreach ($raci as $raciRow): ?>
 												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
@@ -223,6 +232,7 @@
                   <div id="divRACI" class="divDetails">
 										<table class="table table-bordered">
 											<thead id="raciHeader">
+												<th colspan = '4'>Current</th>
 												<tr>
 													<th width="25%" class='text-center'>R</th>
 													<th width="25%" class='text-center'>A</th>
@@ -230,7 +240,22 @@
 													<th width="25%" class='text-center'>I</th>
 												</tr>
 											</thead>
-											<tbody id="raciHistory">
+											<tbody id="raciCurrentTable">
+											</tbody>
+										</table>
+
+										<table class="table table-bordered">
+											<thead>
+												<th colspan = '4'>History</th>
+												<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
+												<tr id="raciHeader2">
+													<th width="25%" class='text-center'>R</th>
+													<th width="25%" class='text-center'>A</th>
+													<th width="25%" class='text-center'>C</th>
+													<th width="25%" class='text-center'>I</th>
+												</tr>
+											</thead>
+											<tbody id="raciHistoryTable">
 											</tbody>
 										</table>
 									</div>
@@ -261,7 +286,7 @@
 													<th width="1%"></th>
 													<th width="35%">Task</th>
 													<th width="20%" class="text-center">Start Date</th>
-													<th width="20%" class="text-center">End Date</th>
+													<th width="20%" class="text-center">Possible Start Date</th>
 													<th width="24%">Responsible</th>
 												</tr>
 	                    </thead>
@@ -322,6 +347,9 @@
 
                 </div>
 								<!-- /.modal-body -->
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+								</div>
               </div>
               <!-- /.modal-content -->
             </div>
@@ -355,6 +383,7 @@
 				$("#divDependency").show();
 
 				var $taskID = $(this).attr('data-id');
+				alert($taskID);
 				var $isDelayed = $(this).attr('data-delay');
 
 				if($isDelayed == 'true'){
@@ -432,6 +461,54 @@
 						// 		$("#delegationHistory").append("<tr>");
 						// 	}
 						// }
+
+						// TASK DELEGATION
+						$("#raciCurrentTable").html("");
+						$("#raciHistoryTable").html("");
+						$('#raciHistoryTitle').hide();
+
+						if(data['raciHistory'][0].ROLE == "5"){
+							var start = 1;
+						}
+						else {
+							var start = 0;
+						}
+
+						var current = true;
+
+						for(rh=start; rh < data['raciHistory'].length; rh+=4)
+						{
+							if(current)
+							{
+								$("#raciCurrentTable").append(
+									"<tr><td>" + data['raciHistory'][rh+3].FIRSTNAME + " " + data['raciHistory'][rh+3].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+2].FIRSTNAME + " " + data['raciHistory'][rh+2].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+1].FIRSTNAME + " " + data['raciHistory'][rh+1].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh].FIRSTNAME + " " + data['raciHistory'][rh].LASTNAME + "</td></tr>");
+							}
+							else {
+								$("#raciHistoryTable").append(
+									"<tr><td>" + data['raciHistory'][rh+3].FIRSTNAME + " " + data['raciHistory'][rh+3].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+2].FIRSTNAME + " " + data['raciHistory'][rh+2].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh+1].FIRSTNAME + " " + data['raciHistory'][rh+1].LASTNAME + "</td>" +
+									"<td>" + data['raciHistory'][rh].FIRSTNAME + " " + data['raciHistory'][rh].LASTNAME + "</td></tr>");
+							}
+
+							if(data['raciHistory'][rh+4].ROLE == '0' || data['raciHistory'][rh+4].ROLE == null){
+								break;
+							}
+							else {
+								current = false;
+								$('#raciHeader2').show();
+							}
+						}
+
+						if(data['raciHistory'].length < 10)
+						{
+							$('#raciHistoryTitle').html("There is no RACI assignment history");
+							$('#raciHeader2').hide();
+							$('#raciHistoryTitle').show();
+						}
 
 						// RFC HISTORY
 						if(data['changeRequests'].length <= 0)
