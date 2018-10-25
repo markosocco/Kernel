@@ -279,7 +279,7 @@
 
 									<div id="divDelay" class="divDetails">
 										<table class="table table-bordered">
-											<thead>
+											<thead id="affectedDelay">
 												<th colspan = '5'>Affected Post-Requisites</th>
 												<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
 												<tr id="affectedDelayHeader">
@@ -295,7 +295,7 @@
                   	</table>
 
 										<table class="table table-bordered">
-											<thead>
+											<thead id="unaffectedDelay">
 												<th colspan = '5'>Unaffected Post-Requisites</th>
 												<tr class='text-center'><td id="unaffectedTitle" colspan='5'></td></tr>
 												<tr id="unaffectedDelayHeader">
@@ -388,6 +388,107 @@
 
 				if($isDelayed == 'true'){
 					$("#tabDelay").show();
+
+					// DELAY
+
+					$.ajax({
+		 			 type:"POST",
+		 			 url: "<?php echo base_url("index.php/controller/getPostDependenciesByTaskID"); ?>",
+		 			 data: {task_ID: $taskID},
+		 			 dataType: 'json',
+		 			 success:function(postReqData)
+		 			 {
+ 						 $('#unaffectedTitle').hide();
+						 $('#affectedTitle').hide();
+						 $('#affectedDelayHistory').html("");
+						 $('#unaffectedDelayHistory').html("");
+						 var withAffected = false;
+						 var withUnaffected = false;
+
+						 if(postReqData['dependencies'].length > 0)
+						 {
+						 	for(i=0; i<postReqData['dependencies'].length; i++)
+						 	{
+								var currentDate = moment(postReqData['dependencies'][i].currDate).format('MMM DD, YYYY');
+					 			var taskStart = moment(postReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+					 			var startDate = postReqData['dependencies'][i].TASKSTARTDATE;
+
+						 		if(postReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if end date has been previously adjusted
+						 		{
+						 			var taskEnd = moment(postReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
+						 			var endDate = postReqData['dependencies'][i].TASKENDDATE;
+						 		}
+						 		else
+						 		{
+						 			var taskEnd = moment(postReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+						 			var endDate = postReqData['dependencies'][i].TASKADJUSTEDENDDATE;
+						 		}
+
+						 		if(postReqData['dependencies'][i].TASKSTATUS == "Complete")
+						 		{
+						 			var status = "<td class='bg-teal'></td>";
+						 		}
+						 		if(postReqData['dependencies'][i].TASKSTATUS == "Planning")
+						 		{
+						 			var status = "<td class='bg-yellow'></td>";
+						 		}
+						 		if(postReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+						 		{
+						 			if(postReqData['dependencies'][i].currDate > endDate)
+						 				var status = "<td class='bg-red'></td>";
+						 			else
+						 				var status = "<td class='bg-green'></td>";
+						 		}
+
+								if(postReqData['dependencies'][i].currDate <= startDate)
+								{
+									withUnaffected = true;
+									$('#unaffectedDelayHistory').append(
+												 "<tr>" + status +
+												 "<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
+												 "<td align='center'>" + taskStart+"</td>"+
+												 "<td align='center'>" + taskEnd +"</td>" +
+												 "<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
+								}
+								else
+								{
+									withAffected = true;
+									$('#affectedDelayHistory').append(
+												 "<tr>" + status +
+												 "<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
+												 "<td align='center'>" + taskStart+"</td>"+
+												 "<td align='center'>" + currentDate +"</td>" +
+												 "<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
+								}
+							}
+
+							if(!withAffected)
+							{
+								$('#affectedTitle').html("There are no affected post-requisites");
+								$('#affectedDelayHeader').hide();
+								$('#affectedTitle').show();
+							}
+							if(!withUnaffected)
+							{
+								$('#unaffectedTitle').html("There are no unaffected post-requisites");
+								$('#unaffectedDelayHeader').hide();
+								$('#unaffectedTitle').show();
+							}
+						}
+						else
+						{
+							$("#affectedDelayHistory").html("<tr><td colspan='5' align='center'>There are no post-requisite tasks that will be affected</td></tr>")
+ 							$("#affectedDelay").hide();
+ 							$("#unaffectedDelay").hide();
+						}
+					 },
+					 error:function()
+		 			 {
+		 				 alert("There was a problem in retrieving the task details");
+		 			 }
+		 			});
+
+
 				} else {
 					$("#tabDelay").hide();
 				}
@@ -420,90 +521,80 @@
 	 						$("#taskDates").append(" day)");
 
 						// TASK DELEGATION
-						// $("#delegationHistory").html("");
-						// var isDelegated = 'false';
-						// for(rh=0; rh < data['raciHistory'].length; rh++)
-						// {
-						// 	if(isDelegated == 'false' && data['raciHistory'][rh].ROLE == '0')
-						// 	{
-						// 		isDelegated = 'true';
-						// 		$("#delegationHistory").append(
-						// 			"<tr>" + "<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
-						// 	}
-						//
-						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '1')
-						// 	{
-						// 		$("#delegationHistory").append(
-						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
-						// 	}
-						//
-						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '2')
-						// 	{
-						// 		$("#delegationHistory").append(
-						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
-						// 	}
-						//
-						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '3')
-						// 	{
-						// 		$("#delegationHistory").append(
-						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
-						// 	}
-						//
-						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '4')
-						// 	{
-						// 		$("#delegationHistory").append(
-						// 			"<td>" + data['raciHistory'][rh].FIRSTNAME + "" + data['raciHistory'][rh].LASTNAME + "</td>");
-						// 	}
-						//
-						// 	if(isDelegated == 'true' && data['raciHistory'][rh].ROLE == '4' && data['raciHistory'][rh+1].ROLE == '5')
-						// 	{
-						// 		isDelegated = 'false';
-						// 		$("#delegationHistory").append("<tr>");
-						// 	}
-						// }
-
-						// TASK DELEGATION
 						$("#raciCurrentTable").html("");
 						$("#raciHistoryTable").html("");
 						$('#raciHistoryTitle').hide();
 
-						if(data['raciHistory'][0].ROLE == "5"){
-							var start = 1;
-						}
-						else {
-							var start = 0;
-						}
+						var withHistory = false;
 
-						var current = true;
-
-						for(rh=start; rh < data['raciHistory'].length; rh+=4)
+						for(rh=0; rh < data['raciHistory'].length; rh++)
 						{
-							if(current)
+							if(data['raciHistory'][rh].ROLE == 1 && data['raciHistory'][rh].STATUS == 'Current')
 							{
 								$("#raciCurrentTable").append(
-									"<tr><td>" + data['raciHistory'][rh+3].FIRSTNAME + " " + data['raciHistory'][rh+3].LASTNAME + "</td>" +
-									"<td>" + data['raciHistory'][rh+2].FIRSTNAME + " " + data['raciHistory'][rh+2].LASTNAME + "</td>" +
-									"<td>" + data['raciHistory'][rh+1].FIRSTNAME + " " + data['raciHistory'][rh+1].LASTNAME + "</td>" +
-									"<td>" + data['raciHistory'][rh].FIRSTNAME + " " + data['raciHistory'][rh].LASTNAME + "</td></tr>");
+									"<tr>" +
+										"<td id = 'currentR'></td>" +
+										"<td id = 'currentA'></td>" +
+										"<td id = 'currentC'></td>" +
+										"<td id = 'currentI'></td>" +
+									"</tr>");
+
+								for(rc=0; rc < data['raciHistory'].length; rc++)
+								{
+									if(data['raciHistory'][rc].ROLE == 1 && data['raciHistory'][rc].STATUS == 'Current')
+									{
+										$("#currentR").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+									}
+									if(data['raciHistory'][rc].ROLE == 2 && data['raciHistory'][rc].STATUS == 'Current')
+									{
+										$("#currentA").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+									}
+									if(data['raciHistory'][rc].ROLE == 3 && data['raciHistory'][rc].STATUS == 'Current')
+									{
+										$("#currentC").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+									}
+									if(data['raciHistory'][rc].ROLE == 4 && data['raciHistory'][rc].STATUS == 'Current')
+									{
+										$("#currentI").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+									}
+								}
 							}
-							else {
+
+							if(data['raciHistory'][rh].ROLE == 1 && data['raciHistory'][rh].STATUS == 'Changed')
+							{
+								var withHistory = true;
 								$("#raciHistoryTable").append(
-									"<tr><td>" + data['raciHistory'][rh+3].FIRSTNAME + " " + data['raciHistory'][rh+3].LASTNAME + "</td>" +
-									"<td>" + data['raciHistory'][rh+2].FIRSTNAME + " " + data['raciHistory'][rh+2].LASTNAME + "</td>" +
-									"<td>" + data['raciHistory'][rh+1].FIRSTNAME + " " + data['raciHistory'][rh+1].LASTNAME + "</td>" +
-									"<td>" + data['raciHistory'][rh].FIRSTNAME + " " + data['raciHistory'][rh].LASTNAME + "</td></tr>");
+									"<tr>" +
+										"<td id = 'changedR'></td>" +
+										"<td id = 'changedA'></td>" +
+										"<td id = 'changedC'></td>" +
+										"<td id = 'changedI'></td>" +
+									"</tr>");
+
+								for(ro=0; ro < data['raciHistory'].length; ro++)
+								{
+									if(data['raciHistory'][ro].ROLE == 1 && data['raciHistory'][ro].STATUS == 'Changed')
+									{
+										$("#changedR").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									}
+									if(data['raciHistory'][ro].ROLE == 2 && data['raciHistory'][ro].STATUS == 'Changed')
+									{
+										$("#changedA").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									}
+									if(data['raciHistory'][ro].ROLE == 3 && data['raciHistory'][ro].STATUS == 'Changed')
+									{
+										$("#changedC").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									}
+									if(data['raciHistory'][ro].ROLE == 4 && data['raciHistory'][ro].STATUS == 'Changed')
+									{
+										$("#changedI").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									}
+								}
 							}
 
-							if(data['raciHistory'][rh+4].ROLE == '0' || data['raciHistory'][rh+4].ROLE == null){
-								break;
-							}
-							else {
-								current = false;
-								$('#raciHeader2').show();
-							}
-						}
+						} // end for loop
 
-						if(data['raciHistory'].length < 10)
+						if(!withHistory)
 						{
 							$('#raciHistoryTitle').html("There is no RACI assignment history");
 							$('#raciHeader2').hide();
@@ -513,7 +604,7 @@
 						// RFC HISTORY
 						if(data['changeRequests'].length <= 0)
 						{
-							$("#rfcHistory").html("<h4 colspan='5' align='center'>There is no change request history</h4>")
+							$("#rfcHistory").html("<tr><td colspan='5' align='center'>There is no change request history</td></tr>")
 							$("#rfcHeader").hide();
 						}
 						else
@@ -571,16 +662,8 @@
 							$("#preReqTitle").hide();
 							for(i=0; i<preReqData['dependencies'].length; i++)
 							{
-								if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
-								{
-									var taskStart = moment(preReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
-									var startDate = preReqData['dependencies'][i].TASKSTARTDATE;
-								}
-								else
-								{
-									var taskStart = moment(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
-									var startDate = preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE;
-								}
+								var taskStart = moment(preReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+								var startDate = preReqData['dependencies'][i].TASKSTARTDATE;
 
 								if(preReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
 								{
@@ -653,16 +736,8 @@
 						 $("#postReqTitle").hide();
 	 					 for(i=0; i<postReqData['dependencies'].length; i++)
 	 					 {
-	 						 if(postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE == null) // check if start date has been previously adjusted
-	 						 {
-	 							 var taskStart = moment(postReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
-	 							 var startDate = postReqData['dependencies'][i].TASKSTARTDATE;
-	 						 }
-	 						 else
-	 						 {
-	 							 var taskStart = moment(postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE).format('MMM DD, YYYY');
-	 							 var startDate = postReqData['dependencies'][i].TASKADJUSTEDSTARTDATE;
-	 						 }
+ 							 var taskStart = moment(postReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+ 							 var startDate = postReqData['dependencies'][i].TASKSTARTDATE;
 
 	 						 if(postReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
 	 						 {
@@ -697,7 +772,8 @@
 	 													"<td align='center'>" + taskStart+"</td>"+
 	 													"<td align='center'>" + taskEnd +"</td>" +
 	 													"<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
-	 					}
+
+						}
 	 					$("#dependencyPostHeader").show();
 	 				}
 	 				else
@@ -715,12 +791,7 @@
 	 			 });
 			});
 
-			// TASK DETAILS
-			// $(".divDetails").hide();
-			// $(".tabDetails").removeClass('active');
-			// $("#tabDependency").addClass("active");
-			// $("#divDependency").show();
-
+			// TASK DETAILS TABS
 			$(document).on("click", "#tabDependency", function(){
 				$(".divDetails").hide();
 				$(".tabDetails").removeClass('active');
