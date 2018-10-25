@@ -413,8 +413,8 @@ class model extends CI_Model
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
   public function getAllOngoingProjectsByUser($userID)
   {
-    $condition = "((raci.users_USERID = '$userID' && raci.STATUS = 'Current') || projects.users_USERID = '$userID') && projects.PROJECTSTARTDATE <= CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing'";
-    // $condition = "((raci.users_USERID = '$userID' && raci.STATUS = 'Current') || projects.users_USERID = '$userID') && projects.PROJECTSTATUS = 'Ongoing'";
+    // $condition = "((raci.users_USERID = '$userID' && raci.STATUS = 'Current') || projects.users_USERID = '$userID') && projects.PROJECTSTARTDATE <= CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing'";
+    $condition = "((raci.users_USERID = '$userID' && raci.STATUS = 'Current') || projects.users_USERID = '$userID') && projects.PROJECTSTATUS = 'Ongoing'";
     $this->db->select('projects.*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -1361,7 +1361,7 @@ class model extends CI_Model
     $this->db->from('raci');
     $this->db->join('users', ' raci.users_USERID = users.USERID');
     $this->db->where($condition);
-    $this->db->order_by("RACIID", 'DESC');
+    $this->db->order_by("RACIID");
 
     return $this->db->get()->result_array();
   }

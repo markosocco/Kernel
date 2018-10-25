@@ -208,6 +208,7 @@
 
               <div class = "projectsGrid" id = "ongoingProjGrid">
                 <?php foreach ($ongoingProjects as $key=> $value):?>
+                  <?php if ($value['datediff'] >= 0): ?>
 
                   <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
@@ -244,6 +245,7 @@
                     </a>
                   </div>
                   <!-- ./col -->
+                <?php endif; ?>
                 <?php endforeach;?>
               </div>
 
