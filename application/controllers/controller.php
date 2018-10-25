@@ -13,12 +13,40 @@ class controller extends CI_Controller
 		$this->load->model("model");
 		$this->load->library('session');
 		$this->load->helper(array('form', 'url'));
+		$this->load->library('email');
+
 	}
 
 	public function index()
 	{
 		$this->load->view('welcome_message');
 	}
+
+	public function email(){
+		$this->load->helper('form');
+    $this->load->view('email_form');
+	}
+
+	public function send_mail() {
+		$from_email = "kernelPMS@gmail.com";
+		$to_email = $this->input->post('email');
+
+		 //Load email library
+	 	$this->load->library('email');
+
+		$this->email->from($from_email, 'Your Name');
+		$this->email->to($to_email);
+		$this->email->subject('Email Test');
+		$this->email->message('Testing the email class.');
+
+		 //Send mail
+		if($this->email->send())
+			$this->session->set_flashdata("email_sent","Email sent successfully.");
+		else
+			$this->session->set_flashdata("email_sent","Error in sending Email.");
+
+		 $this->load->view('email_form');
+  }
 
 	public function login()
 	{
