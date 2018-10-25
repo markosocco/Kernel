@@ -413,7 +413,8 @@ class model extends CI_Model
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE OF LOGGED USER
   public function getAllOngoingProjectsByUser($userID)
   {
-    $condition = "((raci.users_USERID = '$userID' && raci.STATUS = 'Current') || projects.users_USERID = '$userID') && projects.PROJECTSTARTDATE <= CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing'";
+    // $condition = "((raci.users_USERID = '$userID' && raci.STATUS = 'Current') || projects.users_USERID = '$userID') && projects.PROJECTSTARTDATE <= CURDATE() && projects.PROJECTENDDATE > CURDATE() && projects.PROJECTSTATUS = 'Ongoing'";
+    $condition = "((raci.users_USERID = '$userID' && raci.STATUS = 'Current') || projects.users_USERID = '$userID') && projects.PROJECTSTATUS = 'Ongoing'";
     $this->db->select('projects.*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -1932,6 +1933,42 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+  }
+
+  // DELETE AFTER
+  public function importData($data)
+  {
+    $res = $this->db->insert_batch('tasks', $data);
+
+    if($res)
+    {
+        return TRUE;
+    }
+
+    else
+    {
+        return FALSE;
+    }
+  }
+
+  public function checkSamePassword($pass)
+  {
+    $condition = "USERID = " . $_SESSION['USERID'];
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $query = $this->db->get();
+    $currPassword = $query->row("PASSWORD");
+
+    if ($pass == $currPassword)
+    {
+      return true;
+    }
+
+    else
+    {
+      return false;
+    }
   }
 }
 ?>

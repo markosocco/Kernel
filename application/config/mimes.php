@@ -187,4 +187,6 @@ return array(
 	'xls'    =>    'application/excel',
 	'xlsx'    =>    'application/excel',
 	'excell'=>    array('application/msexcell', 'application/octet-stream'),
+	'xlsx' => array('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/zip'),
+	'xls' => array('application/excel', 'application/vnd.ms-excel', 'application/octet-stream'),
 );

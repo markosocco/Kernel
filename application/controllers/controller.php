@@ -306,7 +306,17 @@ class controller extends CI_Controller
 				// }
 
 				$this->session->set_flashdata('alertMessage', 'Successful Login');
-				redirect('controller/dashboard');
+
+				if ($_SESSION['USERID'] == 1)
+				{
+					redirect('controller/dashboardAdmin');
+				}
+
+				else
+				{
+					redirect('controller/dashboard');
+				}
+
 
 					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
 					// {
@@ -349,7 +359,7 @@ class controller extends CI_Controller
 
 				// ALERTS
 				$this->session->set_flashdata('danger', 'alert');
-				$this->session->set_flashdata('alertMessage', 'Email and password does not match');
+				$this->session->set_flashdata('alertMessage', 'Email and password do not match');
 
 				redirect('controller/login');
 			}
@@ -4472,24 +4482,36 @@ class controller extends CI_Controller
 
 				else
 				{
-					$data = array(
-						'PASSWORD' => $newPass
-					);
+					$isSamePassword = $this->model->checkSamePassword($newPass);
 
-					$result = $this->model->updatePassword($data);
-
-					if ($result)
+					if ($isSamePassword)
 					{
-						$this->session->set_flashdata('success', 'alert');
-						$this->session->set_flashdata('alertMessage', ' Password changed');
+						$this->session->set_flashdata('danger', 'alert');
+						$this->session->set_flashdata('alertMessage', ' New password must be different');
 						redirect('controller/dashboard');
 					}
 
 					else
 					{
-						$this->session->set_flashdata('danger', 'alert');
-						$this->session->set_flashdata('alertMessage', ' Error in changing password');
-						redirect('controller/dashboard');
+						$data = array(
+							'PASSWORD' => $newPass
+						);
+
+						$result = $this->model->updatePassword($data);
+
+						if ($result)
+						{
+							$this->session->set_flashdata('success', 'alert');
+							$this->session->set_flashdata('alertMessage', ' Password changed');
+							redirect('controller/dashboard');
+						}
+
+						else
+						{
+							$this->session->set_flashdata('danger', 'alert');
+							$this->session->set_flashdata('alertMessage', ' Error in changing password');
+							redirect('controller/dashboard');
+						}
 					}
 				}
 			}
@@ -4515,5 +4537,130 @@ class controller extends CI_Controller
 				echo "completeness - " . $project['completeness'] . "<br><br>";
 			}
 		}
+	}
+
+	// DELETE THIS draftedProjects
+	public function importTest()
+	{
+		$this->load->view('importTest');
+	}
+
+	public function uploadData()
+	{
+	 $config['upload_path'] = './assets/uploads';
+	 $config['allowed_types'] = 'xlsx|csv|xls';
+	 $config['max_size'] = '10000000';
+	 $this->load->library('upload', $config);
+	 $this->upload->initialize($config);
+
+	 if (!$this->upload->do_upload('document'))
+	 {
+		 // $error = array('error' => $this->upload->display_errors());
+
+		 $this->session->set_flashdata('danger', 'alert');
+		 $this->session->set_flashdata('alertMessage', 'File type is not allowed');
+
+		 redirect('controller/addProjectDetails');
+	 }
+
+	 else
+	 {
+		 $data = array('upload_data' => $this->upload->data());
+		 $path = './assets/uploads/';
+
+     $import_xls_file = $data['upload_data']['file_name'];
+     $inputFileName = $path . $import_xls_file;
+		 $sheetname = 'Sheet1';
+
+     try
+     {
+			$inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+			$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+			$reader->setLoadSheetsOnly($sheetname);
+			$spreadsheet = $reader->load($inputFileName);
+			$worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+			$flag = true;
+			$i=0;
+
+			foreach ($worksheet as $value)
+			{
+				if($flag)
+				{
+          $flag =false;
+          continue;
+				}
+
+				$insertData[$i]['TASKTITLE'] = $value['A'];
+        $insertData[$i]['TASKSTARTDATE'] = $value['B'];
+        $insertData[$i]['TASKENDDATE'] = $value['C'];
+        $insertData[$i]['TASKSTATUS'] = $value['D'];
+				$insertData[$i]['CATEGORY'] = $value['E'];
+				$insertData[$i]['projects_PROJECTID'] = $value['F'];
+				// $insertData[$i]['DEPARTMENT'] = $value['H'];
+
+				// $depts = explode(", ", $value['H']);
+
+				if ($value['G'] != 'NULL')
+				{
+					$insertData[$i]['tasks_TASKPARENT'] = $value['G'];
+				}
+
+        $i++;
+			}
+
+
+
+			// $data = array(
+			// 		'TASKTITLE' => $row,
+			// 		'TASKSTARTDATE' => $startDates[$key],
+			// 		'TASKENDDATE' => $endDates[$key],
+			// 		'TASKSTATUS' => $tStatus,
+			// 		'CATEGORY' => '3',
+			// 		'projects_PROJECTID' => $id,
+			// 		'tasks_TASKPARENT' => $parent[$key]
+			// );
+
+			// $data = array(
+			// 		'ROLE' => '0',
+			// 		'users_USERID' => $deptHead,
+			// 		'tasks_TASKID' => $a,
+			// 		'STATUS' => 'Current'
+			// );
+			//
+			// // ENTER INTO RACI
+			// $result = $this->model->addToRaci($data);
+
+			$result = $this->model->importData($insertData);
+
+			if ($result)
+			{
+				echo "import succesful";
+			}
+
+			else
+			{
+				echo "failed";
+			}
+
+		}
+
+     catch (Exception $e)
+     {
+        die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME)
+                 . '": ' .$e->getMessage());
+     }
+	 }
+
+		 // if(empty($error))
+		 // {
+			//  echo "happy";
+		 // }
+		 //
+		 // else
+		 // {
+			//  echo "sad<br>";
+			//  echo $error['error'];
+		 // }
 	}
 }

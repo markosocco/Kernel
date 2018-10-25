@@ -42,13 +42,17 @@
             <div class="box-header with-border">
               <h3 class="box-title">Input project details</h3>
             </div>
+
             <!-- /.box-header -->
             <!-- form start -->
 						<?php if (isset($_SESSION['edit'])): ?>
-							<form role="form" name = "editProject" id = "addProject" action = "editProject" method = "POST">
-								<input type="hidden" name="edit" value="<?php echo $project['PROJECTID']; ?>">
+							<!-- <form role="form" name = "editProject" id = "addProject" action = "editProject" method = "POST">
+								<input type="hidden" name="edit" value="<?php echo $project['PROJECTID']; ?>"> -->
+
 						<?php else: ?>
-							<form role="form" name = "addProject" id = "addProject" action = "addMainActivities" method = "POST">
+							<!-- <?php echo form_open_multipart('controller/addMainActivities');?> -->
+							<form action="addMainActivities" method="post" enctype="multipart/form-data">
+							<!-- <form role="form" name = "addProject" id = "addProject" action = "addMainActivities" method = "POST"> -->
 						<?php endif; ?>
 							<?php if (isset($_SESSION['templates'])): ?>
 								<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
@@ -57,6 +61,7 @@
                 <div class="form-group">
                   <label>Project Title</label>
 									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
+
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" value ="<?php echo $project['PROJECTTITLE']; ?>" required>
 									<?php else: ?>
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
@@ -143,6 +148,7 @@
 										Add Main Activities
 									<?php endif; ?>
 								</button>
+								<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-uploadExcel" style="margin-right: 2%"><i class="fa fa-file-excel-o"></i> Import from Spreadsheet</button>
               </div>
             </form>
           </div>
@@ -150,6 +156,43 @@
 		    </section>
 		    <!-- /.content -->
 		  </div>
+
+			<div class="modal fade" id="modal-uploadExcel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Upload Project from a File</h4>
+						</div>
+						<div id="uploadDiv">
+						<div class="modal-body">
+							<a href="http://localhost/Kernel/assets/uploads/importTemplate.xlsx" download>Download the Template here</a>
+							<div class="form-group">
+								<label for="uploadDoc">Select an Excel file to upload</label>
+								<input type="file" id="upload" name="document">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+							<button  id="uploadConfirm" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+						</div>
+					</div>
+
+					<!-- CONFIRM UPLOAD -->
+					<div id="confirmUpload">
+						<div class="modal-body">
+							<h4>Are you sure you want to upload this project?</h4>
+						</div>
+						<div class="modal-footer">
+							<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
+							<button id = "confirmUploadBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+						</div>
+					</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
 			<?php include_once("footer.php"); ?>
 
 		</div>
@@ -157,6 +200,25 @@
 
 		<script>
 			$("#myProjects").addClass("active");
+
+			$("#confirmUpload").hide();
+
+			// $(document).on("click", "#confirmUploadBtn", function()
+			// {
+			// 	$("form_open_multipart").submit();
+			// });
+
+			$("#confirmUploadBtn").click(function()
+			{
+				// alert("hello");
+				$("form").submit();
+			});
+
+			$("body").on('click','#uploadConfirm',function()
+			{
+				$("#uploadDiv").hide();
+				$("#confirmUpload").show();
+			});
 
 			<?php if (isset($_SESSION['edit'])): ?>
 				$("#endDate").prop('disabled', false);

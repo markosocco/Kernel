@@ -960,7 +960,7 @@
 				<br>
 
 				<!-- LEGEND -->
-				<div style="margin-bottom:10px">
+				<!-- <div style="margin-bottom:10px">
 					<small style="display: inline-block">Legend:</small>
 					<div style="width: 20px; height: 10px; background-color:#ED6C1F; display:inline-block; margin-left:10px;"></div> Selected
 					<div style="width: 20px; height: 10px; background-color:#465A63; display:inline-block; margin-left:10px;"></div> Parent Target Timeline
@@ -969,7 +969,7 @@
 					<div style="width: 20px; height: 10px; background-color:#BBD6F1; display:inline-block; margin-left:10px;"></div> Actual Timeline
 					<div style="width: 20px; height: 10px; background-color:#68B6F3; display:inline-block; margin-left:10px;"></div> Child Target Timeline
 					<div style="width: 20px; height: 10px; background-color:#0C7F12; display:inline-block; margin-left:10px;"></div> Ongoing
-				</div>
+				</div> -->
 
 				<!-- CONFIRM ARCHIVE -->
 				<div class="modal fade" id="confirmArchive" tabindex="-1">
@@ -1076,12 +1076,12 @@
 				</div>
 				<!-- /.modal -->
 
-				<input type="button" value="-" onclick="chart.zoomOut();">
-				<input type="button" value="+" onclick="chart.zoomIn();">
-				<input type="button" value="Fit All" onclick="chart.fitAll();">
+				<input type="button" class="btn btn-primary btn-sm" value="-" onclick="chart.zoomOut();">
+				<input type="button" class="btn btn-primary btn-sm" value="+" onclick="chart.zoomIn();">
+				<input type="button" class="btn btn-primary btn-sm" value="Fit All" onclick="chart.fitAll();">
 				<!-- <input type="button" value="Day" onclick="chart.zoomTo('day', 1);"> -->
-				<input type="button" value="Week" onclick="chart.zoomTo('week', 1);">
-				<input type="button" value="Month" onclick="chart.zoomTo('month', '1')">
+				<input type="button" class="btn btn-primary btn-sm" value="Week" onclick="chart.zoomTo('week', 1);">
+				<input type="button" class="btn btn-primary btn-sm" value="Month" onclick="chart.zoomTo('month', '1')">
 
 				<!-- DEPENDENCY MODAL -->
 				<div class="modal fade" id="dependencyModal" tabindex="-1">
@@ -1113,7 +1113,9 @@
 				</div>
 				<!-- /.modal -->
 
-				<div id="container" style="height: 600px;"></div>
+				<div id="container" style="height: 600px;">
+					<br>
+				</div>
 
 
 				<!-- </section> -->
@@ -1765,39 +1767,84 @@
 					}
 					// END: Check for task involved
 
-					//START: CHECKS IF RACI IS EMPTY
-					if($accountable == NULL || $consulted == NULL || $informed == NULL){
-						echo "
-						{
-							'id': " . $value['TASKID'] . ",
-							'name': '" . $value['TASKTITLE'] . "',
-							'actualStart': '" . $formatted_startDate .  "T00:00',
-							'actualEnd': '" . $formatted_endDate . "T13:00',
-							'actual':{'fill': 'Orange'},
-							'responsible': '',
-							'accountable': '',
-							'consulted': '',
-							'informed': '',
-							'period': '" . $value['initialTaskDuration'] . " days',
-							'progressValue': '0%',
-							'parent': '" . $parent . "',
-							'connectTo': '" . $dependency . "',
-							'connectorType': '" . $type . "',
-							'markers': " . $marker . ",
+					// START: CHECKS IF MAIN OR SUB
+					if($value['CATEGORY'] == 2 || $value['CATEGORY'] == 1){
+						// START: Planning - no baseline since task have not yet started
+						if(($value['TASKACTUALSTARTDATE'] == NULL)){
+							echo "
+							{
+								'id': " . $value['TASKID'] . ",
+								'name': '" . $value['TASKTITLE'] . "',
+								'actualStart': '" . $formatted_startDate . "',
+								'actualEnd': '" . $formatted_endDate . "',
+								'actual':{'fill': 'Orange'},
+								'responsible': '" . $responsiblePerson  ."',
+								'accountable': '" . $accountablePerson ."',
+								'consulted': '" . $consultedPerson  ."',
+								'informed': '" . $informedPerson  ."',
+								'period': '" . $value['initialTaskDuration'] . " days',
+								'parent': '" . $parent . "',
+								'connectTo': '" . $dependency . "',
+								'connectorType': '" . $type . "',
+								'markers': " . $marker . ",
+							},";
+						} // END: Planning - no baseline since task have not yet started
 
-						},";
-					} else { // START: RACI IS NOT EMPTY
-						// START: CHECKS IF MAIN OR SUB
-						if($value['CATEGORY'] == 2 || $value['CATEGORY'] == 1){
-							// START: Planning - no baseline since task have not yet started
-							if(($value['TASKACTUALSTARTDATE'] == NULL)){
+						// START: Ongoing tasks - baselineEnd is the date today
+						else if($value['TASKACTUALENDDATE'] == NULL){
+							// not delayed
+							if($value['TASKENDDATE'] > date('Y-m-d')){ // ongoing but not delayed
 								echo "
 								{
 									'id': " . $value['TASKID'] . ",
 									'name': '" . $value['TASKTITLE'] . "',
 									'actualStart': '" . $formatted_startDate . "',
 									'actualEnd': '" . $formatted_endDate . "',
-									'actual':{'fill': 'Orange'},
+									'actual':{'fill': '#006600'},
+									'responsible': '" . $responsiblePerson  ."',
+									'accountable': '" . $accountablePerson ."',
+									'consulted': '" . $consultedPerson  ."',
+									'informed': '" . $informedPerson  ."',
+									'period': '" . $value['initialTaskDuration'] ." days',
+									'parent': '" . $parent . "',
+									'connectTo': '" . $dependency . "',
+									'connectorType': '" . $type . "',
+									'markers': " . $marker . ",
+								},";
+							} else { // ongoing and delayed
+								echo "
+								{
+									'id': " . $value['TASKID'] . ",
+									'name': '" . $value['TASKTITLE'] . "',
+									'actualStart': '" . $formatted_startDate . "',
+									'actualEnd': '" . $formatted_endDate . "',
+									'actual':{'fill': '#006600'},
+									'responsible': '" . $responsiblePerson  ."',
+									'accountable': '" . $accountablePerson ."',
+									'consulted': '" . $consultedPerson  ."',
+									'informed': '" . $informedPerson  ."',
+									'period': '" . $value['initialTaskDuration'] ." days',
+									'parent': '" . $parent . "',
+									'connectTo': '" . $dependency . "',
+									'connectorType': '" . $type . "',
+									'baselineStart': '" . $formatted_endDate . "',
+									'baselineEnd': '" . date('M d, Y') . "',
+									'baseline':{'fill': 'Red'},
+									'markers': " . $marker . ",
+								},";
+							}
+
+						} // END: Ongoing tasks - baselineEnd is the date today
+
+						// START: Completed parent - baselineStart and baselineEnd are present
+						else {
+							if($formatted_endDate >= $formatted_actualEndDate){ // Completed but not delayed
+								echo "
+								{
+									'id': " . $value['TASKID'] . ",
+									'name': '" . $value['TASKTITLE'] . "',
+									'actualStart': '" . $formatted_startDate . "',
+									'actualEnd': '" . $formatted_endDate . "',
 									'responsible': '" . $responsiblePerson  ."',
 									'accountable': '" . $accountablePerson ."',
 									'consulted': '" . $consultedPerson  ."',
@@ -1808,108 +1855,82 @@
 									'connectorType': '" . $type . "',
 									'markers': " . $marker . ",
 								},";
-							} // END: Planning - no baseline since task have not yet started
 
-							// START: Ongoing tasks - baselineEnd is the date today
-							else if($value['TASKACTUALENDDATE'] == NULL){
-								// not delayed
-								if($value['TASKENDDATE'] > date('Y-m-d')){ // ongoing but not delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'actual':{'fill': '#006600'},
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] ." days',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'connectorType': '" . $type . "',
-										'markers': " . $marker . ",
-									},";
-								} else { // ongoing and delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'actual':{'fill': '#006600'},
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] ." days',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'connectorType': '" . $type . "',
-										'baselineStart': '" . $formatted_endDate . "',
-										'baselineEnd': '" . date('M d, Y') . "',
-										'baseline':{'fill': 'Red'},
-										'markers': " . $marker . ",
-									},";
-								}
-
-							} // END: Ongoing tasks - baselineEnd is the date today
-
-							// START: Completed parent - baselineStart and baselineEnd are present
-							else {
-								if($formatted_endDate >= $formatted_actualEndDate){ // Completed but not delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] . " days',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'connectorType': '" . $type . "',
-										'markers': " . $marker . ",
-									},";
-
-								} else { // Completed but delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] ." days',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'connectorType': '" . $type . "',
-										'baselineStart': '" . $formatted_endDate . "',
-										'baselineEnd': '" . $formatted_actualEndDate . "',
-										'baseline':{'fill': 'Red'},
-										'markers': " . $marker . ",
-									},";
-
-								}
-
-							} // END: Completed tasks - baselineStart and baselineEnd are present
-
-						} else { // START: IF TASK
-							if(($value['TASKACTUALSTARTDATE'] == NULL)){
+							} else { // Completed but delayed
 								echo "
 								{
 									'id': " . $value['TASKID'] . ",
 									'name': '" . $value['TASKTITLE'] . "',
 									'actualStart': '" . $formatted_startDate . "',
 									'actualEnd': '" . $formatted_endDate . "',
-									'actual':{'fill': 'Orange'},
+									'responsible': '" . $responsiblePerson  ."',
+									'accountable': '" . $accountablePerson ."',
+									'consulted': '" . $consultedPerson  ."',
+									'informed': '" . $informedPerson  ."',
+									'period': '" . $value['initialTaskDuration'] ." days',
+									'parent': '" . $parent . "',
+									'connectTo': '" . $dependency . "',
+									'connectorType': '" . $type . "',
+									'baselineStart': '" . $formatted_endDate . "',
+									'baselineEnd': '" . $formatted_actualEndDate . "',
+									'baseline':{'fill': 'Red'},
+									'markers': " . $marker . ",
+								},";
+
+							}
+
+						} // END: Completed tasks - baselineStart and baselineEnd are present
+
+					} else { // START: IF TASK
+						if(($value['TASKACTUALSTARTDATE'] == NULL)){
+							echo "
+							{
+								'id': " . $value['TASKID'] . ",
+								'name': '" . $value['TASKTITLE'] . "',
+								'actualStart': '" . $formatted_startDate . "',
+								'actualEnd': '" . $formatted_endDate . "',
+								'actual':{'fill': 'Orange'},
+								'responsible': '" . $responsiblePerson  ."',
+								'accountable': '" . $accountablePerson ."',
+								'consulted': '" . $consultedPerson  ."',
+								'informed': '" . $informedPerson  ."',
+								'period': '" . $value['initialTaskDuration'] . " days',
+								'progressValue': '" . $progress . "%',
+								'parent': '" . $parent . "',
+								'connectTo': '" . $dependency . "',
+								'connectorType': '" . $type . "',
+								'markers': " . $marker . ",
+							},";
+						} // END: Planning - no baseline since task have not yet started
+
+						// START: Ongoing tasks - baselineEnd is the date today
+						else if($value['TASKACTUALENDDATE'] == NULL){
+							if($value['TASKENDDATE'] > date('Y-m-d')) { // ongoing task but NOT delayed
+								echo "
+								{
+									'id': " . $value['TASKID'] . ",
+									'name': '" . $value['TASKTITLE'] . "',
+									'actualStart': '" . $formatted_startDate . "',
+									'actualEnd': '" . $formatted_endDate . "',
+									'actual':{'fill': '#006600'},
+									'responsible': '" . $responsiblePerson  ."',
+									'accountable': '" . $accountablePerson ."',
+									'consulted': '" . $consultedPerson  ."',
+									'informed': '" . $informedPerson  ."',
+									'period': '" . $value['initialTaskDuration'] . " days',
+									'progressValue': '" . $progress . "%',
+									'parent': '" . $parent . "',
+									'connectTo': '" . $dependency . "',
+									'markers': " . $marker . ",
+								},";
+							} else { // ongoing task but delayed
+								echo "
+								{
+									'id': " . $value['TASKID'] . ",
+									'name': '" . $value['TASKTITLE'] . "',
+									'actualStart': '" . $formatted_startDate . "',
+									'actualEnd': '" . $formatted_endDate . "',
+									'actual':{'fill': '#006600'},
 									'responsible': '" . $responsiblePerson  ."',
 									'accountable': '" . $accountablePerson ."',
 									'consulted': '" . $consultedPerson  ."',
@@ -1919,101 +1940,61 @@
 									'parent': '" . $parent . "',
 									'connectTo': '" . $dependency . "',
 									'connectorType': '" . $type . "',
-									'markers': " . $marker . ",
+									'baselineStart': '" . $formatted_endDate ."',
+									'baselineEnd': '" . date('M d, Y') . "',
+									'baseline':{'fill': 'Red'},
+									'markers': '" . $marker . "',
 								},";
-							} // END: Planning - no baseline since task have not yet started
+							} // end: ongoing task but delayed
 
-							// START: Ongoing tasks - baselineEnd is the date today
-							else if($value['TASKACTUALENDDATE'] == NULL){
-								if($value['TASKENDDATE'] > date('Y-m-d')) { // ongoing task but NOT delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'actual':{'fill': '#006600'},
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] . " days',
-										'progressValue': '" . $progress . "%',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'markers': " . $marker . ",
-									},";
-								} else { // ongoing task but delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'actual':{'fill': '#006600'},
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] . " days',
-										'progressValue': '" . $progress . "%',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'connectorType': '" . $type . "',
-										'baselineStart': '" . $formatted_endDate ."',
-										'baselineEnd': '" . date('M d, Y') . "',
-										'baseline':{'fill': 'Red'},
-										'markers': '" . $marker . "',
-									},";
-								} // end: ongoing task but delayed
+						} // END: Ongoing tasks - baselineEnd is the date today
 
-							} // END: Ongoing tasks - baselineEnd is the date today
+						// START: Completed tasks - baselineStart and baselineEnd are present
+						else {
+							if($formatted_endDate >= $formatted_actualEndDate){ // Completed but not delayed
+								echo "
+								{
+									'id': " . $value['TASKID'] . ",
+									'name': '" . $value['TASKTITLE'] . "',
+									'actualStart': '" . $formatted_startDate . "',
+									'actualEnd': '" . $formatted_endDate . "',
+									'responsible': '" . $responsiblePerson  ."',
+									'accountable': '" . $accountablePerson ."',
+									'consulted': '" . $consultedPerson  ."',
+									'informed': '" . $informedPerson  ."',
+									'period': '" . $value['initialTaskDuration'] ." days',
+									'progressValue': '" . $progress . "%',
+									'parent': '" . $parent . "',
+									'connectTo': '" . $dependency . "',
+									'connectorType': '" . $type . "',
+									'markers': '" . $marker . "',
+								},";
 
-							// START: Completed tasks - baselineStart and baselineEnd are present
-							else {
-								if($formatted_endDate >= $formatted_actualEndDate){ // Completed but not delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] ." days',
-										'progressValue': '" . $progress . "%',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'connectorType': '" . $type . "',
-									},";
+							} else { // Completed but delayed
+								echo "
+								{
+									'id': " . $value['TASKID'] . ",
+									'name': '" . $value['TASKTITLE'] . "',
+									'actualStart': '" . $formatted_startDate . "',
+									'actualEnd': '" . $formatted_endDate . "',
+									'responsible': '" . $responsiblePerson  ."',
+									'accountable': '" . $accountablePerson ."',
+									'consulted': '" . $consultedPerson  ."',
+									'informed': '" . $informedPerson  ."',
+									'period': '" . $value['initialTaskDuration'] ." days',
+									'progressValue': '" . $progress . "%',
+									'parent': '" . $parent . "',
+									'connectTo': '" . $dependency . "',
+									'connectorType': '" . $type . "',
+									'baselineStart': '" . $formatted_endDate . "',
+									'baselineEnd': '" . $formatted_actualEndDate . "',
+									'baseline':{'fill': 'Red'},
+									'markers': '" . $marker . "',
+								},";
 
-								} else { // Completed but delayed
-									echo "
-									{
-										'id': " . $value['TASKID'] . ",
-										'name': '" . $value['TASKTITLE'] . "',
-										'actualStart': '" . $formatted_startDate . "',
-										'actualEnd': '" . $formatted_endDate . "',
-										'responsible': '" . $responsiblePerson  ."',
-										'accountable': '" . $accountablePerson ."',
-										'consulted': '" . $consultedPerson  ."',
-										'informed': '" . $informedPerson  ."',
-										'period': '" . $value['initialTaskDuration'] ." days',
-										'progressValue': '" . $progress . "%',
-										'parent': '" . $parent . "',
-										'connectTo': '" . $dependency . "',
-										'connectorType': '" . $type . "',
-										'baselineStart': '" . $formatted_endDate . "',
-										'baselineEnd': '" . $formatted_actualEndDate . "',
-										'baseline':{'fill': 'Red'},
-									},";
-
-								} // END: completed but delayed
-							} // END: Completed tasks - baselineStart and baselineEnd are present
-						} // END: CHECKS FOR CATEGORY
-					} // END: CHECKS IF RACI IS EMPTY OR NOT
+							} // END: completed but delayed
+						} // END: Completed tasks - baselineStart and baselineEnd are present
+					} // END: CHECKS FOR CATEGORY
 				} // END: Foreach
 				?>
 
@@ -2031,23 +2012,31 @@
 			var progress = groupingTasks.progress();
     	progress.normal({fill: '#66b2b2'});
 
-			// var elements = tl.elements();
-			// var selected = elements.selected();
-			chart.getTimeline().elements().selected().fill('').stroke('Red');
+			groupingTasks.normal({fill: 'Orange'});
+
+			var elements = tl.elements();
+			var selectedElement = elements.selected();
+			selectedElement.fill('').stroke('Red');
 			chart.rowSelectedFill('#FFFFCC');
 
 			var tasks = tl.tasks();
 			var taskProgress = tasks.progress();
 			taskProgress.normal({fill: '#66b2b2'});
 
-			chart.listen('rowSelect', function(e) {
-        $("#dependencyModal").modal('show');
+			chart.listen('rowClick', function(e) {
 
-				var taskID = e.item.getID;
-				var stringTaskID = String(taskID);
+				var taskID = e.item.get('id');
 
-				alert(stringTaskID);
+				// if parent (no modal)
+				if(e.item && e.item.getParent() == null){
+					e.preventDefault();
+				} else {
+					$("#dependencyModal").modal('show');
+				}
 
+				// alert(e.item.getParent());
+				// console.log(e.item);
+				console.log(e.item.getParent());
     	});
 
 			// data grid getter
