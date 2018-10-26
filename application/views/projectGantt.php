@@ -2123,7 +2123,7 @@
 			var taskProgress = tasks.progress();
 			taskProgress.normal({fill: '#66b2b2'});
 
-			chart.listen('rowClick', function(e) {
+			chart.listen('rowdblClick', function(e) {
 
 				var taskID = e.item.get('id');
 
