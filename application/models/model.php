@@ -10,6 +10,7 @@ class model extends CI_Model
   public function checkDatabase($data)
   {
     $condition = "EMAIL =" . "'" . $data['email'] . "' AND " . "PASSWORD =" . "'" . $data['password'] . "'";
+    // $condition = "EMAIL =" . "'" . $data['email'] . "'";
     $this->db->select('*');
     $this->db->from('users');
     $this->db->where($condition);
@@ -20,6 +21,19 @@ class model extends CI_Model
     {
       return true;
     }
+
+    // $hash = $query->row('PASSWORD');
+    //
+    // if ($query->num_rows() == 1)
+    // {
+    //   if (password_verify($data['password'], $hash))
+    //   {
+    //     return true;
+    //   }
+    //   else {
+    //     return false;
+    //   }
+    // }
 
     else
     {

@@ -387,7 +387,7 @@ desired effect
       </div>
       <div class="modal-body" style="text-align:center">
         <div style="text-align:left; display:inline-block">
-          <p style="color:red"><b>Your new password is new</b></p>
+          <!-- <p style="color:red"><b>Your new password is new</b></p> -->
           <form name="changePassword" class="form-horizontal" action="changePassword" method="POST">
           <div class="form-group">
             <label for="oldPass" class="col-sm-6 control-label"><span style="color:red">*</span>Old Password</label>
