@@ -279,25 +279,9 @@
 									<div id="divDelay" class="divDetails">
 										<table class="table table-bordered">
 											<thead id="affectedDelay">
-												<th colspan = '5'>Affected Post-Requisites</th>
+												<th colspan = '5'>Affected Tasks</th>
 												<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
 												<tr id="affectedDelayHeader">
-													<th width="1%"></th>
-													<th width="35%">Task</th>
-													<th width="20%" class="text-center">Start Date</th>
-													<th width="20%" class="text-center">Possible Start Date</th>
-													<th width="24%">Responsible</th>
-												</tr>
-	                    </thead>
-	                    <tbody id="affectedDelayHistory">
-	                    </tbody>
-                  	</table>
-
-										<table class="table table-bordered">
-											<thead id="unaffectedDelay">
-												<th colspan = '5'>Unaffected Post-Requisites</th>
-												<tr class='text-center'><td id="unaffectedTitle" colspan='5'></td></tr>
-												<tr id="unaffectedDelayHeader">
 													<th width="1%"></th>
 													<th width="35%">Task</th>
 													<th width="20%" class="text-center">Start Date</th>
@@ -305,7 +289,7 @@
 													<th width="24%">Responsible</th>
 												</tr>
 	                    </thead>
-	                    <tbody id="unaffectedDelayHistory">
+	                    <tbody id="affectedDelayData">
 	                    </tbody>
                   	</table>
 									</div>
@@ -387,6 +371,69 @@
 
 				if($isDelayed == 'true'){
 					$("#tabDelay").show();
+
+					// DELAY
+
+					$.ajax({
+		 			 type:"POST",
+		 			 url: "<?php echo base_url("index.php/controller/getDelayEffect"); ?>",
+		 			 data: {task_ID: $taskID},
+		 			 dataType: 'json',
+		 			 success:function(affectedTasks)
+		 			 {
+						 console.log(affectedTasks);
+
+						 $('#affectedTitle').hide();
+						 $('#affectedDelayData').html("");
+
+						 if(affectedTasks.length > 0)
+						 {
+	 						 var d = new Date();
+
+	 						 var month = d.getMonth()+1;
+	 					   var day = d.getDate();
+
+	 						 var currDate = d.getFullYear() + '-' +
+	 							    ((''+month).length<2 ? '0' : '') + month + '-' +
+	 							    ((''+day).length<2 ? '0' : '') + day;
+
+							 for(i=0; i < affectedTasks.length; i++)
+							 {
+								 if(affectedTasks[i].taskStatus == "Complete")
+								 {
+									 var status = "<td class='bg-teal'></td>";
+								 }
+								 if(affectedTasks[i].taskStatus == "Planning")
+								 {
+									 var status = "<td class='bg-yellow'></td>";
+								 }
+								 if(affectedTasks[i].taskStatus == "Ongoing")
+								 {
+									 if(currDate > affectedTasks[i].endDate)
+										 var status = "<td class='bg-red'></td>";
+									 else
+										 var status = "<td class='bg-green'></td>";
+								 }
+
+								 $('#affectedDelayData').append(
+												"<tr>" + status +
+												"<td>" + affectedTasks[i].taskTitle+"</td>"+
+												"<td align='center'><span style='color:gray'><strike>" + moment(affectedTasks[i].startDate).format('MMM DD, YYYY') + "</strike></span><br>" + moment(affectedTasks[i].newStartDate).format('MMM DD, YYYY') + "</td>"+
+												"<td align='center'><span style='color:gray'><strike>" + moment(affectedTasks[i].endDate).format('MMM DD, YYYY') + "</strike></span><br>" + moment(affectedTasks[i].newEndDate).format('MMM DD, YYYY') + "</td>"+
+												"<td>" + affectedTasks[i].responsible + "</td></tr>");
+							 }
+						 }
+						else
+						{
+							$("#affectedDelayData").html("<tr><td colspan='5' align='center'>There are no post-requisite tasks that will be affected</td></tr>")
+ 							$("#affectedDelay").hide();
+						}
+					 },
+					 error:function()
+		 			 {
+		 				 alert("There was a problem in retrieving the task details");
+		 			 }
+		 			});
 
 				} else {
 					$("#tabDelay").hide();

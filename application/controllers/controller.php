@@ -4636,72 +4636,97 @@ class controller extends CI_Controller
 		 // }
 	}
 
-	// public function getDelayEffect()
-	// {
-	// 	$taskID = $this->input->post("task_ID");
-	// 	$task = $this->model->getTaskByID($taskID);
-	// 	$taskPostReqs = $this->model->getPostDependenciesByTaskID($taskID);
-	//
-	// 	$postReqsToCheck = array();
-	//
-	// 	// if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
-	// 	// {
-	// 	// 	$postReqsToCheck[] = $taskID; // add requested task to array
-	// 	// 	$i = 0; // set counter
-	// 	// 	// $currDate = date("mm-dd-YYYY");
-	// 	//
-	// 	// 	while(COUNT($postReqsToCheck) > 0) // loop while array is not empty/there are postreqs to check
-	// 	// 	{
-	// 	// 		$currTask = $this->model->getTaskByID($postReqsToCheck[$i]); // get current task data
-	// 	// 		// if($currTask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-	// 	// 		// 	$endDate = $currTask['TASKENDDATE'];
-	// 	// 		// else
-	// 	// 		// 	$endDate = $currTask['TASKADJUSTEDENDDATE'];
-	// 	//
-	// 	// 		$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToCheck[$i]); // get post reqs of current task
-	// 	// 		if(COUNT($postReqs) > 0) // if there are post reqs found
-	// 	// 		{
-	// 	// 			foreach($postReqs as $postReq)
-	// 	// 			{
-	// 	// 				// $startDate = $postReq['TASKSTARTDATE'];
-	// 	// 				//
-	// 	// 				// if($endDate >= $startDate) //check if currTasks's end date will exceed the postreq's start date
-	// 	// 				// {
-	// 	// 				// 	if($postReq['TASKADJUSTEDSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
-	// 	// 				// 		$taskDuration = $postReq['adjustedTaskDuration2'];
-	// 	// 				// 	elseif($postReq['TASKSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
-	// 	// 				// 		$taskDuration = $postReq['adjustedTaskDuration1'];
-	// 	// 				// 	else
-	// 	// 				// 		$taskDuration = $postReq['initialTaskDuration'];
-	// 	// 				//
-	// 	// 				// 	$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
-	// 	// 				// 	$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
-	// 	// 				//
-	// 	// 				// 	$postTaskData = array(
-	// 	// 				// 		'TASKADJUSTEDSTARTDATE' => $new_start,
-	// 	// 				// 		'TASKADJUSTEDENDDATE' => $new_end
-	// 	// 				// 	);
-	// 	// 				// 	$this->model->updateTaskDates($postReq['TASKID'], $postTaskData); //save adjusted dates
-	// 	// 				// }
-	// 	// 				array_push($postReqsToCheck, $postReq['TASKID']); // save task to array for checking
-	// 	// 			}
-	// 	// 		}
-	// 	// 		// unset($postReqsToCheck[$i]); // remove current task from array
-	// 	// 		$i++; // increase counter
-	// 	// 	}
-	// 	// }
-	// 	// else // if no post requisite tasks
-	// 	// {
-	// 	// }
-	// 	$postReqsToCheck[] = array("id" => "123",
-	// 								 "username" => "321",
-	// 								 "name" => "andre",
-	// 								 "email" => "email");
-	// 	 $postReqsToCheck[] = array("id" => "1321",
- 	// 								 "username" => "123",
- 	// 								 "name" => "gonzaga",
- 	// 								 "email" => "@yahoo");
-	// 	echo json_encode($postReqsToCheck);
-	// }
+	public function getDelayEffect()
+	{
+		$taskID = $this->input->post("task_ID");
+		$task = $this->model->getTaskByID($taskID);
+		$taskPostReqs = $this->model->getPostDependenciesByTaskID($taskID);
+
+		$affectedTasks = array();
+
+		// if($changeRequest['NEWSTARTDATE'] == "")
+		// {
+		// 	$taskData = array(
+		// 		'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
+		// 	);
+		// }
+		// else
+		// {
+		// 	$taskData = array(
+		// 		'TASKADJUSTEDSTARTDATE' => $changeRequest['NEWSTARTDATE'],
+		// 		'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
+		// 	);
+		// }
+		// $this->model->updateTaskDates($taskID, $taskData); //save adjusted dates of requested task
+
+		if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
+		{
+			$postReqsToAdjust = array();
+			$postReqsToAdjust[] = $taskID; // add requested task to array
+			$i = 0; // set counter
+			while(COUNT($postReqsToAdjust) > 0) // loop while array is not empty/there are postreqs to check
+			{
+				// $currTask = $this->model->getTaskByID($postReqsToAdjust[$i]); // get current task data
+				// if($currTask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+				// 	$endDate = $currTask['TASKENDDATE'];
+				// else
+				// 	$endDate = $currTask['TASKADJUSTEDENDDATE'];
+
+				$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
+
+				if(COUNT($postReqs) > 0) // if there are post reqs found
+				{
+					foreach($postReqs as $postReq)
+					{
+						$startDate = $postReq['TASKSTARTDATE'];
+						$endDate = $postReq['currDate'];
+
+						if($endDate >= $startDate) //check if currTasks's end date will exceed the postreq's start date
+						{
+							if($postReq['TASKADJUSTEDSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+								$taskDuration = $postReq['adjustedTaskDuration2'];
+							elseif($postReq['TASKSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+								$taskDuration = $postReq['adjustedTaskDuration1'];
+							else
+								$taskDuration = $postReq['initialTaskDuration'];
+
+							if($postReq['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+								$currTaskEnd = $postReq['TASKENDDATE'];
+							else
+								$currTaskEnd = $postReq['TASKADJUSTEDENDDATE'];
+
+							$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
+							$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
+
+							// $postTaskData = array(
+							// 	'TASKADJUSTEDSTARTDATE' => $new_start,
+							// 	'TASKADJUSTEDENDDATE' => $new_end
+							// );
+
+							$affectedTasks[] = array("id" => $postReq['TASKID'],
+																		"taskTitle" => $postReq['TASKTITLE'],
+																		"taskStatus" => $postReq['TASKSTATUS'],
+								                    "startDate" => $postReq['TASKSTARTDATE'],
+								                    "newStartDate" => $new_start,
+								                    "endDate" => $currTaskEnd,
+																		"newEndDate" => $new_end,
+																		"responsible" => $postReq['FIRSTNAME'] . " " . $postReq['LASTNAME']);
+
+							// $this->model->updateTaskDates($postReq['TASKID'], $postTaskData); //save adjusted dates
+						}
+						array_push($postReqsToAdjust, $postReq['TASKID']); // save task to array for checking
+					}
+				}
+				unset($postReqsToAdjust[$i]); // remove current task from array
+				$i++; // increase counter
+			}
+		}
+		else // if no post requisite tasks
+		{
+
+		}
+
+		echo json_encode($affectedTasks);
+	}
 
 }
