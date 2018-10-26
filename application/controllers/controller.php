@@ -4663,4 +4663,95 @@ class controller extends CI_Controller
 			//  echo $error['error'];
 		 // }
 	}
+
+	public function getDelayEffect()
+	{
+		$taskID = $this->input->post("task_ID");
+		$task = $this->model->getTaskByID($taskID);
+		$taskPostReqs = $this->model->getPostDependenciesByTaskID($taskID);
+
+		$affectedTasks = array();
+
+		if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
+		{
+			$postReqsToAdjust = array();
+			$postReqsToAdjust[] = $taskID; // add requested task to array
+			$i = 0; // set counter
+			while(COUNT($postReqsToAdjust) > 0) // loop while array is not empty/there are postreqs to check
+			{
+				$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
+
+				if(COUNT($postReqs) > 0) // if there are post reqs found
+				{
+					foreach($postReqs as $postReq)
+					{
+						$startDate = $postReq['TASKSTARTDATE'];
+						$endDate = $postReq['currDate'];
+
+						if($endDate >= $startDate) //check if currTasks's end date will exceed the postreq's start date
+						{
+							if($postReq['TASKADJUSTEDSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+								$taskDuration = $postReq['adjustedTaskDuration2'];
+							elseif($postReq['TASKSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+								$taskDuration = $postReq['adjustedTaskDuration1'];
+							else
+								$taskDuration = $postReq['initialTaskDuration'];
+
+							if($postReq['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+								$currTaskEnd = $postReq['TASKENDDATE'];
+							else
+								$currTaskEnd = $postReq['TASKADJUSTEDENDDATE'];
+
+							$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
+							$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
+
+							foreach($affectedTasks as $affectedTask)
+							{
+								if($affectedTask['id'] == $postReqsToAdjust[$i])
+								{
+									$new_start = date('Y-m-d', strtotime($affectedTask['newEndDate'] . ' +1 day'));
+									$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day'));
+								}
+							}
+
+							$affectedTasks[] = array("id" => $postReq['TASKID'],
+																		"taskTitle" => $postReq['TASKTITLE'],
+																		"taskStatus" => $postReq['TASKSTATUS'],
+								                    "startDate" => $postReq['TASKSTARTDATE'],
+								                    "newStartDate" => $new_start,
+								                    "endDate" => $currTaskEnd,
+																		"newEndDate" => $new_end,
+																		"responsible" => $postReq['FIRSTNAME'] . " " . $postReq['LASTNAME']);
+
+						}
+						array_push($postReqsToAdjust, $postReq['TASKID']); // save task to array for checking
+					}
+				}
+				unset($postReqsToAdjust[$i]); // remove current task from array
+				$i++; // increase counter
+			}
+		}
+
+		// ARRAY CLEAN UP
+		$index = 0;
+		foreach($affectedTasks as $affectedTask1)
+		{
+			$doubleCount = 0;
+			foreach($affectedTasks as $affectedTask2)
+			{
+				if($affectedTask1['id'] == $affectedTask2['id'])
+				{
+					$doubleCount++;
+					if($doubleCount >= 2)
+					{
+						$affectedTasks[$index] = array("id" => null);
+					}
+				}
+			}
+			$index++;
+		}
+
+		echo json_encode($affectedTasks);
+	}
+
 }
