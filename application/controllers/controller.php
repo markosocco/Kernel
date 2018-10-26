@@ -2617,208 +2617,298 @@ class controller extends CI_Controller
 
 	public function addMainActivities()
 	{
-		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
-
-		$this->load->library('form_validation');
-
-		$this->form_validation->set_rules('projectTitle', 'Project Title', 'required');
-		$this->form_validation->set_rules('projectDetails', 'Project Details', 'required');
-		$this->form_validation->set_rules('startDate', 'Start Date', 'required');
-		$this->form_validation->set_rules('endDate', 'End Date', 'required');
-
-		if ($this->form_validation->run() == FALSE)
+		if (isset($_SESSION['USERID']))
 		{
-			$this->session->set_flashdata('projectTitle', $this->input->post('projectTitle'));
-			$this->session->set_flashdata('projectDetails', $this->input->post('projectDetails'));
-			$this->session->set_flashdata('startDate', $this->input->post('startDate'));
-			$this->session->set_flashdata('endDate', $this->input->post('endDate'));
+			// CHECKS IF PROJECT HAS STARTED TO SET STATUS
 
-			$this->session->set_flashdata('danger', 'alert');
-			$this->session->set_flashdata('alertMessage', ' All fields are required');
+			$this->load->library('form_validation');
 
-			$this->load->view('addProjectDetails');
-		}
+			$this->form_validation->set_rules('projectTitle', 'Project Title', 'required');
+			$this->form_validation->set_rules('projectDetails', 'Project Details', 'required');
+			$this->form_validation->set_rules('startDate', 'Start Date', 'required');
+			$this->form_validation->set_rules('endDate', 'End Date', 'required');
 
-		else
-		{
-			if ($this->input->post('isImport') == 1)
+			if ($this->form_validation->run() == FALSE)
 			{
-				$config['upload_path'] = './assets/uploads/templates';
-		 	 	$config['allowed_types'] = 'xlsx|csv|xls';
-		 	 	$config['max_size'] = '10000000';
-		 	 	$this->load->library('upload', $config);
-		 	 	$this->upload->initialize($config);
+				$this->session->set_flashdata('projectTitle', $this->input->post('projectTitle'));
+				$this->session->set_flashdata('projectDetails', $this->input->post('projectDetails'));
+				$this->session->set_flashdata('startDate', $this->input->post('startDate'));
+				$this->session->set_flashdata('endDate', $this->input->post('endDate'));
 
-		 	 	if (!$this->upload->do_upload('uploadFile'))
-		 	 	{
-					$error = array('error' => $this->upload->display_errors());
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', ' All fields are required');
 
-					 $this->session->set_flashdata('projectTitle', $this->input->post('projectTitle'));
-					 $this->session->set_flashdata('projectDetails', $this->input->post('projectDetails'));
-					 $this->session->set_flashdata('startDate', $this->input->post('startDate'));
-					 $this->session->set_flashdata('endDate', $this->input->post('endDate'));
-
-					 $this->session->set_flashdata('danger', 'alert');
-					 $this->session->set_flashdata('alertMessage', $error['error']);
-
-			 		 redirect('controller/addProjectDetails');
-		 	 	}
-
-			 	 else
-			 	 {
-					 $startDate = $this->input->post('startDate');
-					 date_default_timezone_set("Singapore");
-					 $currDate = date("Y-m-d");
-
-					 if ($currDate >= $startDate)
-					 {
-					   $status = 'Ongoing';
-					 }
-
-					 else
-					 {
-					   $status = 'Drafted';
-					 }
-
-					 $data = array(
-					     'PROJECTTITLE' => $this->input->post('projectTitle'),
-					     'PROJECTSTARTDATE' => $startDate,
-					     'PROJECTENDDATE' => $this->input->post('endDate'),
-					     'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
-					     'PROJECTSTATUS' => $status,
-					     'users_USERID' => $_SESSION['USERID'],
-					     'DATECREATED' => $currDate
-					 );
-
-					 $sDate = date_create($startDate);
-					 $eDate = date_create($this->input->post('endDate'));
-					 $diff = date_diff($eDate, $sDate, true);
-					 $dateDiff = $diff->format('%R%a');
-
-					 // PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
-					 $data['project'] = $this->model->addProject($data);
-					 $data['dateDiff'] =$dateDiff;
-					 $data['departments'] = $this->model->getAllDepartments();
-
-					 $projectID = $data['project']['PROJECTID'];
-
-					 if ($data)
-					 {
-					   // TODO PUT ALERT
-
-					   // START OF LOGS/NOTIFS
-					   $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-					   $projectID = $data['project']['PROJECTID'];
-
-					   // START: LOG DETAILS
-					   $details = $userName . " created this project.";
-
-					   $logData = array (
-					     'LOGDETAILS' => $details,
-					     'TIMESTAMP' => date('Y-m-d H:i:s'),
-					     'projects_PROJECTID' => $projectID
-					   );
-
-					   $this->model->addToProjectLogs($logData);
-					   // END: LOG DETAILS
-
-					   $progressData = array(
-					     'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
-					     'DATE' => date('Y-m-d'),
-					     'COMPLETENESS' => 0,
-					     'TIMELINESS' => 0
-					   );
-
-					   $this->model->addAssessmentProject($progressData);
-
-						 $data = array('upload_data' => $this->upload->data());
-					   $path = './assets/uploads/templates/';
-
-					   $import_xls_file = $data['upload_data']['file_name'];
-					   $inputFileName = $path . $import_xls_file;
-					   $sheetname = 'Sheet1';
-
-						 try
-					   {
-					    $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
-					    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
-					    $reader->setLoadSheetsOnly($sheetname);
-					    $spreadsheet = $reader->load($inputFileName);
-					    $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
-
-					    $flag = true;
-					    $i=0;
-
-					    foreach ($worksheet as $value)
-					    {
-					      if($flag)
-					      {
-					        $flag =false;
-					        continue;
-					      }
-
-					      $insertData[$i]['TASKTITLE'] = $value['A'];
-					      $insertData[$i]['TASKSTARTDATE'] = $value['B'];
-					      $insertData[$i]['TASKENDDATE'] = $value['C'];
-					      $insertData[$i]['TASKSTATUS'] = $value['D'];
-								$insertData[$i]['TASKREMARKS'] = $value['E'];
-					      $insertData[$i]['CATEGORY'] = $value['F'];
-					      $insertData[$i]['projects_PROJECTID'] = $projectID;
-
-					      if ($value['G'] != 'NULL')
-					      {
-					        $insertData[$i]['tasks_TASKPARENT'] = $value['G'];
-					      }
-
-					      $i++;
-					    }
-
-					    $result = $this->model->importData($insertData);
-
-					    if ($result)
-					    {
-								$data['projectProfile'] = $this->model->getProjectByID($projectID);
-								$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-								$data['dependencies'] = $this->model->getDependenciesByProject($projectID);
-								$data['users'] = $this->model->getAllUsers();
-								$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
-								$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
-								$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
-								$data['informed'] = $this->model->getAllInformedByProject($projectID);
-
-								$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
-								$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
-								$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
-								$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
-
-								// foreach ($data['ganttData'] as $key => $value) {
-								// 	echo $value['tasks_TASKID'] . " parent is ";
-								// 	echo $value['tasks_TASKPARENT'] . "<br>";
-								// }
-
-								$this->load->view("projectGantt", $data);
-					    }
-
-					    else
-					    {
-					      echo "failed";
-					    }
-					  }
-
-						catch (Exception $e)
-					  {
-					     die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME)
-					              . '": ' .$e->getMessage());
-					  }
-					 }
-			 	 }
+				$this->load->view('addProjectDetails');
 			}
 
 			else
 			{
-					echo "normal";
+				if ($this->input->post('isImport') == 1)
+				{
+					$config['upload_path'] = './assets/uploads/templates';
+			 	 	$config['allowed_types'] = 'xlsx|csv|xls';
+			 	 	$config['max_size'] = '10000000';
+			 	 	$this->load->library('upload', $config);
+			 	 	$this->upload->initialize($config);
+
+			 	 	if (!$this->upload->do_upload('uploadFile'))
+			 	 	{
+						$error = array('error' => $this->upload->display_errors());
+
+						 $this->session->set_flashdata('projectTitle', $this->input->post('projectTitle'));
+						 $this->session->set_flashdata('projectDetails', $this->input->post('projectDetails'));
+						 $this->session->set_flashdata('startDate', $this->input->post('startDate'));
+						 $this->session->set_flashdata('endDate', $this->input->post('endDate'));
+
+						 $this->session->set_flashdata('danger', 'alert');
+						 $this->session->set_flashdata('alertMessage', $error['error']);
+
+				 		 redirect('controller/addProjectDetails');
+			 	 	}
+
+				 	 else
+				 	 {
+						 $startDate = $this->input->post('startDate');
+						 date_default_timezone_set("Singapore");
+						 $currDate = date("Y-m-d");
+
+						 if ($currDate >= $startDate)
+						 {
+						   $status = 'Ongoing';
+						 }
+
+						 else
+						 {
+						   $status = 'Drafted';
+						 }
+
+						 $data = array(
+						     'PROJECTTITLE' => $this->input->post('projectTitle'),
+						     'PROJECTSTARTDATE' => $startDate,
+						     'PROJECTENDDATE' => $this->input->post('endDate'),
+						     'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
+						     'PROJECTSTATUS' => $status,
+						     'users_USERID' => $_SESSION['USERID'],
+						     'DATECREATED' => $currDate
+						 );
+
+						 $sDate = date_create($startDate);
+						 $eDate = date_create($this->input->post('endDate'));
+						 $diff = date_diff($eDate, $sDate, true);
+						 $dateDiff = $diff->format('%R%a');
+
+						 // PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
+						 $data['project'] = $this->model->addProject($data);
+						 $data['dateDiff'] =$dateDiff;
+						 $data['departments'] = $this->model->getAllDepartments();
+
+						 $projectID = $data['project']['PROJECTID'];
+
+						 if ($data)
+						 {
+						   // TODO PUT ALERT
+
+						   // START OF LOGS/NOTIFS
+						   $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+						   $projectID = $data['project']['PROJECTID'];
+
+						   // START: LOG DETAILS
+						   $details = $userName . " created this project.";
+
+						   $logData = array (
+						     'LOGDETAILS' => $details,
+						     'TIMESTAMP' => date('Y-m-d H:i:s'),
+						     'projects_PROJECTID' => $projectID
+						   );
+
+						   $this->model->addToProjectLogs($logData);
+						   // END: LOG DETAILS
+
+						   $progressData = array(
+						     'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
+						     'DATE' => date('Y-m-d'),
+						     'COMPLETENESS' => 0,
+						     'TIMELINESS' => 0
+						   );
+
+						   $this->model->addAssessmentProject($progressData);
+
+							 $data = array('upload_data' => $this->upload->data());
+						   $path = './assets/uploads/templates/';
+
+						   $import_xls_file = $data['upload_data']['file_name'];
+						   $inputFileName = $path . $import_xls_file;
+						   $sheetname = 'Sheet1';
+
+							 try
+						   {
+						    $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+						    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+						    $reader->setLoadSheetsOnly($sheetname);
+						    $spreadsheet = $reader->load($inputFileName);
+						    $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+						    $flag = true;
+						    $i=0;
+
+						    foreach ($worksheet as $value)
+						    {
+						      if($flag)
+						      {
+						        $flag =false;
+						        continue;
+						      }
+
+						      $insertData[$i]['TASKTITLE'] = $value['A'];
+						      $insertData[$i]['TASKSTARTDATE'] = $value['B'];
+						      $insertData[$i]['TASKENDDATE'] = $value['C'];
+						      $insertData[$i]['TASKSTATUS'] = $value['D'];
+									$insertData[$i]['TASKREMARKS'] = $value['E'];
+						      $insertData[$i]['CATEGORY'] = $value['F'];
+						      $insertData[$i]['projects_PROJECTID'] = $projectID;
+
+						      if ($value['G'] != 'NULL')
+						      {
+						        $insertData[$i]['tasks_TASKPARENT'] = $value['G'];
+						      }
+
+						      $i++;
+						    }
+
+						    $result = $this->model->importData($insertData);
+
+						    if ($result)
+						    {
+									$data['projectProfile'] = $this->model->getProjectByID($projectID);
+									$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+									$data['dependencies'] = $this->model->getDependenciesByProject($projectID);
+									$data['users'] = $this->model->getAllUsers();
+									$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
+									$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
+									$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
+									$data['informed'] = $this->model->getAllInformedByProject($projectID);
+
+									$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
+									$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
+									$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+									$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+
+									// foreach ($data['ganttData'] as $key => $value) {
+									// 	echo $value['tasks_TASKID'] . " parent is ";
+									// 	echo $value['tasks_TASKPARENT'] . "<br>";
+									// }
+
+									$this->load->view("projectGantt", $data);
+						    }
+
+						    else
+						    {
+						      echo "failed";
+						    }
+						  }
+
+							catch (Exception $e)
+						  {
+						     die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME)
+						              . '": ' .$e->getMessage());
+						  }
+						 }
+				 	 }
+				}
+
+				else
+				{
+					$startDate = $this->input->post('startDate');
+					date_default_timezone_set("Singapore");
+					$currDate = date("Y-m-d");
+
+					if ($currDate >= $startDate)
+					{
+						$status = 'Ongoing';
+					}
+
+					else
+					{
+						$status = 'Drafted';
+					}
+
+					$data = array(
+							'PROJECTTITLE' => $this->input->post('projectTitle'),
+							'PROJECTSTARTDATE' => $startDate,
+							'PROJECTENDDATE' => $this->input->post('endDate'),
+							'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
+							'PROJECTSTATUS' => $status,
+							'users_USERID' => $_SESSION['USERID'],
+							'DATECREATED' => $currDate
+					);
+
+					$sDate = date_create($startDate);
+					$eDate = date_create($this->input->post('endDate'));
+					$diff = date_diff($eDate, $sDate, true);
+					$dateDiff = $diff->format('%R%a');
+
+					// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
+					$data['project'] = $this->model->addProject($data);
+					$data['dateDiff'] =$dateDiff;
+					$data['departments'] = $this->model->getAllDepartments();
+
+					if ($data)
+					{
+						// TODO PUT ALERT
+
+						// START OF LOGS/NOTIFS
+						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+						$projectID = $data['project']['PROJECTID'];
+
+						// START: LOG DETAILS
+						$details = $userName . " created this project.";
+
+						$logData = array (
+							'LOGDETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'projects_PROJECTID' => $projectID
+						);
+
+						$this->model->addToProjectLogs($logData);
+						// END: LOG DETAILS
+
+						$progressData = array(
+							'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
+							'DATE' => date('Y-m-d'),
+							'COMPLETENESS' => 0,
+							'TIMELINESS' => 0
+						);
+
+						$this->model->addAssessmentProject($progressData);
+
+						$templates = $this->input->post('templates');
+
+						if (isset($templates))
+						{
+							$this->session->set_flashdata('templates', $templates);
+
+							$data['templateProject'] = $this->model->getProjectByID($templates);
+							$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+							$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+							$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+							$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+							$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
+							$data['templateRaci'] = $this->model->getRaci($templates);
+							$data['templateUsers'] = $this->model->getAllUsers();
+						}
+
+							$this->load->view('addMainActivities', $data);
+					}
+				}
 			}
+		}
+
+		else
+		{
+			// TODO PUT ALERT
+			redirect('controller/restrictedAccess');
 		}
 	}
 

@@ -172,7 +172,7 @@
 						</div>
 						<div id="uploadDiv">
 						<div class="modal-body">
-							<a href="http://localhost/Kernel/assets/uploads/importTemplate.xlsx" download>Download the Template here</a>
+							<a href="http://localhost/Kernel/assets/uploads/templates/importTemplate.xlsx" download>Download the Template here</a>
 							<div class="form-group">
 								<label for="uploadDoc">Select an Excel file to upload</label>
 								<input type="file" id="uploadFile" name="uploadFile">
