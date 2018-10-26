@@ -587,8 +587,8 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
-			$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
-			// $data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			// $data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
+			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
 			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
 
 			// foreach($data['departments'] as $d)

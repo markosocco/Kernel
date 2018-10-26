@@ -1712,7 +1712,7 @@ class model extends CI_Model
   public function getAllTasksForAllOngoingProjects($id)
   {
     $condition = "users.USERID = " . $id . " && raci.STATUS = 'Current' && raci.ROLE = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Parked' && projects.PROJECTSTATUS != 'Drafted'";
-    $this->db->select('*');
+    $this->db->select('*, CURDATE() as "currDate"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
     $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
