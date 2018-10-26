@@ -51,7 +51,7 @@
 
 						<?php else: ?>
 							<!-- <?php echo form_open_multipart('controller/addMainActivities');?> -->
-							<form action="addMainActivities" method="post" enctype="multipart/form-data">
+							<form action="addMainActivities" id="newProjectForm" method="post" enctype="multipart/form-data">
 							<!-- <form role="form" name = "addProject" id = "addProject" action = "addMainActivities" method = "POST"> -->
 						<?php endif; ?>
 							<?php if (isset($_SESSION['templates'])): ?>
@@ -61,8 +61,9 @@
                 <div class="form-group">
                   <label>Project Title</label>
 									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
-
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" value ="<?php echo $project['PROJECTTITLE']; ?>" required>
+									<?php elseif (isset($_SESSION['projectTitle'])): ?>
+										<input type="text" class="form-control" id="projectTitle" name="projectTitle" value="<?php echo $_SESSION['projectTitle']; ?>" required>
 									<?php else: ?>
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
 									<?php endif; ?>
@@ -71,6 +72,8 @@
 									<label>Project Details</label>
 									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required><?php echo $project['PROJECTDESCRIPTION']; ?></textarea>
+									<?php elseif (isset($_SESSION['projectDetails'])): ?>
+										<textarea class="form-control" rows="5" name="projectDetails"required><?php echo $_SESSION['projectDetails']; ?></textarea>
 									<?php else: ?>
 										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
 									<?php endif; ?>
@@ -86,6 +89,8 @@
 			                  </div>
 												<?php if (isset($_SESSION['edit'])): ?>
 													<input type="text" class="form-control pull-right" id="startDate" name="startDate" value="<?php echo $project['PROJECTSTARTDATE']; ?>" required>
+												<?php elseif (isset($_SESSION['startDate'])): ?>
+													<input type="text" class="form-control pull-right" id="startDate" name="startDate" value="<?php echo $_SESSION['startDate']; ?>" required>
 												<?php else: ?>
 													<input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
 												<?php endif; ?>
@@ -102,6 +107,8 @@
 			                  </div>
 												<?php if (isset($_SESSION['edit'])): ?>
 													<input type="text" class="form-control pull-right" id="endDate" name ="endDate" value="<?php echo $project['PROJECTENDDATE']; ?>" required>
+												<?php elseif (isset($_SESSION['endDate'])): ?>
+													<input type="text" class="form-control pull-right" id="startDate" name="endDate" value="<?php echo $_SESSION['endDate']; ?>" required>
 												<?php else: ?>
 													<input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
 												<?php endif; ?>
@@ -150,7 +157,7 @@
 								</button>
 								<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-uploadExcel" style="margin-right: 2%"><i class="fa fa-file-excel-o"></i> Import from Spreadsheet</button>
               </div>
-            </form>
+
           </div>
 
 		    </section>
@@ -168,13 +175,14 @@
 							<a href="http://localhost/Kernel/assets/uploads/importTemplate.xlsx" download>Download the Template here</a>
 							<div class="form-group">
 								<label for="uploadDoc">Select an Excel file to upload</label>
-								<input type="file" id="upload" name="document">
+								<input type="file" id="uploadFile" name="uploadFile">
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
 							<button  id="uploadConfirm" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
 						</div>
+						</form>
 					</div>
 
 					<!-- CONFIRM UPLOAD -->
@@ -203,15 +211,10 @@
 
 			$("#confirmUpload").hide();
 
-			// $(document).on("click", "#confirmUploadBtn", function()
-			// {
-			// 	$("form_open_multipart").submit();
-			// });
-
 			$("#confirmUploadBtn").click(function()
 			{
-				// alert("hello");
-				$("form").submit();
+				$("#newProjectForm").append("<input type='hidden' name='isImport' value= 1>");
+				$("#newProjectForm").submit();
 			});
 
 			$("body").on('click','#uploadConfirm',function()
