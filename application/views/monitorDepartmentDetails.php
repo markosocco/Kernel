@@ -167,7 +167,6 @@
 										<td><?php echo $task['TASKTITLE'];?></td>
 										<td align='center'><?php echo date_format($startDate, "M d, Y");?></td>
 										<td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
-                    <!-- <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td> -->
 										<td>
 											<?php foreach ($raci as $raciRow): ?>
 												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
@@ -388,106 +387,6 @@
 
 				if($isDelayed == 'true'){
 					$("#tabDelay").show();
-
-					// DELAY
-
-					$.ajax({
-		 			 type:"POST",
-		 			 url: "<?php echo base_url("index.php/controller/getPostDependenciesByTaskID"); ?>",
-		 			 data: {task_ID: $taskID},
-		 			 dataType: 'json',
-		 			 success:function(postReqData)
-		 			 {
- 						 $('#unaffectedTitle').hide();
-						 $('#affectedTitle').hide();
-						 $('#affectedDelayHistory').html("");
-						 $('#unaffectedDelayHistory').html("");
-						 var withAffected = false;
-						 var withUnaffected = false;
-
-						 if(postReqData['dependencies'].length > 0)
-						 {
-						 	for(i=0; i<postReqData['dependencies'].length; i++)
-						 	{
-								var currentDate = moment(postReqData['dependencies'][i].currDate).format('MMM DD, YYYY');
-					 			var taskStart = moment(postReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
-					 			var startDate = postReqData['dependencies'][i].TASKSTARTDATE;
-
-						 		if(postReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if end date has been previously adjusted
-						 		{
-						 			var taskEnd = moment(postReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
-						 			var endDate = postReqData['dependencies'][i].TASKENDDATE;
-						 		}
-						 		else
-						 		{
-						 			var taskEnd = moment(postReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
-						 			var endDate = postReqData['dependencies'][i].TASKADJUSTEDENDDATE;
-						 		}
-
-						 		if(postReqData['dependencies'][i].TASKSTATUS == "Complete")
-						 		{
-						 			var status = "<td class='bg-teal'></td>";
-						 		}
-						 		if(postReqData['dependencies'][i].TASKSTATUS == "Planning")
-						 		{
-						 			var status = "<td class='bg-yellow'></td>";
-						 		}
-						 		if(postReqData['dependencies'][i].TASKSTATUS == "Ongoing")
-						 		{
-						 			if(postReqData['dependencies'][i].currDate > endDate)
-						 				var status = "<td class='bg-red'></td>";
-						 			else
-						 				var status = "<td class='bg-green'></td>";
-						 		}
-
-								if(postReqData['dependencies'][i].currDate <= startDate)
-								{
-									withUnaffected = true;
-									$('#unaffectedDelayHistory').append(
-												 "<tr>" + status +
-												 "<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
-												 "<td align='center'>" + taskStart+"</td>"+
-												 "<td align='center'>" + taskEnd +"</td>" +
-												 "<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
-								}
-								else
-								{
-									withAffected = true;
-									$('#affectedDelayHistory').append(
-												 "<tr>" + status +
-												 "<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
-												 "<td align='center'>" + taskStart+"</td>"+
-												 "<td align='center'>" + currentDate +"</td>" +
-												 "<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
-								}
-							}
-
-							if(!withAffected)
-							{
-								$('#affectedTitle').html("There are no affected post-requisites");
-								$('#affectedDelayHeader').hide();
-								$('#affectedTitle').show();
-							}
-							if(!withUnaffected)
-							{
-								$('#unaffectedTitle').html("There are no unaffected post-requisites");
-								$('#unaffectedDelayHeader').hide();
-								$('#unaffectedTitle').show();
-							}
-						}
-						else
-						{
-							$("#affectedDelayHistory").html("<tr><td colspan='5' align='center'>There are no post-requisite tasks that will be affected</td></tr>")
- 							$("#affectedDelay").hide();
- 							$("#unaffectedDelay").hide();
-						}
-					 },
-					 error:function()
-		 			 {
-		 				 alert("There was a problem in retrieving the task details");
-		 			 }
-		 			});
-
 
 				} else {
 					$("#tabDelay").hide();
