@@ -279,7 +279,7 @@
 									<div id="divDelay" class="divDetails">
 										<table class="table table-bordered">
 											<thead id="affectedDelay">
-												<th colspan = '5'>Affected Tasks</th>
+												<th colspan = '5'>Affected Tasks Projection</th>
 												<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
 												<tr id="affectedDelayHeader">
 													<th width="1%"></th>
@@ -366,14 +366,12 @@
 				$("#divDependency").show();
 
 				var $taskID = $(this).attr('data-id');
-				alert($taskID);
 				var $isDelayed = $(this).attr('data-delay');
 
 				if($isDelayed == 'true'){
 					$("#tabDelay").show();
 
 					// DELAY
-
 					$.ajax({
 		 			 type:"POST",
 		 			 url: "<?php echo base_url("index.php/controller/getDelayEffect"); ?>",
@@ -381,46 +379,46 @@
 		 			 dataType: 'json',
 		 			 success:function(affectedTasks)
 		 			 {
-						 console.log(affectedTasks);
-
 						 $('#affectedTitle').hide();
 						 $('#affectedDelayData').html("");
 
 						 if(affectedTasks.length > 0)
 						 {
 	 						 var d = new Date();
-
 	 						 var month = d.getMonth()+1;
 	 					   var day = d.getDate();
-
 	 						 var currDate = d.getFullYear() + '-' +
 	 							    ((''+month).length<2 ? '0' : '') + month + '-' +
 	 							    ((''+day).length<2 ? '0' : '') + day;
 
 							 for(i=0; i < affectedTasks.length; i++)
 							 {
-								 if(affectedTasks[i].taskStatus == "Complete")
+								 if(affectedTasks[i].id != null)
 								 {
-									 var status = "<td class='bg-teal'></td>";
-								 }
-								 if(affectedTasks[i].taskStatus == "Planning")
-								 {
-									 var status = "<td class='bg-yellow'></td>";
-								 }
-								 if(affectedTasks[i].taskStatus == "Ongoing")
-								 {
-									 if(currDate > affectedTasks[i].endDate)
-										 var status = "<td class='bg-red'></td>";
-									 else
-										 var status = "<td class='bg-green'></td>";
-								 }
+									 if(affectedTasks[i].taskStatus == "Complete")
+									 {
+										 var status = "<td class='bg-teal'></td>";
+									 }
+									 if(affectedTasks[i].taskStatus == "Planning")
+									 {
+										 var status = "<td class='bg-yellow'></td>";
+									 }
+									 if(affectedTasks[i].taskStatus == "Ongoing")
+									 {
+										 if(currDate > affectedTasks[i].endDate)
+											 var status = "<td class='bg-red'></td>";
+										 else
+											 var status = "<td class='bg-green'></td>";
+									 }
 
-								 $('#affectedDelayData').append(
-												"<tr>" + status +
-												"<td>" + affectedTasks[i].taskTitle+"</td>"+
-												"<td align='center'><span style='color:gray'><strike>" + moment(affectedTasks[i].startDate).format('MMM DD, YYYY') + "</strike></span><br>" + moment(affectedTasks[i].newStartDate).format('MMM DD, YYYY') + "</td>"+
-												"<td align='center'><span style='color:gray'><strike>" + moment(affectedTasks[i].endDate).format('MMM DD, YYYY') + "</strike></span><br>" + moment(affectedTasks[i].newEndDate).format('MMM DD, YYYY') + "</td>"+
-												"<td>" + affectedTasks[i].responsible + "</td></tr>");
+									 $('#affectedDelayData').append(
+													"<tr>" + status +
+													"<td>" + affectedTasks[i].taskTitle+"</td>"+
+													"<td align='center'><span style='color:gray'><strike>" + moment(affectedTasks[i].startDate).format('MMM DD, YYYY') + "</strike></span><br>" + moment(affectedTasks[i].newStartDate).format('MMM DD, YYYY') + "</td>"+
+													"<td align='center'><span style='color:gray'><strike>" + moment(affectedTasks[i].endDate).format('MMM DD, YYYY') + "</strike></span><br>" + moment(affectedTasks[i].newEndDate).format('MMM DD, YYYY') + "</td>"+
+													"<td>" + affectedTasks[i].responsible + "</td></tr>");
+
+								 }
 							 }
 						 }
 						else
@@ -489,19 +487,19 @@
 								{
 									if(data['raciHistory'][rc].ROLE == 1 && data['raciHistory'][rc].STATUS == 'Current')
 									{
-										$("#currentR").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+										$("#currentR").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
 									}
 									if(data['raciHistory'][rc].ROLE == 2 && data['raciHistory'][rc].STATUS == 'Current')
 									{
-										$("#currentA").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+										$("#currentA").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
 									}
 									if(data['raciHistory'][rc].ROLE == 3 && data['raciHistory'][rc].STATUS == 'Current')
 									{
-										$("#currentC").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+										$("#currentC").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
 									}
 									if(data['raciHistory'][rc].ROLE == 4 && data['raciHistory'][rc].STATUS == 'Current')
 									{
-										$("#currentI").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME);
+										$("#currentI").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
 									}
 								}
 							}
@@ -565,14 +563,23 @@
 								else
 									var type = "<i class='fa fa-calendar'></i>";
 
-								var approver="-";
 								for(u=0; u < data['users'].length; u++)
 								{
 									if(data['changeRequests'][r].users_REQUESTEDBY == data['users'][u].USERID)
 										var requester = data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME;
 
 									if(data['changeRequests'][r].users_APPROVEDBY == data['users'][u].USERID)
-										var approver = data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME;
+										var approver = "<td>" + data['users'][u].FIRSTNAME + " " + data['users'][u].LASTNAME + "</td>";
+								}
+
+								if(data['changeRequests'][r].REQUESTSTATUS == 'Pending')
+								{
+									var approver = "<td align='center'>-</td>";
+									var reviewDate = "-";
+								}
+								else
+								{
+									var reviewDate = moment(data['changeRequests'][r].APPROVEDDATE).format('MMM DD, YYYY');
 								}
 
 								$("#rfcHistory").append(
@@ -581,8 +588,8 @@
 									"<td>" + requester + "</td>" +
 									"<td align='center'>" + moment(data['changeRequests'][r].REQUESTEDDATE).format('MMM DD, YYYY') + "</td>" +
 									"<td align='center'>" + data['changeRequests'][r].REQUESTSTATUS + "</td>" +
-									"<td>" + approver + "</td>" +
-									"<td align='center'>" + moment(data['changeRequests'][r].APPROVEDDATE).format('MMM DD, YYYY') + "</td>" +
+									approver  +
+									"<td align='center'>" + reviewDate + "</td>" +
 									"</tr>");
 							}
 						}

@@ -4644,21 +4644,6 @@ class controller extends CI_Controller
 
 		$affectedTasks = array();
 
-		// if($changeRequest['NEWSTARTDATE'] == "")
-		// {
-		// 	$taskData = array(
-		// 		'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
-		// 	);
-		// }
-		// else
-		// {
-		// 	$taskData = array(
-		// 		'TASKADJUSTEDSTARTDATE' => $changeRequest['NEWSTARTDATE'],
-		// 		'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
-		// 	);
-		// }
-		// $this->model->updateTaskDates($taskID, $taskData); //save adjusted dates of requested task
-
 		if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
 		{
 			$postReqsToAdjust = array();
@@ -4666,12 +4651,6 @@ class controller extends CI_Controller
 			$i = 0; // set counter
 			while(COUNT($postReqsToAdjust) > 0) // loop while array is not empty/there are postreqs to check
 			{
-				// $currTask = $this->model->getTaskByID($postReqsToAdjust[$i]); // get current task data
-				// if($currTask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-				// 	$endDate = $currTask['TASKENDDATE'];
-				// else
-				// 	$endDate = $currTask['TASKADJUSTEDENDDATE'];
-
 				$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
 
 				if(COUNT($postReqs) > 0) // if there are post reqs found
@@ -4698,10 +4677,14 @@ class controller extends CI_Controller
 							$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
 							$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
 
-							// $postTaskData = array(
-							// 	'TASKADJUSTEDSTARTDATE' => $new_start,
-							// 	'TASKADJUSTEDENDDATE' => $new_end
-							// );
+							foreach($affectedTasks as $affectedTask)
+							{
+								if($affectedTask['id'] == $postReqsToAdjust[$i])
+								{
+									$new_start = date('Y-m-d', strtotime($affectedTask['newEndDate'] . ' +1 day'));
+									$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day'));
+								}
+							}
 
 							$affectedTasks[] = array("id" => $postReq['TASKID'],
 																		"taskTitle" => $postReq['TASKTITLE'],
@@ -4712,7 +4695,6 @@ class controller extends CI_Controller
 																		"newEndDate" => $new_end,
 																		"responsible" => $postReq['FIRSTNAME'] . " " . $postReq['LASTNAME']);
 
-							// $this->model->updateTaskDates($postReq['TASKID'], $postTaskData); //save adjusted dates
 						}
 						array_push($postReqsToAdjust, $postReq['TASKID']); // save task to array for checking
 					}
@@ -4721,9 +4703,24 @@ class controller extends CI_Controller
 				$i++; // increase counter
 			}
 		}
-		else // if no post requisite tasks
-		{
 
+		// ARRAY CLEAN UP
+		$index = 0;
+		foreach($affectedTasks as $affectedTask1)
+		{
+			$doubleCount = 0;
+			foreach($affectedTasks as $affectedTask2)
+			{
+				if($affectedTask1['id'] == $affectedTask2['id'])
+				{
+					$doubleCount++;
+					if($doubleCount >= 2)
+					{
+						$affectedTasks[$index] = array("id" => null);
+					}
+				}
+			}
+			$index++;
 		}
 
 		echo json_encode($affectedTasks);
