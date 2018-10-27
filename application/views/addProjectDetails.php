@@ -155,7 +155,7 @@
 										Add Main Activities
 									<?php endif; ?>
 								</button>
-								<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-uploadExcel" style="margin-right: 2%"><i class="fa fa-file-excel-o"></i> Import from Spreadsheet</button>
+								<button id="importBtn" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-uploadExcel" style="margin-right: 2%"><i class="fa fa-file-excel-o"></i> Import from Spreadsheet</button>
               </div>
 
           </div>
@@ -180,7 +180,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-							<button  id="uploadConfirm" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+							<button  id="uploadConfirm" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 						</div>
 						</form>
 					</div>
@@ -191,8 +191,8 @@
 							<h4>Are you sure you want to upload this project?</h4>
 						</div>
 						<div class="modal-footer">
-							<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-							<button id = "confirmUploadBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="top" title="Confirm"><i class="fa fa-check"></i></button>
+							<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+							<button id = "confirmUploadBtn" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 						</div>
 					</div>
 					</div>
@@ -221,6 +221,18 @@
 			{
 				$("#uploadDiv").hide();
 				$("#confirmUpload").show();
+			});
+
+			$("body").on('click','#backConfirm',function()
+			{
+				$("#uploadDiv").show();
+				$("#confirmUpload").hide();
+			});
+
+			$("#importBtn").click(function()
+			{
+				$("#uploadDiv").show();
+				$("#confirmUpload").hide();
 			});
 
 			<?php if (isset($_SESSION['edit'])): ?>
