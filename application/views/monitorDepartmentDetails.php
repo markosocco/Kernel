@@ -277,6 +277,18 @@
 									</div>
 
 									<div id="divDelay" class="divDetails">
+										<table class="table table-bordered" id='projectDelayTable'>
+											<thead>
+												<th colspan = '2'>Project</th>
+												<tr id="affectedDelayHeader">
+													<td width="25%">Target End Date</td>
+													<td id='projectEndDates'>MMM DD, YYYY</td>
+												</tr>
+	                    </thead>
+	                    <tbody id="projectDelayData">
+	                    </tbody>
+                  	</table>
+
 										<table class="table table-bordered">
 											<thead id="affectedDelay">
 												<th colspan = '5'>Affected Tasks Projection</th>
@@ -370,6 +382,7 @@
 
 				if($isDelayed == 'true'){
 					$("#tabDelay").show();
+					$("#projectDelayTable").hide();
 
 					// DELAY
 					$.ajax({
@@ -418,6 +431,12 @@
 													"<td align='center'><span style='color:gray'><strike>" + moment(affectedTasks[i].endDate).format('MMM DD, YYYY') + "</strike></span><br>" + moment(affectedTasks[i].newEndDate).format('MMM DD, YYYY') + "</td>"+
 													"<td>" + affectedTasks[i].responsible + "</td></tr>");
 
+									 if(affectedTasks[i].projEndDate < affectedTasks[i].newEndDate)
+									 {
+										 $("#projectDelayTable").show();
+										 $('#projectEndDates').html("<span style='color:gray'><strike>" + moment(affectedTasks[i].projEndDate).format('MMM DD, YYYY') + "</strike></span>");
+										 $('#projectEndDates').append("<b> " + moment(affectedTasks[i].newEndDate).format('MMM DD, YYYY')+ " </b>");
+									 }
 								 }
 							 }
 						 }
