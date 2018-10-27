@@ -47,8 +47,8 @@
 									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsParkedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
 								</tr>
 								<tr>
-									<td>Project Performance</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projectPerformance'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+									<td>Project Summary</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projectSummary'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 								</tr>
 								<tr>
 									<td>Employee Performance per Project</td>
@@ -85,12 +85,12 @@
 				</div>
 				<!-- /.box -->
 
-				<!-- PROJECT PERFORMANCE -->
-				<div class="modal fade" id="projectPerformance" tabindex="-1">
+				<!-- PROJECT SUMMARY -->
+				<div class="modal fade" id="projectSummary" tabindex="-1">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h2 class="modal-title">Project Performance</h2>
+								<h2 class="modal-title">Project Summary</h2>
 							</div>
 							<div class="modal-body">
 								<select class="form-control select2" data-placeholder="Select Departments">
@@ -104,7 +104,7 @@
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsProjectPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<a href="<?php echo base_url("index.php/controller/reportsProjectSummary"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
 								</div>
 							</div>
 						</div>

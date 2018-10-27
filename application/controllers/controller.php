@@ -304,7 +304,6 @@ class controller extends CI_Controller
 				// 	}
 				// }
 
-				$this->session->set_flashdata('alertMessage', 'Successful Login');
 
 				if ($_SESSION['USERID'] == 1)
 				{
@@ -315,41 +314,7 @@ class controller extends CI_Controller
 				{
 					redirect('controller/dashboard');
 				}
-
-
-					// if ($userType == 1 || $userType == 5 || $userType == 6 || $userType == 7)
-					// {
-					// 	$this->load->view("home");
-					// 	//redirect('guardwatch_controller/viewHome');
-					// }
-					//
-					// elseif ($userType == 2)
-					// {
-					// 	$sessionData = $this->dbtest_model->getUserData_Client($data);
-					// 	$this->session->set_userdata($sessionData);
-					//
-					// 	$this->load->view("home");
-					// 	// redirect('guardwatch_controller/viewHome');
-					// }
-					//
-					// elseif ($userType == 3)
-					// {
-					// 	$sessionData = $this->dbtest_model->getUserData_Guard($data);
-					// 	$this->session->set_userdata($sessionData);
-					//
-					// 	$this->load->view("home");
-					// 	// redirect('guardwatch_controller/viewHome');
-					// }
-					//
-					// elseif ($userType == 4)
-					// {
-					// 	$sessionData = $this->dbtest_model->getUserData_Guard($data);
-					// 	$this->session->set_userdata($sessionData);
-					//
-					// 	$this->load->view("home");
-					// 	//redirect('guardwatch_controller/viewHome');
-					// }
-				}
+			}
 
 			else
 			{
@@ -1067,6 +1032,8 @@ class controller extends CI_Controller
 				}
 			}
 		}
+		$this->session->set_flashdata('success', 'alert');
+		$this->session->set_flashdata('alertMessage', ' Task has been Marked Complete');
 		$this->taskTodo();
 	}
 
@@ -1164,6 +1131,8 @@ class controller extends CI_Controller
 				// END: Notification
 			}
 		}
+		$this->session->set_flashdata('success', 'alert');
+		$this->session->set_flashdata('alertMessage', ' Task has been Accepted');
 		$this->taskDelegate();
 	}
 
@@ -1410,6 +1379,8 @@ class controller extends CI_Controller
 
 			}
 		}
+		$this->session->set_flashdata('success', 'alert');
+		$this->session->set_flashdata('alertMessage', ' Task has been Delegated');
 		$this->taskDelegate();
 	}
 
@@ -1535,7 +1506,8 @@ class controller extends CI_Controller
 			// END: Notification
 		}
 		$this->model->addRFC($data);
-
+		$this->session->set_flashdata('success', 'alert');
+		$this->session->set_flashdata('alertMessage', ' Request for Change Submitted');
 		$this->taskTodo();
 	}
 
@@ -1825,7 +1797,9 @@ class controller extends CI_Controller
 						// END: Notification
 					}
 				}
-			// }
+				$this->session->set_flashdata('success', 'alert');
+
+				$this->session->set_flashdata('alertMessage', ' Request for Change Approved');
 		} // end if appoved change Performer
 		else // if approved change date
 		{
@@ -1924,7 +1898,9 @@ class controller extends CI_Controller
 				}
 			}
 			// END: Notification
+			$this->session->set_flashdata('success', 'alert');
 
+			$this->session->set_flashdata('alertMessage', ' Request for Change Denied');
 		} // end if approved change dates
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
@@ -2246,7 +2222,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsProjectPerformance()
+	public function reportsProjectSummary()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2255,7 +2231,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsProjectPerformance");
+			$this->load->view("reportsProjectSummary");
 		}
 	}
 
