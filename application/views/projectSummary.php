@@ -259,6 +259,28 @@
 							<!-- /.box-header -->
 							<div class="box-body" id="delayedBox">
 								<table class="table table-hover no-margin" id="delayedTable">
+									<?php $hasDelayed = false;?>
+
+									<?php foreach ($tasks as $task):?>
+										<?php
+										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+										{
+											$endDate = $task['TASKENDDATE'];
+											$delay = $task['actualInitial'];
+										}
+										else
+										{
+											$endDate = $task['TASKADJUSTEDENDDATE'];
+											$delay = $task['actualAdjusted'];
+										}?>
+
+										<?php if($task['TASKACTUALENDDATE'] > $endDate && $task['TASKSTATUS'] == "Complete"):?>
+											<?php $hasDelayed = true;?>
+									<?php endif;?>
+									<?php endforeach;?>
+
+									<?php if($hasDelayed):?>
+
 									<thead>
 										<tr>
 											<th width="20%">Task</th>
@@ -296,6 +318,11 @@
 											</tr>
 										<?php endif;?>
 										<?php endforeach;?>
+									<?php else:?>
+
+									<tr><h4 align="center">There were no delayed tasks</h4></tr>
+
+								<?php endif;?>
 									</tbody>
 								</table>
 							</div>
@@ -312,7 +339,7 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<h4 align="center">There were no delayed task</h4>
+								<h4 align="center">There were no delayed tasks</h4>
 							</div>
 						</div>
 					</div>
