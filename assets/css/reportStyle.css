@@ -2,3 +2,29 @@
 {
   text-align: center;
 }
+
+.reportFooter
+{
+  background-color: fff;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  position:fixed;
+  bottom:0;
+  width:100%;
+}
+
+#logo
+{
+  height:60px;
+}
+
+@page {
+  size: 8.5in 11in;
+  margin: 70pt 60pt 70pt;
+}
+
+@page:right{
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+  }
+}

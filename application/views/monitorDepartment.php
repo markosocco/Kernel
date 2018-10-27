@@ -32,7 +32,7 @@
 					<!-- START HERE -->
 					<div class="row">
 						<div class="col-md-4 col-sm-4 col-xs-12">
-							<div class="box box-danger">
+							<div class="box box-danger clickable project">
 								<div class="box-header with-border">
 									<h3 class="box-title">Project Performance</h3>
 								</div>
@@ -75,6 +75,10 @@
 	              </div>
 							</div>
 		        </div>
+
+						<form id="projForm" action = 'monitorProjectDetails'  method="POST">
+							<input type='hidden' name='project_ID' value= "<?php echo $projectProfile['PROJECTID'] ;?>">
+						</form>
 
 						<div class="col-md-8 col-sm- col-xs-12">
 							<div class="box box-danger" style="height:45%; overflow-y: scroll">
@@ -150,45 +154,59 @@
 					</form>
 
 					<div class='row'>
-						<?php foreach($departments as $department):?>
+						<?php foreach($allDepartments as $allDepartment):?>
 							<div class="col-md-4 col-sm-4 col-xs-12">
-								<div class="box box-danger clickable dept" data-id="<?php echo $department['DEPARTMENTID'];?>">
+								<div class="box box-danger clickable dept" data-id="<?php echo $allDepartment['DEPARTMENTID'];?>">
 									<div class="box-header with-border">
-										<h3 class="box-title"><?php echo $department['DEPARTMENTNAME'];?> Performance</h3>
+										<h3 class="box-title"><?php echo $allDepartment['DEPARTMENTNAME'];?> Performance</h3>
 									</div>
 									<!-- /.box-header -->
 									<div class="box-body">
 		                <div style="display:inline-block; text-align:center; width:49%;">
 		                  <div class="circlechart"
-		                    data-percentage="<?php
-													if($department['completeness'] == NULL){
-														echo 0;
-													} else {
-														if($department['completeness'] == 100.00){
-															echo 100;
-														} elseif ($department['completeness'] == 0.00) {
+		                    data-percentage="
+												<?php
+												foreach($departments as $department)
+												{
+													if($department['DEPARTMENTID'] == $allDepartment['DEPARTMENTID'])
+													{
+														if($department['completeness'] == NULL){
 															echo 0;
 														} else {
-															echo $department['completeness'];
+															if($department['completeness'] == 100.00){
+																echo 100;
+															} elseif ($department['completeness'] == 0.00) {
+																echo 0;
+															} else {
+																echo $department['completeness'];
+															}
 														}
 													}
+												}
 													?>">Completeness
 		                  </div>
 		                </div>
 		                <div style="display:inline-block; text-align:center; width:49%;">
 		                  <div class="circlechart"
-		                   data-percentage="<?php
-	  										 if($department['timeliness'] == NULL){
-	  											 echo 0;
-	  										 } else {
-	  											 if($department['timeliness'] == 100.00){
-	  												 echo 100;
-	  											 } elseif ($department['timeliness'] == 0.00) {
-	  												 echo 0;
-	  											 } else {
-	  												 echo $department['timeliness'];
-	  											 }
-	  										 }
+		                   data-percentage="
+											 <?php
+											 foreach($departments as $department)
+											 {
+												 if($department['DEPARTMENTID'] == $allDepartment['DEPARTMENTID'])
+												 {
+													 if($department['timeliness'] == NULL){
+														 echo 0;
+													 } else {
+														 if($department['timeliness'] == 100.00){
+															 echo 100;
+														 } elseif ($department['timeliness'] == 0.00) {
+															 echo 0;
+														 } else {
+															 echo $department['timeliness'];
+														 }
+													 }
+												 }
+											 }
 	  										 ?>">Timeliness
 		                 </div>
 		               </div>
@@ -215,6 +233,12 @@
 	      $("#deptForm").append("<input type='hidden' name='dept_ID' value= " + $id + ">");
 	      $("#deptForm").submit();
 	    });
+
+			$(document).on("click", ".project", function() {
+	      $("#projForm").attr("name", "formSubmit");
+	      $("#projForm").submit();
+	    });
+
 		</script>
 	</body>
 </html>

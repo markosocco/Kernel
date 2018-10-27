@@ -1859,11 +1859,16 @@
 
 					// START: Check for task involved
 					$marker = '""';
+					$rowHeight = '""';
+
 					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
 						if($changeRequest['TASKID'] == $value['TASKID']){
-							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
+							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'diagonalCross'}]";
+							$rowHeight = 50;
 						}
 					}
+
+
 					// END: Check for task involved
 
 					// START: CHECKS IF MAIN OR SUB
@@ -2111,25 +2116,24 @@
 			var progress = groupingTasks.progress();
     	progress.normal({fill: '#66b2b2'});
 
-			groupingTasks.normal({fill: 'Orange'});
+			// groupingTasks.normal({fill: 'Orange'});
+			// console.log(anychart.VERSION);
 
 			var elements = tl.elements();
 			var selectedElement = elements.selected();
-			selectedElement.fill('').stroke('Red');
+			selectedElement.fill('').stroke('');
 			chart.rowSelectedFill('#FFFFCC');
 
 			var tasks = tl.tasks();
 			var taskProgress = tasks.progress();
 			taskProgress.normal({fill: '#66b2b2'});
 
-			chart.listen('rowClick', function(e) {
+			chart.listen('rowdblClick', function(e) {
 
 				var taskID = e.item.get('id');
 
 				// if parent (no modal)
-				if(e.item && e.item.numChildren()){
-					e.preventDefault();
-				} else {
+				if(e.item && !e.item.numChildren()){
 					$("#taskDetails").modal('show');
 
 					$(".divDetails").hide();
@@ -2528,12 +2532,7 @@
 						 alert("There was a problem in retrieving the task details");
 					 }
 					 });
-
 				}
-
-				// alert(e.item.getParent());
-				// console.log(e.item);
-				console.log(e.item.getParent());
     	});
 
 			// data grid getter
@@ -2545,13 +2544,15 @@
 			var columnTitle = dataGrid.column(1);
 			columnTitle.title("Task Name");
 			columnTitle.setColumnFormat("name", "text");
-			columnTitle.width(140);
-                // .labelsOverrider(labelTextSettingsOverrider)
-                // .labels()
-                // .format(function () {
-                //     return this.name;
-                // });
-			columnTitle.width(300);
+			columnTitle.width(300)
+				.labelsOverrider(labelTextSettingsOverrider)
+      	.labels()
+      	.format(function() {
+					return this.item.get('name');
+				});
+			// .labels().format(function(item) {
+      //   return this.item.get('name');
+      // });
 
 			var columnStartDate = dataGrid.column(2);
 			columnStartDate.title("Target Start Date");
@@ -2613,8 +2614,6 @@
 						}
 					} else {
 						echo "chart.fitAll();";
-						// chart.zoomTo(Date.now());
-						// chart.zoomTo('month', 1);";
 					}
 				}
 			?>
@@ -2661,6 +2660,12 @@
 			$(this).addClass('active')
 			$("#divDelay").show();
 		});
+
+		function labelTextSettingsOverrider(label, item) {
+			var taskTitle = item.get('name');
+			// console.log(taskTitle);
+
+		}
 
 		// function labelTextSettingsOverrider(label, item) {
 		// 	var taskTitle = item.get('name');
