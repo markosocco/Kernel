@@ -1859,11 +1859,16 @@
 
 					// START: Check for task involved
 					$marker = '""';
+					$rowHeight = '""';
+
 					if(isset($_SESSION['rfc']) && !isset($_SESSION['userRequest'])){
 						if($changeRequest['TASKID'] == $value['TASKID']){
-							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'star5'}]";
+							$marker = "[{'value': '" . $formatted_startDate . "', 'type': 'diagonalCross'}]";
+							$rowHeight = 50;
 						}
 					}
+
+
 					// END: Check for task involved
 
 					// START: CHECKS IF MAIN OR SUB
@@ -2539,13 +2544,15 @@
 			var columnTitle = dataGrid.column(1);
 			columnTitle.title("Task Name");
 			columnTitle.setColumnFormat("name", "text");
-			columnTitle.width(140);
-                // .labelsOverrider(labelTextSettingsOverrider)
-                // .labels()
-                // .format(function () {
-                //     return this.name;
-                // });
-			columnTitle.width(300);
+			columnTitle.width(300)
+				.labelsOverrider(labelTextSettingsOverrider)
+      	.labels()
+      	.format(function() {
+					return this.item.get('name');
+				});
+			// .labels().format(function(item) {
+      //   return this.item.get('name');
+      // });
 
 			var columnStartDate = dataGrid.column(2);
 			columnStartDate.title("Target Start Date");
@@ -2607,8 +2614,6 @@
 						}
 					} else {
 						echo "chart.fitAll();";
-						// chart.zoomTo(Date.now());
-						// chart.zoomTo('month', 1);";
 					}
 				}
 			?>
@@ -2655,6 +2660,12 @@
 			$(this).addClass('active')
 			$("#divDelay").show();
 		});
+
+		function labelTextSettingsOverrider(label, item) {
+			var taskTitle = item.get('name');
+			// console.log(taskTitle);
+
+		}
 
 		// function labelTextSettingsOverrider(label, item) {
 		// 	var taskTitle = item.get('name');
