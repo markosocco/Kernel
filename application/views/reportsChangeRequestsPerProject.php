@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Report - Change Requests on Store Opening - DLSU Andrew</title>
+  <title>Report - Project Status Report</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -20,107 +20,200 @@
   <!-- <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportsProjectPerDeptStyle.css")?>"> -->
   <!-- Report Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
-
 </head>
-<body onload="window.print();">
+<body onload="window.print();" style="font-size: 11px">
 <div class="wrapper">
   <!-- Main content -->
   <section>
     <!-- title row -->
     <div class="reportHeader viewCenter">
-      <h2>Change Requests on Store Opening - DLSU Andrew</h2>
-      <h5>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></h5>
-      <h5>Prepared On: <?php echo date('F d, Y'); ?></h5>
+      <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Project Status Report</h3>
     </div>
     <div class="reportBody">
       <!-- LOOP START HERE -->
-
         <div class="box box-danger">
-          <div class="box-header with-border">
-            <h5>Owner: Mickey Mouse</h5>
-            <h5>Details: 1st branch in DLSU</h5>
-            <h5>Start Date: Apr 1, 2018</h5>
-            <h5>Target End Date: Aug 28, 2018</h5>
-            <h5>Status: Ongoing</h5>
-            <h5>Remaining: 6 days</h5>
-            <h5>Change Requests: 9</h5>
-          </div>
-          <table id="rfcList" class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Request Date</th>
-                <th>Type</th>
-                <th>Requester</th>
-                <th>Department</th>
-                <th>Reason</th>
-                <th>Task</th>
-                <th class='text-center'>Start Date</th>
-                <th class='text-center'>Target End Date</th>
-                <th>Status</th>
-                <th>Reviewed By</th>
-                <th class='text-center'>Reviewed On</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Mar 21, 2018</td>
-                <td>Change Performer</td>
-                <td>Winnie</td>
-                <td>Marketing</td>
-                <td>Not my function</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>Mar 22, 2018</td>
-              </tr>
-              <tr>
-                <td>Mar 29, 2018</td>
-                <td>Change Date</td>
-                <td>Winnie</td>
-                <td>Marketing</td>
-                <td>Leave of Absence</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>Mar 29, 2018</td>
-              </tr>
-              <tr>
-                <td>Mar 21, 2018</td>
-                <td>Change Performer</td>
-                <td>Winnie</td>
-                <td>Marketing</td>
-                <td>Not my function</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>Mar 22, 2018</td>
-              </tr>
-              <tr>
-                <td>Mar 29, 2018</td>
-                <td>Change Date</td>
-                <td>Winnie</td>
-                <td>Marketing</td>
-                <td>Leave of Absence</td>
-                <td>Task 2.3.4.5.6</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 5, 2018</td>
-                <td>Denied</td>
-                <td>Mickey Mouse</td>
-                <td class='text-center'>Mar 29, 2018</td>
-              </tr>
-            </tbody>
+          <table class="table-condensed" style="width:100%">
+            <tr>
+              <td><b>Title: </b><?php echo $project['PROJECTTITLE']; ?></td>
+              <td align="right"><b>Duration: </b><?php echo $project['PROJECTSTARTDATE'] . " to " . $project['PROJECTENDDATE'];?></td>
+            </tr>
+            <tr>
+              <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
+              <td><b>Owner: </b>
+
+                <?php foreach ($users as $user): ?>
+                  <?php if ($user['USERID'] == $project['users_USERID']): ?>
+                    <?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME']; ?>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+
+              </td>
+            </tr>
           </table>
+          <!-- PLANNED LAST WEEK -->
+  				<div class="row">
+  					<div class="col-md-12 col-sm-12 col-xs-12">
+  						<div class="box box-default">
+  							<div class="box-header with-border">
+  								<h5 class="box-title">Planned Last Week</h5>
+  							</div>
+  							<!-- /.box-header -->
+  							<div class="box-body">
+  								<table class="table table-bordered table-condensed" id="">
+  									<thead>
+  										<tr>
+  											<th>Name</th>
+                        <th>Position</th>
+  											<th>Department</th>
+  											<th class='text-center'>Total Tasks</th>
+                        <th class='text-center'>Delayed Tasks</th>
+  											<th class='text-center'>Timeliness</th>
+  										</tr>
+  									</thead>
+  									<tbody>
+
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  	        </div>
+  	        <!-- /.col -->
+  				</div>
+
+  				<!-- ACCOMPLISHED TASKS LAST WEEK -->
+  				<div class="row">
+  					<div class="col-md-12 col-sm-12 col-xs-12">
+  						<div class="box box-default">
+  							<div class="box-header with-border">
+  								<h5 class="box-title">Accomplished Tasks Last Week</h5>
+  							</div>
+  							<!-- /.box-header -->
+  							<div class="box-body" id="delayedBox">
+  								<table class="table table-bordered table-condensed" id="delayedTable">
+  									<thead>
+  										<tr>
+  											<th width="20%">Task</th>
+  											<th width="10%" class='text-center'>Target<br>End Date</th>
+  											<th width="10%" class='text-center'>Actual<br>End Date</th>
+  											<th width="5%" class='text-center'>Days Delayed</th>
+                        <th width="15%">Responsible</th>
+                        <th width="15%" class='text-center'>Department</th>
+  											<th width="25">Reason</th>
+  										</tr>
+  									</thead>
+  									<tbody id="delayedData">
+
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  	        </div>
+  	        <!-- /.col -->
+  				</div>
+
+  				<!-- PLANNED NEXT WEEK -->
+  				<div class="row">
+  					<div class="col-md-12 col-sm-12 col-xs-12">
+  						<div class="box box-default">
+  							<div class="box-header with-border">
+  								<h5 class="box-title">Planned Next Week</h5>
+  							</div>
+  							<!-- /.box-header -->
+  							<div class="box-body">
+  								<table class="table table-bordered table-condensed" id="">
+  									<thead>
+  										<tr>
+  											<th width="20%">Task</th>
+  											<th width="10%" class='text-center'>Target<br>End Date</th>
+  											<th width="10%" class='text-center'>Actual<br>End Date</th>
+  											<th width="5%" class='text-center'>Days Early</th>
+                        <th width="15%">Responsible</th>
+                        <th width="15%" class='text-center'>Department</th>
+  											<th width="25">Reason</th>
+  										</tr>
+  									</thead>
+  									<tbody>
+
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  	        </div>
+  	        <!-- /.col -->
+  				</div>
+
+  				<!-- RISKS -->
+  				<div class="row">
+  					<div class="col-md-12 col-sm-12 col-xs-12">
+  						<div class="box box-default">
+  							<div class="box-header with-border">
+  								<h5 class="box-title">Risks</h5>
+  							</div>
+  							<!-- /.box-header -->
+  							<div class="box-body">
+                  <h5>Pending Task Delegation</h5>
+                  <table class="table table-bordered table-condensed" id="">
+  									<thead>
+  										<tr>
+  											<th width="0%">Task</th>
+                        <th width="0%" class='text-center'>Type</th>
+                        <th width="0%" class='text-center'>Date Requested</th>
+                        <th width="0">Reason</th>
+  											<th width="0%">Requested By</th>
+  											<th width="0%" class='text-center'>Department</th>
+  											<th width="0%" class='text-center'>Status</th>
+  											<th width="0%">Reviewed By</th>
+  											<th width="0%" class='text-center'>Date Approved</th>
+  											<th width="0">Remarks</th>
+  										</tr>
+  									</thead>
+  									<tbody>
+
+  									</tbody>
+  								</table>
+
+                  <h5>Pending Change Requests</h5>
+  								<table class="table table-bordered table-condensed" id="">
+  									<thead>
+  										<tr>
+  											<th width="0%">Task</th>
+                        <th width="0%" class='text-center'>Type</th>
+                        <th width="0%" class='text-center'>Date Requested</th>
+                        <th width="0">Reason</th>
+  											<th width="0%">Requested By</th>
+  											<th width="0%" class='text-center'>Department</th>
+  											<th width="0%" class='text-center'>Status</th>
+  											<th width="0%">Reviewed By</th>
+  											<th width="0%" class='text-center'>Date Approved</th>
+  											<th width="0">Remarks</th>
+  										</tr>
+  									</thead>
+  									<tbody>
+
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  	        </div>
+  	        <!-- /.col -->
+  				</div>
+
         </div>
 
-    <div class="reportFooter viewCenter">
+    <div class="endReport viewCenter">
       <p>***END OF REPORT***</p>
     </div>
+
+    <footer class="reportFooter">
+      <!-- To the right -->
+      <div class="pull-right hidden-xs">
+        <!-- <medium>Page 1 of 1M</medium> -->
+      </div>
+      <!-- Default to the left -->
+      <medium>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></medium>
+      <br>
+      <medium>Prepared On: <?php echo date('F d, Y'); ?></medium>
+    </footer>
   </section>
   <!-- /.content -->
 </div>
