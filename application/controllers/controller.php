@@ -4871,49 +4871,6 @@ class controller extends CI_Controller
 		}
 	}
 
-	// DELETE THIS draftedProjects
-	public function importTest()
-	{
-		$this->load->view('importTest');
-	}
-
-	public function uploadData()
-	{
-	 $config['upload_path'] = './assets/uploads/templates';
-	 $config['allowed_types'] = 'xlsx|csv|xls';
-	 $config['max_size'] = '10000000';
-	 $this->load->library('upload', $config);
-	 $this->upload->initialize($config);
-
-	 if (!$this->upload->do_upload('uploadFile'))
-	 {
-		 $error = array('error' => $this->upload->display_errors());
-
-		 // $this->session->set_flashdata('danger', 'alert');
-		 // $this->session->set_flashdata('alertMessage', 'File type is not allowed');
-		 //
-		 // redirect('controller/importTest');
-	 }
-
-	 else
-	 {
-		 $this->session->set_flashdata('success', 'alert');
-		 $this->session->set_flashdata('alertMessage', ' Success');
-
-		 redirect('controller/importTest');
-	 }
-
-		 if(!empty($error))
-		 {
-			 echo $error['error'];
-		 }
-
-		 // else
-		 // {
-			//  echo "sad<br>";
-		 // }
-	}
-
 	public function getDelayEffect()
 	{
 		$taskID = $this->input->post("task_ID");
