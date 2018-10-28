@@ -62,8 +62,6 @@
                   <label>Project Title</label>
 									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" value ="<?php echo $project['PROJECTTITLE']; ?>" required>
-									<?php elseif (isset($_SESSION['projectTitle'])): ?>
-										<input type="text" class="form-control" id="projectTitle" name="projectTitle" value="<?php echo $_SESSION['projectTitle']; ?>" required>
 									<?php else: ?>
 										<input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter Project Title" required>
 									<?php endif; ?>
@@ -72,8 +70,6 @@
 									<label>Project Details</label>
 									<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required><?php echo $project['PROJECTDESCRIPTION']; ?></textarea>
-									<?php elseif (isset($_SESSION['projectDetails'])): ?>
-										<textarea class="form-control" rows="5" name="projectDetails"required><?php echo $_SESSION['projectDetails']; ?></textarea>
 									<?php else: ?>
 										<textarea class="form-control" rows="5" placeholder="Enter project details..." name="projectDetails" required></textarea>
 									<?php endif; ?>
@@ -89,8 +85,6 @@
 			                  </div>
 												<?php if (isset($_SESSION['edit'])): ?>
 													<input type="text" class="form-control pull-right" id="startDate" name="startDate" value="<?php echo $project['PROJECTSTARTDATE']; ?>" required>
-												<?php elseif (isset($_SESSION['startDate'])): ?>
-													<input type="text" class="form-control pull-right" id="startDate" name="startDate" value="<?php echo $_SESSION['startDate']; ?>" required>
 												<?php else: ?>
 													<input type="text" class="form-control pull-right" id="startDate" name="startDate" required>
 												<?php endif; ?>
@@ -107,8 +101,6 @@
 			                  </div>
 												<?php if (isset($_SESSION['edit'])): ?>
 													<input type="text" class="form-control pull-right" id="endDate" name ="endDate" value="<?php echo $project['PROJECTENDDATE']; ?>" required>
-												<?php elseif (isset($_SESSION['endDate'])): ?>
-													<input type="text" class="form-control pull-right" id="startDate" name="endDate" value="<?php echo $_SESSION['endDate']; ?>" required>
 												<?php else: ?>
 													<input type="text" class="form-control pull-right" id="endDate" name ="endDate" required>
 												<?php endif; ?>
@@ -189,6 +181,7 @@
 					<div id="confirmUpload">
 						<div class="modal-body">
 							<h4>Are you sure you want to upload this project?</h4>
+							<h5>All changes to the form will not apply after importing this project.</h5>
 						</div>
 						<div class="modal-footer">
 							<button id="backConfirm" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>

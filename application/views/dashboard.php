@@ -361,7 +361,6 @@
 								<!-- /.box-footer -->
 							</div>
 							<!-- /.box -->
-					<?php endif; ?>
 
 
 				</div>
@@ -440,6 +439,9 @@
 						</div>
 					</div>
 					<!-- END APPROVAL TABLE -->
+
+				<?php endif; ?>
+
 
 					<!-- Main row -->
 					<div class="row">

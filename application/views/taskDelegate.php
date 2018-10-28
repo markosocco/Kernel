@@ -96,8 +96,8 @@
 																			<?php else:?>
 																				<td class = 'bg-red'></td>
 																			<?php endif;?>
-																			<td><?php echo $task['TASKTITLE'];?></td>
-																			<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
+																			<td class = "clickable task" data-id="<?php echo $task['TASKID'] ;?>" data-toggle="modal" data-target="#taskDetails"><?php echo $task['TASKTITLE'];?></td>
+																			<td class = "clickable task" data-id="<?php echo $task['TASKID'] ;?>" data-toggle="modal" data-target="#taskDetails" align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 																			<td align="center">
 																				<span data-toggle="modal" data-target="#modal-delegate">
 																				<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $task['TASKID'];?>"
@@ -227,8 +227,9 @@
 																			<td class = 'bg-green'></td>
 																		<?php else:?>
 																			<td class = 'bg-red'></td>
-																		<?php endif;?>																		<td><?php echo $task['TASKTITLE'];?></td>
-																		<td align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
+																		<?php endif;?>
+																		<td class = "clickable task" data-id="<?php echo $task['TASKID'] ;?>" data-toggle="modal" data-target="#taskDetails"><?php echo $task['TASKTITLE'];?></td>
+																		<td class = "clickable task" data-id="<?php echo $task['TASKID'] ;?>" data-toggle="modal" data-target="#taskDetails" align="center"><?php echo date_format($startdate, 'M d, Y');?></td>
 																		<td align="center">
 																			<span data-toggle="modal" data-target="#modal-delegate">
 																			<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $task['TASKID'];?>"
@@ -629,6 +630,99 @@
 		</div>
 		<!-- END ACCEPT MODAL -->
 
+		<!-- Task Details Modal -->
+		<div class="modal fade" id="taskDetails" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title" id='taskName'>Task Name here</h2>
+						<h4 id="taskDates">Start Date - End Date (Days)</h4>
+					</div>
+					<div class="modal-body">
+						<div class="btn-group">
+							<button type="button" id = "tabDependency" class="btn btn-default tabDetails">Dependencies</button>
+							<button type="button" id = "tabRACI" class="btn btn-default tabDetails">RACI</button>
+						</div>
+						<br><br>
+
+						<div id="divRACI" class="divDetails">
+							<table class="table table-bordered">
+								<thead>
+									<th colspan = '4'>Current</th>
+									<tr class='text-center'><td id="raciCurrentTitle" colspan='4'></td></tr>
+									<tr  id="raciHeader">
+										<th width="25%" class='text-center'>R</th>
+										<th width="25%" class='text-center'>A</th>
+										<th width="25%" class='text-center'>C</th>
+										<th width="25%" class='text-center'>I</th>
+									</tr>
+								</thead>
+								<tbody id="raciCurrentTable">
+								</tbody>
+							</table>
+
+							<table class="table table-bordered">
+								<thead>
+									<th colspan = '4'>History</th>
+									<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
+									<tr id="raciHeader2">
+										<th width="25%" class='text-center'>R</th>
+										<th width="25%" class='text-center'>A</th>
+										<th width="25%" class='text-center'>C</th>
+										<th width="25%" class='text-center'>I</th>
+									</tr>
+								</thead>
+								<tbody id="raciHistoryTable">
+								</tbody>
+							</table>
+						</div>
+
+						<div id="divDependency" class="divDetails">
+							<table class="table table-bordered">
+								<thead>
+									<th colspan = '5'>Pre-Requisites</th>
+									<tr class='text-center'><td id="preReqTitle" colspan='5'></td></tr>
+									<tr id="dependencyPreHeader">
+										<th width="1%"></th>
+										<th width="35%">Task</th>
+										<th width="20%" class="text-center">Start Date</th>
+										<th width="20%" class="text-center">End Date</th>
+										<th width="24%">Responsible</th>
+									</tr>
+								</thead>
+								<tbody id="dependencyPreBody">
+								</tbody>
+							</table>
+
+							<table class="table table-bordered">
+								<thead>
+									<th colspan = '5'>Post-Requisites</th>
+									<tr class='text-center'><td id="postReqTitle" colspan='5'></td></tr>
+									<tr id="dependencyPostHeader">
+										<th width="1%"></th>
+										<th width="35%">Task</th>
+										<th width="20%" class="text-center">Start Date</th>
+										<th width="20%" class="text-center">End Date</th>
+										<th width="24%">Responsible</th>
+									</tr>
+								</thead>
+								<tbody id="dependencyPostBody">
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+					<!-- /.modal-body -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-toggle="tooltip" data-placement="left" title="Close"><i class="fa fa-close"></i></button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
 				<!-- END MODALS -->
 
 			</section>
@@ -960,6 +1054,311 @@
 			 var $id = $("#acceptConfirm").attr('data-id');
 			 $("#acceptForm").attr("name", "formSubmit");
 			 $("#acceptForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+		 });
+
+		 // TASK DETAILS
+		 $(document).on("click", ".task", function(){
+			 $(".divDetails").hide();
+			 $(".tabDetails").removeClass('active');
+			 $("#tabDependency").addClass("active");
+			 $("#divDependency").show();
+
+			 var $taskID = $(this).attr('data-id');
+
+			 $.ajax({
+				 type:"POST",
+				 url: "<?php echo base_url("index.php/controller/loadTaskHistory"); ?>",
+				 data: {task_ID: $taskID},
+				 dataType: 'json',
+				 success:function(data)
+				 {
+					 $("#taskName").html(data['task'].TASKTITLE);
+
+					 if(data['task'].TASKADJUSTEDSTARTDATE == null)
+						 var startDate = data['task'].TASKSTARTDATE;
+					 else
+						 var startDate = data['task'].TASKADJUSTEDSTARTDATE;
+
+					 if(data['task'].TASKADJUSTEDENDDATE == null)
+						 var endDate = data['task'].TASKENDDATE;
+					 else
+						 var endDate = data['task'].TASKADJUSTEDENDDATE;
+
+					 var diff = ((new Date(endDate) - new Date(startDate))/ 1000 / 60 / 60 / 24)+1;
+
+					 $("#taskDates").html(moment(startDate).format('MMMM DD, YYYY') + " - " + moment(endDate).format('MMMM DD, YYYY') + " (" + diff);
+					 if(diff > 1)
+						 $("#taskDates").append(" days)");
+					 else
+						 $("#taskDates").append(" day)");
+
+					 // TASK DELEGATION
+					 $("#raciCurrentTable").html("");
+					 $("#raciHistoryTable").html("");
+					 $('#raciHistoryTitle').hide();
+					 $('#raciCurrentTitle').hide();
+
+					 var withHistory = false;
+					 var withCurrent = false;
+
+					 for(rh=0; rh < data['raciHistory'].length; rh++)
+					 {
+						 if(data['raciHistory'][rh].ROLE == 1 && data['raciHistory'][rh].STATUS == 'Current')
+						 {
+							 withCurrent = true;
+							 $("#raciCurrentTable").append(
+								 "<tr>" +
+									 "<td id = 'currentR'></td>" +
+									 "<td id = 'currentA'></td>" +
+									 "<td id = 'currentC'></td>" +
+									 "<td id = 'currentI'></td>" +
+								 "</tr>");
+
+							 for(rc=0; rc < data['raciHistory'].length; rc++)
+							 {
+								 if(data['raciHistory'][rc].ROLE == 1 && data['raciHistory'][rc].STATUS == 'Current')
+								 {
+									 $("#currentR").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
+								 }
+								 if(data['raciHistory'][rc].ROLE == 2 && data['raciHistory'][rc].STATUS == 'Current')
+								 {
+									 $("#currentA").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
+								 }
+								 if(data['raciHistory'][rc].ROLE == 3 && data['raciHistory'][rc].STATUS == 'Current')
+								 {
+									 $("#currentC").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
+								 }
+								 if(data['raciHistory'][rc].ROLE == 4 && data['raciHistory'][rc].STATUS == 'Current')
+								 {
+									 $("#currentI").append(data['raciHistory'][rc].FIRSTNAME + " " + data['raciHistory'][rc].LASTNAME + "<br>");
+								 }
+							 }
+						 }
+
+						 if(data['raciHistory'][rh].ROLE == 1 && data['raciHistory'][rh].STATUS == 'Changed')
+						 {
+							 withHistory = true;
+							 $("#raciHistoryTable").append(
+								 "<tr>" +
+									 "<td id = 'changedR'></td>" +
+									 "<td id = 'changedA'></td>" +
+									 "<td id = 'changedC'></td>" +
+									 "<td id = 'changedI'></td>" +
+								 "</tr>");
+
+							 for(ro=0; ro < data['raciHistory'].length; ro++)
+							 {
+								 if(data['raciHistory'][ro].ROLE == 1 && data['raciHistory'][ro].STATUS == 'Changed')
+								 {
+									 $("#changedR").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+								 }
+								 if(data['raciHistory'][ro].ROLE == 2 && data['raciHistory'][ro].STATUS == 'Changed')
+								 {
+									 $("#changedA").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+								 }
+								 if(data['raciHistory'][ro].ROLE == 3 && data['raciHistory'][ro].STATUS == 'Changed')
+								 {
+									 $("#changedC").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+								 }
+								 if(data['raciHistory'][ro].ROLE == 4 && data['raciHistory'][ro].STATUS == 'Changed')
+								 {
+									 $("#changedI").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+								 }
+							 }
+						 }
+
+					 } // end for loop
+
+					 if(!withHistory)
+					 {
+						 $('#raciHistoryTitle').html("There is no RACI assignment history");
+						 $('#raciHeader2').hide();
+						 $('#raciHistoryTitle').show();
+					 }
+					 if(!withCurrent)
+					 {
+						 $('#raciCurrentTitle').html("There is no current RACI assignment");
+						 $('#raciHeader').hide();
+						 $('#raciCurrentTitle').show();
+					 }
+				 },
+				 error:function(data)
+				 {
+					 alert("There was a problem with loading the task details");
+				 }
+			 });
+
+			 // PRE-REQUISITES
+			 $.ajax({
+				 type:"POST",
+				 url: "<?php echo base_url("index.php/controller/getDependenciesByTaskID"); ?>",
+				 data: {task_ID: $taskID},
+				 dataType: 'json',
+				 success:function(preReqData)
+				 {
+					 if(preReqData['dependencies'].length > 0)
+					 {
+						 $('#dependencyPreBody').html("");
+						 $('#preReqTitle').html("");
+						 $("#preReqTitle").hide();
+						 for(i=0; i<preReqData['dependencies'].length; i++)
+						 {
+							 var taskStart = moment(preReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+							 var startDate = preReqData['dependencies'][i].TASKSTARTDATE;
+
+							 if(preReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+							 {
+								 var taskEnd = moment(preReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
+								 var endDate = preReqData['dependencies'][i].TASKENDDATE;
+							 }
+							 else
+							 {
+								 var taskEnd = moment(preReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+								 var endDate = preReqData['dependencies'][i].TASKADJUSTEDENDDATE;
+							 }
+
+							 if(preReqData['dependencies'][i].TASKADJUSTEDSTARTDATE != null && preReqData['dependencies'][i].TASKADJUSTEDENDDATE != null)
+								 var taskDuration = parseInt(preReqData['dependencies'][i].adjustedTaskDuration2);
+							 if(preReqData['dependencies'][i].TASKSTARTDATE != null && preReqData['dependencies'][i].TASKADJUSTEDENDDATE != null)
+								 var taskDuration = parseInt(preReqData['dependencies'][i].adjustedTaskDuration1);
+							 else
+								 var taskDuration = parseInt(preReqData['dependencies'][i].initialTaskDuration);
+
+							 if(preReqData['dependencies'][i].TASKSTATUS == "Complete")
+							 {
+								 var status = "<td class='bg-teal'></td>";
+							 }
+							 if(preReqData['dependencies'][i].TASKSTATUS == "Planning")
+							 {
+								 var status = "<td class='bg-yellow'></td>";
+							 }
+							 if(preReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+							 {
+								 if(preReqData['dependencies'][i].currDate > endDate)
+									 var status = "<td class='bg-red'></td>";
+								 else
+									 var status = "<td class='bg-green'></td>";
+							 }
+
+							 $('#dependencyPreBody').append(
+														"<tr>" + status +
+														"<td>" + preReqData['dependencies'][i].TASKTITLE+"</td>"+
+														"<td align='center'>" + taskStart+"</td>"+
+														"<td align='center'>" + taskEnd +"</td>" +
+														"<td>" + preReqData['dependencies'][i].FIRSTNAME + " " + preReqData['dependencies'][i].LASTNAME + "</td></tr>");
+						}
+						$("#dependencyPreHeader").show();
+					}
+					else
+					{
+						$('#preReqTitle').html("There are no pre-requisite tasks");
+						$('#dependencyPreBody').html("");
+						$("#dependencyPreHeader").hide();
+						$("#preReqTitle").show();
+					}
+				 },
+				 error:function()
+				 {
+					 alert("There was a problem in retrieving the task details");
+				 }
+				 });
+
+			 // POST REQUISITES
+			 $.ajax({
+				type:"POST",
+				url: "<?php echo base_url("index.php/controller/getPostDependenciesByTaskID"); ?>",
+				data: {task_ID: $taskID},
+				dataType: 'json',
+				success:function(postReqData)
+				{
+					if(postReqData['dependencies'].length > 0)
+					{
+						$('#dependencyPostBody').html("");
+						$("#postReqTitle").hide();
+						for(i=0; i<postReqData['dependencies'].length; i++)
+						{
+								var taskStart = moment(postReqData['dependencies'][i].TASKSTARTDATE).format('MMM DD, YYYY');
+								var startDate = postReqData['dependencies'][i].TASKSTARTDATE;
+
+							if(postReqData['dependencies'][i].TASKADJUSTEDENDDATE == null) // check if start date has been previously adjusted
+							{
+								var taskEnd = moment(postReqData['dependencies'][i].TASKENDDATE).format('MMM DD, YYYY');
+								var endDate = postReqData['dependencies'][i].TASKENDDATE;
+							}
+							else
+							{
+								var taskEnd = moment(postReqData['dependencies'][i].TASKADJUSTEDENDDATE).format('MMM DD, YYYY');
+								var endDate = postReqData['dependencies'][i].TASKADJUSTEDENDDATE;
+							}
+
+							if(postReqData['dependencies'][i].TASKSTATUS == "Complete")
+							{
+								var status = "<td class='bg-teal'></td>";
+							}
+							if(postReqData['dependencies'][i].TASKSTATUS == "Planning")
+							{
+								var status = "<td class='bg-yellow'></td>";
+							}
+							if(postReqData['dependencies'][i].TASKSTATUS == "Ongoing")
+							{
+								if(postReqData['dependencies'][i].currDate > endDate)
+									var status = "<td class='bg-red'></td>";
+								else
+									var status = "<td class='bg-green'></td>";
+							}
+
+							$('#dependencyPostBody').append(
+													 "<tr>" + status +
+													 "<td>" + postReqData['dependencies'][i].TASKTITLE+"</td>"+
+													 "<td align='center'>" + taskStart+"</td>"+
+													 "<td align='center'>" + taskEnd +"</td>" +
+													 "<td>" + postReqData['dependencies'][i].FIRSTNAME + " " + postReqData['dependencies'][i].LASTNAME + "</td></tr>");
+
+					 }
+					 $("#dependencyPostHeader").show();
+				 }
+				 else
+				 {
+					 $('#postReqTitle').html("There are no post-requisite tasks");
+					 $("#dependencyPostHeader").hide();
+					 $('#dependencyPostBody').html("");
+					 $("#postReqTitle").show();
+				 }
+				},
+				error:function()
+				{
+					alert("There was a problem in retrieving the task details");
+				}
+				});
+		 });
+
+		 // TASK DETAILS TABS
+		 $(document).on("click", "#tabDependency", function(){
+			 $(".divDetails").hide();
+			 $(".tabDetails").removeClass('active');
+			 $(this).addClass('active')
+			 $("#divDependency").show();
+		 });
+
+		 $(document).on("click", "#tabRACI", function(){
+			 $(".divDetails").hide();
+			 $(".tabDetails").removeClass('active');
+			 $(this).addClass('active')
+			 $("#divRACI").show();
+		 });
+
+		 $(document).on("click", "#tabRFC", function(){
+			 $(".divDetails").hide();
+			 $(".tabDetails").removeClass('active');
+			 $(this).addClass('active')
+			 $("#divRFC").show();
+		 });
+
+		 $(document).on("click", "#tabDelay", function(){
+			 $(".divDetails").hide();
+			 $(".tabDetails").removeClass('active');
+			 $(this).addClass('active')
+			 $("#divDelay").show();
 		 });
 
 		</script>

@@ -2154,8 +2154,14 @@ class controller extends CI_Controller
 
 		else
 		{
+<<<<<<< HEAD
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
 			$this->load->view("reports", $data);
+=======
+
+
+			$this->load->view("reports");
+>>>>>>> 5590ce8fb2d7bf241903da2a80fcb7e3b71ceaa4
 		}
 	}
 
@@ -2633,288 +2639,149 @@ class controller extends CI_Controller
 	{
 		if (isset($_SESSION['USERID']))
 		{
-			// CHECKS IF PROJECT HAS STARTED TO SET STATUS
-
-			$this->load->library('form_validation');
-
-			$this->form_validation->set_rules('projectTitle', 'Project Title', 'required');
-			$this->form_validation->set_rules('projectDetails', 'Project Details', 'required');
-			$this->form_validation->set_rules('startDate', 'Start Date', 'required');
-			$this->form_validation->set_rules('endDate', 'End Date', 'required');
-
-			if ($this->form_validation->run() == FALSE)
+				// IMPORT PROJECT
+			if ($this->input->post('isImport') == 1)
 			{
-				$this->session->set_flashdata('projectTitle', $this->input->post('projectTitle'));
-				$this->session->set_flashdata('projectDetails', $this->input->post('projectDetails'));
-				$this->session->set_flashdata('startDate', $this->input->post('startDate'));
-				$this->session->set_flashdata('endDate', $this->input->post('endDate'));
+				$config['upload_path'] = './assets/uploads/templates';
+		 	 	$config['allowed_types'] = 'xlsx|csv|xls';
+		 	 	$config['max_size'] = '10000000';
+		 	 	$this->load->library('upload', $config);
+		 	 	$this->upload->initialize($config);
 
-				$this->session->set_flashdata('danger', 'alert');
-				$this->session->set_flashdata('alertMessage', ' All fields are required');
+		 	 	if (!$this->upload->do_upload('uploadFile'))
+		 	 	{
+					$error = array('error' => $this->upload->display_errors());
 
-				$this->load->view('addProjectDetails');
-			}
+					 $this->session->set_flashdata('danger', 'alert');
+					 $this->session->set_flashdata('alertMessage', $error['error']);
 
+			 		 redirect('controller/addProjectDetails');
+		 	 	}
+
+			 	 else
+			 	 {
+					 $data = array('upload_data' => $this->upload->data());
+				   $path = './assets/uploads/templates/';
+
+				   $import_xls_file = $data['upload_data']['file_name'];
+				   $inputFileName = $path . $import_xls_file;
+				   $sheetname = 'Project Details';
+
+					 try
+				   {
+				    $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+				    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+				    $reader->setLoadSheetsOnly($sheetname);
+				    $spreadsheet = $reader->load($inputFileName);
+				    $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+						$title = $spreadsheet->getActiveSheet()->getCell('B1')->getValue();
+						$description = $spreadsheet->getActiveSheet()->getCell('B2')->getValue();
+						$startDate = $spreadsheet->getActiveSheet()->getCell('B3')->getValue();
+						$endDate = $spreadsheet->getActiveSheet()->getCell('B4')->getValue();
+						$status = $spreadsheet->getActiveSheet()->getCell('B5')->getValue();
+
+						echo $title . "<br>";
+						echo $description . "<br>";
+						echo $startDate . "<br>";
+						echo $endDate . "<br>";
+						echo $status . "<br>";
+
+
+				  }
+
+					catch (Exception $e)
+				  {
+				     die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME)
+				              . '": ' .$e->getMessage());
+				  }
+				 }
+		 	 }
+
+			// NEW PROJECT FROM SCRATCH
 			else
 			{
-				if ($this->input->post('isImport') == 1)
+				$startDate = $this->input->post('startDate');
+				date_default_timezone_set("Singapore");
+				$currDate = date("Y-m-d");
+
+				if ($currDate >= $startDate)
 				{
-					$config['upload_path'] = './assets/uploads/templates';
-			 	 	$config['allowed_types'] = 'xlsx|csv|xls';
-			 	 	$config['max_size'] = '10000000';
-			 	 	$this->load->library('upload', $config);
-			 	 	$this->upload->initialize($config);
-
-			 	 	if (!$this->upload->do_upload('uploadFile'))
-			 	 	{
-						$error = array('error' => $this->upload->display_errors());
-
-						 $this->session->set_flashdata('projectTitle', $this->input->post('projectTitle'));
-						 $this->session->set_flashdata('projectDetails', $this->input->post('projectDetails'));
-						 $this->session->set_flashdata('startDate', $this->input->post('startDate'));
-						 $this->session->set_flashdata('endDate', $this->input->post('endDate'));
-
-						 $this->session->set_flashdata('danger', 'alert');
-						 $this->session->set_flashdata('alertMessage', $error['error']);
-
-				 		 redirect('controller/addProjectDetails');
-			 	 	}
-
-				 	 else
-				 	 {
-						 $startDate = $this->input->post('startDate');
-						 date_default_timezone_set("Singapore");
-						 $currDate = date("Y-m-d");
-
-						 if ($currDate >= $startDate)
-						 {
-						   $status = 'Ongoing';
-						 }
-
-						 else
-						 {
-						   $status = 'Drafted';
-						 }
-
-						 $data = array(
-						     'PROJECTTITLE' => $this->input->post('projectTitle'),
-						     'PROJECTSTARTDATE' => $startDate,
-						     'PROJECTENDDATE' => $this->input->post('endDate'),
-						     'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
-						     'PROJECTSTATUS' => $status,
-						     'users_USERID' => $_SESSION['USERID'],
-						     'DATECREATED' => $currDate
-						 );
-
-						 $sDate = date_create($startDate);
-						 $eDate = date_create($this->input->post('endDate'));
-						 $diff = date_diff($eDate, $sDate, true);
-						 $dateDiff = $diff->format('%R%a');
-
-						 // PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
-						 $data['project'] = $this->model->addProject($data);
-						 $data['dateDiff'] =$dateDiff;
-						 $data['departments'] = $this->model->getAllDepartments();
-
-						 $projectID = $data['project']['PROJECTID'];
-
-						 if ($data)
-						 {
-						   // TODO PUT ALERT
-
-						   // START OF LOGS/NOTIFS
-						   $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-						   $projectID = $data['project']['PROJECTID'];
-
-						   // START: LOG DETAILS
-						   $details = $userName . " created this project.";
-
-						   $logData = array (
-						     'LOGDETAILS' => $details,
-						     'TIMESTAMP' => date('Y-m-d H:i:s'),
-						     'projects_PROJECTID' => $projectID
-						   );
-
-						   $this->model->addToProjectLogs($logData);
-						   // END: LOG DETAILS
-
-						   $progressData = array(
-						     'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
-						     'DATE' => date('Y-m-d'),
-						     'COMPLETENESS' => 0,
-						     'TIMELINESS' => 0
-						   );
-
-						   $this->model->addAssessmentProject($progressData);
-
-							 $data = array('upload_data' => $this->upload->data());
-						   $path = './assets/uploads/templates/';
-
-						   $import_xls_file = $data['upload_data']['file_name'];
-						   $inputFileName = $path . $import_xls_file;
-						   $sheetname = 'Sheet1';
-
-							 try
-						   {
-						    $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
-						    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
-						    $reader->setLoadSheetsOnly($sheetname);
-						    $spreadsheet = $reader->load($inputFileName);
-						    $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
-
-						    $flag = true;
-						    $i=0;
-
-						    foreach ($worksheet as $value)
-						    {
-						      if($flag)
-						      {
-						        $flag =false;
-						        continue;
-						      }
-
-						      $insertData[$i]['TASKTITLE'] = $value['A'];
-						      $insertData[$i]['TASKSTARTDATE'] = $value['B'];
-						      $insertData[$i]['TASKENDDATE'] = $value['C'];
-						      $insertData[$i]['TASKSTATUS'] = $value['D'];
-									$insertData[$i]['TASKREMARKS'] = $value['E'];
-						      $insertData[$i]['CATEGORY'] = $value['F'];
-						      $insertData[$i]['projects_PROJECTID'] = $projectID;
-
-						      if ($value['G'] != 'NULL')
-						      {
-						        $insertData[$i]['tasks_TASKPARENT'] = $value['G'];
-						      }
-
-						      $i++;
-						    }
-
-						    $result = $this->model->importData($insertData);
-
-						    if ($result)
-						    {
-									$data['projectProfile'] = $this->model->getProjectByID($projectID);
-									$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-									$data['dependencies'] = $this->model->getDependenciesByProject($projectID);
-									$data['users'] = $this->model->getAllUsers();
-									$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
-									$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
-									$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
-									$data['informed'] = $this->model->getAllInformedByProject($projectID);
-
-									$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
-									$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
-									$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
-									$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
-
-									// foreach ($data['ganttData'] as $key => $value) {
-									// 	echo $value['tasks_TASKID'] . " parent is ";
-									// 	echo $value['tasks_TASKPARENT'] . "<br>";
-									// }
-
-									$this->load->view("projectGantt", $data);
-						    }
-
-						    else
-						    {
-						      echo "failed";
-						    }
-						  }
-
-							catch (Exception $e)
-						  {
-						     die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME)
-						              . '": ' .$e->getMessage());
-						  }
-						 }
-				 	 }
+					$status = 'Ongoing';
 				}
 
 				else
 				{
-					$startDate = $this->input->post('startDate');
-					date_default_timezone_set("Singapore");
-					$currDate = date("Y-m-d");
+					$status = 'Drafted';
+				}
 
-					if ($currDate >= $startDate)
-					{
-						$status = 'Ongoing';
-					}
+				$data = array(
+						'PROJECTTITLE' => $this->input->post('projectTitle'),
+						'PROJECTSTARTDATE' => $startDate,
+						'PROJECTENDDATE' => $this->input->post('endDate'),
+						'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
+						'PROJECTSTATUS' => $status,
+						'users_USERID' => $_SESSION['USERID'],
+						'DATECREATED' => $currDate
+				);
 
-					else
-					{
-						$status = 'Drafted';
-					}
+				$sDate = date_create($startDate);
+				$eDate = date_create($this->input->post('endDate'));
+				$diff = date_diff($eDate, $sDate, true);
+				$dateDiff = $diff->format('%R%a');
 
-					$data = array(
-							'PROJECTTITLE' => $this->input->post('projectTitle'),
-							'PROJECTSTARTDATE' => $startDate,
-							'PROJECTENDDATE' => $this->input->post('endDate'),
-							'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
-							'PROJECTSTATUS' => $status,
-							'users_USERID' => $_SESSION['USERID'],
-							'DATECREATED' => $currDate
+				// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
+				$data['project'] = $this->model->addProject($data);
+				$data['dateDiff'] =$dateDiff;
+				$data['departments'] = $this->model->getAllDepartments();
+
+				if ($data)
+				{
+					// TODO PUT ALERT
+
+					// START OF LOGS/NOTIFS
+					$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+					$projectID = $data['project']['PROJECTID'];
+
+					// START: LOG DETAILS
+					$details = $userName . " created this project.";
+
+					$logData = array (
+						'LOGDETAILS' => $details,
+						'TIMESTAMP' => date('Y-m-d H:i:s'),
+						'projects_PROJECTID' => $projectID
 					);
 
-					$sDate = date_create($startDate);
-					$eDate = date_create($this->input->post('endDate'));
-					$diff = date_diff($eDate, $sDate, true);
-					$dateDiff = $diff->format('%R%a');
+					$this->model->addToProjectLogs($logData);
+					// END: LOG DETAILS
 
-					// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
-					$data['project'] = $this->model->addProject($data);
-					$data['dateDiff'] =$dateDiff;
-					$data['departments'] = $this->model->getAllDepartments();
+					$progressData = array(
+						'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
+						'DATE' => date('Y-m-d'),
+						'COMPLETENESS' => 0,
+						'TIMELINESS' => 0
+					);
 
-					if ($data)
+					$this->model->addAssessmentProject($progressData);
+
+					$templates = $this->input->post('templates');
+
+					if (isset($templates))
 					{
-						// TODO PUT ALERT
+						$this->session->set_flashdata('templates', $templates);
 
-						// START OF LOGS/NOTIFS
-						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-						$projectID = $data['project']['PROJECTID'];
-
-						// START: LOG DETAILS
-						$details = $userName . " created this project.";
-
-						$logData = array (
-							'LOGDETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'projects_PROJECTID' => $projectID
-						);
-
-						$this->model->addToProjectLogs($logData);
-						// END: LOG DETAILS
-
-						$progressData = array(
-							'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
-							'DATE' => date('Y-m-d'),
-							'COMPLETENESS' => 0,
-							'TIMELINESS' => 0
-						);
-
-						$this->model->addAssessmentProject($progressData);
-
-						$templates = $this->input->post('templates');
-
-						if (isset($templates))
-						{
-							$this->session->set_flashdata('templates', $templates);
-
-							$data['templateProject'] = $this->model->getProjectByID($templates);
-							$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-							$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-							$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-							$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-							$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
-							$data['templateRaci'] = $this->model->getRaci($templates);
-							$data['templateUsers'] = $this->model->getAllUsers();
-						}
-
-							$this->load->view('addMainActivities', $data);
+						$data['templateProject'] = $this->model->getProjectByID($templates);
+						$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
+						$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
+						$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
+						$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
+						$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
+						$data['templateRaci'] = $this->model->getRaci($templates);
+						$data['templateUsers'] = $this->model->getAllUsers();
 					}
+
+						$this->load->view('addMainActivities', $data);
 				}
 			}
 		}
@@ -4853,6 +4720,97 @@ class controller extends CI_Controller
 								}
 							}
 
+							$affectedTasks[] = array("projEndDate" => $task['PROJECTENDDATE'],
+																		"id" => $postReq['TASKID'],
+																		"taskTitle" => $postReq['TASKTITLE'],
+																		"taskStatus" => $postReq['TASKSTATUS'],
+								                    "startDate" => $postReq['TASKSTARTDATE'],
+								                    "newStartDate" => $new_start,
+								                    "endDate" => $currTaskEnd,
+																		"newEndDate" => $new_end,
+																		"responsible" => $postReq['FIRSTNAME'] . " " . $postReq['LASTNAME']);
+
+						}
+						array_push($postReqsToAdjust, $postReq['TASKID']); // save task to array for checking
+					}
+				}
+				unset($postReqsToAdjust[$i]); // remove current task from array
+				$i++; // increase counter
+			}
+		}
+
+		// ARRAY CLEAN UP
+		$index = 0;
+		foreach($affectedTasks as $affectedTask1)
+		{
+			$doubleCount = 0;
+			foreach($affectedTasks as $affectedTask2)
+			{
+				if($affectedTask1['id'] == $affectedTask2['id'])
+				{
+					$doubleCount++;
+					if($doubleCount >= 2)
+					{
+						$affectedTasks[$index] = array("id" => null);
+					}
+				}
+			}
+			$index++;
+		}
+
+		echo json_encode($affectedTasks);
+	}
+
+	public function getRFCDateEffect()
+	{
+		$rfcID = $this->input->post("rfc_ID");
+		$rfc = $this->model->getChangeRequestbyID($rfcID);
+		$taskPostReqs = $this->model->getPostDependenciesByTaskID($rfc['tasks_REQUESTEDTASK']);
+
+		$affectedTasks = array();
+
+		if(COUNT($taskPostReqs) > 0) // if there are post requisite tasks
+		{
+			$postReqsToAdjust = array();
+			$postReqsToAdjust[] = $rfc['tasks_REQUESTEDTASK']; // add requested task to array
+			$i = 0; // set counter
+			while(COUNT($postReqsToAdjust) > 0) // loop while array is not empty/there are postreqs to check
+			{
+				$postReqs = $this->model->getPostDependenciesByTaskID($postReqsToAdjust[$i]); // get post reqs of current task
+
+				if(COUNT($postReqs) > 0) // if there are post reqs found
+				{
+					foreach($postReqs as $postReq)
+					{
+						$startDate = $postReq['TASKSTARTDATE'];
+						$endDate = $rfc['NEWENDDATE'];
+
+						if($endDate >= $startDate) //check if currTasks's end date will exceed the postreq's start date
+						{
+							if($postReq['TASKADJUSTEDSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+								$taskDuration = $postReq['adjustedTaskDuration2'];
+							elseif($postReq['TASKSTARTDATE'] != null && $postReq['TASKADJUSTEDENDDATE'] != null)
+								$taskDuration = $postReq['adjustedTaskDuration1'];
+							else
+								$taskDuration = $postReq['initialTaskDuration'];
+
+							if($postReq['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+								$currTaskEnd = $postReq['TASKENDDATE'];
+							else
+								$currTaskEnd = $postReq['TASKADJUSTEDENDDATE'];
+
+							$new_start = date('Y-m-d', strtotime($endDate . ' +1 day')); // set start date to one day after enddate
+							$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day')); // set end date according to duration
+
+							foreach($affectedTasks as $affectedTask)
+							{
+								if($affectedTask['id'] == $postReqsToAdjust[$i])
+								{
+									$new_start = date('Y-m-d', strtotime($affectedTask['newEndDate'] . ' +1 day'));
+									$new_end = date('Y-m-d', strtotime($new_start . ' +' . ($taskDuration-1) . ' day'));
+								}
+							}
+
 							$affectedTasks[] = array("id" => $postReq['TASKID'],
 																		"taskTitle" => $postReq['TASKTITLE'],
 																		"taskStatus" => $postReq['TASKSTATUS'],
@@ -4892,5 +4850,6 @@ class controller extends CI_Controller
 
 		echo json_encode($affectedTasks);
 	}
+
 
 }
