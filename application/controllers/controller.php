@@ -2155,6 +2155,8 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
+			$data['allOngoingProjects'] = $this->model->getAllOngoingOwnedProjectsByUser($_SESSION['USERID']);
+
 			$this->load->view("reports", $data);
 		}
 	}
@@ -2332,7 +2334,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsChangeRequestsPerProject()
+	public function reportsChangeRequestsPerProject() //PROJECT STATUS REPORT
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2341,7 +2343,22 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsChangeRequestsPerProject");
+			$projectID = $this->input->post("project");
+			$data['interval'] = $this->input->post("interval");
+			if($data['interval'] == '7')
+				$data['intervalWord'] = "Week";
+			else
+				$data['intervalWord'] = "Month";
+
+			$currDate = Date('Y-m-d');
+
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['plannedLast'] = $this->model->getPlannedLast($projectID, $data['interval']);
+			$data['accomplishedLast'] = $this->model->getAccomplishedLast($projectID, $data['interval']);
+			$data['problemTasks'] = $this->model->getProblemTasks($projectID, $data['interval']);
+
+			$this->load->view("reportsChangeRequestsPerProject", $data);
 		}
 	}
 	// REPORTS END

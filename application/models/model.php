@@ -2036,5 +2036,66 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  // PROJECT STATUS REPORT
+  public function getPlannedLast($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAccomplishedLast($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)
+                  && tasks.TASKSTATUS = 'Complete'";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getProblemTasks($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && (TASKENDDATE < CURDATE() || TASKADJUSTEDENDDATE < CURDATE()
+                  || TASKACTUALENDDATE > TASKADJUSTEDENDDATE || TASKACTUALENDDATE > TASKENDDATE) 
+                  && tasks.TASKSTATUS != 'Planning'
+                  && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKACTUALENDDATE)";
+    $this->db->select('*, ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "completeOrigDelay",
+                      ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "completeAdjustedDelay",
+                      ABS(DATEDIFF(tasks.TASKADJUSTEDENDDATE, CURDATE())) as "ongoingAdjustedDelay",
+                      ABS(DATEDIFF(tasks.TASKENDDATE, CURDATE())) as "ongoingOrigDelay"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+
 }
 ?>
