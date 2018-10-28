@@ -189,7 +189,13 @@
 
 																				else
 																				{
-																					echo $allTasks['DEPARTMENTNAME'];
+																					foreach ($allTasks as $row)
+			  																	{
+			  																		if($tValue['TASKTITLE'] == $row['TASKTITLE'])
+			  																		{
+			  																			echo $row['DEPARTMENTNAME'];
+			  																		}
+			  																	}
 																				}
 		  																?>
 																		</td>
