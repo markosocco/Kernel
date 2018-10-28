@@ -1960,22 +1960,6 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  // DELETE AFTER
-  public function importData($data)
-  {
-    $res = $this->db->insert_batch('tasks', $data);
-
-    if($res)
-    {
-        return TRUE;
-    }
-
-    else
-    {
-        return FALSE;
-    }
-  }
-
   public function checkSamePassword($pass)
   {
     $condition = "USERID = " . $_SESSION['USERID'];
