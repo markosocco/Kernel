@@ -2154,14 +2154,8 @@ class controller extends CI_Controller
 
 		else
 		{
-<<<<<<< HEAD
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
 			$this->load->view("reports", $data);
-=======
-
-
-			$this->load->view("reports");
->>>>>>> 5590ce8fb2d7bf241903da2a80fcb7e3b71ceaa4
 		}
 	}
 
