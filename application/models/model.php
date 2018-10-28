@@ -1984,5 +1984,62 @@ class model extends CI_Model
       return false;
     }
   }
+
+  public function importTaskToProject($data)
+  {
+    $result = $this->db->insert('tasks', $data);
+
+    if ($result)
+    {
+      $this->db->select('*');
+      $this->db->from('tasks');
+      $this->db->order_by('TASKID', 'DESC');
+      $this->db->limit(1);
+      $query = $this->db->get();
+
+      return $query->row_array();
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
+  public function getUserByName($data)
+  {
+    $name = explode(" ", $data);
+    $firstName = $name[0];
+    $lastName = $name[1];
+
+    $condition = "FIRSTNAME = '" . $firstName . "' && LASTNAME = '" . $lastName ."'";
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $this->db->limit(1);
+    $query = $this->db->get();
+
+    return $query->row('USERID');
+  }
+
+  public function getAllTasksForImportDependency($id)
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id;
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>
