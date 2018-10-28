@@ -50,6 +50,7 @@
               </td>
             </tr>
           </table>
+
           <!-- PLANNED LAST WEEK -->
   				<div class="row">
   					<div class="col-md-12 col-sm-12 col-xs-12">
@@ -62,16 +63,19 @@
   								<table class="table table-bordered table-condensed" id="">
   									<thead>
   										<tr>
-  											<th>Name</th>
-                        <th>Position</th>
-  											<th>Department</th>
-  											<th class='text-center'>Total Tasks</th>
-                        <th class='text-center'>Delayed Tasks</th>
-  											<th class='text-center'>Timeliness</th>
+  											<th>Task</th>
+  											<th class='text-center'>Start Date</th>
+                        <th class='text-center'>End Date</th>
+                        <th>Responsible</th>
+  											<th>Status</th>
   										</tr>
   									</thead>
   									<tbody>
-
+                      <td></td>
+                      <td align="center"></td>
+                      <td align="center"></td>
+                      <td></td>
+                      <td></td>
   									</tbody>
   								</table>
   							</div>
@@ -90,19 +94,54 @@
   							<!-- /.box-header -->
   							<div class="box-body" id="delayedBox">
   								<table class="table table-bordered table-condensed" id="delayedTable">
-  									<thead>
+                    <thead>
   										<tr>
-  											<th width="20%">Task</th>
-  											<th width="10%" class='text-center'>Target<br>End Date</th>
-  											<th width="10%" class='text-center'>Actual<br>End Date</th>
-  											<th width="5%" class='text-center'>Days Delayed</th>
-                        <th width="15%">Responsible</th>
-                        <th width="15%" class='text-center'>Department</th>
-  											<th width="25">Reason</th>
+  											<th>Task</th>
+  											<th class='text-center'>End Date</th>
+                        <th class='text-center'>Actual End Date</th>
+                        <th>Responsible</th>
   										</tr>
   									</thead>
-  									<tbody id="delayedData">
+  									<tbody>
+                      <td></td>
+                      <td align="center"></td>
+                      <td align="center"></td>
+                      <td></td>
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  	        </div>
+  	        <!-- /.col -->
+  				</div>
 
+          <!-- PROBLEMS ENCOUNTERED -->
+  				<div class="row">
+  					<div class="col-md-12 col-sm-12 col-xs-12">
+  						<div class="box box-default">
+  							<div class="box-header with-border">
+  								<h5 class="box-title">Problems Encountered</h5>
+  							</div>
+  							<!-- /.box-header -->
+  							<div class="box-body">
+  								<table class="table table-bordered table-condensed" id="">
+                    <thead>
+  										<tr>
+  											<th>Task</th>
+  											<th class='text-center'>End Date</th>
+                        <th class='text-center'>Actual End Date</th>
+                        <th class='text-center'>Days Delayed</th>
+                        <th>Responsible</th>
+                        <th>Remarks</th>
+  										</tr>
+  									</thead>
+  									<tbody>
+                      <td></td>
+                      <td align="center"></td>
+                      <td align="center"></td>
+                      <td align="center"></td>
+                      <td></td>
+                      <td></td>
   									</tbody>
   								</table>
   							</div>
@@ -121,19 +160,21 @@
   							<!-- /.box-header -->
   							<div class="box-body">
   								<table class="table table-bordered table-condensed" id="">
-  									<thead>
+                    <thead>
   										<tr>
-  											<th width="20%">Task</th>
-  											<th width="10%" class='text-center'>Target<br>End Date</th>
-  											<th width="10%" class='text-center'>Actual<br>End Date</th>
-  											<th width="5%" class='text-center'>Days Early</th>
-                        <th width="15%">Responsible</th>
-                        <th width="15%" class='text-center'>Department</th>
-  											<th width="25">Reason</th>
+  											<th>Task</th>
+                        <th class='text-center'>Start Date</th>
+  											<th class='text-center'>End Date</th>
+                        <th>Responsible</th>
+                        <th>Status</th>
   										</tr>
   									</thead>
   									<tbody>
-
+                      <td></td>
+                      <td align="center"></td>
+                      <td align="center"></td>
+                      <td></td>
+                      <td></td>
   									</tbody>
   								</table>
   							</div>
@@ -153,43 +194,39 @@
   							<div class="box-body">
                   <h5>Pending Task Delegation</h5>
                   <table class="table table-bordered table-condensed" id="">
-  									<thead>
+                    <thead>
   										<tr>
-  											<th width="0%">Task</th>
-                        <th width="0%" class='text-center'>Type</th>
-                        <th width="0%" class='text-center'>Date Requested</th>
-                        <th width="0">Reason</th>
-  											<th width="0%">Requested By</th>
-  											<th width="0%" class='text-center'>Department</th>
-  											<th width="0%" class='text-center'>Status</th>
-  											<th width="0%">Reviewed By</th>
-  											<th width="0%" class='text-center'>Date Approved</th>
-  											<th width="0">Remarks</th>
+  											<th>Task</th>
+                        <th class='text-center'>Start Date</th>
+                        <th>Delagator</th>
   										</tr>
   									</thead>
   									<tbody>
-
+                      <td></td>
+                      <td align="center"></td>
+                      <td></td>
   									</tbody>
   								</table>
 
                   <h5>Pending Change Requests</h5>
   								<table class="table table-bordered table-condensed" id="">
-  									<thead>
+                    <thead>
   										<tr>
-  											<th width="0%">Task</th>
-                        <th width="0%" class='text-center'>Type</th>
-                        <th width="0%" class='text-center'>Date Requested</th>
-                        <th width="0">Reason</th>
-  											<th width="0%">Requested By</th>
-  											<th width="0%" class='text-center'>Department</th>
-  											<th width="0%" class='text-center'>Status</th>
-  											<th width="0%">Reviewed By</th>
-  											<th width="0%" class='text-center'>Date Approved</th>
-  											<th width="0">Remarks</th>
+  											<th>Task</th>
+                        <th class='text-center'>End Date</th>
+                        <th>Type</th>
+                        <th class='text-center'>Date Requested</th>
+                        <th>Requester</th>
+                        <th>Reason</th>
   										</tr>
   									</thead>
   									<tbody>
-
+                      <td></td>
+                      <td align="center"></td>
+                      <td></td>
+                      <td align="center"></td>
+                      <td></td>
+                      <td></td>
   									</tbody>
   								</table>
   							</div>
