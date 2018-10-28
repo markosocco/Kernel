@@ -1751,6 +1751,17 @@ class model extends CI_Model
 
 // MONITOR PROJECTS
 
+  public function getAllProjectsOwnedByUser($userID){
+    $condition = "PROJECTSTATUS != 'Planning' && users_USERID = " . $userID;
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $this->db->order_by('projects.PROJECTTITLE');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
   public function getAllCompletedOwnedProjectsByUser($userID)
   {
     $condition = "PROJECTSTATUS = 'Complete' && users_USERID = " . $userID;
