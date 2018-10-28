@@ -93,18 +93,24 @@
 								<h2 class="modal-title">Project Summary</h2>
 							</div>
 							<div class="modal-body">
-								<select class="form-control select2" data-placeholder="Select Departments">
+								<form name="projSummReport" id="projSummReport" action="reportsProjectSummary" method="POST">
+								<select name="project" class="form-control select2" data-placeholder="Select Departments">
+									<?php
+										foreach ($allProjects as $value) {
+											echo "<option value=" . $value['PROJECTID'] . ">" . $value['PROJECTTITLE'] . "</option>";
+										}
+									?>
 
-									<option>Store Opening - DLSU Andrew</option>
+									<!-- <option>Store Opening - DLSU Andrew</option>
 									<option>Store Opening - DLSU Bloemen</option>
 									<option>Store Opening - DLSU Pericos</option>
-									<option>New Product Launch - Green Tea Popcorn</option>
+									<option>New Product Launch - Green Tea Popcorn</option> -->
 
 								</select>
-
+							</form>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsProjectSummary"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<a id="generateProjSumm" href="" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
 								</div>
 							</div>
 						</div>
@@ -333,11 +339,13 @@
 		<script>
 		$("#reports").addClass("active");
 
-		// $(document).ready(function() {
-		// 	$(".generateBtn").click(function(){
-		// 		alert("Place download function here!");
-		// 	});
-		// });
+		$(document).ready(function() {
+			$("#generateProjSumm").click(function()
+			{
+				$("#projSummReport").submit();
+				// alert("hello");
+			});
+		});
 		</script>
 
 	</body>

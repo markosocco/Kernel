@@ -34,15 +34,23 @@
         <div class="box box-danger">
           <table class="table-condensed" style="width:100%">
             <tr>
-              <td><b>Title: </b>Project Title Here</td>
-              <td align="right"><b>Initial Duration: </b>March 21, 1996 to March 21, 2019</td>
+              <td><b>Title: </b><?php echo $project['PROJECTTITLE']; ?></td>
+              <td align="right"><b>Initial Duration: </b><?php echo $project['PROJECTSTARTDATE'] . " to " . $project['PROJECTENDDATE'];?></td>
             </tr>
             <tr>
-              <td><b>Owner: </b>Marko Socco</td>
-              <td align="right"><b>Actual Duration: </b>March 21, 1996 to March 21, 2019</td>
+              <td><b>Owner: </b>
+
+                <?php foreach ($users as $user): ?>
+                  <?php if ($user['USERID'] == $project['users_USERID']): ?>
+                    <?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME']; ?>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+
+              </td>
+              <td align="right"><b>Actual Duration: </b><?php echo $project['PROJECTACTUALSTARTDATE'] . " to " . $project['PROJECTACTUALENDDATE'];?></td>
             </tr>
             <tr>
-              <td><b>Description: </b>This project is consuming every drop of energy that we have</td>
+              <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
               <td></td>
             </tr>
           </table>
@@ -67,14 +75,31 @@
   										</tr>
   									</thead>
   									<tbody>
+                      <?php foreach($team as $member):?>
+
+  											<?php $numTasks = 0;?>
+  											<?php $timeliness = 0;?>
+
+  											<?php foreach($taskCount as $count)
+  												if($count['USERID'] == $member['USERID'])
+  													$numTasks = $count['taskCount'];
+  											?>
+
+  											<?php foreach($employeeTimeliness as $empTimeliness)
+  												if($empTimeliness['USERID'] == $member['USERID'])
+  													$timeliness = $empTimeliness['timeliness'];
+  											?>
+  											<?php if($timeliness == 100.00)
+  											 	$timeliness = 100;
+  											?>
+
   											<tr>
   												<td><?php echo $member['FIRSTNAME'];?> <?php echo $member['LASTNAME'];?></td>
-                          <td></td>
   												<td><?php echo $member['DEPARTMENTNAME'];?></td>
   												<td class='text-center'><?php echo $numTasks;?></td>
-                          <td class='text-center'></td>
   												<td class='text-center'><?php echo $timeliness;?>%</td>
   											</tr>
+  										<?php endforeach;?>
   									</tbody>
   								</table>
   							</div>

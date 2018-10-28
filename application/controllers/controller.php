@@ -2154,9 +2154,8 @@ class controller extends CI_Controller
 
 		else
 		{
-
-			
-			$this->load->view("reports");
+			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
+			$this->load->view("reports", $data);
 		}
 	}
 
@@ -2233,7 +2232,25 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsProjectSummary");
+			$id = $this->input->post('project');
+
+			$data['project'] = $this->model->getProjectByID($id);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
+			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
+			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
+			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
+			$data['documents'] = $this->model->getAllDocumentsByProject($id);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
+			$data['departments'] = $this->model->compute_timeliness_departmentByProject($id);
+			$data['team'] = $this->model->getTeamByProject($id);
+			$data['users'] = $this->model->getAllUsers();
+			$data['allDepartments'] = $this->model->getAllDepartments();
+			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($id);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($id);
+
+			$this->load->view("reportsProjectSummary", $data);
 		}
 	}
 
