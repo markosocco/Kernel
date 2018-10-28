@@ -2671,17 +2671,267 @@ class controller extends CI_Controller
 
 						$title = $spreadsheet->getActiveSheet()->getCell('B1')->getValue();
 						$description = $spreadsheet->getActiveSheet()->getCell('B2')->getValue();
-						$startDate = $spreadsheet->getActiveSheet()->getCell('B3')->getValue();
-						$endDate = $spreadsheet->getActiveSheet()->getCell('B4')->getValue();
+						$startDate = $spreadsheet->getActiveSheet()->getCell('B3')->getFormattedValue();
+						$endDate = $spreadsheet->getActiveSheet()->getCell('B4')->getFormattedValue();
 						$status = $spreadsheet->getActiveSheet()->getCell('B5')->getValue();
 
-						echo $title . "<br>";
-						echo $description . "<br>";
-						echo $startDate . "<br>";
-						echo $endDate . "<br>";
-						echo $status . "<br>";
+						$currDate = date("Y-m-d");
 
+						$data = array(
+								'PROJECTTITLE' => $title,
+								'PROJECTSTARTDATE' => $startDate,
+								'PROJECTENDDATE' => $endDate,
+								'PROJECTDESCRIPTION' => $description,
+								'PROJECTSTATUS' => $status,
+								'users_USERID' => $_SESSION['USERID'],
+								'DATECREATED' => $currDate
+						);
 
+						$sDate = date_create($startDate);
+						$eDate = date_create($endDate);
+						$diff = date_diff($eDate, $sDate, true);
+						$dateDiff = $diff->format('%R%a');
+
+						$data['project'] = $this->model->addProject($data);
+						$data['dateDiff'] =$dateDiff;
+						$data['departments'] = $this->model->getAllDepartments();
+
+						$projectID = $data['project']['PROJECTID'];
+
+						if ($data)
+						{
+						  // TODO PUT ALERT
+
+						  // START OF LOGS/NOTIFS
+						  $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+						  $projectID = $data['project']['PROJECTID'];
+
+						  // START: LOG DETAILS
+						  $details = $userName . " created this project.";
+
+						  $logData = array (
+						    'LOGDETAILS' => $details,
+						    'TIMESTAMP' => date('Y-m-d H:i:s'),
+						    'projects_PROJECTID' => $projectID
+						  );
+
+						  $this->model->addToProjectLogs($logData);
+						  // END: LOG DETAILS
+
+						  $progressData = array(
+						    'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
+						    'DATE' => date('Y-m-d'),
+						    'COMPLETENESS' => 0,
+						    'TIMELINESS' => 0
+						  );
+
+						  $this->model->addAssessmentProject($progressData);
+
+							$sheetname = 'Tasks';
+
+							$reader->setLoadSheetsOnly($sheetname);
+					    $spreadsheet = $reader->load($inputFileName);
+					    $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+							// GET MAIN ACTIVITIES FROM WORKSHEET
+							$flag = true;
+							$i=0;
+
+							foreach ($worksheet as $value)
+							{
+							  if($flag)
+							  {
+							    $flag =false;
+							    continue;
+							  }
+
+							  if ($value['F'] == 1)
+								{
+									$insertMain['TASKTITLE'] = $value['A'];
+								  $insertMain['TASKSTARTDATE'] = $value['B'];
+								  $insertMain['TASKENDDATE'] = $value['C'];
+								  $insertMain['TASKSTATUS'] = $value['D'];
+								  $insertMain['TASKREMARKS'] = $value['E'];
+								  $insertMain['CATEGORY'] = $value['F'];
+								  $insertMain['projects_PROJECTID'] = $projectID;
+
+									// ENTER TASK TO DB
+									$mainAct = $this->model->importTaskToProject($insertMain);
+
+									// ENTER RACI TO DB
+
+									// RESPONSIBLE
+									$mainUsers = explode(", ", $value['H']);
+
+									// IMPORTDELETE
+									// $echoMain = " ===== " . $mainAct['TASKTITLE'] . ": ";
+
+									foreach ($mainUsers as $mU)
+									{
+										$userID = $this->model->getUserByName($mU);
+
+										$mainRaci['ROLE'] = 1;
+									  $mainRaci['users_USERID'] = $userID;
+									  $mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
+									  $mainRaci['STATUS'] = 'Current';
+
+										$result = $this->model->addToRaci($mainRaci);
+
+										// $echoMain .= $userID . ", ";
+									}
+
+									// echo $echoMain . " ===== <br>";
+
+									// GET ALL SUB ACTS UNDER CURRENT MAIN
+									foreach ($worksheet as $cell)
+									{
+										if ($cell['G'] == $mainAct['TASKTITLE'])
+										{
+											$insertSub['TASKTITLE'] = $cell['A'];
+										  $insertSub['TASKSTARTDATE'] = $cell['B'];
+										  $insertSub['TASKENDDATE'] = $cell['C'];
+										  $insertSub['TASKSTATUS'] = $cell['D'];
+										  $insertSub['TASKREMARKS'] = $cell['E'];
+										  $insertSub['CATEGORY'] = $cell['F'];
+											$insertSub['tasks_TASKPARENT'] = $mainAct['TASKID'];
+										  $insertSub['projects_PROJECTID'] = $projectID;
+
+											$subAct = $this->model->importTaskToProject($insertSub);
+
+											// RESPONSIBLE
+											$subUsers = explode(", ", $cell['H']);
+
+											// IMPORTDELETE
+											// $echoSub = " \t----- " . $subAct['TASKTITLE'] . ": ";
+
+											foreach ($subUsers as $sU)
+											{
+												$subUserID = $this->model->getUserByName($sU);
+
+												$subRaci['ROLE'] = 1;
+											  $subRaci['users_USERID'] = $subUserID;
+											  $subRaci['tasks_TASKID'] = $subAct['TASKID'];
+											  $subRaci['STATUS'] = 'Current';
+
+												$result = $this->model->addToRaci($subRaci);
+												// $echoSub .= $subUserID . ", ";
+												// echo $subAct['TASKTITLE'] . " -- " . $subUserID . "<br>";
+											}
+
+											// echo $echoSub . " -----<br>";
+
+											// GET ALL TASKS UNDER CURRENT SUB
+											foreach ($worksheet as $cell_2)
+											{
+												if ($cell_2['G'] == $subAct['TASKTITLE'])
+												{
+													$insertTask['TASKTITLE'] = $cell_2['A'];
+												  $insertTask['TASKSTARTDATE'] = $cell_2['B'];
+												  $insertTask['TASKENDDATE'] = $cell_2['C'];
+												  $insertTask['TASKSTATUS'] = $cell_2['D'];
+												  $insertTask['TASKREMARKS'] = $cell_2['E'];
+												  $insertTask['CATEGORY'] = $cell_2['F'];
+													$insertTask['tasks_TASKPARENT'] = $subAct['TASKID'];
+												  $insertTask['projects_PROJECTID'] = $projectID;
+
+													$task = $this->model->importTaskToProject($insertTask);
+
+													// RESPONSIBLE
+													$taskUsersR = explode(", ", $cell_2['H']);
+
+													foreach ($taskUsersR as $r)
+													{
+														$taskUserIDR = $this->model->getUserByName($r);
+
+														$taskR['ROLE'] = 1;
+													  $taskR['users_USERID'] = $taskUserIDR;
+													  $taskR['tasks_TASKID'] = $task['TASKID'];
+													  $taskR['STATUS'] = 'Current';
+
+														$result = $this->model->addToRaci($taskR);
+													}
+
+													// ACCOUNTABLE
+													$taskUsersA = explode(", ", $cell_2['I']);
+
+													foreach ($taskUsersA as $a)
+													{
+														$taskUserIDA = $this->model->getUserByName($a);
+
+														$taskA['ROLE'] = 2;
+													  $taskA['users_USERID'] = $taskUserIDA;
+													  $taskA['tasks_TASKID'] = $task['TASKID'];
+													  $taskA['STATUS'] = 'Current';
+
+														$result = $this->model->addToRaci($taskA);
+													}
+
+													// CONSULTED
+													$taskUsersC = explode(", ", $cell_2['J']);
+
+													foreach ($taskUsersC as $c)
+													{
+														$taskUserIDC = $this->model->getUserByName($c);
+
+														$taskC['ROLE'] = 3;
+													  $taskC['users_USERID'] = $taskUserIDC;
+													  $taskC['tasks_TASKID'] = $task['TASKID'];
+													  $taskC['STATUS'] = 'Current';
+
+														$result = $this->model->addToRaci($taskC);
+													}
+
+													// INFORMED
+													$taskUsersI = explode(", ", $cell_2['K']);
+
+													foreach ($taskUsersI as $i)
+													{
+														$taskUserIDI = $this->model->getUserByName($i);
+
+														$taskI['ROLE'] = 4;
+													  $taskI['users_USERID'] = $taskUserIDI;
+													  $taskI['tasks_TASKID'] = $task['TASKID'];
+													  $taskI['STATUS'] = 'Current';
+
+														$result = $this->model->addToRaci($taskI);
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+
+							// REDIRECT TO DEPENDENCIES
+							$data['project'] = $this->model->getProjectByID($projectID);
+							$data['allTasks'] = $this->model->getAllTasksForImportDependency($projectID);
+							$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+							$data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+							$data['subActivity'] = $this->model->getAllSubActivitiesByID($projectID);
+							$data['tasks'] = $this->model->getAllTasksByIDRole1($projectID);
+							$data['users'] = $this->model->getAllUsers();
+							$data['departments'] = $this->model->getAllDepartments();
+
+							$sDate = date_create($data['project']['PROJECTSTARTDATE']);
+							$eDate = date_create($data['project']['PROJECTENDDATE']);
+							$diff = date_diff($eDate, $sDate, true);
+							$dateDiff = $diff->format('%R%a');
+
+							$data['dateDiff'] = $dateDiff;
+
+							$this->session->set_flashdata('import', 'import');
+
+							$this->load->view("addDependencies", $data);
+						}
+
+						else
+						{
+							$this->session->set_flashdata('danger', 'alert');
+	 					 	$this->session->set_flashdata('alertMessage', ' There was an error in inserting your data');
+
+	 			 		 	redirect('controller/addProjectDetails');
+						}
 				  }
 
 					catch (Exception $e)
@@ -2775,7 +3025,7 @@ class controller extends CI_Controller
 						$data['templateUsers'] = $this->model->getAllUsers();
 					}
 
-						$this->load->view('addMainActivities', $data);
+					$this->load->view('addMainActivities', $data);
 				}
 			}
 		}
