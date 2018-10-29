@@ -39,7 +39,7 @@
                 $projectStart = date_create($project['PROJECTSTARTDATE']);
                 $projectEnd = date_create($project['PROJECTENDDATE']);
               ?>
-              <td align="right"><b>Duration: </b><?php echo date_format($projectStart, "F d, Y") . " to " . date_format($projectEnd, "F d, Y");?></td>
+              <td align="right"><b>Duration: </b><?php echo date_format($projectStart, "F d, Y") . " - " . date_format($projectEnd, "F d, Y");?></td>
             </tr>
             <tr>
               <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
@@ -168,13 +168,24 @@
                           <th class='text-center'>Actual End Date</th>
                           <th class='text-center'>Days Delayed</th>
                           <th>Responsible</th>
+                          <th class='text-center'>Status</th>
                           <th>Remarks</th>
     										</tr>
     									</thead>
     									<tbody>
                         <?php foreach($problemTasks as $problemTask):?>
                           <?php // to fix date format
-                            $taskActualEnd = date_create($problemTask['TASKACTUALENDDATE']);
+                            if($problemTask['TASKSTATUS'] == 'Ongoing')
+                            {
+                              $taskActualEnd = "-";
+                              $remarks = "-";
+                            }
+                            else
+                            {
+                              $taskActualEnd = date_format(date_create($problemTask['TASKACTUALENDDATE']), "M d, Y");
+                              $remarks = $problemTask['TASKREMARKS'];
+                            }
+
                             if($problemTask['TASKADJUSTEDENDDATE'] == "")
                             {
                               $taskEnd = date_create($problemTask['TASKENDDATE']);
@@ -195,10 +206,11 @@
                           <tr>
                             <td><?php echo $problemTask['TASKTITLE'];?></td>
                             <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
-                            <td align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo $taskActualEnd;?></td>
                             <td align="center"><?php echo $daysDelayed;?></td>
                             <td><?php echo $problemTask['FIRSTNAME'];?> <?php echo $problemTask['LASTNAME'];?></td>
-                            <td align="center"><?php echo $problemTask['TASKREMARKS'];?></td>
+                            <td align="center"><?php echo $problemTask['TASKSTATUS'];?></td>
+                            <td align="center"><?php echo $remarks;?></td>
                           </tr>
                         <? endforeach;?>
     									</tbody>
@@ -268,67 +280,75 @@
   								<h5 class="box-title">Risks</h5>
   							</div>
   							<!-- /.box-header -->
-  							<div class="box-body">
-                  <h5>Pending Task Delegation</h5>
-                  <table class="table table-bordered table-condensed" id="">
-                    <thead>
-  										<tr>
-  											<th>Task</th>
-                        <th class='text-center'>Start Date</th>
-                        <th>Delegator</th>
-  										</tr>
-  									</thead>
-  									<tbody>
-                      <td></td>
-                      <td align="center"></td>
-                      <td></td>
-  									</tbody>
-  								</table>
+                <?php if($pendingRFC != NULL || $pendingRACI != NULL):?>
+    							<div class="box-body">
+                    <?php if($pendingRACI != NULL):?>
+                      <h5>Pending Task Delegation</h5>
+                        <table class="table table-bordered table-condensed" id="">
+                          <thead>
+        										<tr>
+        											<th>Task</th>
+                              <th class='text-center'>Start Date</th>
+                              <th>Delegator</th>
+        										</tr>
+        									</thead>
+        									<tbody>
+                            <?php foreach($pendingRACI as $taskRACI):?>
+                              <tr>
+                                <td><?php echo $taskRACI['TASKTITLE'];?></td>
+                                <td align="center"><?php echo date_format(date_create($taskRACI['TASKSTARTDATE']), "M d, Y");?></td>
+                                <td><?php echo $taskRACI['FIRSTNAME'];?> <?php echo $taskRACI['LASTNAME'];?></td>
+                              </tr>
+                            <? endforeach;?>
+        									</tbody>
+        								</table>
+                      <?php endif;?>
 
-                  <h5>Pending Change Requests</h5>
-                  <?php if($pendingRFC != NULL):?>
-    								<table class="table table-bordered table-condensed" id="">
-                      <thead>
-    										<tr>
-    											<th>Task</th>
-                          <th class='text-center'>End Date</th>
-                          <th>Type</th>
-                          <th class='text-center'>Date Requested</th>
-                          <th>Requester</th>
-                          <th>Reason</th>
-    										</tr>
-    									</thead>
-    									<tbody>
-                        <?php foreach($pendingRFC as $request):?>
-                          <?php // to fix date format
-                            $taskStart = date_create($request['TASKSTARTDATE']);
-                            if($request['TASKADJUSTEDENDDATE'] == "")
-                              $taskEnd = date_create($request['TASKENDDATE']);
-                            else
-                              $taskEnd = date_create($request['TASKADJUSTEDENDDATE']);
+                    <?php if($pendingRFC != NULL):?>
+                      <h5>Pending Change Requests</h5>
+      								<table class="table table-bordered table-condensed" id="">
+                        <thead>
+      										<tr>
+      											<th>Task</th>
+                            <th class='text-center'>End Date</th>
+                            <th>Type</th>
+                            <th class='text-center'>Date Requested</th>
+                            <th>Requester</th>
+                            <th>Reason</th>
+      										</tr>
+      									</thead>
+      									<tbody>
+                          <?php foreach($pendingRFC as $request):?>
+                            <?php // to fix date format
+                              $taskStart = date_create($request['TASKSTARTDATE']);
+                              if($request['TASKADJUSTEDENDDATE'] == "")
+                                $taskEnd = date_create($request['TASKENDDATE']);
+                              else
+                                $taskEnd = date_create($request['TASKADJUSTEDENDDATE']);
 
-                            if($request['REQUESTTYPE'] == '1')
-                              $type = "Change Date";
-                            else
-                              $type = "Change Performer";
+                              if($request['REQUESTTYPE'] == '1')
+                                $type = "Change Date";
+                              else
+                                $type = "Change Performer";
 
-                            $taskRequest = date_create($request['REQUESTEDDATE']);
-                          ?>
-                          <tr>
-                            <td><?php echo $request['TASKTITLE'];?></td>
-                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
-                            <td><?php echo $type;?></td>
-                            <td align="center"><?php echo date_format($taskRequest, "M d, Y");?></td>
-                            <td><?php echo $request['FIRSTNAME'];?> <?php echo $request['LASTNAME'];?></td>
-                            <td><?php echo $request['REASON'];?></td>
-                          </tr>
-                        <? endforeach;?>
-    									</tbody>
-    								</table>
-                  <?php else:?>
-                    <h5 align="center">There are No Pending Change Requests</h5>
-                  <?php endif;?>
-  							</div>
+                              $taskRequest = date_create($request['REQUESTEDDATE']);
+                            ?>
+                            <tr>
+                              <td><?php echo $request['TASKTITLE'];?></td>
+                              <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                              <td><?php echo $type;?></td>
+                              <td align="center"><?php echo date_format($taskRequest, "M d, Y");?></td>
+                              <td><?php echo $request['FIRSTNAME'];?> <?php echo $request['LASTNAME'];?></td>
+                              <td><?php echo $request['REASON'];?></td>
+                            </tr>
+                          <? endforeach;?>
+      									</tbody>
+      								</table>
+                    <?php endif;?>
+    							</div>
+                <?php elseif($pendingRFC == NULL && $pendingRACI == NULL):?>
+                  <h5 align="center">There are no Risks</h5>
+                <?php endif;?>
   						</div>
   	        </div>
   	        <!-- /.col -->

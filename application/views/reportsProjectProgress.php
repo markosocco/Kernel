@@ -27,7 +27,7 @@
   <section>
     <!-- title row -->
     <div class="reportHeader viewCenter">
-      <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Project Status Report</h3>
+      <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Project Progress Report</h3>
     </div>
     <div class="reportBody">
       <!-- LOOP START HERE -->
@@ -35,18 +35,20 @@
           <table class="table-condensed" style="width:100%">
             <tr>
               <td><b>Title: </b><?php echo $project['PROJECTTITLE']; ?></td>
-              <td align="right"><b>Duration: </b><?php echo $project['PROJECTSTARTDATE'] . " to " . $project['PROJECTENDDATE'];?></td>
+              <?php // to fix date format
+                $projectStart = date_create($project['PROJECTSTARTDATE']);
+                $projectEnd = date_create($project['PROJECTENDDATE']);
+              ?>
+              <td align="right"><b>Duration: </b><?php echo date_format($projectStart, "F d, Y") . " - " . date_format($projectEnd, "F d, Y");?></td>
             </tr>
             <tr>
               <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
-              <td><b>Owner: </b>
-
-                <?php foreach ($users as $user): ?>
-                  <?php if ($user['USERID'] == $project['users_USERID']): ?>
-                    <?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME']; ?>
-                  <?php endif; ?>
-                <?php endforeach; ?>
-
+              <td align="right"><b>Owner: </b>
+                  <?php foreach ($users as $user): ?>
+                    <?php if ($user['USERID'] == $project['users_USERID']): ?>
+                      <?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME']; ?>
+                    <?php endif; ?>
+                  <?php endforeach; ?>
               </td>
             </tr>
           </table>
@@ -102,71 +104,52 @@
   								<h5 class="box-title">Accomplished Tasks</h5>
   							</div>
   							<!-- /.box-header -->
-  							<div class="box-body" id="delayedBox">
-                  <table class="table table-bordered table-condensed" id="">
-                    <thead>
-                      <tr>
-                        <th width="20%"></th>
-                        <th>Task</th>
-                        <th class='text-center'>Start Date</th>
-                        <th class='text-center'>End Date</th>
-                        <th class='text-center'>Actual End Date</th>
-                        <th class='text-center'>Days Completed</th>
-                        <th>Remarks</th>
-                      </tr>
-                    </thead>
+                <?php if($accomplishedTasks != NULL):?>
+                  <div class="box-body" id="delayedBox">
+                    <table class="table table-bordered table-condensed" id="">
+                      <thead>
+                        <tr>
+                          <th>Task</th>
+                          <th class='text-center'>Start Date</th>
+                          <th class='text-center'>End Date</th>
+                          <th class='text-center'>Actual End Date</th>
+                          <th class='text-center'>Days Completed</th>
+                          <th>Responsible</th>
+                          <th>Remarks</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach($accomplishedTasks as $accomplishedTask):?>
+                          <?php // to fix date format
+                            $taskActualEnd = date_create($accomplishedTask['TASKACTUALENDDATE']);
+                            if($accomplishedTask['TASKADJUSTEDENDDATE'] == "")
+                            {
+                              $taskEnd = date_create($accomplishedTask['TASKENDDATE']);
+                              $daysCompleted = $accomplishedTask['completeOrig'];
+                            }
+                            else
+                            {
+                              $taskEnd = date_create($accomplishedTask['TASKADJUSTEDENDDATE']);
+                              $daysCompleted = $accomplishedTask['completeAdjusted'];
 
-                    <tbody>
-                      <!-- DATA HERE -->
-                      <tr>
-                        <td rowspan="2" align="" style="vertical-align: middle;">Main 1: Kill Someone</td>
-                        <td></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td></td>
-                      </tr>
-
-                      <tr>
-                        <td></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td></td>
-                      </tr>
-
-                      <tr>
-                        <td rowspan="3" align="" style="vertical-align: middle;">Main 2: Bury Someone</td>
-                        <td></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td></td>
-                      </tr>
-
-                      <tr>
-                        <td></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td></td>
-                      </tr>
-
-                      <tr>
-                        <td></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </table>
-  							</div>
+                            }
+                          ?>
+                          <tr>
+                            <td rowspan="2" align="" style="vertical-align: middle;"><?php echo $accomplishedTask['TASKTITLE'];?></td>
+                            <td align="center"><?php echo date_format(date_create($accomplishedTask['TASKSTARTDATE']), "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo $daysCompleted;?></td>
+                            <td><?php echo $accomplishedTask['FIRSTNAME'];?> <?php echo $accomplishedTask['LASTNAME'];?></td>
+                            <td><?php echo $accomplishedTask['TASKREMARKS'];?></td>
+                          </tr>
+                        <? endforeach;?>
+                      </tbody>
+                    </table>
+    							</div>
+                <?php else:?>
+                  <h5 align="center">There were No Tasks Accomplished Last <?php echo $intervalWord;?></h5>
+                <?php endif;?>
   						</div>
   	        </div>
   	        <!-- /.col -->

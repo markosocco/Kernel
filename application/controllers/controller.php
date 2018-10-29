@@ -1088,7 +1088,7 @@ class controller extends CI_Controller
 			'ROLE' => '5',
 			'users_USERID' => $_SESSION['USERID'],
 			'tasks_TASKID' => $taskID,
-			'STATUS' => 'Current'
+			'STATUS' => 'Changed'
 		);
 		$result = $this->model->addToRaci($delegateData);
 
@@ -1149,6 +1149,7 @@ class controller extends CI_Controller
 		if($this->input->post("responsibleEmp"))
 		{
 			$responsibleEmp = $this->input->post('responsibleEmp');
+			$responsibleType = $this->model->getUserType($responsibleEmp);
 
 			$delegate = $this->model->checkForDelegation($taskID);
 
@@ -1156,19 +1157,32 @@ class controller extends CI_Controller
 			{
 				$updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
 
-				$delegateDataNew = array(
-					'ROLE' => '0',
-					'users_USERID' => $responsibleEmp,
-					'tasks_TASKID' => $taskID,
-					'STATUS' => 'Current'
-				);
+				if($responsibleType == '5') //if to staff, remove delegation
+				{
+					$delegateDataNew = array(
+						'ROLE' => '0',
+						'users_USERID' => $responsibleEmp,
+						'tasks_TASKID' => $taskID,
+						'STATUS' => 'Changed'
+					);
+				}
+				else
+				{
+					$delegateDataNew = array(
+						'ROLE' => '0',
+						'users_USERID' => $responsibleEmp,
+						'tasks_TASKID' => $taskID,
+						'STATUS' => 'Current'
+					);
+				}
+
 				$result = $this->model->addToRaci($delegateDataNew);
 
 				$delegateData = array(
 					'ROLE' => '5',
 					'users_USERID' => $_SESSION['USERID'],
 					'tasks_TASKID' => $taskID,
-					'STATUS' => 'Current'
+					'STATUS' => 'Changed'
 				);
 				$result = $this->model->addToRaci($delegateData);
 			}
@@ -1383,6 +1397,7 @@ class controller extends CI_Controller
 		$this->session->set_flashdata('alertMessage', ' Task has been Delegated');
 		$this->taskDelegate();
 	}
+
 
 	public function submitRFC()
 	{
@@ -2155,6 +2170,8 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
+			$data['allOngoingProjects'] = $this->model->getAllOngoingOwnedProjectsByUser($_SESSION['USERID']);
+
 			$this->load->view("reports", $data);
 		}
 	}
@@ -2306,7 +2323,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsChangeRequestsPerEmployee()
+	public function reportsProjectProgress()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2315,7 +2332,18 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsChangeRequestsPerEmployee");
+			$projectID = $this->input->post("project");
+			$data['interval'] = $this->input->post("interval");
+			if($data['interval'] == '7')
+				$data['intervalWord'] = "Week";
+			else
+				$data['intervalWord'] = "Month";
+
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['accomplishedTasks'] = $this->model->getAccomplishedTasks($projectID, $data['interval']);
+
+			$this->load->view("reportsProjectProgress", $data);
 		}
 	}
 
@@ -2332,7 +2360,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsChangeRequestsPerProject()
+	public function reportsProjectStatus()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2341,15 +2369,12 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsChangeRequestsPerProject");
 			$projectID = $this->input->post("project");
 			$data['interval'] = $this->input->post("interval");
 			if($data['interval'] == '7')
 				$data['intervalWord'] = "Week";
 			else
 				$data['intervalWord'] = "Month";
-
-			$currDate = Date('Y-m-d');
 
 			$data['project'] = $this->model->getProjectByID($projectID);
 			$data['users'] = $this->model->getAllUsers();
@@ -2358,8 +2383,9 @@ class controller extends CI_Controller
 			$data['problemTasks'] = $this->model->getProblemTasks($projectID, $data['interval']);
 			$data['plannedNext'] = $this->model->getPlannedNext($projectID, $data['interval']);
 			$data['pendingRFC'] = $this->model->getPendingRFCNext($projectID, $data['interval']);
+			$data['pendingRACI'] = $this->model->getPendingRaci($projectID);
 
-			$this->load->view("reportsChangeRequestsPerProject", $data);
+			$this->load->view("reportsProjectStatus", $data);
 		}
 	}
 	// REPORTS END

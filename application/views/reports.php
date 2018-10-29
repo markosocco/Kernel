@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Kernel - Reports</title>
-		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/reportsStyle.css")?>">
+		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/reportsStyle.css")?>"> -->
 	</head>
 	<body>
 
@@ -66,14 +66,18 @@
 									<td>Departmental Performance per Project</td>
 									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 								</tr>
-								<tr>
-									<td>Project Status Report</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
-								<tr>
-									<td>Project Progress Report</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
+								<!-- SHOW ONLY TO THOSE PO'S WITH ONGOING PROJECTS -->
+								<?php if($allOngoingProjects != NULL):?>
+									<tr>
+										<td>Project Status Report</td>
+										<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+									</tr>
+									<tr>
+										<td>Project Progress Report</td>
+										<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+									</tr>
+								<?php endif;?>
+
 							</tbody>
 						</table>
 					</div>
@@ -90,23 +94,18 @@
 							</div>
 							<div class="modal-body">
 								<form name="projSummReport" id="projSummReport" action="reportsProjectSummary" method="POST" target="_blank">
-									<select name="project" class="form-control select2" data-placeholder="Select Departments">
+									<select name="project" id="projectSummarySelect" class="form-control select2" data-placeholder="Select Departments">
+										<option disabled selected value = "0">-- Select a Project -- </option>
 										<?php
 											foreach ($allProjects as $value) {
 												echo "<option value=" . $value['PROJECTID'] . ">" . $value['PROJECTTITLE'] . "</option>";
 											}
 										?>
-
-										<!-- <option>Store Opening - DLSU Andrew</option>
-										<option>Store Opening - DLSU Bloemen</option>
-										<option>Store Opening - DLSU Pericos</option>
-										<option>New Product Launch - Green Tea Popcorn</option> -->
-
 									</select>
 								</form>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a id="generateProjSumm" href="" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<button id="closeProjectSummary" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id="generateProjSumm" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
 								</div>
 							</div>
 						</div>
@@ -243,13 +242,13 @@
 								<h2 class="modal-title">Project Status Report</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projStatusReport" id="projStatusReport" action="reportsChangeRequestsPerProject" method="POST" target='_blank'>
+								<form name="projStatusReport" id="projStatusReport" action="reportsProjectStatus" method="POST" target='_blank'>
 									<h4>Status Interval: </h4>
-									<div class="btn-group">
-										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default">Weekly</button>
-										<button type="button" id = "monthlyBtn" value = '31' class="btn btn-default">Monthly</button>
+									<div class="btn-group" id="btnStatus">
+										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default intervalsStatus">Weekly</button>
+										<button type="button" id = "monthlyBtn" value = '31' class="btn btn-default intervalsStatus">Monthly</button>
 									</div>
-									<input id="intervalValue" type='hidden' name='interval' value= "">
+									<input id="intervalValueStatus" type='hidden' name='interval' value= "">
 									<br><br>
 
 									<select id="projectStatus" name="project" class="form-control select2" data-placeholder="Select Departments">
@@ -264,8 +263,7 @@
 
 								<div class="modal-footer">
 									<button id = "closeStatusReport" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-									<a id="generateStatusReport" href="<?php echo base_url("index.php/controller/reportsChangeRequestsPerProject"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></a>
-									<!-- <button id="generateStatusReport" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button> -->
+									<button id="generateStatusReport" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
 								</div>
 							</div>
 						</div>
@@ -283,25 +281,27 @@
 								<h2 class="modal-title">Project Progress Report</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projSummReport" id="projSummReport" action="reportsChangeRequestsPerProject" method="POST" data-interval=''>
-									<select name="project" class="form-control select2" data-placeholder="Select Departments">
+								<form name="projProgressReport" id="projProgressReport" action="reportsProjectProgress" method="POST" data-interval='' target="_blank">
+									<h4>Progress Interval: </h4>
+									<div class="btn-group" id="btnProgress">
+										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default intervalsProgress">Weekly</button>
+										<button type="button" id = "monthlyBtn" value = '31' class="btn btn-default intervalsProgress">Monthly</button>
+									</div>
+									<input id="intervalValueProgress" type='hidden' name='interval' value= "">
+									<br><br>
+									<select id="projectProgressSelect" name="project" class="form-control select2" data-placeholder="Select Departments">
+										<option disabled selected value = "0">-- Select a Project -- </option>
 										<?php
-											foreach ($allProjects as $value) {
+											foreach ($allOngoingProjects as $value) {
 												echo "<option value=" . $value['PROJECTID'] . ">" . $value['PROJECTTITLE'] . "</option>";
 											}
 										?>
-
-										<!-- <option>Store Opening - DLSU Andrew</option>
-										<option>Store Opening - DLSU Bloemen</option>
-										<option>Store Opening - DLSU Pericos</option>
-										<option>New Product Launch - Green Tea Popcorn</option> -->
-
 									</select>
 								</form>
 
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsChangeRequestsPerEmployee"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<button id="closeProjectProgress" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id="generateProgressReport" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
 								</div>
 							</div>
 						</div>
@@ -322,17 +322,23 @@
 		$("#reports").addClass("active");
 
 		$(document).ready(function() {
+
+			// PROJECT SUMMARY REPORT
 			$("#generateProjSumm").click(function()
 			{
 				$("#projSummReport").submit();
-				// alert("hello");
 			});
 
-			// PROJECT STATUS REPORT START
+			$("#closeProjectSummary").click(function()
+			{
+				$("#projectSummarySelect").val("0");
+			});
+
+			// PROJECT STATUS REPORT
 			$(".btn-group > .btn").click(function(){
 			    $(".btn-group > .btn").removeClass("active");
 			    $(this).addClass("active");
-					$("#intervalValue").attr("value", $(this).val());
+					$("#intervalValueStatus").attr("value", $(this).val());
 			});
 
 			$("#generateStatusReport").click(function()
@@ -343,9 +349,26 @@
 			$("#closeStatusReport").click(function()
 			{
 				$("#projectStatus").val("0");
+				$(".intervalsStatus").removeClass("active");
 			});
-			// PROJECT STATUS REPORT END
 
+			// PROJECT PROGRESS REPORT
+			$(".btn-group > .btn").click(function(){
+			    $(".btn-group > .btn").removeClass("active");
+			    $(this).addClass("active");
+					$("#intervalValueProgress").attr("value", $(this).val());
+			});
+
+			$("#generateProgressReport").click(function()
+			{
+				$("#projProgressReport").submit();
+			});
+
+			$("#closeProjectProgress").click(function()
+			{
+				$("#projectProgressSelect").val("0");
+				$(".intervalsProgress").removeClass("active");
+			});
 		});
 		</script>
 
