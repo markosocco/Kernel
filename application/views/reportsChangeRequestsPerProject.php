@@ -35,7 +35,11 @@
           <table class="table-condensed" style="width:100%">
             <tr>
               <td><b>Title: </b><?php echo $project['PROJECTTITLE']; ?></td>
-              <td align="right"><b>Duration: </b><?php echo $project['PROJECTSTARTDATE'] . " to " . $project['PROJECTENDDATE'];?></td>
+              <?php // to fix date format
+                $projectStart = date_create($project['PROJECTSTARTDATE']);
+                $projectEnd = date_create($project['PROJECTENDDATE']);
+              ?>
+              <td align="right"><b>Duration: </b><?php echo date_format($projectStart, "F d, Y") . " to " . date_format($projectEnd, "F d, Y");?></td>
             </tr>
             <tr>
               <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
@@ -56,29 +60,44 @@
   					<div class="col-md-12 col-sm-12 col-xs-12">
   						<div class="box box-default">
   							<div class="box-header with-border">
-  								<h5 class="box-title">Planned Last Week</h5>
+  								<h5 class="box-title">Planned Last <?php echo $intervalWord;?></h5>
   							</div>
   							<!-- /.box-header -->
-  							<div class="box-body">
-  								<table class="table table-bordered table-condensed" id="">
-  									<thead>
-  										<tr>
-  											<th>Task</th>
-  											<th class='text-center'>Start Date</th>
-                        <th class='text-center'>End Date</th>
-                        <th>Responsible</th>
-  											<th>Status</th>
-  										</tr>
-  									</thead>
-  									<tbody>
-                      <td></td>
-                      <td align="center"></td>
-                      <td align="center"></td>
-                      <td></td>
-                      <td></td>
-  									</tbody>
-  								</table>
-  							</div>
+                <?php if($plannedLast != NULL):?>
+    							<div class="box-body">
+    								<table class="table table-bordered table-condensed" id="">
+    									<thead>
+    										<tr>
+    											<th>Task</th>
+    											<th class='text-center'>Start Date</th>
+                          <th class='text-center'>End Date</th>
+                          <th>Responsible</th>
+    											<th>Status</th>
+    										</tr>
+    									</thead>
+    									<tbody>
+                        <?php foreach($plannedLast as $plannedLastTask):?>
+                          <?php // to fix date format
+                            $taskStart = date_create($plannedLastTask['TASKSTARTDATE']);
+                            if($plannedLastTask['TASKADJUSTEDENDDATE'] == "")
+                              $taskEnd = date_create($plannedLastTask['TASKENDDATE']);
+                            else
+                              $taskEnd = date_create($plannedLastTask['TASKADJUSTEDENDDATE']);
+                          ?>
+                          <tr>
+                            <td><?php echo $plannedLastTask['TASKTITLE'];?></td>
+                            <td align="center"><?php echo date_format($taskStart, "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                            <td><?php echo $plannedLastTask['FIRSTNAME'];?> <?php echo $plannedLastTask['LASTNAME'];?></td>
+                            <td><?php echo $plannedLastTask['TASKSTATUS'];?></td>
+                          </tr>
+                        <? endforeach;?>
+    									</tbody>
+    								</table>
+    							</div>
+                <?php else:?>
+                  <h5 align="center">There were No Tasks Planned Last <?php echo $intervalWord;?></h5>
+                <?php endif;?>
   						</div>
   	        </div>
   	        <!-- /.col -->
@@ -89,27 +108,42 @@
   					<div class="col-md-12 col-sm-12 col-xs-12">
   						<div class="box box-default">
   							<div class="box-header with-border">
-  								<h5 class="box-title">Accomplished Tasks Last Week</h5>
+  								<h5 class="box-title">Accomplished Tasks Last <?php echo $intervalWord;?></h5>
   							</div>
   							<!-- /.box-header -->
-  							<div class="box-body" id="delayedBox">
-  								<table class="table table-bordered table-condensed" id="delayedTable">
-                    <thead>
-  										<tr>
-  											<th>Task</th>
-  											<th class='text-center'>End Date</th>
-                        <th class='text-center'>Actual End Date</th>
-                        <th>Responsible</th>
-  										</tr>
-  									</thead>
-  									<tbody>
-                      <td></td>
-                      <td align="center"></td>
-                      <td align="center"></td>
-                      <td></td>
-  									</tbody>
-  								</table>
-  							</div>
+                <?php if($accomplishedLast != NULL):?>
+    							<div class="box-body" id="delayedBox">
+    								<table class="table table-bordered table-condensed" id="delayedTable">
+                      <thead>
+    										<tr>
+    											<th>Task</th>
+    											<th class='text-center'>End Date</th>
+                          <th class='text-center'>Actual End Date</th>
+                          <th>Responsible</th>
+    										</tr>
+    									</thead>
+    									<tbody>
+                        <?php foreach($accomplishedLast as $accomplishedLastTask):?>
+                          <?php // to fix date format
+                            $taskActualEnd = date_create($accomplishedLastTask['TASKACTUALENDDATE']);
+                            if($accomplishedLastTask['TASKADJUSTEDENDDATE'] == "")
+                              $taskEnd = date_create($accomplishedLastTask['TASKENDDATE']);
+                            else
+                              $taskEnd = date_create($accomplishedLastTask['TASKADJUSTEDENDDATE']);
+                          ?>
+                          <tr>
+                            <td><?php echo $accomplishedLastTask['TASKTITLE'];?></td>
+                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
+                            <td><?php echo $accomplishedLastTask['FIRSTNAME'];?> <?php echo $accomplishedLastTask['LASTNAME'];?></td>
+                          </tr>
+                        <? endforeach;?>
+    									</tbody>
+    								</table>
+    							</div>
+                <?php else:?>
+                  <h5 align="center">There were No Tasks Accomplished Last <?php echo $intervalWord;?></h5>
+                <?php endif;?>
   						</div>
   	        </div>
   	        <!-- /.col -->
@@ -123,28 +157,56 @@
   								<h5 class="box-title">Problems Encountered</h5>
   							</div>
   							<!-- /.box-header -->
-  							<div class="box-body">
-  								<table class="table table-bordered table-condensed" id="">
-                    <thead>
-  										<tr>
-  											<th>Task</th>
-  											<th class='text-center'>End Date</th>
-                        <th class='text-center'>Actual End Date</th>
-                        <th class='text-center'>Days Delayed</th>
-                        <th>Responsible</th>
-                        <th>Remarks</th>
-  										</tr>
-  									</thead>
-  									<tbody>
-                      <td></td>
-                      <td align="center"></td>
-                      <td align="center"></td>
-                      <td align="center"></td>
-                      <td></td>
-                      <td></td>
-  									</tbody>
-  								</table>
-  							</div>
+                <?php if($problemTasks != NULL):?>
+
+    							<div class="box-body">
+    								<table class="table table-bordered table-condensed" id="">
+                      <thead>
+    										<tr>
+    											<th>Task</th>
+    											<th class='text-center'>End Date</th>
+                          <th class='text-center'>Actual End Date</th>
+                          <th class='text-center'>Days Delayed</th>
+                          <th>Responsible</th>
+                          <th>Remarks</th>
+    										</tr>
+    									</thead>
+    									<tbody>
+                        <?php foreach($problemTasks as $problemTask):?>
+                          <?php // to fix date format
+                            $taskActualEnd = date_create($problemTask['TASKACTUALENDDATE']);
+                            if($problemTask['TASKADJUSTEDENDDATE'] == "")
+                            {
+                              $taskEnd = date_create($problemTask['TASKENDDATE']);
+                              if($problemTask['TASKSTATUS'] == 'Ongoing')
+                                $daysDelayed = $problemTask['ongoingOrigDelay'];
+                              else
+                                $daysDelayed = $problemTask['completeOrigDelay'];
+                            }
+                            else
+                            {
+                              $taskEnd = date_create($problemTask['TASKADJUSTEDENDDATE']);
+                              if($problemTask['TASKSTATUS'] == 'Ongoing')
+                                $daysDelayed = $problemTask['ongoingAdjustedDelay'];
+                              else
+                                $daysDelayed = $problemTask['completeAdjustedDelay'];
+                            }
+                          ?>
+                          <tr>
+                            <td><?php echo $problemTask['TASKTITLE'];?></td>
+                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo $daysDelayed;?></td>
+                            <td><?php echo $problemTask['FIRSTNAME'];?> <?php echo $problemTask['LASTNAME'];?></td>
+                            <td align="center"><?php echo $problemTask['TASKREMARKS'];?></td>
+                          </tr>
+                        <? endforeach;?>
+    									</tbody>
+    								</table>
+    							</div>
+                <?php else:?>
+                  <h5 align="center">There were No Problems Encountered Last <?php echo $intervalWord;?></h5>
+                <?php endif;?>
   						</div>
   	        </div>
   	        <!-- /.col -->
@@ -155,29 +217,44 @@
   					<div class="col-md-12 col-sm-12 col-xs-12">
   						<div class="box box-default">
   							<div class="box-header with-border">
-  								<h5 class="box-title">Planned Next Week</h5>
+  								<h5 class="box-title">Planned Next <?php echo $intervalWord;?></h5>
   							</div>
   							<!-- /.box-header -->
-  							<div class="box-body">
-  								<table class="table table-bordered table-condensed" id="">
-                    <thead>
-  										<tr>
-  											<th>Task</th>
-                        <th class='text-center'>Start Date</th>
-  											<th class='text-center'>End Date</th>
-                        <th>Responsible</th>
-                        <th>Status</th>
-  										</tr>
-  									</thead>
-  									<tbody>
-                      <td></td>
-                      <td align="center"></td>
-                      <td align="center"></td>
-                      <td></td>
-                      <td></td>
-  									</tbody>
-  								</table>
-  							</div>
+                <?php if ($plannedNext != NULL):?>
+    							<div class="box-body">
+    								<table class="table table-bordered table-condensed" id="">
+                      <thead>
+    										<tr>
+    											<th>Task</th>
+                          <th class='text-center'>Start Date</th>
+    											<th class='text-center'>End Date</th>
+                          <th>Responsible</th>
+                          <th>Status</th>
+    										</tr>
+    									</thead>
+    									<tbody>
+                        <?php foreach($plannedNext as $plannedNextTask):?>
+                          <?php // to fix date format
+                            $taskStart = date_create($plannedNextTask['TASKSTARTDATE']);
+                            if($plannedNextTask['TASKADJUSTEDENDDATE'] == "")
+                              $taskEnd = date_create($plannedNextTask['TASKENDDATE']);
+                            else
+                              $taskEnd = date_create($plannedNextTask['TASKADJUSTEDENDDATE']);
+                          ?>
+                          <tr>
+                            <td><?php echo $plannedNextTask['TASKTITLE'];?></td>
+                            <td align="center"><?php echo date_format($taskStart, "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                            <td><?php echo $plannedNextTask['FIRSTNAME'];?> <?php echo $plannedNextTask['LASTNAME'];?></td>
+                            <td><?php echo $plannedNextTask['TASKSTATUS'];?></td>
+                          </tr>
+                        <? endforeach;?>
+    									</tbody>
+    								</table>
+    							</div>
+                <?php else:?>
+                  <h5 align="center">There are No Tasks Planned Next <?php echo $intervalWord;?></h5>
+                <?php endif;?>
   						</div>
   	        </div>
   	        <!-- /.col -->
@@ -198,7 +275,7 @@
   										<tr>
   											<th>Task</th>
                         <th class='text-center'>Start Date</th>
-                        <th>Delagator</th>
+                        <th>Delegator</th>
   										</tr>
   									</thead>
   									<tbody>
@@ -209,26 +286,48 @@
   								</table>
 
                   <h5>Pending Change Requests</h5>
-  								<table class="table table-bordered table-condensed" id="">
-                    <thead>
-  										<tr>
-  											<th>Task</th>
-                        <th class='text-center'>End Date</th>
-                        <th>Type</th>
-                        <th class='text-center'>Date Requested</th>
-                        <th>Requester</th>
-                        <th>Reason</th>
-  										</tr>
-  									</thead>
-  									<tbody>
-                      <td></td>
-                      <td align="center"></td>
-                      <td></td>
-                      <td align="center"></td>
-                      <td></td>
-                      <td></td>
-  									</tbody>
-  								</table>
+                  <?php if($pendingRFC != NULL):?>
+    								<table class="table table-bordered table-condensed" id="">
+                      <thead>
+    										<tr>
+    											<th>Task</th>
+                          <th class='text-center'>End Date</th>
+                          <th>Type</th>
+                          <th class='text-center'>Date Requested</th>
+                          <th>Requester</th>
+                          <th>Reason</th>
+    										</tr>
+    									</thead>
+    									<tbody>
+                        <?php foreach($pendingRFC as $request):?>
+                          <?php // to fix date format
+                            $taskStart = date_create($request['TASKSTARTDATE']);
+                            if($request['TASKADJUSTEDENDDATE'] == "")
+                              $taskEnd = date_create($request['TASKENDDATE']);
+                            else
+                              $taskEnd = date_create($request['TASKADJUSTEDENDDATE']);
+
+                            if($request['REQUESTTYPE'] == '1')
+                              $type = "Change Date";
+                            else
+                              $type = "Change Performer";
+
+                            $taskRequest = date_create($request['REQUESTEDDATE']);
+                          ?>
+                          <tr>
+                            <td><?php echo $request['TASKTITLE'];?></td>
+                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                            <td><?php echo $type;?></td>
+                            <td align="center"><?php echo date_format($taskRequest, "M d, Y");?></td>
+                            <td><?php echo $request['FIRSTNAME'];?> <?php echo $request['LASTNAME'];?></td>
+                            <td><?php echo $request['REASON'];?></td>
+                          </tr>
+                        <? endforeach;?>
+    									</tbody>
+    								</table>
+                  <?php else:?>
+                    <h5 align="center">There are No Pending Change Requests</h5>
+                  <?php endif;?>
   							</div>
   						</div>
   	        </div>

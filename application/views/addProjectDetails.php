@@ -171,7 +171,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+							<button id="uploadBack" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
 							<button  id="uploadConfirm" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 						</div>
 						</form>
@@ -226,6 +226,11 @@
 			{
 				$("#uploadDiv").show();
 				$("#confirmUpload").hide();
+			});
+
+			$("#uploadBack").click(function()
+			{
+				$("#uploadFile").val("");
 			});
 
 			<?php if (isset($_SESSION['edit'])): ?>
