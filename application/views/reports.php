@@ -89,7 +89,7 @@
 								<h2 class="modal-title">Project Summary</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projSummReport" id="projSummReport" action="reportsProjectSummary" method="POST">
+								<form name="projSummReport" id="projSummReport" action="reportsProjectSummary" method="POST" target="_blank">
 									<select name="project" class="form-control select2" data-placeholder="Select Departments">
 										<?php
 											foreach ($allProjects as $value) {
@@ -243,7 +243,7 @@
 								<h2 class="modal-title">Project Status Report</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projStatusReport" id="projStatusReport" action="reportsChangeRequestsPerProject" method="POST">
+								<form name="projStatusReport" id="projStatusReport" action="reportsChangeRequestsPerProject" method="POST" target='_blank'>
 									<h4>Status Interval: </h4>
 									<div class="btn-group">
 										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default">Weekly</button>

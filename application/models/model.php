@@ -2077,7 +2077,7 @@ class model extends CI_Model
   {
     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
                   && (TASKENDDATE < CURDATE() || TASKADJUSTEDENDDATE < CURDATE()
-                  || TASKACTUALENDDATE > TASKADJUSTEDENDDATE || TASKACTUALENDDATE > TASKENDDATE) 
+                  || TASKACTUALENDDATE > TASKADJUSTEDENDDATE || TASKACTUALENDDATE > TASKENDDATE)
                   && tasks.TASKSTATUS != 'Planning'
                   && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
@@ -2094,6 +2094,41 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+  }
+
+  public function getPlannedNext($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && tasks.TASKSTATUS != 'Complete'
+                  && (DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getPendingRFCNext($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && changeRequests.REQUESTSTATUS = 'Pending'
+                  && (DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
+    $this->db->select('*');
+    $this->db->from('changerequests');
+    $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
   }
 
 
