@@ -27,7 +27,7 @@
   <section>
     <!-- title row -->
     <div class="reportHeader viewCenter">
-      <!-- <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Project Status Report</h3> -->
+      <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Project Status Report</h3>
     </div>
     <div class="reportBody">
       <!-- LOOP START HERE -->
