@@ -95,8 +95,10 @@
 
   											<tr>
   												<td><?php echo $member['FIRSTNAME'];?> <?php echo $member['LASTNAME'];?></td>
+                          <td></td>
   												<td><?php echo $member['DEPARTMENTNAME'];?></td>
   												<td class='text-center'><?php echo $numTasks;?></td>
+                          <td></td>
   												<td class='text-center'><?php echo $timeliness;?>%</td>
   											</tr>
   										<?php endforeach;?>
