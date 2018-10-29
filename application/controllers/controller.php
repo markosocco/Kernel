@@ -2357,6 +2357,8 @@ class controller extends CI_Controller
 			$data['plannedLast'] = $this->model->getPlannedLast($projectID, $data['interval']);
 			$data['accomplishedLast'] = $this->model->getAccomplishedLast($projectID, $data['interval']);
 			$data['problemTasks'] = $this->model->getProblemTasks($projectID, $data['interval']);
+			$data['plannedNext'] = $this->model->getPlannedNext($projectID, $data['interval']);
+			$data['pendingRFC'] = $this->model->getPendingRFCNext($projectID, $data['interval']);
 
 			$this->load->view("reportsChangeRequestsPerProject", $data);
 		}
