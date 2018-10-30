@@ -31,7 +31,7 @@
 						<table id="reportList" class="table table-bordered table-hover">
 							<tbody>
 								<!-- SHOW ONLY TO THOSE PO'S WITH ONGOING PROJECTS -->
-								<?php if($allOngoingProjects != NULL):?>
+								<!-- <?php if($allOngoingProjects != NULL):?> -->
 									<tr>
 										<td>Project Status Report</td>
 										<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
@@ -40,17 +40,19 @@
 										<td>Project Progress Report</td>
 										<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 									</tr>
-								<?php endif;?>
+								<!-- <?php endif;?> -->
 
 								<tr>
 									<td>Project Summary</td>
 									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projectSummary'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 								</tr>
 
-								<tr>
-									<td>Department Performance</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsDepartmentPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr>
+								<!-- <?php if($_SESSION['departments_DEPARTMENTID'] != 1):?>  --> <!-- Change to == for restricted access -->
+									<tr>
+										<td>Department Performance</td>
+										<td align="center"><a href="<?php echo base_url("index.php/controller/reportsDepartmentPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+									</tr>
+								<!-- <?php endif;?> -->
 
 								<tr>
 									<td>Departmental Performance per Project</td>
