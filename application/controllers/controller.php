@@ -2178,7 +2178,7 @@ class controller extends CI_Controller
 
 	// REPORTS STARTS
 
-	public function reportsProjectPerDept()
+	public function reportsDepartmentPerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2192,7 +2192,13 @@ class controller extends CI_Controller
 			$data['projectCompleteness'] = $this->model->compute_completeness_allProjects();
 			$data['projectTimeliness'] = $this->model->compute_timeliness_allProjects();
 
-			$this->load->view("reportsProjectPerDept", $data);
+			foreach($data['departments'] as $department)
+			{
+				$data['departmentPerf' . $department['DEPARTMENTID']] = $this->model->getDeptPerformance($department['DEPARTMENTID']);
+				// $data['departmentTimeliness' . $department['DEPARTMENTID']] = $this->model->getDeptTimeliness($department['DEPARTMENTID']);
+			}
+
+			$this->load->view("reportsDepartmentPerformance", $data);
 		}
 	}
 
@@ -2255,6 +2261,8 @@ class controller extends CI_Controller
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
+			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($id);
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
 			$data['documents'] = $this->model->getAllDocumentsByProject($id);
@@ -2643,6 +2651,8 @@ class controller extends CI_Controller
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
+			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($id);
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
 			$data['documents'] = $this->model->getAllDocumentsByProject($id);

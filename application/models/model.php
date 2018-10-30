@@ -256,6 +256,7 @@ class model extends CI_Model
     $condition = "users.departments_DEPARTMENTID = '$deptID' && USERID != '1'";
     $this->db->select('*');
     $this->db->from('users');
+
     $this->db->where($condition);
     $query = $this->db->get();
 
@@ -851,6 +852,8 @@ class model extends CI_Model
   {
     $this->db->select('*');
     $this->db->from('departments');
+    $this->db->order_by('DEPARTMENTNAME');
+
     $query = $this->db->get();
 
     return $query->result_array();
@@ -2176,6 +2179,66 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllEarlyTasksByIDRole1($id)
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id . " && tasks.CATEGORY = 3
+                  && tasks.TASKSTATUS = 'Complete' && (tasks.TASKACTUALENDDATE < tasks.TASKENDDATE || tasks.TASKACTUALENDDATE < tasks.TASKADJUSTEDENDDATE)";
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllDelayedTasksByIDRole1($id)
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id . " && tasks.CATEGORY = 3
+                  && tasks.TASKSTATUS = 'Complete' && (tasks.TASKACTUALENDDATE > tasks.TASKENDDATE || tasks.TASKACTUALENDDATE > tasks.TASKADJUSTEDENDDATE)";
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getDeptPerformance($deptID)
+  {
+    $condition = "CATEGORY = 3 && raci.status = 'Current' && role = 1 && departments_DEPARTMENTID = " . $deptID;
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, projects.PROJECTTITLE, projects.PROJECTENDDATE, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->join('users', 'users_USERID = USERID');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+
+    return $this->db->get()->result_array();
+  }
 
 }
 ?>

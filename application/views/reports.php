@@ -30,42 +30,6 @@
 					<div class="box-body">
 						<table id="reportList" class="table table-bordered table-hover">
 							<tbody>
-								<tr>
-									<td>Department Performance</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsProjectPerDept"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr>
-								<!-- <tr>
-									<td>Ongoing Projects</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsOngoingProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr>
-								<tr>
-									<td>Planned Projects</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsPlannedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr>
-								<tr>
-									<td>Parked Projects</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsParkedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr> -->
-								<tr>
-									<td>Project Summary</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projectSummary'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
-								<!-- <tr>
-									<td>Employee Performance per Project</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#empPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr> -->
-								<tr>
-									<td>Employee Performance</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#empPerfEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
-								<tr>
-									<td>Team Performance</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfDept'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
-								<tr>
-									<td>Departmental Performance per Project</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
 								<!-- SHOW ONLY TO THOSE PO'S WITH ONGOING PROJECTS -->
 								<?php if($allOngoingProjects != NULL):?>
 									<tr>
@@ -78,6 +42,48 @@
 									</tr>
 								<?php endif;?>
 
+								<tr>
+									<td>Project Summary</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projectSummary'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+								</tr>
+
+								<tr>
+									<td>Department Performance</td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsDepartmentPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+								</tr>
+
+								<tr>
+									<td>Departmental Performance per Project</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+								</tr>
+
+								<tr>
+									<td>Team Performance</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfDept'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+								</tr>
+
+								<tr>
+									<td>Employee Performance</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#empPerfEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+								</tr>
+
+								<!-- <tr>
+									<td>Ongoing Projects</td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsOngoingProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+								</tr>
+								<tr>
+									<td>Planned Projects</td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsPlannedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+								</tr>
+								<tr>
+									<td>Parked Projects</td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsParkedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+								</tr> -->
+
+								<!-- <tr>
+									<td>Employee Performance per Project</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#empPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+								</tr> -->
 							</tbody>
 						</table>
 					</div>

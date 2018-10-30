@@ -109,13 +109,13 @@
                     <table class="table table-bordered table-condensed" id="">
                       <thead>
                         <tr>
-                          <th>Task</th>
+                          <th width="30%">Task</th>
                           <th class='text-center'>Start Date</th>
                           <th class='text-center'>End Date</th>
                           <th class='text-center'>Actual End Date</th>
-                          <th class='text-center'>Days Completed</th>
+                          <th class='text-center' width="10%">Days Completed</th>
                           <th>Responsible</th>
-                          <th>Remarks</th>
+                          <th width="15%">Remarks</th>
                         </tr>
                       </thead>
                       <tbody>
