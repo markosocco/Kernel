@@ -27,16 +27,41 @@ class controller extends CI_Controller
 	}
 
 	public function send_mail() {
-		$from_email = "kernelPMS@gmail.com";
-		$to_email = $this->input->post('email');
 
-		 //Load email library
-	 	$this->load->library('email');
+		//Load email library
+		$this->load->library('email');
 
-		$this->email->from($from_email, 'Your Name');
-		$this->email->to($to_email);
-		$this->email->subject('Email Test');
-		$this->email->message('Testing the email class.');
+		//SMTP & mail configuration
+		$config = array(
+		    'protocol'  => 'smtp',
+		    'smtp_host' => 'ssl://smtp.googlemail.com',
+		    'smtp_port' => 465,
+		    'smtp_user' => 'KernelPMS@gmail.com',
+		    'smtp_pass' => 'TatersNotifications',
+		    'mailtype'  => 'html',
+		    'charset'   => 'utf-8'
+		);
+		$this->email->initialize($config);
+		$this->email->set_mailtype("html");
+		$this->email->set_newline("\r\n");
+
+		//Email content
+		// $htmlContent = '<h1>Sending email via SMTP server</h1>';
+		// $htmlContent .= '<p>This email has sent via SMTP server from CodeIgniter application.</p><br><br>';
+		$htmlContent = '<h1>Hi Favorite!</h1>';
+		$htmlContent .= '<p>and not so favorites hehehe</p>';
+
+
+		$this->email->to('adrienne_gonzaga@dlsu.edu.ph, juan_socco@dlsu.edu.ph, keziah_isidoro@dlsu.edu.ph');
+		// $this->email->to('namihihii@gmail.com');
+		$this->email->from('KernelPMS@gmail.com','Kernel Notification');
+		$this->email->bcc('namihihii@gmail.com');
+		$this->email->subject('woOoOoOoOoOow');
+		$this->email->message($htmlContent);
+
+		// $this->load->library('email', $config);
+		// $this->email->set_newline("\r\n");
+		$this->email->send();
 
 		 //Send mail
 		if($this->email->send())
