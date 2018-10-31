@@ -1018,7 +1018,7 @@ class controller extends CI_Controller
 
 						$projectOwnerID = $projectDetails['users_USERID'];
 
-						$details = $projectTitle . " has been completed and will be archived in 7 days.";
+						$details = $projectTitle . " has been completed. Project Summary is now viewable.";
 
 						// notify PO
 						$notificationData = array(
@@ -1027,7 +1027,7 @@ class controller extends CI_Controller
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
-							'TYPE' => '1'
+							'TYPE' => '7'
 						);
 
 						$this->model->addNotification($notificationData);
@@ -1046,7 +1046,7 @@ class controller extends CI_Controller
 									'TIMESTAMP' => date('Y-m-d H:i:s'),
 									'status' => 'Unread',
 									'projects_PROJECTID' => $projectID,
-									'TYPE' => '1'
+									'TYPE' => '7'
 								);
 
 								$this->model->addNotification($notificationData);
@@ -3594,6 +3594,38 @@ class controller extends CI_Controller
 			$data['changeRequests'] = $this->model->getChangeRequestsForApproval($filter, $_SESSION['USERID']);
 			$data['userRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
 			$this->load->view("rfc", $data);
+
+		} else if ($type == 7) { // project summary
+
+			$templateProjSummary = $this->input->post('templateProjSummary');
+
+			// if (isset($templateProjSummary))
+			// {
+			// 	echo $templateProjSummary;
+			// }
+			// else {
+			// 	echo "hello";
+			// }
+
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByID($projectID);
+			$data['tasks'] = $this->model->getAllTasksByIDRole1($projectID);
+			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($projectID);
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
+			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+			$data['changeRequests'] = $this->model->getChangeRequestsByProject($projectID);
+			$data['documents'] = $this->model->getAllDocumentsByProject($projectID);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			$data['team'] = $this->model->getTeamByProject($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['allDepartments'] = $this->model->getAllDepartments();
+			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($projectID);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($projectID);
+
+			$this->load->view("projectSummary", $data);
 
 		} else { // projectGantt
 
