@@ -433,6 +433,7 @@
                     <tr class="project ongoingProjList">
 
                       <?php foreach ($ongoingProjects as $key=> $value):?>
+                        <?php if ($value['datediff'] >= 0): ?>
 
                         <?php // to fix date format
                           $ongoingStart = date_create($value['PROJECTSTARTDATE']);
@@ -458,6 +459,7 @@
                               }
                             } ?>%</td>
                         </tr>
+                      <?php endif; ?>
                       <?php endforeach;?>
                     </tr>
 
@@ -627,6 +629,7 @@
 
               <div class = "teamGrid" id = "ongoingTeamGrid">
   							<?php foreach ($ongoingProjects as $key=> $value):?>
+                  <?php if ($value['datediff'] >= 0): ?>
 
   								<div class="col-lg-3 col-xs-6">
   									<!-- small box -->
@@ -663,6 +666,7 @@
   								</a>
   								</div>
   								<!-- ./col -->
+                <?php endif; ?>
   							<?php endforeach;?>
               </div>
 
@@ -846,6 +850,7 @@
                   <tr class="myTeam ongoingTeamList clickable">
 
                     <?php foreach ($ongoingProjects as $key=> $value):?>
+                      <?php if ($value['datediff'] >= 0): ?>
 
                       <?php // to fix date format
                         $ongoingStart = date_create($value['PROJECTSTARTDATE']);
@@ -871,7 +876,8 @@
                             }
                           } ?>%</td>
                     </tr>
-                  <?php endforeach;?>
+                  <?php endif; ?>
+                  <?php endforeach; ?>
                 </tr>
 
                 <tr class="myTeam plannedTeamList clickable">
