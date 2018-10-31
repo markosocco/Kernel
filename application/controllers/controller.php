@@ -2996,7 +2996,7 @@ class controller extends CI_Controller
 						'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
 						'DATE' => date('Y-m-d'),
 						'COMPLETENESS' => 0,
-						'TIMELINESS' => 0
+						'TIMELINESS' => 100
 					);
 
 					$this->model->addAssessmentProject($progressData);
@@ -3827,45 +3827,45 @@ class controller extends CI_Controller
 									// ENTER INTO RACI
 									$result = $this->model->addToRaci($data);
 
-									// START OF LOGS/NOTIFS
-									$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-									$taskDetails = $this->model->getTaskByID($a);
-									$taskTitle = $taskDetails['TASKTITLE'];
-
-									$projectID = $taskDetails['projects_PROJECTID'];
-									$projectDetails = $this->model->getProjectByID($projectID);
-									$projectTitle = $projectDetails['PROJECTTITLE'];
-
-									$userDetails = $this->model->getUserByID($deptHead);
-									$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-									// START: LOG DETAILS
-									$details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
-
-									$logData = array (
-										'LOGDETAILS' => $details,
-										'TIMESTAMP' => date('Y-m-d H:i:s'),
-										'projects_PROJECTID' => $projectID
-									);
-
-									$this->model->addToProjectLogs($logData);
-									// END: LOG DETAILS
-
-									//START: Notifications
-									$details = "A new project has been created. " . $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
-									$notificationData = array(
-										'users_USERID' => $deptHead,
-										'DETAILS' => $details,
-										'TIMESTAMP' => date('Y-m-d H:i:s'),
-										'status' => 'Unread',
-										'projects_PROJECTID' => $projectID,
-										'tasks_TASKID' => $a,
-										'TYPE' => '2'
-									);
-
-									$this->model->addNotification($notificationData);
-									// END: Notification
+									// // START OF LOGS/NOTIFS
+									// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+									//
+									// $taskDetails = $this->model->getTaskByID($a);
+									// $taskTitle = $taskDetails['TASKTITLE'];
+									//
+									// $projectID = $taskDetails['projects_PROJECTID'];
+									// $projectDetails = $this->model->getProjectByID($projectID);
+									// $projectTitle = $projectDetails['PROJECTTITLE'];
+									//
+									// $userDetails = $this->model->getUserByID($deptHead);
+									// $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+									//
+									// // START: LOG DETAILS
+									// $details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
+									//
+									// $logData = array (
+									// 	'LOGDETAILS' => $details,
+									// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+									// 	'projects_PROJECTID' => $projectID
+									// );
+									//
+									// $this->model->addToProjectLogs($logData);
+									// // END: LOG DETAILS
+									//
+									// //START: Notifications
+									// $details = "A new project has been created. " . $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
+									// $notificationData = array(
+									// 	'users_USERID' => $deptHead,
+									// 	'DETAILS' => $details,
+									// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+									// 	'status' => 'Unread',
+									// 	'projects_PROJECTID' => $projectID,
+									// 	'tasks_TASKID' => $a,
+									// 	'TYPE' => '2'
+									// );
+									//
+									// $this->model->addNotification($notificationData);
+									// // END: Notification
 								}
 							}
 							// echo "<br>";
@@ -4264,44 +4264,44 @@ class controller extends CI_Controller
 	 								$result = $this->model->addToRaci($data);
 
 									// START OF LOGS/NOTIFS
-									$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-									$taskDetails = $this->model->getTaskByID($a);
-									$taskTitle = $taskDetails['TASKTITLE'];
-
-									$projectID = $taskDetails['projects_PROJECTID'];
-									$projectDetails = $this->model->getProjectByID($projectID);
-									$projectTitle = $projectDetails['PROJECTTITLE'];
-
-									$userDetails = $this->model->getUserByID($deptHead);
-									$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
+									// $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+									//
+									// $taskDetails = $this->model->getTaskByID($a);
+									// $taskTitle = $taskDetails['TASKTITLE'];
+									//
+									// $projectID = $taskDetails['projects_PROJECTID'];
+									// $projectDetails = $this->model->getProjectByID($projectID);
+									// $projectTitle = $projectDetails['PROJECTTITLE'];
+									//
+									// $userDetails = $this->model->getUserByID($deptHead);
+									// $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+									//
 									// START: LOG DETAILS
-									$details = $userName . " has tagged " . $taggedUserName . " to delegate Sub Activity - " . $taskTitle . ".";
-
-									$logData = array (
-										'LOGDETAILS' => $details,
-										'TIMESTAMP' => date('Y-m-d H:i:s'),
-										'projects_PROJECTID' => $projectID
-									);
-
-									$this->model->addToProjectLogs($logData);
+									// $details = $userName . " has tagged " . $taggedUserName . " to delegate Sub Activity - " . $taskTitle . ".";
+									//
+									// $logData = array (
+									// 	'LOGDETAILS' => $details,
+									// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+									// 	'projects_PROJECTID' => $projectID
+									// );
+									//
+									// $this->model->addToProjectLogs($logData);
 									// END: LOG DETAILS
-
-									//START: Notifications
-									$details = "A new project has been created. " . $userName . " has tagged you to delegate Sub Activity - " . $taskTitle . " in " . $projectTitle . ".";
-									$notificationData = array(
-										'users_USERID' => $deptHead,
-										'DETAILS' => $details,
-										'TIMESTAMP' => date('Y-m-d H:i:s'),
-										'status' => 'Unread',
-										'projects_PROJECTID' => $projectID,
-										'tasks_TASKID' => $a,
-										'TYPE' => '3'
-									);
-
-									$this->model->addNotification($notificationData);
-									// END: Notification
+									//
+									// //START: Notifications
+									// $details = "A new project has been created. " . $userName . " has tagged you to delegate Sub Activity - " . $taskTitle . " in " . $projectTitle . ".";
+									// $notificationData = array(
+									// 	'users_USERID' => $deptHead,
+									// 	'DETAILS' => $details,
+									// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+									// 	'status' => 'Unread',
+									// 	'projects_PROJECTID' => $projectID,
+									// 	'tasks_TASKID' => $a,
+									// 	'TYPE' => '3'
+									// );
+									//
+									// $this->model->addNotification($notificationData);
+									// // END: Notification
 
 	 							}
 	 							// echo "<br>";
