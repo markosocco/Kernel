@@ -249,51 +249,29 @@
 				</div>
 
 				<!-- DELAYED TASKS -->
-				<?php if($tasks != null):?>
+				<?php if($delayedTasks != null):?>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
-						<div class="box box-danger">
+						<div class="box box-default">
 							<div class="box-header with-border">
-								<h3 class="box-title">Delayed Tasks</h3>
+								<h5 class="box-title">Delayed Tasks</h5>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body" id="delayedBox">
-								<table class="table table-hover no-margin" id="delayedTable">
-									<?php $hasDelayed = false;?>
-
-									<?php foreach ($tasks as $task):?>
-										<?php
-										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-										{
-											$endDate = $task['TASKENDDATE'];
-											$delay = $task['actualInitial'];
-										}
-										else
-										{
-											$endDate = $task['TASKADJUSTEDENDDATE'];
-											$delay = $task['actualAdjusted'];
-										}?>
-
-										<?php if($task['TASKACTUALENDDATE'] > $endDate && $task['TASKSTATUS'] == "Complete"):?>
-											<?php $hasDelayed = true;?>
-									<?php endif;?>
-									<?php endforeach;?>
-
-									<?php if($hasDelayed):?>
-
+								<table class="table table-bordered table-condensed" id="delayedTable">
 									<thead>
 										<tr>
 											<th width="20%">Task</th>
-											<th width="15%">Responsible</th>
-											<th width="15%" class='text-center'>Department</th>
 											<th width="10%" class='text-center'>Target<br>End Date</th>
 											<th width="10%" class='text-center'>Actual<br>End Date</th>
 											<th width="5%" class='text-center'>Days Delayed</th>
+											<th width="15%">Responsible</th>
+											<th width="15%" class='text-center'>Department</th>
 											<th width="25">Reason</th>
 										</tr>
 									</thead>
 									<tbody id="delayedData">
-										<?php foreach ($tasks as $task):?>
+										<?php foreach ($delayedTasks as $task):?>
 											<?php
 											if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 											{
@@ -306,40 +284,35 @@
 												$delay = $task['actualAdjusted'];
 											}?>
 
-											<?php if($task['TASKACTUALENDDATE'] > $endDate && $task['TASKSTATUS'] == "Complete"):?>
+											<?php if($task['TASKACTUALENDDATE'] > $endDate):?>
 											<tr>
 												<td><?php echo $task['TASKTITLE'];?></td>
-												<td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
-												<td class='text-center'><?php echo $task['DEPARTMENTNAME'];?></td>
 												<td class='text-center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
 												<td class='text-center'><?php echo date_format(date_create($task['TASKACTUALENDDATE']), "M d, Y");?></td>
 												<td align="center"><?php echo $delay;?></td>
+												<td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
+												<td class='text-center'><?php echo $task['DEPARTMENTNAME'];?></td>
 												<td><?php echo $task['TASKREMARKS'];?></td>
 											</tr>
 										<?php endif;?>
 										<?php endforeach;?>
-									<?php else:?>
-
-									<tr><h4 align="center">There were no delayed tasks</h4></tr>
-
-								<?php endif;?>
 									</tbody>
 								</table>
 							</div>
 						</div>
-	        </div>
-	        <!-- /.col -->
+					</div>
+					<!-- /.col -->
 				</div>
 			<?php else:?>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="box box-danger">
 							<div class="box-header with-border">
-								<h3 class="box-title">Delayed Tasks</h3>
+								<h5 class="box-title">Delayed Tasks</h5>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<h4 align="center">There were no delayed tasks</h4>
+								<h6 align="center">There were no delayed tasks</h6>
 							</div>
 						</div>
 					</div>
@@ -348,7 +321,7 @@
 			<?php endif;?>
 
 				<!-- EARLY TASKS -->
-				<?php if($tasks != null):?>
+				<?php if($earlyTasks != null):?>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="box box-danger">
@@ -370,7 +343,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach ($tasks as $task):?>
+										<?php foreach ($earlyTasks as $task):?>
 											<?php
 											if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 											{
@@ -384,7 +357,7 @@
 											}
 											?>
 
-											<?php if($task['TASKACTUALENDDATE'] < $endDate && $task['TASKSTATUS'] == "Complete"):?>
+											<?php if($task['TASKACTUALENDDATE'] < $endDate):?>
 												<tr>
 													<td><?php echo $task['TASKTITLE'];?></td>
 													<td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>

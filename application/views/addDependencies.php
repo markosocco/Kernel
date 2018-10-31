@@ -166,24 +166,37 @@
 																		<td>
 																			<!-- DEPARTMENT @TASK LEVEL -->
 																			<?php
+																				if (!isset($_SESSION['import']))
+																				{
+																					$tDepts = array();
 
-																				$tDepts = array();
+			  																	foreach ($allTasks as $row)
+			  																	{
+			  																		if($tValue['TASKTITLE'] == $row['TASKTITLE'])
+			  																		{
+			  																			foreach ($departments as $row2)
+			  																			{
+			  																				if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+			  																				{
+			  																					$tDepts[] = $row2['DEPARTMENTNAME'];
+			  																				}
+			  																			}
+			  																		}
+			  																	}
 
-		  																	foreach ($allTasks as $row)
-		  																	{
-		  																		if($tValue['TASKTITLE'] == $row['TASKTITLE'])
-		  																		{
-		  																			foreach ($departments as $row2)
-		  																			{
-		  																				if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
-		  																				{
-		  																					$tDepts[] = $row2['DEPARTMENTNAME'];
-		  																				}
-		  																			}
-		  																		}
-		  																	}
+																					echo implode(", ", $tDepts);
+																				}
 
-																				echo implode(", ", $tDepts);
+																				else
+																				{
+																					foreach ($allTasks as $row)
+			  																	{
+			  																		if($tValue['TASKTITLE'] == $row['TASKTITLE'])
+			  																		{
+			  																			echo $row['DEPARTMENTNAME'];
+			  																		}
+			  																	}
+																				}
 		  																?>
 																		</td>
 

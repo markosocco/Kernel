@@ -256,6 +256,7 @@ class model extends CI_Model
     $condition = "users.departments_DEPARTMENTID = '$deptID' && USERID != '1'";
     $this->db->select('*');
     $this->db->from('users');
+
     $this->db->where($condition);
     $query = $this->db->get();
 
@@ -851,6 +852,8 @@ class model extends CI_Model
   {
     $this->db->select('*');
     $this->db->from('departments');
+    $this->db->order_by('DEPARTMENTNAME');
+
     $query = $this->db->get();
 
     return $query->result_array();
@@ -1960,22 +1963,6 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  // DELETE AFTER
-  public function importData($data)
-  {
-    $res = $this->db->insert_batch('tasks', $data);
-
-    if($res)
-    {
-        return TRUE;
-    }
-
-    else
-    {
-        return FALSE;
-    }
-  }
-
   public function checkSamePassword($pass)
   {
     $condition = "USERID = " . $_SESSION['USERID'];
@@ -1995,5 +1982,263 @@ class model extends CI_Model
       return false;
     }
   }
+
+  public function importTaskToProject($data)
+  {
+    $result = $this->db->insert('tasks', $data);
+
+    if ($result)
+    {
+      $this->db->select('*');
+      $this->db->from('tasks');
+      $this->db->order_by('TASKID', 'DESC');
+      $this->db->limit(1);
+      $query = $this->db->get();
+
+      return $query->row_array();
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
+  public function getUserByName($data)
+  {
+    $name = explode(" ", $data);
+    $firstName = $name[0];
+    $lastName = $name[1];
+
+    $condition = "FIRSTNAME = '" . $firstName . "' && LASTNAME = '" . $lastName ."'";
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $this->db->limit(1);
+    $query = $this->db->get();
+
+    return $query->row('USERID');
+  }
+
+  public function getAllTasksForImportDependency($id)
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id;
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getUserType($userID)
+  {
+    $condition = "USERID = '$userID'";
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $this->db->limit(1);
+    $query = $this->db->get();
+
+    return $query->row('usertype_USERTYPEID');
+  }
+
+  // REPORTS
+  public function getPlannedLast($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAccomplishedLast($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)
+                  && tasks.TASKSTATUS = 'Complete'";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getProblemTasks($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && (tasks.TASKACTUALENDDATE > tasks.TASKADJUSTEDENDDATE || tasks.TASKACTUALENDDATE > tasks.TASKENDDATE
+                  || tasks.TASKENDDATE < CURDATE() || tasks.TASKADJUSTEDENDDATE < CURDATE())
+                  && tasks.TASKSTATUS != 'Planning'
+                  && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) <= tasks.TASKACTUALENDDATE)";
+    $this->db->select('*, ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "completeOrigDelay",
+                      ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "completeAdjustedDelay",
+                      ABS(DATEDIFF(tasks.TASKADJUSTEDENDDATE, CURDATE())) as "ongoingAdjustedDelay",
+                      ABS(DATEDIFF(tasks.TASKENDDATE, CURDATE())) as "ongoingOrigDelay"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getPlannedNext($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && tasks.TASKSTATUS != 'Complete'
+                  && (DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getPendingRFCNext($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && changeRequests.REQUESTSTATUS = 'Pending'
+                  && (DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
+    $this->db->select('*');
+    $this->db->from('changerequests');
+    $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', 'users.USERID = changerequests.users_REQUESTEDBY');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
+  public function getPendingRaci($projectID)
+  {
+    $condition = "projects.PROJECTID = '" . $projectID . "' AND raci.STATUS = 'Current'
+                  && (raci.ROLE = '0') && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '3'";
+    $this->db->select('*');
+    $this->db->from('raci');
+    $this->db->join('tasks', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', ' raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAccomplishedTasks($projectID, $interval)
+  {
+    $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                  && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                  || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)
+                  && tasks.TASKSTATUS = 'Complete'";
+    $this->db->select('*, ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "completeOrig",
+                      ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "completeAdjusted"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllEarlyTasksByIDRole1($id)
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id . " && tasks.CATEGORY = 3
+                  && tasks.TASKSTATUS = 'Complete' && (tasks.TASKACTUALENDDATE < tasks.TASKENDDATE || tasks.TASKACTUALENDDATE < tasks.TASKADJUSTEDENDDATE)";
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllDelayedTasksByIDRole1($id)
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id . " && tasks.CATEGORY = 3
+                  && tasks.TASKSTATUS = 'Complete' && (tasks.TASKACTUALENDDATE > tasks.TASKENDDATE || tasks.TASKACTUALENDDATE > tasks.TASKADJUSTEDENDDATE)";
+    $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "actualAdjusted",
+    ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "actualInitial",
+    ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
+    ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getDeptPerformance($deptID)
+  {
+    $condition = "CATEGORY = 3 && raci.status = 'Current' && role = 1 && departments_DEPARTMENTID = " . $deptID;
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, projects.PROJECTTITLE, projects.PROJECTENDDATE, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->join('users', 'users_USERID = USERID');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->where($condition);
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('projects.PROJECTENDDATE');
+
+    return $this->db->get()->result_array();
+  }
+
 }
 ?>

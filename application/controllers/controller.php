@@ -1113,7 +1113,7 @@ class controller extends CI_Controller
 			'ROLE' => '5',
 			'users_USERID' => $_SESSION['USERID'],
 			'tasks_TASKID' => $taskID,
-			'STATUS' => 'Current'
+			'STATUS' => 'Changed'
 		);
 		$result = $this->model->addToRaci($delegateData);
 
@@ -1174,6 +1174,7 @@ class controller extends CI_Controller
 		if($this->input->post("responsibleEmp"))
 		{
 			$responsibleEmp = $this->input->post('responsibleEmp');
+			$responsibleType = $this->model->getUserType($responsibleEmp);
 
 			$delegate = $this->model->checkForDelegation($taskID);
 
@@ -1181,19 +1182,32 @@ class controller extends CI_Controller
 			{
 				$updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
 
-				$delegateDataNew = array(
-					'ROLE' => '0',
-					'users_USERID' => $responsibleEmp,
-					'tasks_TASKID' => $taskID,
-					'STATUS' => 'Current'
-				);
+				if($responsibleType == '5') //if to staff, remove delegation
+				{
+					$delegateDataNew = array(
+						'ROLE' => '0',
+						'users_USERID' => $responsibleEmp,
+						'tasks_TASKID' => $taskID,
+						'STATUS' => 'Changed'
+					);
+				}
+				else
+				{
+					$delegateDataNew = array(
+						'ROLE' => '0',
+						'users_USERID' => $responsibleEmp,
+						'tasks_TASKID' => $taskID,
+						'STATUS' => 'Current'
+					);
+				}
+
 				$result = $this->model->addToRaci($delegateDataNew);
 
 				$delegateData = array(
 					'ROLE' => '5',
 					'users_USERID' => $_SESSION['USERID'],
 					'tasks_TASKID' => $taskID,
-					'STATUS' => 'Current'
+					'STATUS' => 'Changed'
 				);
 				$result = $this->model->addToRaci($delegateData);
 			}
@@ -1408,6 +1422,7 @@ class controller extends CI_Controller
 		$this->session->set_flashdata('alertMessage', ' Task has been Delegated');
 		$this->taskDelegate();
 	}
+
 
 	public function submitRFC()
 	{
@@ -2180,13 +2195,15 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
+			$data['allOngoingProjects'] = $this->model->getAllOngoingOwnedProjectsByUser($_SESSION['USERID']);
+
 			$this->load->view("reports", $data);
 		}
 	}
 
 	// REPORTS STARTS
 
-	public function reportsProjectPerDept()
+	public function reportsDepartmentPerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2200,7 +2217,13 @@ class controller extends CI_Controller
 			$data['projectCompleteness'] = $this->model->compute_completeness_allProjects();
 			$data['projectTimeliness'] = $this->model->compute_timeliness_allProjects();
 
-			$this->load->view("reportsProjectPerDept", $data);
+			foreach($data['departments'] as $department)
+			{
+				$data['departmentPerf' . $department['DEPARTMENTID']] = $this->model->getDeptPerformance($department['DEPARTMENTID']);
+				// $data['departmentTimeliness' . $department['DEPARTMENTID']] = $this->model->getDeptTimeliness($department['DEPARTMENTID']);
+			}
+
+			$this->load->view("reportsDepartmentPerformance", $data);
 		}
 	}
 
@@ -2263,6 +2286,8 @@ class controller extends CI_Controller
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
+			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($id);
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
 			$data['documents'] = $this->model->getAllDocumentsByProject($id);
@@ -2331,7 +2356,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsChangeRequestsPerEmployee()
+	public function reportsProjectProgress()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2340,7 +2365,18 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsChangeRequestsPerEmployee");
+			$projectID = $this->input->post("project");
+			$data['interval'] = $this->input->post("interval");
+			if($data['interval'] == '7')
+				$data['intervalWord'] = "Week";
+			else
+				$data['intervalWord'] = "Month";
+
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['accomplishedTasks'] = $this->model->getAccomplishedTasks($projectID, $data['interval']);
+
+			$this->load->view("reportsProjectProgress", $data);
 		}
 	}
 
@@ -2357,7 +2393,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsChangeRequestsPerProject()
+	public function reportsProjectStatus()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2366,7 +2402,23 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsChangeRequestsPerProject");
+			$projectID = $this->input->post("project");
+			$data['interval'] = $this->input->post("interval");
+			if($data['interval'] == '7')
+				$data['intervalWord'] = "Week";
+			else
+				$data['intervalWord'] = "Month";
+
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['plannedLast'] = $this->model->getPlannedLast($projectID, $data['interval']);
+			$data['accomplishedLast'] = $this->model->getAccomplishedLast($projectID, $data['interval']);
+			$data['problemTasks'] = $this->model->getProblemTasks($projectID, $data['interval']);
+			$data['plannedNext'] = $this->model->getPlannedNext($projectID, $data['interval']);
+			$data['pendingRFC'] = $this->model->getPendingRFCNext($projectID, $data['interval']);
+			$data['pendingRACI'] = $this->model->getPendingRaci($projectID);
+
+			$this->load->view("reportsProjectStatus", $data);
 		}
 	}
 	// REPORTS END
@@ -2624,6 +2676,8 @@ class controller extends CI_Controller
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
 			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
 			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
+			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($id);
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($id);
 			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
 			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
 			$data['documents'] = $this->model->getAllDocumentsByProject($id);
@@ -2688,26 +2742,189 @@ class controller extends CI_Controller
 
 					 try
 				   {
-				    $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
-				    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
-				    $reader->setLoadSheetsOnly($sheetname);
-				    $spreadsheet = $reader->load($inputFileName);
-				    $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+					  $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+ 						$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+ 						$reader->setLoadSheetsOnly($sheetname);
+ 						$spreadsheet = $reader->load($inputFileName);
+ 						$worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
 
+						// CHECK IF DATA IN PROJECT DETAILS SHEET IS VALID
 						$title = $spreadsheet->getActiveSheet()->getCell('B1')->getValue();
 						$description = $spreadsheet->getActiveSheet()->getCell('B2')->getValue();
-						$startDate = $spreadsheet->getActiveSheet()->getCell('B3')->getValue();
-						$endDate = $spreadsheet->getActiveSheet()->getCell('B4')->getValue();
-						$status = $spreadsheet->getActiveSheet()->getCell('B5')->getValue();
+						$startDate = $spreadsheet->getActiveSheet()->getCell('B3')->getFormattedValue();
+						$endDate = $spreadsheet->getActiveSheet()->getCell('B4')->getFormattedValue();
+						$actualEndDate = $spreadsheet->getActiveSheet()->getCell('B5')->getFormattedValue();
+						$status = $spreadsheet->getActiveSheet()->getCell('B6')->getValue();
 
-						echo $title . "<br>";
-						echo $description . "<br>";
-						echo $startDate . "<br>";
-						echo $endDate . "<br>";
-						echo $status . "<br>";
+						// CHECK IF SPREADSHEET IS NULL/BLANK
+						if ($title == NULL || $description == NULL || $startDate == NULL || $endDate == NULL || $status == NULL)
+						{
+							$this->session->set_flashdata('danger', 'alert');
+							$this->session->set_flashdata('alertMessage', ' Please make sure all required fields in Project Details sheet are filled');
 
+							redirect('controller/addProjectDetails');
+						}
 
-				  }
+						else
+						{
+							// CHECK IF START DATE IS VALID DATE
+							if (DateTime::createFromFormat('Y-m-d', $startDate) !== FALSE)
+							{
+							  if (DateTime::createFromFormat('Y-m-d', $endDate) !== FALSE)
+							  {
+							    if ($endDate > $startDate)
+							    {
+										// CHECK IF SPREADSHEET IS NULL/BLANK
+										$sheetname = 'Tasks';
+
+										$reader->setLoadSheetsOnly($sheetname);
+										$spreadsheet = $reader->load($inputFileName);
+										$worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+										foreach ($worksheet as $wKey => $checkCell)
+										{
+											if ($wKey != 1)
+											{
+												if ($checkCell['A'] == 'NULL' || $checkCell['B'] == 'NULL' || $checkCell['C'] == 'NULL' || $checkCell['E'] == 'NULL' || $checkCell['G'] == 'NULL' || $checkCell['I'] == 'NULL')
+												{
+													$this->session->set_flashdata('danger', 'alert');
+										      $this->session->set_flashdata('alertMessage', ' Please check that all required fields are filled on row ' . $wKey);
+
+										      redirect('controller/addProjectDetails');
+												}
+
+												else
+												{
+													// CHECK IF DATA IN TASKS SHEET IS VALID
+													if (DateTime::createFromFormat('Y-m-d', $checkCell['B']) !== FALSE)
+										      {
+										        if (DateTime::createFromFormat('Y-m-d', $checkCell['C']) !== FALSE)
+										        {
+										          if ($checkCell['C'] > $checkCell['B'])
+										          {
+										            // CHECK IF SUB ACT AND TASK HAVE TASK PARENT
+										            if (($checkCell['G'] == 2 && $checkCell['H'] == 'NULL') || $checkCell['G'] == 3 && $checkCell['H'] == 'NULL')
+										            {
+										              $this->session->set_flashdata('danger', 'alert');
+										              $this->session->set_flashdata('alertMessage', ' Task Parent on row ' . $wKey . ' should not be null');
+
+										              redirect('controller/addProjectDetails');
+										            }
+
+										            else
+										            {
+										              // CHECK IF TASK PARENT IS VALID
+																	$task_title = array_column($worksheet, 'A');
+
+										              if ($checkCell['H'] != 'NULL')
+										              {
+																		if (in_array($checkCell['H'], array_column($worksheet, 'A')))
+																		{
+																			// CHECK IF TASK PARENT IS CORRECT FOR CATEGORY
+																			if ($checkCell['G'] == 2 || $checkCell['G'] == 3)
+																			{
+																				// echo $checkCell['A'] . "<br>";
+																				foreach ($worksheet as $checkParent)
+																				{
+																					if ($checkCell['A'] == $checkParent['H'])
+																					{
+																						echo $checkCell['A'] . "<br>";
+																						// echo $checkCell['A'] . " cell " . $checkCell['G'] . " == parent " . $checkParent['G'] . "<br>";
+																					}
+																					//
+																					// else
+																					// {
+																					// 	$this->session->set_flashdata('danger', 'alert');
+																					// 	$this->session->set_flashdata('alertMessage', ' Task Parent on row ' . $wKey . ' should be a higher category');
+																					//
+																					// 	redirect('controller/addProjectDetails');
+																					// }
+																				}
+																			}
+																		}
+
+																		else
+																		{
+																			$this->session->set_flashdata('danger', 'alert');
+													            $this->session->set_flashdata('alertMessage', ' Task Parent on row ' . $wKey . ' is not a valid task');
+
+																			unlink($inputFileName);
+
+													            redirect('controller/addProjectDetails');
+																		}
+										              }
+										            }
+										          }
+
+										          else
+										          {
+										            $this->session->set_flashdata('danger', 'alert');
+										            $this->session->set_flashdata('alertMessage', ' End Date on row ' . $wKey . ' should be greater than Start Date');
+
+																unlink($inputFileName);
+
+										            redirect('controller/addProjectDetails');
+										          }
+										        }
+
+										        else
+										        {
+										          $this->session->set_flashdata('danger', 'alert');
+										          $this->session->set_flashdata('alertMessage', ' End Date on row ' . $wKey . ' is not valid');
+
+															unlink($inputFileName);
+
+										          redirect('controller/addProjectDetails');
+										        }
+										      }
+
+										      else
+										      {
+										        $this->session->set_flashdata('danger', 'alert');
+										        $this->session->set_flashdata('alertMessage', ' Start Date on row ' . $wKey . ' is not valid');
+
+														unlink($inputFileName);
+
+										        redirect('controller/addProjectDetails');
+										      }
+												}
+											}
+										}
+							    }
+
+							    else
+							    {
+							      $this->session->set_flashdata('danger', 'alert');
+							      $this->session->set_flashdata('alertMessage', ' End Date must be greater than Start Date');
+
+										unlink($inputFileName);
+
+							      redirect('controller/addProjectDetails');
+							    }
+							  }
+
+							  else
+							  {
+							    $this->session->set_flashdata('danger', 'alert');
+							    $this->session->set_flashdata('alertMessage', ' Project End Date is not a valid date');
+
+									unlink($inputFileName);
+
+							    redirect('controller/addProjectDetails');
+							  }
+							}
+
+							else
+							{
+							  $this->session->set_flashdata('danger', 'alert');
+							  $this->session->set_flashdata('alertMessage', ' Project Start Date is not a valid date');
+
+								unlink($inputFileName);
+
+							  redirect('controller/addProjectDetails');
+							}
+						}
+					}
 
 					catch (Exception $e)
 				  {
@@ -2800,7 +3017,7 @@ class controller extends CI_Controller
 						$data['templateUsers'] = $this->model->getAllUsers();
 					}
 
-						$this->load->view('addMainActivities', $data);
+					$this->load->view('addMainActivities', $data);
 				}
 			}
 		}
@@ -4644,49 +4861,6 @@ class controller extends CI_Controller
 				echo "completeness - " . $project['completeness'] . "<br><br>";
 			}
 		}
-	}
-
-	// DELETE THIS draftedProjects
-	public function importTest()
-	{
-		$this->load->view('importTest');
-	}
-
-	public function uploadData()
-	{
-	 $config['upload_path'] = './assets/uploads/templates';
-	 $config['allowed_types'] = 'xlsx|csv|xls';
-	 $config['max_size'] = '10000000';
-	 $this->load->library('upload', $config);
-	 $this->upload->initialize($config);
-
-	 if (!$this->upload->do_upload('uploadFile'))
-	 {
-		 $error = array('error' => $this->upload->display_errors());
-
-		 // $this->session->set_flashdata('danger', 'alert');
-		 // $this->session->set_flashdata('alertMessage', 'File type is not allowed');
-		 //
-		 // redirect('controller/importTest');
-	 }
-
-	 else
-	 {
-		 $this->session->set_flashdata('success', 'alert');
-		 $this->session->set_flashdata('alertMessage', ' Success');
-
-		 redirect('controller/importTest');
-	 }
-
-		 if(!empty($error))
-		 {
-			 echo $error['error'];
-		 }
-
-		 // else
-		 // {
-			//  echo "sad<br>";
-		 // }
 	}
 
 	public function getDelayEffect()
