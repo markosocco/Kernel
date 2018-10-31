@@ -35,7 +35,15 @@
           <table class="table-condensed" style="width:100%">
             <tr>
               <td><b>Title: </b><?php echo $project['PROJECTTITLE']; ?></td>
-              <td align="right"><b>Initial Duration: </b><?php echo $project['PROJECTSTARTDATE'] . " to " . $project['PROJECTENDDATE'];?></td>
+              <?php // to fix date format
+                $projectStart = date_create($project['PROJECTSTARTDATE']);
+                $projectEnd = date_create($project['PROJECTENDDATE']);
+                if($project['PROJECTSTATUS'] == 'Complete')
+                  $projectActualEnd = date_format(date_create($project['PROJECTACTUALENDDATE']), "F d, Y");
+                else
+                  $projectActualEnd = "Present";
+              ?>
+              <td align="right"><b>Initial Duration: </b><?php echo date_format($projectStart, "F d, Y") . " - " . date_format($projectEnd, "F d, Y");?></td>
             </tr>
             <tr>
               <td><b>Owner: </b>
@@ -47,7 +55,7 @@
                 <?php endforeach; ?>
 
               </td>
-              <td align="right"><b>Actual Duration: </b><?php echo $project['PROJECTACTUALSTARTDATE'] . " to " . $project['PROJECTACTUALENDDATE'];?></td>
+              <td align="right"><b>Actual Duration: </b><?php echo date_format($projectStart, "F d, Y") . " - " . $projectActualEnd;?></td>
             </tr>
             <tr>
               <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
@@ -95,7 +103,7 @@
 
   											<tr>
   												<td><?php echo $member['FIRSTNAME'];?> <?php echo $member['LASTNAME'];?></td>
-                          <td></td>
+                          <td><?php echo $member['POSITION'];?></td>
   												<td><?php echo $member['DEPARTMENTNAME'];?></td>
   												<td class='text-center'><?php echo $numTasks;?></td>
                           <td></td>
@@ -111,7 +119,7 @@
   				</div>
 
   				<!-- DELAYED TASKS -->
-  				<?php if($tasks != null):?>
+  				<?php if($delayedTasks != null):?>
   				<div class="row">
   					<div class="col-md-12 col-sm-12 col-xs-12">
   						<div class="box box-default">
@@ -133,7 +141,7 @@
   										</tr>
   									</thead>
   									<tbody id="delayedData">
-  										<?php foreach ($tasks as $task):?>
+  										<?php foreach ($delayedTasks as $task):?>
   											<?php
   											if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
   											{
@@ -146,7 +154,7 @@
   												$delay = $task['actualAdjusted'];
   											}?>
 
-  											<?php if($task['TASKACTUALENDDATE'] > $endDate && $task['TASKSTATUS'] == "Complete"):?>
+  											<?php if($task['TASKACTUALENDDATE'] > $endDate):?>
   											<tr>
   												<td><?php echo $task['TASKTITLE'];?></td>
   												<td class='text-center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
@@ -174,7 +182,7 @@
   							</div>
   							<!-- /.box-header -->
   							<div class="box-body">
-  								<h6 align="center">There were no delayed task</h6>
+  								<h6 align="center">There were no delayed tasks</h6>
   							</div>
   						</div>
   					</div>
@@ -183,7 +191,7 @@
   			<?php endif;?>
 
   				<!-- EARLY TASKS -->
-  				<?php if($tasks != null):?>
+  				<?php if($earlyTasks != null):?>
   				<div class="row">
   					<div class="col-md-12 col-sm-12 col-xs-12">
   						<div class="box box-default">
@@ -205,7 +213,7 @@
   										</tr>
   									</thead>
   									<tbody>
-  										<?php foreach ($tasks as $task):?>
+  										<?php foreach ($earlyTasks as $task):?>
   											<?php
   											if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
   											{
@@ -219,7 +227,7 @@
   											}
   											?>
 
-  											<?php if($task['TASKACTUALENDDATE'] < $endDate && $task['TASKSTATUS'] == "Complete"):?>
+  											<?php if($task['TASKACTUALENDDATE'] < $endDate):?>
   												<tr>
   													<td><?php echo $task['TASKTITLE'];?></td>
   													<td class='text-center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
@@ -269,14 +277,14 @@
   									<thead>
   										<tr>
   											<th width="0%">Task</th>
-                        <th width="0%" class='text-center'>Type</th>
+                        <th width="0%">Type</th>
                         <th width="0%" class='text-center'>Date Requested</th>
                         <th width="0">Reason</th>
   											<th width="0%">Requested By</th>
   											<th width="0%" class='text-center'>Department</th>
   											<th width="0%" class='text-center'>Status</th>
   											<th width="0%">Reviewed By</th>
-  											<th width="0%" class='text-center'>Date Approved</th>
+  											<th width="0%" class='text-center'>Date Reviewed</th>
   											<th width="0">Remarks</th>
   										</tr>
   									</thead>
@@ -284,9 +292,9 @@
   										<?php foreach($changeRequests as $request):?>
   											<tr>
   												<?php if($request['REQUESTTYPE'] == '1')
-  														$type = "<i class='fa fa-user-times'></i>";
+  														$type = "Change Performer";
   													else
-  														$type = "<i class='fa fa-calendar'></i>";
+  														$type = "Change Date";
   													?>
 
   												<?php foreach($users as $user)
@@ -310,12 +318,12 @@
   												$approveddate = date_create($request['APPROVEDDATE']);
   												?>
 
-  												<td class='text-center'><?php echo $type;?></td>
   												<td><?php echo $request['TASKTITLE'];?></td>
-  												<td><?php echo $requester;?></td>
+                          <td><?php echo $type;?></td>
+                          <td class='text-center'><?php echo date_format($requestdate, "M d, Y");?></td>
+                          <td><?php echo $request['REASON'];?></td>
+                        	<td><?php echo $requester;?></td>
   												<td class='text-center'><?php echo $deptName;?></td>
-  												<td class='text-center'><?php echo date_format($requestdate, "M d, Y");?></td>
-  												<td><?php echo $request['REASON'];?></td>
   												<td class='text-center'><?php echo $request['REQUESTSTATUS'];?></td>
   												<?php if($request['REQUESTSTATUS'] == 'Pending'):?>
   													<td align='center'>-</td>

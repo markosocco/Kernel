@@ -68,11 +68,11 @@
     								<table class="table table-bordered table-condensed" id="">
     									<thead>
     										<tr>
-    											<th>Task</th>
+    											<th width="40%">Task</th>
     											<th class='text-center'>Start Date</th>
                           <th class='text-center'>End Date</th>
                           <th>Responsible</th>
-    											<th>Status</th>
+    											<th width="10%" class='text-center'>Status</th>
     										</tr>
     									</thead>
     									<tbody>
@@ -89,7 +89,7 @@
                             <td align="center"><?php echo date_format($taskStart, "M d, Y");?></td>
                             <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
                             <td><?php echo $plannedLastTask['FIRSTNAME'];?> <?php echo $plannedLastTask['LASTNAME'];?></td>
-                            <td><?php echo $plannedLastTask['TASKSTATUS'];?></td>
+                            <td align="center"><?php echo $plannedLastTask['TASKSTATUS'];?></td>
                           </tr>
                         <? endforeach;?>
     									</tbody>
@@ -116,7 +116,7 @@
     								<table class="table table-bordered table-condensed" id="delayedTable">
                       <thead>
     										<tr>
-    											<th>Task</th>
+    											<th width="40%">Task</th>
     											<th class='text-center'>End Date</th>
                           <th class='text-center'>Actual End Date</th>
                           <th>Responsible</th>
@@ -163,13 +163,13 @@
     								<table class="table table-bordered table-condensed" id="">
                       <thead>
     										<tr>
-    											<th>Task</th>
-    											<th class='text-center'>End Date</th>
-                          <th class='text-center'>Actual End Date</th>
-                          <th class='text-center'>Days Delayed</th>
+    											<th width="30%">Task</th>
+    											<th class='text-center' width="10%">End Date</th>
+                          <th class='text-center' width="10%">Actual End Date</th>
+                          <th class='text-center' width="7%">Days Delayed</th>
                           <th>Responsible</th>
                           <th class='text-center'>Status</th>
-                          <th>Remarks</th>
+                          <th width="15%">Remarks</th>
     										</tr>
     									</thead>
     									<tbody>
@@ -237,11 +237,11 @@
     								<table class="table table-bordered table-condensed" id="">
                       <thead>
     										<tr>
-    											<th>Task</th>
+    											<th width="40%">Task</th>
                           <th class='text-center'>Start Date</th>
     											<th class='text-center'>End Date</th>
                           <th>Responsible</th>
-                          <th>Status</th>
+                          <th class='text-center'>Status</th>
     										</tr>
     									</thead>
     									<tbody>
@@ -258,7 +258,7 @@
                             <td align="center"><?php echo date_format($taskStart, "M d, Y");?></td>
                             <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
                             <td><?php echo $plannedNextTask['FIRSTNAME'];?> <?php echo $plannedNextTask['LASTNAME'];?></td>
-                            <td><?php echo $plannedNextTask['TASKSTATUS'];?></td>
+                            <td align="center"><?php echo $plannedNextTask['TASKSTATUS'];?></td>
                           </tr>
                         <? endforeach;?>
     									</tbody>
@@ -287,7 +287,7 @@
                         <table class="table table-bordered table-condensed" id="">
                           <thead>
         										<tr>
-        											<th>Task</th>
+        											<th width="40%">Task</th>
                               <th class='text-center'>Start Date</th>
                               <th>Delegator</th>
         										</tr>
@@ -309,7 +309,7 @@
       								<table class="table table-bordered table-condensed" id="">
                         <thead>
       										<tr>
-      											<th>Task</th>
+      											<th width = "40%">Task</th>
                             <th class='text-center'>End Date</th>
                             <th>Type</th>
                             <th class='text-center'>Date Requested</th>

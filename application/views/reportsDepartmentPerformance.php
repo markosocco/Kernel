@@ -17,7 +17,7 @@
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <!-- Own Style -->
-    <!-- <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportsProjectPerDeptStyle.css")?>"> -->
+    <!-- <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportsDepartmentPerformanceStyle.css")?>"> -->
     <!-- Report Style -->
     <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
   </head>
@@ -28,7 +28,7 @@
       <!-- title row -->
       <div class="reportHeader viewCenter">
         <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Department Performance Report</h3>
-        <h4 class="viewCenter">2021</h4>
+        <h4 class="viewCenter"><?php echo date('Y');?></h4>
       </div>
       <div class="reportBody">
 
@@ -36,12 +36,11 @@
         <div class="box box-success">
           <div class="box-header with-border">
             <h3 class="box-title">Bar Chart</h3>
-
-            <div class="box-tools pull-right">
+            <!-- <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
               </button>
               <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
+            </div> -->
           </div>
           <div class="box-body">
             <div class="chart">
@@ -62,22 +61,46 @@
     							</div>
     							<!-- /.box-header -->
     							<div class="box-body">
-    								<table class="table table-bordered table-condensed" id="">
-                        <tr>
-                          <td rowspan="2" align="center" style="vertical-align: middle; font-size:24px;">110%</td>
-                          <th colspan="4">DEPARTMENT NAME</th>
-                        </tr>
-    										<tr>
-    											<th>Project</th>
-    											<th class='text-center'>End Date</th>
-                          <th class='text-center'>Timeliness</th>
-    											<th class='text-center'>Completeness</th>
-    										</tr>
+                    <?php foreach($departments as $department):?>
+                      <?php if($department['DEPARTMENTID'] != 1):?>
+      								<table class="table table-bordered table-condensed" id="">
 
-    									<tbody>
-                        <!-- DATA HERE -->
-    									</tbody>
-    								</table>
+                          <!-- <tr width = "15%">
+                            <td rowspan="2" align="center" style="vertical-align: middle; font-size:24px;">110%</td>
+                            <th colspan="4"><?php echo $department['DEPARTMENTNAME'];?></th>
+                          </tr> -->
+      										<tr>
+                            <th><?php echo $department['DEPARTMENTNAME'];?></th>
+      											<th width = "35%">Project</th>
+      											<th width = "20%" class='text-center'>End Date</th>
+                            <th width = "15%" class='text-center'>Timeliness</th>
+      											<th width = "15%" class='text-center'>Completeness</th>
+      										</tr>
+      									<tbody>
+                          <?php $counter = 0;?>
+                          <?php foreach(${"departmentPerf" . $department['DEPARTMENTID']} as $performanceData):?>
+                            <?php if($counter == 0):?>
+                              <tr>
+                                <th rowspan = "<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:24px;">500%</th>
+                                <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?></td>
+                              </tr>
+                            <?php else:?>
+                              <tr>
+                                <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?></td>
+                              </tr>
+                              <?php endif;?>
+                          <?php $counter++;?>
+                          <?php endforeach;?>
+                      	</tbody>
+      								</table><br><br>
+                    <?php endif;?>
+                    <?php endforeach;?>
     							</div>
     						</div>
     	        </div>
@@ -103,6 +126,25 @@
   <!-- ./wrapper -->
   <!-- ChartJS -->
   <script src="<?php echo base_url()."assets/"; ?>bower_components/chart.js/Chart.js"></script>
+  <script> //AJAX DATA
+
+    $.ajax({
+     type:"POST",
+     url: "<?php echo base_url("index.php/controller/getDelayEffect"); ?>",
+     data: {task_ID: $taskID},
+     dataType: 'json',
+     success:function(affectedTasks)
+     {
+
+     },
+     error:function()
+     {
+       alert("There was a problem in retrieving the department performance");
+     }
+    });
+
+  </script>
+
   <script>
     $(function ()
     {

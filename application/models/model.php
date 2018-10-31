@@ -256,6 +256,7 @@ class model extends CI_Model
     $condition = "users.departments_DEPARTMENTID = '$deptID' && USERID != '1'";
     $this->db->select('*');
     $this->db->from('users');
+
     $this->db->where($condition);
     $query = $this->db->get();
 
@@ -851,6 +852,8 @@ class model extends CI_Model
   {
     $this->db->select('*');
     $this->db->from('departments');
+    $this->db->order_by('DEPARTMENTNAME');
+
     $query = $this->db->get();
 
     return $query->result_array();
