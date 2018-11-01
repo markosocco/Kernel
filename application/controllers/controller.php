@@ -2928,14 +2928,15 @@ class controller extends CI_Controller
 								    continue;
 								  }
 
-								  if ($value['F'] == 1)
+								  if ($value['G'] == 1)
 								  {
 								    $insertMain['TASKTITLE'] = $value['A'];
 								    $insertMain['TASKSTARTDATE'] = $value['B'];
 								    $insertMain['TASKENDDATE'] = $value['C'];
-								    $insertMain['TASKSTATUS'] = $value['D'];
-								    $insertMain['TASKREMARKS'] = $value['E'];
-								    $insertMain['CATEGORY'] = $value['F'];
+								    $insertMain['TASKACTUALENDDATE'] = $value['D'];
+								    $insertMain['TASKSTATUS'] = $value['E'];
+								    $insertMain['TASKREMARKS'] = $value['F'];
+										$insertMain['CATEGORY'] = $value['G'];
 								    $insertMain['projects_PROJECTID'] = $projectID;
 
 								    // ENTER TASK TO DB
@@ -2944,7 +2945,7 @@ class controller extends CI_Controller
 								    // ENTER RACI TO DB
 
 								    // RESPONSIBLE
-								    $mainUsers = explode(", ", $value['H']);
+								    $mainUsers = explode(", ", $value['I']);
 
 								    foreach ($mainUsers as $mU)
 								    {
@@ -2958,124 +2959,121 @@ class controller extends CI_Controller
 								      $result = $this->model->addToRaci($mainRaci);
 								    }
 
-										if ($result)
-										{
-											echo "success";
-										}
+								    // GET ALL SUB ACTS UNDER CURRENT MAIN
+								    foreach ($worksheet as $cell)
+								    {
+								      if ($cell['H'] == $mainAct['TASKTITLE'])
+								      {
+								        $insertSub['TASKTITLE'] = $cell['A'];
+								        $insertSub['TASKSTARTDATE'] = $cell['B'];
+								        $insertSub['TASKENDDATE'] = $cell['C'];
+												$insertSub['TASKACTUALENDDATE'] = $cell['D'];
+								        $insertSub['TASKSTATUS'] = $cell['E'];
+								        $insertSub['TASKREMARKS'] = $cell['F'];
+								        $insertSub['CATEGORY'] = $cell['G'];
+								        $insertSub['tasks_TASKPARENT'] = $mainAct['TASKID'];
+								        $insertSub['projects_PROJECTID'] = $projectID;
 
-								    // // GET ALL SUB ACTS UNDER CURRENT MAIN
-								    // foreach ($worksheet as $cell)
-								    // {
-								    //   if ($cell['G'] == $mainAct['TASKTITLE'])
-								    //   {
-								    //     $insertSub['TASKTITLE'] = $cell['A'];
-								    //     $insertSub['TASKSTARTDATE'] = $cell['B'];
-								    //     $insertSub['TASKENDDATE'] = $cell['C'];
-								    //     $insertSub['TASKSTATUS'] = $cell['D'];
-								    //     $insertSub['TASKREMARKS'] = $cell['E'];
-								    //     $insertSub['CATEGORY'] = $cell['F'];
-								    //     $insertSub['tasks_TASKPARENT'] = $mainAct['TASKID'];
-								    //     $insertSub['projects_PROJECTID'] = $projectID;
-										//
-								    //     $subAct = $this->model->importTaskToProject($insertSub);
-										//
-								    //     // RESPONSIBLE
-								    //     $subUsers = explode(", ", $cell['H']);
-										//
-								    //     // IMPORTDELETE
-								    //     // $echoSub = " \t----- " . $subAct['TASKTITLE'] . ": ";
-										//
-								    //     foreach ($subUsers as $sU)
-								    //     {
-								    //       $subUserID = $this->model->getUserByName($sU);
-										//
-								    //       $subRaci['ROLE'] = 1;
-								    //       $subRaci['users_USERID'] = $subUserID;
-								    //       $subRaci['tasks_TASKID'] = $subAct['TASKID'];
-								    //       $subRaci['STATUS'] = 'Current';
-										//
-								    //       $result = $this->model->addToRaci($subRaci);
-								    //     }
-										//
-								    //     // GET ALL TASKS UNDER CURRENT SUB
-								    //     foreach ($worksheet as $cell_2)
-								    //     {
-								    //       if ($cell_2['G'] == $subAct['TASKTITLE'])
-								    //       {
-								    //         $insertTask['TASKTITLE'] = $cell_2['A'];
-								    //         $insertTask['TASKSTARTDATE'] = $cell_2['B'];
-								    //         $insertTask['TASKENDDATE'] = $cell_2['C'];
-								    //         $insertTask['TASKSTATUS'] = $cell_2['D'];
-								    //         $insertTask['TASKREMARKS'] = $cell_2['E'];
-								    //         $insertTask['CATEGORY'] = $cell_2['F'];
-								    //         $insertTask['tasks_TASKPARENT'] = $subAct['TASKID'];
-								    //         $insertTask['projects_PROJECTID'] = $projectID;
-										//
-								    //         $task = $this->model->importTaskToProject($insertTask);
-										//
-								    //         // RESPONSIBLE
-								    //         $taskUsersR = explode(", ", $cell_2['H']);
-										//
-								    //         foreach ($taskUsersR as $r)
-								    //         {
-								    //           $taskUserIDR = $this->model->getUserByName($r);
-										//
-								    //           $taskR['ROLE'] = 1;
-								    //           $taskR['users_USERID'] = $taskUserIDR;
-								    //           $taskR['tasks_TASKID'] = $task['TASKID'];
-								    //           $taskR['STATUS'] = 'Current';
-										//
-								    //           $result = $this->model->addToRaci($taskR);
-								    //         }
-										//
-								    //         // ACCOUNTABLE
-								    //         $taskUsersA = explode(", ", $cell_2['I']);
-										//
-								    //         foreach ($taskUsersA as $a)
-								    //         {
-								    //           $taskUserIDA = $this->model->getUserByName($a);
-										//
-								    //           $taskA['ROLE'] = 2;
-								    //           $taskA['users_USERID'] = $taskUserIDA;
-								    //           $taskA['tasks_TASKID'] = $task['TASKID'];
-								    //           $taskA['STATUS'] = 'Current';
-										//
-								    //           $result = $this->model->addToRaci($taskA);
-								    //         }
-										//
-								    //         // CONSULTED
-								    //         $taskUsersC = explode(", ", $cell_2['J']);
-										//
-								    //         foreach ($taskUsersC as $c)
-								    //         {
-								    //           $taskUserIDC = $this->model->getUserByName($c);
-										//
-								    //           $taskC['ROLE'] = 3;
-								    //           $taskC['users_USERID'] = $taskUserIDC;
-								    //           $taskC['tasks_TASKID'] = $task['TASKID'];
-								    //           $taskC['STATUS'] = 'Current';
-										//
-								    //           $result = $this->model->addToRaci($taskC);
-								    //         }
-										//
-								    //         // INFORMED
-								    //         $taskUsersI = explode(", ", $cell_2['K']);
-										//
-								    //         foreach ($taskUsersI as $i)
-								    //         {
-								    //           $taskUserIDI = $this->model->getUserByName($i);
-										//
-								    //           $taskI['ROLE'] = 4;
-								    //           $taskI['users_USERID'] = $taskUserIDI;
-								    //           $taskI['tasks_TASKID'] = $task['TASKID'];
-								    //           $taskI['STATUS'] = 'Current';
-										//
-								    //           $result = $this->model->addToRaci($taskI);
-								    //         }
-								    //       }
-								    //     }
-								    //   }
-								    // }
+								        $subAct = $this->model->importTaskToProject($insertSub);
+
+								        // RESPONSIBLE
+								        $subUsers = explode(", ", $cell['I']);
+
+								        // IMPORTDELETE
+								        // $echoSub = " \t----- " . $subAct['TASKTITLE'] . ": ";
+
+								        foreach ($subUsers as $sU)
+								        {
+								          $subUserID = $this->model->getUserByName($sU);
+
+								          $subRaci['ROLE'] = 1;
+								          $subRaci['users_USERID'] = $subUserID;
+								          $subRaci['tasks_TASKID'] = $subAct['TASKID'];
+								          $subRaci['STATUS'] = 'Current';
+
+								          $result = $this->model->addToRaci($subRaci);
+								        }
+
+								        // GET ALL TASKS UNDER CURRENT SUB
+								        foreach ($worksheet as $cell_2)
+								        {
+								          if ($cell_2['H'] == $subAct['TASKTITLE'])
+								          {
+								            $insertTask['TASKTITLE'] = $cell_2['A'];
+								            $insertTask['TASKSTARTDATE'] = $cell_2['B'];
+								            $insertTask['TASKENDDATE'] = $cell_2['C'];
+														$insertTask['TASKACTUALENDDATE'] = $cell_2['D'];
+								            $insertTask['TASKSTATUS'] = $cell_2['E'];
+								            $insertTask['TASKREMARKS'] = $cell_2['F'];
+								            $insertTask['CATEGORY'] = $cell_2['G'];
+								            $insertTask['tasks_TASKPARENT'] = $subAct['TASKID'];
+								            $insertTask['projects_PROJECTID'] = $projectID;
+
+								            $task = $this->model->importTaskToProject($insertTask);
+
+								            // RESPONSIBLE
+								            $taskUsersR = explode(", ", $cell_2['I']);
+
+								            foreach ($taskUsersR as $r)
+								            {
+								              $taskUserIDR = $this->model->getUserByName($r);
+
+								              $taskR['ROLE'] = 1;
+								              $taskR['users_USERID'] = $taskUserIDR;
+								              $taskR['tasks_TASKID'] = $task['TASKID'];
+								              $taskR['STATUS'] = 'Current';
+
+								              $result = $this->model->addToRaci($taskR);
+								            }
+
+								            // ACCOUNTABLE
+								            $taskUsersA = explode(", ", $cell_2['J']);
+
+								            foreach ($taskUsersA as $a)
+								            {
+								              $taskUserIDA = $this->model->getUserByName($a);
+
+								              $taskA['ROLE'] = 2;
+								              $taskA['users_USERID'] = $taskUserIDA;
+								              $taskA['tasks_TASKID'] = $task['TASKID'];
+								              $taskA['STATUS'] = 'Current';
+
+								              $result = $this->model->addToRaci($taskA);
+								            }
+
+								            // CONSULTED
+								            $taskUsersC = explode(", ", $cell_2['K']);
+
+								            foreach ($taskUsersC as $c)
+								            {
+								              $taskUserIDC = $this->model->getUserByName($c);
+
+								              $taskC['ROLE'] = 3;
+								              $taskC['users_USERID'] = $taskUserIDC;
+								              $taskC['tasks_TASKID'] = $task['TASKID'];
+								              $taskC['STATUS'] = 'Current';
+
+								              $result = $this->model->addToRaci($taskC);
+								            }
+
+								            // INFORMED
+								            $taskUsersI = explode(", ", $cell_2['L']);
+
+								            foreach ($taskUsersI as $i)
+								            {
+								              $taskUserIDI = $this->model->getUserByName($i);
+
+								              $taskI['ROLE'] = 4;
+								              $taskI['users_USERID'] = $taskUserIDI;
+								              $taskI['tasks_TASKID'] = $task['TASKID'];
+								              $taskI['STATUS'] = 'Current';
+
+								              $result = $this->model->addToRaci($taskI);
+								            }
+								          }
+								        }
+								      }
+								    }
 								  }
 								}
 
