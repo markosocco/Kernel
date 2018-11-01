@@ -2195,7 +2195,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
-			$data['allOngoingProjects'] = $this->model->getAllOngoingOwnedProjectsByUser($_SESSION['USERID']);
+			$data['allOngoingProjects'] = $this->model->getAllOngoingPOProjects($_SESSION['USERID']);
 
 			$this->load->view("reports", $data);
 		}
@@ -2374,7 +2374,16 @@ class controller extends CI_Controller
 
 			$data['project'] = $this->model->getProjectByID($projectID);
 			$data['users'] = $this->model->getAllUsers();
-			$data['accomplishedTasks'] = $this->model->getAccomplishedTasks($projectID, $data['interval']);
+			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
+			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
+
+			foreach($data['mainActivities'] as $mainActivity)
+			{
+				foreach($data['subActivities'] as $subActivity)
+				{
+					$data['accomplishedTasks' . $subActivity['TASKID']] = $this->model->getAccomplishedTasks($projectID, $subActivity['TASKID'], $data['interval']);
+				}
+			}
 
 			$this->load->view("reportsProjectProgress", $data);
 		}
@@ -2769,7 +2778,7 @@ class controller extends CI_Controller
 
 						else
 						{
-							//DATA VALIDATION FOR IMPORT 
+							//DATA VALIDATION FOR IMPORT
 
 							// CHECK IF START DATE IS VALID DATE
 							if (DateTime::createFromFormat('Y-m-d', $startDate) !== FALSE)
