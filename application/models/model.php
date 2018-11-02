@@ -3,7 +3,7 @@ class model extends CI_Model
 {
   public function __construct()
   {
-    $this -> load -> database();
+    $this->load->database();
   }
 
 // CHECK IF EMAIL AND PASSWORD EXIST AND MATCH IN DB
@@ -52,6 +52,17 @@ class model extends CI_Model
     $query = $this->db->get();
 
     return $query->row_array();
+  }
+
+  public function getEmail($id)
+  {
+    $condition = "USERID = " . $id;
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+    $query = $this->db->get();
+
+    return $query->row("EMAIL");
   }
 
 // GET PROJECTID GIVEN TITLE AND DATES
@@ -1310,7 +1321,9 @@ class model extends CI_Model
   public function addNotification($data)
   {
     $this->db->insert('notifications', $data);
-    return true;
+    $id = $this->db->insert_id();
+    
+    return $id;
   }
 
   public function updateNotification($notificationID, $notificationStatus)

@@ -21,55 +21,21 @@ class controller extends CI_Controller
 		$this->load->view('welcome_message');
 	}
 
-	public function email(){
-		$this->load->helper('form');
-    $this->load->view('email_form');
-	}
-
 	public function send_mail() {
 
-		//Load email library
-		$this->load->library('email');
-
-		//SMTP & mail configuration
-		$config = array(
-		    'protocol'  => 'smtp',
-		    'smtp_host' => 'ssl://smtp.googlemail.com',
-		    'smtp_port' => 465,
-		    'smtp_user' => 'KernelPMS@gmail.com',
-		    'smtp_pass' => 'TatersNotifications',
-		    'mailtype'  => 'html',
-		    'charset'   => 'utf-8'
-		);
-		$this->email->initialize($config);
 		$this->email->set_mailtype("html");
 		$this->email->set_newline("\r\n");
 
 		//Email content
-		// $htmlContent = '<h1>Sending email via SMTP server</h1>';
-		// $htmlContent .= '<p>This email has sent via SMTP server from CodeIgniter application.</p><br><br>';
-		$htmlContent = '<h1>Hi Favorite!</h1>';
-		$htmlContent .= '<p>and not so favorites hehehe</p>';
+		$htmlContent = '<h1>Sending email via SMTP server</h1>';
+		$htmlContent .= '<p>This email has sent via SMTP server from CodeIgniter application.</p><br><br>';
 
-
-		$this->email->to('adrienne_gonzaga@dlsu.edu.ph, juan_socco@dlsu.edu.ph, keziah_isidoro@dlsu.edu.ph');
-		// $this->email->to('namihihii@gmail.com');
+		$this->email->to('namihihii@gmail.com');
 		$this->email->from('KernelPMS@gmail.com','Kernel Notification');
-		$this->email->bcc('namihihii@gmail.com');
 		$this->email->subject('woOoOoOoOoOow');
 		$this->email->message($htmlContent);
 
-		// $this->load->library('email', $config);
-		// $this->email->set_newline("\r\n");
 		$this->email->send();
-
-		 //Send mail
-		if($this->email->send())
-			$this->session->set_flashdata("email_sent","Email sent successfully.");
-		else
-			$this->session->set_flashdata("email_sent","Error in sending Email.");
-
-		 $this->load->view('email_form');
   }
 
 	public function login()
@@ -181,7 +147,27 @@ class controller extends CI_Controller
 
 							$this->model->addNotification($notificationData);
 							// END: Notification
+
+							// // START: Email Notification
+							//
+							// $email = $this->model->getEmail($taskWithDeadline['TASKOWNER']);
+							//
+							// $this->email->set_mailtype("html");
+							// $this->email->set_newline("\r\n");
+							//
+							// //Email content
+							// $htmlContent = '<h1>Sending email via SMTP server</h1>';
+							// $htmlContent .= '<p>This email has sent via SMTP server from CodeIgniter application.</p><br><br>';
+							//
+							// $this->email->to($email);
+							// $this->email->from('KernelPMS@gmail.com','Kernel Notification');
+							// $this->email->subject('woOoOoOoOoOow');
+							// $this->email->message($htmlContent);
+							//
+							// $this->email->send();
+							// // END: Email Notification
 						}
+
 
 						if($taskWithDeadline['DATEDIFF'] < 0){
 
@@ -788,7 +774,25 @@ class controller extends CI_Controller
 				'TYPE' => '1'
 			);
 
-			$this->model->addNotification($notificationData);
+			$notificationID = $this->model->addNotification($notificationData);
+
+			// START: Email notification
+			$projectOwnerEmail = $this->model->getEmail($projectOwnerID);
+
+			$this->email->set_mailtype("html");
+			$this->email->set_newline("\r\n");
+
+			//Email content
+			$htmlContent = '<h1>Hi!</h1>';
+			$htmlContent .= '<p>' . $details . '</p>';
+
+			$this->email->to($projectOwnerEmail);
+			$this->email->from('KernelPMS@gmail.com','Kernel Notification');
+			$this->email->subject('#' . $notificationID . " - " . $projectTitle . " update");
+			$this->email->message($htmlContent);
+
+			$this->email->send();
+			// End: Email notification
 
 			// notify next task person
 			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
