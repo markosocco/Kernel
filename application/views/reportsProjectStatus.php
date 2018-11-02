@@ -91,7 +91,7 @@
                             <td><?php echo $plannedLastTask['FIRSTNAME'];?> <?php echo $plannedLastTask['LASTNAME'];?></td>
                             <td align="center"><?php echo $plannedLastTask['TASKSTATUS'];?></td>
                           </tr>
-                        <? endforeach;?>
+                        <?php endforeach;?>
     									</tbody>
     								</table>
     							</div>
@@ -137,7 +137,7 @@
                             <td align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
                             <td><?php echo $accomplishedLastTask['FIRSTNAME'];?> <?php echo $accomplishedLastTask['LASTNAME'];?></td>
                           </tr>
-                        <? endforeach;?>
+                        <?php endforeach;?>
     									</tbody>
     								</table>
     							</div>
@@ -212,7 +212,7 @@
                             <td align="center"><?php echo $problemTask['TASKSTATUS'];?></td>
                             <td align="center"><?php echo $remarks;?></td>
                           </tr>
-                        <? endforeach;?>
+                        <?php endforeach;?>
     									</tbody>
     								</table>
     							</div>
@@ -260,7 +260,7 @@
                             <td><?php echo $plannedNextTask['FIRSTNAME'];?> <?php echo $plannedNextTask['LASTNAME'];?></td>
                             <td align="center"><?php echo $plannedNextTask['TASKSTATUS'];?></td>
                           </tr>
-                        <? endforeach;?>
+                        <?php endforeach;?>
     									</tbody>
     								</table>
     							</div>
@@ -299,7 +299,7 @@
                                 <td align="center"><?php echo date_format(date_create($taskRACI['TASKSTARTDATE']), "M d, Y");?></td>
                                 <td><?php echo $taskRACI['FIRSTNAME'];?> <?php echo $taskRACI['LASTNAME'];?></td>
                               </tr>
-                            <? endforeach;?>
+                            <?php endforeach;?>
         									</tbody>
         								</table>
                       <?php endif;?>
@@ -341,7 +341,7 @@
                               <td><?php echo $request['FIRSTNAME'];?> <?php echo $request['LASTNAME'];?></td>
                               <td><?php echo $request['REASON'];?></td>
                             </tr>
-                          <? endforeach;?>
+                          <?php endforeach;?>
       									</tbody>
       								</table>
                     <?php endif;?>
