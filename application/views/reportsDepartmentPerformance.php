@@ -65,12 +65,8 @@
                       <?php if($department['DEPARTMENTID'] != 1):?>
       								<table class="table table-bordered table-condensed" id="">
 
-                          <!-- <tr width = "15%">
-                            <td rowspan="2" align="center" style="vertical-align: middle; font-size:24px;">110%</td>
-                            <th colspan="4"><?php echo $department['DEPARTMENTNAME'];?></th>
-                          </tr> -->
       										<tr>
-                            <th><?php echo $department['DEPARTMENTNAME'];?></th>
+                            <th class='text-center'><?php echo $department['DEPARTMENTNAME'];?></th>
       											<th width = "35%">Project</th>
       											<th width = "20%" class='text-center'>End Date</th>
                             <th width = "15%" class='text-center'>Timeliness</th>
