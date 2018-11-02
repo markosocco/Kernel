@@ -2195,7 +2195,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
-			$data['allOngoingProjects'] = $this->model->getAllOngoingPOProjects($_SESSION['USERID']);
+			$data['allOngoingProjects'] = $this->model->getAllOngoingOwnedProjectsByUser($_SESSION['USERID']);
 
 			$this->load->view("reports", $data);
 		}
@@ -2374,16 +2374,7 @@ class controller extends CI_Controller
 
 			$data['project'] = $this->model->getProjectByID($projectID);
 			$data['users'] = $this->model->getAllUsers();
-			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
-			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
-
-			foreach($data['mainActivities'] as $mainActivity)
-			{
-				foreach($data['subActivities'] as $subActivity)
-				{
-					$data['accomplishedTasks' . $subActivity['TASKID']] = $this->model->getAccomplishedTasks($projectID, $subActivity['TASKID'], $data['interval']);
-				}
-			}
+			$data['accomplishedTasks'] = $this->model->getAccomplishedTasks($projectID, $data['interval']);
 
 			$this->load->view("reportsProjectProgress", $data);
 		}
@@ -2780,11 +2771,15 @@ class controller extends CI_Controller
 
 						else
 						{
+<<<<<<< HEAD
 							// PROJECT ASSESSMENT
 							// CHECK IF SPREADSHEET IS NULL/BLANK
 				      $sheetname = 'Project Assessment';
 
 							//DATA VALIDATION FOR IMPORT
+=======
+							//DATA VALIDATION FOR IMPORT 
+>>>>>>> parent of fad5a21e... fixed reports
 
 				      $reader->setLoadSheetsOnly($sheetname);
 				      $spreadsheet = $reader->load($inputFileName);

@@ -2041,31 +2041,12 @@ class model extends CI_Model
   }
 
     // REPORTS
-
-    public function getAllOngoingPOProjects($userID)
-    {
-      $condition = "projects.users_USERID = '$userID' && projects.PROJECTSTATUS = 'Ongoing'";
-      $this->db->select('projects.*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
-      $this->db->from('projects');
-      $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
-      $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-      $this->db->where($condition);
-      $this->db->group_by('projects.PROJECTID');
-      $this->db->order_by('projects.PROJECTENDDATE');
-
-      $query = $this->db->get();
-
-      return $query->result_array();
-    }
-
    public function getPlannedLast($projectID, $interval)
    {
-     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
-                   && (tasks.TASKENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKADJUSTEDENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKSTARTDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || (tasks.TASKENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing')
-                   || (tasks.TASKADJUSTEDENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing'))";
+     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                   && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
      $this->db->select('*');
      $this->db->from('projects');
      $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
@@ -2079,12 +2060,10 @@ class model extends CI_Model
 
    public function getAccomplishedLast($projectID, $interval)
    {
-     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
-                   && (tasks.TASKENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKADJUSTEDENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKSTARTDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || (tasks.TASKENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing')
-                   || (tasks.TASKADJUSTEDENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing'))
+     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                   && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)
                    && tasks.TASKSTATUS = 'Complete'";
      $this->db->select('*');
      $this->db->from('projects');
@@ -2099,15 +2078,13 @@ class model extends CI_Model
 
    public function getProblemTasks($projectID, $interval)
    {
-     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
+     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
                    && (tasks.TASKACTUALENDDATE > tasks.TASKADJUSTEDENDDATE || tasks.TASKACTUALENDDATE > tasks.TASKENDDATE
                    || tasks.TASKENDDATE < CURDATE() || tasks.TASKADJUSTEDENDDATE < CURDATE())
                    && tasks.TASKSTATUS != 'Planning'
-                   && (tasks.TASKENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKADJUSTEDENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKSTARTDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || (tasks.TASKENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing')
-                   || (tasks.TASKADJUSTEDENDDATE <= CURDATE()))";
+                   && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) <= tasks.TASKACTUALENDDATE)";
      $this->db->select('*, ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "completeOrigDelay",
                        ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "completeAdjustedDelay",
                        ABS(DATEDIFF(tasks.TASKADJUSTEDENDDATE, CURDATE())) as "ongoingAdjustedDelay",
@@ -2124,12 +2101,11 @@ class model extends CI_Model
 
    public function getPlannedNext($projectID, $interval)
    {
-     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
-                   && (tasks.TASKENDDATE BETWEEN DATE_ADD(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKADJUSTEDENDDATE BETWEEN DATE_ADD(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKSTARTDATE BETWEEN DATE_ADD(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || (tasks.TASKENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing')
-                   || (tasks.TASKADJUSTEDENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing'))";
+     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                   && tasks.TASKSTATUS != 'Complete'
+                   && (DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                   || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                   || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
      $this->db->select('*');
      $this->db->from('projects');
      $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
@@ -2144,7 +2120,9 @@ class model extends CI_Model
    public function getPendingRFCNext($projectID, $interval)
    {
      $condition = "PROJECTID = '$projectID' && changeRequests.REQUESTSTATUS = 'Pending'
-                  && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '3'";
+                   && (DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                   || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                   || DATE_ADD(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)";
      $this->db->select('*');
      $this->db->from('changerequests');
      $this->db->join('tasks', 'changerequests.tasks_REQUESTEDTASK = tasks.TASKID');
@@ -2159,7 +2137,7 @@ class model extends CI_Model
    public function getPendingRaci($projectID)
    {
      $condition = "projects.PROJECTID = '" . $projectID . "' AND raci.STATUS = 'Current'
-                   && raci.ROLE = '0' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '3'";
+                   && (raci.ROLE = '0') && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '3'";
      $this->db->select('*');
      $this->db->from('raci');
      $this->db->join('tasks', 'raci.tasks_TASKID = tasks.TASKID');
@@ -2170,10 +2148,12 @@ class model extends CI_Model
      return $this->db->get()->result_array();
    }
 
-   public function getAccomplishedTasks($projectID, $subActivityID, $interval)
+   public function getAccomplishedTasks($projectID, $interval)
    {
-     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.tasks_TASKPARENT = '$subActivityID'
-                   && tasks.TASKACTUALENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
+     $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current'
+                   && (DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKADJUSTEDENDDATE
+                   || DATE_SUB(CURDATE(), INTERVAL $interval DAY) >= tasks.TASKSTARTDATE)
                    && tasks.TASKSTATUS = 'Complete'";
      $this->db->select('*, ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "completeOrig",
                        ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "completeAdjusted"');
@@ -2181,8 +2161,8 @@ class model extends CI_Model
      $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
      $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
      $this->db->join('users', 'raci.users_userid = users.userid');
+     $this->db->order_by('tasks.TASKENDDATE');
      $this->db->where($condition);
-     $this->db->order_by('tasks.TASKACTUALENDDATE');
 
      return $this->db->get()->result_array();
    }
@@ -2244,30 +2224,6 @@ class model extends CI_Model
      $this->db->where($condition);
      $this->db->group_by('projects.PROJECTID');
      $this->db->order_by('projects.PROJECTENDDATE');
-
-     return $this->db->get()->result_array();
-   }
-
-   public function getMainActivitiesByProject($projectID)
-   {
-     $condition = "CATEGORY = '1' && tasks.projects_PROJECTID = '$projectID'";
-     $this->db->select('*');
-     $this->db->from('tasks');
-     $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
-     $this->db->where($condition);
-     $this->db->order_by('tasks.TASKSTARTDATE');
-
-     return $this->db->get()->result_array();
-   }
-
-   public function getSubActivitiesByProject($projectID)
-   {
-     $condition = "CATEGORY = '2' && tasks.projects_PROJECTID = '$projectID'";
-     $this->db->select('*');
-     $this->db->from('tasks');
-     $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
-     $this->db->where($condition);
-     $this->db->order_by('tasks.TASKSTARTDATE');
 
      return $this->db->get()->result_array();
    }

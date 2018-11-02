@@ -104,89 +104,46 @@
   								<h5 class="box-title">Accomplished Tasks</h5>
   							</div>
   							<!-- /.box-header -->
-                <?php
-                  $withAccomplishedTasks = 'false';
-                  foreach($mainActivities as $mainActivity)
-                  {
-                    $rowCount[$mainActivity['TASKID']] = 0;
-                    foreach($subActivities as $subActivity)
-                    {
-                      if($subActivity['tasks_TASKPARENT'] == $mainActivity['TASKID'])
-                      {
-                        foreach(${"accomplishedTasks" . $subActivity['TASKID']} as $accomplishedTask)
-                        {
-                          $rowCount[$mainActivity['TASKID']]++;
-                          $withAccomplishedTasks = 'true';
-                        }
-                      }
-                    }
-                  }
-                ;?>
-
-                <?php if($withAccomplishedTasks == 'true'):?>
+                <?php if($accomplishedTasks != NULL):?>
                   <div class="box-body" id="delayedBox">
                     <table class="table table-bordered table-condensed" id="">
                       <thead>
                         <tr>
-                          <th width="15%">Main Activity</th>
                           <th width="30%">Task</th>
-                          <th width="10%" class='text-center'>Start Date</th>
-                          <th width="10%" class='text-center'>End Date</th>
-                          <th width="15%" class='text-center'>Actual End Date</th>
+                          <th class='text-center'>Start Date</th>
+                          <th class='text-center'>End Date</th>
+                          <th class='text-center'>Actual End Date</th>
                           <th class='text-center' width="10%">Days Completed</th>
                           <th>Responsible</th>
                           <th width="15%">Remarks</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <?php foreach($mainActivities as $mainActivity):?>
-                          <?php $counter = 0;?>
-                          <?php foreach($subActivities as $subActivity):?>
-                          <?php if($subActivity['tasks_TASKPARENT'] == $mainActivity['TASKID']):?>
-                          <?php foreach(${"accomplishedTasks" . $subActivity['TASKID']} as $accomplishedTask):?>
+                        <?php foreach($accomplishedTasks as $accomplishedTask):?>
+                          <?php // to fix date format
+                            $taskActualEnd = date_create($accomplishedTask['TASKACTUALENDDATE']);
+                            if($accomplishedTask['TASKADJUSTEDENDDATE'] == "")
+                            {
+                              $taskEnd = date_create($accomplishedTask['TASKENDDATE']);
+                              $daysCompleted = $accomplishedTask['completeOrig'];
+                            }
+                            else
+                            {
+                              $taskEnd = date_create($accomplishedTask['TASKADJUSTEDENDDATE']);
+                              $daysCompleted = $accomplishedTask['completeAdjusted'];
 
-
-                            <?php // to fix date format
-                              $taskActualEnd = date_create($accomplishedTask['TASKACTUALENDDATE']);
-                              if($accomplishedTask['TASKADJUSTEDENDDATE'] == "")
-                              {
-                                $taskEnd = date_create($accomplishedTask['TASKENDDATE']);
-                                $daysCompleted = $accomplishedTask['completeOrig'];
-                              }
-                              else
-                              {
-                                $taskEnd = date_create($accomplishedTask['TASKADJUSTEDENDDATE']);
-                                $daysCompleted = $accomplishedTask['completeAdjusted'];
-
-                              }
-                            ?>
-                          <?php if($counter == 0):?>
-                            <tr>
-                              <td rowspan="<?php echo $rowCount[$mainActivity['TASKID']];?>" style="vertical-align: middle;"><?php echo $mainActivity['TASKTITLE'];?></td>
-                              <td style="vertical-align: middle;"><?php echo $accomplishedTask['TASKTITLE'];?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo date_format(date_create($accomplishedTask['TASKSTARTDATE']), "M d, Y");?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo $daysCompleted;?></td>
-                              <td style="vertical-align: middle;"><?php echo $accomplishedTask['FIRSTNAME'];?> <?php echo $accomplishedTask['LASTNAME'];?></td>
-                              <td style="vertical-align: middle;"><?php echo $accomplishedTask['TASKREMARKS'];?></td>
-                            </tr>
-                          <?php else:?>
-                            <tr>
-                              <td style="vertical-align: middle;"><?php echo $accomplishedTask['TASKTITLE'];?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo date_format(date_create($accomplishedTask['TASKSTARTDATE']), "M d, Y");?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
-                              <td style="vertical-align: middle;" align="center"><?php echo $daysCompleted;?></td>
-                              <td style="vertical-align: middle;"><?php echo $accomplishedTask['FIRSTNAME'];?> <?php echo $accomplishedTask['LASTNAME'];?></td>
-                              <td style="vertical-align: middle;"><?php echo $accomplishedTask['TASKREMARKS'];?></td>
-                            </tr>
-                          <?php endif;?>
-                          <?php $counter++;?>
-                          <? endforeach;?>
-                        <?php endif;?>
+                            }
+                          ?>
+                          <tr>
+                            <td rowspan="2" align="" style="vertical-align: middle;"><?php echo $accomplishedTask['TASKTITLE'];?></td>
+                            <td align="center"><?php echo date_format(date_create($accomplishedTask['TASKSTARTDATE']), "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo date_format($taskActualEnd, "M d, Y");?></td>
+                            <td align="center"><?php echo $daysCompleted;?></td>
+                            <td><?php echo $accomplishedTask['FIRSTNAME'];?> <?php echo $accomplishedTask['LASTNAME'];?></td>
+                            <td><?php echo $accomplishedTask['TASKREMARKS'];?></td>
+                          </tr>
                         <? endforeach;?>
-                      <? endforeach;?>
                       </tbody>
                     </table>
     							</div>

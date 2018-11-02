@@ -30,8 +30,8 @@
 					<div class="box-body">
 						<table id="reportList" class="table table-bordered table-hover">
 							<tbody>
-								<!-- SHOW ONLY TO THOSE PO'S WITH ONGOING PROJECTS --> <!-- Change to $allOngoingProjects for restricted access -->
-								<!-- <?php if($allProjects != NULL):?> -->
+								<!-- SHOW ONLY TO THOSE PO'S WITH ONGOING PROJECTS -->
+								<!-- <?php if($allOngoingProjects != NULL):?> -->
 									<tr>
 										<td>Project Status Report</td>
 										<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
