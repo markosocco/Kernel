@@ -183,10 +183,10 @@
                             </tr>
                           <?php endif;?>
                           <?php $counter++;?>
-                          <? endforeach;?>
+                        <?php endforeach;?>
                         <?php endif;?>
-                        <? endforeach;?>
-                      <? endforeach;?>
+                      <?php endforeach;?>
+                    <?php endforeach;?>
                       </tbody>
                     </table>
     							</div>
