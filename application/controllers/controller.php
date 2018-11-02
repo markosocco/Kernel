@@ -2840,6 +2840,10 @@ class controller extends CI_Controller
 													$prevRow = $worksheet[$prevIndex];
 												}
 
+												// $tempDate = date_create($prevRow['A']);
+												// $formatTempDate = $tempDate->format('Y-m-d');
+
+												// $date_plusOne = date_add(date_create($formatTempDate), date_interval_create_from_date_string("1 days"));
 												$date_plusOne = date_add(date_create($prevRow['A']), date_interval_create_from_date_string("1 days"));
 
 												if ($checkAssessment['A'] != $date_plusOne->format('Y-m-d'))
@@ -2854,15 +2858,33 @@ class controller extends CI_Controller
 
 												else
 												{
-													$sheetname = 'Tasks';
+													// $sheetname = 'Tasks';
+													//
+													// //DATA VALIDATION FOR IMPORT
+													//
+													// $reader->setLoadSheetsOnly($sheetname);
+													// $spreadsheet = $reader->load($inputFileName);
+													// $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
 
-													//DATA VALIDATION FOR IMPORT
-
-													$reader->setLoadSheetsOnly($sheetname);
-													$spreadsheet = $reader->load($inputFileName);
-													$worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
-
-													
+													// foreach ($worksheet as $checkRow => $checkCell)
+													// {
+													// 	// CHECK IF BLANK
+													//
+													// 	if ($checkCell['A'] == 'NULL' || $checkCell['B'] == 'NULL' || $checkCell['C'] == 'NULL' || $checkCell['E'] == 'NULL' || $checkCell['G'] == 'NULL' || $checkCell['I'] == 'NULL')
+					                //   {
+					                //     $this->session->set_flashdata('danger', 'alert');
+					                //     $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $assessmentKey . ' in Project Assessment are filled');
+													//
+					                //     unlink($inputFileName);
+													//
+					                //     redirect('controller/addProjectDetails');
+					                //   }
+													//
+													// 	else
+													// 	{
+													// 		echo "success";
+													// 	}
+													// }
 												}
 	                    }
 
