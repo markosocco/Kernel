@@ -61,88 +61,184 @@
              </div>
            </div>
 
+          <?php foreach($projectCount as $project):?>
           <table class="table table-bordered table-condensed" id="">
             <thead>
-              <?php foreach($projectCount as $project):?>
                 <tr>
-                  <th colspan="10"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
+                  <th colspan="11"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
                 </tr>
                 <tr>
                   <th>Task</th>
-                  <th class='text-center'>Start</th>
-                  <th class='text-center'>End</th>
-                  <th class='text-center'>Actual End</th>
-                  <th class='text-center'>Days Delayed</th>
+                  <th class='text-center'>Start Date</th>
+                  <th class='text-center'>End Date</th>
+                  <th class='text-center'>Actual<br>End Date</th>
+                  <th class='text-center'>Days<br>Delayed</th>
                   <th class='text-center'>A</th>
                   <th class='text-center'>C</th>
                   <th class='text-center'>I</th>
                   <th class='text-center'>Status</th>
+                  <th class='text-center'>Completeness</th>
                   <th class='text-center'>Timeliness</th>
                 </tr>
               </thead>
                 <tbody>
                 <?php foreach($taskCount as $task):?>
                   <?php if($task['projects_PROJECTID'] == $project['PROJECTID']):?>
+                    <?php
+                      if($task['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+                        $startDate = $task['TASKSTARTDATE'];
+                      else
+                        $startDate = $task['TASKADJUSTEDSTARTDATE'];
+
+                      if($task['TASKADJUSTEDENDDATE'] == "")
+                      {
+                        $endDate = $task['TASKENDDATE'];
+                        $daysDelayed = $task['originalDelay'];
+                      }
+                      else
+                      {
+                        $endDate = $task['TASKADJUSTEDENDDATE'];
+                        $daysDelayed = $task['adjustedDelay'];
+                      }
+
+                      if($task['TASKACTUALENDDATE'] == "")
+                        $actualEnd = "-";
+                      else
+                        $actualEnd = date_format(date_create($task['TASKACTUALENDDATE']), "M d, Y");
+                    ?>
                     <tr>
                       <td><?php echo $task['TASKTITLE'];?></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td align='center'><?php echo date_format(date_create($startDate), "M d, Y"); ?></td>
+                      <td align='center'><?php echo date_format(date_create($endDate), "M d, Y"); ?></td>
+                      <td align='center'><?php echo $actualEnd; ?></td>
+                      <td align='center'>
+                        <?php if($task['TASKSTATUS'] == 'Complete'):?>
+                          <?php echo $daysDelayed; ?>
+                        <?php else:?>
+                          -
+                        <?php endif;?>
+                      </td>
+                      <td>
+                        <?php foreach ($raci as $raciRow): ?>
+                          <?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+                            <?php if ($raciRow['ROLE'] == '2'): ?>
+                              <?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+                            <?php endif; ?>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                      </td>
+                      <td>
+                        <?php foreach ($raci as $raciRow): ?>
+                          <?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+                            <?php if ($raciRow['ROLE'] == '3'): ?>
+                              <?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+                            <?php endif; ?>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                      </td>
+                      <td>
+                        <?php foreach ($raci as $raciRow): ?>
+                          <?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+                            <?php if ($raciRow['ROLE'] == '4'): ?>
+                              <?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+                            <?php endif; ?>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                      </td>
+                      <td align='center'><?php echo $task['TASKSTATUS'];?></td>
+                      <td align='center'>0%</td>
+                      <td align='center'>0%</td>
                     </tr>
                   <?php endif;?>
                 <?php endforeach;?>
                 </tbody>
+              </table>
             <?php endforeach;?>
-          </table>
 
-  				<!-- Requests -->
-  				<div class="row">
-  					<div class="col-md-12 col-sm-12 col-xs-12">
-  						<div class="box box-default">
-  							<div class="box-header with-border">
-  								<h5 class="box-title">Change Requests</h5>
-  							</div>
-  							<!-- /.box-header -->
-  							<div class="box-body">
-  								<table class="table table-bordered table-condensed" id="">
-  									<thead>
-  										<tr>
-  											<th width="0%">Task</th>
-                        <th class="text-center" width="0%">End Date</th>
-                        <th width="0%" class='text-center'>Type</th>
-                        <th width="0" class="text-center">Date Requested</th>
-  											<th width="0%">Requester</th>
-  											<th width="0%">Reason</th>
-  										</tr>
-  									</thead>
-  									<tbody>
+  				<!-- Change Requests -->
+          <?php if($changeRequests != NULL):?>
+    				<div class="row">
+    					<div class="col-md-12 col-sm-12 col-xs-12">
+    						<div class="box box-default">
+    							<div class="box-header with-border">
+    								<h5 class="box-title">Change Requests</h5>
+    							</div>
+    							<!-- /.box-header -->
+    							<div class="box-body">
+    								<table class="table table-bordered table-condensed" id="">
+    									<thead>
+    										<tr>
+    											<th width="0%">Task</th>
+                          <th class="text-center" width="0%">End Date</th>
+                          <th width="0%" class='text-center'>Type</th>
+                          <th width="0" class="text-center">Date Requested</th>
+    											<th width="0%">Reason</th>
+                          <th width="0%" class="text-center">Status</th>
+                          <th width="0%">Reviewed By</th>
+                          <th width="0%" class="text-center">Reviewed Date</th>
+    										</tr>
+    									</thead>
+    									<tbody>
+                        <?php foreach($changeRequests as $changeRequest):?>
 
-  									</tbody>
-  								</table>
-  							</div>
-  						</div>
-  	        </div>
-  	        <!-- /.col -->
-  				</div>
-  				<div class="row">
-  					<div class="col-md-12 col-sm-12 col-xs-12">
-  						<div class="box box-default">
-  							<div class="box-header with-border">
-  								<h5 class="box-title">Change Requests</h5>
-  							</div>
-  							<!-- /.box-header -->
-  							<div class="box-body">
-  								<h6 align="center">There were no change requests</h6>
-  							</div>
-  						</div>
-  	        </div>
-  	        <!-- /.col -->
-  				</div>
+                          <?php
+                          if($changeRequest['TASKADJUSTEDENDDATE'] == "") // check if start date has been previously adjusted
+                            $endDate = $changeRequest['TASKENDDATE'];
+                          else
+                            $endDate = $changeRequest['TASKADJUSTEDENDDATE'];
+
+                          if($changeRequest['REQUESTSTATUS'] == 'Pending')
+                          {
+                            $reviewedBy = '<td align="center">-</td>';
+                            $reviewedDate = '<td align="center">-</td>';
+                          }
+                          else
+                          {
+                            $reviewedBy = "<td>" . $changeRequest['FIRSTNAME'] . " " . $changeRequest['LASTNAME'] . "</td>";
+                            $reviewedDate = "<td>" . date_format(date_create($changeRequest['APPROVEDDATE']), "M d, Y") . "</td>";
+                          }
+                          ?>
+                          <tr>
+                            <td><?php echo $changeRequest['TASKTITLE'];?></td>
+                            <td align='center'><?php echo date_format(date_create($endDate), "M d, Y"); ?></td>
+                            <td align='center'>
+                              <?php if($changeRequest['REQUESTTYPE'] == '1')
+    														echo "Change Performer";
+    													else
+    														echo "Change Date";
+    													?>
+                            </td>
+                            <td align='center'><?php echo date_format(date_create($changeRequest['REQUESTEDDATE']), "M d, Y"); ?></td>
+                            <td><?php echo $changeRequest['REASON'];?></td>
+                            <td align='center'><?php echo $changeRequest['REQUESTSTATUS'];?></td>
+                            <?php echo $reviewedBy;?>
+                            <?php echo $reviewedDate;?>
+                          </tr>
+                        <?php endforeach;?>
+
+    									</tbody>
+    								</table>
+    							</div>
+    						</div>
+    	        </div>
+    	        <!-- /.col -->
+    				</div>
+          <?php else:?>
+    				<div class="row">
+    					<div class="col-md-12 col-sm-12 col-xs-12">
+    						<div class="box box-default">
+    							<div class="box-header with-border">
+    								<h5 class="box-title">Change Requests</h5>
+    							</div>
+    							<!-- /.box-header -->
+    							<div class="box-body">
+    								<h6 align="center">There were no change requests</h6>
+    							</div>
+    						</div>
+    	        </div>
+    	        <!-- /.col -->
+    				</div>
+          <?php endif;?>
         </div>
 
     <div class="endReport viewCenter">

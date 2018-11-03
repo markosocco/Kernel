@@ -2378,5 +2378,33 @@ class model extends CI_Model
 
      return true;
    }
+
+   public function getProjectCountRole1($userID)
+   {
+    $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
+                 && raci.users_USERID = '$userID'";
+    $this->db->select('projects.*');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('PROJECTID');
+    return $this->db->get()->result_array();
+  }
+
+  public function getTaskCountRole1($userID)
+  {
+    $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
+                 && raci.users_USERID = '$userID'";
+    $this->db->select('tasks.*, ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "originalDelay",
+                      ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "adjustedDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
 }
 ?>
