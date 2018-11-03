@@ -34,13 +34,18 @@
         <div class="box box-danger">
           <table class="table-condensed" style="width:100%">
             <tr>
-              <td><b>Name: </b></td>
+              <td><b>Name: </b><?php echo $userInfo['FIRSTNAME'] . " " . $userInfo['LASTNAME'];?></td>
             </tr>
             <tr>
-              <td><b>Position: </b></td>
+              <td><b>Position: </b><?php echo $userInfo['POSITION'];?></td>
             </tr>
             <tr>
-              <td><b>Department: </b></td>
+              <td><b>Department: </b>
+                <?php foreach($departments as $department)
+                  if($department['DEPARTMENTID'] == $userInfo['departments_DEPARTMENTID'])
+                    echo $department['DEPARTMENTNAME'];
+                ?>
+              </td>
             </tr>
           </table>
 
