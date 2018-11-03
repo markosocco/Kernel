@@ -71,20 +71,29 @@
   								<table class="table table-bordered table-condensed" id="delayedTable">
   									<thead>
   										<tr>
-  											<th width="20%">Task</th>
-  											<th width="10%" class='text-center'>End Date</th>
-  											<th width="10%" class='text-center'>Actual<br>End Date</th>
-  											<th width="5%" class='text-center'>Days Delayed</th>
-                        <th width="15%" class="text-center">R</th>
-                        <th width="15%">A</th>
-                        <th width="15%">C</th>
-                        <th width="15%">I</th>
-                        <th width="15%" class='text-center'>Department</th>
-  											<th width="25">Reason</th>
+  											<th>Task</th>
+  											<th class='text-center'>End Date</th>
+  											<th class='text-center'>Actual<br>End Date</th>
+  											<th class='text-center'>Days Delayed</th>
+                        <th class="text-center">R</th>
+                        <th class="text-center">A</th>
+                        <th class="text-center">C</th>
+                        <th class="text-center">I</th>
+                        <th class='text-center'>Department</th>
+  											<th>Reason</th>
   										</tr>
   									</thead>
   									<tbody id="delayedData">
   											<tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
                           <td></td>
   											</tr>
   									</tbody>

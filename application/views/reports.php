@@ -186,7 +186,7 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h2 class="modal-title">Department Performance per Department</h2>
+								<h2 class="modal-title">Team Performance</h2>
 							</div>
 							<div class="modal-body">
 								<select class="form-control select2" data-placeholder="Select Departments">
