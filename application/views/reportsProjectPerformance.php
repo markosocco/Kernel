@@ -43,11 +43,11 @@
                 else
                   $projectActualEnd = "Present";
               ?>
-              <td align="right"><b>Duration: </b></td>
+              <td align="right"><b>Duration: </b><?php echo date_format($projectStart, "F d, Y") . " - " . date_format($projectEnd, "F d, Y");?></td>
             </tr>
             <tr>
               <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
-              <td><b>Owner: </b>
+              <td align="right"><b>Owner: </b>
 
                 <?php foreach ($users as $user): ?>
                   <?php if ($user['USERID'] == $project['users_USERID']): ?>
@@ -60,49 +60,112 @@
           </table>
 
   				<!-- DELAYED TASKS -->
-  				<div class="row">
-  					<div class="col-md-12 col-sm-12 col-xs-12">
-  						<div class="box box-default">
-  							<div class="box-header with-border">
-  								<h5 class="box-title">Delayed Tasks</h5>
-  							</div>
-  							<!-- /.box-header -->
-  							<div class="box-body" id="delayedBox">
-  								<table class="table table-bordered table-condensed" id="delayedTable">
-  									<thead>
-  										<tr>
-  											<th>Task</th>
-  											<th class='text-center'>End Date</th>
-  											<th class='text-center'>Actual<br>End Date</th>
-  											<th class='text-center'>Days Delayed</th>
-                        <th class="text-center">R</th>
-                        <th class="text-center">A</th>
-                        <th class="text-center">C</th>
-                        <th class="text-center">I</th>
-                        <th class='text-center'>Department</th>
-  											<th>Reason</th>
-  										</tr>
-  									</thead>
-  									<tbody id="delayedData">
+          <?php if($delayedTasks != null):?>
+    				<div class="row">
+    					<div class="col-md-12 col-sm-12 col-xs-12">
+    						<div class="box box-default">
+    							<div class="box-header with-border">
+    								<h5 class="box-title">Delayed Tasks</h5>
+    							</div>
+    							<!-- /.box-header -->
+    							<div class="box-body" id="delayedBox">
+    								<table class="table table-bordered table-condensed" id="delayedTable">
+    									<thead>
+    										<tr>
+    											<th width='20%'>Task</th>
+    											<th class='text-center'>End Date</th>
+    											<th class='text-center'>Actual<br>End Date</th>
+    											<th class='text-center'>Days<br>Delayed</th>
+                          <th class="text-center">R</th>
+                          <th class="text-center">A</th>
+                          <th class="text-center">C</th>
+                          <th class="text-center">I</th>
+                          <th class='text-center'>Department</th>
+    											<th width="10%">Reason</th>
+    										</tr>
+    									</thead>
+    									<tbody id="delayedData">
+                        <?php foreach ($delayedTasks as $task):?>
+    											<?php
+    											if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+    											{
+    												$endDate = $task['TASKENDDATE'];
+    												$delay = $task['actualInitial'];
+    											}
+    											else
+    											{
+    												$endDate = $task['TASKADJUSTEDENDDATE'];
+    												$delay = $task['actualAdjusted'];
+    											}
+                          foreach($users as $user)
+                          {
+
+                          }
+                          ?>
   											<tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
+                          <td><?php echo $task['TASKTITLE'];?></td>
+                          <td class='text-center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
+  												<td class='text-center'><?php echo date_format(date_create($task['TASKACTUALENDDATE']), "M d, Y");?></td>
+                          <td class='text-center'><?php echo $delay?></td>
+                          <td>
+      											<?php foreach ($raci as $raciRow): ?>
+      												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+      													<?php if ($raciRow['ROLE'] == '1'): ?>
+      														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+                                  <?php foreach($users as $user):?>
+                                    <?php if ($raciRow['users_USERID'] == $user['USERID']): ?>
+                                      <?php $deptID = $user['departments_DEPARTMENTID'];?>
+                                    <?php endif;?>
+                                  <?php endforeach;?>
+      													<?php endif; ?>
+      												<?php endif; ?>
+      											<?php endforeach; ?>
+      										</td>
+      										<td>
+      											<?php foreach ($raci as $raciRow): ?>
+      												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+      													<?php if ($raciRow['ROLE'] == '2'): ?>
+      														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+      													<?php endif; ?>
+      												<?php endif; ?>
+      											<?php endforeach; ?>
+      										</td>
+      										<td>
+      											<?php foreach ($raci as $raciRow): ?>
+      												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+      													<?php if ($raciRow['ROLE'] == '3'): ?>
+      														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+      													<?php endif; ?>
+      												<?php endif; ?>
+      											<?php endforeach; ?>
+      										</td>
+      										<td>
+      											<?php foreach ($raci as $raciRow): ?>
+      												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+      													<?php if ($raciRow['ROLE'] == '4'): ?>
+      														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+      													<?php endif; ?>
+      												<?php endif; ?>
+      											<?php endforeach; ?>
+      										</td>
+                          <td class='text-center'>
+                            <?php foreach ($departments as $department): ?>
+      												<?php if ($deptID == $department['DEPARTMENTID']): ?>
+                                <?php echo $department['DEPARTMENTNAME'];?>
+      												<?php endif; ?>
+      											<?php endforeach; ?>
+                          </td>
+                          <td><?php echo $task['TASKREMARKS'];?></td>
   											</tr>
-  									</tbody>
-  								</table>
-  							</div>
-  						</div>
-  	        </div>
-  	        <!-- /.col -->
-  				</div>
+                      <?php endforeach;?>
+    									</tbody>
+    								</table>
+    							</div>
+    						</div>
+    	        </div>
+    	        <!-- /.col -->
+    				</div>
+          <?php else:?>
   				<div class="row">
   					<div class="col-md-12 col-sm-12 col-xs-12">
   						<div class="box box-default">
@@ -117,6 +180,7 @@
   					</div>
   					<!-- /.col -->
   				</div>
+        <?php endif;?>
 
     <div class="endReport viewCenter">
       <p>***END OF REPORT***</p>

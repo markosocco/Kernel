@@ -2361,6 +2361,16 @@ class model extends CI_Model
      return $query->row('usertype_USERTYPEID');
    }
 
+   public function getUserTeam($userID)
+   {
+     $condition = "users_SUPERVISORS = '$userID'";
+     $this->db->select('*');
+     $this->db->from('users');
+     $this->db->where($condition);
+
+     return $this->db->get()->result_array();
+   }
+
    public function addAssessmentProject($data){
 
      $this->db->insert('assessmentProject', $data);
