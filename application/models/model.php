@@ -2367,6 +2367,8 @@ class model extends CI_Model
      $condition = "users_SUPERVISORS = '$userID'";
      $this->db->select('*');
      $this->db->from('users');
+     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+
      $this->db->where($condition);
 
      return $this->db->get()->result_array();
@@ -2404,6 +2406,16 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
+  }
+
+  public function getDepartmentHeadByDepartmentID($deptID)
+  {
+    $condition = "departments_DEPARTMENTID = '$deptID' && usertype_USERTYPEID = '3'";
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+
+    return $this->db->get()->row_array();
   }
 
 }

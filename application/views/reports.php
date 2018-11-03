@@ -60,10 +60,12 @@
 								</tr>
 
 								<?php if($_SESSION['departments_DEPARTMENTID'] != 1):?>
-									<tr>
-										<td>Team Performance</td>
-										<td align="center"><a href="<?php echo base_url("index.php/controller/reportsTeamPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-									</tr>
+									<?php if($_SESSION['usertype_USERTYPEID'] == 3 || $_SESSION['usertype_USERTYPEID'] == 4):?>
+										<tr>
+											<td>Team Performance</td>
+											<td align="center"><a href="<?php echo base_url("index.php/controller/reportsTeamPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+										</tr>
+									<?php endif;?>
 
 									<tr>
 										<td>Employee Performance</td>

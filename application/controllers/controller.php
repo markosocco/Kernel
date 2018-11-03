@@ -2305,7 +2305,14 @@ class controller extends CI_Controller
 		}
 		else
 		{
-			$this->load->view("reportsTeamPerformance");
+			$data['deptName'] = $_SESSION['DEPARTMENTNAME'];
+			$data['deptHead'] = $this->model->getDepartmentHeadByDepartmentID($_SESSION['departments_DEPARTMENTID']);
+			if($_SESSION['usertype_USERTYPEID'] == '3') //managers
+				$data['userTeam'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			else if($_SESSION['usertype_USERTYPEID'] == '4') //supervisors
+				$data['userTeam'] = $this->model->getUserTeam($_SESSION['USERID']);
+
+			$this->load->view("reportsTeamPerformance", $data);
 		}
 	}
 
