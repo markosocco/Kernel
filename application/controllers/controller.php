@@ -2308,7 +2308,19 @@ class controller extends CI_Controller
 
 		else
 		{
+<<<<<<< HEAD
+			$userID = $this->input->post('user');
+			$data['userInfo'] = $this->model->getUserByID($userID);
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['tasks'] = $this->model->getAllTasksByUser($userID);
+			$data['raci'] = $this->model->getAllACI();
+			$data['projectCount'] = $this->model->getProjectCountRole1($userID);
+			$data['taskCount'] = $this->model->getTaskCountRole1($userID);
+
+			$this->load->view("reportsEmployeePerformance", $data);
+=======
 			$this->load->view("reportsEmployeesPerformancePerProject");
+>>>>>>> 5cb69e6f14a998552de04f9cba964a5ae13489d8
 		}
 	}
 
