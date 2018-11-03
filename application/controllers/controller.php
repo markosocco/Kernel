@@ -2211,12 +2211,6 @@ class controller extends CI_Controller
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
 			$data['allOngoingProjects'] = $this->model->getAllOngoingPOProjects($_SESSION['USERID']);
-			if($_SESSION['usertype_USERTYPEID'] == '3') //managers
-				$data['userTeam'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
-			else if($_SESSION['usertype_USERTYPEID'] == '4') //supervisors
-				$data['userTeam'] = $this->model->getUserTeam($_SESSION['USERID']);
-			else //staff
-				$data['userTeam'] = $_SESSION['USERID'];
 
 			$this->load->view("reports", $data);
 		}
@@ -2291,13 +2285,14 @@ class controller extends CI_Controller
 
 		else
 		{
-			$userID = $this->input->post('user');
-			$data['userInfo'] = $this->model->getUserByID($userID);
+			$data['userInfo'] = $this->model->getUserByID($_SESSION['USERID']);
 			$data['departments'] = $this->model->getAllDepartments();
-			$data['tasks'] = $this->model->getAllTasksByUser($userID);
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
 			$data['raci'] = $this->model->getAllACI();
-			$data['projectCount'] = $this->model->getProjectCountRole1($userID);
-			$data['taskCount'] = $this->model->getTaskCountRole1($userID);
+			$data['projectCount'] = $this->model->getProjectCountRole1($_SESSION['USERID']);
+			$data['taskCount'] = $this->model->getTaskCountRole1($_SESSION['USERID']);
+			$data['changeRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
+
 
 			$this->load->view("reportsEmployeePerformance", $data);
 		}
@@ -2311,7 +2306,14 @@ class controller extends CI_Controller
 		}
 		else
 		{
-			$this->load->view("reportsTeamPerformance");
+			$data['deptName'] = $_SESSION['DEPARTMENTNAME'];
+			$data['deptHead'] = $this->model->getDepartmentHeadByDepartmentID($_SESSION['departments_DEPARTMENTID']);
+			if($_SESSION['usertype_USERTYPEID'] == '3') //managers
+				$data['userTeam'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			else if($_SESSION['usertype_USERTYPEID'] == '4') //supervisors
+				$data['userTeam'] = $this->model->getUserTeam($_SESSION['USERID']);
+
+			$this->load->view("reportsTeamPerformance", $data);
 		}
 	}
 

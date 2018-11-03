@@ -1578,7 +1578,7 @@ class model extends CI_Model
   public function compute_completeness_project($projectID)
   {
     $condition = "CATEGORY = 3 AND tasks.projects_PROJECTID = " . $projectID;
-    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)) as "weight",
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -1711,7 +1711,7 @@ class model extends CI_Model
 
   public function checkProjectAssessment()
   {
-    $condition = "datediff(DATE, CURDATE()) = 0 AND TYPE = 1";
+    $condition = "datediff(DATE, CURDATE()) = 0";
     $this->db->select('*');
     $this->db->from('assessmentProject');
     $this->db->where($condition);
@@ -1734,16 +1734,6 @@ class model extends CI_Model
     $condition = "datediff(DATE, CURDATE()) = 0";
     $this->db->select('*');
     $this->db->from('assessmentEmployee');
-    $this->db->where($condition);
-
-    return $this->db->get()->result_array();
-  }
-
-  public function checkMainCompleteness()
-  {
-    $condition = "datediff(DATE, CURDATE()) = 0 AND TYPE = 2";
-    $this->db->select('*');
-    $this->db->from('assessmentProject');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
@@ -2100,7 +2090,6 @@ class model extends CI_Model
     $query = $this->db->get();
 
     return $query->row_array();
-    // return $query->row('USERID');
   }
 
   public function getAllTasksForImportDependency($id)
@@ -2392,6 +2381,8 @@ class model extends CI_Model
      $condition = "users_SUPERVISORS = '$userID'";
      $this->db->select('*');
      $this->db->from('users');
+     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+
      $this->db->where($condition);
 
      return $this->db->get()->result_array();
@@ -2406,28 +2397,40 @@ class model extends CI_Model
 
    public function getProjectCountRole1($userID)
    {
-     $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
-                  && raci.users_USERID = '$userID'";
-     $this->db->select('projects.*');
-     $this->db->from('tasks');
-     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
-     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-     $this->db->where($condition);
-     $this->db->group_by('PROJECTID');
-     return $this->db->get()->result_array();
-   }
+    $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
+                 && raci.users_USERID = '$userID'";
+    $this->db->select('projects.*');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('PROJECTID');
+    return $this->db->get()->result_array();
+  }
 
-   public function getTaskCountRole1($userID)
-   {
-     $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
-                  && raci.users_USERID = '$userID'";
-     $this->db->select('tasks.*');
-     $this->db->from('tasks');
-     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
-     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-     $this->db->where($condition);
+  public function getTaskCountRole1($userID)
+  {
+    $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
+                 && raci.users_USERID = '$userID'";
+    $this->db->select('tasks.*, ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKENDDATE)) as "originalDelay",
+                      ABS(DATEDIFF(tasks.TASKACTUALENDDATE, tasks.TASKADJUSTEDENDDATE)) as "adjustedDelay"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->where($condition);
 
-     return $this->db->get()->result_array();
-   }
+    return $this->db->get()->result_array();
+  }
+
+  public function getDepartmentHeadByDepartmentID($deptID)
+  {
+    $condition = "departments_DEPARTMENTID = '$deptID' && usertype_USERTYPEID = '3'";
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+
+    return $this->db->get()->row_array();
+  }
+
 }
 ?>

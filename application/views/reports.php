@@ -60,15 +60,19 @@
 								</tr>
 
 								<?php if($_SESSION['departments_DEPARTMENTID'] != 1):?>
-									<td>Team Performance</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsTeamPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr>
+									<?php if($_SESSION['usertype_USERTYPEID'] == 3 || $_SESSION['usertype_USERTYPEID'] == 4):?>
+										<tr>
+											<td>Team Performance</td>
+											<td align="center"><a href="<?php echo base_url("index.php/controller/reportsTeamPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+										</tr>
+									<?php endif;?>
+
+									<tr>
+										<td>Employee Performance</td>
+										<td align="center"><a href="<?php echo base_url("index.php/controller/reportsEmployeePerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
+									</tr>
 								<?php endif;?>
 
-								<tr>
-									<td>Employee Performance</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#empPerfEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -98,39 +102,6 @@
 								<div class="modal-footer">
 									<button id="closeProjectSummary" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
 									<button id="generateProjSumm" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
-								</div>
-							</div>
-						</div>
-						<!-- /.modal-content -->
-					</div>
-					<!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-
-				<!-- EMPLOYEE PERFORMANCE -->
-				<div class="modal fade" id="empPerfEmp" tabindex="-1">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h2 class="modal-title">Employee Performance</h2>
-							</div>
-							<div class="modal-body">
-
-								<form name="empPerfReport" id="empPerfReport" action="reportsEmployeePerformance" method="POST" target="_blank">
-									<h4>Team Member: </h4>
-									<select name="user" id="employeePerformanceSelect" class="form-control select2">
-										<option disabled selected value = "0">-- Select a Team Member -- </option>
-										<?php
-											foreach ($userTeam as $value) {
-												echo "<option value=" . $value['USERID'] . ">" . $value['FIRSTNAME'] . " " . $value['LASTNAME']. "</option>";
-											}
-										?>
-									</select>
-								</form>
-
-								<div class="modal-footer">
-									<button id ="closeEmpPerfReport" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-									<button id="generateEmpPerfReport" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
 								</div>
 							</div>
 						</div>
@@ -318,17 +289,6 @@
 			$("#closeProjPerfReport").click(function()
 			{
 				$("#projectPerformanceSelect").val("0");
-			});
-
-			// EMPLOYEE PERFORMANCE REPORT
-			$("#generateEmpPerfReport").click(function()
-			{
-				$("#empPerfReport").submit();
-			});
-
-			$("#closeEmpPerfReport").click(function()
-			{
-				$("#employeePerformanceSelect").val("0");
 			});
 		});
 		</script>

@@ -34,10 +34,10 @@
         <div class="box box-danger">
           <table class="table-condensed" style="width:100%">
             <tr>
-              <td><b>Department: </b></td>
+              <td><b>Department: </b><?php echo $deptName;?></td>
             </tr>
             <tr>
-              <td><b>Head: </b></td>
+              <td><b>Head: </b><?php echo $deptHead['FIRSTNAME'] . " " . $deptHead['LASTNAME'];?></td>
             </tr>
           </table>
 
@@ -69,19 +69,25 @@
                     <tr>
                       <th>Name</th>
                       <th>Position</th>
-                      <!-- PUT COUNT -->
                       <th class='text-center'>Projects</th>
-                      <!-- PUT COUNT -->
                       <th class='text-center'>Tasks</th>
-                      <!-- PUT COUNT -->
-                      <th class='text-center'>Delayed Tasks</th>
+                      <th class='text-center'>Delayed<br>Tasks</th>
                       <th class='text-center'>Average<br>Timeliness</th>
                       <th class='text-center'>Average<br>Completeness</th>
-                      <!-- DON'T PUT "NO. OF" SAYANG SPACE HAHA UNDERSTOOD NAMAN NA COUNT IF NUM LANG ANDUN-->
                     </tr>
                   </thead>
                   <tbody>
-
+                    <?php foreach($userTeam as $user):?>
+                      <tr>
+                        <td><?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME'];?></td>
+                        <td><?php echo $user['POSITION'];?></td>
+                        <td align='center'></td>
+                        <td align='center'></td>
+                        <td align='center'></td>
+                        <td align='center'>0%</td>
+                        <td align='center'>0%</td>
+                      </tr>
+                    <?php endforeach;?>
                   </tbody>
                 </table>
               </div>
@@ -118,8 +124,18 @@
   $(function ()
   {
     var barChartData = {
-      // LOOP THROUGH DEPT MEMBERS
-      labels  : ['Head', 'Sup1', 'Sup1', 'Emp1', 'Emp2', 'Emp3'],
+      labels:[
+        <?php $index = 0;?>
+        <?php foreach($userTeam as $user):?>
+        '<?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME'];?>'
+        <?php $index++;?>
+        <?php if(count($userTeam) > $index):?>
+          ,
+        <?php else:?>
+          ],
+        <?php endif;?>
+      <?php endforeach;?>
+
       datasets: [
         {
           label               : 'Timeliness',
@@ -129,7 +145,17 @@
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [90, 75, 100, 53, 56, 53]
+          data                : [
+          <?php $index = 0;?>
+          <?php foreach($userTeam as $user):?>
+            '50' //INSERT TIMELINESS DATA PER USER
+            <?php $index++;?>
+            <?php if(count($userTeam) > $index):?>
+              ,
+            <?php else:?>
+              ],
+            <?php endif;?>
+          <?php endforeach;?>
                                 // GRAY DATA
         },
         {
@@ -140,7 +166,17 @@
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27]
+          data                : [
+          <?php $index = 0;?>
+          <?php foreach($userTeam as $user):?>
+            '70' //INSERT COMPLETENESS DATA PER USER
+            <?php $index++;?>
+            <?php if(count($userTeam) > $index):?>
+              ,
+            <?php else:?>
+              ],
+            <?php endif;?>
+          <?php endforeach;?>
                                 // GREEN DATA
         }
       ]

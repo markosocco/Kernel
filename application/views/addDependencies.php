@@ -222,11 +222,13 @@
 																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>
 																						<?php if($gValue['CATEGORY'] == '3'): ?>
 																							<?php if ($gValue['TASKID'] != $tValue['TASKID']): ?>
-																								<?php if ($gValue['TASKSTARTDATE'] < $tValue['TASKENDDATE']): ?>
+																								
+																								<?php if ($gValue['TASKENDDATE'] <= $tValue['TASKSTARTDATE']): ?>
 																									<option value ='<?php echo $gValue['TASKID']; ?>'>
 																										<?php echo $gValue['TASKTITLE']; ?>
 																									</option>
 																								<?php endif; ?>
+
 																							<?php endif; ?>
 																						<?php endif; ?>
 																					<?php endforeach; ?>
