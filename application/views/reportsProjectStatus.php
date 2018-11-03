@@ -43,7 +43,7 @@
             </tr>
             <tr>
               <td><b>Description: </b><?php echo $project['PROJECTDESCRIPTION']; ?></td>
-              <td><b>Owner: </b>
+              <td align="right"><b>Owner: </b>
 
                 <?php foreach ($users as $user): ?>
                   <?php if ($user['USERID'] == $project['users_USERID']): ?>

@@ -55,7 +55,7 @@
 								<!-- <?php endif;?> -->
 
 								<tr>
-									<td>Departmental Performance per Project</td>
+									<td>Project Performance</td>
 									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 								</tr>
 
@@ -251,7 +251,7 @@
 							</div>
 							<div class="modal-body">
 								<form name="projStatusReport" id="projStatusReport" action="reportsProjectStatus" method="POST" target='_blank'>
-									<h4>Status Interval: </h4>
+									<h5>Status Interval: </h5>
 									<div class="btn-group" id="btnStatus">
 										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default intervalsStatus">Weekly</button>
 										<button type="button" id = "monthlyBtn" value = '31' class="btn btn-default intervalsStatus">Monthly</button>
