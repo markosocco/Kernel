@@ -175,33 +175,23 @@
 																{
 																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																	{
-																		if($row['datediff'] < 7){
-							 											 if($row['COMPLETENESS'] == 100.00){
-							 												 echo 100;
-							 											 } elseif ($row['COMPLETENESS'] == 0.00) {
-							 												 echo 0;
-							 											 } else {
-							 												 echo $row['COMPLETENESS'];
-							 											 }
-							 										 }
-
-																  echo "% </h2>";
+																	 echo $row['COMPLETENESS'] . "% </h2>";
 																}
 
 																} ?>
 														</td>
 														<td align="center">
 															<?php
-			                          foreach ($ongoingProjectProgress as $row)
+			                          foreach ($currentProgress as $row)
 			                          {
 			                            if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 			                            {
-																		if($row['projectProgress'] == 100.00){
+																		if($row['COMPLETENESS'] == 100.00){
 																			echo 100;
-																		} elseif ($row['projectProgress'] == 0.00) {
+																		} elseif ($row['COMPLETENESS'] == 0.00) {
 																			echo 0;
 																		} else {
-																			echo $row['projectProgress'];
+																			echo $row['COMPLETENESS'];
 																		}
 			                            }
 			                          } ?>%

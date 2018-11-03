@@ -96,9 +96,7 @@ class controller extends CI_Controller
 				$tasks = $this->model->getAllTasksByUser($_SESSION['USERID']);
 
 				$count = 0;
-				foreach ($tasks as $taskCount){
-					$count++;
-				}
+				foreach ($tasks as $taskCount){ $count++; }
 
 				$this->session->set_userdata('taskCount', $count);
 
@@ -110,10 +108,7 @@ class controller extends CI_Controller
 
 				$this->session->set_userdata('tasks', $allTasks);
 
-
 				$taskDeadlines = $this->model->getTasks2DaysBeforeDeadline();
-
-				// echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'] . "<br>";
 
 				if($taskDeadlines != NULL){
 
@@ -248,6 +243,43 @@ class controller extends CI_Controller
 					}
 				}
 
+				// Project Performance Assessment
+				$projectAssessmentFound = $this->model->checkProjectAssessment();
+
+				if($projectAssessmentFound == NULL){
+
+					$projectAssessment = $this->model->compute_daily_projectPerformance();
+
+					foreach ($projectAssessment as $value){
+						echo "project id " . $value['projects_PROJECTID'] . "<br>";
+						echo "completeness " . $value['completeness'] . "<br>";
+						echo "timeliness " . $value['timeliness'] . "<br><br>";
+
+						$projectAssessmentDate = array (
+							'COMPLETENESS' => $value['completeness'],
+							'TIMELINESS' => $value['timeliness'],
+							'projects_PROJECTID' => $value['projects_PROJECTID'],
+							'DATE' => date('Y-m-d')
+						);
+
+						$this->model->addProjectAssessment($projectAssessmentDate);
+					}
+				}
+
+				// // Department Performance Assessment
+				// $departmentAssessmentFound = $this->model->checkDepartmentAssessment();
+				// if(!$departmentAssessmentFound){
+				//
+				// }
+				//
+				// // Employee Performance Assessment
+				// $employeeAssessmentFound = $this->model->checkEmployeeAssessment();
+				// if(!$employeeAssessmentFound){
+				//
+				//}
+
+
+
 				// // check for project weekly progress
 				// $data['latestProgress'] = $this->model->getLatestWeeklyProgress();
 				//
@@ -379,9 +411,10 @@ class controller extends CI_Controller
 				$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
 			}
 
-			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
-			$data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
+			// $data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
+			// $data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
+			// $data['parkedProjectProgress'] = $this->model->getParkedProjectProgress();
+			$data['currentProgress'] = $this->model->checkProjectAssessment();
 
 			$data['ongoingTeamProjectProgress'] = $this->model->getOngoingProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
 			$data['delayedTeamProjectProgress'] = $this->model->getDelayedProjectProgressByTeam($_SESSION['departments_DEPARTMENTID']);
@@ -2977,7 +3010,7 @@ class controller extends CI_Controller
 	          'TIMELINESS' => 100
 	        );
 
-	        $this->model->addAssessmentProject($progressData);
+	        $this->model->addProjectAssessment($progressData);
 
 	        $templates = $this->input->post('templates');
 

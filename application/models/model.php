@@ -1322,7 +1322,7 @@ class model extends CI_Model
   {
     $this->db->insert('notifications', $data);
     $id = $this->db->insert_id();
-    
+
     return $id;
   }
 
@@ -1406,28 +1406,12 @@ class model extends CI_Model
   }
 
   public function getLatestWeeklyProgress(){
-    $condition = "datediff(curdate(), DATE) <= 7 && datediff(curdate(), DATE) > 0 ";
+    $condition = "datediff(curdate(), DATE) = 7";
     $this->db->select('*,  datediff(curdate(), DATE) as "datediff"');
     $this->db->from('assessmentProject');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
-  }
-
-  public function checkAssessmentProject($projectID){
-    $condition = "datediff(curdate(), DATE) = 7";
-    $this->db->select('*, datediff(curdate(), DATE) as "datediff"');
-    $this->db->from('assessmentProject');
-    $this->db->where($condition);
-
-    return $this->db->get()->result_array();
-  }
-
-  public function addAssessmentProject($data){
-
-    $this->db->insert('assessmentProject', $data);
-
-    return true;
   }
 
   public function getLatestAssessmentDepartment(){
@@ -1439,22 +1423,6 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function checkAssessmentDepartment(){
-    $condition = "datediff(curdate(), DATE) = 7";
-    $this->db->select('*, datediff(curdate(), DATE) as "datediff"');
-    $this->db->from('assessmentDepartment');
-    $this->db->where($condition);
-
-    return $this->db->get()->result_array();
-  }
-
-  public function addAssessmentDepartment($data){
-
-    $this->db->insert('assessmentDepartment', $data);
-
-    return true;
-  }
-
   public function getLatestAssessmentEmployee(){
     $condition = "datediff(curdate(), DATE) <= 7 && datediff(curdate(), DATE) > 0 ";
     $this->db->select('*,  datediff(curdate(), DATE) as "datediff"');
@@ -1462,22 +1430,6 @@ class model extends CI_Model
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
-  }
-
-  public function checkAssessmentEmployee(){
-    $condition = "datediff(curdate(), DATE) = 7";
-    $this->db->select('*, datediff(curdate(), DATE) as "datediff"');
-    $this->db->from('assessmentEmployee');
-    $this->db->where($condition);
-
-    return $this->db->get()->result_array();
-  }
-
-  public function addAssessmentEmployee($data){
-
-    $this->db->insert('assessmentEmployee', $data);
-
-    return true;
   }
 
   public function editProject($id, $data)
@@ -1671,6 +1623,24 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function compute_daily_projectPerformance()
+  {
+    $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != ''
+        AND projects.PROJECTSTATUS != 'Complete'
+        AND projects.PROJECTSTATUS != 'Archived'
+        AND projects.PROJECTSTATUS != 'Parked'
+        AND projects.PROJECTSTATUS != 'Planning'";
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condition);
+    $this->db->group_by('projects_PROJECTID');
+
+    return $this->db->get()->result_array();
+  }
+
   // public function compute_completeness_projectByUser()
   // {
   //   $condition = "CATEGORY = 3 AND projects.PROJECTSTATUS = 'Ongoing' AND projects.users_USERID = " . $_SESSION['USERID'];
@@ -1696,7 +1666,58 @@ class model extends CI_Model
   //
   //   return $this->db->get()->result_array();
   // }
-  //
+
+  public function checkProjectAssessment()
+  {
+    $condition = "datediff(DATE, CURDATE()) = 0";
+    $this->db->select('*');
+    $this->db->from('assessmentProject');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function checkDepartmentAssessment()
+  {
+    $condition = "datediff(DATE, CURDATE()) = 0";
+    $this->db->select('*');
+    $this->db->from('assessmentDepartment');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function checkEmployeeAssessment()
+  {
+    $condition = "datediff(DATE, CURDATE()) = 0";
+    $this->db->select('*');
+    $this->db->from('assessmentEmployee');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function addProjectAssessment($data){
+
+    $this->db->insert('assessmentProject', $data);
+
+    return true;
+  }
+
+  public function addDepartmentAssessment($data){
+
+    $this->db->insert('assessmentDepartment', $data);
+
+    return true;
+  }
+
+  public function addEmployeeAssessment($data){
+
+    $this->db->insert('assessmentEmployee', $data);
+
+    return true;
+  }
+
   public function getAllProjects()
   {
     $this->db->select('*');
