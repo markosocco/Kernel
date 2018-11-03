@@ -1671,9 +1671,9 @@ class model extends CI_Model
 
   public function compute_departmentPerformance(){
 
-    $condition = "YEAR(CURDATE())";
+    $condition = "YEAR(CURDATE()) AND departments_DEPARTMENTID != 1";
     $this->db->select('departments_DEPARTMENTID, DEPARTMENTNAME,
-    ROUND((AVG(timeliness) +AVG(completeness))/2 ,2) as "AVERAGE"');
+    ROUND((AVG(timeliness) + AVG(completeness))/2 ,2) as "AVERAGE"');
     $this->db->from('assessmentdepartment');
     $this->db->join('departments', 'departments_DEPARTMENTID = DEPARTMENTID');
     $this->db->where($condition);
