@@ -3325,19 +3325,14 @@ class controller extends CI_Controller
 						      // ENTER RACI TO DB
 
 						      // RESPONSIBLE
-						      $mainUsers = explode(", ", $value['I']);
+					        // $userID = $this->model->getUserByName($mU);
 
-						      foreach ($mainUsers as $mU)
-						      {
-						        $userID = $this->model->getUserByName($mU);
-
-						        $mainRaci['ROLE'] = 6;
-						        $mainRaci['users_USERID'] = $_SESSION['USERID'];
-						        $mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
-						        $mainRaci['STATUS'] = 'Current';
-
-						        $result = $this->model->addToRaci($mainRaci);
-						      }
+					        // $mainRaci['ROLE'] = 6;
+					        // $mainRaci['users_USERID'] = $_SESSION['USERID'];
+					        // $mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
+					        // $mainRaci['STATUS'] = 'Current';
+									//
+					        // $result = $this->model->addToRaci($mainRaci);
 
 						      // GET ALL SUB ACTS UNDER CURRENT MAIN
 						      foreach ($worksheet as $cell)
@@ -3357,19 +3352,14 @@ class controller extends CI_Controller
 						          $subAct = $this->model->importTaskToProject($insertSub);
 
 						          // RESPONSIBLE
-						          $subUsers = explode(", ", $cell['I']);
+					            // $subUserID = $this->model->getUserByName($sU);
 
-						          foreach ($subUsers as $sU)
-						          {
-						            $subUserID = $this->model->getUserByName($sU);
-
-						            $subRaci['ROLE'] = 6;
-						            $subRaci['users_USERID'] = $_SESSION['USERID'];
-						            $subRaci['tasks_TASKID'] = $subAct['TASKID'];
-						            $subRaci['STATUS'] = 'Current';
-
-						            $result = $this->model->addToRaci($subRaci);
-						          }
+					            // $subRaci['ROLE'] = 5;
+					            // $subRaci['users_USERID'] = $_SESSION['USERID'];
+					            // $subRaci['tasks_TASKID'] = $subAct['TASKID'];
+					            // $subRaci['STATUS'] = 'Current';
+											//
+					            // $result = $this->model->addToRaci($subRaci);
 
 						          // GET ALL TASKS UNDER CURRENT SUB
 						          foreach ($worksheet as $cell_2)
@@ -3396,11 +3386,25 @@ class controller extends CI_Controller
 						                $taskUserIDR = $this->model->getUserByName($r);
 
 						                $taskR['ROLE'] = 1;
-						                $taskR['users_USERID'] = $taskUserIDR;
+						                $taskR['users_USERID'] = $taskUserIDR['USERID'];
 						                $taskR['tasks_TASKID'] = $task['TASKID'];
 						                $taskR['STATUS'] = 'Current';
 
 						                $result = $this->model->addToRaci($taskR);
+
+														$mainRaci['ROLE'] = 5;
+										        $mainRaci['users_USERID'] = $taskUserIDR['users_DEPARTMENTHEAD'];
+										        $mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
+										        $mainRaci['STATUS'] = 'Current';
+
+										        $result = $this->model->addToRaci($mainRaci);
+
+														$subRaci['ROLE'] = 5;
+								            $subRaci['users_USERID'] = $taskUserIDR['users_DEPARTMENTHEAD'];
+								            $subRaci['tasks_TASKID'] = $subAct['TASKID'];
+								            $subRaci['STATUS'] = 'Current';
+
+								            $result = $this->model->addToRaci($subRaci);
 						              }
 
 						              // ACCOUNTABLE
@@ -3411,7 +3415,7 @@ class controller extends CI_Controller
 						                $taskUserIDA = $this->model->getUserByName($a);
 
 						                $taskA['ROLE'] = 2;
-						                $taskA['users_USERID'] = $taskUserIDA;
+						                $taskA['users_USERID'] = $taskUserIDA['USERID'];
 						                $taskA['tasks_TASKID'] = $task['TASKID'];
 						                $taskA['STATUS'] = 'Current';
 
@@ -3426,7 +3430,7 @@ class controller extends CI_Controller
 						                $taskUserIDC = $this->model->getUserByName($c);
 
 						                $taskC['ROLE'] = 3;
-						                $taskC['users_USERID'] = $taskUserIDC;
+						                $taskC['users_USERID'] = $taskUserIDC['USERID'];
 						                $taskC['tasks_TASKID'] = $task['TASKID'];
 						                $taskC['STATUS'] = 'Current';
 
@@ -3441,7 +3445,7 @@ class controller extends CI_Controller
 						                $taskUserIDI = $this->model->getUserByName($i);
 
 						                $taskI['ROLE'] = 4;
-						                $taskI['users_USERID'] = $taskUserIDI;
+						                $taskI['users_USERID'] = $taskUserIDI['USERID'];
 						                $taskI['tasks_TASKID'] = $task['TASKID'];
 						                $taskI['STATUS'] = 'Current';
 
