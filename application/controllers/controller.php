@@ -261,7 +261,8 @@ class controller extends CI_Controller
 							'COMPLETENESS' => $value['completeness'],
 							'TIMELINESS' => $value['timeliness'],
 							'projects_PROJECTID' => $value['projects_PROJECTID'],
-							'DATE' => date('Y-m-d')
+							'DATE' => date('Y-m-d'),
+							'TYPE' => 1
 						);
 
 						$this->model->addProjectAssessment($projectAssessmentData);
@@ -305,6 +306,25 @@ class controller extends CI_Controller
 						$this->model->addEmployeeAssessment($employeeAssessmentData);
 					}
 				}
+
+				// // Main Completeness
+				// $mainCompletenessFound = $this->model->checkMainCompleteness();
+				// if($mainCompletenessFound == NULL){
+				//
+				// 	$projectAssessment = $this->model->compute_daily_projectPerformance();
+				//
+				// 	foreach ($projectAssessment as $value){
+				//
+				// 		$mainCompletenessData = array (
+				// 			'COMPLETENESS' => $value['completeness'],
+				// 			'projects_PROJECTID' => $value['projects_PROJECTID'],
+				// 			'DATE' => date('Y-m-d'),
+				// 			'TYPE' => 2
+				// 		);
+				//
+				// 		$this->model->addProjectAssessment($mainCompletenessData);
+				// 	}
+				// }
 
 				if ($_SESSION['USERID'] == 1)
 				{
@@ -2331,11 +2351,53 @@ class controller extends CI_Controller
 			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
 			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
 
+			// $data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
+			// $data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
+			$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+			$data['weight'] = $this->model->compute_completeness_project($projectID);
+
 			foreach($data['mainActivities'] as $mainActivity)
 			{
 				foreach($data['subActivities'] as $subActivity)
 				{
 					$data['accomplishedTasks' . $subActivity['TASKID']] = $this->model->getAccomplishedTasks($projectID, $subActivity['TASKID'], $data['interval']);
+				}
+			}
+
+			// Department Performance Assessment
+			$departmentAssessmentFound = $this->model->checkDepartmentAssessment();
+			if($departmentAssessmentFound == NULL){
+
+				$departmentAssessment = $this->model->compute_daily_departmentPerformance();
+
+				foreach ($departmentAssessment as $value){
+
+					$departmentAssessmentData = array (
+						'COMPLETENESS' => $value['completeness'],
+						'TIMELINESS' => $value['timeliness'],
+						'departments_DEPARTMENTID' => $value['departments_DEPARTMENTID'],
+						'DATE' => date('Y-m-d')
+					);
+
+					$this->model->addDepartmentAssessment($departmentAssessmentData);
+				}
+			}
+
+			$curTask = "";
+			$currentMain = "";
+			$sub = "";
+
+			$weight = $data['weight']['weight'];
+
+			foreach ($data['allTasks'] as $currentTask){
+
+				$curTask = $currentTask['TASKID'];
+
+				foreach ($data['allTasks'] as $allTask){
+					if($allTask['tasks_TASKPARENT'] == $curTask){
+						echo "task loop - " . $allTask['TASKID'] . "<br>";
+						echo "parent - " . $allTask['tasks_TASKPARENT'] . "<br>";
+					}
 				}
 			}
 
@@ -3555,7 +3617,6 @@ class controller extends CI_Controller
 	{
 		$id = $this->input->post('project_ID');
 
-		$parent = $this->input->post('subActivity_ID');
 		$title = $this->input->post('title');
 		$startDates = $this->input->post('taskStartDate');
 		$endDates = $this->input->post('taskEndDate');
