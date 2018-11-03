@@ -2148,17 +2148,20 @@
 							array_push($informedArray, $informedPeople);
 						}
 					}
+
 					$informedCount = count($informedArray);
 					$informedPerson = '';
 					$counter == 0;
 
-					if($informedCount != 0){
-
-						$informedPerson = $informedArray[0];
-
-						for($i = 0; $i < $informedCount; $i++){
-							$informedPerson .= (", " . $informedArray[$i]);
-						}
+					if($informedCount != 0)
+					{
+						$informedPerson = implode(", ", $informedArray);
+						// $informedPerson = $informedArray[0];
+						//
+						// for($i = 0; $i < $informedCount; $i++)
+						// {
+						// 	$informedPerson .= (", " . $informedArray[$i]);
+						// }
 					}
 					// END: Checks for informed
 
