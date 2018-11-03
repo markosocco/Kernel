@@ -144,14 +144,16 @@
                         <form action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in
+                        <p><b><?php echo $value['PROJECTTITLE']; ?></b>
+                          <br><i>Archiving in
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days
                           <?php else:?>
                             day
                           <?php endif;?>
-                        </i></p>
+                        </i>
+                      </p>
                       </div>
                       <div class="icon" style="margin-top:25px;">
                         <i class="ion ion-checkmark"></i>

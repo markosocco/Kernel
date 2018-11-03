@@ -2370,42 +2370,69 @@ class controller extends CI_Controller
 				}
 			}
 
-			// Department Performance Assessment
-			$departmentAssessmentFound = $this->model->checkDepartmentAssessment();
-			if($departmentAssessmentFound == NULL){
-
-				$departmentAssessment = $this->model->compute_daily_departmentPerformance();
-
-				foreach ($departmentAssessment as $value){
-
-					$departmentAssessmentData = array (
-						'COMPLETENESS' => $value['completeness'],
-						'TIMELINESS' => $value['timeliness'],
-						'departments_DEPARTMENTID' => $value['departments_DEPARTMENTID'],
-						'DATE' => date('Y-m-d')
-					);
-
-					$this->model->addDepartmentAssessment($departmentAssessmentData);
-				}
-			}
-
-			$curTask = "";
-			$currentMain = "";
-			$sub = "";
+			// // Department Performance Assessment
+			// $departmentAssessmentFound = $this->model->checkDepartmentAssessment();
+			// if($departmentAssessmentFound == NULL){
+			//
+			// 	$departmentAssessment = $this->model->compute_daily_departmentPerformance();
+			//
+			// 	foreach ($departmentAssessment as $value){
+			//
+			// 		$departmentAssessmentData = array (
+			// 			'COMPLETENESS' => $value['completeness'],
+			// 			'TIMELINESS' => $value['timeliness'],
+			// 			'departments_DEPARTMENTID' => $value['departments_DEPARTMENTID'],
+			// 			'DATE' => date('Y-m-d')
+			// 		);
+			//
+			// 		$this->model->addDepartmentAssessment($departmentAssessmentData);
+			// 	}
+			// }
 
 			$weight = $data['weight']['weight'];
 
-			foreach ($data['allTasks'] as $currentTask){
+			$subActivityArray = array();
+			$mainActivityArray = array();
+			$subCompleteness = 0;
+			$mainCompleteness = 0;
 
-				$curTask = $currentTask['TASKID'];
+			foreach($data['subActivities'] as $keySub => $sub){
 
-				foreach ($data['allTasks'] as $allTask){
-					if($allTask['tasks_TASKPARENT'] == $curTask){
-						echo "task loop - " . $allTask['TASKID'] . "<br>";
-						echo "parent - " . $allTask['tasks_TASKPARENT'] . "<br>";
+				$subCompleteness = 0;
+
+				foreach($data['allTasks'] as $keyTask => $task) {
+
+					if($sub['TASKID'] == $task['tasks_TASKPARENT']){
+
+						if($task['TASKSTATUS'] == 'Complete'){
+							$subCompleteness += $weight;
+							echo "after - " . $subCompleteness . "<br><br>";
+						}
 					}
 				}
+
+				$subData = array(
+					'SUBID' => $sub['TASKID'],
+					'subCompleteness' => $subCompleteness,
+					'tasks_TASKPARENT' => $sub['tasks_TASKPARENT']
+				);
+
+				array_push($subActivityArray, $subData);
 			}
+
+			// foreach($data['mainActivities'] as $keyMain => $main){
+			//
+			//
+			//
+			//
+			// }
+			
+			// $mainData = array(
+			// 	'MAINID' => ,
+			// 	'mainCompleteness' => ,
+			// );
+
+			// array_push($mainActivityArray, $mainData);
 
 			$this->load->view("reportsProjectProgress", $data);
 		}

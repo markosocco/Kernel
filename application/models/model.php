@@ -1578,7 +1578,7 @@ class model extends CI_Model
   public function compute_completeness_project($projectID)
   {
     $condition = "CATEGORY = 3 AND tasks.projects_PROJECTID = " . $projectID;
-    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)) AS "weight",
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
