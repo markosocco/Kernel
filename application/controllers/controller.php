@@ -2942,7 +2942,147 @@ class controller extends CI_Controller
 
 																				else
 																				{
-																						echo "success";
+																					// CHECK IF COMPLETE TASK HAS ACTUAL END DATE
+																					if ($checkCell['D'] != 'NULL' && $checkCell['E'] != 'Complete')
+																					{
+																						$this->session->set_flashdata('danger', 'alert');
+																						$this->session->set_flashdata('alertMessage', ' Status in row ' . $checkRow . ' should be <i>Complete</i>');
+
+																						unlink($inputFileName);
+
+																						redirect('controller/addProjectDetails');
+																					}
+
+																					else
+																					{
+																						// CHECK IF DELAYED TASK HAS REMARKS
+																						if ($checkCell['F'] == 'NULL' && ($checkCell['E'] == 'Complete' && $checkCell['C'] < $checkCell['D']))
+																						{
+																							$this->session->set_flashdata('danger', 'alert');
+													                    $this->session->set_flashdata('alertMessage', ' Remarks in row ' . $checkRow . ' is required for delayed tasks');
+
+													                    unlink($inputFileName);
+
+													                    redirect('controller/addProjectDetails');
+																						}
+
+																						else
+																						{
+																							// CHECK IF MAIN ACT HAS NO TASK PARENT
+																							if ($checkCell['G'] == 1 && $checkCell['H'] != 'NULL')
+																							{
+																								$this->session->set_flashdata('danger', 'alert');
+														                    $this->session->set_flashdata('alertMessage', ' Task in row ' . $checkRow . ' should not have a Task Parent');
+
+														                    unlink($inputFileName);
+
+														                    redirect('controller/addProjectDetails');
+																							}
+
+																							else
+																							{
+																								// CHECK IF TASK PARENT IS NULL FOR SUB/TASKS
+																								if ($checkCell['G'] != 1 && $checkCell['H'] == 'NULL')
+																								{
+																									$this->session->set_flashdata('danger', 'alert');
+															                    $this->session->set_flashdata('alertMessage', ' Task Parent in row ' . $checkRow . ' is required');
+
+															                    unlink($inputFileName);
+
+															                    redirect('controller/addProjectDetails');
+																								}
+
+																								else
+																								{
+																									// CHECK IF TASK PARENT IS VALID TASK
+																									if ($checkCell['G'] != 1)
+																									{
+																										$checkTaskParents = array_column($worksheet_tasks, 'A');
+
+																										if (in_array($checkCell['H'], $checkTaskParents))
+																										{
+																											// CHECK IF TASK PARENT IS OF HIGHER CATEGORY
+																											foreach ($worksheet_tasks as $checkParent)
+																											{
+																												if ($checkCell['H'] == $checkParent['A'])
+																												{
+																													if ($checkCell['G'] > $checkParent['G'])
+																													{
+																														if ($checkCell['G'] - $checkParent['G'] != 1)
+																														{
+																															$this->session->set_flashdata('danger', 'alert');
+																															$this->session->set_flashdata('alertMessage', ' Task Parent in row ' . $checkRow . ' should be one category higher');
+
+																															unlink($inputFileName);
+
+																															redirect('controller/addProjectDetails');
+																														}
+																													}
+
+																													else
+																													{
+																														$this->session->set_flashdata('danger', 'alert');
+																														$this->session->set_flashdata('alertMessage', ' Task Parent in row ' . $checkRow . ' should be a higher category');
+
+																														unlink($inputFileName);
+
+																														redirect('controller/addProjectDetails');
+																													}
+																												}
+																											}
+																										}
+
+																										else
+																										{
+																											$this->session->set_flashdata('danger', 'alert');
+																	                    $this->session->set_flashdata('alertMessage', ' Task Parent in row ' . $checkRow . ' is not a valid task');
+
+																	                    unlink($inputFileName);
+
+																	                    redirect('controller/addProjectDetails');
+																										}
+																									}
+
+																									// CHECK IF RACI IS NULL
+																									if ($checkCell['G'] == 3)
+																									{
+																										if ($checkCell['J'] == 'NULL' || $checkCell['K'] == 'NULL' || $checkCell['L'] == 'NULL')
+																										{
+																											$this->session->set_flashdata('danger', 'alert');
+																											$this->session->set_flashdata('alertMessage', ' Please make sure RACI in row ' . $checkRow . ' is filled');
+
+																											unlink($inputFileName);
+
+																											redirect('controller/addProjectDetails');
+																										}
+																									}
+
+																									// CHECK IF R IS VALID USER
+																									$checkResponsible = explode(", ", $checkCell['I']);
+
+																									foreach ($checkResponsible as $c)
+																									{
+																										$checkUser = $this->model->checkUserByName($c);
+
+																										if ($checkUser)
+																										{
+																											echo $c . " == valid<br>";
+																										}
+
+																										else
+																										{
+																											$this->session->set_flashdata('danger', 'alert');
+																											$this->session->set_flashdata('alertMessage', ' Responsible (R) in row ' . $checkRow . ' is not a valid user');
+
+																											unlink($inputFileName);
+
+																											redirect('controller/addProjectDetails');
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
 																				}
 																			}
 
