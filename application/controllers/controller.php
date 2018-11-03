@@ -2840,10 +2840,7 @@ class controller extends CI_Controller
 													$prevRow = $worksheet[$prevIndex];
 												}
 
-												// $tempDate = date_create($prevRow['A']);
-												// $formatTempDate = $tempDate->format('Y-m-d');
-
-												// $date_plusOne = date_add(date_create($formatTempDate), date_interval_create_from_date_string("1 days"));
+												// CHECK IF DATES ARE SEQUENTIAL
 												$date_plusOne = date_add(date_create($prevRow['A']), date_interval_create_from_date_string("1 days"));
 
 												if ($checkAssessment['A'] != $date_plusOne->format('Y-m-d'))
@@ -2858,33 +2855,109 @@ class controller extends CI_Controller
 
 												else
 												{
-													// $sheetname = 'Tasks';
-													//
-													// //DATA VALIDATION FOR IMPORT
-													//
-													// $reader->setLoadSheetsOnly($sheetname);
-													// $spreadsheet = $reader->load($inputFileName);
-													// $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+													$sheetname = 'Tasks';
 
-													// foreach ($worksheet as $checkRow => $checkCell)
-													// {
-													// 	// CHECK IF BLANK
-													//
-													// 	if ($checkCell['A'] == 'NULL' || $checkCell['B'] == 'NULL' || $checkCell['C'] == 'NULL' || $checkCell['E'] == 'NULL' || $checkCell['G'] == 'NULL' || $checkCell['I'] == 'NULL')
-					                //   {
-					                //     $this->session->set_flashdata('danger', 'alert');
-					                //     $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $assessmentKey . ' in Project Assessment are filled');
-													//
-					                //     unlink($inputFileName);
-													//
-					                //     redirect('controller/addProjectDetails');
-					                //   }
-													//
-													// 	else
-													// 	{
-													// 		echo "success";
-													// 	}
-													// }
+													//DATA VALIDATION FOR IMPORT
+
+													$reader->setLoadSheetsOnly($sheetname);
+													$spreadsheet_tasks = $reader->load($inputFileName);
+													$worksheet_tasks = $spreadsheet_tasks->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+													foreach ($worksheet_tasks as $checkRow => $checkCell)
+													{
+														// CHECK IF BLANK
+														if ($checkCell['A'] == 'NULL' || $checkCell['B'] == 'NULL' || $checkCell['C'] == 'NULL' || $checkCell['E'] == 'NULL' || $checkCell['G'] == 'NULL' || $checkCell['I'] == 'NULL')
+					                  {
+					                    $this->session->set_flashdata('danger', 'alert');
+					                    $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $checkRow . ' in Tasks are filled');
+
+					                    unlink($inputFileName);
+
+					                    redirect('controller/addProjectDetails');
+					                  }
+
+														else
+														{
+															if ($checkRow != 1)
+															{
+																// CEHCK IF START DATE IS VALIDE
+																if (DateTime::createFromFormat('Y-m-d', $checkCell['B']) !== FALSE)
+																{
+																	// CHECK IF END DATE IS VALID
+																	if (DateTime::createFromFormat('Y-m-d', $checkCell['C']) !== FALSE)
+																	{
+																		// CHECK IF DATE IS IN RANGE OF PROJECT START AND END DATE
+																		$projStart_ts = strtotime($startDate);
+																		$projEnd_ts = strtotime($endDate);
+																		$startCell_ts = strtotime($checkCell['B']);
+																		$endCell_ts = strtotime($checkCell['C']);
+
+																		if ($startCell_ts >= $projStart_ts)
+																		{
+																			if ($endCell_ts <= $projEnd_ts)
+																			{
+																				// CHECK IF TASK IS COMPLETE AND ACTUAL END DATE IS FILLED
+																				if ($checkCell['D'] == 'NULL' && $checkCell['E'] == 'Complete')
+																				{
+																					$this->session->set_flashdata('danger', 'alert');
+											                    $this->session->set_flashdata('alertMessage', ' Actual End Date in row ' . $checkRow . ' is required');
+
+											                    unlink($inputFileName);
+
+											                    redirect('controller/addProjectDetails');
+																				}
+
+																				else
+																				{
+																						echo "success";
+																				}
+																			}
+
+																			else
+																			{
+																				$this->session->set_flashdata('danger', 'alert');
+										                    $this->session->set_flashdata('alertMessage', ' End Date in row ' . $checkRow . ' is not in the Project Date range');
+
+										                    unlink($inputFileName);
+
+										                    redirect('controller/addProjectDetails');
+																			}
+																		}
+
+																		else
+																		{
+																			$this->session->set_flashdata('danger', 'alert');
+									                    $this->session->set_flashdata('alertMessage', ' Start Date in row ' . $checkRow . ' is not in the Project Date range');
+
+									                    unlink($inputFileName);
+
+									                    redirect('controller/addProjectDetails');
+																		}
+																	}
+
+																	else
+																	{
+																		$this->session->set_flashdata('danger', 'alert');
+								                    $this->session->set_flashdata('alertMessage', ' End Date in row ' . $checkRow . ' is not valid');
+
+								                    unlink($inputFileName);
+
+								                    redirect('controller/addProjectDetails');
+																	}
+																}
+
+																else
+																{
+																	$this->session->set_flashdata('danger', 'alert');
+							                    $this->session->set_flashdata('alertMessage', ' Start Date in row ' . $checkRow . ' is not valid');
+
+							                    unlink($inputFileName);
+
+							                    redirect('controller/addProjectDetails');
+																}
+															}
+														}
+													}
 												}
 	                    }
 
