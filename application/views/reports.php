@@ -115,18 +115,22 @@
 								<h2 class="modal-title">Employee Performance</h2>
 							</div>
 							<div class="modal-body">
-								<select class="form-control select2" data-placeholder="Select Departments">
 
-									<option>Minnie Mouse</option>
-									<option>Piglet Pig</option>
-									<option>Tiger the Tiger</option>
-									<option>Spongebob</option>
-
-								</select>
+								<form name="empPerfReport" id="empPerfReport" action="reportsEmployeePerformance" method="POST" target="_blank">
+									<h4>Team Member: </h4>
+									<select name="user" id="employeePerformanceSelect" class="form-control select2">
+										<option disabled selected value = "0">-- Select a Team Member -- </option>
+										<?php
+											foreach ($userTeam as $value) {
+												echo "<option value=" . $value['USERID'] . ">" . $value['FIRSTNAME'] . " " . $value['LASTNAME']. "</option>";
+											}
+										?>
+									</select>
+								</form>
 
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsEmployeePerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></a>
+									<button id ="closeEmpPerfReport" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id="generateEmpPerfReport" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
 								</div>
 							</div>
 						</div>
@@ -144,19 +148,21 @@
 								<h2 class="modal-title">Project Performance</h2>
 							</div>
 							<div class="modal-body">
-								<h4>Project: </h4>
-								<select class="form-control select2" data-placeholder="Select Departments">
-
-									<option>Store Opening - DLSU Andrew</option>
-									<option>Store Opening - DLSU Bloemen</option>
-									<option>Store Opening - DLSU Pericos</option>
-									<option>New Product Launch - Green Tea Popcorn</option>
-
-								</select>
+								<form name="projPerfReport" id="projPerfReport" action="reportsProjectPerformance" method="POST" target="_blank">
+									<h4>Project: </h4>
+									<select name="project" id="projectPerformanceSelect" class="form-control select2">
+										<option disabled selected value = "0">-- Select a Project -- </option>
+										<?php
+											foreach ($allOngoingProjects as $value) {
+												echo "<option value=" . $value['PROJECTID'] . ">" . $value['PROJECTTITLE'] . "</option>";
+											}
+										?>
+									</select>
+								</form>
 
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsProjectPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></a>
+									<button id ="closeProjPerfReport" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id="generateProjPerfReport" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
 								</div>
 							</div>
 						</div>
@@ -194,7 +200,7 @@
 								</form>
 
 								<div class="modal-footer">
-									<button id = "closeStatusReport" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id ="closeStatusReport" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
 									<button id="generateStatusReport" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></button>
 								</div>
 							</div>
@@ -301,6 +307,28 @@
 			{
 				$("#projectProgressSelect").val("0");
 				$(".intervalsProgress").removeClass("active");
+			});
+
+			// PROJECT PERFORMANCE REPORT
+			$("#generateProjPerfReport").click(function()
+			{
+				$("#projPerfReport").submit();
+			});
+
+			$("#closeProjPerfReport").click(function()
+			{
+				$("#projectPerformanceSelect").val("0");
+			});
+
+			// EMPLOYEE PERFORMANCE REPORT
+			$("#generateEmpPerfReport").click(function()
+			{
+				$("#empPerfReport").submit();
+			});
+
+			$("#closeEmpPerfReport").click(function()
+			{
+				$("#employeePerformanceSelect").val("0");
 			});
 		});
 		</script>

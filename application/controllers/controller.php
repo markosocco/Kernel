@@ -2191,7 +2191,12 @@ class controller extends CI_Controller
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
 			$data['allOngoingProjects'] = $this->model->getAllOngoingPOProjects($_SESSION['USERID']);
-
+			if($_SESSION['usertype_USERTYPEID'] == '3') //managers
+				$data['userTeam'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			else if($_SESSION['usertype_USERTYPEID'] == '4') //supervisors
+				$data['userTeam'] = $this->model->getUserTeam($_SESSION['USERID']);
+			else //staff
+				$data['userTeam'] = $_SESSION['USERID'];
 			$this->load->view("reports", $data);
 		}
 	}
@@ -2264,7 +2269,11 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsEmployeePerformance");
+			$userID = $this->input->post('user');
+			$data['userInfo'] = $this->model->getUserByID($userID);
+			$data['departments'] = $this->model->getAllDepartments();
+
+			$this->load->view("reportsEmployeePerformance", $data);
 		}
 	}
 
@@ -2290,7 +2299,14 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsProjectPerformance");
+			$projectID = $this->input->post('project');
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
+			$data['raci'] = $this->model->getAllACI();
+			$data['departments'] = $this->model->getAllDepartments();
+
+			$this->load->view("reportsProjectPerformance", $data);
 		}
 	}
 
@@ -3275,7 +3291,7 @@ class controller extends CI_Controller
 									{
 										$userID = $this->model->getUserByName($mU);
 
-										$mainRaci['ROLE'] = 1;
+										$mainRaci['ROLE'] = 0;
 										$mainRaci['users_USERID'] = $userID;
 										$mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
 										$mainRaci['STATUS'] = 'Current';
@@ -3307,7 +3323,7 @@ class controller extends CI_Controller
 											{
 												$subUserID = $this->model->getUserByName($sU);
 
-												$subRaci['ROLE'] = 1;
+												$subRaci['ROLE'] = 0;
 												$subRaci['users_USERID'] = $subUserID;
 												$subRaci['tasks_TASKID'] = $subAct['TASKID'];
 												$subRaci['STATUS'] = 'Current';
