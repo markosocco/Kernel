@@ -2349,6 +2349,18 @@ class model extends CI_Model
      }
    }
 
+   public function getUserType($userID)
+   {
+     $condition = "USERID = '$userID'";
+     $this->db->select('*');
+     $this->db->from('users');
+     $this->db->where($condition);
+     $this->db->limit(1);
+     $query = $this->db->get();
+
+     return $query->row('usertype_USERTYPEID');
+   }
+
    public function addAssessmentProject($data){
 
      $this->db->insert('assessmentProject', $data);
