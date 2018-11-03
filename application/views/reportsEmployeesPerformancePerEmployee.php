@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Report - Employee Performance per Employee</title>
+  <title>Report - Employee Performance Report</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -20,135 +20,112 @@
   <!-- <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportsProjectPerDeptStyle.css")?>"> -->
   <!-- Report Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
-
 </head>
-<body onload="window.print();">
+<body onload="window.print();" style="font-size: 11px">
 <div class="wrapper">
   <!-- Main content -->
   <section>
     <!-- title row -->
     <div class="reportHeader viewCenter">
-      <h2>Mickey Mouse Performance on Projects</h2>
-      <h5>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></h5>
-      <h5>Prepared On: <?php echo date('F d, Y'); ?></h5>
+      <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Employee Performance Report</h3>
     </div>
     <div class="reportBody">
       <!-- LOOP START HERE -->
-
         <div class="box box-danger">
-          <div class="box-header with-border">
-            <h5>Department: Marketing</h5>
-            <h5>Total Ongoing Projects: 2</h5>
-          </div>
+          <table class="table-condensed" style="width:100%">
+            <tr>
+              <td><b>Name: </b></td>
+            </tr>
+            <tr>
+              <td><b>Position: </b></td>
+            </tr>
+            <tr>
+              <td><b>Department: </b></td>
+            </tr>
+          </table>
 
-          <table id="rfcList" class="table table-bordered table-hover">
+          <table class="table table-bordered table-condensed" id="">
             <thead>
-              <tr style="background:lightgray"><th colspan='9'>Project: Store Opening (August 23, 2017 - October 20, 2017)</th></tr>
+              <tr>
+                <th colspan="10">Project (START-END)</th>
+              </tr>
               <tr>
                 <th>Task</th>
-                <th class='text-center'>Start Date</th>
-                <th class='text-center'>Target End Date</th>
-                <th class='text-center'>R</th>
+                <th class='text-center'>Start</th>
+                <th class='text-center'>End</th>
+                <th class='text-center'>Actual End</th>
+                <th class='text-center'>Days Delayed</th>
                 <th class='text-center'>A</th>
                 <th class='text-center'>C</th>
                 <th class='text-center'>I</th>
                 <th class='text-center'>Status</th>
-                <th class='text-center'>Days Completed / Remaining</th>
+                <th class='text-center'>Timeliness</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Receive Inventory</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Tony Stark</td>
-                <td class='text-center'>Steve Rogers</td>
-                <td class='text-center'>Bruce Banner</td>
-                <td class='text-center'>Nick Fury</td>
-                <td class='text-center'>Completed</td>
-                <td class='text-center'>1 day</td>
-              </tr>
-              <tr>
-                <td>Double check Inventory</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Tony Stark</td>
-                <td class='text-center'>Steve Rogers</td>
-                <td class='text-center'>Bruce Banner</td>
-                <td class='text-center'>Nick Fury</td>
-                <td class='text-center'>Completed</td>
-                <td class='text-center'>1 day</td>
-              </tr>
-              <tr>
-                <td>Display Inventory</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Tony Stark</td>
-                <td class='text-center'>Steve Rogers</td>
-                <td class='text-center'>Bruce Banner</td>
-                <td class='text-center'>Nick Fury</td>
-                <td class='text-center'>Completed</td>
-                <td class='text-center'>1 day</td>
-              </tr>
+
             </tbody>
           </table>
 
-          <table id="rfcList" class="table table-bordered table-hover">
-            <thead>
-              <tr style="background:lightgray"><th colspan='9'>Project: Store Opening (August 23, 2017 - October 20, 2017)</th></tr>
-              <tr>
-                <th>Task</th>
-                <th class='text-center'>Start Date</th>
-                <th class='text-center'>Target End Date</th>
-                <th class='text-center'>R</th>
-                <th class='text-center'>A</th>
-                <th class='text-center'>C</th>
-                <th class='text-center'>I</th>
-                <th class='text-center'>Status</th>
-                <th class='text-center'>Days Completed / Remaining</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Receive Inventory</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Tony Stark</td>
-                <td class='text-center'>Steve Rogers</td>
-                <td class='text-center'>Bruce Banner</td>
-                <td class='text-center'>Nick Fury</td>
-                <td class='text-center'>Completed</td>
-                <td class='text-center'>1 day</td>
-              </tr>
-              <tr>
-                <td>Double check Inventory</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Tony Stark</td>
-                <td class='text-center'>Steve Rogers</td>
-                <td class='text-center'>Bruce Banner</td>
-                <td class='text-center'>Nick Fury</td>
-                <td class='text-center'>Completed</td>
-                <td class='text-center'>1 day</td>
-              </tr>
-              <tr>
-                <td>Display Inventory</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Apr 1, 2018</td>
-                <td class='text-center'>Tony Stark</td>
-                <td class='text-center'>Steve Rogers</td>
-                <td class='text-center'>Bruce Banner</td>
-                <td class='text-center'>Nick Fury</td>
-                <td class='text-center'>Completed</td>
-                <td class='text-center'>1 day</td>
-              </tr>
-            </tbody>
-          </table>
+  				<!-- Requests -->
+  				<div class="row">
+  					<div class="col-md-12 col-sm-12 col-xs-12">
+  						<div class="box box-default">
+  							<div class="box-header with-border">
+  								<h5 class="box-title">Change Requests</h5>
+  							</div>
+  							<!-- /.box-header -->
+  							<div class="box-body">
+  								<table class="table table-bordered table-condensed" id="">
+  									<thead>
+  										<tr>
+  											<th width="0%">Task</th>
+                        <th class="text-center" width="0%">End Date</th>
+                        <th width="0%" class='text-center'>Type</th>
+                        <th width="0" class="text-center">Date Requested</th>
+  											<th width="0%">Requester</th>
+  											<th width="0%">Reason</th>
+  										</tr>
+  									</thead>
+  									<tbody>
+
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  	        </div>
+  	        <!-- /.col -->
+  				</div>
+  				<div class="row">
+  					<div class="col-md-12 col-sm-12 col-xs-12">
+  						<div class="box box-default">
+  							<div class="box-header with-border">
+  								<h5 class="box-title">Change Requests</h5>
+  							</div>
+  							<!-- /.box-header -->
+  							<div class="box-body">
+  								<h6 align="center">There were no change requests</h6>
+  							</div>
+  						</div>
+  	        </div>
+  	        <!-- /.col -->
+  				</div>
         </div>
 
-    <div class="reportFooter viewCenter">
+    <div class="endReport viewCenter">
       <p>***END OF REPORT***</p>
     </div>
+
+    <footer class="reportFooter">
+      <!-- To the right -->
+      <div class="pull-right hidden-xs">
+        <!-- <medium>Page 1 of 1M</medium> -->
+      </div>
+      <!-- Default to the left -->
+      <medium>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></medium>
+      <br>
+      <medium>Prepared On: <?php echo date('F d, Y'); ?></medium>
+    </footer>
   </section>
   <!-- /.content -->
 </div>
