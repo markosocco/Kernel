@@ -245,108 +245,60 @@ class controller extends CI_Controller
 
 				// Project Performance Assessment
 				$projectAssessmentFound = $this->model->checkProjectAssessment();
-
 				if($projectAssessmentFound == NULL){
 
 					$projectAssessment = $this->model->compute_daily_projectPerformance();
 
 					foreach ($projectAssessment as $value){
-						echo "project id " . $value['projects_PROJECTID'] . "<br>";
-						echo "completeness " . $value['completeness'] . "<br>";
-						echo "timeliness " . $value['timeliness'] . "<br><br>";
 
-						$projectAssessmentDate = array (
+						$projectAssessmentData = array (
 							'COMPLETENESS' => $value['completeness'],
 							'TIMELINESS' => $value['timeliness'],
 							'projects_PROJECTID' => $value['projects_PROJECTID'],
 							'DATE' => date('Y-m-d')
 						);
 
-						$this->model->addProjectAssessment($projectAssessmentDate);
+						$this->model->addProjectAssessment($projectAssessmentData);
 					}
 				}
 
-				// // Department Performance Assessment
-				// $departmentAssessmentFound = $this->model->checkDepartmentAssessment();
-				// if(!$departmentAssessmentFound){
-				//
-				// }
-				//
-				// // Employee Performance Assessment
-				// $employeeAssessmentFound = $this->model->checkEmployeeAssessment();
-				// if(!$employeeAssessmentFound){
-				//
-				//}
+				// Department Performance Assessment
+				$departmentAssessmentFound = $this->model->checkDepartmentAssessment();
+				if($departmentAssessmentFound == NULL){
 
+					$departmentAssessment = $this->model->compute_daily_departmentPerformance();
 
+					foreach ($departmentAssessment as $value){
 
-				// // check for project weekly progress
-				// $data['latestProgress'] = $this->model->getLatestWeeklyProgress();
-				//
-				// foreach($data['latestProgress'] as $latestProgressDetails){
-				//
-				// 	// echo "<br> latest progress" . $latestProgressDetails['projects_PROJECTID'] . " " . $latestProgressDetails['datediff'] ."<br>";
-				//
-				// 	$isFound = $this->model->checkAssessmentProject($latestProgressDetails['projects_PROJECTID']);
-				//
-				// 	if(!$isFound){
-				// 		$completeness = $this->model->compute_completeness_project($latestProgressDetails['projects_PROJECTID']);
-				// 		$timeliness = $this->model->compute_timeliness_project($latestProgressDetails['projects_PROJECTID']);
-				//
-				// 		$progressData = array(
-				// 			'projects_PROJECTID' => $latestProgressDetails['projects_PROJECTID'],
-				// 			'DATE' => date('Y-m-d'),
-				// 			'COMPLETENESS' => $completeness['completeness'],
-				// 			'TIMELINESS' => $timeliness['timeliness']
-				// 		);
-				// 		$this->model->addAssessmentProject($progressData);
-				// 	}
-				// }
+						$departmentAssessmentData = array (
+							'COMPLETENESS' => $value['completeness'],
+							'TIMELINESS' => $value['timeliness'],
+							'departments_DEPARTMENTID' => $value['departments_DEPARTMENTID'],
+							'DATE' => date('Y-m-d')
+						);
 
-				// // check for department assessment
-				// $data['latestAssessmentDepartment'] = $this->model->getLatestAssessmentDepartment();
-				//
-				// foreach($data['latestAssessmentDepartment'] as $latestAssessment){
-				//
-				// 	$isFound = $this->model->checkAssessmentDepartment($latestAssessment['departments_DEPARTMENTID']);
-				//
-				// 	if(!$isFound){
-				//
-				// 		$completeness = $this->model->compute_completeness_department($latestAssessment['departments_DEPARTMENTID']);
-				// 		$timeliness = $this->model->compute_timeliness_department($latestAssessment['departments_DEPARTMENTID']);
-				//
-				// 		$progressData = array(
-				// 			'departments_DEPARTMENTID' => $latestAssessment['departments_DEPARTMENTID'],
-				// 			'DATE' => date('Y-m-d'),
-				// 			'COMPLETENESS' => $completeness['completeness'],
-				// 			'TIMELINESS' => $timeliness['timeliness']
-				// 		);
-				// 		$this->model->addAssessmentDepartment($progressData);
-				// 	}
-				// }
+						$this->model->addDepartmentAssessment($departmentAssessmentData);
+					}
+				}
 
-				// // check for employee assessment
-				// $data['latestAssessmentEmployee'] = $this->model->getLatestAssessmentEmployee();
-				//
-				// foreach($data['latestAssessmentDepartment'] as $latestAssessment){
-				//
-				// 	$isFound = $this->model->checkAssessmentDepartment($latestAssessment['users_USERID']);
-				//
-				// 	if(!$isFound){
-				//
-				// 		$completeness = $this->model->compute_completeness_employee($latestAssessment['users_USERID']);
-				// 		$timeliness = $this->model->compute_timeliness_employee($latestAssessment['users_USERID']);
-				//
-				// 		$progressData = array(
-				// 			'departments_DEPARTMENTID' => $latestAssessment['users_USERID'],
-				// 			'DATE' => date('Y-m-d'),
-				// 			'COMPLETENESS' => $completeness['completeness'],
-				// 			'TIMELINESS' => $timeliness['timeliness']
-				// 		);
-				// 		$this->model->addAssessmentDepartment($progressData);
-				// 	}
-				// }
+				// Employee Performance Assessment
+				$employeeAssessmentFound = $this->model->checkEmployeeAssessment();
+				if($employeeAssessmentFound == NULL){
 
+					$employeeAssessment = $this->model->compute_daily_employeePerformance();
+
+					foreach ($employeeAssessment as $value){
+
+						$employeeAssessmentData = array (
+							'COMPLETENESS' => $value['completeness'],
+							'TIMELINESS' => $value['timeliness'],
+							'users_USERID' => $value['users_USERID'],
+							'DATE' => date('Y-m-d')
+						);
+
+						$this->model->addEmployeeAssessment($employeeAssessmentData);
+					}
+				}
 
 				if ($_SESSION['USERID'] == 1)
 				{

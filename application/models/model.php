@@ -1623,13 +1623,11 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function compute_daily_projectPerformance()
-  {
+  public function compute_daily_projectPerformance(){
+
     $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != ''
-        AND projects.PROJECTSTATUS != 'Complete'
-        AND projects.PROJECTSTATUS != 'Archived'
-        AND projects.PROJECTSTATUS != 'Parked'
-        AND projects.PROJECTSTATUS != 'Planning'";
+        AND projects.PROJECTSTATUS != 'Complete' AND projects.PROJECTSTATUS != 'Archived'
+        AND projects.PROJECTSTATUS != 'Parked' AND projects.PROJECTSTATUS != 'Planning'";
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
     ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
@@ -1637,6 +1635,36 @@ class model extends CI_Model
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->where($condition);
     $this->db->group_by('projects_PROJECTID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function compute_daily_departmentPerformance(){
+
+    $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != '' AND raci.status = 'Current' AND role = 1";
+    $this->db->select('COUNT(TASKID), departments_DEPARTMENTID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->join('users', 'users_USERID = USERID');
+    $this->db->where($condition);
+    $this->db->group_by('departments_DEPARTMENTID');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function compute_daily_employeePerformance(){
+
+    $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != '' AND raci.status = 'Current' AND role = 1";
+    $this->db->select('COUNT(TASKID), users_USERID, (100 / COUNT(taskstatus)),
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->where($condition);
+    $this->db->group_by('users_USERID');
 
     return $this->db->get()->result_array();
   }
