@@ -51,25 +51,41 @@
 
           <table class="table table-bordered table-condensed" id="">
             <thead>
-              <tr>
-                <th colspan="10">Project (START-END)</th>
-              </tr>
-              <tr>
-                <th>Task</th>
-                <th class='text-center'>Start</th>
-                <th class='text-center'>End</th>
-                <th class='text-center'>Actual End</th>
-                <th class='text-center'>Days Delayed</th>
-                <th class='text-center'>A</th>
-                <th class='text-center'>C</th>
-                <th class='text-center'>I</th>
-                <th class='text-center'>Status</th>
-                <th class='text-center'>Timeliness</th>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
+              <?php foreach($projectCount as $project):?>
+                <tr>
+                  <th colspan="10"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
+                </tr>
+                <tr>
+                  <th>Task</th>
+                  <th class='text-center'>Start</th>
+                  <th class='text-center'>End</th>
+                  <th class='text-center'>Actual End</th>
+                  <th class='text-center'>Days Delayed</th>
+                  <th class='text-center'>A</th>
+                  <th class='text-center'>C</th>
+                  <th class='text-center'>I</th>
+                  <th class='text-center'>Status</th>
+                  <th class='text-center'>Timeliness</th>
+                </tr>
+              </thead>
+                <tbody>
+                <?php foreach($taskCount as $task):?>
+                  <?php if($task['projects_PROJECTID'] == $project['PROJECTID']):?>
+                    <tr>
+                      <td><?php echo $task['TASKTITLE'];?></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  <?php endif;?>
+                <?php endforeach;?>
+                </tbody>
+            <?php endforeach;?>
           </table>
 
   				<!-- Requests -->

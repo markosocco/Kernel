@@ -2081,10 +2081,12 @@ class model extends CI_Model
     $condition = "CONCAT(FIRSTNAME, ' ', LASTNAME) = '" . $data . "'";
     $this->db->select("*");
     $this->db->from('users');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
     $query = $this->db->get();
 
-    return $query->row('USERID');
+    return $query->row_array();
+    // return $query->row('USERID');
   }
 
   public function getAllTasksForImportDependency($id)
@@ -2386,6 +2388,32 @@ class model extends CI_Model
      $this->db->insert('assessmentProject', $data);
 
      return true;
+   }
+
+   public function getProjectCountRole1($userID)
+   {
+     $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
+                  && raci.users_USERID = '$userID'";
+     $this->db->select('projects.*');
+     $this->db->from('tasks');
+     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+     $this->db->where($condition);
+     $this->db->group_by('PROJECTID');
+     return $this->db->get()->result_array();
+   }
+
+   public function getTaskCountRole1($userID)
+   {
+     $condition = "raci.ROLE = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
+                  && raci.users_USERID = '$userID'";
+     $this->db->select('tasks.*');
+     $this->db->from('tasks');
+     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+     $this->db->where($condition);
+
+     return $this->db->get()->result_array();
    }
 }
 ?>
