@@ -56,36 +56,19 @@
 
 								<tr>
 									<td>Project Performance</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projPerf'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 								</tr>
 
-								<tr>
+								<?php if($_SESSION['departments_DEPARTMENTID'] != 1):?>
 									<td>Team Performance</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#deptPerfDept'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsTeamPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
 								</tr>
+								<?php endif;?>
 
 								<tr>
 									<td>Employee Performance</td>
 									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#empPerfEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 								</tr>
-
-								<!-- <tr>
-									<td>Ongoing Projects</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsOngoingProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr>
-								<tr>
-									<td>Planned Projects</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsPlannedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr>
-								<tr>
-									<td>Parked Projects</td>
-									<td align="center"><a href="<?php echo base_url("index.php/controller/reportsParkedProjects"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
-								</tr> -->
-
-								<!-- <tr>
-									<td>Employee Performance per Project</td>
-									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#empPerfProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr> -->
 							</tbody>
 						</table>
 					</div>
@@ -102,6 +85,7 @@
 							</div>
 							<div class="modal-body">
 								<form name="projSummReport" id="projSummReport" action="reportsProjectSummary" method="POST" target="_blank">
+									<h4>Project: </h4>
 									<select name="project" id="projectSummarySelect" class="form-control select2" data-placeholder="Select Departments">
 										<option disabled selected value = "0">-- Select a Project -- </option>
 										<?php
@@ -123,41 +107,12 @@
 				</div>
 				<!-- /.modal -->
 
-				<!-- EMPLOYEE PERFORMANCE PER PROJECT  -->
-				<div class="modal fade" id="empPerfProj" tabindex="-1">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h2 class="modal-title">Employee Performance per Project</h2>
-							</div>
-							<div class="modal-body">
-								<select class="form-control select2" data-placeholder="Select Departments">
-
-										<option>Store Opening - DLSU Andrew</option>
-										<option>Store Opening - DLSU Bloemen</option>
-										<option>Store Opening - DLSU Pericos</option>
-										<option>New Product Launch - Green Tea Popcorn</option>
-
-								</select>
-
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsEmployeesPerformancePerProject"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
-								</div>
-							</div>
-						</div>
-						<!-- /.modal-content -->
-					</div>
-					<!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-
-				<!-- EMPLOYEE PERFORMANCE PER EMPLOYEE -->
+				<!-- EMPLOYEE PERFORMANCE -->
 				<div class="modal fade" id="empPerfEmp" tabindex="-1">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h2 class="modal-title">Employee Performance per Employee</h2>
+								<h2 class="modal-title">Employee Performance</h2>
 							</div>
 							<div class="modal-body">
 								<select class="form-control select2" data-placeholder="Select Departments">
@@ -170,8 +125,8 @@
 								</select>
 
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsEmployeesPerformancePerEmployee"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<a href="<?php echo base_url("index.php/controller/reportsEmployeePerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></a>
 								</div>
 							</div>
 						</div>
@@ -181,46 +136,15 @@
 				</div>
 				<!-- /.modal -->
 
-				<!-- DEPARTMENTAL PERFORMANCE PER DEPARTMENT -->
-				<div class="modal fade" id="deptPerfDept" tabindex="-1">
+				<!-- PROJECT PERFORMANCE -->
+				<div class="modal fade" id="projPerf" tabindex="-1">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h2 class="modal-title">Team Performance</h2>
+								<h2 class="modal-title">Project Performance</h2>
 							</div>
 							<div class="modal-body">
-								<select class="form-control select2" data-placeholder="Select Departments">
-
-										<option>Marketing</option>
-										<option>HR</option>
-										<option>MIS</option>
-										<option>Procurement</option>
-										<option>Finance</option>
-										<option>Store Operations</option>
-										<option>IDK</option>
-
-								</select>
-
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsDepartmentalPerformancePerDepartment"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
-								</div>
-							</div>
-						</div>
-						<!-- /.modal-content -->
-					</div>
-					<!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-
-				<!-- DEPARTMENT PERFORMANCE PER PROJECT -->
-				<div class="modal fade" id="deptPerfProj" tabindex="-1">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h2 class="modal-title">Department Performance per Project</h2>
-							</div>
-							<div class="modal-body">
+								<h4>Project: </h4>
 								<select class="form-control select2" data-placeholder="Select Departments">
 
 									<option>Store Opening - DLSU Andrew</option>
@@ -231,8 +155,8 @@
 								</select>
 
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close"></i></button>
-									<a href="<?php echo base_url("index.php/controller/reportsDepartmentalPerformancePerProject"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a>
+									<button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<a href="<?php echo base_url("index.php/controller/reportsProjectPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='left' title='Generate Report'><i class="fa fa-print"></i></a>
 								</div>
 							</div>
 						</div>
@@ -251,14 +175,14 @@
 							</div>
 							<div class="modal-body">
 								<form name="projStatusReport" id="projStatusReport" action="reportsProjectStatus" method="POST" target='_blank'>
-									<h5>Status Interval: </h5>
+									<h4>Status Interval: </h4>
 									<div class="btn-group" id="btnStatus">
 										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default intervalsStatus">Weekly</button>
 										<button type="button" id = "monthlyBtn" value = '31' class="btn btn-default intervalsStatus">Monthly</button>
 									</div>
 									<input id="intervalValueStatus" type='hidden' name='interval' value= "">
 									<br><br>
-
+									<h4>Project: </h4>
 									<select id="projectStatus" name="project" class="form-control select2" data-placeholder="Select Departments">
 										<option disabled selected value = "0">-- Select a Project -- </option>
 										<?php
@@ -297,6 +221,7 @@
 									</div>
 									<input id="intervalValueProgress" type='hidden' name='interval' value= "">
 									<br><br>
+									<h4>Project: </h4>
 									<select id="projectProgressSelect" name="project" class="form-control select2" data-placeholder="Select Departments">
 										<option disabled selected value = "0">-- Select a Project -- </option>
 										<?php

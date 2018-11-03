@@ -2222,50 +2222,6 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsOngoingProjects()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-
-			$this->load->view("reportsOngoingProjects", $data);
-		}
-	}
-
-	public function reportsPlannedProjects()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
-
-			$this->load->view("reportsPlannedProjects", $data);
-		}
-	}
-
-	public function reportsParkedProjects()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$this->load->view("reportsParkedProjects");
-		}
-	}
-
 	public function reportsProjectSummary()
 	{
 		if (!isset($_SESSION['EMAIL']))
@@ -2299,7 +2255,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsEmployeesPerformancePerProject()
+	public function reportsEmployeePerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2308,11 +2264,11 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsEmployeesPerformancePerProject");
+			$this->load->view("reportsEmployeePerformance");
 		}
 	}
 
-	public function reportsEmployeesPerformancePerEmployee()
+	public function reportsTeamPerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2321,11 +2277,11 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsEmployeesPerformancePerEmployee");
+			$this->load->view("reportsTeamPerformance");
 		}
 	}
 
-	public function reportsDepartmentalPerformancePerDepartment()
+	public function reportsProjectPerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2334,20 +2290,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("reportsDepartmentalPerformancePerDepartment");
-		}
-	}
-
-	public function reportsDepartmentalPerformancePerProject()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$this->load->view("reportsDepartmentalPerformancePerProject");
+			$this->load->view("reportsProjectPerformance");
 		}
 	}
 
@@ -2381,19 +2324,6 @@ class controller extends CI_Controller
 			}
 
 			$this->load->view("reportsProjectProgress", $data);
-		}
-	}
-
-	public function reportsChangeRequestsPerDepartment()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$this->load->view("reportsChangeRequestsPerDepartment");
 		}
 	}
 
