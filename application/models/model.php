@@ -2068,16 +2068,11 @@ class model extends CI_Model
 
   public function getUserByName($data)
   {
-    $name = explode(" ", $data);
-    $firstName = $name[0];
-    $lastName = $name[1];
-
-    $condition = "FIRSTNAME = '" . $firstName . "' && LASTNAME = '" . $lastName ."'";
-    $this->db->select('*');
+    $condition = "FULLNAME = " . $data;
+    $this->db->select("CONCAT(FIRSTNAME, ' ', LASTNAME) as FULLNAME");
     $this->db->from('users');
-    $this->db->where($condition);
     $this->db->limit(1);
-    $query = $this->db->get();
+    $query = $this->db->get();;
 
     return $query->row('USERID');
   }
@@ -2332,6 +2327,25 @@ class model extends CI_Model
      $this->db->order_by('tasks.TASKSTARTDATE');
 
      return $this->db->get()->result_array();
+   }
+
+   public function checkUserByName($data)
+   {
+     $condition = "FULLNAME = " . $data;
+     $this->db->select("CONCAT(FIRSTNAME, ' ', LASTNAME) as FULLNAME");
+     $this->db->from('users');
+     $this->db->limit(1);
+     $query = $this->db->get();
+
+     if ($query->num_rows() == 1)
+     {
+       return true;
+     }
+
+     else
+     {
+       return false;
+     }
    }
 }
 ?>

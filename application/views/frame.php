@@ -208,19 +208,7 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="<?php echo base_url()."assets/"; ?>#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <?php if ($_SESSION['USERID'] == '4'): ?>
-                <img src="<?php echo base_url()."assets/"; ?>media/mickey.jpg" class="user-image" alt="User Image">
-              <?php elseif ($_SESSION['USERID'] == '6'): ?>
-                <img src="<?php echo base_url()."assets/"; ?>media/donald.png" class="user-image" alt="User Image">
-              <?php elseif ($_SESSION['USERID'] == '33'): ?>
-                <img src="<?php echo base_url()."assets/"; ?>media/goofy.png" class="user-image" alt="User Image">
-              <?php elseif ($_SESSION['USERID'] == '34'): ?>
-                <img src="<?php echo base_url()."assets/"; ?>media/minnie.gif" class="user-image" alt="User Image">
-              <?php elseif ($_SESSION['USERID'] == '25'): ?>
-                <img src="<?php echo base_url()."assets/"; ?>media/winnie.jpg" class="user-image" alt="User Image">
-              <?php else: ?>
-                <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="user-image" alt="User Image">
-              <?php endif; ?>
+              <img src="<?php echo $_SESSION['IDPIC']; ?>" class="user-image" alt="User Image">
 
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs"><?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?></span>
@@ -228,7 +216,8 @@ desired effect
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="img-circle" alt="User Image">
+                <img src="<?php echo $_SESSION['IDPIC']; ?>" class="img-circle" alt="User Image">
+
 
                 <p>
                   <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']; ?>
@@ -264,19 +253,7 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <?php if ($_SESSION['USERID'] == '4'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/mickey.jpg" class="img-circle" alt="User Image">
-          <?php elseif ($_SESSION['USERID'] == '6'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/donald.png" class="img-circle" alt="User Image">
-          <?php elseif ($_SESSION['USERID'] == '33'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/goofy.png" class="img-circle" alt="User Image">
-          <?php elseif ($_SESSION['USERID'] == '34'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/minnie.gif" class="img-circle" alt="User Image">
-          <?php elseif ($_SESSION['USERID'] == '25'): ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/winnie.jpg" class="img-circle" alt="User Image">
-          <?php else: ?>
-            <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="img-circle" alt="User Image">
-          <?php endif; ?>
+          <img src="<?php echo $_SESSION['IDPIC']; ?>" class="img-circle" alt="User Image">
         </div>
 
         <div class="pull-left info">
