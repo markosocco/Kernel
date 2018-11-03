@@ -33,25 +33,20 @@
       <div class="reportBody">
 
         <!-- BAR CHART -->
-        <div class="box box-success">
-          <div class="box-header with-border">
+        <div class="box box-danger">
+          <!-- <div class="box-header with-border">
             <h3 class="box-title">Bar Chart</h3>
-            <!-- <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div> -->
-          </div>
+          </div> -->
           <div class="box-body">
             <div class="chart">
-              <canvas id="barChart" style="height:120px"></canvas>
+              <canvas id="barChart" style="height:220px"></canvas>
             </div>
           </div>
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
 
-          <div class="box box-danger">
+          <div class="box box-default">
             <!-- TEAM MEMBERS -->
     				<div class="row">
     					<div class="col-md-12 col-sm-12 col-xs-12">
@@ -120,8 +115,6 @@
     <!-- /.content -->
   </div>
   <!-- ./wrapper -->
-  <!-- ChartJS -->
-  <script src="<?php echo base_url()."assets/"; ?>bower_components/chart.js/Chart.js"></script>
   <script> //AJAX DATA
 
     $.ajax({
@@ -141,12 +134,16 @@
 
   </script>
 
+  <!-- jQuery 3 -->
+  <script src="<?php echo base_url()."assets/"; ?>bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- ChartJS -->
+  <script src="<?php echo base_url()."assets/"; ?>bower_components/chart.js/Chart.js"></script>
   <script>
     $(function ()
     {
-      var areaChartData =
-      {
-        labels  : ['Mkt', 'Fin', 'HR', 'Ops', 'FAD', 'MIS'],
+      var barChartData = {
+        // LOOP THROUGH DEPTS
+        labels  : ['MKT', 'OPS', 'MIS', 'FIN', 'FAD', 'HR', 'PROC'],
         datasets: [
           {
             label               : 'Timeliness',
@@ -156,7 +153,8 @@
             pointStrokeColor    : '#c1c7d1',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [100, 59, 80, 81, 56, 55]
+            data                : [90, 75, 100, 53, 56, 53, 20]
+                                  // GRAY DATA
           },
           {
             label               : 'Completeness',
@@ -166,7 +164,8 @@
             pointStrokeColor    : 'rgba(60,141,188,1)',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : [100, 48, 40, 19, 86, 27]
+            data                : [28, 48, 40, 19, 86, 27, 90]
+                                  // GREEN DATA
           }
         ]
       }
@@ -176,7 +175,7 @@
       //-------------
       var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
       var barChart                         = new Chart(barChartCanvas)
-      var barChartData                     = areaChartData
+      var barChartData                     = barChartData
       barChartData.datasets[1].fillColor   = '#00a65a'
       barChartData.datasets[1].strokeColor = '#00a65a'
       barChartData.datasets[1].pointColor  = '#00a65a'
@@ -205,7 +204,29 @@
         legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
         //Boolean - whether to make the chart responsive
         responsive              : true,
-        maintainAspectRatio     : true
+        maintainAspectRatio     : true,
+
+        legend:
+        {
+          display: true,
+          position: 'bottom',
+          fullWidth: true
+        },
+
+        onAnimationComplete: function ()
+        {
+          var ctx = this.chart.ctx;
+          ctx.font = this.scale.font;
+          ctx.fillStyle = this.scale.textColor
+          ctx.textAlign = "center";
+          ctx.textBaseline = "bottom";
+
+          this.datasets.forEach(function (dataset) {
+              dataset.bars.forEach(function (bar) {
+                  ctx.fillText(bar.value, bar.x, bar.y - 0);
+              });
+          })
+        }
       }
 
       barChartOptions.datasetFill = false
