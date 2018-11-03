@@ -2721,6 +2721,26 @@ class controller extends CI_Controller
 	            redirect('controller/addProjectDetails');
 	          }
 
+						if (DateTime::createFromFormat('Y-m-d', $startDate) == FALSE)
+						{
+							$this->session->set_flashdata('danger', 'alert');
+							$this->session->set_flashdata('alertMessage', ' Project Start Date in Project Details is not a valid date');
+
+							unlink($inputFileName);
+
+							redirect('controller/addProjectDetails');
+						}
+
+						if (DateTime::createFromFormat('Y-m-d', $endDate) == FALSE)
+						{
+							$this->session->set_flashdata('danger', 'alert');
+							$this->session->set_flashdata('alertMessage', ' Project End Date in Project Details is not a valid date');
+
+							unlink($inputFileName);
+
+							redirect('controller/addProjectDetails');
+						}
+
             // PROJECT ASSESSMENT
             // CHECK IF SPREADSHEET IS NULL/BLANK
             $sheetname = 'Project Assessment';
@@ -3097,7 +3117,6 @@ class controller extends CI_Controller
 					  }
 
 						// ACTUAL IMPORT
-						// ACTUAL IMPORT
 						$sheetname = 'Project Details';
 
 						$reader->setLoadSheetsOnly($sheetname);
@@ -3270,18 +3289,6 @@ class controller extends CI_Controller
 						      // ENTER TASK TO DB
 						      $mainAct = $this->model->importTaskToProject($insertMain);
 
-						      // ENTER RACI TO DB
-
-						      // RESPONSIBLE
-					        // $userID = $this->model->getUserByName($mU);
-
-					        // $mainRaci['ROLE'] = 6;
-					        // $mainRaci['users_USERID'] = $_SESSION['USERID'];
-					        // $mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
-					        // $mainRaci['STATUS'] = 'Current';
-									//
-					        // $result = $this->model->addToRaci($mainRaci);
-
 						      // GET ALL SUB ACTS UNDER CURRENT MAIN
 						      foreach ($worksheet as $cell)
 						      {
@@ -3298,16 +3305,6 @@ class controller extends CI_Controller
 						          $insertSub['projects_PROJECTID'] = $projectID;
 
 						          $subAct = $this->model->importTaskToProject($insertSub);
-
-						          // RESPONSIBLE
-					            // $subUserID = $this->model->getUserByName($sU);
-
-					            // $subRaci['ROLE'] = 5;
-					            // $subRaci['users_USERID'] = $_SESSION['USERID'];
-					            // $subRaci['tasks_TASKID'] = $subAct['TASKID'];
-					            // $subRaci['STATUS'] = 'Current';
-											//
-					            // $result = $this->model->addToRaci($subRaci);
 
 						          // GET ALL TASKS UNDER CURRENT SUB
 						          foreach ($worksheet as $cell_2)
