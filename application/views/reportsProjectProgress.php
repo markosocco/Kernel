@@ -63,9 +63,12 @@
   							<!-- /.box-header -->
   							<div class="box-body">
   								<table class="table table-bordered" id="">
-                    <td align="center" style="width:35%"></td>
+                    <td align="center" style="width:35%">
+                      <!-- PAST DONUT -->
+
+                    </td>
                     <td style="width:30%">
-                      <table class="table table-bordered" width="100%">
+                      <table class="table table-bordered table-condensed" width="100%">
                         <tr>
                           <th class='text-center'>Last <?php echo $intervalWord;?></th>
                           <th class='text-center'></th>
@@ -81,7 +84,10 @@
                         <?php endforeach; ?>
                       </table>
                     </td>
-                    <td align="center" style="width:35%"></td>
+                    <td align="center" style="width:35%">
+                      <!-- FUTURE DONUT -->
+
+                    </td>
   								</table>
   							</div>
   						</div>

@@ -49,15 +49,14 @@
             </tr>
           </table>
 
-           <!-- /.box-header -->
-           <div style="display:inline-block; margin-right: 20px" class="pull-right">
-             <div style="display:inline-block; text-align:center; width:49%;">
-               <h1>100%</h1>
-               <h4>Timeliness</h4>
+           <div class="pull-right" style="display:inline-block; margin-right: 20px">
+             <div style="display:inline-block; text-align:center; width:49%; padding-right: 20px">
+               <h3>100%</h3>
+               <h6>Timeliness</h6>
              </div>
-             <div style="display:inline-block; text-align:center; width:49%; border-left: solid lightgray 1px;">
-               <h1>100%</h1>
-               <h4>Completeness</h4>
+             <div style="display:inline-block; text-align:center; width:49%; padding-left: 20px; border-left: solid lightgray 1px;">
+               <h3>100%</h3>
+               <h6>Completeness</h6>
              </div>
            </div>
 
