@@ -26,16 +26,22 @@ class controller extends CI_Controller
 		$this->email->set_mailtype("html");
 		$this->email->set_newline("\r\n");
 
+		$email = $this->input->post('emailadd');
+
 		//Email content
 		$htmlContent = '<h1>Sending email via SMTP server</h1>';
 		$htmlContent .= '<p>This email has sent via SMTP server from CodeIgniter application.</p><br><br>';
 
-		$this->email->to('namihihii@gmail.com');
+		$this->email->to($email);
 		$this->email->from('KernelPMS@gmail.com','Kernel Notification');
-		$this->email->subject('woOoOoOoOoOow');
+		$this->email->subject('Hello');
 		$this->email->message($htmlContent);
 
 		$this->email->send();
+
+		$this->session->set_flashdata('success', 'alert');
+		$this->session->set_flashdata('alertMessage', ' Email sent successfully');
+		$this->load->view("login");
   }
 
 	public function login()
@@ -761,23 +767,23 @@ class controller extends CI_Controller
 
 			$notificationID = $this->model->addNotification($notificationData);
 
-			// START: Email notification
-			$projectOwnerEmail = $this->model->getEmail($projectOwnerID);
-
-			$this->email->set_mailtype("html");
-			$this->email->set_newline("\r\n");
-
-			//Email content
-			$htmlContent = '<h1>Hi!</h1>';
-			$htmlContent .= '<p>' . $details . '</p>';
-
-			$this->email->to($projectOwnerEmail);
-			$this->email->from('KernelPMS@gmail.com','Kernel Notification');
-			$this->email->subject('#' . $notificationID . " - " . $projectTitle . " update");
-			$this->email->message($htmlContent);
-
-			$this->email->send();
-			// End: Email notification
+			// // START: Email notification
+			// $projectOwnerEmail = $this->model->getEmail($projectOwnerID);
+			//
+			// $this->email->set_mailtype("html");
+			// $this->email->set_newline("\r\n");
+			//
+			// //Email content
+			// $htmlContent = '<h1>Hi!</h1>';
+			// $htmlContent .= '<p>' . $details . '</p>';
+			//
+			// $this->email->to($projectOwnerEmail);
+			// $this->email->from('KernelPMS@gmail.com','Kernel Notification');
+			// $this->email->subject('#' . $notificationID . " - " . $projectTitle . " update");
+			// $this->email->message($htmlContent);
+			//
+			// $this->email->send();
+			// // End: Email notification
 
 			// notify next task person
 			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($id);
