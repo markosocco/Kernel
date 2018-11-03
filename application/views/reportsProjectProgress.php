@@ -67,25 +67,18 @@
                     <td style="width:30%">
                       <table class="table table-bordered" width="100%">
                         <tr>
-                          <th class='text-center'>2 Weeks Ago</th>
+                          <th class='text-center'>Last <?php echo $intervalWord;?></th>
                           <th class='text-center'></th>
-                          <th class='text-center'>Last Week</th>
+                          <th class='text-center'>Current</th>
                         </tr>
-                        <tr>
-                          <td align="center">1k%</td>
-                          <td align="center">main1</td>
-                          <td align="center">1M%</td>
-                        </tr>
-                        <tr>
-                          <td align="center">1k%</td>
-                          <td align="center">main1</td>
-                          <td align="center">1M%</td>
-                        </tr>
-                        <tr>
-                          <td align="center">1k%</td>
-                          <td align="center">main1</td>
-                          <td align="center">1M%</td>
-                        </tr>
+
+                        <?php foreach ($mainActivities as $main): ?>
+                            <tr>
+                              <td align="center">1k%</td>
+                              <td align="center"><?php echo $main['TASKTITLE']; ?></td>
+                              <td align="center">1M%</td>
+                            </tr>
+                        <?php endforeach; ?>
                       </table>
                     </td>
                     <td align="center" style="width:35%"></td>
@@ -191,7 +184,7 @@
                     </table>
     							</div>
                 <?php else:?>
-                  <h5 align="center">There were No Tasks Accomplished Last <?php echo $intervalWord;?></h5>
+                    <h5 align="center">There were No Tasks Accomplished Last <?php echo $intervalWord;?></h5>
                 <?php endif;?>
   						</div>
   	        </div>

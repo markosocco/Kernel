@@ -1578,7 +1578,7 @@ class model extends CI_Model
   public function compute_completeness_project($projectID)
   {
     $condition = "CATEGORY = 3 AND tasks.projects_PROJECTID = " . $projectID;
-    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)) as "weight",
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
@@ -1697,7 +1697,7 @@ class model extends CI_Model
 
   public function checkProjectAssessment()
   {
-    $condition = "datediff(DATE, CURDATE()) = 0";
+    $condition = "datediff(DATE, CURDATE()) = 0 AND TYPE = 1";
     $this->db->select('*');
     $this->db->from('assessmentProject');
     $this->db->where($condition);
@@ -1720,6 +1720,16 @@ class model extends CI_Model
     $condition = "datediff(DATE, CURDATE()) = 0";
     $this->db->select('*');
     $this->db->from('assessmentEmployee');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function checkMainCompleteness()
+  {
+    $condition = "datediff(DATE, CURDATE()) = 0 AND TYPE = 2";
+    $this->db->select('*');
+    $this->db->from('assessmentProject');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();

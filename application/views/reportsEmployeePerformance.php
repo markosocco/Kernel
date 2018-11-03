@@ -32,7 +32,7 @@
     <div class="reportBody">
       <!-- LOOP START HERE -->
         <div class="box box-danger">
-          <table class="table-condensed" style="width:100%">
+          <table class="table-condensed" style="width:100%; width:auto; display:inline-block">
             <tr>
               <td><b>Name: </b><?php echo $userInfo['FIRSTNAME'] . " " . $userInfo['LASTNAME'];?></td>
             </tr>
@@ -48,6 +48,18 @@
               </td>
             </tr>
           </table>
+
+           <!-- /.box-header -->
+           <div style="display:inline-block; margin-right: 20px" class="pull-right">
+             <div style="display:inline-block; text-align:center; width:49%;">
+               <h1>100%</h1>
+               <h4>Timeliness</h4>
+             </div>
+             <div style="display:inline-block; text-align:center; width:49%; border-left: solid lightgray 1px;">
+               <h1>100%</h1>
+               <h4>Completeness</h4>
+             </div>
+           </div>
 
           <table class="table table-bordered table-condensed" id="">
             <thead>
