@@ -2272,6 +2272,10 @@ class controller extends CI_Controller
 			$userID = $this->input->post('user');
 			$data['userInfo'] = $this->model->getUserByID($userID);
 			$data['departments'] = $this->model->getAllDepartments();
+			$data['tasks'] = $this->model->getAllTasksByUser($userID);
+			$data['raci'] = $this->model->getAllACI();
+			$data['projectCount'] = $this->model->getProjectCountRole1($userID);
+			$data['taskCount'] = $this->model->getTaskCountRole1($userID);
 
 			$this->load->view("reportsEmployeePerformance", $data);
 		}
