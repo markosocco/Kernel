@@ -84,26 +84,17 @@
 							<div class="box box-danger" style="height:45%; overflow-y: scroll">
 								<div class="box-header with-border">
 
-									<?php $delayCount = 0?>
-
 									<?php foreach($tasks as $task)
 										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 											$endDate = $task['TASKENDDATE'];
 										else
-											$endDate = $task['TASKADJUSTEDENDDATE'];
+											$endDate = $task['TASKADJUSTEDENDDATE'];?>
 
-											$currentDate = date("Y-m-d");
-											date_default_timezone_set("Singapore");
-
-										if($task['TASKSTATUS'] == 'Ongoing' && $currentDate > $endDate)
-											$delayCount++;
-									?>
-
-									<h3 class="box-title">Delayed Tasks</h3>
+									<h3 class="box-title">Delayed Tasks (<?php echo count($delayedTasks);?>)</h3>
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
-									<?php if($delayCount == 0 && $tasks != null):?>
+									<?php if($delayedTasks != NULL):?>
 									<table class="table table-bordered responsive">
 		                <thead>
 		                  <tr>
@@ -115,9 +106,8 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-											<?php foreach($tasks as $task):?>
-												<?php
-												if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+											<?php foreach($delayedTasks as $task):?>
+												<?php if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
 												{
 													$endDate = $task['TASKENDDATE'];
 													$delay = $task['initialDelay'];
@@ -127,9 +117,7 @@
 													$endDate = $task['TASKADJUSTEDENDDATE'];
 													$delay = $task['adjustedDelay'];
 												}
-												?>
-
-											<?php if($task['TASKSTATUS'] == 'Ongoing' && $task['currDate'] > $endDate):?>
+												;?>
 			                  <tr data-toggle='modal' data-target='#taskDetails'>
 			                    <td><?php echo $task['TASKTITLE'];?></td>
 			                    <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
@@ -137,7 +125,6 @@
 			                    <td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
 			                    <td align="center"><b><span style="color:red"><?php echo $delay;?></span></b></td>
 			                  </tr>
-											<?php endif;?>
 										<?php endforeach;?>
 		                </tbody>
 		              </table>

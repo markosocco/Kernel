@@ -604,6 +604,7 @@ class controller extends CI_Controller
 			$data['allDepartments'] = $this->model->getAllDepartmentsByProject($projectID);
 			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
 			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
+			$data['delayedTasks'] = $this->model->getAllOngoingDelayedTasksByIDRole1($projectID);
 
 			// foreach($data['departments'] as $d)
 			// {
