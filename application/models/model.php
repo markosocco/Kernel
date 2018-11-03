@@ -2068,11 +2068,11 @@ class model extends CI_Model
 
   public function getUserByName($data)
   {
-    $condition = "FULLNAME = " . $data;
-    $this->db->select("CONCAT(FIRSTNAME, ' ', LASTNAME) as FULLNAME");
+    $condition = "CONCAT(FIRSTNAME, ' ', LASTNAME) = '" . $data . "'";
+    $this->db->select("*");
     $this->db->from('users');
-    $this->db->limit(1);
-    $query = $this->db->get();;
+    $this->db->where($condition);
+    $query = $this->db->get();
 
     return $query->row('USERID');
   }
@@ -2331,9 +2331,10 @@ class model extends CI_Model
 
    public function checkUserByName($data)
    {
-     $condition = "FULLNAME = " . $data;
+     $condition = "CONCAT(FIRSTNAME, ' ', LASTNAME) = '" . $data . "'";
      $this->db->select("CONCAT(FIRSTNAME, ' ', LASTNAME) as FULLNAME");
      $this->db->from('users');
+     $this->db->where($condition);
      $this->db->limit(1);
      $query = $this->db->get();
 
@@ -2346,6 +2347,13 @@ class model extends CI_Model
      {
        return false;
      }
+   }
+
+   public function addAssessmentProject($data){
+
+     $this->db->insert('assessmentProject', $data);
+
+     return true;
    }
 }
 ?>
