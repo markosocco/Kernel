@@ -39,7 +39,8 @@
 											<h5 class="widget-user-desc"><?php echo $row['POSITION']; ?></h5>
 										</div>
 										<div class="widget-user-image">
-											<img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="img-circle" alt="User Image">
+											<img src="<?php echo $row['IDPIC']; ?>" class="img-circle" alt="User Image">
+											<!-- <img src="<?php echo base_url()."assets/"; ?>media/idpic.png" class="img-circle" alt="User Image"> -->
 										</div>
 										<div class="box-footer">
 											<div class="row">

@@ -51,16 +51,18 @@
 						<h4>Provide us your email and we will send you your credentials.</h4>
 						<h4>Please be sure to provide your corporate email (@tatersgroup.com).</h4>
 
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-							<input type="email" class="form-control" placeholder="Email">
-						</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
-		        <button type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
-		      </div>
-		    </div>
+						<?php echo form_open('/controller/send_mail'); ?>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+								<input type="email" name='emailadd' class="form-control" placeholder="Email">
+							</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+			        <button type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+			      </div>
+					<?php echo form_close(); ?>
+				</div>
 		  </div>
 		</div>
 		<!-- CANT LOGIN MODAL -->
