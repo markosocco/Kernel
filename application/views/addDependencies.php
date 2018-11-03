@@ -222,9 +222,7 @@
 																					<?php foreach ($groupedTasks as $gKey => $gValue): ?>
 																						<?php if($gValue['CATEGORY'] == '3'): ?>
 																							<?php if ($gValue['TASKID'] != $tValue['TASKID']): ?>
-
-																								<!-- tvalue = yung lalagyan ng pre req -->
-																								<!-- gValue = pwede maging pre req -->
+																								
 																								<?php if ($gValue['TASKENDDATE'] <= $tValue['TASKSTARTDATE']): ?>
 																									<option value ='<?php echo $gValue['TASKID']; ?>'>
 																										<?php echo $gValue['TASKTITLE']; ?>
