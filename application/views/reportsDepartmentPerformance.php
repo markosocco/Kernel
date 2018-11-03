@@ -56,7 +56,7 @@
     							</div>
     							<!-- /.box-header -->
     							<div class="box-body">
-                    <?php foreach($departments as $department):?>
+                    <?php foreach($departments as $key => $department):?>
                       <?php if($department['DEPARTMENTID'] != 1):?>
       								<table class="table table-bordered table-condensed" id="">
 
@@ -72,7 +72,7 @@
                           <?php foreach(${"departmentPerf" . $department['DEPARTMENTID']} as $performanceData):?>
                             <?php if($counter == 0):?>
                               <tr>
-                                <th rowspan = "<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:24px;">500%</th>
+                                <th rowspan = "<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:24px;"><?php echo $averages[$key-1]['AVERAGE'];?>%</th>
                                 <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?></td>

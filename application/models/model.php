@@ -1669,6 +1669,20 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function compute_departmentPerformance(){
+
+    $condition = "YEAR(CURDATE()) AND departments_DEPARTMENTID != 1";
+    $this->db->select('departments_DEPARTMENTID, DEPARTMENTNAME,
+    ROUND((AVG(timeliness) + AVG(completeness))/2 ,2) as "AVERAGE"');
+    $this->db->from('assessmentdepartment');
+    $this->db->join('departments', 'departments_DEPARTMENTID = DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('departments_DEPARTMENTID');
+    $this->db->order_by('DEPARTMENTNAME');
+
+    return $this->db->get()->result_array();
+  }
+
   // public function compute_completeness_projectByUser()
   // {
   //   $condition = "CATEGORY = 3 AND projects.PROJECTSTATUS = 'Ongoing' AND projects.users_USERID = " . $_SESSION['USERID'];
