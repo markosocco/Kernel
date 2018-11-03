@@ -3275,7 +3275,7 @@ class controller extends CI_Controller
 									{
 										$userID = $this->model->getUserByName($mU);
 
-										$mainRaci['ROLE'] = 1;
+										$mainRaci['ROLE'] = 0;
 										$mainRaci['users_USERID'] = $userID;
 										$mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
 										$mainRaci['STATUS'] = 'Current';
@@ -3307,7 +3307,7 @@ class controller extends CI_Controller
 											{
 												$subUserID = $this->model->getUserByName($sU);
 
-												$subRaci['ROLE'] = 1;
+												$subRaci['ROLE'] = 0;
 												$subRaci['users_USERID'] = $subUserID;
 												$subRaci['tasks_TASKID'] = $subAct['TASKID'];
 												$subRaci['STATUS'] = 'Current';
