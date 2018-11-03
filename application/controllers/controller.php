@@ -2191,6 +2191,12 @@ class controller extends CI_Controller
 		{
 			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
 			$data['allOngoingProjects'] = $this->model->getAllOngoingPOProjects($_SESSION['USERID']);
+			if($_SESSION['usertype_USERTYPEID'] == '3') //managers
+				$data['userTeam'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			else if($_SESSION['usertype_USERTYPEID'] == '4') //supervisors
+				$data['userTeam'] = $this->model->getUserTeam($_SESSION['USERID']);
+			else //staff
+				$data['userTeam'] = $_SESSION['USERID'];
 
 			$this->load->view("reports", $data);
 		}
@@ -2219,50 +2225,6 @@ class controller extends CI_Controller
 			}
 
 			$this->load->view("reportsDepartmentPerformance", $data);
-		}
-	}
-
-	public function reportsOngoingProjects()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$data['ongoingProjects'] = $this->model->getAllOngoingProjects();
-			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
-
-			$this->load->view("reportsOngoingProjects", $data);
-		}
-	}
-
-	public function reportsPlannedProjects()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$data['plannedProjects'] = $this->model->getAllPlannedProjects();
-
-			$this->load->view("reportsPlannedProjects", $data);
-		}
-	}
-
-	public function reportsParkedProjects()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$this->load->view("reportsParkedProjects");
 		}
 	}
 
@@ -2299,7 +2261,7 @@ class controller extends CI_Controller
 		}
 	}
 
-	public function reportsEmployeesPerformancePerProject()
+	public function reportsEmployeePerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
@@ -2308,7 +2270,6 @@ class controller extends CI_Controller
 
 		else
 		{
-<<<<<<< HEAD
 			$userID = $this->input->post('user');
 			$data['userInfo'] = $this->model->getUserByID($userID);
 			$data['departments'] = $this->model->getAllDepartments();
@@ -2318,48 +2279,36 @@ class controller extends CI_Controller
 			$data['taskCount'] = $this->model->getTaskCountRole1($userID);
 
 			$this->load->view("reportsEmployeePerformance", $data);
-=======
-			$this->load->view("reportsEmployeesPerformancePerProject");
->>>>>>> 5cb69e6f14a998552de04f9cba964a5ae13489d8
 		}
 	}
 
-	public function reportsEmployeesPerformancePerEmployee()
+	public function reportsTeamPerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
 			$this->load->view('restrictedAccess');
 		}
-
 		else
 		{
-			$this->load->view("reportsEmployeesPerformancePerEmployee");
+			$this->load->view("reportsTeamPerformance");
 		}
 	}
 
-	public function reportsDepartmentalPerformancePerDepartment()
+	public function reportsProjectPerformance()
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
 			$this->load->view('restrictedAccess');
 		}
-
 		else
 		{
-			$this->load->view("reportsDepartmentalPerformancePerDepartment");
-		}
-	}
-
-	public function reportsDepartmentalPerformancePerProject()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$this->load->view("reportsDepartmentalPerformancePerProject");
+			$projectID = $this->input->post('project');
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
+			$data['raci'] = $this->model->getAllACI();
+			$data['departments'] = $this->model->getAllDepartments();
+			$this->load->view("reportsProjectPerformance", $data);
 		}
 	}
 
@@ -2393,19 +2342,6 @@ class controller extends CI_Controller
 			}
 
 			$this->load->view("reportsProjectProgress", $data);
-		}
-	}
-
-	public function reportsChangeRequestsPerDepartment()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			$this->load->view("reportsChangeRequestsPerDepartment");
 		}
 	}
 
