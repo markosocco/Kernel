@@ -67,15 +67,15 @@
                   <th colspan="11"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
                 </tr>
                 <tr>
-                  <th>Task</th>
+                  <th width="20%">Task</th>
                   <th class='text-center' width="10%">Start Date</th>
                   <th class='text-center' width="10%">End Date</th>
                   <th class='text-center' width="10%">Actual<br>End Date</th>
                   <th class='text-center' width="5%">Days<br>Delayed</th>
-                  <th class='text-center'>A</th>
-                  <th class='text-center'>C</th>
-                  <th class='text-center'>I</th>
-                  <th class='text-center'>Status</th>
+                  <th class='text-center' width="15%">A</th>
+                  <th class='text-center' width="15%">C</th>
+                  <th class='text-center' width="15%">I</th>
+                  <th class='text-center' width="10%">Status</th>
                   <th class='text-center' width="5%">Completeness</th>
                   <th class='text-center' width="5%">Timeliness</th>
                 </tr>
