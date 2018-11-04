@@ -1874,10 +1874,12 @@ class model extends CI_Model
 
   public function getAllProjectsByDepartment($departmentID)
   {
-    $condition = "departments_DEPARTMENTID = " . $departmentID;
-    $this->db->select('*');
+    $condition = "YEAR(CURDATE()) && departments_DEPARTMENTID = " . $departmentID;
+    $this->db->select('tasks.*, COUNT(DISTINCT(projects.PROJECTID)) as "PROJECTCOUNT"');
     $this->db->from('projects');
     $this->db->join('users', 'projects.users_userid = users.userid');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
     $this->db->where($condition);
 
