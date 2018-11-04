@@ -2454,5 +2454,24 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllUsersForAdmin()
+  {
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->order_by('users.LASTNAME');
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllUsersForAdmin()
+  {
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->join('departments', 'users.USERID = departments.users_DEPARTMENTHEAD');
+    $this->db->order_by('users.LASTNAME');
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

@@ -2510,7 +2510,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("manageDepartments");
+			$data['departments'] = $this->model->getAllDepartmentsForAdmin();
+
+			$this->load->view("manageDepartments", $data);
 		}
 	}
 
@@ -2523,7 +2525,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("manageUsers");
+			$data['users'] = $this->model->getAllUsersForAdmin();
+
+			$this->load->view("manageUsers", $data);
 		}
 	}
 

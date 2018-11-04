@@ -34,13 +34,20 @@
 							<tr>
 								<th>Last Name</th>
 								<th>First Name</th>
-								<th>Middle Name</th>
+								<th>Position</th>
 								<th>Department</th>
 								<th></th>
 							</tr>
 							</thead>
 							<tbody>
-
+								<?php foreach ($users as $u): ?>
+									<tr>
+										<td><?php echo $u['LASTNAME']; ?></td>
+										<td><?php echo $u['FIRSTNAME']; ?></td>
+										<td><?php echo $u['POSITION']; ?></td>
+										<td><?php echo $u['DEPARTMENTNAME']; ?></td>
+									</tr>
+								<?php endforeach; ?>
 							</tbody>
 						</table>
 					</div>

@@ -21,7 +21,7 @@
 
 			<!-- Main content -->
 			<section class="content container-fluid">
-				
+
 			</section>
 		</div>
 		<?php require("footer.php"); ?>
