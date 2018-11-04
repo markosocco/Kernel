@@ -303,14 +303,16 @@ class model extends CI_Model
 
   public function getTaskCountByProjectByRole($id)
   {
-    $condition = "projects.PROJECTID = '$id' && raci.ROLE != '0' && raci.ROLE != '5' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+    $condition = "projects.PROJECTID = '$id' && raci.ROLE = 1 && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
     $this->db->select('users.*, count(distinct tasks.TASKID) AS "taskCount"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
     $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
     $this->db->group_by('users.USERID');
+    $this->db->order_by('departments.DEPARTMENTNAME');
 
     return $this->db->get()->result_array();
   }
@@ -881,6 +883,7 @@ class model extends CI_Model
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->where($condition);
     $this->db->group_by('DEPARTMENTNAME');
+    $this->db->order_by('DEPARTMENTNAME');
 
     return $this->db->get()->result_array();
   }
@@ -1784,8 +1787,8 @@ class model extends CI_Model
 
   public function getTeamByProject($id)
   {
-    $condition = "raci.STATUS = 'Current' && tasks.projects_PROJECTID = '$id'";
-    $this->db->select('users.*, departments.DEPARTMENTNAME');
+    $condition = "raci.STATUS = 'Current' && role = 1 && tasks.projects_PROJECTID = '$id'";
+    $this->db->select('users.*, tasks.*, departments.DEPARTMENTNAME');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
     $this->db->join('users', 'raci.users_userid = users.userid');
@@ -2528,6 +2531,22 @@ class model extends CI_Model
     $this->db->select('*');
     $this->db->from('assessmentProject');
     $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getDelayedTaskCount($projectID){
+
+    $condition = "projects.PROJECTID = '$projectID' && raci.ROLE = 1 && raci.STATUS = 'Current' && tasks.CATEGORY = '3'";
+    $this->db->select('users.*, tasks.*, COUNT(IF(TASKENDDATE < TASKACTUALENDDATE, 1, NULL)) AS "DELAYEDCOUNT"');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('users.USERID');
+    $this->db->order_by('departments.DEPARTMENTNAME');
 
     return $this->db->get()->result_array();
   }
