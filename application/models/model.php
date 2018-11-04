@@ -2464,7 +2464,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getAllUsersForAdmin()
+  public function getAllDepartmentsForAdmin()
   {
     $this->db->select('*');
     $this->db->from('users');
