@@ -72,7 +72,7 @@
                           <?php foreach(${"departmentPerf" . $department['DEPARTMENTID']} as $performanceData):?>
                             <?php if($counter == 0):?>
                               <tr>
-                                <th rowspan = "<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:24px;"><?php echo $averages[$key-1]['AVERAGE'];?>%</th>
+                                <th rowspan = "<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:24px;"><?php echo $departmentPerformance[$key]['AVERAGE'];?>%</th>
                                 <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
@@ -143,7 +143,17 @@
     {
       var barChartData = {
         // LOOP THROUGH DEPTS
-        labels  : ['MKT', 'OPS', 'MIS', 'FIN', 'FAD', 'HR', 'PROC'],
+        labels  : [
+          <?php $index = 0;?>
+          <?php foreach($departments as $department):?>
+            '<?php echo $department['DEPT'];?>'
+            <?php $index++;?>
+            <?php if(count($departments) > $index):?>
+              ,
+            <?php else:?>
+              ],
+            <?php endif;?>
+          <?php endforeach;?>
         datasets: [
           {
             label               : 'Timeliness',
@@ -153,8 +163,17 @@
             pointStrokeColor    : '#c1c7d1',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [90, 75, 100, 53, 56, 53, 20]
-                                  // GRAY DATA
+            data                : [
+              <?php $index = 0;?>
+              <?php foreach($departmentPerformance as $deptTimeliness):?>
+                <?php echo $deptTimeliness['TIMELINESSAVERAGE'];?>
+                <?php $index++;?>
+                <?php if(count($departmentPerformance) > $index):?>
+                  ,
+                <?php else:?>
+                  ]
+                <?php endif;?>
+              <?php endforeach;?>
           },
           {
             label               : 'Completeness',
@@ -164,8 +183,17 @@
             pointStrokeColor    : 'rgba(60,141,188,1)',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : [28, 48, 40, 19, 86, 27, 90]
-                                  // GREEN DATA
+            data                : [
+              <?php $index = 0;?>
+              <?php foreach($departmentPerformance as $deptCompleteness):?>
+                <?php echo $deptCompleteness['COMPLETENESSAVERAGE'];?>
+                <?php $index++;?>
+                <?php if(count($departmentPerformance) > $index):?>
+                  ,
+                <?php else:?>
+                  ]
+                <?php endif;?>
+              <?php endforeach;?>
           }
         ]
       }

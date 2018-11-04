@@ -2283,10 +2283,10 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjects();
-			$data['departments'] = $this->model->getAllDepartments();
+			$data['departments'] = $this->model->getAllDepartmentsWithoutExecutive();
 			$data['projectCompleteness'] = $this->model->compute_completeness_allProjects();
 			$data['projectTimeliness'] = $this->model->compute_timeliness_allProjects();
-			$data['averages'] = $this->model->compute_departmentPerformance();
+			$data['departmentPerformance'] = $this->model->compute_departmentPerformance();
 
 			foreach($data['departments'] as $department)
 			{
@@ -2307,25 +2307,28 @@ class controller extends CI_Controller
 
 		else
 		{
-			$id = $this->input->post('project');
+			$projectID = $this->input->post('project');
 
-			$data['project'] = $this->model->getProjectByID($id);
-			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
-			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
-			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
-			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($id);
-			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($id);
-			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
-			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
-			$data['documents'] = $this->model->getAllDocumentsByProject($id);
-			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
-			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
-			$data['departments'] = $this->model->compute_timeliness_departmentByProject($id);
-			$data['team'] = $this->model->getTeamByProject($id);
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByID($projectID);
+			$data['tasks'] = $this->model->getAllTasksByIDRole1($projectID);
+			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($projectID);
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
+			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+			$data['changeRequests'] = $this->model->getChangeRequestsByProject($projectID);
+			$data['documents'] = $this->model->getAllDocumentsByProject($projectID);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
+			$data['team'] = $this->model->getTeamByProject($projectID);
 			$data['users'] = $this->model->getAllUsers();
-			$data['allDepartments'] = $this->model->getAllDepartments();
-			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($id);
-			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($id);
+			$data['allDepartments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
+			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($projectID);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($projectID);
+			$data['delayedTaskCount'] = $this->model->getDelayedTaskCount($projectID);
+
 
 			$this->load->view("reportsProjectSummary", $data);
 		}
@@ -2779,7 +2782,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$id = $this->input->post('project_ID');
+			$projectID = $this->input->post('project_ID');
 			$templateProjSummary = $this->input->post('templateProjSummary');
 
 			// if (isset($templateProjSummary))
@@ -2790,23 +2793,23 @@ class controller extends CI_Controller
 			// 	echo "hello";
 			// }
 
-			$data['project'] = $this->model->getProjectByID($id);
-			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($id);
-			$data['subActivity'] = $this->model->getAllSubActivitiesByID($id);
-			$data['tasks'] = $this->model->getAllTasksByIDRole1($id);
-			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($id);
-			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($id);
-			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
-			$data['changeRequests'] = $this->model->getChangeRequestsByProject($id);
-			$data['documents'] = $this->model->getAllDocumentsByProject($id);
-			$data['projectCompleteness'] = $this->model->compute_completeness_project($id);
-			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
-			$data['departments'] = $this->model->compute_timeliness_departmentByProject($id);
-			$data['team'] = $this->model->getTeamByProject($id);
+			$data['project'] = $this->model->getProjectByID($projectID);
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByID($projectID);
+			$data['tasks'] = $this->model->getAllTasksByIDRole1($projectID);
+			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($projectID);
+			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
+			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+			$data['changeRequests'] = $this->model->getChangeRequestsByProject($projectID);
+			$data['documents'] = $this->model->getAllDocumentsByProject($projectID);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			$data['team'] = $this->model->getTeamByProject($projectID);
 			$data['users'] = $this->model->getAllUsers();
 			$data['allDepartments'] = $this->model->getAllDepartments();
-			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($id);
-			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($id);
+			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($projectID);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($projectID);
 
 			$this->load->view("projectSummary", $data);
 		}
