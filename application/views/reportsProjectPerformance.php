@@ -99,16 +99,16 @@
 	                  <div>
                       <br>
                       <br>
-                      <h1>100%</h1>
-                      <h4>Timeliness</h4>
+                      <h1><?php echo $projectCompleteness['completeness']; ?>%</h1>
+                      <h4>Completeness</h4>
 	                  </div>
 	                </div>
 	                <div style="display:inline-block; text-align:center; width:49%; height: 100%; border-left: solid lightgray 1px;">
 	                  <div>
                       <br>
                       <br>
-                      <h1>100%</h1>
-                      <h4>Completeness</h4>
+                      <h1><?php echo $projectTimeliness['timeliness']; ?>%</h1>
+                      <h4>Timeliness</h4>
 	                 </div>
 	               </div>
 	              </div>

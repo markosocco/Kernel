@@ -2391,22 +2391,8 @@ class controller extends CI_Controller
 			$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
 			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
 			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
-
-			// foreach ($data['departmentTimeliness'] as $time)
-			// {
-			// 	foreach ($data['departments'] as $d)
-			// 	{
-			// 		if ($d['DEPARTMENTID'] != 1)
-			// 		{
-			// 			if ($time['DEPT'] == $d['DEPT'])
-			// 			{
-			// 				echo $d['DEPT'] . " " . $time['timeliness'] . "<br>";
-			// 			}
-			// 		}
-			// 	}
-			//
-			// 	echo "========<br>";
-			// }
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 
 			$this->load->view("reportsProjectPerformance", $data);
 		}
