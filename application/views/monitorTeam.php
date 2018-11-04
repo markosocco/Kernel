@@ -30,9 +30,9 @@
 
 							<?php foreach ($staff as $key => $row): ?>
 								<?php if ($row['USERID'] != $_SESSION['USERID']): ?>
-								<div class="col-md-4 employee clickable" data-id="<?php echo $row['USERID']; ?>">
+								<div class="col-md-4 employee" data-id="<?php echo $row['USERID']; ?>">
 									<!-- Widget: user widget style 1 -->
-									<div class="box box-widget widget-user">
+									<div class="box box-widget widget-user clickable">
 										<!-- Add the bg color to the header using any of the bg-* classes -->
 										<div class="widget-user-header bg-aqua-active">
 											<h3 class="widget-user-username"><?php echo $row['FIRSTNAME'] . " " . $row['LASTNAME']; ?></h3>
@@ -65,7 +65,7 @@
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php if (in_array($row['USERID'], $tCountStaff)): ?>
+															<!-- <?php if (in_array($row['USERID'], $tCountStaff)): ?>
 																<?php foreach ($taskCount as $tCount): ?>
 																 <?php if ($row['USERID'] == $tCount['USERID']): ?>
 																	 <?php echo $tCount['taskCount']; ?>
@@ -73,7 +73,9 @@
 															 <?php endforeach; ?>
 															<?php else: ?>
 																0
-															<?php endif; ?>
+															<?php endif; ?> -->
+
+															<?php echo $taskCount[$key]['TASKCOUNT']?>
 														</h5>
 														<span class="description-text">TASKS</span>
 													</div>

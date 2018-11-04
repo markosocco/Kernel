@@ -486,57 +486,61 @@ class controller extends CI_Controller
 			$data['performance'] = array();
 			$data['tCountStaff'] = array();
 			$data['pCountStaff'] = array();
+			$condition = "";
 
 			if ($_SESSION['usertype_USERTYPEID'] == 3)
 			{
 				// echo "head";
 				$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
+				$condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
 			}
 
 			elseif ($_SESSION['usertype_USERTYPEID'] == 4)
 			{
 				// echo "sup";
 				$data['staff'] = $this->model->getAllUsersBySupervisor($_SESSION['USERID']);
+				$condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3 && users_SUPERVISORS = " . $_SESSION['USERID'];
 			}
 
 			$data['projects'] = $this->model->getAllProjects();
 			$data['projectCount'] = $this->model->getProjectCount();
-			$data['taskCount'] = $this->model->getTaskCount();
+			// $data['taskCount'] = $this->model->getTaskCount();
+			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $condition);
 
 			foreach ($data['staff'] as $row)
 			{
 				$data['performance'][] = $this->model->compute_timeliness_employee($row['USERID']);
 			}
 
-			// SAVES USER IDS WITH TASKS INTO ARRAY
-			foreach ($data['taskCount'] as $row2)
-			{
-				$data['tCountStaff'][] = $row2['USERID'];
-			}
-
-			// CHECKS IF STAFF HAS TASK, SAVES INTO ARRAY
-			foreach ($data['staff'] as $s)
-			{
-				if (in_array($s['USERID'], $data['tCountStaff']))
-				{
-					$data['tCountStaff'][] = $s['USERID'];
- 				}
-			}
-
-			// SAVES USER IDS WITH PROJECTS INTO ARRAY
-			foreach ($data['projectCount'] as $row2)
-			{
-				$data['pCountStaff'][] = $row2['USERID'];
-			}
-
-			// CHECKS IF STAFF HAS PROJECTS, SAVES INTO ARRAY
-			foreach ($data['staff'] as $s)
-			{
-				if (in_array($s['USERID'], $data['pCountStaff']))
-				{
-					$data['pCountStaff'][] = $s['USERID'];
- 				}
-			}
+			// // SAVES USER IDS WITH TASKS INTO ARRAY
+			// foreach ($data['taskCount'] as $row2)
+			// {
+			// 	$data['tCountStaff'][] = $row2['USERID'];
+			// }
+			//
+			// // CHECKS IF STAFF HAS TASK, SAVES INTO ARRAY
+			// foreach ($data['staff'] as $s)
+			// {
+			// 	if (in_array($s['USERID'], $data['tCountStaff']))
+			// 	{
+			// 		$data['tCountStaff'][] = $s['USERID'];
+ 			// 	}
+			// }
+			//
+			// // SAVES USER IDS WITH PROJECTS INTO ARRAY
+			// foreach ($data['projectCount'] as $row2)
+			// {
+			// 	$data['pCountStaff'][] = $row2['USERID'];
+			// }
+			//
+			// // CHECKS IF STAFF HAS PROJECTS, SAVES INTO ARRAY
+			// foreach ($data['staff'] as $s)
+			// {
+			// 	if (in_array($s['USERID'], $data['pCountStaff']))
+			// 	{
+			// 		$data['pCountStaff'][] = $s['USERID'];
+ 			// 	}
+			// }
 
 			$this->load->view("monitorTeam", $data);
 		}
