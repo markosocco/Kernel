@@ -2385,7 +2385,26 @@ class controller extends CI_Controller
 			$data['users'] = $this->model->getAllUsers();
 			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
 			$data['raci'] = $this->model->getAllACI();
-			$data['departments'] = $this->model->getAllDepartments();
+			$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
+
+			// foreach ($data['departmentTimeliness'] as $time)
+			// {
+			// 	foreach ($data['departments'] as $d)
+			// 	{
+			// 		if ($d['DEPARTMENTID'] != 1)
+			// 		{
+			// 			if ($time['DEPT'] == $d['DEPT'])
+			// 			{
+			// 				echo $d['DEPT'] . " " . $time['timeliness'] . "<br>";
+			// 			}
+			// 		}
+			// 	}
+			//
+			// 	echo "========<br>";
+			// }
+
 			$this->load->view("reportsProjectPerformance", $data);
 		}
 	}

@@ -349,30 +349,70 @@
   lineChartOptions.datasetFill = false
   lineChart.Line(lineChartData, lineChartOptions)
 
+
+
     var barChartData = {
       // LOOP THROUGH DEPTS
-      labels  : ['MKT', 'OPS', 'MIS', 'FIN', 'FAD', 'HR', 'PROC'],
+      labels  : [
+        <?php $depts = array() ?>
+        <?php foreach ($departments as $deptKey => $dept): ?>
+          <?php if ($dept['DEPARTMENTID'] != 1): ?>
+            '<?php echo $dept['DEPT']; ?>'
+            <?php array_push($depts, $dept['DEPT']); ?>
+            <?php if (end($departments) == $dept): ?>
+              ],
+            <?php else: ?>
+              ,
+            <?php endif; ?>
+          <?php endif; ?>
+        <?php endforeach; ?>
       datasets: [
         {
-          label               : 'Timeliness',
+          label               : 'Completeness',
           fillColor           : 'rgba(210, 214, 222, 1)',
           strokeColor         : 'rgba(210, 214, 222, 1)',
           pointColor          : 'rgba(210, 214, 222, 1)',
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [90, 75, 100, 53, 56, 53, 20]
+          data                : [
+            <?php foreach ($departments as $dKey => $d): ?>
+              <?php foreach ($departmentCompleteness as $comp): ?>
+                <?php if ($d['DEPT'] == $comp['DEPT']): ?>
+                  <?php echo $comp['completeness']; ?>
+
+                  <?php if (count($departmentCompleteness) == ($dKey + 1)): ?>
+                      ]
+                  <?php else: ?>
+                      ,
+                  <?php endif; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php endforeach; ?>
                                 // GRAY DATA
         },
         {
-          label               : 'Completeness',
+          label               : 'Timeliness',
           fillColor           : 'rgba(60,141,188,0.9)',
           strokeColor         : 'rgba(60,141,188,0.8)',
           pointColor          : '#3b8bba',
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
+          data                : [
+            <?php foreach ($departments as $dKey => $d): ?>
+              <?php foreach ($departmentTimeliness as $time): ?>
+                <?php if ($d['DEPT'] == $time['DEPT']): ?>
+                  <?php echo $time['timeliness']; ?>
+
+                  <?php if (count($departmentTimeliness) == ($dKey + 1)): ?>
+                      ]
+                  <?php else: ?>
+                      ,
+                  <?php endif; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php endforeach; ?>
                                 // GREEN DATA
         }
       ]
