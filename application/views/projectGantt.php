@@ -804,13 +804,13 @@
 
 					<a name="PROJECTID_logs" class="btn btn-primary btn" id="projectLog" data-toggle="tooltip" data-placement="top" title="Logs"><i class="fa fa-list"></i></a>
 
-					<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete'): ?>
+					<?php if ($projectProfile['PROJECTSTATUS'] == 'Complete' && $_SESSION['usertype_USERTYPEID'] != 5): ?>
 
 						<form action = 'archiveProject' id="archiveProject" method="POST" style="display:inline-block">
 						</form>
 						<span data-toggle="modal" data-target="#confirmArchive"><a name="" class="btn btn-primary btn" id="archiveProject" data-toggle="tooltip" data-placement="top" title="Archive Project"><i class="fa fa-archive"></i></a></span>
 
-					<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt'])): ?>
+					<?php elseif($projectProfile['PROJECTSTATUS'] == 'Archived' && !isset($_SESSION['templates']) && !isset($_SESSION['templateProjectGantt']) && $_SESSION['usertype_USERTYPEID'] != 5): ?>
 
 						<?php if (!$isTemplate): ?>
 							<form id="templateProject" action = 'templateProject' method="POST" style="display:inline-block">
