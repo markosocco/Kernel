@@ -311,18 +311,61 @@ class controller extends CI_Controller
 				// $mainCompletenessFound = $this->model->checkMainCompleteness();
 				// if($mainCompletenessFound == NULL){
 				//
-				// 	$projectAssessment = $this->model->compute_daily_projectPerformance();
+				// 	$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
+				// 	$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
+				// 	$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+				// 	$data['weight'] = $this->model->compute_completeness_project($projectID);
 				//
-				// 	foreach ($projectAssessment as $value){
+				// 	$weight = $data['weight']['weight'];
 				//
-				// 		$mainCompletenessData = array (
-				// 			'COMPLETENESS' => $value['completeness'],
-				// 			'projects_PROJECTID' => $value['projects_PROJECTID'],
-				// 			'DATE' => date('Y-m-d'),
-				// 			'TYPE' => 2
+				// 	$mainActCompleteness = array();
+				// 	$subActCompleteness = array();
+				//
+				// 	// SET COMPLETENESS
+				// 	foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
+				// 	{
+				// 		$mainCompleteness = 0;
+				//
+				// 		foreach ($data['subActivities'] as $subCompKey => $subCompValue)
+				// 		{
+				// 			if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
+				// 			{
+				// 				$subCompleteness = 0;
+				//
+				// 				foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
+				// 				{
+				// 					if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
+				// 					{
+				// 						if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
+				// 						{
+				// 							$subCompleteness += $weight;
+				// 						}
+				// 					}
+				// 				}
+				//
+				// 				$mainCompleteness += $subCompleteness;
+				//
+				// 				$subCompleteness = array(
+				// 					'TASKID' => $subCompValue['TASKID'],
+				// 					'subCompleteness' => round($subCompleteness, 2),
+				// 					'tasks_TASKPARENT' => $mainCompValue['TASKID']
+				// 				);
+				//
+				// 				array_push($subActCompleteness, $subCompleteness);
+				// 			}
+				// 		}
+				//
+				// 		$mainCompleteness = array(
+				// 			'tasks_MAINID' => $mainCompValue['TASKID'],
+				// 			'COMPLETENESS' => round($mainCompleteness, 2),
+				// 			'projects_PROJECTID' => $projectID,
+				// 			'TYPE' => 2,
+				// 			'DATE' => date('Y-m-d')
 				// 		);
 				//
-				// 		$this->model->addProjectAssessment($mainCompletenessData);
+				// 		array_push($mainActCompleteness, $mainCompleteness);
+				//
+				// 		$addAssessment = $this->model->addProjectAssessment($mainCompleteness);
 				// 	}
 				// }
 
@@ -2366,11 +2409,6 @@ class controller extends CI_Controller
 			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
 			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
 
-			// $data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
-			// $data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
-			$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-			$data['weight'] = $this->model->compute_completeness_project($projectID);
-
 			foreach($data['mainActivities'] as $mainActivity)
 			{
 				foreach($data['subActivities'] as $subActivity)
@@ -2379,78 +2417,66 @@ class controller extends CI_Controller
 				}
 			}
 
-			// // Department Performance Assessment
-			// $departmentAssessmentFound = $this->model->checkDepartmentAssessment();
-			// if($departmentAssessmentFound == NULL){
-			//
-			// 	$departmentAssessment = $this->model->compute_daily_departmentPerformance();
-			//
-			// 	foreach ($departmentAssessment as $value){
-			//
-			// 		$departmentAssessmentData = array (
-			// 			'COMPLETENESS' => $value['completeness'],
-			// 			'TIMELINESS' => $value['timeliness'],
-			// 			'departments_DEPARTMENTID' => $value['departments_DEPARTMENTID'],
-			// 			'DATE' => date('Y-m-d')
-			// 		);
-			//
-			// 		$this->model->addDepartmentAssessment($departmentAssessmentData);
-			// 	}
-			// }
+			// Main Completeness
+			$mainCompletenessFound = $this->model->checkMainCompleteness($projectID);
+			if($mainCompletenessFound == NULL){
 
-			$weight = $data['weight']['weight'];
+				$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
+				$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
+				$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+				$data['weight'] = $this->model->compute_completeness_project($projectID);
 
-			// 3.7037
-			// 5.8824
+				$weight = $data['weight']['weight'];
 
-			$mainActCompleteness = array();
-			$subActCompleteness = array();
+				$mainActCompleteness = array();
+				$subActCompleteness = array();
 
-			// SET COMPLETENESS
-			foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
-			{
-				$mainCompleteness = 0;
-
-				foreach ($data['subActivities'] as $subCompKey => $subCompValue)
+				// SET COMPLETENESS
+				foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
 				{
-					if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
-					{
-						$subCompleteness = 0;
+					$mainCompleteness = 0;
 
-						foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
+					foreach ($data['subActivities'] as $subCompKey => $subCompValue)
+					{
+						if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
 						{
-							if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
+							$subCompleteness = 0;
+
+							foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
 							{
-								if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
+								if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
 								{
-									$subCompleteness += $weight;
+									if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
+									{
+										$subCompleteness += $weight;
+									}
 								}
 							}
+
+							$mainCompleteness += $subCompleteness;
+
+							$subCompleteness = array(
+								'TASKID' => $subCompValue['TASKID'],
+								'subCompleteness' => round($subCompleteness, 2),
+								'tasks_TASKPARENT' => $mainCompValue['TASKID']
+							);
+
+							array_push($subActCompleteness, $subCompleteness);
 						}
-
-						$mainCompleteness += $subCompleteness;
-
-						$subCompleteness = array(
-							'TASKID' => $subCompValue['TASKID'],
-							'subCompleteness' => round($subCompleteness, 2),
-							'tasks_TASKPARENT' => $mainCompValue['TASKID']
-						);
-
-						array_push($subActCompleteness, $subCompleteness);
 					}
+
+					$mainCompleteness = array(
+						'tasks_MAINID' => $mainCompValue['TASKID'],
+						'COMPLETENESS' => round($mainCompleteness, 2),
+						'projects_PROJECTID' => $projectID,
+						'TYPE' => 2,
+						'DATE' => date('Y-m-d')
+					);
+
+					array_push($mainActCompleteness, $mainCompleteness);
+
+					$addAssessment = $this->model->addProjectAssessment($mainCompleteness);
 				}
-
-				$mainCompleteness = array(
-					'tasks_MAINID' => $mainCompValue['TASKID'],
-					'COMPLETENESS' => round($mainCompleteness, 2),
-					'projects_PROJECTID' => $projectID,
-					'TYPE' => 2,
-					'DATE' => date('Y-m-d')
-				);
-
-				array_push($mainActCompleteness, $mainCompleteness);
-
-				// $addAssessment = $this->model->addProjectAssessment($mainCompleteness);
 			}
 
 			$data['pastProgress'] = $this->model->getAssessmentByMain($data['interval'], $projectID);
