@@ -94,17 +94,14 @@
                           <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
                             Main 1 (10%)
                           </div>
-
-                          <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
-                            Main 2 (10%)
-                          </div>
-                          <div class="progress-bar" role="progressbar" style="width:10%; background-color:#005b96 !important;">
-                            Main 3 (10%)
-                          </div>
-                          <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
-                            Main 1 (10%)
-                          </div>
-
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <!-- TOTAL PROGRESS -->
+                        <span class="pull-right" style="margin-left:10px;">60%</span>
+                        <div class="progress">
                           <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
                             Main 2 (10%)
                           </div>
@@ -116,9 +113,6 @@
                           </div>
                         </div>
                       </td>
-                    </tr>
-                    <tr>
-                      <td>GRAPH 2</td>
                     </tr>
   								</table>
   							</div>
