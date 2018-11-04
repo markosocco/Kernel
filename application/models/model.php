@@ -2487,5 +2487,25 @@ class model extends CI_Model
     return $this->db->get()->result_array();
 
   }
+
+  public function getAssessmentByMain($key, $projectID)
+  {
+    $condition = "projects_PROJECTID = " . $projectID . " AND TYPE = 2 AND DATE = date_sub(curdate(), INTERVAL " . $key . " DAY)";
+    $this->db->select('*');
+    $this->db->from('assessmentProject');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getCurrentAssessmentByMain($projectID)
+  {
+    $condition = "projects_PROJECTID = " . $projectID . " && DATE = '" . date('Y-m-d') . "' && TYPE = 2";
+    $this->db->select('*');
+    $this->db->from('assessmentProject');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

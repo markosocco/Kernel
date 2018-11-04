@@ -2427,7 +2427,7 @@ class controller extends CI_Controller
 
 						$subCompleteness = array(
 							'TASKID' => $subCompValue['TASKID'],
-							'subCompleteness' => $subCompleteness,
+							'subCompleteness' => round($subCompleteness, 2),
 							'tasks_TASKPARENT' => $mainCompValue['TASKID']
 						);
 
@@ -2437,15 +2437,19 @@ class controller extends CI_Controller
 
 				$mainCompleteness = array(
 					'tasks_MAINID' => $mainCompValue['TASKID'],
-					'COMPLETENESS' => $mainCompleteness,
+					'COMPLETENESS' => round($mainCompleteness, 2),
 					'projects_PROJECTID' => $projectID,
-					'TYPE' => 2
+					'TYPE' => 2,
+					'DATE' => date('Y-m-d')
 				);
 
 				array_push($mainActCompleteness, $mainCompleteness);
 
-				$addAssessment = $this->model->addProjectAssessment($mainCompleteness);
+				// $addAssessment = $this->model->addProjectAssessment($mainCompleteness);
 			}
+
+			$data['pastProgress'] = $this->model->getAssessmentByMain($data['interval'], $projectID);
+			$data['currentProgress'] = $this->model->getCurrentAssessmentByMain($projectID);
 
 			$this->load->view("reportsProjectProgress", $data);
 		}

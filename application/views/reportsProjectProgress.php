@@ -72,20 +72,68 @@
                             <th class='text-center'>Current</th>
                           </tr>
 
+                          <?php $pastTotalProgress = 0; ?>
+                          <?php $currentTotalProgress = 0; ?>
+
                           <?php foreach ($mainActivities as $main): ?>
                               <tr>
-                                <td align="center">1k%</td>
+                                <?php if (count($pastProgress) == 0): ?>
+                                  <td>No data available</td>
+                                <?php else: ?>
+                                  <?php foreach ($pastProgress as $past): ?>
+                                    <?php if ($main['TASKID'] == $past['tasks_MAINID']): ?>
+                                      <td align="center"><?php echo $past['COMPLETENESS']; ?>%</td>
+                                      <?php $pastTotalProgress += $past['COMPLETENESS']; ?>
+                                    <?php endif; ?>
+                                  <?php endforeach;?>
+                                <?php endif; ?>
+
                                 <td align="center"><?php echo $main['TASKTITLE']; ?></td>
-                                <td align="center">1M%</td>
+
+                                <?php foreach ($currentProgress as $current): ?>
+                                  <?php if ($main['TASKID'] == $current['tasks_MAINID']): ?>
+                                    <td align="center"><?php echo $current['COMPLETENESS']; ?>%</td>
+                                    <?php $currentTotalProgress += $current['COMPLETENESS']; ?>
+                                  <?php endif; ?>
+                                <?php endforeach; ?>
                               </tr>
                           <?php endforeach; ?>
                         </table>
                       </td>
                       <td>
+                        <!-- LAST WEEK/MONTH  -->
                         <!-- TOTAL PROGRESS -->
-                        <span class="pull-right" style="margin-left:10px;">60%</span>
+                        <span class="pull-right" style="margin-left:10px;"><?php echo $pastTotalProgress; ?>%</span>
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
+
+                          <?php $colorCounter = 1; ?>
+
+                          <?php foreach ($mainActivities as $mainProgressBar): ?>
+
+                              <?php foreach ($pastProgress as $pastBar): ?>
+                                <?php if ($mainProgressBar['TASKID'] == $pastBar['tasks_MAINID']): ?>
+                                  <div class="progress-bar" role="progressbar" style="width:<?php echo $pastBar['COMPLETENESS'] ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
+                                    <?php echo $mainProgressBar['TASKTITLE'] . " (" . $pastBar['COMPLETENESS'] . "%)"; ?>
+                                  </div>
+
+                                  <?php
+                                    if ($colorCounter == 3)
+                                    {
+                                      $colorCounter = 1;
+                                    }
+
+                                    else
+                                    {
+                                      $colorCounter++;
+                                    }
+
+                                  ?>
+                                <?php endif; ?>
+                              <?php endforeach;?>
+
+                          <?php endforeach; ?>
+
+                          <!-- <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
                             Main 2 (10%)
                           </div>
                           <div class="progress-bar" role="progressbar" style="width:10%; background-color:#005b96 !important;">
@@ -93,16 +141,45 @@
                           </div>
                           <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
                             Main 1 (10%)
-                          </div>
+                          </div> -->
                         </div>
                       </td>
                     </tr>
                     <tr>
                       <td>
+                        <!-- THIS WEEK/MONTH -->
                         <!-- TOTAL PROGRESS -->
-                        <span class="pull-right" style="margin-left:10px;">60%</span>
+                        <span class="pull-right" style="margin-left:10px;"><?php echo $currentTotalProgress; ?>%</span>
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
+
+                          <?php $colorCounter = 1; ?>
+
+                          <?php foreach ($mainActivities as $mainProgressBar): ?>
+
+                              <?php foreach ($currentProgress as $currentBar): ?>
+                                <?php if ($mainProgressBar['TASKID'] == $currentBar['tasks_MAINID']): ?>
+                                  <div class="progress-bar" role="progressbar" style="width:<?php echo $currentBar['COMPLETENESS'] ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
+                                    <?php echo $mainProgressBar['TASKTITLE'] . " (" . $currentBar['COMPLETENESS'] . "%)"; ?>
+                                  </div>
+
+                                  <?php
+                                    if ($colorCounter == 3)
+                                    {
+                                      $colorCounter = 1;
+                                    }
+
+                                    else
+                                    {
+                                      $colorCounter++;
+                                    }
+
+                                  ?>
+                                <?php endif; ?>
+                              <?php endforeach;?>
+
+                          <?php endforeach; ?>
+
+                          <!-- <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
                             Main 2 (10%)
                           </div>
                           <div class="progress-bar" role="progressbar" style="width:10%; background-color:#005b96 !important;">
@@ -110,7 +187,7 @@
                           </div>
                           <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
                             Main 1 (10%)
-                          </div>
+                          </div> -->
                         </div>
                       </td>
                     </tr>
