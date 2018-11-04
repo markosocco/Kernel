@@ -51,20 +51,21 @@
 
            <div class="pull-right" style="display:inline-block; margin-right: 20px">
              <div style="display:inline-block; text-align:center; width:49%; padding-right: 20px">
-               <h3>100%</h3>
+               <h3><?php echo $timeliness['timeliness']; ?>%</h3>
                <h6>Timeliness</h6>
              </div>
              <div style="display:inline-block; text-align:center; width:49%; padding-left: 20px; border-left: solid lightgray 1px;">
-               <h3>100%</h3>
+               <h3><?php echo $completeness['completeness']; ?>%</h3>
                <h6>Completeness</h6>
              </div>
            </div>
 
-          <?php foreach($projectCount as $project):?>
+          <?php foreach($projectCount as $key => $project):?>
           <table class="table table-bordered table-condensed" id="">
             <thead>
                 <tr>
-                  <th colspan="11"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
+                  <th colspan="1"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
+                  <th colspan="8">Completess: <?php echo $projectPerformance[$key]['completeness'] . "%"; ?> || Timeliness: <?php echo $projectPerformance[$key]['timeliness'] . "%"; ?></th>
                 </tr>
                 <tr>
                   <th width="20%">Task</th>
@@ -76,8 +77,6 @@
                   <th class='text-center' width="15%">C</th>
                   <th class='text-center' width="15%">I</th>
                   <th class='text-center' width="10%">Status</th>
-                  <th class='text-center' width="5%">Completeness</th>
-                  <th class='text-center' width="5%">Timeliness</th>
                 </tr>
               </thead>
                 <tbody>
@@ -145,8 +144,6 @@
                         <?php endforeach; ?>
                       </td>
                       <td align='center'><?php echo $task['TASKSTATUS'];?></td>
-                      <td align='center'>0%</td>
-                      <td align='center'>0%</td>
                     </tr>
                   <?php endif;?>
                 <?php endforeach;?>
