@@ -2426,7 +2426,7 @@ class controller extends CI_Controller
 			//
 			//
 			// }
-			
+
 			// $mainData = array(
 			// 	'MAINID' => ,
 			// 	'mainCompleteness' => ,
@@ -3637,6 +3637,7 @@ class controller extends CI_Controller
 	{
 		$id = $this->input->post('project_ID');
 
+		$parent = $this->input->post('subActivity_ID');
 		$title = $this->input->post('title');
 		$startDates = $this->input->post('taskStartDate');
 		$endDates = $this->input->post('taskEndDate');
