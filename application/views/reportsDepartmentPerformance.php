@@ -75,15 +75,15 @@
                                 <th rowspan = "<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:24px;"><?php echo $averages[$key-1]['AVERAGE'];?>%</th>
                                 <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
-                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?></td>
-                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?>%</td>
                               </tr>
                             <?php else:?>
                               <tr>
                                 <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
-                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?></td>
-                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?></td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?>%</td>
                               </tr>
                               <?php endif;?>
                           <?php $counter++;?>

@@ -67,17 +67,17 @@
                   <th colspan="11"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
                 </tr>
                 <tr>
-                  <th>Task</th>
-                  <th class='text-center'>Start Date</th>
-                  <th class='text-center'>End Date</th>
-                  <th class='text-center'>Actual<br>End Date</th>
-                  <th class='text-center'>Days<br>Delayed</th>
-                  <th class='text-center'>A</th>
-                  <th class='text-center'>C</th>
-                  <th class='text-center'>I</th>
-                  <th class='text-center'>Status</th>
-                  <th class='text-center'>Completeness</th>
-                  <th class='text-center'>Timeliness</th>
+                  <th width="20%">Task</th>
+                  <th class='text-center' width="10%">Start Date</th>
+                  <th class='text-center' width="10%">End Date</th>
+                  <th class='text-center' width="10%">Actual<br>End Date</th>
+                  <th class='text-center' width="5%">Days<br>Delayed</th>
+                  <th class='text-center' width="15%">A</th>
+                  <th class='text-center' width="15%">C</th>
+                  <th class='text-center' width="15%">I</th>
+                  <th class='text-center' width="10%">Status</th>
+                  <th class='text-center' width="5%">Completeness</th>
+                  <th class='text-center' width="5%">Timeliness</th>
                 </tr>
               </thead>
                 <tbody>
@@ -168,13 +168,13 @@
     									<thead>
     										<tr>
     											<th width="0%">Task</th>
-                          <th class="text-center" width="0%">End Date</th>
+                          <th class="text-center" width="10%">End Date</th>
                           <th width="0%" class='text-center'>Type</th>
-                          <th width="0" class="text-center">Date Requested</th>
+                          <th width="0" class="text-center" width="10%">Date Requested</th>
     											<th width="0%">Reason</th>
                           <th width="0%" class="text-center">Status</th>
                           <th width="0%">Reviewed By</th>
-                          <th width="0%" class="text-center">Reviewed Date</th>
+                          <th width="0%" class="text-center" width="10%">Reviewed Date</th>
     										</tr>
     									</thead>
     									<tbody>

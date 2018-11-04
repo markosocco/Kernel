@@ -92,9 +92,9 @@
   											<th>Name</th>
                         <th>Position</th>
   											<th>Department</th>
-  											<th class='text-center'>Total Tasks</th>
-                        <th class='text-center'>Delayed Tasks</th>
-  											<th class='text-center'>Timeliness</th>
+  											<th class='text-center' width="10%">Total Tasks</th>
+                        <th class='text-center' width="10%">Delayed Tasks</th>
+  											<th class='text-center' width="10%">Timeliness</th>
   										</tr>
   									</thead>
   									<tbody>
@@ -151,7 +151,7 @@
   											<th width="10%" class='text-center'>Actual<br>End Date</th>
   											<th width="5%" class='text-center'>Days Delayed</th>
                         <th width="15%">Responsible</th>
-                        <th width="15%" class='text-center'>Department</th>
+                        <th width="15%">Department</th>
   											<th width="25">Reason</th>
   										</tr>
   									</thead>
@@ -176,7 +176,7 @@
   												<td class='text-center'><?php echo date_format(date_create($task['TASKACTUALENDDATE']), "M d, Y");?></td>
   												<td align="center"><?php echo $delay;?></td>
                           <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
-                          <td class='text-center'><?php echo $task['DEPARTMENTNAME'];?></td>
+                          <td><?php echo $task['DEPARTMENTNAME'];?></td>
   												<td><?php echo $task['TASKREMARKS'];?></td>
   											</tr>
   										<?php endif;?>
@@ -223,7 +223,7 @@
   											<th width="10%" class='text-center'>Actual<br>End Date</th>
   											<th width="5%" class='text-center'>Days Early</th>
                         <th width="15%">Responsible</th>
-                        <th width="15%" class='text-center'>Department</th>
+                        <th width="15%">Department</th>
   											<th width="25">Reason</th>
   										</tr>
   									</thead>
@@ -249,7 +249,7 @@
   													<td class='text-center'><?php echo date_format(date_create($task['TASKACTUALENDDATE']), "M d, Y");?></td>
   													<td align="center"><?php echo $early;?></td>
                             <td><?php echo $task['FIRSTNAME'];?> <?php echo $task['LASTNAME'];?></td>
-                            <td class='text-center'><?php echo $task['DEPARTMENTNAME'];?></td>
+                            <td><?php echo $task['DEPARTMENTNAME'];?></td>
   													<td><?php echo $task['TASKREMARKS'];?></td>
   												</tr>
   											<?php endif;?>
@@ -296,7 +296,7 @@
                         <th width="0%" class='text-center'>Date Requested</th>
                         <th width="0">Reason</th>
   											<th width="0%">Requested By</th>
-  											<th width="0%" class='text-center'>Department</th>
+  											<th width="0%">Department</th>
   											<th width="0%" class='text-center'>Status</th>
   											<th width="0%">Reviewed By</th>
   											<th width="0%" class='text-center'>Date Reviewed</th>
@@ -338,7 +338,7 @@
                           <td class='text-center'><?php echo date_format($requestdate, "M d, Y");?></td>
                           <td><?php echo $request['REASON'];?></td>
                         	<td><?php echo $requester;?></td>
-  												<td class='text-center'><?php echo $deptName;?></td>
+  												<td><?php echo $deptName;?></td>
   												<td class='text-center'><?php echo $request['REQUESTSTATUS'];?></td>
   												<?php if($request['REQUESTSTATUS'] == 'Pending'):?>
   													<td align='center'>-</td>
