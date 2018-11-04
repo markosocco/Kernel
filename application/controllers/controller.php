@@ -2429,11 +2429,10 @@ class controller extends CI_Controller
 						}
 
 						$mainCompleteness += $subCompleteness;
-						// echo $subCompValue['TASKID'] . " " . $subCompValue['TASKTITLE'] . " = " . $subCompleteness . "<br><br>";
 
 						$subCompleteness = array(
 							'TASKID' => $subCompValue['TASKID'],
-							'subCompleteness' => $subCompleteness,
+							'subCompleteness' => round($subCompleteness, 2),
 							'tasks_TASKPARENT' => $mainCompValue['TASKID']
 						);
 
@@ -2441,29 +2440,23 @@ class controller extends CI_Controller
 					}
 				}
 
-				// echo $mainCompValue['TASKID'] . " " . $mainCompValue['TASKTITLE'] . " = " . $mainCompleteness . "<br><br>";
-
 				$mainCompleteness = array(
-					'TASKID' => $mainCompValue['TASKID'],
-					'mainCompleteness' => $mainCompleteness
+					'tasks_MAINID' => $mainCompValue['TASKID'],
+					'COMPLETENESS' => round($mainCompleteness, 2),
+					'projects_PROJECTID' => $projectID,
+					'TYPE' => 2,
+					'DATE' => date('Y-m-d')
 				);
 
 				array_push($mainActCompleteness, $mainCompleteness);
+
+				// $addAssessment = $this->model->addProjectAssessment($mainCompleteness);
 			}
 
-			foreach ($subActCompleteness as $cKey => $s)
-			{
-				echo $cKey . " " . $s['TASKID'] . " = " . $s['subCompleteness'] . " parent " . $s['tasks_TASKPARENT'] . "<br>";
-			}
+			$data['pastProgress'] = $this->model->getAssessmentByMain($data['interval'], $projectID);
+			$data['currentProgress'] = $this->model->getCurrentAssessmentByMain($projectID);
 
-			echo "===============<br>";
-
-			foreach ($mainActCompleteness as $mKey => $m)
-			{
-				echo $mKey . " " . $m['TASKID'] . " = " . $m['mainCompleteness']  . "<br>";
-			}
-
-			// $this->load->view("reportsProjectProgress", $data);
+			$this->load->view("reportsProjectProgress", $data);
 		}
 	}
 
