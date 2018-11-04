@@ -64,8 +64,9 @@
           <table class="table table-bordered table-condensed" id="">
             <thead>
                 <tr>
-                  <th colspan="1"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
-                  <th colspan="8">Completess: <?php echo $projectPerformance[$key]['completeness'] . "%"; ?> || Timeliness: <?php echo $projectPerformance[$key]['timeliness'] . "%"; ?></th>
+                  <th colspan="2"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
+                  <th colspan="2">Completess: <?php echo $projectPerformance[$key]['completeness'] . "%"; ?></th>
+                  <th colspan="5">Timeliness: <?php echo $projectPerformance[$key]['timeliness'] . "%"; ?></th>
                 </tr>
                 <tr>
                   <th width="20%">Task</th>

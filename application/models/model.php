@@ -875,7 +875,7 @@ class model extends CI_Model
 // GETS ALL DEPARTMENTS INVOLVED IN A PROJECT
   public function getAllDepartmentsByProject($projectID)
   {
-    $condition = "raci.ROLE = 1 && raci.STATUS = 'Current' && tasks.projects_PROJECTID = " . $projectID;
+    $condition = "raci.STATUS = 'Current' && tasks.projects_PROJECTID = " . $projectID;
     $this->db->select('*');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');

@@ -655,7 +655,7 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
-			$data['allDepartments'] = $this->model->getAllDepartmentsByProject($projectID);
+			$data['allDepartments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
 			$data['departments'] = $this->model->compute_timeliness_departmentByProject($projectID);
 			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
 			$data['delayedTasks'] = $this->model->getAllOngoingDelayedTasksByIDRole1($projectID);
@@ -2390,12 +2390,16 @@ class controller extends CI_Controller
 			$data['users'] = $this->model->getAllUsers();
 			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
 			$data['raci'] = $this->model->getAllACI();
-			$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
+<<<<<<< HEAD
+			$data['departments'] = $this->model->getAllDepartments();
+=======
+			$data['departments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
 			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
 			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 
+>>>>>>> b231573cddbf3eec33d05acf21110c73ac7fdd29
 			$this->load->view("reportsProjectPerformance", $data);
 		}
 	}
