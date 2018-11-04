@@ -2391,50 +2391,70 @@ class controller extends CI_Controller
 
 			$weight = $data['weight']['weight'];
 
-			$subActivityArray = array();
-			$mainActivityArray = array();
-			$subCompleteness = 0;
-			$mainCompleteness = 0;
+			// 3.7037
+			// 5.8824
 
-			foreach($data['subActivities'] as $keySub => $sub){
+			$mainActCompleteness = array();
+			$subActCompleteness = array();
 
-				$subCompleteness = 0;
+			// SET COMPLETENESS
+			foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
+			{
+				$mainCompleteness = 0;
 
-				foreach($data['allTasks'] as $keyTask => $task) {
+				foreach ($data['subActivities'] as $subCompKey => $subCompValue)
+				{
+					if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
+					{
+						$subCompleteness = 0;
 
-					if($sub['TASKID'] == $task['tasks_TASKPARENT']){
-
-						if($task['TASKSTATUS'] == 'Complete'){
-							$subCompleteness += $weight;
-							echo "after - " . $subCompleteness . "<br><br>";
+						foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
+						{
+							if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
+							{
+								if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
+								{
+									$subCompleteness += $weight;
+								}
+							}
 						}
+
+						$mainCompleteness += $subCompleteness;
+						// echo $subCompValue['TASKID'] . " " . $subCompValue['TASKTITLE'] . " = " . $subCompleteness . "<br><br>";
+
+						$subCompleteness = array(
+							'TASKID' => $subCompValue['TASKID'],
+							'subCompleteness' => $subCompleteness,
+							'tasks_TASKPARENT' => $mainCompValue['TASKID']
+						);
+
+						array_push($subActCompleteness, $subCompleteness);
 					}
 				}
 
-				$subData = array(
-					'SUBID' => $sub['TASKID'],
-					'subCompleteness' => $subCompleteness,
-					'tasks_TASKPARENT' => $sub['tasks_TASKPARENT']
+				// echo $mainCompValue['TASKID'] . " " . $mainCompValue['TASKTITLE'] . " = " . $mainCompleteness . "<br><br>";
+
+				$mainCompleteness = array(
+					'TASKID' => $mainCompValue['TASKID'],
+					'mainCompleteness' => $mainCompleteness
 				);
 
-				array_push($subActivityArray, $subData);
+				array_push($mainActCompleteness, $mainCompleteness);
 			}
 
-			// foreach($data['mainActivities'] as $keyMain => $main){
-			//
-			//
-			//
-			//
-			// }
+			foreach ($subActCompleteness as $cKey => $s)
+			{
+				echo $cKey . " " . $s['TASKID'] . " = " . $s['subCompleteness'] . " parent " . $s['tasks_TASKPARENT'] . "<br>";
+			}
 
-			// $mainData = array(
-			// 	'MAINID' => ,
-			// 	'mainCompleteness' => ,
-			// );
+			echo "===============<br>";
 
-			// array_push($mainActivityArray, $mainData);
+			foreach ($mainActCompleteness as $mKey => $m)
+			{
+				echo $mKey . " " . $m['TASKID'] . " = " . $m['mainCompleteness']  . "<br>";
+			}
 
-			$this->load->view("reportsProjectProgress", $data);
+			// $this->load->view("reportsProjectProgress", $data);
 		}
 	}
 
