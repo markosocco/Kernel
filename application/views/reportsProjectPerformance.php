@@ -271,9 +271,10 @@
     var lineChartData = {
 
       labels  : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+      // YOU CAN LOOP INSIDE THE BRACKET TO MAKE IT DYNAMIC
       datasets: [
         {
-          label               : 'Digital Goods',
+          label               : 'timeliness Goods',
           fillColor           : 'rgba(60,141,188,0.9)',
           strokeColor         : 'rgba(60,141,188,0.8)',
           pointColor          : '#3b8bba',
@@ -281,6 +282,16 @@
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
           data                : [0, 15, 25, 27, 50, 70, 73, 80, 85, 90, 99, 100]
+        },
+        {
+          label               : 'Electronics',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
         }
       ]
     }
