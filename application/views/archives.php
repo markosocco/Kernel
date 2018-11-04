@@ -37,7 +37,7 @@
 								<th width="35%">Project</th>
 								<th>Owner</th>
 								<th width = "15%" class='text-center'>Start Date</th>
-								<th width = "15%" class='text-center'>Target End Date</th>
+								<th width = "15%" class='text-center'>Target<br>End Date</th>
 								<th width = "15%" class='text-center'>Actual End Date</th>
 							</tr>
 							</thead>
