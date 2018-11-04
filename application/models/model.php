@@ -2473,5 +2473,19 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function getTaskCountPerDepartment($deptID , $condition){
+
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
+    $this->db->select('users_USERID, COUNT(IF(taskstatus = "Ongoing", 1, NULL)) AS "TASKCOUNT"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+    $this->db->group_by('users_USERID');
+
+    return $this->db->get()->result_array();
+
+  }
 }
 ?>
