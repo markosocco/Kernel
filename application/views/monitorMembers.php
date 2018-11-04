@@ -76,14 +76,14 @@
 						<?php $projCount = 0;?>
 						<?php foreach ($pCount as $p): ?>
 						<?php  if ($p['USERID'] == $user['USERID']): ?>
-							<?php $projCount = $p['projectCount']; ?>
+							<?php $projCount = $p['PROJECTCOUNT']; ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
 
 					<?php $taskCount = 0;?>
 					<?php foreach ($tCount as $t): ?>
-					<?php  if ($t['USERID'] == $user['USERID']): ?>
-						<?php $taskCount =  $t['taskCount']; ?>
+					<?php  if ($t['users_USERID'] == $user['USERID']): ?>
+						<?php $taskCount =  $t['TASKCOUNT']; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
 
@@ -116,6 +116,9 @@
             <!-- /.box-header -->
             <div class="box-body">
               <!-- START LOOP HERE -->
+							<?php if($projects == NULL): ?>
+								<h3 class = "projects" align="center">There are no projects</h3>
+							<?php else: ?>
               <?php foreach ($projects as $row): ?>
 								<h4><?php echo $row['PROJECTTITLE']; ?></h4>
 	              <table class="table table-bordered">
@@ -214,6 +217,7 @@
 	                </tbody>
 	              </table>
 							<?php endforeach; ?>
+						<?php endif; ?>
               <!-- END LOOP HERE -->
             </div>
             <!-- /.box-body -->

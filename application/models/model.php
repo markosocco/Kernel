@@ -1799,7 +1799,7 @@ class model extends CI_Model
 
   public function getAllProjectsByUser($id)
   {
-    $condition = "users.USERID = " . $id . " && raci.STATUS = 'Current' && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Parked' && projects.PROJECTSTATUS != 'Drafted'";
+    $condition = "users.USERID = " . $id . " && raci.STATUS = 'Current' && raci.role = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Parked' && projects.PROJECTSTATUS != 'Drafted'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
@@ -2484,7 +2484,7 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function getTaskCountPerDepartment($deptID , $condition){
+  public function getTaskCountPerDepartment($deptID, $condition){
 
     $this->db->select('users_USERID, COUNT(IF(taskstatus = "Ongoing", 1, NULL)) + COUNT(IF(taskstatus = "Planning", 1, NULL)) AS "TASKCOUNT"');
     $this->db->from('tasks');
@@ -2498,8 +2498,10 @@ class model extends CI_Model
 
   public function getProjectCountPerDepartment($deptID){
 
-    $condition = "raci.ROLE = 1 AND raci.STATUS = 'Current'AND tasks.CATEGORY = 3 AND users.departments_DEPARTMENTID = " . $deptID;
-    $this->db->select('users.*, COUNT(DISTINCT IF(projects.projectStatus = "Ongoing", 1, NULL))  +  COUNT(DISTINCT IF(projects.projectStatus = "Planning", 1, NULL)) AS "PROJECTCOUNT"');
+    $condition = "raci.ROLE = 1 AND raci.STATUS = 'Current'AND tasks.CATEGORY = 3
+      AND (projects.PROJECTSTATUS = 'Ongoing' OR projects.PROJECTSTATUS = 'Planning')
+      AND users.departments_DEPARTMENTID = " . $deptID;
+    $this->db->select('users.*, COUNT(DISTINCT(projects.PROJECTID)) as "PROJECTCOUNT"');
     $this->db->from('projects');
     $this->db->join('tasks', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');

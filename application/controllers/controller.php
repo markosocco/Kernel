@@ -560,35 +560,35 @@ class controller extends CI_Controller
 				$data['performance'][] = $this->model->compute_timeliness_employee($row['USERID']);
 			}
 
-			// // SAVES USER IDS WITH TASKS INTO ARRAY
-			// foreach ($data['taskCount'] as $row2)
-			// {
-			// 	$data['tCountStaff'][] = $row2['USERID'];
-			// }
-			//
-			// // CHECKS IF STAFF HAS TASK, SAVES INTO ARRAY
-			// foreach ($data['staff'] as $s)
-			// {
-			// 	if (in_array($s['USERID'], $data['tCountStaff']))
-			// 	{
-			// 		$data['tCountStaff'][] = $s['USERID'];
- 			// 	}
-			// }
-			//
-			// // SAVES USER IDS WITH PROJECTS INTO ARRAY
-			// foreach ($data['projectCount'] as $row2)
-			// {
-			// 	$data['pCountStaff'][] = $row2['USERID'];
-			// }
-			//
-			// // CHECKS IF STAFF HAS PROJECTS, SAVES INTO ARRAY
-			// foreach ($data['staff'] as $s)
-			// {
-			// 	if (in_array($s['USERID'], $data['pCountStaff']))
-			// 	{
-			// 		$data['pCountStaff'][] = $s['USERID'];
- 			// 	}
-			// }
+			// SAVES USER IDS WITH TASKS INTO ARRAY
+			foreach ($data['taskCount'] as $row2)
+			{
+				$data['tCountStaff'][] = $row2['users_USERID'];
+			}
+
+			// CHECKS IF STAFF HAS TASK, SAVES INTO ARRAY
+			foreach ($data['staff'] as $s)
+			{
+				if (in_array($s['USERID'], $data['tCountStaff']))
+				{
+					$data['tCountStaff'][] = $s['USERID'];
+ 				}
+			}
+
+			// SAVES USER IDS WITH PROJECTS INTO ARRAY
+			foreach ($data['projectCount'] as $row2)
+			{
+				$data['pCountStaff'][] = $row2['USERID'];
+			}
+
+			// CHECKS IF STAFF HAS PROJECTS, SAVES INTO ARRAY
+			foreach ($data['staff'] as $s)
+			{
+				if (in_array($s['USERID'], $data['pCountStaff']))
+				{
+					$data['pCountStaff'][] = $s['USERID'];
+ 				}
+			}
 
 			$this->load->view("monitorTeam", $data);
 		}
@@ -604,12 +604,14 @@ class controller extends CI_Controller
 		else
 		{
 			$id = $this->input->post('employee_ID');
+			$deptID = $_SESSION['DEPARTMENTID'];
+			$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
 
 			$data['pCount'] = array();
 			$data['tCount'] = array();
 
-			$projectCount = $this->model->getProjectCount();
-			$taskCount = $this->model->getTaskCount();
+			$projectCount = $this->model->getProjectCountPerDepartment($deptID);
+			$taskCount = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
 
 			// SET PROJECT COUNT FOR EMPLOYEE
 			foreach ($projectCount as $p)
@@ -623,7 +625,7 @@ class controller extends CI_Controller
 			// SET TASK COUNT FOR EMPLOYEE
 			foreach ($taskCount as $t)
 			{
-				if ($t['USERID'] == $id)
+				if ($t['users_USERID'] == $id)
 				{
 					$data['tCount'][] = $t;
 				}
