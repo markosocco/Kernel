@@ -63,31 +63,57 @@
   							<!-- /.box-header -->
   							<div class="box-body">
   								<table class="table table-bordered" id="">
-                    <td align="center" style="width:35%">
-                      <!-- PAST DONUT -->
+                    <tr  height="50%">
+                      <td style="width:30%" rowspan="2">
+                        <table class="table table-bordered table-condensed" width="100%">
+                          <tr>
+                            <th class='text-center'>Last <?php echo $intervalWord;?></th>
+                            <th class='text-center'></th>
+                            <th class='text-center'>Current</th>
+                          </tr>
 
-                    </td>
-                    <td style="width:30%">
-                      <table class="table table-bordered table-condensed" width="100%">
-                        <tr>
-                          <th class='text-center'>Last <?php echo $intervalWord;?></th>
-                          <th class='text-center'></th>
-                          <th class='text-center'>Current</th>
-                        </tr>
-
-                        <?php foreach ($mainActivities as $main): ?>
-                            <tr>
-                              <td align="center">1k%</td>
-                              <td align="center"><?php echo $main['TASKTITLE']; ?></td>
-                              <td align="center">1M%</td>
-                            </tr>
-                        <?php endforeach; ?>
-                      </table>
-                    </td>
-                    <td align="center" style="width:35%">
-                      <!-- FUTURE DONUT -->
-
-                    </td>
+                          <?php foreach ($mainActivities as $main): ?>
+                              <tr>
+                                <td align="center">1k%</td>
+                                <td align="center"><?php echo $main['TASKTITLE']; ?></td>
+                                <td align="center">1M%</td>
+                              </tr>
+                          <?php endforeach; ?>
+                        </table>
+                      </td>
+                      <td>
+                        <!-- TOTAL PROGRESS -->
+                        <span class="pull-right" style="margin-left:10px;">60%</span>
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
+                            Main 2 (10%)
+                          </div>
+                          <div class="progress-bar" role="progressbar" style="width:10%; background-color:#005b96 !important;">
+                            Main 3 (10%)
+                          </div>
+                          <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
+                            Main 1 (10%)
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <!-- TOTAL PROGRESS -->
+                        <span class="pull-right" style="margin-left:10px;">60%</span>
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
+                            Main 2 (10%)
+                          </div>
+                          <div class="progress-bar" role="progressbar" style="width:10%; background-color:#005b96 !important;">
+                            Main 3 (10%)
+                          </div>
+                          <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
+                            Main 1 (10%)
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
   								</table>
   							</div>
   						</div>
@@ -217,5 +243,10 @@
   <!-- /.content -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="<?php echo base_url()."assets/"; ?>bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="<?php echo base_url()."assets/"; ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
