@@ -2761,7 +2761,7 @@ class controller extends CI_Controller
 	    if ($this->input->post('isImport') == 1)
 	    {
 	      $config['upload_path'] = './assets/uploads/templates';
-	      $config['allowed_types'] = 'xlsx|csv|xls';
+	      $config['allowed_types'] = 'xlsx|xls';
 	      $config['max_size'] = '10000000';
 	      $this->load->library('upload', $config);
 	      $this->upload->initialize($config);
@@ -3070,6 +3070,19 @@ class controller extends CI_Controller
 					                              redirect('controller/addProjectDetails');
 					                            }
 					                          }
+
+																		if ($checkCell['G'] == 1 || $checkCell['G'] == 2)
+																		{
+																			if ($checkCell['I'] != 'NULL' || $checkCell['J'] != 'NULL' || $checkCell['K'] != 'NULL' || $checkCell['L'] != 'NULL')
+																			{
+																				$this->session->set_flashdata('danger', 'alert');
+					                              $this->session->set_flashdata('alertMessage', ' Mains and Subs in row ' . $checkRow . ' should not have RACI');
+
+					                              unlink($inputFileName);
+
+					                              redirect('controller/addProjectDetails');
+																			}
+																		}
 
 					                          if ($checkCell['G'] == 3)
 					                          {
