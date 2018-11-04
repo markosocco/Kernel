@@ -47,7 +47,7 @@
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php if (in_array($row['USERID'], $pCountStaff)): ?>
+															<!-- <?php if (in_array($row['USERID'], $pCountStaff)): ?>
 																<?php foreach ($projectCount as $pCount): ?>
 																 <?php if ($row['USERID'] == $pCount['USERID']): ?>
 																	 <?php echo $pCount['projectCount']; ?>
@@ -55,7 +55,8 @@
 															 <?php endforeach; ?>
 															<?php else: ?>
 																0
-															<?php endif; ?>
+															<?php endif; ?> -->
+															<?php echo $projectCount[$key]['PROJECTCOUNT']; ?>
 														</h5>
 														<span class="description-text">PROJECTS</span>
 													</div>
@@ -65,17 +66,7 @@
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
 														<h5 class="description-header">
-															<!-- <?php if (in_array($row['USERID'], $tCountStaff)): ?>
-																<?php foreach ($taskCount as $tCount): ?>
-																 <?php if ($row['USERID'] == $tCount['USERID']): ?>
-																	 <?php echo $tCount['taskCount']; ?>
-																 <?php endif; ?>
-															 <?php endforeach; ?>
-															<?php else: ?>
-																0
-															<?php endif; ?> -->
-
-															<?php echo $taskCount[$key]['TASKCOUNT']?>
+															<?php echo $taskCount[$key]['TASKCOUNT']; ?>
 														</h5>
 														<span class="description-text">TASKS</span>
 													</div>

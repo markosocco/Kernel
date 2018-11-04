@@ -486,26 +486,31 @@ class controller extends CI_Controller
 			$data['performance'] = array();
 			$data['tCountStaff'] = array();
 			$data['pCountStaff'] = array();
-			$condition = "";
+			$taskCondition = "";
+			$projectCondition = "";
 
 			if ($_SESSION['usertype_USERTYPEID'] == 3)
 			{
 				// echo "head";
 				$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
-				$condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
+				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
+				// $projectCondition =
 			}
 
 			elseif ($_SESSION['usertype_USERTYPEID'] == 4)
 			{
 				// echo "sup";
 				$data['staff'] = $this->model->getAllUsersBySupervisor($_SESSION['USERID']);
-				$condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3 && users_SUPERVISORS = " . $_SESSION['USERID'];
+				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3 && users_SUPERVISORS = " . $_SESSION['USERID'];
+				// $projectCondition
 			}
 
 			$data['projects'] = $this->model->getAllProjects();
 			$data['projectCount'] = $this->model->getProjectCount();
 			// $data['taskCount'] = $this->model->getTaskCount();
-			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $condition);
+			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
+			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
+
 
 			foreach ($data['staff'] as $row)
 			{
