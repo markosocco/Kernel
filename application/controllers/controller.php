@@ -2283,10 +2283,10 @@ class controller extends CI_Controller
 		else
 		{
 			$data['allProjects'] = $this->model->getAllProjects();
-			$data['departments'] = $this->model->getAllDepartments();
+			$data['departments'] = $this->model->getAllDepartmentsWithoutExecutive();
 			$data['projectCompleteness'] = $this->model->compute_completeness_allProjects();
 			$data['projectTimeliness'] = $this->model->compute_timeliness_allProjects();
-			$data['averages'] = $this->model->compute_departmentPerformance();
+			$data['departmentPerformance'] = $this->model->compute_departmentPerformance();
 
 			foreach($data['departments'] as $department)
 			{

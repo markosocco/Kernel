@@ -425,21 +425,6 @@
           <?php endif;?>
         <?php endforeach;?>
 
-      // labels: [
-      //
-      //   <?php
-      //     $index = 0;
-      //     foreach($allDepartments as $dept){
-      //       echo "'" . $dept['DEPT'] . "'";
-      //       $index++;
-      //       if(count($allDepartments) > $index)
-      //         echo ",";
-      //       else {
-      //         echo "],";
-      //       }
-      //     }
-      //   ?>
-
       datasets: [
         {
           label               : 'Timeliness',

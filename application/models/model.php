@@ -1235,6 +1235,17 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllDepartmentsWithoutExecutive()
+  {
+    $condition = "DEPARTMENTID != 1";
+    $this->db->select('*');
+    $this->db->from('departments');
+    $this->db->where($condition);
+    $this->db->order_by('DEPARTMENTNAME');
+
+    return $this->db->get()->result_array();
+  }
+
   public function addRFC($data)
   {
     $this->db->insert('changerequests', $data);
@@ -1693,6 +1704,8 @@ class model extends CI_Model
 
     $condition = "YEAR(CURDATE()) AND departments_DEPARTMENTID != 1";
     $this->db->select('departments_DEPARTMENTID, DEPARTMENTNAME,
+    ROUND(AVG(timeliness), 2) as "TIMELINESSAVERAGE",
+    ROUND(AVG(completeness), 2) as "COMPLETENESSAVERAGE",
     ROUND((AVG(timeliness) + AVG(completeness))/2 ,2) as "AVERAGE"');
     $this->db->from('assessmentdepartment');
     $this->db->join('departments', 'departments_DEPARTMENTID = DEPARTMENTID');
