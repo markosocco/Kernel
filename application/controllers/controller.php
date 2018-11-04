@@ -2350,7 +2350,9 @@ class controller extends CI_Controller
 			$data['projectCount'] = $this->model->getProjectCountRole1($_SESSION['USERID']);
 			$data['taskCount'] = $this->model->getTaskCountRole1($_SESSION['USERID']);
 			$data['changeRequests'] = $this->model->getChangeRequestsByUser($_SESSION['USERID']);
-
+			$data['completeness'] = $this->model->compute_completeness_employee($_SESSION['USERID']);
+			$data['timeliness'] = $this->model->compute_timeliness_employee($_SESSION['USERID']);
+			$data['projectPerformance'] = $this->model->compute_employeePerformance_perProject($_SESSION['USERID']);
 
 			$this->load->view("reportsEmployeePerformance", $data);
 		}
