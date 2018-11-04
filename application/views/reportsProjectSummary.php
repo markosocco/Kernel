@@ -451,10 +451,10 @@
           pointHighlightStroke: 'rgba(220,220,220,1)',
           data                : [
             <?php $index = 0;?>
-            <?php foreach($departmentPerformance as $deptTimeliness):?>
+            <?php foreach($departmentTimeliness as $deptTimeliness):?>
               <?php echo $deptTimeliness['timeliness'];?>
               <?php $index++;?>
-              <?php if(count($departmentPerformance) > $index):?>
+              <?php if(count($departmentTimeliness) > $index):?>
                 ,
               <?php else:?>
                 ]
@@ -471,10 +471,10 @@
           pointHighlightStroke: 'rgba(60,141,188,1)',
           data                : [
             <?php $index = 0;?>
-            <?php foreach($departmentPerformance as $deptCompleteness):?>
+            <?php foreach($departmentCompleteness as $deptCompleteness):?>
               <?php echo $deptCompleteness['completeness'];?>
               <?php $index++;?>
-              <?php if(count($departmentPerformance) > $index):?>
+              <?php if(count($departmentCompleteness) > $index):?>
                 ,
               <?php else:?>
                 ]

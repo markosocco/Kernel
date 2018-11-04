@@ -2320,10 +2320,11 @@ class controller extends CI_Controller
 			$data['documents'] = $this->model->getAllDocumentsByProject($projectID);
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
-			$data['departmentPerformance'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
+			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
 			$data['team'] = $this->model->getTeamByProject($projectID);
 			$data['users'] = $this->model->getAllUsers();
-			$data['allDepartments'] = $this->model->getAllDepartmentsByProject($projectID);
+			$data['allDepartments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
 			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($projectID);
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($projectID);
 			$data['delayedTaskCount'] = $this->model->getDelayedTaskCount($projectID);

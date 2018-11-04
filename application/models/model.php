@@ -888,6 +888,21 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllDepartmentsByProjectByRole($projectID)
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = 1 && tasks.projects_PROJECTID = " . $projectID;
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('DEPARTMENTNAME');
+    $this->db->order_by('DEPARTMENTNAME');
+
+    return $this->db->get()->result_array();
+  }
+
 // GETS ALL THE USERS OF A DEPARTMENT THAT ARE INVOLVED IN A PROJECT EXCEPT THE SESSION USER
   public function getAllUsersByProjectByDepartment($projectID, $departmentID)
   {
@@ -1558,6 +1573,7 @@ class model extends CI_Model
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
     $this->db->group_by('departments_DEPARTMENTID');
     $this->db->where($condition);
+    $this->db->order_by('departments.DEPARTMENTNAME');
 
     return $this->db->get()->result_array();
   }
@@ -1574,6 +1590,7 @@ class model extends CI_Model
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
     $this->db->group_by('departments_DEPARTMENTID');
     $this->db->where($condition);
+    $this->db->order_by('departments.DEPARTMENTNAME');
 
     return $this->db->get()->result_array();
   }
