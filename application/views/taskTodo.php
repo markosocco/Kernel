@@ -815,18 +815,18 @@
 			 });
 
 			 $("body").on('click','#rfcConfirm',function(){
-				 if($("#rfcType").val() == null)
-				 {
-					 alert("Please choose a request type"); //insert in line error message
-				 }
-				 else if(!$("#rfcReason").val().match(/^[0-9a-zA-Z]+$/) || ($("#rfcType").val() == '2' && $("#endDate").val() == ""))
-				 {
-					 alert("Please complete the form"); //insert in line error message
-				 }
-				 else {
+				 // if($("#rfcType").val() == null)
+				 // {
+					//  alert("Please choose a request type"); //insert in line error message
+				 // }
+				 // else if(!$("#rfcReason").val().match(/^[0-9a-zA-Z]+$/) || ($("#rfcType").val() == '2' && $("#endDate").val() == ""))
+				 // {
+					//  alert("Please complete the form"); //insert in line error message
+				 // }
+				 // else {
 					 $("#request").hide();
   				 $("#submitConfirm").show();
-				 }
+				 // }
 			 });
 
 			 $("body").on('click','#backConfirm',function(){
@@ -919,13 +919,13 @@
 		 });
 
 		 $("body").on('click','#doneConfirmBtn',function(){
-			 if(!$("#remarks").val().match(/^[0-9a-zA-Z]+$/)){
-				 alert("Please enter remarks"); //insert in line error message
-			 }
-			 else {
+			 // if(!$("#remarks").val().match(/^[0-9a-zA-Z]+$/)){
+				//  alert("Please enter remarks"); //insert in line error message
+			 // }
+			 // else {
 				 $("#doneDiv").hide();
 				 $("#doneConfirmDiv").show();
-			 }
+			 // }
 		 });
 
 		 $("body").on('click','#backConfirmDone',function(){
