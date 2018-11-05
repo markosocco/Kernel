@@ -47,21 +47,21 @@
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php foreach ($timeliness as $p): ?>
+															<?php foreach ($completeness as $p): ?>
 																<?php if ($p['USERID'] == $row['USERID']): ?>
-																	<?php if ($p['timeliness'] == NULL): ?>
+																	<?php if ($p['completeness'] == NULL): ?>
 																		0%
-																	<?php elseif ($p['timeliness'] == 100.00): ?>
+																	<?php elseif ($p['completeness'] == 100.00): ?>
 																		100%
-																	<?php elseif ($p['timeliness'] == 0.00): ?>
+																	<?php elseif ($p['completeness'] == 0.00): ?>
 																		0%
 																	<?php else: ?>
-																		<?php echo $p['timeliness'] . "%"; ?>
+																		<?php echo $p['completeness'] . "%"; ?>
 																	<?php endif; ?>
 																<?php endif; ?>
 															<?php endforeach; ?>
 														</h5>
-														<span class="description-text">TIMELINESS</span>
+														<span class="description-text">COMPLETENESS</span>
 													</div>
 													<!-- /.description-block -->
 												</div>
@@ -79,21 +79,21 @@
 												<div class="col-sm-4">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php foreach ($completeness as $p): ?>
+															<?php foreach ($timeliness as $p): ?>
 																<?php if ($p['USERID'] == $row['USERID']): ?>
-																	<?php if ($p['completeness'] == NULL): ?>
+																	<?php if ($p['timeliness'] == NULL): ?>
 																		0%
-																	<?php elseif ($p['completeness'] == 100.00): ?>
+																	<?php elseif ($p['timeliness'] == 100.00): ?>
 																		100%
-																	<?php elseif ($p['completeness'] == 0.00): ?>
+																	<?php elseif ($p['timeliness'] == 0.00): ?>
 																		0%
 																	<?php else: ?>
-																		<?php echo $p['completeness'] . "%"; ?>
+																		<?php echo $p['timeliness'] . "%"; ?>
 																	<?php endif; ?>
 																<?php endif; ?>
 															<?php endforeach; ?>
 														</h5>
-														<span class="description-text">COMPLETENESS</span>
+														<span class="description-text">TIMELINESS</span>
 													</div>
 													<!-- /.description-block -->
 												</div>

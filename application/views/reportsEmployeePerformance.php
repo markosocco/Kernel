@@ -51,12 +51,12 @@
 
            <div class="pull-right" style="display:inline-block; margin-right: 20px">
              <div style="display:inline-block; text-align:center; width:49%; padding-right: 20px">
-               <h3><?php echo $timeliness['timeliness']; ?>%</h3>
-               <h6>Timeliness</h6>
-             </div>
-             <div style="display:inline-block; text-align:center; width:49%; padding-left: 20px; border-left: solid lightgray 1px;">
                <h3><?php echo $completeness['completeness']; ?>%</h3>
                <h6>Completeness</h6>
+             </div>
+             <div style="display:inline-block; text-align:center; width:49%; padding-left: 20px; border-left: solid lightgray 1px;">
+               <h3><?php echo $timeliness['timeliness']; ?>%</h3>
+               <h6>Timeliness</h6>
              </div>
            </div>
 
