@@ -61,7 +61,7 @@
       								<table class="table table-bordered table-condensed" id="">
 
       										<tr>
-                            <th class='text-center'><?php echo $department['DEPARTMENTNAME'];?></th>
+                            <th class='text-center' colspan="2"><?php echo $department['DEPARTMENTNAME'];?></th>
       											<th width = "35%">Project</th>
       											<th width = "20%" class='text-center'>End Date</th>
                             <th width = "15%" class='text-center'>Timeliness</th>
@@ -72,7 +72,8 @@
                           <?php foreach(${"departmentPerf" . $department['DEPARTMENTID']} as $performanceData):?>
                             <?php if($counter == 0):?>
                               <tr>
-                                <th rowspan = "<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:24px;"><?php echo $departmentPerformance[$key]['AVERAGE'];?>%</th>
+                                <th rowspan="<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:14px;"><?php echo $departmentPerformance[$key]['AVERAGE'];?>%<br><span style="font-size:8px">Completeness</span></th>
+                                <th rowspan="<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:14px;">100%<br><span style="font-size:8px">Timeliness</span></th>
                                 <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
