@@ -492,20 +492,20 @@ class controller extends CI_Controller
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 				$data['completedProjects'] = $this->model->getAllCompletedProjects();
 
-				foreach ($data['completedProjects'] as $completeProjects)
-				{
-					$checkProjectStatus = $this->model->checkProjectStatusForArchiving($completeProjects);
-
-					if (date_add($completeProjects['PROJECTACTUALENDDATE'], INTERVAL 7 DAY) == curdate() && $completeProjects['PROJECTSTATUS'] == 'Complete')
-					{
-						$data = array(
-							'PROJECTID' => $completeProjects['PROJECTID'],
-							'PROJECTSTATUS' => 'Archived'
-						);
-
-						$changeProjectStatus = $this->model->changeProjectStatus($data);
-					}
-				}
+				// foreach ($data['completedProjects'] as $completeProjects)
+				// {
+				// 	$checkProjectStatus = $this->model->checkProjectStatusForArchiving($completeProjects);
+				//
+				// 	if (date_add($completeProjects['PROJECTACTUALENDDATE'], INTERVAL 7 DAY) == curdate() && $completeProjects['PROJECTSTATUS'] == 'Complete')
+				// 	{
+				// 		$data = array(
+				// 			'PROJECTID' => $completeProjects['PROJECTID'],
+				// 			'PROJECTSTATUS' => 'Archived'
+				// 		);
+				//
+				// 		$changeProjectStatus = $this->model->changeProjectStatus($data);
+				// 	}
+				// }
 			}
 			else
 			{
@@ -567,14 +567,12 @@ class controller extends CI_Controller
 			$data['projectCount'] = $this->model->getProjectCount();
 			// $data['taskCount'] = $this->model->getTaskCount();
 			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
-			// $data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
+			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
 
 
 			foreach ($data['staff'] as $row)
 			{
-				$data['timeliness'][] = $this->model->compute_timeliness_employee($row['USERID']);
-				$data['completeness'][] = $this->model->compute_completeness_employee($row['USERID']);
-
+				$data['performance'][] = $this->model->compute_timeliness_employee($row['USERID']);
 			}
 
 			// SAVES USER IDS WITH TASKS INTO ARRAY
@@ -2383,18 +2381,12 @@ class controller extends CI_Controller
 		}
 		else
 		{
-			$deptID = $_SESSION['departments_DEPARTMENTID'];
 			$data['deptName'] = $_SESSION['DEPARTMENTNAME'];
-
 			$data['deptHead'] = $this->model->getDepartmentHeadByDepartmentID($_SESSION['departments_DEPARTMENTID']);
 			if($_SESSION['usertype_USERTYPEID'] == '3') //managers
 				$data['userTeam'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 			else if($_SESSION['usertype_USERTYPEID'] == '4') //supervisors
 				$data['userTeam'] = $this->model->getUserTeam($_SESSION['USERID']);
-
-			$data['projects'] = $this->model->getAllProjectsByDepartment($deptID);
-
-
 
 			$this->load->view("reportsTeamPerformance", $data);
 		}
