@@ -572,7 +572,9 @@ class controller extends CI_Controller
 
 			foreach ($data['staff'] as $row)
 			{
-				$data['performance'][] = $this->model->compute_timeliness_employee($row['USERID']);
+				$data['timeliness'][] = $this->model->compute_timeliness_employee($row['USERID']);
+				$data['completeness'][] = $this->model->compute_completeness_employee($row['USERID']);
+
 			}
 
 			// SAVES USER IDS WITH TASKS INTO ARRAY
