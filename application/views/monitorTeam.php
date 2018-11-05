@@ -47,17 +47,21 @@
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php if (in_array($row['USERID'], $pCountStaff)): ?>
-																<?php foreach ($projectCount as $pCount): ?>
-																 <?php if ($row['USERID'] == $pCount['USERID']): ?>
-																	 <?php echo $pCount['PROJECTCOUNT']; ?>
-																 <?php endif; ?>
-															 <?php endforeach; ?>
-															<?php else: ?>
-																0
-															<?php endif; ?>
+															<?php foreach ($completeness as $p): ?>
+																<?php if ($p['USERID'] == $row['USERID']): ?>
+																	<?php if ($p['completeness'] == NULL): ?>
+																		0%
+																	<?php elseif ($p['completeness'] == 100.00): ?>
+																		100%
+																	<?php elseif ($p['completeness'] == 0.00): ?>
+																		0%
+																	<?php else: ?>
+																		<?php echo $p['completeness'] . "%"; ?>
+																	<?php endif; ?>
+																<?php endif; ?>
+															<?php endforeach; ?>
 														</h5>
-														<span class="description-text">PROJECTS</span>
+														<span class="description-text">COMPLETENESS</span>
 													</div>
 													<!-- /.description-block -->
 												</div>
@@ -75,7 +79,7 @@
 												<div class="col-sm-4">
 													<div class="description-block">
 														<h5 class="description-header">
-															<?php foreach ($performance as $p): ?>
+															<?php foreach ($timeliness as $p): ?>
 																<?php if ($p['USERID'] == $row['USERID']): ?>
 																	<?php if ($p['timeliness'] == NULL): ?>
 																		0%

@@ -72,8 +72,8 @@
                       <th class='text-center'>Projects</th>
                       <th class='text-center'>Tasks</th>
                       <th class='text-center'>Delayed<br>Tasks</th>
-                      <th class='text-center'>Average<br>Timeliness</th>
                       <th class='text-center'>Average<br>Completeness</th>
+                      <th class='text-center'>Average<br>Timeliness</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -82,13 +82,6 @@
                       <?php $projectCount = 0; ?>
                       <?php $taskCount = 0; ?>
                       <?php $delayedTaskCount = 0; ?>
-
-                      <?php
-                        foreach ($projects as $project) {
-                          if($user['USERID'] = $project['projects_PROJECTID'])
-                            $projectCount = $project['PROJECTCOUNT'];
-                        }
-                      ?>
 
 
                       <tr>

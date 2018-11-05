@@ -1489,7 +1489,7 @@ class model extends CI_Model
 
   public function compute_completeness_employee($userID){
     $condition = "YEAR(CURDATE()) && CATEGORY = 3 && raci.status = 'Current' && role = 1 && users_USERID = " . $userID;
-		$this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+		$this->db->select('USERS_USERID as USERID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
 		ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
 		$this->db->from('tasks');
 		$this->db->join('raci', 'tasks_TASKID = TASKID');
@@ -2594,6 +2594,12 @@ class model extends CI_Model
     $this->db->order_by('departments.DEPARTMENTNAME');
 
     return $this->db->get()->result_array();
+  }
+
+  public function changeProjectStatus($id, $data)
+  {
+    $this->db->where('PROJECTID', $id);
+    $result = $this->db->update('projects', $data);
   }
 }
 ?>
