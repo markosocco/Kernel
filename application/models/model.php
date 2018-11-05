@@ -1667,6 +1667,21 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function compute_employeePerformance_byDepartments($deptID){
+
+    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && departments_departmentid = " . $deptID;
+    $this->db->select('users_USERID,
+    ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
+    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->join('users', 'users_USERID = USERID');
+    $this->db->where($condition);
+    $this->db->group_by('users_USERID');
+
+    return $this->db->get()->result_array();
+  }
+
   public function compute_daily_projectPerformance(){
 
     $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != ''
