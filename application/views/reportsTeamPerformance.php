@@ -153,9 +153,21 @@
           pointHighlightStroke: 'rgba(220,220,220,1)',
           data                : [
           <?php $index = 0;?>
-          <?php foreach($userTeam as $user):?>
-            '50' //INSERT TIMELINESS DATA PER USER
-            <?php $index++;?>
+          <?php $timeliness = 0;?>
+
+          <?php foreach($userTeam as $key => $user):?>
+          <?php $timeliness = 0;?>
+
+          <?php foreach($employeePerformance as $employee): ?>
+
+            <?php if($employee['users_USERID'] == $user['USERID']): ?>
+              <?php $timeliness = $employee['timeliness'];?>
+            <?php endif; ?>
+          <?php endforeach; ?>
+
+          '<?php echo $timeliness ?>'
+
+          <?php $index++;?>
             <?php if(count($userTeam) > $index):?>
               ,
             <?php else:?>
@@ -173,17 +185,27 @@
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
           data                : [
-          <?php $index = 0;?>
+          <?php $idx = 0;?>
+
           <?php foreach($userTeam as $user):?>
-            '70' //INSERT COMPLETENESS DATA PER USER
-            <?php $index++;?>
-            <?php if(count($userTeam) > $index):?>
+
+            <?php $completeness = 0;?>
+
+            <?php foreach($employeePerformance as $employee): ?>
+
+              <?php if($employee['users_USERID'] == $user['USERID']): ?>
+                <?php $completeness = $employee['completeness'];?>
+              <?php endif; ?>
+            <?php endforeach; ?>
+
+            '<?php echo $completeness ?>'
+            <?php $idx++;?>
+            <?php if(count($userTeam) > $idx):?>
               ,
             <?php else:?>
               ],
             <?php endif;?>
           <?php endforeach;?>
-                                // GREEN DATA
         }
       ]
     }
