@@ -78,20 +78,34 @@
                   </thead>
                   <tbody>
                     <?php foreach($userTeam as $user):?>
-
-                      <?php $projectCount = 0; ?>
-                      <?php $taskCount = 0; ?>
-                      <?php $delayedTaskCount = 0; ?>
-
-
                       <tr>
                         <td><?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME'];?></td>
-                        <td><?php echo $user['POSITION'];?></td>
-                        <td align='center'><?php echo $projectCount; ?></td>
-                        <td align='center'><?php echo $taskCount; ?></td>
-                        <td align='center'><?php echo $delayedTaskCount; ?></td>
-                        <td align='center'>0%</td>
-                        <td align='center'>0%</td>
+                        <td><?php echo $user['POSITION']; ?></td>
+
+                        <?php foreach ($projectCount as $pCount): ?>
+                          <?php if ($user['USERID'] == $pCount['USERID']): ?>
+                            <td align='center'><?php echo $pCount['PROJECTCOUNT']; ?></td>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+
+                        <?php foreach ($taskCount as $tCount): ?>
+                          <?php if ($user['USERID'] == $tCount['users_USERID']): ?>
+                            <td align='center'><?php echo $tCount['TASKCOUNT']; ?></td>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+
+                        <?php foreach ($delayedCount as $dCount): ?>
+                          <?php if ($user['USERID'] == $dCount['userid']): ?>
+                            <td align='center'><?php echo $dCount['delayedTaskCount']; ?></td>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+
+                        <?php foreach ($employeePerformance as $perf): ?>
+                          <?php if ($perf['users_USERID'] == $user['USERID']): ?>
+                            <td align='center'><?php echo $perf['completeness']; ?>%</td>
+                            <td align='center'><?php echo $perf['timeliness']; ?>%</td>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
                       </tr>
                     <?php endforeach;?>
                   </tbody>

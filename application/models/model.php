@@ -2616,5 +2616,18 @@ class model extends CI_Model
     $this->db->where('PROJECTID', $id);
     $result = $this->db->update('projects', $data);
   }
+
+  public function getDelayedTaskCountPerDepartment($deptID)
+  {
+    $condition = "YEAR(CURDATE()) && CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && departments_departmentid = " . $deptID;
+    $this->db->select('users.userid, COUNT(IF(TASKACTUALENDDATE < TASKENDDATE, 1, NULL)) AS "delayedTaskCount"');
+    $this->db->from('tasks');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'users.userid = raci.users_userid');
+    $this->db->where($condition);
+    $this->db->group_by('users_userid');
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

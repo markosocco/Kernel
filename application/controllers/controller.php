@@ -2400,36 +2400,7 @@ class controller extends CI_Controller
 			$data['employeePerformance'] = $this->model->compute_employeePerformance_byDepartments($deptID);
 			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
 			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
-
-			// SAVES USER IDS WITH TASKS INTO ARRAY
-			foreach ($data['taskCount'] as $row2)
-			{
-				$data['tCountStaff'][] = $row2['users_USERID'];
-			}
-
-			// CHECKS IF STAFF HAS TASK, SAVES INTO ARRAY
-			foreach ($data['staff'] as $s)
-			{
-				if (in_array($s['USERID'], $data['tCountStaff']))
-				{
-					$data['tCountStaff'][] = $s['USERID'];
- 				}
-			}
-
-			// SAVES USER IDS WITH PROJECTS INTO ARRAY
-			foreach ($data['projectCount'] as $row2)
-			{
-				$data['pCountStaff'][] = $row2['USERID'];
-			}
-
-			// CHECKS IF STAFF HAS PROJECTS, SAVES INTO ARRAY
-			foreach ($data['staff'] as $s)
-			{
-				if (in_array($s['USERID'], $data['pCountStaff']))
-				{
-					$data['pCountStaff'][] = $s['USERID'];
- 				}
-			}
+			$data['delayedCount'] = $this->model->getDelayedTaskCountPerDepartment($deptID);
 
 			$this->load->view("reportsTeamPerformance", $data);
 		}
