@@ -552,12 +552,14 @@ class controller extends CI_Controller
 			$data['projectCount'] = $this->model->getProjectCount();
 			// $data['taskCount'] = $this->model->getTaskCount();
 			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
-			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
+			// $data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
 
 
 			foreach ($data['staff'] as $row)
 			{
-				$data['performance'][] = $this->model->compute_timeliness_employee($row['USERID']);
+				$data['timeliness'][] = $this->model->compute_timeliness_employee($row['USERID']);
+				$data['completeness'][] = $this->model->compute_completeness_employee($row['USERID']);
+
 			}
 
 			// SAVES USER IDS WITH TASKS INTO ARRAY
