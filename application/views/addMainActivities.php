@@ -315,7 +315,7 @@
 								</div>
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Project details</button>
+									<!-- <button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Project details</button> -->
 									<button type="submit" class="btn btn-success pull-right" id="arrangeTask" data-id= <?php echo $project['PROJECTID']; ?>><i class="fa fa-forward"></i>
 										<?php if (isset($_SESSION['edit'])): ?>
 											Edit Sub Activities
