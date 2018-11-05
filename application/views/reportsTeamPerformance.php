@@ -78,12 +78,25 @@
                   </thead>
                   <tbody>
                     <?php foreach($userTeam as $user):?>
+
+                      <?php $projectCount = 0; ?>
+                      <?php $taskCount = 0; ?>
+                      <?php $delayedTaskCount = 0; ?>
+
+                      <?php
+                        foreach ($projects as $project) {
+                          if($user['USERID'] = $project['projects_PROJECTID'])
+                            $projectCount = $project['PROJECTCOUNT'];
+                        }
+                      ?>
+
+
                       <tr>
                         <td><?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME'];?></td>
                         <td><?php echo $user['POSITION'];?></td>
-                        <td align='center'></td>
-                        <td align='center'></td>
-                        <td align='center'></td>
+                        <td align='center'><?php echo $projectCount; ?></td>
+                        <td align='center'><?php echo $taskCount; ?></td>
+                        <td align='center'><?php echo $delayedTaskCount; ?></td>
                         <td align='center'>0%</td>
                         <td align='center'>0%</td>
                       </tr>

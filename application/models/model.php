@@ -1489,7 +1489,7 @@ class model extends CI_Model
 
   public function compute_completeness_employee($userID){
     $condition = "YEAR(CURDATE()) && CATEGORY = 3 && raci.status = 'Current' && role = 1 && users_USERID = " . $userID;
-		$this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+		$this->db->select('USERS_USERID as USERID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
 		ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
 		$this->db->from('tasks');
 		$this->db->join('raci', 'tasks_TASKID = TASKID');
@@ -1874,10 +1874,12 @@ class model extends CI_Model
 
   public function getAllProjectsByDepartment($departmentID)
   {
-    $condition = "departments_DEPARTMENTID = " . $departmentID;
-    $this->db->select('*');
+    $condition = "YEAR(CURDATE()) && departments_DEPARTMENTID = " . $departmentID;
+    $this->db->select('tasks.*, COUNT(DISTINCT(projects.PROJECTID)) as "PROJECTCOUNT"');
     $this->db->from('projects');
     $this->db->join('users', 'projects.users_userid = users.userid');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
     $this->db->where($condition);
 

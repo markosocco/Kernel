@@ -567,12 +567,14 @@ class controller extends CI_Controller
 			$data['projectCount'] = $this->model->getProjectCount();
 			// $data['taskCount'] = $this->model->getTaskCount();
 			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
-			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
+			// $data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
 
 
 			foreach ($data['staff'] as $row)
 			{
-				$data['performance'][] = $this->model->compute_timeliness_employee($row['USERID']);
+				$data['timeliness'][] = $this->model->compute_timeliness_employee($row['USERID']);
+				$data['completeness'][] = $this->model->compute_completeness_employee($row['USERID']);
+
 			}
 
 			// SAVES USER IDS WITH TASKS INTO ARRAY
@@ -2381,12 +2383,18 @@ class controller extends CI_Controller
 		}
 		else
 		{
+			$deptID = $_SESSION['departments_DEPARTMENTID'];
 			$data['deptName'] = $_SESSION['DEPARTMENTNAME'];
+
 			$data['deptHead'] = $this->model->getDepartmentHeadByDepartmentID($_SESSION['departments_DEPARTMENTID']);
 			if($_SESSION['usertype_USERTYPEID'] == '3') //managers
 				$data['userTeam'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
 			else if($_SESSION['usertype_USERTYPEID'] == '4') //supervisors
 				$data['userTeam'] = $this->model->getUserTeam($_SESSION['USERID']);
+
+			$data['projects'] = $this->model->getAllProjectsByDepartment($deptID);
+
+
 
 			$this->load->view("reportsTeamPerformance", $data);
 		}
