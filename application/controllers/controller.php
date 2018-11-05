@@ -492,20 +492,7 @@ class controller extends CI_Controller
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 				$data['completedProjects'] = $this->model->getAllCompletedProjects();
 
-				// foreach ($data['completedProjects'] as $completeProjects)
-				// {
-				// 	$checkProjectStatus = $this->model->checkProjectStatusForArchiving($completeProjects);
-				//
-				// 	if (date_add($completeProjects['PROJECTACTUALENDDATE'], INTERVAL 7 DAY) == curdate() && $completeProjects['PROJECTSTATUS'] == 'Complete')
-				// 	{
-				// 		$data = array(
-				// 			'PROJECTID' => $completeProjects['PROJECTID'],
-				// 			'PROJECTSTATUS' => 'Archived'
-				// 		);
-				//
-				// 		$changeProjectStatus = $this->model->changeProjectStatus($data);
-				// 	}
-				// }
+
 			}
 			else
 			{
@@ -514,8 +501,24 @@ class controller extends CI_Controller
 				$data['delayedProjects'] = $this->model->getAllDelayedProjectsByUser($_SESSION['USERID']);
 				$data['parkedProjects'] = $this->model->getAllParkedProjectsByUser($_SESSION['USERID']);
 				$data['draftedProjects'] = $this->model->getAllDraftedProjectsByUser($_SESSION['USERID']);
-				$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
+				$compProjects = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
+
+				foreach ($compProjects as $completeProjects)
+				{
+					$datePlusSeven = date_add(date_create($completeProjects['PROJECTACTUALENDDATE']), date_interval_create_from_date_string("7 days"));
+
+					if ($datePlusSeven->format('Y-m-d') <= date('Y-m-d'))
+					{
+						$archiveStatus = array(
+							'PROJECTSTATUS' => 'Archived'
+						);
+
+						$changeProjectStatus = $this->model->changeProjectStatus($completeProjects['PROJECTID'], $archiveStatus);
+					}
+				}
 			}
+
+			$data['completedProjects'] = $this->model->getAllCompletedProjectsByUser($_SESSION['USERID']);
 
 			$data['ongoingProjectProgress'] = $this->model->getOngoingProjectProgress();
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();

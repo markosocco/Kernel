@@ -2596,10 +2596,10 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function changeProjectStatus($data)
+  public function changeProjectStatus($id, $data)
   {
-    $this->db->where('PROJECTID', $data['PROJECTID']);
-    $result = $this->db->update('projects', $data['PROJECTSTATUS']);
+    $this->db->where('PROJECTID', $id);
+    $result = $this->db->update('projects', $data);
   }
 }
 ?>
