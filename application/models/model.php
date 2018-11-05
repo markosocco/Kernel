@@ -2593,5 +2593,11 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function changeProjectStatus($data)
+  {
+    $this->db->where('PROJECTID', $data['PROJECTID']);
+    $result = $this->db->update('projects', $data['PROJECTSTATUS']);
+  }
 }
 ?>

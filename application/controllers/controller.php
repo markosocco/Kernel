@@ -491,6 +491,21 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 				$data['completedProjects'] = $this->model->getAllCompletedProjects();
+
+				foreach ($data['completedProjects'] as $completeProjects)
+				{
+					$checkProjectStatus = $this->model->checkProjectStatusForArchiving($completeProjects);
+
+					if (date_add($completeProjects['PROJECTACTUALENDDATE'], INTERVAL 7 DAY) == curdate() && $completeProjects['PROJECTSTATUS'] == 'Complete')
+					{
+						$data = array(
+							'PROJECTID' => $completeProjects['PROJECTID'],
+							'PROJECTSTATUS' => 'Archived'
+						);
+
+						$changeProjectStatus = $this->model->changeProjectStatus($data);
+					}
+				}
 			}
 			else
 			{
