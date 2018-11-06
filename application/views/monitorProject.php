@@ -175,7 +175,7 @@
 	                    <a class = "project clickable" data-id = "<?php echo $row['PROJECTID']; ?>">
 	                    <div class="small-box bg-yellow">
 	                      <div class="inner">
-	                        <h2 class="title"><?php echo $row['PROJECTTITLE']; ?></h2>
+	                        <h2 class='title'><?php echo $row['PROJECTTITLE']; ?></h2>
 
 	                        <form class="dept" action = 'monitorDepartment'  method="POST">
 	                        </form>
