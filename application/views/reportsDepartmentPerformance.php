@@ -195,7 +195,7 @@
                   ]
                 <?php endif;?>
               <?php endforeach;?>
-          }
+          },
         ]
       }
 
