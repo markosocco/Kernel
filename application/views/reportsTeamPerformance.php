@@ -141,6 +141,7 @@
 <!-- ChartJS -->
 <script src="<?php echo base_url()."assets/"; ?>bower_components/chart.js/Chart.js"></script>
 <script>
+  console.log("hello");
   $(function ()
   {
     var barChartData = {
