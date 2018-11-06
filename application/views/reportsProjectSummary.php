@@ -427,7 +427,7 @@
 
       datasets: [
         {
-          label               : 'Timeliness',
+          label               : 'Completeness',
           fillColor           : 'rgba(210, 214, 222, 1)',
           strokeColor         : 'rgba(210, 214, 222, 1)',
           pointColor          : 'rgba(210, 214, 222, 1)',
@@ -436,18 +436,19 @@
           pointHighlightStroke: 'rgba(220,220,220,1)',
           data                : [
             <?php $index = 0;?>
-            <?php foreach($departmentTimeliness as $deptTimeliness):?>
-              <?php echo $deptTimeliness['timeliness'];?>
+            <?php foreach($departmentCompleteness as $deptCompleteness):?>
+              <?php echo $deptCompleteness['completeness'];?>
               <?php $index++;?>
-              <?php if(count($departmentTimeliness) > $index):?>
+              <?php if(count($departmentCompleteness) > $index):?>
                 ,
               <?php else:?>
                 ]
               <?php endif;?>
             <?php endforeach;?>
+
         },
         {
-          label               : 'Completeness',
+          label               : 'Timeliness',
           fillColor           : 'rgba(60,141,188,0.9)',
           strokeColor         : 'rgba(60,141,188,0.8)',
           pointColor          : '#3b8bba',
@@ -456,10 +457,10 @@
           pointHighlightStroke: 'rgba(60,141,188,1)',
           data                : [
             <?php $index = 0;?>
-            <?php foreach($departmentCompleteness as $deptCompleteness):?>
-              <?php echo $deptCompleteness['completeness'];?>
+            <?php foreach($departmentTimeliness as $deptTimeliness):?>
+              <?php echo $deptTimeliness['timeliness'];?>
               <?php $index++;?>
-              <?php if(count($departmentCompleteness) > $index):?>
+              <?php if(count($departmentTimeliness) > $index):?>
                 ,
               <?php else:?>
                 ]

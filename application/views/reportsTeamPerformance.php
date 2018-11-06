@@ -159,7 +159,7 @@
 
       datasets: [
         {
-          label               : 'Timeliness',
+          label               : 'Completeness',
           fillColor           : 'rgba(210, 214, 222, 1)',
           strokeColor         : 'rgba(210, 214, 222, 1)',
           pointColor          : 'rgba(210, 214, 222, 1)',
@@ -167,32 +167,31 @@
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
           data                : [
-          <?php $index = 0;?>
-          <?php $timeliness = 0;?>
+            <?php $idx = 0;?>
 
-          <?php foreach($userTeam as $key => $user):?>
-          <?php $timeliness = 0;?>
+            <?php foreach($userTeam as $user):?>
 
-          <?php foreach($employeePerformance as $employee): ?>
+              <?php $completeness = 0;?>
 
-            <?php if($employee['users_USERID'] == $user['USERID']): ?>
-              <?php $timeliness = $employee['timeliness'];?>
-            <?php endif; ?>
-          <?php endforeach; ?>
+              <?php foreach($employeePerformance as $employee): ?>
 
-          '<?php echo $timeliness ?>'
+                <?php if($employee['users_USERID'] == $user['USERID']): ?>
+                  <?php $completeness = $employee['completeness'];?>
+                <?php endif; ?>
+              <?php endforeach; ?>
 
-          <?php $index++;?>
-            <?php if(count($userTeam) > $index):?>
-              ,
-            <?php else:?>
-              ],
-            <?php endif;?>
-          <?php endforeach;?>
+              '<?php echo $completeness ?>'
+              <?php $idx++;?>
+              <?php if(count($userTeam) > $idx):?>
+                ,
+              <?php else:?>
+                ],
+              <?php endif;?>
+            <?php endforeach;?>
                                 // GRAY DATA
         },
         {
-          label               : 'Completeness',
+          label               : 'Timeliness',
           fillColor           : 'rgba(60,141,188,0.9)',
           strokeColor         : 'rgba(60,141,188,0.8)',
           pointColor          : '#3b8bba',
@@ -200,27 +199,28 @@
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
           data                : [
-          <?php $idx = 0;?>
+            <?php $index = 0;?>
+            <?php $timeliness = 0;?>
 
-          <?php foreach($userTeam as $user):?>
-
-            <?php $completeness = 0;?>
+            <?php foreach($userTeam as $key => $user):?>
+            <?php $timeliness = 0;?>
 
             <?php foreach($employeePerformance as $employee): ?>
 
               <?php if($employee['users_USERID'] == $user['USERID']): ?>
-                <?php $completeness = $employee['completeness'];?>
+                <?php $timeliness = $employee['timeliness'];?>
               <?php endif; ?>
             <?php endforeach; ?>
 
-            '<?php echo $completeness ?>'
-            <?php $idx++;?>
-            <?php if(count($userTeam) > $idx):?>
-              ,
-            <?php else:?>
-              ],
-            <?php endif;?>
-          <?php endforeach;?>
+            '<?php echo $timeliness ?>'
+
+            <?php $index++;?>
+              <?php if(count($userTeam) > $index):?>
+                ,
+              <?php else:?>
+                ],
+              <?php endif;?>
+            <?php endforeach;?>
         }
       ]
     }
