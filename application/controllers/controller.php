@@ -5558,7 +5558,7 @@ class controller extends CI_Controller
 							'PASSWORD' => password_hash($newPass, PASSWORD_DEFAULT)
 						);
 
-						echo password_hash($newPass, PASSWORD_DEFAULT);
+						// echo password_hash($newPass, PASSWORD_DEFAULT);
 
 						// echo "<br>$2y$10$weMZc/mMJqs0HLU58WGfDeHr.SzSEBtDlEBxt3WOk/T3zM/zc25.S";
 

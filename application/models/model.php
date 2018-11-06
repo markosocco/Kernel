@@ -9,19 +9,20 @@ class model extends CI_Model
 // CHECK IF EMAIL AND PASSWORD EXIST AND MATCH IN DB
   public function checkDatabase($data)
   {
-    $condition = "EMAIL =" . "'" . $data['email'] . "' AND " . "PASSWORD =" . "'" . $data['password'] . "'";
-    // $condition = "EMAIL =" . "'" . $data['email'] . "'";
-    $this->db->select('*');
-    $this->db->from('users');
-    $this->db->where($condition);
-    $this->db->limit(1);
-    $query = $this->db->get();
+    // NO ENCRYPTION
+    $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' AND PASSWORD = '" . $data['password'] . "' LIMIT 1";
 
+    // WITH ENCRYPTION
+    // $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' LIMIT 1";
+    $query = $this->db->query($q);
+
+    // NO ENCRYPTION
     if ($query->num_rows() == 1)
     {
       return true;
     }
 
+    // ENCRYPTION START
     // $hash = $query->row('PASSWORD');
     //
     // if ($query->num_rows() == 1)
@@ -30,10 +31,13 @@ class model extends CI_Model
     //   {
     //     return true;
     //   }
-    //   else {
+    //
+    //   else
+    //   {
     //     return false;
     //   }
     // }
+    // ENCRYPTION END
 
     else
     {
@@ -2081,7 +2085,7 @@ class model extends CI_Model
     $query = $this->db->get();
     $currPassword = $query->row("PASSWORD");
 
-    if ($oldPass == $currPassword)
+    if (password_verify($oldPass, $currPassword))
     {
       return true;
     }
@@ -2121,7 +2125,7 @@ class model extends CI_Model
     $query = $this->db->get();
     $currPassword = $query->row("PASSWORD");
 
-    if ($pass == $currPassword)
+    if (password_verify($pass, $currPassword))
     {
       return true;
     }
