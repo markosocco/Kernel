@@ -32,4 +32,9 @@
     size: 8.5in 11in;
     margin: 25mm 25mm 25mm 25mm !important;
   }
+
+  .progress-bar
+  {
+    color: white;
+  }
 }
