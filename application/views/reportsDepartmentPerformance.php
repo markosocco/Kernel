@@ -21,7 +21,7 @@
     <!-- Report Style -->
     <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
   </head>
-  <body onload="window.print();" style="font-size: 11px">
+  <body id="printArea" style="font-size: 11px">
   <div class="wrapper">
     <!-- Main content -->
     <section>
@@ -39,7 +39,7 @@
           </div> -->
           <div class="box-body">
             <div class="chart">
-              <canvas id="barChart" style="height:220px"></canvas>
+              <canvas id="barChart" style="height:180px"></canvas>
             </div>
           </div>
           <!-- /.box-body -->
@@ -234,6 +234,7 @@
         //Boolean - whether to make the chart responsive
         responsive              : true,
         maintainAspectRatio     : true,
+        animation               : false,
 
         legend:
         {
@@ -261,6 +262,17 @@
       barChartOptions.datasetFill = false
       barChart.Bar(barChartData, barChartOptions)
     })
+
+    $.ajax({
+      success:function()
+      {
+
+      },
+      complete:function()
+      {
+        window.print();
+      }
+    });
   </script>
   </body>
 </html>

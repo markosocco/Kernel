@@ -21,7 +21,7 @@
   <!-- Report Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
 </head>
-<body onload="window.print();" style="font-size: 11px">
+<body id="printArea" style="font-size: 11px">
 <div class="wrapper">
   <!-- Main content -->
   <section>
