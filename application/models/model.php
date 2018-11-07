@@ -10,33 +10,33 @@ class model extends CI_Model
   public function checkDatabase($data)
   {
     // NO ENCRYPTION
-    $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' AND PASSWORD = '" . $data['password'] . "' LIMIT 1";
+    // $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' AND PASSWORD = '" . $data['password'] . "' LIMIT 1";
 
     // WITH ENCRYPTION
-    // $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' LIMIT 1";
+    $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' LIMIT 1";
     $query = $this->db->query($q);
 
     // NO ENCRYPTION
-    if ($query->num_rows() == 1)
-    {
-      return true;
-    }
-
-    // ENCRYPTION START
-    // $hash = $query->row('PASSWORD');
-    //
     // if ($query->num_rows() == 1)
     // {
-    //   if (password_verify($data['password'], $hash))
-    //   {
-    //     return true;
-    //   }
-    //
-    //   else
-    //   {
-    //     return false;
-    //   }
+    //   return true;
     // }
+
+    // ENCRYPTION START
+    $hash = $query->row('PASSWORD');
+
+    if ($query->num_rows() == 1)
+    {
+      if (password_verify($data['password'], $hash))
+      {
+        return true;
+      }
+
+      else
+      {
+        return false;
+      }
+    }
     // ENCRYPTION END
 
     else
