@@ -3386,8 +3386,6 @@ class controller extends CI_Controller
 
 						if ($data)
 						{
-						  // TODO PUT ALERT
-
 						  // START OF LOGS/NOTIFS
 						  $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
 
@@ -3488,6 +3486,32 @@ class controller extends CI_Controller
 						      // ENTER TASK TO DB
 						      $mainAct = $this->model->importTaskToProject($insertMain);
 
+									// TODO LOG
+									// START OF LOGS/NOTIFS
+									$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+									$taskDetails = $this->model->getTaskByID($mainAct['TASKID']);
+									$taskTitle = $mainAct['TASKTITLE'];
+
+									$projectID = $mainAct['projects_PROJECTID'];
+									$projectDetails = $this->model->getProjectByID($projectID);
+									$projectTitle = $projectDetails['PROJECTTITLE'];
+
+									// $userDetails = $this->model->getUserByID($dept['users_DEPARTMENTHEAD']);
+									// $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+									// START: LOG DETAILS
+									$details = $userName . " has created Main Activity - " . $taskTitle . ".";
+
+									$logData = array (
+										'LOGDETAILS' => $details,
+										'TIMESTAMP' => date('Y-m-d H:i:s'),
+										'projects_PROJECTID' => $projectID
+									);
+
+									$this->model->addToProjectLogs($logData);
+									// END: LOG DETAILS
+
 						      // GET ALL SUB ACTS UNDER CURRENT MAIN
 						      foreach ($worksheet as $cell)
 						      {
@@ -3504,6 +3528,28 @@ class controller extends CI_Controller
 						          $insertSub['projects_PROJECTID'] = $projectID;
 
 						          $subAct = $this->model->importTaskToProject($insertSub);
+
+											// START OF LOGS/NOTIFS
+											$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+											$taskDetails = $this->model->getTaskByID($subAct['TASKID']);
+											$taskTitle = $subAct['TASKTITLE'];
+
+											$projectID = $subAct['projects_PROJECTID'];
+											$projectDetails = $this->model->getProjectByID($projectID);
+											$projectTitle = $projectDetails['PROJECTTITLE'];
+
+											// START: LOG DETAILS
+											$details = $userName . " has created Sub Activity - " . $taskTitle . ".";
+
+											$logData = array (
+												'LOGDETAILS' => $details,
+												'TIMESTAMP' => date('Y-m-d H:i:s'),
+												'projects_PROJECTID' => $projectID
+											);
+
+											$this->model->addToProjectLogs($logData);
+											// END: LOG DETAILS
 
 						          // GET ALL TASKS UNDER CURRENT SUB
 						          foreach ($worksheet as $cell_2)
@@ -3536,6 +3582,46 @@ class controller extends CI_Controller
 
 						                $result = $this->model->addToRaci($taskR);
 
+														// START OF LOGS/NOTIFS
+														$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+														$taskDetails = $this->model->getTaskByID($task['TASKID']);
+														$taskTitle = $task['TASKTITLE'];
+
+														$projectID = $task['projects_PROJECTID'];
+														$projectDetails = $this->model->getProjectByID($projectID);
+														$projectTitle = $projectDetails['PROJECTTITLE'];
+
+														$userDetails = $this->model->getUserByID($taskUserIDR['USERID']);
+														$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+														// START: LOG DETAILS
+														$details = $userName . " has tagged " . $taggedUserName . " as responsible for  " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'];
+
+														$logData = array (
+															'LOGDETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'projects_PROJECTID' => $projectID
+														);
+
+														$this->model->addToProjectLogs($logData);
+														// END: LOG DETAILS
+
+														//START: Notifications
+														$details = $userName . " has tagged you as responsbile for " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'] . ".";
+														$notificationData = array(
+															'users_USERID' => $taskUserIDR['USERID'],
+															'DETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'status' => 'Unread',
+															'projects_PROJECTID' => $projectID,
+															'tasks_TASKID' => $task['TASKID'],
+															'TYPE' => '2'
+														);
+
+														$this->model->addNotification($notificationData);
+														// END: Notification
+
 														$mainRaci['ROLE'] = 5;
 										        $mainRaci['users_USERID'] = $taskUserIDR['users_DEPARTMENTHEAD'];
 										        $mainRaci['tasks_TASKID'] = $mainAct['TASKID'];
@@ -3564,6 +3650,46 @@ class controller extends CI_Controller
 						                $taskA['STATUS'] = 'Current';
 
 						                $result = $this->model->addToRaci($taskA);
+
+														// START OF LOGS/NOTIFS
+														$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+														$taskDetails = $this->model->getTaskByID($task['TASKID']);
+														$taskTitle = $task['TASKTITLE'];
+
+														$projectID = $task['projects_PROJECTID'];
+														$projectDetails = $this->model->getProjectByID($projectID);
+														$projectTitle = $projectDetails['PROJECTTITLE'];
+
+														$userDetails = $this->model->getUserByID($taskUserIDA['USERID']);
+														$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+														// START: LOG DETAILS
+														$details = $userName . " has tagged " . $taggedUserName . " as accountable for  " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'];
+
+														$logData = array (
+															'LOGDETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'projects_PROJECTID' => $projectID
+														);
+
+														$this->model->addToProjectLogs($logData);
+														// END: LOG DETAILS
+
+														//START: Notifications
+														$details = $userName . " has tagged you as accountable for " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'] . ".";
+														$notificationData = array(
+															'users_USERID' => $taskUserIDA['USERID'],
+															'DETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'status' => 'Unread',
+															'projects_PROJECTID' => $projectID,
+															'tasks_TASKID' => $task['TASKID'],
+															'TYPE' => '2'
+														);
+
+														$this->model->addNotification($notificationData);
+														// END: Notification
 						              }
 
 						              // CONSULTED
@@ -3579,6 +3705,46 @@ class controller extends CI_Controller
 						                $taskC['STATUS'] = 'Current';
 
 						                $result = $this->model->addToRaci($taskC);
+
+														// START OF LOGS/NOTIFS
+														$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+														$taskDetails = $this->model->getTaskByID($task['TASKID']);
+														$taskTitle = $task['TASKTITLE'];
+
+														$projectID = $task['projects_PROJECTID'];
+														$projectDetails = $this->model->getProjectByID($projectID);
+														$projectTitle = $projectDetails['PROJECTTITLE'];
+
+														$userDetails = $this->model->getUserByID($taskUserIDC['USERID']);
+														$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+														// START: LOG DETAILS
+														$details = $userName . " has tagged " . $taggedUserName . " as consulted for  " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'];
+
+														$logData = array (
+															'LOGDETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'projects_PROJECTID' => $projectID
+														);
+
+														$this->model->addToProjectLogs($logData);
+														// END: LOG DETAILS
+
+														//START: Notifications
+														$details = $userName . " has tagged you as consulted for " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'] . ".";
+														$notificationData = array(
+															'users_USERID' => $taskUserIDC['USERID'],
+															'DETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'status' => 'Unread',
+															'projects_PROJECTID' => $projectID,
+															'tasks_TASKID' => $task['TASKID'],
+															'TYPE' => '2'
+														);
+
+														$this->model->addNotification($notificationData);
+														// END: Notification
 						              }
 
 						              // INFORMED
@@ -3594,6 +3760,46 @@ class controller extends CI_Controller
 						                $taskI['STATUS'] = 'Current';
 
 						                $result = $this->model->addToRaci($taskI);
+
+														// START OF LOGS/NOTIFS
+														$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+														$taskDetails = $this->model->getTaskByID($task['TASKID']);
+														$taskTitle = $task['TASKTITLE'];
+
+														$projectID = $task['projects_PROJECTID'];
+														$projectDetails = $this->model->getProjectByID($projectID);
+														$projectTitle = $projectDetails['PROJECTTITLE'];
+
+														$userDetails = $this->model->getUserByID($taskUserIDI['USERID']);
+														$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+														// START: LOG DETAILS
+														$details = $userName . " has tagged " . $taggedUserName . " as informed for  " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'];
+
+														$logData = array (
+															'LOGDETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'projects_PROJECTID' => $projectID
+														);
+
+														$this->model->addToProjectLogs($logData);
+														// END: LOG DETAILS
+
+														//START: Notifications
+														$details = $userName . " has tagged you as informed for " . $taskTitle . " in " . $projectDetails['PROJECTTITLE'] . ".";
+														$notificationData = array(
+															'users_USERID' => $taskUserIDI['USERID'],
+															'DETAILS' => $details,
+															'TIMESTAMP' => date('Y-m-d H:i:s'),
+															'status' => 'Unread',
+															'projects_PROJECTID' => $projectID,
+															'tasks_TASKID' => $task['TASKID'],
+															'TYPE' => '2'
+														);
+
+														$this->model->addNotification($notificationData);
+														// END: Notification
 						              }
 						            }
 						          }
@@ -4527,7 +4733,7 @@ class controller extends CI_Controller
 											$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
 											// START: LOG DETAILS
-											$details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
+											$details = $userName . " has created Main Activity - " . $taskTitle . ".";
 
 											$logData = array (
 												'LOGDETAILS' => $details,
@@ -4582,7 +4788,7 @@ class controller extends CI_Controller
 									// $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 									//
 									// // START: LOG DETAILS
-									// $details = $userName . " has tagged " . $taggedUserName . " to delegate Main Activity - " . $taskTitle . ".";
+									// $details = $userName . " has created Main Activity - " . $taskTitle . ".";
 									//
 									// $logData = array (
 									// 	'LOGDETAILS' => $details,
@@ -5018,7 +5224,7 @@ class controller extends CI_Controller
 									// $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 									//
 									// START: LOG DETAILS
-									// $details = $userName . " has tagged " . $taggedUserName . " to delegate Sub Activity - " . $taskTitle . ".";
+									// $details = $userName . " has created Sub Activity - " . $taskTitle . ".";
 									//
 									// $logData = array (
 									// 	'LOGDETAILS' => $details,
@@ -5258,9 +5464,6 @@ class controller extends CI_Controller
 			$user = $_SESSION['USERID'];
 			$fileName = $this->upload->data('file_name');
 			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
-			$this->session->set_flashdata('success', 'alert');
-			$this->session->set_flashdata('alertMessage', ' Document uploaded successfully');
-
 
 			foreach ($departmentIDs as $key => $value) {
 				$value;
@@ -5413,6 +5616,9 @@ class controller extends CI_Controller
 		$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
 		$data['users'] = $this->model->getAllUsersByProject($id);
 
+		// $this->session->set_flashdata('success', 'alert');
+		// $this->session->set_flashdata('alertMessage', ' Document uploaded successfully');
+
 		$this->load->view("projectDocuments", $data);
 	}
 
@@ -5443,9 +5649,14 @@ class controller extends CI_Controller
 
 		if ($result)
 		{
-			if(isset($dashboard)){
+			if(isset($dashboard))
+			{
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' Document acknowledged');
 				redirect('controller/dashboard');
-			} else {
+			}
+
+			else {
 				// redirect('controller/projectDocuments');
 
 				$data['projectProfile'] = $this->model->getProjectByID($projectID);
