@@ -23,7 +23,7 @@
   <!-- Report Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
 </head>
-<body onload="window.print();" style="font-size: 11px">
+<body id="printArea" style="font-size: 11px">
 <div class="wrapper">
   <!-- Main content -->
   <section>
@@ -85,16 +85,16 @@
 	                  <div>
                       <br>
                       <br>
-                      <h1><?php echo $projectCompleteness['completeness']; ?>%</h1>
-                      <h4>Completeness</h4>
+                      <h3><?php echo $projectCompleteness['completeness']; ?>%</h3>
+                      <h5>Completeness</h5>
 	                  </div>
 	                </div>
 	                <div style="display:inline-block; text-align:center; width:49%; height: 100%; border-left: solid lightgray 1px;">
 	                  <div>
                       <br>
                       <br>
-                      <h1><?php echo $projectTimeliness['timeliness']; ?>%</h1>
-                      <h4>Timeliness</h4>
+                      <h3><?php echo $projectTimeliness['timeliness']; ?>%</h3>
+                      <h5>Timeliness</h5>
 	                 </div>
 	               </div>
 	              </div>
@@ -356,6 +356,7 @@
       //Boolean - whether to make the chart responsive
       responsive              : true,
       maintainAspectRatio     : true,
+      animation               : false,
 
       legend:
       {
@@ -382,6 +383,17 @@
     barChartOptions.datasetFill = false
     barChart.Bar(barChartData, barChartOptions)
   })
+
+  $.ajax({
+    success:function()
+    {
+
+    },
+    complete:function()
+    {
+      window.print();
+    }
+  });
 </script>
 </body>
 </html>

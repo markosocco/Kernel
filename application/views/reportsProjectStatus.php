@@ -21,7 +21,7 @@
   <!-- Report Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
 </head>
-<body onload="window.print();" style="font-size: 11px">
+<body onload="window.print();" id="printArea" style="font-size: 11px">
 <div class="wrapper">
   <!-- Main content -->
   <section>
@@ -360,19 +360,23 @@
       <p>***END OF REPORT***</p>
     </div>
 
-    <footer class="reportFooter">
+    <div class="reportFooter">
       <!-- To the right -->
-      <div class="pull-right hidden-xs">
+      <div id="pageCounter">
         <!-- <medium>Page 1 of 1M</medium> -->
       </div>
       <!-- Default to the left -->
       <medium>Prepared By: <?php echo $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME']?></medium>
       <br>
       <medium>Prepared On: <?php echo date('F d, Y'); ?></medium>
-    </footer>
+
+    </div>
   </section>
   <!-- /.content -->
 </div>
 <!-- ./wrapper -->
+<script>
+
+</script>
 </body>
 </html>

@@ -21,7 +21,7 @@
   <!-- Report Style -->
   <link rel="stylesheet" href="<?php echo base_url("/assets/css/reportStyle.css")?>">
 </head>
-<body onload="window.print();" style="font-size: 11px">
+<body id="printArea" onload="window.print()" style="font-size: 11px">
 <div class="wrapper">
   <!-- Main content -->
   <section>
@@ -103,8 +103,9 @@
                       <td>
                         <!-- LAST WEEK/MONTH  -->
                         <!-- TOTAL PROGRESS -->
+                        <h4>Past Progress</h4>
                         <span class="pull-right" style="margin-left:10px;"><?php echo $pastTotalProgress; ?>%</span>
-                        <div class="progress">
+                        <div class="progress" style="vertical-align:middle">
 
                           <?php $colorCounter = 1; ?>
 
@@ -149,8 +150,9 @@
                       <td>
                         <!-- THIS WEEK/MONTH -->
                         <!-- TOTAL PROGRESS -->
+                        <h4>Current Progress</h4>
                         <span class="pull-right" style="margin-left:10px;"><?php echo $currentTotalProgress; ?>%</span>
-                        <div class="progress">
+                        <div class="progress" style="vertical-align:middle">
 
                           <?php $colorCounter = 1; ?>
 

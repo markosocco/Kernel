@@ -5455,7 +5455,7 @@ class controller extends CI_Controller
 		{
 			// echo "<script>alert('did not upload');</script>";
 			$this->session->set_flashdata('danger', 'alert');
-			$this->session->set_flashdata('alertMessage', ' Upload Document Failed');
+			$this->session->set_flashdata('alertMessage', ' Upload document failed');
 		}
 
 		else
@@ -5737,7 +5737,7 @@ class controller extends CI_Controller
 		if(!$checker)
 		{
 			$this->session->set_flashdata('danger', 'alert');
-			$this->session->set_flashdata('alertMessage', ' Current Password is Incorrect');
+			$this->session->set_flashdata('alertMessage', ' Current password is incorrect');
 			redirect('controller/dashboard');
 		}
 
