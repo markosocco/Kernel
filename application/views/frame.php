@@ -298,7 +298,6 @@ desired effect
           </li>
         <?php endif;?>
 
-        <!-- <li id = 'myTasks'><a href="<?php echo base_url("index.php/controller/myTasks"); ?>"><i class="fa fa-check-square-o"></i> <span> My Tasks</span></a></li> -->
       <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
           <li id = 'tasks' class="treeview">
             <a href=" ">
@@ -325,7 +324,7 @@ desired effect
             </ul>
           </li>
         <?php else:?>
-          <li id = 'taskTodo'><a class="menu" href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-check-square-o"></i> To Do</a></li>
+          <li id = 'taskTodo'><a href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-check-square-o"></i> <span>To Do</span></a></li>
         <?php endif;?>
 
         <li id = 'rfc'><a href="<?php echo base_url("index.php/controller/rfc"); ?>"><i class="fa fa-flag"></i> <span> Change Requests</span></a></li>

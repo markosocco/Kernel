@@ -5,7 +5,7 @@
 		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/monitorMembersStyle.css")?>">
 	</head>
 	<body class="hold-transition skin-red sidebar-mini fixed">
-		<?php require("frame.php"); ?>
+		<?php require("frame.php"); ?>Department
 
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
