@@ -35,38 +35,7 @@ body
   font-weight: bold;
 }
 
-.loginElements
-{
-  opacity: 0.75;
-  border-radius: 5px;
-  width: 300px;
-  position: relative;
-  margin: auto;
-  height: auto;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  padding: 1rem;
-}
-
-input[type = "text"], input[type = "password"]
-{
-  width: 230px;
-  height: 30px;
-  margin-bottom: 15px;
-  padding-left: 5px;
-  background: transparent;
-  border-style: solid;
-  border-color: #1A1A1A;
-  border-width: thin;
-  border-radius: 3px;
-  font-size: 1em;
-  color: #1A1A1A;
-  font-family: 'Source Sans Pro', sans-serif;
-}
-
-input[type = "submit"]
+.redirectBtn
 {
   /* background: transparent; */
   border-style: none;
@@ -83,38 +52,12 @@ input[type = "submit"]
   font-weight: bold;
   border-style: solid;
   border-width: thin;
+  color: WHITE;
 }
 
-/* input[type = "text"]:hover, input[type = "password"]:hover
-{
-  border-color: orange;
-} */
-
-input[type = "text"]:focus, input[type = "password"]:focus
+a:focus
 {
   border-color: black;
-  color: black;
-}
-
-/* input[type = "submit"]:hover
-{
-
-} */
-
-#mainContainer p
-{
-  color: #1A1A1A;
-}
-
-#mainContainer a
-{
-  /* font-size: .8em; */
-  text-decoration: none;
-  color: #1A1A1A;
-}
-
-#resetPass:hover
-{
   color: black;
 }
 
@@ -141,9 +84,4 @@ footer a:hover
 {
   color: black;
   text-decoration: none;
-}
-
-::placeholder
-{
-  color: #1A1A1A;
 }

@@ -64,27 +64,27 @@
                             <th class='text-center' colspan="2"><?php echo $department['DEPARTMENTNAME'];?></th>
       											<th width = "35%">Project</th>
       											<th width = "20%" class='text-center'>End Date</th>
+                            <th width = "15%" class='text-center'>Completeness</th>
                             <th width = "15%" class='text-center'>Timeliness</th>
-      											<th width = "15%" class='text-center'>Completeness</th>
       										</tr>
       									<tbody>
                           <?php $counter = 0;?>
                           <?php foreach(${"departmentPerf" . $department['DEPARTMENTID']} as $performanceData):?>
                             <?php if($counter == 0):?>
                               <tr>
-                                <th rowspan="<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:14px;"><?php echo $departmentPerformance[$key]['AVERAGE'];?>%<br><span style="font-size:8px">Completeness</span></th>
-                                <th rowspan="<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:14px;">100%<br><span style="font-size:8px">Timeliness</span></th>
+                                <th rowspan="<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:14px;"><?php echo $departmentPerformance[$key]['COMPLETENESSAVERAGE'];?>%<br><span style="font-size:8px">Completeness</span></th>
+                                <th rowspan="<?php echo count(${"departmentPerf" . $department['DEPARTMENTID']});?>" class="text-center" style="vertical-align: middle; font-size:14px;"><?php echo $departmentPerformance[$key]['TIMELINESSAVERAGE'];?>%<br><span style="font-size:8px">Timeliness</span></th>
                                 <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
-                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?>%</td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
                               </tr>
                             <?php else:?>
                               <tr>
                                 <td style="vertical-align: middle"><?php echo $performanceData['PROJECTTITLE'];?></td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo date_format(date_create($performanceData['PROJECTENDDATE']), "F d, Y");?></td>
-                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
                                 <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['completeness'];?>%</td>
+                                <td style="vertical-align: middle" align = 'center'><?php echo $performanceData['timeliness'];?>%</td>
                               </tr>
                               <?php endif;?>
                           <?php $counter++;?>
@@ -157,7 +157,7 @@
           <?php endforeach;?>
         datasets: [
           {
-            label               : 'Timeliness',
+            label               : 'Completeness',
             fillColor           : 'rgba(210, 214, 222, 1)',
             strokeColor         : 'rgba(210, 214, 222, 1)',
             pointColor          : 'rgba(210, 214, 222, 1)',
@@ -166,8 +166,8 @@
             pointHighlightStroke: 'rgba(220,220,220,1)',
             data                : [
               <?php $index = 0;?>
-              <?php foreach($departmentPerformance as $deptTimeliness):?>
-                <?php echo $deptTimeliness['TIMELINESSAVERAGE'];?>
+              <?php foreach($departmentPerformance as $deptCompleteness):?>
+                <?php echo $deptCompleteness['COMPLETENESSAVERAGE'];?>
                 <?php $index++;?>
                 <?php if(count($departmentPerformance) > $index):?>
                   ,
@@ -177,7 +177,7 @@
               <?php endforeach;?>
           },
           {
-            label               : 'Completeness',
+            label               : 'Timeliness',
             fillColor           : 'rgba(60,141,188,0.9)',
             strokeColor         : 'rgba(60,141,188,0.8)',
             pointColor          : '#3b8bba',
@@ -186,8 +186,8 @@
             pointHighlightStroke: 'rgba(60,141,188,1)',
             data                : [
               <?php $index = 0;?>
-              <?php foreach($departmentPerformance as $deptCompleteness):?>
-                <?php echo $deptCompleteness['COMPLETENESSAVERAGE'];?>
+              <?php foreach($departmentPerformance as $deptTimeliness):?>
+                <?php echo $deptTimeliness['TIMELINESSAVERAGE'];?>
                 <?php $index++;?>
                 <?php if(count($departmentPerformance) > $index):?>
                   ,

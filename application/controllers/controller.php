@@ -1148,7 +1148,7 @@ class controller extends CI_Controller
 			}
 		}
 		$this->session->set_flashdata('success', 'alert');
-		$this->session->set_flashdata('alertMessage', ' Task has been Marked Complete');
+		$this->session->set_flashdata('alertMessage', ' Task has been marked complete');
 		$this->taskTodo();
 	}
 
@@ -1247,7 +1247,7 @@ class controller extends CI_Controller
 			}
 		}
 		$this->session->set_flashdata('success', 'alert');
-		$this->session->set_flashdata('alertMessage', ' Task has been Accepted');
+		$this->session->set_flashdata('alertMessage', ' Task has been accepted');
 		$this->taskDelegate();
 	}
 
@@ -1509,7 +1509,7 @@ class controller extends CI_Controller
 			}
 		}
 		$this->session->set_flashdata('success', 'alert');
-		$this->session->set_flashdata('alertMessage', ' Task has been Delegated');
+		$this->session->set_flashdata('alertMessage', ' Task has been delegated');
 		$this->taskDelegate();
 	}
 
@@ -1637,7 +1637,7 @@ class controller extends CI_Controller
 		}
 		$this->model->addRFC($data);
 		$this->session->set_flashdata('success', 'alert');
-		$this->session->set_flashdata('alertMessage', ' Request for Change Submitted');
+		$this->session->set_flashdata('alertMessage', ' Request for change submitted');
 		$this->taskTodo();
 	}
 
@@ -1929,7 +1929,7 @@ class controller extends CI_Controller
 				}
 				$this->session->set_flashdata('success', 'alert');
 
-				$this->session->set_flashdata('alertMessage', ' Request for Change Approved');
+				$this->session->set_flashdata('alertMessage', ' Request for change approved');
 		} // end if appoved change Performer
 		else // if approved change date
 		{
@@ -2030,7 +2030,7 @@ class controller extends CI_Controller
 			// END: Notification
 			$this->session->set_flashdata('success', 'alert');
 
-			$this->session->set_flashdata('alertMessage', ' Request for Change Denied');
+			$this->session->set_flashdata('alertMessage', ' Request for change denied');
 		} // end if approved change dates
 
 		$data['projectProfile'] = $this->model->getProjectByID($projectID);
@@ -5135,6 +5135,8 @@ class controller extends CI_Controller
 			{
 				$data['archives'] = $this->model->getAllProjectArchives();
 
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' Project has been archived');
 				$this->load->view("archives", $data);
 			}
 		}
@@ -5216,6 +5218,8 @@ class controller extends CI_Controller
 			{
 				$data['templates'] = $this->model->getAllTemplates();
 
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' Project has been saved as a template');
 				$this->load->view("templates", $data);
 			}
 		}
@@ -5243,7 +5247,9 @@ class controller extends CI_Controller
 		// UPLOAD: FAILED
 		if(!$this->upload->do_upload('document'))
 		{
-			echo "<script>alert('did not upload');</script>";
+			// echo "<script>alert('did not upload');</script>";
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Upload Document Failed');
 		}
 
 		else
@@ -5252,6 +5258,9 @@ class controller extends CI_Controller
 			$user = $_SESSION['USERID'];
 			$fileName = $this->upload->data('file_name');
 			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
+			$this->session->set_flashdata('success', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Document uploaded successfully');
+
 
 			foreach ($departmentIDs as $key => $value) {
 				$value;
@@ -5445,6 +5454,8 @@ class controller extends CI_Controller
 				$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($projectID, $_SESSION['USERID']);
 				$data['users'] = $this->model->getAllUsersByProject($projectID);
 
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' Document acknowledged');
 				$this->load->view("projectDocuments", $data);
 			}
 		}
