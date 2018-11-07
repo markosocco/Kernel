@@ -75,7 +75,7 @@
                           <?php $pastTotalProgress = 0; ?>
                           <?php $currentTotalProgress = 0; ?>
 
-                          <?php foreach ($mainActivities as $main): ?>
+                          <?php foreach ($mainActivities as $mainKey => $main): ?>
                               <tr>
                                 <?php if (count($pastProgress) == 0): ?>
                                   <td>No data available</td>
@@ -88,7 +88,7 @@
                                   <?php endforeach;?>
                                 <?php endif; ?>
 
-                                <td align="center"><?php echo $main['TASKTITLE']; ?></td>
+                                <td align="center"><?php echo "<b>M" . ($mainKey + 1) . "</b>. " . $main['TASKTITLE']; ?></td>
 
                                 <?php foreach ($currentProgress as $current): ?>
                                   <?php if ($main['TASKID'] == $current['tasks_MAINID']): ?>
@@ -108,12 +108,12 @@
 
                           <?php $colorCounter = 1; ?>
 
-                          <?php foreach ($mainActivities as $mainProgressBar): ?>
+                          <?php foreach ($mainActivities as $mainProgKey => $mainProgressBar): ?>
 
                               <?php foreach ($pastProgress as $pastBar): ?>
                                 <?php if ($mainProgressBar['TASKID'] == $pastBar['tasks_MAINID']): ?>
                                   <div class="progress-bar" role="progressbar" style="width:<?php echo $pastBar['COMPLETENESS'] ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
-                                    <?php echo $mainProgressBar['TASKTITLE'] . " (" . $pastBar['COMPLETENESS'] . "%)"; ?>
+                                    <?php echo "M" . ($mainProgKey + 1) . " (" . $pastBar['COMPLETENESS'] . "%)"; ?>
                                   </div>
 
                                   <?php
@@ -154,12 +154,12 @@
 
                           <?php $colorCounter = 1; ?>
 
-                          <?php foreach ($mainActivities as $mainProgressBar): ?>
+                          <?php foreach ($mainActivities as $mainProgKey => $mainProgressBar): ?>
 
                               <?php foreach ($currentProgress as $currentBar): ?>
                                 <?php if ($mainProgressBar['TASKID'] == $currentBar['tasks_MAINID']): ?>
                                   <div class="progress-bar" role="progressbar" style="width:<?php echo $currentBar['COMPLETENESS'] ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
-                                    <?php echo $mainProgressBar['TASKTITLE'] . " (" . $currentBar['COMPLETENESS'] . "%)"; ?>
+                                    <?php echo "M" . ($mainProgKey + 1) . " (" . $currentBar['COMPLETENESS'] . "%)"; ?>
                                   </div>
 
                                   <?php
