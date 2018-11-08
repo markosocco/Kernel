@@ -364,6 +364,18 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllOngoingAndDelayedProjects()
+  {
+    $condition = "(PROJECTSTARTDATE <= CURDATE() && PROJECTENDDATE >= CURDATE() || PROJECTENDDATE < CURDATE()) && PROJECTSTATUS = 'Ongoing'";
+    $this->db->select('*, DATEDIFF(projects.PROJECTENDDATE, CURDATE()) as "datediff"');
+    $this->db->from('projects');
+    $this->db->where($condition);
+    $this->db->order_by('PROJECTENDDATE');
+    $query = $this->db->get();
+
+    return $query->result_array();
+  }
+
 // GET ALL ONGOING PROJECTS BASED ON PROJECTSTARTDATE AND PROJECTENDDATE
   public function getAllOngoingProjects()
   {
@@ -1843,6 +1855,7 @@ class model extends CI_Model
     $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
     $this->db->join('users', 'raci.users_userid = users.userid');
     $this->db->join('departments', 'users.departments_departmentid = departments.departmentid');
+    $this->db->group_by("PROJECTID");
 
     return $this->db->get()->result_array();
   }

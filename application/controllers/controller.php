@@ -2284,8 +2284,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
-			$data['allOngoingProjects'] = $this->model->getAllOngoingPOProjects($_SESSION['USERID']);
+			if($_SESSION['departments_DEPARTMENTID'] == 1)
+			{
+				$data['allProjects'] = $this->model->getAllProjects();
+				$data['allOngoingProjects'] = $this->model->getAllOngoingAndDelayedProjects();
+			}
+			else
+			{
+				$data['allProjects'] = $this->model->getAllProjectsOwnedByUser($_SESSION['USERID']);
+				$data['allOngoingProjects'] = $this->model->getAllOngoingPOProjects($_SESSION['USERID']);
+			}
 
 			$this->load->view("reports", $data);
 		}
