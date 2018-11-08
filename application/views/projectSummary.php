@@ -252,7 +252,7 @@
 				<?php if($delayedTasks != null):?>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
-						<div class="box box-default">
+						<div class="box box-danger">
 							<div class="box-header with-border">
 								<h5 class="box-title">Delayed Tasks</h5>
 							</div>
