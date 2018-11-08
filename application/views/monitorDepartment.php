@@ -142,64 +142,66 @@
 
 					<div class='row'>
 						<?php foreach($allDepartments as $allDepartment):?>
-							<div class="col-md-4 col-sm-4 col-xs-12">
-								<div class="box box-danger clickable dept" data-id="<?php echo $allDepartment['DEPARTMENTID'];?>">
-									<div class="box-header with-border">
-										<h3 class="box-title"><?php echo $allDepartment['DEPARTMENTNAME'];?> Performance</h3>
-									</div>
-									<!-- /.box-header -->
-									<div class="box-body">
-		                <div style="display:inline-block; text-align:center; width:49%;">
-		                  <div class="circlechart"
-		                    data-percentage="
-												<?php
-												foreach($departments as $department)
-												{
-													if($department['DEPARTMENTID'] == $allDepartment['DEPARTMENTID'])
+							<?php if($allDepartment['DEPARTMENTID'] != 1):?>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<div class="box box-danger clickable dept" data-id="<?php echo $allDepartment['DEPARTMENTID'];?>">
+										<div class="box-header with-border">
+											<h3 class="box-title"><?php echo $allDepartment['DEPARTMENTNAME'];?> Performance</h3>
+										</div>
+										<!-- /.box-header -->
+										<div class="box-body">
+			                <div style="display:inline-block; text-align:center; width:49%;">
+			                  <div class="circlechart"
+			                    data-percentage="
+													<?php
+													foreach($departments as $department)
 													{
-														if($department['completeness'] == NULL){
-															echo 0;
-														} else {
-															if($department['completeness'] == 100.00){
-																echo 100;
-															} elseif ($department['completeness'] == 0.00) {
+														if($department['DEPARTMENTID'] == $allDepartment['DEPARTMENTID'])
+														{
+															if($department['completeness'] == NULL){
 																echo 0;
 															} else {
-																echo $department['completeness'];
+																if($department['completeness'] == 100.00){
+																	echo 100;
+																} elseif ($department['completeness'] == 0.00) {
+																	echo 0;
+																} else {
+																	echo $department['completeness'];
+																}
 															}
 														}
 													}
-												}
-													?>">Completeness
-		                  </div>
-		                </div>
-		                <div style="display:inline-block; text-align:center; width:49%;">
-		                  <div class="circlechart"
-		                   data-percentage="
-											 <?php
-											 foreach($departments as $department)
-											 {
-												 if($department['DEPARTMENTID'] == $allDepartment['DEPARTMENTID'])
+														?>">Completeness
+			                  </div>
+			                </div>
+			                <div style="display:inline-block; text-align:center; width:49%;">
+			                  <div class="circlechart"
+			                   data-percentage="
+												 <?php
+												 foreach($departments as $department)
 												 {
-													 if($department['timeliness'] == NULL){
-														 echo 0;
-													 } else {
-														 if($department['timeliness'] == 100.00){
-															 echo 100;
-														 } elseif ($department['timeliness'] == 0.00) {
+													 if($department['DEPARTMENTID'] == $allDepartment['DEPARTMENTID'])
+													 {
+														 if($department['timeliness'] == NULL){
 															 echo 0;
 														 } else {
-															 echo $department['timeliness'];
+															 if($department['timeliness'] == 100.00){
+																 echo 100;
+															 } elseif ($department['timeliness'] == 0.00) {
+																 echo 0;
+															 } else {
+																 echo $department['timeliness'];
+															 }
 														 }
 													 }
 												 }
-											 }
-	  										 ?>">Timeliness
-		                 </div>
-		               </div>
-		              </div>
-								</div>
-			        </div>
+		  										 ?>">Timeliness
+			                 </div>
+			               </div>
+			              </div>
+									</div>
+				        </div>
+							<?php endif;?>
 						<?php endforeach;?>
 					</div>
 
