@@ -535,7 +535,7 @@ class controller extends CI_Controller
 
 	public function monitorTeam()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL'])|| $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}
@@ -616,7 +616,7 @@ class controller extends CI_Controller
 
 	public function monitorMembers()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL']) || $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}
@@ -664,7 +664,7 @@ class controller extends CI_Controller
 
 	public function monitorDepartment()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL']) || $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}
@@ -699,7 +699,7 @@ class controller extends CI_Controller
 
 	public function monitorDepartmentDetails()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL'])|| $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}
@@ -721,7 +721,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('restrictedAccess');
+			$this->load->view('restrictedAccess' || $_SESSION['usertype_USERTYPEID'] == 5);
 		}
 
 		else
@@ -740,7 +740,7 @@ class controller extends CI_Controller
 	{
 		if (!isset($_SESSION['EMAIL']))
 		{
-			$this->load->view('restrictedAccess');
+			$this->load->view('restrictedAccess' || $_SESSION['usertype_USERTYPEID'] == 5);
 		}
 
 		else
@@ -2074,7 +2074,7 @@ class controller extends CI_Controller
 
 	public function templates()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL']) || $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}
@@ -2302,6 +2302,7 @@ class controller extends CI_Controller
 
 		else
 		{
+
 			$data['allProjects'] = $this->model->getAllProjects();
 			$data['departments'] = $this->model->getAllDepartmentsWithoutExecutive();
 			$data['projectCompleteness'] = $this->model->compute_completeness_allProjects();
@@ -2329,28 +2330,39 @@ class controller extends CI_Controller
 		{
 			$projectID = $this->input->post('project');
 
-			$data['project'] = $this->model->getProjectByID($projectID);
-			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
-			$data['subActivity'] = $this->model->getAllSubActivitiesByID($projectID);
-			$data['tasks'] = $this->model->getAllTasksByIDRole1($projectID);
-			$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($projectID);
-			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
-			$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-			$data['changeRequests'] = $this->model->getChangeRequestsByProject($projectID);
-			$data['documents'] = $this->model->getAllDocumentsByProject($projectID);
-			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
-			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
-			$data['team'] = $this->model->getTeamByProject($projectID);
-			$data['users'] = $this->model->getAllUsers();
-			$data['allDepartments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
-			$data['taskCount'] = $this->model->getTaskCountByProjectByRole($projectID);
-			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($projectID);
-			$data['delayedTaskCount'] = $this->model->getDelayedTaskCount($projectID);
+			if ($projectID == NULL)
+			{
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', ' You did not select a project');
+
+				redirect('controller/reports');
+			}
+
+			else
+			{
+				$data['project'] = $this->model->getProjectByID($projectID);
+				$data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+				$data['subActivity'] = $this->model->getAllSubActivitiesByID($projectID);
+				$data['tasks'] = $this->model->getAllTasksByIDRole1($projectID);
+				$data['earlyTasks'] = $this->model->getAllEarlyTasksByIDRole1($projectID);
+				$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
+				$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+				$data['changeRequests'] = $this->model->getChangeRequestsByProject($projectID);
+				$data['documents'] = $this->model->getAllDocumentsByProject($projectID);
+				$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+				$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+				$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
+				$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
+				$data['team'] = $this->model->getTeamByProject($projectID);
+				$data['users'] = $this->model->getAllUsers();
+				$data['allDepartments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
+				$data['taskCount'] = $this->model->getTaskCountByProjectByRole($projectID);
+				$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($projectID);
+				$data['delayedTaskCount'] = $this->model->getDelayedTaskCount($projectID);
 
 
-			$this->load->view("reportsProjectSummary", $data);
+				$this->load->view("reportsProjectSummary", $data);
+			}
 		}
 	}
 
@@ -2415,17 +2427,29 @@ class controller extends CI_Controller
 		else
 		{
 			$projectID = $this->input->post('project');
-			$data['project'] = $this->model->getProjectByID($projectID);
-			$data['users'] = $this->model->getAllUsers();
-			$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
-			$data['raci'] = $this->model->getAllACI();
-			$data['departments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
-			$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
-			$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
-			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
-			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 
-			$this->load->view("reportsProjectPerformance", $data);
+			if ($projectID == NULL)
+			{
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', ' You did not select a project');
+
+				redirect('controller/reports');
+			}
+
+			else
+			{
+				$data['project'] = $this->model->getProjectByID($projectID);
+				$data['users'] = $this->model->getAllUsers();
+				$data['delayedTasks'] = $this->model->getAllDelayedTasksByIDRole1($projectID);
+				$data['raci'] = $this->model->getAllACI();
+				$data['departments'] = $this->model->getAllDepartmentsByProjectByRole($projectID);
+				$data['departmentCompleteness'] = $this->model->compute_completeness_departmentByProject($projectID);
+				$data['departmentTimeliness'] = $this->model->compute_timeliness_departmentByProject($projectID);
+				$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+				$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+
+				$this->load->view("reportsProjectPerformance", $data);
+			}
 		}
 	}
 
@@ -2438,92 +2462,117 @@ class controller extends CI_Controller
 
 		else
 		{
-			$projectID = $this->input->post("project");
-			$data['interval'] = $this->input->post("interval");
-			if($data['interval'] == '7')
-				$data['intervalWord'] = "Week";
-			else
-				$data['intervalWord'] = "Month";
+			$interval = $this->input->post('interval');
 
-			$data['project'] = $this->model->getProjectByID($projectID);
-			$data['users'] = $this->model->getAllUsers();
-			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
-			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
-
-			foreach($data['mainActivities'] as $mainActivity)
+			if ($interval == NULL)
 			{
-				foreach($data['subActivities'] as $subActivity)
-				{
-					$data['accomplishedTasks' . $subActivity['TASKID']] = $this->model->getAccomplishedTasks($projectID, $subActivity['TASKID'], $data['interval']);
-				}
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', ' You did not select an interval');
+
+				redirect('controller/reports');
 			}
 
-			// Main Completeness
-			$mainCompletenessFound = $this->model->checkMainCompleteness($projectID);
-			if($mainCompletenessFound == NULL){
+			else
+			{
+				$projectID = $this->input->post("project");
 
-				$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
-				$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
-				$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-				$data['weight'] = $this->model->compute_completeness_project($projectID);
-
-				$weight = $data['weight']['weight'];
-
-				$mainActCompleteness = array();
-				$subActCompleteness = array();
-
-				// SET COMPLETENESS
-				foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
+				if ($projectID == NULL)
 				{
-					$mainCompleteness = 0;
+					$this->session->set_flashdata('danger', 'alert');
+					$this->session->set_flashdata('alertMessage', ' You did not select a project');
 
-					foreach ($data['subActivities'] as $subCompKey => $subCompValue)
+					redirect('controller/reports');
+				}
+
+				else
+				{
+					$data['interval'] = $this->input->post("interval");
+					if($data['interval'] == '7')
+						$data['intervalWord'] = "Week";
+					else
+						$data['intervalWord'] = "Month";
+
+					$data['project'] = $this->model->getProjectByID($projectID);
+					$data['users'] = $this->model->getAllUsers();
+					$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
+					$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
+
+					foreach($data['mainActivities'] as $mainActivity)
 					{
-						if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
+						foreach($data['subActivities'] as $subActivity)
 						{
-							$subCompleteness = 0;
-
-							foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
-							{
-								if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
-								{
-									if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
-									{
-										$subCompleteness += $weight;
-									}
-								}
-							}
-
-							$mainCompleteness += $subCompleteness;
-
-							$subCompleteness = array(
-								'TASKID' => $subCompValue['TASKID'],
-								'subCompleteness' => round($subCompleteness, 2),
-								'tasks_TASKPARENT' => $mainCompValue['TASKID']
-							);
-
-							array_push($subActCompleteness, $subCompleteness);
+							$data['accomplishedTasks' . $subActivity['TASKID']] = $this->model->getAccomplishedTasks($projectID, $subActivity['TASKID'], $data['interval']);
 						}
 					}
 
-					$mainCompleteness = array(
-						'tasks_MAINID' => $mainCompValue['TASKID'],
-						'COMPLETENESS' => round($mainCompleteness, 2),
-						'projects_PROJECTID' => $projectID,
-						'TYPE' => 2,
-						'DATE' => date('Y-m-d')
-					);
+					// Main Completeness
+					$mainCompletenessFound = $this->model->checkMainCompleteness($projectID);
+					if($mainCompletenessFound == NULL){
 
-					array_push($mainActCompleteness, $mainCompleteness);
+						$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
+						$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
+						$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+						$data['weight'] = $this->model->compute_completeness_project($projectID);
 
-					$addAssessment = $this->model->addProjectAssessment($mainCompleteness);
+						$weight = $data['weight']['weight'];
+
+						$mainActCompleteness = array();
+						$subActCompleteness = array();
+
+						// SET COMPLETENESS
+						foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
+						{
+							$mainCompleteness = 0;
+
+							foreach ($data['subActivities'] as $subCompKey => $subCompValue)
+							{
+								if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
+								{
+									$subCompleteness = 0;
+
+									foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
+									{
+										if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
+										{
+											if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
+											{
+												$subCompleteness += $weight;
+											}
+										}
+									}
+
+									$mainCompleteness += $subCompleteness;
+
+									$subCompleteness = array(
+										'TASKID' => $subCompValue['TASKID'],
+										'subCompleteness' => round($subCompleteness, 2),
+										'tasks_TASKPARENT' => $mainCompValue['TASKID']
+									);
+
+									array_push($subActCompleteness, $subCompleteness);
+								}
+							}
+
+							$mainCompleteness = array(
+								'tasks_MAINID' => $mainCompValue['TASKID'],
+								'COMPLETENESS' => round($mainCompleteness, 2),
+								'projects_PROJECTID' => $projectID,
+								'TYPE' => 2,
+								'DATE' => date('Y-m-d')
+							);
+
+							array_push($mainActCompleteness, $mainCompleteness);
+
+							$addAssessment = $this->model->addProjectAssessment($mainCompleteness);
+						}
+					}
+
+					$data['pastProgress'] = $this->model->getAssessmentByMain($data['interval'], $projectID);
+					$data['currentProgress'] = $this->model->getCurrentAssessmentByMain($projectID);
+
+					$this->load->view("reportsProjectProgress", $data);
 				}
 			}
-
-			$data['pastProgress'] = $this->model->getAssessmentByMain($data['interval'], $projectID);
-			$data['currentProgress'] = $this->model->getCurrentAssessmentByMain($projectID);
-
-			$this->load->view("reportsProjectProgress", $data);
 		}
 	}
 
@@ -2536,23 +2585,48 @@ class controller extends CI_Controller
 
 		else
 		{
-			$projectID = $this->input->post("project");
-			$data['interval'] = $this->input->post("interval");
-			if($data['interval'] == '7')
-				$data['intervalWord'] = "Week";
+			$interval = $this->input->post('interval');
+
+			if ($interval == NULL)
+			{
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', ' You did not select an interval');
+
+				redirect('controller/reports');
+			}
+
 			else
-				$data['intervalWord'] = "Month";
+			{
+				$projectID = $this->input->post("project");
 
-			$data['project'] = $this->model->getProjectByID($projectID);
-			$data['users'] = $this->model->getAllUsers();
-			$data['plannedLast'] = $this->model->getPlannedLast($projectID, $data['interval']);
-			$data['accomplishedLast'] = $this->model->getAccomplishedLast($projectID, $data['interval']);
-			$data['problemTasks'] = $this->model->getProblemTasks($projectID, $data['interval']);
-			$data['plannedNext'] = $this->model->getPlannedNext($projectID, $data['interval']);
-			$data['pendingRFC'] = $this->model->getPendingRFCNext($projectID, $data['interval']);
-			$data['pendingRACI'] = $this->model->getPendingRaci($projectID);
+				if ($projectID == NULL)
+				{
+					$this->session->set_flashdata('danger', 'alert');
+					$this->session->set_flashdata('alertMessage', ' You did not select a project');
 
-			$this->load->view("reportsProjectStatus", $data);
+					redirect('controller/reports');
+				}
+
+				else
+				{
+					$data['interval'] = $this->input->post("interval");
+					if($data['interval'] == '7')
+						$data['intervalWord'] = "Week";
+					else
+						$data['intervalWord'] = "Month";
+
+					$data['project'] = $this->model->getProjectByID($projectID);
+					$data['users'] = $this->model->getAllUsers();
+					$data['plannedLast'] = $this->model->getPlannedLast($projectID, $data['interval']);
+					$data['accomplishedLast'] = $this->model->getAccomplishedLast($projectID, $data['interval']);
+					$data['problemTasks'] = $this->model->getProblemTasks($projectID, $data['interval']);
+					$data['plannedNext'] = $this->model->getPlannedNext($projectID, $data['interval']);
+					$data['pendingRFC'] = $this->model->getPendingRFCNext($projectID, $data['interval']);
+					$data['pendingRACI'] = $this->model->getPendingRaci($projectID);
+
+					$this->load->view("reportsProjectStatus", $data);
+				}
+			}
 		}
 	}
 	// REPORTS END
@@ -2572,7 +2646,7 @@ class controller extends CI_Controller
 
 	public function manageDepartments()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL']) || $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}
@@ -2685,7 +2759,7 @@ class controller extends CI_Controller
 
 	public function taskDelegate()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL']) || $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}
@@ -2731,7 +2805,7 @@ class controller extends CI_Controller
 
 	public function taskMonitor()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		if (!isset($_SESSION['EMAIL']) || $_SESSION['usertype_USERTYPEID'] == 5)
 		{
 			$this->load->view('restrictedAccess');
 		}

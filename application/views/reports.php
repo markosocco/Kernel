@@ -31,33 +31,34 @@
 						<table id="reportList" class="table table-bordered table-hover">
 							<tbody>
 								<!-- SHOW ONLY TO THOSE PO'S WITH ONGOING PROJECTS --> <!-- Change to $allOngoingProjects for restricted access -->
-								<!-- <?php if($allProjects != NULL):?> -->
-									<tr>
-										<td>Project Status Report</td>
-										<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-									</tr>
-									<tr>
-										<td>Project Progress Report</td>
-										<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-									</tr>
-								<!-- <?php endif;?> -->
-
+								<?php if($_SESSION['usertype_USERTYPEID'] != 5 && $_SESSION['usertype_USERTYPEID'] != 1):?>
+								<tr>
+									<td>Project Status Report</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeProj'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+								</tr>
+								<tr>
+									<td>Project Progress Report</td>
+									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#changeEmp'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
+								</tr>
 								<tr>
 									<td>Project Summary</td>
 									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projectSummary'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
 								</tr>
+								<?php endif;?>
 
-								<!-- <?php if($_SESSION['departments_DEPARTMENTID'] != 1):?>  --> <!-- Change to == for restricted access -->
+								<?php if($_SESSION['usertype_USERTYPEID'] == 2):?> <!-- Change to == for restricted access -->
 									<tr>
 										<td>Department Performance</td>
 										<td align="center"><a href="<?php echo base_url("index.php/controller/reportsDepartmentPerformance"); ?>" target="_blank" class="btn btn-success generateBtn" data-toggle='tooltip' data-placement='top' title='Generate Report'><i class="fa fa-print"></i></a></td>
 									</tr>
-								<!-- <?php endif;?> -->
+								<?php endif;?>
 
+								<?php if ($_SESSION['usertype_USERTYPEID'] != 5): ?>
 								<tr>
 									<td>Project Performance</td>
 									<td align="center"><a href="" target="_blank" class="btn btn-success generateBtn" data-toggle='modal' data-target='#projPerf'><i class="fa fa-print" data-toggle='tooltip' data-placement='top' title='Generate Report'></i></a></td>
-								</tr>
+									</tr>
+								<?php endif; ?>
 
 								<?php if($_SESSION['departments_DEPARTMENTID'] != 1):?>
 									<?php if($_SESSION['usertype_USERTYPEID'] == 3 || $_SESSION['usertype_USERTYPEID'] == 4):?>
@@ -88,9 +89,9 @@
 								<h2 class="modal-title">Project Summary</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projSummReport" id="projSummReport" action="reportsProjectSummary" method="POST" target="_blank">
+								<form name="projSummReport" id="projSummReport" action="reportsProjectSummary" method="POST" target="">
 									<h4>Project: </h4>
-									<select name="project" id="projectSummarySelect" class="form-control select2" data-placeholder="Select Departments">
+									<select name="project" id="projectSummarySelect" class="form-control select2" data-placeholder="Select Departments" required>
 										<option disabled selected value = "0">-- Select a Project -- </option>
 										<?php
 											foreach ($allProjects as $value) {
@@ -98,6 +99,7 @@
 											}
 										?>
 									</select>
+									<input type ="hidden" id="summHasProject" name="summHasProject" value="">
 								</form>
 								<div class="modal-footer">
 									<button id="closeProjectSummary" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
@@ -119,7 +121,7 @@
 								<h2 class="modal-title">Project Performance</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projPerfReport" id="projPerfReport" action="reportsProjectPerformance" method="POST" target="_blank">
+								<form name="projPerfReport" id="projPerfReport" action="reportsProjectPerformance" method="POST" target="">
 									<h4>Project: </h4>
 									<select name="project" id="projectPerformanceSelect" class="form-control select2">
 										<option disabled selected value = "0">-- Select a Project -- </option>
@@ -129,6 +131,7 @@
 											}
 										?>
 									</select>
+									<input type ="hidden" id="perfHasProject" name="perfHasProject" value="">
 								</form>
 
 								<div class="modal-footer">
@@ -151,16 +154,18 @@
 								<h2 class="modal-title">Project Status Report</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projStatusReport" id="projStatusReport" action="reportsProjectStatus" method="POST" target='_blank'>
+								<form name="projStatusReport" id="projStatusReport" action="reportsProjectStatus" method="POST" target=''>
 									<h4>Status Interval: </h4>
 									<div class="btn-group" id="btnStatus">
 										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default intervalsStatus">Weekly</button>
 										<button type="button" id = "monthlyBtn" value = '31' class="btn btn-default intervalsStatus">Monthly</button>
 									</div>
 									<input id="intervalValueStatus" type='hidden' name='interval' value= "">
+									<input id="statHasInterval" type='hidden' name='hasInterval' value= "">
+									<input id="statHasProject" type='hidden' name='hasProject' value= "">
 									<br><br>
 									<h4>Project: </h4>
-									<select id="projectStatus" name="project" class="form-control select2" data-placeholder="Select Departments">
+									<select id="projectStatus" name="project" class="form-control select2" data-placeholder="Select Departments" required>
 										<option disabled selected value = "0">-- Select a Project -- </option>
 										<?php
 											foreach ($allOngoingProjects as $value) {
@@ -190,13 +195,15 @@
 								<h2 class="modal-title">Project Progress Report</h2>
 							</div>
 							<div class="modal-body">
-								<form name="projProgressReport" id="projProgressReport" action="reportsProjectProgress" method="POST" data-interval='' target="_blank">
+								<form name="projProgressReport" id="projProgressReport" action="reportsProjectProgress" method="POST" data-interval='' target="">
 									<h4>Progress Interval: </h4>
 									<div class="btn-group" id="btnProgress">
 										<button type="button" id = "weeklyBtn" value = '7' class="btn btn-default intervalsProgress">Weekly</button>
 										<button type="button" id = "monthlyBtn" value = '31' class="btn btn-default intervalsProgress">Monthly</button>
 									</div>
 									<input id="intervalValueProgress" type='hidden' name='interval' value= "">
+									<input id="progHasInterval" type='hidden' name='hasInterval' value= "">
+									<input id="progHasProject" type='hidden' name='hasProject' value= "">
 									<br><br>
 									<h4>Project: </h4>
 									<select id="projectProgressSelect" name="project" class="form-control select2" data-placeholder="Select Departments">
@@ -234,8 +241,19 @@
 		$(document).ready(function() {
 
 			// PROJECT SUMMARY REPORT
+			$("#projectSummarySelect").change(function() {
+				$("#summHasProject").attr("value", 1);
+			});
+
 			$("#generateProjSumm").click(function()
 			{
+				var summHasProject = $("#summHasProject").val();
+
+				if (summHasProject != "")
+				{
+					$("#projSummReport").attr("target", "_blank");
+				}
+
 				$("#projSummReport").submit();
 			});
 
@@ -249,10 +267,24 @@
 			    $(".btn-group > .btn").removeClass("active");
 			    $(this).addClass("active");
 					$("#intervalValueStatus").attr("value", $(this).val());
+					$("#statHasInterval").attr("value", 1);
 			});
+
+			$("#projectStatus").change(function() {
+				$("#statHasProject").attr("value", 1);
+			});
+
 
 			$("#generateStatusReport").click(function()
 			{
+				var statHasInterval = $("#statHasInterval").val();
+				var statHProject = $("#statHasProject").val();
+
+				if (statHasInterval != "" && statHProject != "")
+				{
+					$("#projStatusReport").attr("target", "_blank");
+				}
+
 	      $("#projStatusReport").submit();
 			});
 
@@ -267,10 +299,23 @@
 			    $(".btn-group > .btn").removeClass("active");
 			    $(this).addClass("active");
 					$("#intervalValueProgress").attr("value", $(this).val());
+					$("#progHasInterval").attr("value", 1);
+			});
+
+			$("#projectProgressSelect").change(function() {
+				$("#progHasProject").attr("value", 1);
 			});
 
 			$("#generateProgressReport").click(function()
 			{
+				var progHasInterval = $("#progHasInterval").val();
+				var progHasProject = $("#progHasProject").val();
+
+				if (progHasInterval != "" && progHasProject != "")
+				{
+					$("#projProgressReport").attr("target", "_blank");
+				}
+
 				$("#projProgressReport").submit();
 			});
 
@@ -281,8 +326,19 @@
 			});
 
 			// PROJECT PERFORMANCE REPORT
+			$("#projectPerformanceSelect").change(function() {
+				$("#perfHasProject").attr("value", 1);
+			});
+
 			$("#generateProjPerfReport").click(function()
 			{
+				var perfHasProject = $("#perfHasProject").val();
+
+				if (perfHasProject != "")
+				{
+					$("#projPerfReport").attr("target", "_blank");
+				}
+
 				$("#projPerfReport").submit();
 			});
 
