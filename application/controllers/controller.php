@@ -3985,7 +3985,8 @@ class controller extends CI_Controller
 	          'projects_PROJECTID' => $projectID = $data['project']['PROJECTID'],
 	          'DATE' => date('Y-m-d'),
 	          'COMPLETENESS' => 0,
-	          'TIMELINESS' => 100
+	          'TIMELINESS' => 100,
+						'TYPE' => 1
 	        );
 
 	        $this->model->addProjectAssessment($progressData);

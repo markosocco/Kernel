@@ -1439,7 +1439,7 @@ class model extends CI_Model
   }
 
   public function getLatestWeeklyProgress(){
-    $condition = "datediff(curdate(), DATE) = 7";
+    $condition = "datediff(curdate(), DATE) = 7 && TYPE = 1";
     $this->db->select('*,  datediff(curdate(), DATE) as "datediff"');
     $this->db->from('assessmentProject');
     $this->db->where($condition);

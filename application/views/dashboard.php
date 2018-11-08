@@ -169,17 +169,17 @@
 														<?php endif;?>
 
 														<td><?php echo $ongoingProject['PROJECTTITLE'];?></td>
-														<td align="center">
-															<?php
-																foreach ($lastWeekProgress as $row)
+														<?php
+														$lstwkprogress = "-";
+															foreach ($lastWeekProgress as $row)
+															{
+																if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																{
-																	if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
-																	{
-																	 echo $row['COMPLETENESS'] . "% </h2>";
+																	$lstwkprogress = $row['COMPLETENESS'];
 																}
-
-																} ?>
-														</td>
+															}
+														?>
+														<td align="center"><?php echo $lstwkprogress; ?></td>
 														<td align="center">
 															<?php
 			                          foreach ($currentProgress as $row)
