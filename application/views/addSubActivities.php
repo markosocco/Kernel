@@ -152,7 +152,7 @@
 
 																			<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
-																			<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value="<?php echo $tSub['TASKTITLE'];?>" required>
+																			<input type="text" class="form-control" placeholder="Enter Sub Activity Name" name = "title[]" value="<?php echo $tSub['TASKTITLE'];?>" required>
 																			<input type="hidden" name="row[]" value="<?php echo $sKey; ?>">
 																			<input type="hidden" name="templateTaskID[]" value="<?php echo $tSub['TASKID']; ?>"
 																		</div></td>
@@ -236,7 +236,7 @@
 
 																		<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
-																		<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+																		<input type="text" class="form-control" placeholder="Enter Sub Activity Name" name = "title[]" required>
 																		<input type="hidden" name="row[]" value="<?php echo (count($templateSubActivity) + $nonTemplateCounter); ?>">
 																		<input type="hidden" name="templateTaskID[]" value="NULL">
 																	</div></td>
@@ -378,7 +378,7 @@
 
 													<input type="hidden" name="mainActivity_ID[]" value="<?php echo $value['TASKID']; ?>">
 
-													<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+													<input type="text" class="form-control" placeholder="Enter Sub Activity Name" name = "title[]" required>
 													<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 												</div></td>
 												<td>
@@ -495,7 +495,7 @@
 					$('#table_' + currTable).append("<tr id='table_" +
 										 currTable + "_Row_" + (h + 1) +
 										 "'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
-										 mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + h + "' > <input type='hidden' name='templateTaskID[]' value='NULL'> </div></td>" +
+										 mainAct + "'> <input type='text' class='form-control' placeholder='Enter Sub Activity Name' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + h + "' > <input type='hidden' name='templateTaskID[]' value='NULL'> </div></td>" +
 										 "<td><select id = 'select" + h + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
 											department +
 										 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
@@ -529,7 +529,7 @@
 					$('#table_' + currTable).append("<tr id='table_" +
 										 currTable + "_Row_" + (i + 1) +
 										 "'><td></td><td><div class ='form-group'> <input type='hidden' name='mainActivity_ID[]' value='" +
-										 mainAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' > <input type='hidden' name='templateTaskID[]' value='NULL'> </div></td>" +
+										 mainAct + "'> <input type='text' class='form-control' placeholder='Enter Sub Activity Name' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' > <input type='hidden' name='templateTaskID[]' value='NULL'> </div></td>" +
 										 "<td><select id = 'select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> " +
 											department +
 										 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +

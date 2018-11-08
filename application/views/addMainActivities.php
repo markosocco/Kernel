@@ -85,7 +85,7 @@
 												<tr id ="row<?php echo  $key?>">
 													<td>
 														<div class="form-group">
-															<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $tMain['TASKTITLE']; ?>" required>
+															<input type="text" class="form-control" placeholder="Enter Main Activity Name" name = "title[]" value = "<?php echo $tMain['TASKTITLE']; ?>" required>
 															<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 															<input type="hidden" name="templateTaskID[]" value="<?php echo $tMain['TASKID']; ?>"
 														</div>
@@ -168,7 +168,7 @@
 													<tr id ="row<?php echo  $key?>">
 														<td>
 															<div class="form-group">
-																<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" value = "<?php echo $eMain['TASKTITLE']; ?>" required>
+																<input type="text" class="form-control" placeholder="Enter Main Activity Name" name = "title[]" value = "<?php echo $eMain['TASKTITLE']; ?>" required>
 																<input type="hidden" name="row[]" value="<?php echo $key; ?>">
 																<input type="hidden" name="taskid[]" value="<?php echo $eMain['TASKID']; ?>">
 															</div>
@@ -249,7 +249,7 @@
 											<tr id="row0">
 			                  <td>
 													<div class="form-group">
-				                  	<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+				                  	<input type="text" class="form-control" placeholder="Enter Main Activity Name" name = "title[]" required>
 														<input type="hidden" name="row[]" value="0">
 				                	</div>
 												</td>
@@ -448,7 +448,7 @@
 				 // console.log("hello "+ str);
 				 var counter = parseInt($(this).attr('data-counter'));
 
-				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' ></div></td> " +
+				 $('#row' + i).html("<td><div class ='form-group'><input type='text' class='form-control' placeholder='Enter Main Activity Name' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' ></div></td> " +
 				 " <td> <select id ='select" + i + "' class='form-control select2' multiple='multiple' name = '' data-placeholder='Select Departments'> <?php foreach ($departments as $row) { echo '<option>' . $row['DEPARTMENTNAME'] . '</option>';  }?>" +
 				 "</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +
 				 "<i class='fa fa-calendar'></i></div> <input type='text' class='form-control pull-right taskStartDate' name='taskStartDate[]' id='start-" + i + "' data-mainAct='"+ i +"' required></div></div></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +

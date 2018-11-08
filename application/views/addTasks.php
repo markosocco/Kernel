@@ -515,7 +515,7 @@
 
 																		<input type="hidden" name="subActivity_ID[]" value="<?php echo $sValue['TASKID']; ?>">
 
-																		<input type="text" class="form-control" placeholder="Enter task title" name = "title[]" required>
+																		<input type="text" class="form-control" placeholder="Enter Task Title" name = "title[]" required>
 																		<input type="hidden" name="row[]" value="<?php echo $c; ?>">
 																	</div>
 																</td>
@@ -586,7 +586,7 @@
 
 		            <!-- /.box-body -->
 								<div class="box-footer">
-									<button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Add Sub Activities</button>
+									<!-- <button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Add Sub Activities</button> -->
 									<button type="submit" class="btn btn-success pull-right" id="addTasks"><i class="fa fa-forward"></i> Add Dependencies</button>
 									<!-- <button id ="skipStep" type="button" class="btn btn-primary pull-right" style="margin-right: 5%"><i class="fa fa-fast-forward"></i> Skip This Step</button> -->
 								</div>
@@ -634,7 +634,7 @@
 				 $('#ma' + mTable + '_s' + sTable).append(
 					 					"<tr id='ma" + mTable + "_s" + (i) +
 										"'><td></td><td><div class ='form-group'> <input type='hidden' name='subActivity_ID[]' value='" +
-										subAct + "'> <input type='text' class='form-control' placeholder='Enter task title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
+										subAct + "'> <input type='text' class='form-control' placeholder='Enter Task Title' name ='title[]' required>  <input type='hidden' name = 'row[]' value='" + i + "' >  </div></td>" +
 										"<td style='padding-top:10px'><select id = 'select" + i + "' class='form-control select2' name = '' data-placeholder='Select Departments'> " +
 										"<option></option>" + department +
 										"</select></td> <td><div class='form-group'><div class='input-group date'><div class='input-group-addon'>" +

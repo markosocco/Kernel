@@ -818,7 +818,8 @@ class model extends CI_Model
 
   public function getDependenciesByTaskID($taskID)
   {
-    $condition = "raci.STATUS = 'Current' && dependencies.tasks_POSTTASKID = '$taskID' && raci.ROLE = '1'";
+    // $condition = "raci.STATUS = 'Current' && dependencies.tasks_POSTTASKID = '$taskID' && raci.ROLE = '1'";
+    $condition = "raci.STATUS = 'Current' && (raci.ROLE = '1' || raci.ROLE = '0') && dependencies.tasks_POSTTASKID = '$taskID'";
     $this->db->select('*, CURDATE() as "currDate"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
@@ -831,7 +832,8 @@ class model extends CI_Model
 
   public function getPostDependenciesByTaskID($taskID)
   {
-    $condition = "raci.STATUS = 'Current' && dependencies.PRETASKID = '$taskID' && raci.ROLE = '1'";
+    // $condition = "raci.STATUS = 'Current' && dependencies.PRETASKID = '$taskID' && raci.ROLE = '1'";
+    $condition = "raci.STATUS = 'Current' && (raci.ROLE = '1' || raci.ROLE = '0') && dependencies.PRETASKID = '$taskID'";
     $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
