@@ -41,7 +41,7 @@ class controller extends CI_Controller
 
 		$this->session->set_flashdata('success', 'alert');
 		$this->session->set_flashdata('alertMessage', ' Email sent successfully');
-		$this->load->view("login");
+		redirect("controller/login");
   }
 
 	public function login()
@@ -4399,8 +4399,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$id = $this->input->post("project_ID");
-			$this->session->set_flashdata('projectID', $id);
+			if (isset($_SESSION['projectID']))
+			{
+				$id = $_SESSION['projectID'];
+			}
+
+			else
+			{
+				$id = $this->input->post("project_ID");
+				$this->session->set_flashdata('projectID', $id);
+			}
 
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$data['departments'] = $this->model->getAllDepartmentsByProject($id);
@@ -5426,7 +5434,8 @@ class controller extends CI_Controller
 
 				$this->session->set_flashdata('success', 'alert');
 				$this->session->set_flashdata('alertMessage', ' Project has been archived');
-				$this->load->view("archives", $data);
+
+				redirect("controller/archives");
 			}
 		}
 
@@ -5509,7 +5518,7 @@ class controller extends CI_Controller
 
 				$this->session->set_flashdata('success', 'alert');
 				$this->session->set_flashdata('alertMessage', ' Project has been saved as a template');
-				$this->load->view("templates", $data);
+				redirect("controller/templates");
 			}
 		}
 
@@ -5548,8 +5557,6 @@ class controller extends CI_Controller
 
 		    $departments = $this->input->post('departments');
 		    $users = $this->input->post('users');
-
-				var_dump($departments);
 
 		    if ($departments == NULL && $users == NULL)
 		    {
@@ -5704,7 +5711,8 @@ class controller extends CI_Controller
 		  $data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
 		  $data['users'] = $this->model->getAllUsersByProject($id);
 
-		  $this->load->view("projectDocuments", $data);
+			redirect("controller/projectDocuments");
+			// $this->load->view("projectDocuments", $data);
 	}
 
 	public function acknowledgeDocument()
@@ -5741,9 +5749,8 @@ class controller extends CI_Controller
 				redirect('controller/dashboard');
 			}
 
-			else {
-				// redirect('controller/projectDocuments');
-
+			else
+			{
 				$data['projectProfile'] = $this->model->getProjectByID($projectID);
 				$data['departments'] = $this->model->getAllDepartmentsByProject($projectID);
 				$data['documentsByProject'] = $this->model->getAllDocumentsByProject($projectID);
@@ -5752,7 +5759,9 @@ class controller extends CI_Controller
 
 				$this->session->set_flashdata('success', 'alert');
 				$this->session->set_flashdata('alertMessage', ' Document acknowledged');
-				$this->load->view("projectDocuments", $data);
+				$this->session->set_flashdata('projectID', $projectID);
+
+				redirect('controller/projectDocuments');
 			}
 		}
 	}
