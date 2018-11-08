@@ -5506,194 +5506,195 @@ class controller extends CI_Controller
 
 	public function uploadDocument()
 	{
-		$config['upload_path']          = './assets/uploads';
-		$config['allowed_types']        = '*';
-		$config['max_size']							= '10000000';
 
-		$this->load->library('upload', $config);
-		$this->upload->initialize($config);
+		  $config['upload_path']          = './assets/uploads';
+		  $config['allowed_types']        = '*';
+		  $config['max_size']							= '10000000';
 
-		//GET PROJECT ID
-		$id = $this->input->post("project_ID");
-		$projectID = $this->model->getProjectByID($id);
+		  $this->load->library('upload', $config);
+		  $this->upload->initialize($config);
 
-		// PLACEHOLDER
-		$documentID = "";
-		$deptID = "";
+		  //GET PROJECT ID
+		  $id = $this->input->post("project_ID");
+		  $projectID = $this->model->getProjectByID($id);
 
-		// GET ALL DEPARTMENTS THAT WERE SELECTED
-		$departmentIDs = $this->input->post("departments");
+		  // PLACEHOLDER
+		  $documentID = "";
+		  $deptID = "";
 
-		// UPLOAD: FAILED
-		if(!$this->upload->do_upload('document'))
-		{
-			// echo "<script>alert('did not upload');</script>";
-			$this->session->set_flashdata('danger', 'alert');
-			$this->session->set_flashdata('alertMessage', ' Upload document failed');
-		}
+		  // UPLOAD: FAILED
+		  if(!$this->upload->do_upload('document'))
+		  {
+		    // echo "<script>alert('did not upload');</script>";
+		    $this->session->set_flashdata('danger', 'alert');
+		    $this->session->set_flashdata('alertMessage', ' Upload document failed');
+		  }
 
-		else
-		{ // START: UPLOAD - SUCCESSFUL
+		  else
+		  { // START: UPLOAD - SUCCESSFUL
 
-			$user = $_SESSION['USERID'];
-			$fileName = $this->upload->data('file_name');
-			$src = "http://localhost/Kernel/assets/uploads/" . $fileName;
+		    $user = $_SESSION['USERID'];
+		    $fileName = $this->upload->data('file_name');
+		    $src = "http://localhost/Kernel/assets/uploads/" . $fileName;
 
-			foreach ($departmentIDs as $key => $value) {
-				$value;
-			}
+		    $departments = $this->input->post('departments');
+		    $users = $this->input->post('users');
 
-			// NEEDS ACKNOWLEDGMENT
-			if($value != 'all'){
-				$uploadData = array(
-					'DOCUMENTSTATUS' => 'For Acknowledgement',
-					'DOCUMENTNAME' => $fileName,
-					'DOCUMENTLINK' => $src,
-					'users_UPLOADEDBY' => $user,
-					'UPLOADEDDATE' => date('Y-m-d'),
-					'projects_PROJECTID' => $id,
-					'REMARKS' => $this->input->post('remarks')
-				);
+		    if ($departments == NULL && $users == NULL)
+		    {
+		      $uploadData = array(
+		        'DOCUMENTSTATUS' => 'Uploaded',
+		        'DOCUMENTNAME' => $fileName,
+		        'DOCUMENTLINK' => $src,
+		        'users_UPLOADEDBY' => $user,
+		        'UPLOADEDDATE' => date('Y-m-d'),
+		        'projects_PROJECTID' => $id,
+		        'REMARKS' => $this->input->post('remarks')
+		      );
 
-				// INSERT IN DOCUMENTS TABLE, RETURNS DOCUMENTID OF INSERTED DATA
-				$documentID = $this->model->uploadDocument($uploadData);
+		      $this->model->uploadDocument($uploadData);
+		      $allUsers = $this->model->getAllUsersByProject($id);
 
-				// START: FOREACH OF $departmentIDs
-				foreach($departmentIDs as $departmentRow){
+		      // START: Notification
+		      $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		      $details = $userName . " has uploaded " . $fileName . ".";
 
-					// START: FOREACH - GETS ALL USERS OF A DEPARTMENT
-					foreach ($this->model->getAllUsersByProjectByDepartment($id, $departmentRow) as $userIDByDepartment) {
-						$acknowledgementData = array (
-							'documents_DOCUMENTID' => $documentID,
-							'users_ACKNOWLEDGEDBY' => $userIDByDepartment['users_USERID']
-						);
+		      foreach($allUsers as $user)
+		      {
+		        if($user['users_USERID'] != $_SESSION['USERID'])
+		        {
 
-						// INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
-						$this->model->addToDocumentAcknowledgement($acknowledgementData);
+		          $notificationData = array(
+		            'users_USERID' => $user['users_USERID'],
+		            'DETAILS' => $details,
+		            'TIMESTAMP' => date('Y-m-d H:i:s'),
+		            'status' => 'Unread',
+		            'projects_PROJECTID' => $id,
+		            'TYPE' => '5'
+		          );
 
-						// START: Notification
-						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-						$projectTitle = $projectID['PROJECTTITLE'];
-						$details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
+		          $this->model->addNotification($notificationData);
+		          // END: Notification
 
-						$notificationData = array(
-							'users_USERID' => $userIDByDepartment['users_USERID'],
-							'DETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'status' => 'Unread',
-							'projects_PROJECTID' => $id,
-							'TYPE' => '5'
-						);
+		        }
+		      }
+		    }
 
-						$this->model->addNotification($notificationData);
-						// END: Notification
+		    else
+		    {
+		      $uploadData = array(
+		        'DOCUMENTSTATUS' => 'For Acknowledgement',
+		        'DOCUMENTNAME' => $fileName,
+		        'DOCUMENTLINK' => $src,
+		        'users_UPLOADEDBY' => $user,
+		        'UPLOADEDDATE' => date('Y-m-d'),
+		        'projects_PROJECTID' => $id,
+		        'REMARKS' => $this->input->post('remarks')
+		      );
 
-					} // END: FOREACH - GETS ALL USERS OF A DEPARTMENT
+		      // INSERT IN DOCUMENTS TABLE, RETURNS DOCUMENTID OF INSERTED DATA
+		      $documentID = $this->model->uploadDocument($uploadData);
 
-				} // END: FOREACH OF $departmentIDs
+		      if ($departments != NULL)
+		      {
+		        foreach ($departments as $departmentRow)
+		        {
+		          $departmentUsers = $this->model->getAllUsersByProjectByDepartment($id, $departmentRow);
 
-			} else { // START: DOESN'T NEED ACKNOWLEDGMENT
-				$uploadData = array(
-					'DOCUMENTSTATUS' => 'Uploaded',
-					'DOCUMENTNAME' => $fileName,
-					'DOCUMENTLINK' => $src,
-					'users_UPLOADEDBY' => $user,
-					'UPLOADEDDATE' => date('Y-m-d'),
-					'projects_PROJECTID' => $id,
-					'REMARKS' => $this->input->post('remarks')
-				);
+		          foreach ($departmentUsers as $userIDByDepartment)
+		          {
+		            $acknowledgementData = array (
+		              'documents_DOCUMENTID' => $documentID,
+		              'users_ACKNOWLEDGEDBY' => $userIDByDepartment['users_USERID']
+		            );
 
-				$this->model->uploadDocument($uploadData);
-				$allUsers = $this->model->getAllUsersByProject($id);
+		            // INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
+		            $this->model->addToDocumentAcknowledgement($acknowledgementData);
 
-				// START: Notification
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$details = $userName . " has uploaded " . $fileName . ".";
+		            // START: Notification
+		            $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		            $projectTitle = $projectID['PROJECTTITLE'];
+		            $details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
 
-				foreach($allUsers as $user){
-					if($user['users_USERID'] != $_SESSION['USERID']){
+		            $notificationData = array(
+		              'users_USERID' => $userIDByDepartment['users_USERID'],
+		              'DETAILS' => $details,
+		              'TIMESTAMP' => date('Y-m-d H:i:s'),
+		              'status' => 'Unread',
+		              'projects_PROJECTID' => $id,
+		              'TYPE' => '5'
+		            );
 
-						$notificationData = array(
-							'users_USERID' => $user['users_USERID'],
-							'DETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'status' => 'Unread',
-							'projects_PROJECTID' => $id,
-							'TYPE' => '5'
-						);
+		            $this->model->addNotification($notificationData);
+		            // END: Notification
+		          }
+		        }
+		      }
 
-						$this->model->addNotification($notificationData);
-						// END: Notification
+		      if ($users != NULL)
+		      {
+		        foreach ($users as $userID)
+		        {
+		          // CHECKS DOCUMENT ACKNOWLEDGMENT TABLE FOR DUPLICATION
+		          $documentAcknowledgement = $this->model->getDocumentAcknowledgementID($userID, $documentID);
 
-					}
-				}
-			} // END: DOESN'T NEED ACKNOWLEDGMENT
+		          if (!$documentAcknowledgement['DOCUMENTACKNOWLEDGEMENTID'])
+		          {
+		            $acknowledgementData = array (
+		              'documents_DOCUMENTID' => $documentID,
+		              'users_ACKNOWLEDGEDBY' => $userID
+		            );
 
-			// START: GET ALL USERS THAT WERE SELECTED
-			if($this->input->post("users") != NULL){
-				foreach($this->input->post("users") as $userID) {
+		            // START: Notification
+		            $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		            $projectTitle = $projectID['PROJECTTITLE'];
+		            $details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
 
-					// CHECKS DOCUMENT ACKNOWLEDGMENT TABLE FOR DUPLICATION
-					$documentAcknowledgement = $this->model->getDocumentAcknowledgementID($userID, $documentID);
-					// NOT YET IN DOCUMENT ACKNOWLEDGMENT TABLE
-					if(!$documentAcknowledgement['DOCUMENTACKNOWLEDGEMENTID']){
+		            $notificationData = array(
+		              'users_USERID' => $userID,
+		              'DETAILS' => $details,
+		              'TIMESTAMP' => date('Y-m-d H:i:s'),
+		              'status' => 'Unread',
+		              'projects_PROJECTID' => $id,
+		              'TYPE' => '5'
+		            );
 
-						$acknowledgementData = array (
-							'documents_DOCUMENTID' => $documentID,
-							'users_ACKNOWLEDGEDBY' => $userID
-						);
+		            $this->model->addNotification($notificationData);
+		            // END: Notification
 
-						// START: Notification
-						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-						$projectTitle = $projectID['PROJECTTITLE'];
-						$details = $userName . " has uploaded " . $fileName . " to the project " .  $projectTitle . " and needs your acknowledgement.";
+		            // INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
+		            $this->model->addToDocumentAcknowledgement($acknowledgementData);
+		          }
+		        }
+		      }
+		    }
 
-						$notificationData = array(
-							'users_USERID' => $userIDByDepartment['users_USERID'],
-							'DETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'status' => 'Unread',
-							'projects_PROJECTID' => $id,
-							'TYPE' => '5'
-						);
+		    // START: LOG DETAILS
+		    $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		    $details = $userName . " uploaded " . $fileName;
 
-						$this->model->addNotification($notificationData);
-						// END: Notification
+		    $logData = array (
+		      'LOGDETAILS' => $details,
+		      'TIMESTAMP' => date('Y-m-d H:i:s'),
+		      'projects_PROJECTID' => $id
+		    );
 
-						// INSERT IN DOCUMENT ACKNOWLEDGMENT TABLE
-						$this->model->addToDocumentAcknowledgement($acknowledgementData);
-					}
-					// END: NOT YET IN DOCUMENT ACKNOWLEDGMENT TABLE
-				}
-				// END: GET ALL USERS THAT WERE SELECTED
-			}
+		    $this->model->addToProjectLogs($logData);
+		    // END: LOG DETAILS
 
-			// START: LOG DETAILS
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-			$details = $userName . " uploaded " . $fileName;
+		  }
 
-			$logData = array (
-				'LOGDETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $id
-			);
+		  $this->session->set_flashdata('projectID', $id);
+		  $data['projectProfile'] = $this->model->getProjectByID($id);
+		  $data['departments'] = $this->model->getAllDepartmentsByProject($id);
+		  $data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
+		  $data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
+		  $data['users'] = $this->model->getAllUsersByProject($id);
 
-			$this->model->addToProjectLogs($logData);
-			// END: LOG DETAILS
+		  // $this->session->set_flashdata('success', 'alert');
+		  // $this->session->set_flashdata('alertMessage', ' Document uploaded successfully');
 
-		}
-
-		$this->session->set_flashdata('projectID', $id);
-		$data['projectProfile'] = $this->model->getProjectByID($id);
-		$data['departments'] = $this->model->getAllDepartmentsByProject($id);
-		$data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
-		$data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
-		$data['users'] = $this->model->getAllUsersByProject($id);
-
-		// $this->session->set_flashdata('success', 'alert');
-		// $this->session->set_flashdata('alertMessage', ' Document uploaded successfully');
-
-		$this->load->view("projectDocuments", $data);
+		  $this->load->view("projectDocuments", $data);
 	}
 
 	public function acknowledgeDocument()
