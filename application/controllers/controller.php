@@ -5515,7 +5515,6 @@ class controller extends CI_Controller
 
 	public function uploadDocument()
 	{
-
 		  $config['upload_path']          = './assets/uploads';
 		  $config['allowed_types']        = '*';
 		  $config['max_size']							= '10000000';
@@ -5534,9 +5533,10 @@ class controller extends CI_Controller
 		  // UPLOAD: FAILED
 		  if(!$this->upload->do_upload('document'))
 		  {
-		    // echo "<script>alert('did not upload');</script>";
-		    $this->session->set_flashdata('danger', 'alert');
-		    $this->session->set_flashdata('alertMessage', ' Upload document failed');
+				$error = array('error' => $this->upload->display_errors());
+
+				 $this->session->set_flashdata('danger', 'alert');
+				 $this->session->set_flashdata('alertMessage', "did not work " . $error['error']);
 		  }
 
 		  else
@@ -5548,6 +5548,8 @@ class controller extends CI_Controller
 
 		    $departments = $this->input->post('departments');
 		    $users = $this->input->post('users');
+
+				var_dump($departments);
 
 		    if ($departments == NULL && $users == NULL)
 		    {
@@ -5691,6 +5693,8 @@ class controller extends CI_Controller
 		    $this->model->addToProjectLogs($logData);
 		    // END: LOG DETAILS
 
+				$this->session->set_flashdata('success', 'alert');
+			  $this->session->set_flashdata('alertMessage', ' Document uploaded successfully');
 		  }
 
 		  $this->session->set_flashdata('projectID', $id);
@@ -5699,9 +5703,6 @@ class controller extends CI_Controller
 		  $data['documentsByProject'] = $this->model->getAllDocumentsByProject($id);
 		  $data['documentAcknowledgement'] = $this->model->getDocumentsForAcknowledgement($id, $_SESSION['USERID']);
 		  $data['users'] = $this->model->getAllUsersByProject($id);
-
-		  // $this->session->set_flashdata('success', 'alert');
-		  // $this->session->set_flashdata('alertMessage', ' Document uploaded successfully');
 
 		  $this->load->view("projectDocuments", $data);
 	}

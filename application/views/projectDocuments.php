@@ -199,7 +199,6 @@
 												<p>Departments</p>
 												<select id ="departments" class="form-control select2 departments" multiple="multiple" name = "departments[]" data-placeholder="Select Departments" style="width:100%">
 
-													<option value="all">All</option>
 													<?php foreach ($departments as $row): ?>
 
 														<option value="<?php echo $row['DEPARTMENTID']?>">
