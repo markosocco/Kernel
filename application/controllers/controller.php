@@ -214,6 +214,33 @@ class controller extends CI_Controller
 								}
 							}
 
+							// for executives(task escalation)
+							if($taskWithDeadline['DATEDIFF'] <= -7){
+								$filter = "users.usertype_USERTYPEID = '2'";
+								$details = $taskWithDeadline['TASKTITLE'] . " of " . $projectTitle . " is being escalated to your attention due to it being delayed for more than a week.";
+								$data['executives'] = $this->model->getAllUsersByUserType($filter);
+								if($data['executives'] != NULL) {
+									foreach($data['executives'] as $executiveUsers){
+										$isFound = $this->model->checkNotification($currentDate, $details, $executiveUsers['users_USERID']);
+
+										if(!$isFound){
+											// START: Notifications
+											$notificationData = array(
+												'users_USERID' => $executiveUsers['USERID'],
+												'DETAILS' => $details,
+												'TIMESTAMP' => date('Y-m-d H:i:s'),
+												'status' => 'Unread',
+												'tasks_TASKID' => $taskWithDeadline['TASKID'],
+												'projects_PROJECTID' => $taskWithDeadline['projects_PROJECTID'],
+												'TYPE' => '1'
+											);
+											$this->model->addNotification($notificationData);
+										}
+									}
+								}
+							}
+
+
 							// for next task person
 							$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskWithDeadline['TASKID']);
 							if($postTasksData['nextTaskID'] != NULL){

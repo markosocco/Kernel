@@ -76,7 +76,7 @@
 							</div>
 		        </div>
 
-						<form id="projForm" action = 'monitorProjectDetails'  method="POST">
+						<form id="projForm" action = 'monitorProjectDetails'  method="POST" style="margin:0; padding:0">
 							<input type='hidden' name='project_ID' value= "<?php echo $projectProfile['PROJECTID'] ;?>">
 						</form>
 
