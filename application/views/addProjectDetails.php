@@ -3,7 +3,7 @@
 		<title>Kernel - New Project</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/newProjectStyle.css")?>"> -->
 	</head>
-	<body class="hold-transition skin-red sidebar-mini fixed">
+	<body class="hold-transition skin-red sidebar-mini">
 		<?php include_once("frame.php"); ?>
 
 			<div class="content-wrapper">
