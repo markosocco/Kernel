@@ -3613,9 +3613,15 @@ class controller extends CI_Controller
 
 						    if ($value['G'] == 1)
 						    {
+									if ($value['E'] == 'Complete' || $value['E'] == 'Ongoing')
+									{
+										$mainActualStartDate = $value['B'];
+									}
+
 						      $insertMain['TASKTITLE'] = $value['A'];
 						      $insertMain['TASKSTARTDATE'] = $value['B'];
 						      $insertMain['TASKENDDATE'] = $value['C'];
+									$insertMain['TASKACTUALSTARTDATE'] = $mainActualStartDate;
 						      $insertMain['TASKACTUALENDDATE'] = $value['D'];
 						      $insertMain['TASKSTATUS'] = $value['E'];
 						      $insertMain['TASKREMARKS'] = $value['F'];
@@ -3656,9 +3662,15 @@ class controller extends CI_Controller
 						      {
 						        if ($cell['H'] == $mainAct['TASKTITLE'])
 						        {
+											if ($cell['E'] == 'Complete' || $cell['E'] == 'Ongoing')
+											{
+												$subActualStartDate = $cell['B'];
+											}
+
 						          $insertSub['TASKTITLE'] = $cell['A'];
 						          $insertSub['TASKSTARTDATE'] = $cell['B'];
 						          $insertSub['TASKENDDATE'] = $cell['C'];
+											$insertSub['TASKACTUALSTARTDATE'] = $subActualStartDate;
 						          $insertSub['TASKACTUALENDDATE'] = $cell['D'];
 						          $insertSub['TASKSTATUS'] = $cell['E'];
 						          $insertSub['TASKREMARKS'] = $cell['F'];
@@ -3695,9 +3707,15 @@ class controller extends CI_Controller
 						          {
 						            if ($cell_2['H'] == $subAct['TASKTITLE'])
 						            {
+													if ($cell_2['E'] == 'Complete' || $cell_2['E'] == 'Ongoing')
+													{
+														$taskActualStartDate = $cell_2['B'];
+													}
+
 						              $insertTask['TASKTITLE'] = $cell_2['A'];
 						              $insertTask['TASKSTARTDATE'] = $cell_2['B'];
 						              $insertTask['TASKENDDATE'] = $cell_2['C'];
+													$insertTask['TASKACTUALSTARTDATE'] = $taskActualStartDate;
 						              $insertTask['TASKACTUALENDDATE'] = $cell_2['D'];
 						              $insertTask['TASKSTATUS'] = $cell_2['E'];
 						              $insertTask['TASKREMARKS'] = $cell_2['F'];
