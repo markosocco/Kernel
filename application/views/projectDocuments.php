@@ -3,7 +3,7 @@
 		<title>Kernel - Project Documents</title>
 		<!-- <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/projectDocumentsStyle.css")?>"> -->
 	</head>
-	<body class="hold-transition skin-red sidebar-mini sidebar-collapse fixed">
+	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
 		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">

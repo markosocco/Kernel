@@ -6,7 +6,7 @@
     <link rel = "stylesheet" href = "<?php echo base_url("/assets/css/myProjectsStyle.css")?>">
   </head>
 
-  <body class="hold-transition skin-red sidebar-mini fixed">
+  <body class="hold-transition skin-red sidebar-mini">
     <?php require("frame.php"); ?>
 
     <div class="content-wrapper">
