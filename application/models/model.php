@@ -2648,5 +2648,15 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function getUserHead($userid){
+
+    $condition = "USERID = " . $userid;
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where($condition);
+
+    return $this->db->get()->row('users_SUPERVISORS');
+  }
 }
 ?>

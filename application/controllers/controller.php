@@ -1581,22 +1581,49 @@ class controller extends CI_Controller
 			// START: Notifications
 			$details =  "A change in performer was requested by " . $userName . " for " . $taskTitle . " in " . $projectTitle . ".";
 
-			$taggedUserID = "";
+			// if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
+			// 	$taggedUserID = $_SESSION['users_SUPERVISORS'];
+			// } else {
+			// 	$taggedUserID = $projectDetails['users_USERID'];
+			// }
 
-			if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
-				$taggedUserID = $_SESSION['users_SUPERVISORS'];
-			} else {
-				$taggedUserID = $projectDetails['users_USERID'];
-			}
+			// notify PO
+			$notificationData = array(
+			  'users_USERID' => $projectDetails['users_USERID'],
+			  'DETAILS' => $details,
+			  'TIMESTAMP' => date('Y-m-d H:i:s'),
+			  'status' => 'Unread',
+			  'projects_PROJECTID' => $projectID,
+			  'tasks_TASKID' => $taskID,
+			  'TYPE' => '6'
+			);
+
+			$this->model->addNotification($notificationData);
+
+			// notify immediate head
+			$notificationData = array(
+			  'users_USERID' => $_SESSION['users_SUPERVISORS'],
+			  'DETAILS' => $details,
+			  'TIMESTAMP' => date('Y-m-d H:i:s'),
+			  'status' => 'Unread',
+			  'projects_PROJECTID' => $projectID,
+			  'tasks_TASKID' => $taskID,
+			  'TYPE' => '6'
+			);
+
+			$this->model->addNotification($notificationData);
+
+			// notify department head
+			$departmentHeadID = $this->model->getUserHead($_SESSION['users_SUPERVISORS']);
 
 			$notificationData = array(
-				'users_USERID' => $taggedUserID,
-				'DETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'status' => 'Unread',
-				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $taskID,
-				'TYPE' => '6'
+			  'users_USERID' => $departmentHeadID,
+			  'DETAILS' => $details,
+			  'TIMESTAMP' => date('Y-m-d H:i:s'),
+			  'status' => 'Unread',
+			  'projects_PROJECTID' => $projectID,
+			  'tasks_TASKID' => $taskID,
+			  'TYPE' => '6'
 			);
 
 			$this->model->addNotification($notificationData);
@@ -2076,9 +2103,12 @@ class controller extends CI_Controller
 		$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 
 		unset($_SESSION['rfc']);
+		$this->session->set_flashdata('projectID', $projectID);
 		$this->session->set_flashdata('changeRequest', 0);
 
-		$this->load->view("projectGantt", $data);
+		redirect("controller/projectGantt");
+
+		// $this->load->view("projectGantt", $data);
 	}
 
 	public function getUserWorkloadProjects()
@@ -4277,7 +4307,16 @@ class controller extends CI_Controller
 
 		else
 		{
-			$id = $this->input->post("project_ID");
+			if (isset($_SESSION['projectID']))
+			{
+				$id = $_SESSION['projectID'];
+			}
+
+			else
+			{
+				$id = $this->input->post("project_ID");
+			}
+
 			$archives =$this->input->post("archives");
 			$rfc =$this->input->post("rfc");
 			$userRequest =$this->input->post("userRequest");
