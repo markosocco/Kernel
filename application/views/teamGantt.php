@@ -3,7 +3,7 @@
 		<title>Kernel - <?php echo  $projectProfile['PROJECTTITLE'];?></title>
 		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/teamGanttStyle.css")?>">
 	</head>
-	<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
+	<body class="hold-transition skin-red sidebar-mini sidebar-collapse fixed">
 		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
