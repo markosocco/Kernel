@@ -24,7 +24,7 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div style="display:inline-block; text-align:center; width:49%;">
-									<div class="circlechart" id="completeness"
+									<div class="circlechart"
 										data-percentage="<?php
 											if($departmentCompleteness['completeness'] == NULL){
 												echo 0;
@@ -37,7 +37,7 @@
 													echo $departmentCompleteness['completeness'];
 												}
 											}
-									 ?>">Completeness
+											?>">Completeness
 									</div>
 								</div>
 								<div style="display:inline-block; text-align:center; width:49%;">

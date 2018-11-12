@@ -103,7 +103,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Ongoing Tasks <br><br><b><?php echo $taskCount;?></b></h4>
+										<h4 align="center"> Tasks <br><br><b><?php echo $taskCount;?></b></h4>
 									</div>
 								</div>
 							</div>
