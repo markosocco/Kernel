@@ -3032,7 +3032,7 @@ class controller extends CI_Controller
 	          $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
 	          $reader->setLoadSheetsOnly($sheetname);
 	          $spreadsheet = $reader->load($inputFileName);
-	          $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+	          $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
 	          // CHECK IF DATA IN PROJECT DETAILS SHEET IS VALID
 	          $title = $spreadsheet->getActiveSheet()->getCell('B1')->getValue();
@@ -3080,7 +3080,7 @@ class controller extends CI_Controller
             //DATA VALIDATION FOR IMPORT
             $reader->setLoadSheetsOnly($sheetname);
             $spreadsheet = $reader->load($inputFileName);
-            $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+            $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
             foreach ($worksheet as $assessmentKey => $checkAssessment)
             {
@@ -3088,7 +3088,7 @@ class controller extends CI_Controller
               {
                 if ($assessmentKey == 2)
                 {
-                  if ($checkAssessment['A'] == 'NULL' || $checkAssessment['B'] == 'NULL' || $checkAssessment['C'] == 'NULL')
+                  if ($checkAssessment['A'] == NULL || $checkAssessment['B'] == NULL || $checkAssessment['C'] == NULL)
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' All fields in the first row of Project Assessment are required');
@@ -3101,7 +3101,7 @@ class controller extends CI_Controller
 
                 else
                 {
-                  if (($checkAssessment['A'] != 'NULL' && $checkAssessment['B'] == 'NULL') || ($checkAssessment['A'] != 'NULL' && $checkAssessment['C'] == 'NULL'))
+                  if (($checkAssessment['A'] != NULL && $checkAssessment['B'] == NULL) || ($checkAssessment['A'] != NULL && $checkAssessment['C'] == NULL))
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $assessmentKey . ' in Project Assessment are filled');
@@ -3161,14 +3161,14 @@ class controller extends CI_Controller
 					  //DATA VALIDATION FOR IMPORT
 					  $reader->setLoadSheetsOnly($sheetname);
 					  $spreadsheet_tasks = $reader->load($inputFileName);
-					  $worksheet_tasks = $spreadsheet_tasks->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+					  $worksheet_tasks = $spreadsheet_tasks->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
 						$mainActivityTitles = array();
 
 					  foreach ($worksheet_tasks as $checkRow => $checkCell)
 					  {
 					    // CHECK IF BLANK
-					    if ($checkCell['A'] == 'NULL' || $checkCell['B'] == 'NULL' || $checkCell['C'] == 'NULL' || $checkCell['E'] == 'NULL' || $checkCell['G'] == 'NULL')
+					    if ($checkCell['A'] == NULL || $checkCell['B'] == NULL || $checkCell['C'] == NULL || $checkCell['E'] == NULL || $checkCell['G'] == NULL)
 					    {
 					      $this->session->set_flashdata('danger', 'alert');
 					      $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $checkRow . ' in Tasks are filled');
@@ -3199,7 +3199,7 @@ class controller extends CI_Controller
 					              if ($endCell_ts <= $projEnd_ts)
 					              {
 					                // CHECK IF TASK IS COMPLETE AND ACTUAL END DATE IS FILLED
-					                if ($checkCell['D'] == 'NULL' && $checkCell['E'] == 'Complete')
+					                if ($checkCell['D'] == NULL && $checkCell['E'] == 'Complete')
 					                {
 					                  $this->session->set_flashdata('danger', 'alert');
 					                  $this->session->set_flashdata('alertMessage', ' Actual End Date in row ' . $checkRow . ' is required');
@@ -3212,7 +3212,7 @@ class controller extends CI_Controller
 					                else
 					                {
 					                  // CHECK IF COMPLETE TASK HAS ACTUAL END DATE
-					                  if ($checkCell['D'] != 'NULL' && $checkCell['E'] != 'Complete')
+					                  if ($checkCell['D'] != NULL && $checkCell['E'] != 'Complete')
 					                  {
 					                    $this->session->set_flashdata('danger', 'alert');
 					                    $this->session->set_flashdata('alertMessage', ' Status in row ' . $checkRow . ' should be <i>Complete</i>');
@@ -3225,7 +3225,7 @@ class controller extends CI_Controller
 					                  else
 					                  {
 					                    // CHECK IF DELAYED TASK HAS REMARKS
-					                    if ($checkCell['F'] == 'NULL' && ($checkCell['E'] == 'Complete' && $checkCell['C'] < $checkCell['D']))
+					                    if ($checkCell['F'] == NULL && ($checkCell['E'] == 'Complete' && $checkCell['C'] < $checkCell['D']))
 					                    {
 					                      $this->session->set_flashdata('danger', 'alert');
 					                      $this->session->set_flashdata('alertMessage', ' Remarks in row ' . $checkRow . ' is required for delayed tasks');
@@ -3238,7 +3238,7 @@ class controller extends CI_Controller
 					                    else
 					                    {
 					                      // CHECK IF MAIN ACT HAS NO TASK PARENT
-					                      if ($checkCell['G'] == 1 && $checkCell['H'] != 'NULL')
+					                      if ($checkCell['G'] == 1 && $checkCell['H'] != NULL)
 					                      {
 					                        $this->session->set_flashdata('danger', 'alert');
 					                        $this->session->set_flashdata('alertMessage', ' Task in row ' . $checkRow . ' should not have a Task Parent');
@@ -3251,7 +3251,7 @@ class controller extends CI_Controller
 					                      else
 					                      {
 					                        // CHECK IF TASK PARENT IS NULL FOR SUB/TASKS
-					                        if ($checkCell['G'] != 1 && $checkCell['H'] == 'NULL')
+					                        if ($checkCell['G'] != 1 && $checkCell['H'] == NULL)
 					                        {
 					                          $this->session->set_flashdata('danger', 'alert');
 					                          $this->session->set_flashdata('alertMessage', ' Task Parent in row ' . $checkRow . ' is required');
@@ -3314,7 +3314,7 @@ class controller extends CI_Controller
 
 																		if ($checkCell['G'] == 1 || $checkCell['G'] == 2)
 																		{
-																			if ($checkCell['I'] != 'NULL' || $checkCell['J'] != 'NULL' || $checkCell['K'] != 'NULL' || $checkCell['L'] != 'NULL')
+																			if ($checkCell['I'] != NULL || $checkCell['J'] != NULL || $checkCell['K'] != NULL || $checkCell['L'] != NULL)
 																			{
 																				$this->session->set_flashdata('danger', 'alert');
 					                              $this->session->set_flashdata('alertMessage', ' Mains and Subs in row ' . $checkRow . ' should not have RACI');
@@ -3328,7 +3328,7 @@ class controller extends CI_Controller
 					                          if ($checkCell['G'] == 3)
 					                          {
 																			// CHECK IF RACI IS FILLED
-																			if ($checkCell['I'] == 'NULL' || $checkCell['J'] == 'NULL' || $checkCell['K'] == 'NULL' || $checkCell['L'] == 'NULL')
+																			if ($checkCell['I'] == NULL || $checkCell['J'] == NULL || $checkCell['K'] == NULL || $checkCell['L'] == NULL)
 					                            {
 					                              $this->session->set_flashdata('danger', 'alert');
 					                              $this->session->set_flashdata('alertMessage', ' Please make sure RACI in row ' . $checkRow . ' is filled');
@@ -3476,7 +3476,7 @@ class controller extends CI_Controller
             //DATA VALIDATION FOR IMPORT
             $reader->setLoadSheetsOnly($sheetname);
             $spreadsheet = $reader->load($inputFileName);
-            $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+            $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
             foreach ($worksheet as $mainAssessmentKey => $checkMainAssessment)
             {
@@ -3484,7 +3484,7 @@ class controller extends CI_Controller
               {
                 if ($mainAssessmentKey == 2)
                 {
-                  if ($checkMainAssessment['A'] == 'NULL' || $checkMainAssessment['B'] == 'NULL')
+                  if ($checkMainAssessment['A'] == NULL || $checkMainAssessment['B'] == NULL)
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' All fields in the first row of Main Activity Progress are required');
@@ -3497,7 +3497,7 @@ class controller extends CI_Controller
 
                 else
                 {
-                  if (($checkMainAssessment['A'] != 'NULL' && $checkMainAssessment['B'] == 'NULL'))
+                  if (($checkMainAssessment['A'] != NULL && $checkMainAssessment['B'] == NULL))
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $mainAssessmentKey . ' in Main Activity Progress are filled');
@@ -3561,11 +3561,6 @@ class controller extends CI_Controller
 
 									redirect('controller/addProjectDetails');
 								}
-
-								else
-								{
-									echo "success";
-								}
               }
             }
 
@@ -3574,7 +3569,7 @@ class controller extends CI_Controller
 
 						$reader->setLoadSheetsOnly($sheetname);
 						$spreadsheet = $reader->load($inputFileName);
-						$worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+						$worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
 						$title = $spreadsheet->getActiveSheet()->getCell('B1')->getValue();
 						$description = $spreadsheet->getActiveSheet()->getCell('B2')->getValue();
@@ -3661,7 +3656,7 @@ class controller extends CI_Controller
 
 						  $reader->setLoadSheetsOnly($sheetname);
 						  $spreadsheet = $reader->load($inputFileName);
-						  $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+						  $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
 						  if ($status == 'Planning')
 						  {
@@ -3714,7 +3709,7 @@ class controller extends CI_Controller
 
 						  $reader->setLoadSheetsOnly($sheetname);
 						  $spreadsheet = $reader->load($inputFileName);
-						  $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+						  $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
 						  // GET MAIN ACTIVITIES FROM WORKSHEET
 						  $flag = true;
@@ -4085,7 +4080,7 @@ class controller extends CI_Controller
 
 						  $reader->setLoadSheetsOnly($sheetname);
 						  $spreadsheet = $reader->load($inputFileName);
-						  $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+						  $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
 
 							foreach ($worksheet as $mainActProg)
 							{
