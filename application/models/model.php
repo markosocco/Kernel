@@ -1517,11 +1517,13 @@ class model extends CI_Model
   }
 
   public function compute_timeliness_employee($userID){
-    $condition = "YEAR(CURDATE()) && CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && users_USERID = " . $userID;
-    $this->db->select('USERS_USERID as USERID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    $condition = "YEAR(CURDATE()) && CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 &&
+      (PROJECTSTATUS = 'Ongoing' || PROJECTSTATUS = 'Complete' || PROJECTSTATUS = 'Archived') && raci.users_USERID = " . $userID;
+    $this->db->select('raci.USERS_USERID as USERID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
+    $this->db->join('projects', 'projects_PROJECTID = PROJECTID');
     $this->db->where($condition);
 
     return $this->db->get()->row_array();
@@ -1879,7 +1881,7 @@ class model extends CI_Model
 
   public function getAllProjectsByUser($id)
   {
-    $condition = "users.USERID = " . $id . " && raci.STATUS = 'Current' && raci.role = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Parked' && projects.PROJECTSTATUS != 'Drafted'";
+    $condition = "users.USERID = " . $id . " && raci.STATUS = 'Current' && raci.role = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && projects.PROJECTSTATUS != 'Parked' && projects.PROJECTSTATUS != 'Drafted'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
