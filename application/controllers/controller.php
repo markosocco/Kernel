@@ -3484,7 +3484,7 @@ class controller extends CI_Controller
               {
                 if ($mainAssessmentKey == 2)
                 {
-                  if ($checkMainAssessment['A'] == 'NULL' || $checkMainAssessment['B'] == 'NULL' || $checkMainAssessment['C'] == 'NULL')
+                  if ($checkMainAssessment['A'] == 'NULL' || $checkMainAssessment['B'] == 'NULL')
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' All fields in the first row of Main Activity Progress are required');
@@ -3497,7 +3497,7 @@ class controller extends CI_Controller
 
                 else
                 {
-                  if (($checkMainAssessment['A'] != 'NULL' && $checkMainAssessment['B'] == 'NULL') || ($checkMainAssessment['A'] != 'NULL' && $checkMainAssessment['C'] == 'NULL'))
+                  if (($checkMainAssessment['A'] != 'NULL' && $checkMainAssessment['B'] == 'NULL'))
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $mainAssessmentKey . ' in Main Activity Progress are filled');
@@ -3512,30 +3512,30 @@ class controller extends CI_Controller
                     // CHECK IF DATE IS VALID
                     if (DateTime::createFromFormat('Y-m-d', $checkMainAssessment['A']) !== FALSE)
                     {
-											if ($mainAssessmentKey == 2)
-											{
-												$prevRow = array();
-												$prevRow['A'] = $startDate;
-											}
-
-											else
-											{
-												$prevIndex = $mainAssessmentKey - 1;
-												$prevRow = $worksheet[$prevIndex];
-											}
-
-											// CHECK IF DATES ARE SEQUENTIAL
-											$date_plusOne = date_add(date_create($prevRow['A']), date_interval_create_from_date_string("1 days"));
-
-											if ($checkMainAssessment['A'] != $date_plusOne->format('Y-m-d'))
-											{
-												$this->session->set_flashdata('danger', 'alert');
-	                      $this->session->set_flashdata('alertMessage', ' Date in row ' . $mainAssessmentKey . ' in Main Activity Progress is not sequential');
-
-	                      unlink($inputFileName);
-
-	                      redirect('controller/addProjectDetails');
-											}
+											// if ($mainAssessmentKey == 2)
+											// {
+											// 	$prevRow = array();
+											// 	$prevRow['A'] = $startDate;
+											// }
+											//
+											// else
+											// {
+											// 	$prevIndex = $mainAssessmentKey - 1;
+											// 	$prevRow = $worksheet[$prevIndex];
+											// }
+											//
+											// // CHECK IF DATES ARE SEQUENTIAL
+											// $date_plusOne = date_add(date_create($prevRow['A']), date_interval_create_from_date_string("1 days"));
+											//
+											// if ($checkMainAssessment['A'] != $date_plusOne->format('Y-m-d'))
+											// {
+											// 	$this->session->set_flashdata('danger', 'alert');
+	                    //   $this->session->set_flashdata('alertMessage', ' Date in row ' . $mainAssessmentKey . ' in Main Activity Progress is not sequential');
+											//
+	                    //   unlink($inputFileName);
+											//
+	                    //   redirect('controller/addProjectDetails');
+											// }
                     }
 
                     else
