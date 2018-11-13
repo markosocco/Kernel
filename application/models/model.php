@@ -1640,7 +1640,7 @@ class model extends CI_Model
 
   public function compute_timeliness_project($projectID)
   {
-    $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != '' AND tasks.projects_PROJECTID = " . $projectID;
+    $condition = "CATEGORY = 3 AND (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') AND TASKACTUALENDDATE != '' AND tasks.projects_PROJECTID = " . $projectID;
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
