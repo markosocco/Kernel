@@ -600,12 +600,19 @@ class controller extends CI_Controller
 			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
 
 
-			foreach ($data['staff'] as $row)
+			foreach ($data['staff'] as $keu=> $row)
 			{
 				$data['timeliness'][] = $this->model->compute_timeliness_employee($row['USERID']);
 				$data['completeness'][] = $this->model->compute_completeness_employee($row['USERID']);
-
+				// echo $keu . " " . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "<BR>";
 			}
+
+			// echo "<br>";
+			//
+			// foreach ($data['timeliness'] as $tK=> $t)
+			// {
+			// 	echo $tK . " " . $t['timeliness'] . "<br>";
+			// }
 
 			// SAVES USER IDS WITH TASKS INTO ARRAY
 			foreach ($data['taskCount'] as $row2)
@@ -3454,6 +3461,89 @@ class controller extends CI_Controller
 					    }
 					  }
 
+						// PROJECT ASSESSMENT
+            // CHECK IF SPREADSHEET IS NULL/BLANK
+            $sheetname = 'Main Activity Progress';
+
+            //DATA VALIDATION FOR IMPORT
+            $reader->setLoadSheetsOnly($sheetname);
+            $spreadsheet = $reader->load($inputFileName);
+            $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+            foreach ($worksheet as $assessmentKey => $checkAssessment)
+            {
+              if ($assessmentKey != 1)
+              {
+                if ($assessmentKey == 2)
+                {
+                  if ($checkAssessment['A'] == 'NULL' || $checkAssessment['B'] == 'NULL' || $checkAssessment['C'] == 'NULL')
+                  {
+                    $this->session->set_flashdata('danger', 'alert');
+                    $this->session->set_flashdata('alertMessage', ' All fields in the first row of Project Assessment are required');
+
+                    unlink($inputFileName);
+
+                    redirect('controller/addProjectDetails');
+                  }
+                }
+
+                else
+                {
+                  if (($checkAssessment['A'] != 'NULL' && $checkAssessment['B'] == 'NULL') || ($checkAssessment['A'] != 'NULL' && $checkAssessment['C'] == 'NULL'))
+                  {
+                    $this->session->set_flashdata('danger', 'alert');
+                    $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $assessmentKey . ' in Project Assessment are filled');
+
+                    unlink($inputFileName);
+
+                    redirect('controller/addProjectDetails');
+                  }
+
+                  else
+                  {
+                    // CHECK IF DATE IS VALID
+                    if (DateTime::createFromFormat('Y-m-d', $checkAssessment['A']) !== FALSE)
+                    {
+											if ($assessmentKey == 3)
+											{
+												$prevRow = array();
+												$prevRow['A'] = $startDate;
+											}
+
+											else
+											{
+												$prevIndex = $assessmentKey - 1;
+												$prevRow = $worksheet[$prevIndex];
+											}
+
+											// CHECK IF DATES ARE SEQUENTIAL
+											$date_plusOne = date_add(date_create($prevRow['A']), date_interval_create_from_date_string("1 days"));
+
+											if ($checkAssessment['A'] != $date_plusOne->format('Y-m-d'))
+											{
+												$this->session->set_flashdata('danger', 'alert');
+	                      $this->session->set_flashdata('alertMessage', ' Date in row ' . $assessmentKey . ' in Project Assessment is not sequential');
+
+	                      unlink($inputFileName);
+
+	                      redirect('controller/addProjectDetails');
+											}
+                    }
+
+                    else
+                    {
+                      $this->session->set_flashdata('danger', 'alert');
+                      $this->session->set_flashdata('alertMessage', ' Date in row ' . $assessmentKey . ' in Project Assessment is not valid');
+
+                      unlink($inputFileName);
+
+                      redirect('controller/addProjectDetails');
+                    }
+                  }
+                }
+              }
+            }
+
 						// ACTUAL IMPORT
 						$sheetname = 'Project Details';
 
@@ -3572,7 +3662,8 @@ class controller extends CI_Controller
 						            'projects_PROJECTID' => $projectID,
 						            'DATE' => $startDate,
 						            'COMPLETENESS' => $projAssessment['B'],
-						            'TIMELINESS' => $projAssessment['C']
+						            'TIMELINESS' => $projAssessment['C'],
+												'TYPE' => 1
 						          );
 
 						          $this->model->addAssessmentProject($progressData);
@@ -3584,7 +3675,8 @@ class controller extends CI_Controller
 						            'projects_PROJECTID' => $projectID,
 						            'DATE' => $projAssessment['A'],
 						            'COMPLETENESS' => $projAssessment['B'],
-						            'TIMELINESS' => $projAssessment['C']
+						            'TIMELINESS' => $projAssessment['C'],
+												'TYPE' => 1
 						          );
 
 						          $this->model->addAssessmentProject($progressData);
