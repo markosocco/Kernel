@@ -3163,6 +3163,8 @@ class controller extends CI_Controller
 					  $spreadsheet_tasks = $reader->load($inputFileName);
 					  $worksheet_tasks = $spreadsheet_tasks->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
 
+						$mainActivityTitles = array();
+
 					  foreach ($worksheet_tasks as $checkRow => $checkCell)
 					  {
 					    // CHECK IF BLANK
@@ -3459,9 +3461,15 @@ class controller extends CI_Controller
 					        }
 					      }
 					    }
+
+							if ($checkCell['G'] == 1)
+							{
+								array_push($mainActivityTitles, $checkCell['A']);
+								// echo $checkCell['A'] . "<br>";
+							}
 					  }
 
-						// PROJECT ASSESSMENT
+						// MAIN ACTIVITY PROGRESS
             // CHECK IF SPREADSHEET IS NULL/BLANK
             $sheetname = 'Main Activity Progress';
 
@@ -3470,16 +3478,16 @@ class controller extends CI_Controller
             $spreadsheet = $reader->load($inputFileName);
             $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
 
-            foreach ($worksheet as $assessmentKey => $checkAssessment)
+            foreach ($worksheet as $mainAssessmentKey => $checkMainAssessment)
             {
-              if ($assessmentKey != 1)
+              if ($mainAssessmentKey != 1)
               {
-                if ($assessmentKey == 2)
+                if ($mainAssessmentKey == 2)
                 {
-                  if ($checkAssessment['A'] == 'NULL' || $checkAssessment['B'] == 'NULL' || $checkAssessment['C'] == 'NULL')
+                  if ($checkMainAssessment['A'] == 'NULL' || $checkMainAssessment['B'] == 'NULL' || $checkMainAssessment['C'] == 'NULL')
                   {
                     $this->session->set_flashdata('danger', 'alert');
-                    $this->session->set_flashdata('alertMessage', ' All fields in the first row of Project Assessment are required');
+                    $this->session->set_flashdata('alertMessage', ' All fields in the first row of Main Activity Progress are required');
 
                     unlink($inputFileName);
 
@@ -3489,10 +3497,10 @@ class controller extends CI_Controller
 
                 else
                 {
-                  if (($checkAssessment['A'] != 'NULL' && $checkAssessment['B'] == 'NULL') || ($checkAssessment['A'] != 'NULL' && $checkAssessment['C'] == 'NULL'))
+                  if (($checkMainAssessment['A'] != 'NULL' && $checkMainAssessment['B'] == 'NULL') || ($checkMainAssessment['A'] != 'NULL' && $checkMainAssessment['C'] == 'NULL'))
                   {
                     $this->session->set_flashdata('danger', 'alert');
-                    $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $assessmentKey . ' in Project Assessment are filled');
+                    $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $mainAssessmentKey . ' in Main Activity Progress are filled');
 
                     unlink($inputFileName);
 
@@ -3502,9 +3510,9 @@ class controller extends CI_Controller
                   else
                   {
                     // CHECK IF DATE IS VALID
-                    if (DateTime::createFromFormat('Y-m-d', $checkAssessment['A']) !== FALSE)
+                    if (DateTime::createFromFormat('Y-m-d', $checkMainAssessment['A']) !== FALSE)
                     {
-											if ($assessmentKey == 3)
+											if ($mainAssessmentKey == 2)
 											{
 												$prevRow = array();
 												$prevRow['A'] = $startDate;
@@ -3512,17 +3520,17 @@ class controller extends CI_Controller
 
 											else
 											{
-												$prevIndex = $assessmentKey - 1;
+												$prevIndex = $mainAssessmentKey - 1;
 												$prevRow = $worksheet[$prevIndex];
 											}
 
 											// CHECK IF DATES ARE SEQUENTIAL
 											$date_plusOne = date_add(date_create($prevRow['A']), date_interval_create_from_date_string("1 days"));
 
-											if ($checkAssessment['A'] != $date_plusOne->format('Y-m-d'))
+											if ($checkMainAssessment['A'] != $date_plusOne->format('Y-m-d'))
 											{
 												$this->session->set_flashdata('danger', 'alert');
-	                      $this->session->set_flashdata('alertMessage', ' Date in row ' . $assessmentKey . ' in Project Assessment is not sequential');
+	                      $this->session->set_flashdata('alertMessage', ' Date in row ' . $mainAssessmentKey . ' in Main Activity Progress is not sequential');
 
 	                      unlink($inputFileName);
 
@@ -3533,7 +3541,7 @@ class controller extends CI_Controller
                     else
                     {
                       $this->session->set_flashdata('danger', 'alert');
-                      $this->session->set_flashdata('alertMessage', ' Date in row ' . $assessmentKey . ' in Project Assessment is not valid');
+                      $this->session->set_flashdata('alertMessage', ' Date in row ' . $mainAssessmentKey . ' in Main Activity Progress is not valid');
 
                       unlink($inputFileName);
 
@@ -3541,6 +3549,23 @@ class controller extends CI_Controller
                     }
                   }
                 }
+
+								// CHECK IF TASK IS VALID TASK
+
+								if (!in_array($checkMainAssessment['D'], $mainActivityTitles))
+								{
+									$this->session->set_flashdata('danger', 'alert');
+									$this->session->set_flashdata('alertMessage', ' Main Activity in row ' . $mainAssessmentKey . ' in Main Activity Progess is not a valid task');
+
+									unlink($inputFileName);
+
+									redirect('controller/addProjectDetails');
+								}
+
+								else
+								{
+									echo "success";
+								}
               }
             }
 
@@ -4054,11 +4079,37 @@ class controller extends CI_Controller
 						    }
 						  }
 
+						  $data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+
+							$sheetname = 'Main Activity Progress';
+
+						  $reader->setLoadSheetsOnly($sheetname);
+						  $spreadsheet = $reader->load($inputFileName);
+						  $worksheet = $spreadsheet->getActiveSheet()->toArray('NULL', 'true', 'true', 'true');
+
+							foreach ($worksheet as $mainActProg)
+							{
+								foreach ($data['mainActivity'] as $m)
+								{
+									if ($mainActProg['D'] == $m['TASKTITLE'])
+									{
+										$progressData = array(
+											'projects_PROJECTID' => $projectID,
+											'DATE' => $mainActProg['A'],
+											'COMPLETENESS' => $mainActProg['B'],
+											'TIMELINESS' => $mainActProg['C'],
+											'TYPE' => 2
+										);
+
+										$this->model->addAssessmentProject($progressData);
+									}
+								}
+							}
+
 						  // REDIRECT TO DEPENDENCIES
 						  $data['project'] = $this->model->getProjectByID($projectID);
 						  $data['allTasks'] = $this->model->getAllTasksForImportDependency($projectID);
 						  $data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-						  $data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
 						  $data['subActivity'] = $this->model->getAllSubActivitiesByID($projectID);
 						  $data['tasks'] = $this->model->getAllTasksByIDRole1($projectID);
 						  $data['users'] = $this->model->getAllUsers();
