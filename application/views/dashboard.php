@@ -175,7 +175,7 @@
 															{
 																if ($ongoingProject['PROJECTID'] == $row['projects_PROJECTID'])
 																{
-																	$lstwkprogress = $row['COMPLETENESS'];
+																	$lstwkprogress = $row['COMPLETENESS'] . "%";
 																}
 															}
 														?>

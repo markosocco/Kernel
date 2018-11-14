@@ -702,8 +702,8 @@
 									<div style="display:inline-block; text-align:center; width:49%;">
 										<div class="circlechart"
 										 data-percentage="<?php
-										 if($employeeTimeliness['timeliness'] == NULL){
-											 echo 0;
+										 if($employeeTimeliness['timeliness'] == 0.00 && $employeeTimeliness['projects_PROJECTID'] == NULL){
+											 echo 100;
 										 } else {
 											 if($employeeTimeliness['timeliness'] == 100.00){
 												 echo 100;

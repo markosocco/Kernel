@@ -4605,7 +4605,6 @@ class controller extends CI_Controller
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
 
 			$this->load->view("projectGantt", $data);
-			// $this->load->view("gantt2", $data);
 		}
 	}
 
