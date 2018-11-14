@@ -4106,13 +4106,15 @@ class controller extends CI_Controller
 											'DATE' => $mainActProg['A'],
 											'COMPLETENESS' => $mainActProg['B'],
 											'TIMELINESS' => $mainActProg['C'],
-											'TYPE' => 2
+											'TYPE' => 2,
+											'tasks_MAINID' => $m['TASKID']
 										);
 
 										$this->model->addAssessmentProject($progressData);
 									}
 								}
 							}
+
 
 						  // REDIRECT TO DEPENDENCIES
 						  $data['project'] = $this->model->getProjectByID($projectID);
