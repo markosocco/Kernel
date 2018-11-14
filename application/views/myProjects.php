@@ -98,7 +98,7 @@
                     <form id = 'template' action = 'projectGantt'  method="POST">
                       <input type='hidden' name='myProjects' value= "0">
                     </form>
-                    <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
+                    <h2 class="title"><?php echo $template['PROJECTTITLE'];?></h2>
                     <?php
                       $enddate = date_create($template['PROJECTACTUALENDDATE']);
                     ;?>

@@ -4115,6 +4115,7 @@ class controller extends CI_Controller
 								}
 							}
 
+
 						  // REDIRECT TO DEPENDENCIES
 						  $data['project'] = $this->model->getProjectByID($projectID);
 						  $data['allTasks'] = $this->model->getAllTasksForImportDependency($projectID);
