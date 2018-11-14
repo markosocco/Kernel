@@ -567,7 +567,7 @@
   											<form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
 
-  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?>
+  											<p><b class="title"><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?>
                           <?php if($value['datediff'] +1 > 1) :?>
                             days
                           <?php else:?>
@@ -609,7 +609,7 @@
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
 
-  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?>
+  											<p><b class="title"><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'];?>
                           <?php if($value['datediff'] > 1) :?>
                             days
                           <?php else:?>
@@ -653,7 +653,7 @@
                         <form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
 
-  											<p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?>
+  											<p><b class="title"><?php echo $value['PROJECTTITLE']; ?></b><br><i><?php echo $value['datediff'] +1;?>
                           <?php if($value['datediff'] > 1) :?>
                             days
                           <?php else:?>
