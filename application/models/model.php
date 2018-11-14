@@ -1517,11 +1517,11 @@ class model extends CI_Model
   }
 
   public function compute_timeliness_employee($userID){
-    $condition = "YEAR(CURDATE()) && CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 &&
+    $condition = "YEAR(CURDATE()) && CATEGORY = 3 && (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') &&  TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 &&
       (PROJECTSTATUS = 'Ongoing' || PROJECTSTATUS = 'Complete' || PROJECTSTATUS = 'Archived') && raci.users_USERID = " . $userID;
     $this->db->select('raci.USERS_USERID as USERID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) +
-	  ROUND((COUNT(IF(TASKENDDATE >= CURDATE(), 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+      ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
     $this->db->join('projects', 'projects_PROJECTID = PROJECTID');
@@ -1544,10 +1544,10 @@ class model extends CI_Model
 
   public function compute_timeliness_employeesByProject($projectID)
   {
-    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
+    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
     $this->db->select('users.USERID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) +
-	  ROUND((COUNT(IF(TASKENDDATE >= CURDATE(), 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+      ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
     $this->db->join('users', 'users_USERID = USERID');
@@ -1559,10 +1559,10 @@ class model extends CI_Model
 
   public function compute_timeliness_employeeByProject($userID, $projectID)
   {
-    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && users_USERID = " . $userID . " && projects_PROJECTID = " . $projectID;
+    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') && raci.status = 'Current' && role = 1 && users_USERID = " . $userID . " && projects_PROJECTID = " . $projectID;
     $this->db->select('projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) +
-	  ROUND((COUNT(IF(TASKENDDATE >= CURDATE(), 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+      ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
     $this->db->where($condition);
@@ -1585,10 +1585,10 @@ class model extends CI_Model
 
   public function compute_timeliness_department($deptID)
   {
-    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && raci.status = 'Current' && role = 1 && departments_DEPARTMENTID = " . $deptID;
+    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') && raci.status = 'Current' && role = 1 && departments_DEPARTMENTID = " . $deptID;
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) +
-	  ROUND((COUNT(IF(TASKENDDATE >= CURDATE(), 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+      ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
     $this->db->join('users', 'users_USERID = USERID');
@@ -1615,10 +1615,10 @@ class model extends CI_Model
 
   public function compute_timeliness_departmentByProject($projectID)
   {
-    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
+    $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
     $this->db->select('departments.*, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) +
-	  ROUND((COUNT(IF(TASKENDDATE >= CURDATE(), 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"
+      ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
@@ -1647,8 +1647,8 @@ class model extends CI_Model
   {
     $condition = "CATEGORY = 3 AND (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') AND tasks.projects_PROJECTID = " . $projectID;
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) +
-	  ROUND((COUNT(IF(TASKENDDATE >= CURDATE(), 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+      ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->where($condition);
@@ -1670,9 +1670,10 @@ class model extends CI_Model
 
   public function compute_timeliness_allProjects()
   {
-    $condition = "CATEGORY = 3 AND TASKACTUALSTARTDATE != ''";
+    $condition = "CATEGORY = 3 AND (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') AND TASKACTUALSTARTDATE != ''";
     $this->db->select('COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
-    ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
+      ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');
     $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
     $this->db->where($condition);
