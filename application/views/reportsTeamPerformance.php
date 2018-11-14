@@ -82,30 +82,47 @@
                         <td><?php echo $user['FIRSTNAME'] . " " . $user['LASTNAME'];?></td>
                         <td><?php echo $user['POSITION']; ?></td>
 
+                        <?php
+                          $countProject = 0;
+                          $countTask = 0;
+                          $countDelayed = 0;
+                          $completeness = 0;
+                          $timeliness = 100;
+                        ?>
+
                         <?php foreach ($projectCount as $pCount): ?>
                           <?php if ($user['USERID'] == $pCount['USERID']): ?>
-                            <td align='center'><?php echo $pCount['PROJECTCOUNT']; ?></td>
+                            <?php $countProject = $pCount['PROJECTCOUNT']; ?>
                           <?php endif; ?>
                         <?php endforeach; ?>
 
+
                         <?php foreach ($taskCount as $tCount): ?>
                           <?php if ($user['USERID'] == $tCount['users_USERID']): ?>
-                            <td align='center'><?php echo $tCount['TASKCOUNT']; ?></td>
+                            <?php $countTask = $tCount['TASKCOUNT']; ?>
                           <?php endif; ?>
                         <?php endforeach; ?>
 
                         <?php foreach ($delayedCount as $dCount): ?>
                           <?php if ($user['USERID'] == $dCount['userid']): ?>
-                            <td align='center'><?php echo $dCount['delayedTaskCount']; ?></td>
+                            <?php $countDelayed = $dCount['delayedTaskCount']; ?>
                           <?php endif; ?>
                         <?php endforeach; ?>
 
                         <?php foreach ($employeePerformance as $perf): ?>
                           <?php if ($perf['users_USERID'] == $user['USERID']): ?>
-                            <td align='center'><?php echo $perf['completeness']; ?>%</td>
-                            <td align='center'><?php echo $perf['timeliness']; ?>%</td>
+                            <?php $completeness =  $perf['completeness']; ?>
+                            <?php $timeliness =  $perf['timeliness'];?>
+
                           <?php endif; ?>
                         <?php endforeach; ?>
+
+                        <td align='center'><?php echo $countProject; ?></td>
+                        <td align='center'><?php echo $countTask; ?></td>
+                        <td align='center'><?php echo $countDelayed; ?></td>
+                        <td align='center'><?php echo $completeness; ?>%</td>
+                        <td align='center'><?php echo $timeliness; ?>%</td>
+
                       </tr>
                     <?php endforeach;?>
                   </tbody>

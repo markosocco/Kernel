@@ -189,7 +189,7 @@
 	                        ?>
 	                        <p><?php echo date_format($startdate, "F d, Y"); ?><br><i>Launch in
 	                          <?php echo $row['datediff'] +1;?>
-	                          <?php if(($value['datediff'] +1) > 1):?>
+	                          <?php if(($row['datediff'] +1) > 1):?>
 	                            days
 	                          <?php else:?>
 	                            day

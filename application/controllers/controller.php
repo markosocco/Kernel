@@ -582,7 +582,6 @@ class controller extends CI_Controller
 				// echo "head";
 				$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
 				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
-				// $projectCondition =
 			}
 
 			elseif ($_SESSION['usertype_USERTYPEID'] == 4)
@@ -590,12 +589,9 @@ class controller extends CI_Controller
 				// echo "sup";
 				$data['staff'] = $this->model->getAllUsersBySupervisor($_SESSION['USERID']);
 				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3 && users_SUPERVISORS = " . $_SESSION['USERID'];
-				// $projectCondition
 			}
 
 			$data['projects'] = $this->model->getAllProjects();
-			// $data['projectCount'] = $this->model->getProjectCount();
-			// $data['taskCount'] = $this->model->getTaskCount();
 			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
 			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
 
@@ -604,15 +600,8 @@ class controller extends CI_Controller
 			{
 				$data['timeliness'][] = $this->model->compute_timeliness_employee($row['USERID']);
 				$data['completeness'][] = $this->model->compute_completeness_employee($row['USERID']);
-				// echo $keu . " " . $row['FIRSTNAME'] . " " . $row['LASTNAME'] . "<BR>";
 			}
 
-			// echo "<br>";
-			//
-			// foreach ($data['timeliness'] as $tK=> $t)
-			// {
-			// 	echo $tK . " " . $t['timeliness'] . "<br>";
-			// }
 
 			// SAVES USER IDS WITH TASKS INTO ARRAY
 			foreach ($data['taskCount'] as $row2)
