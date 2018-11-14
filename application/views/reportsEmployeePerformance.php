@@ -65,8 +65,19 @@
             <thead>
                 <tr>
                   <th colspan="3"><?php echo $project['PROJECTTITLE'];?> (<?php echo date_format(date_create($project['PROJECTSTARTDATE']), "M d, Y");?> - <?php echo date_format(date_create($project['PROJECTENDDATE']), "M d, Y");?>)</th>
-                  <th colspan="3">Completess: <?php echo $projectPerformance[$key]['completeness'] . "%"; ?></th>
-                  <th colspan="3">Timeliness: <?php echo $projectPerformance[$key]['timeliness'] . "%"; ?></th>
+                  <?php
+                    $completeness = 0;
+                    $timeliness = 100;
+                  ?>
+                  <?php foreach($projectPerformance as $pp): ?>
+                    <?php if($project['PROJECTID'] == $pp['PROJECTID']):?>
+                      <?php $completeness = $pp['completeness']; ?>
+                      <?php $timeliness = $pp['timeliness']; ?>
+                    <?php endif;?>
+                  <?php endforeach;?>
+
+                  <th colspan="3">Completess: <?php echo $completeness . "%"; ?></th>
+                  <th colspan="3">Timeliness: <?php echo $timeliness . "%"; ?></th>
                 </tr>
                 <tr>
                   <th width="20%">Task</th>

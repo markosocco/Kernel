@@ -594,7 +594,7 @@ class controller extends CI_Controller
 			}
 
 			$data['projects'] = $this->model->getAllProjects();
-			$data['projectCount'] = $this->model->getProjectCount();
+			// $data['projectCount'] = $this->model->getProjectCount();
 			// $data['taskCount'] = $this->model->getTaskCount();
 			$data['taskCount'] = $this->model->getTaskCountPerDepartment($deptID, $taskCondition);
 			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
@@ -4106,7 +4106,8 @@ class controller extends CI_Controller
 											'DATE' => $mainActProg['A'],
 											'COMPLETENESS' => $mainActProg['B'],
 											'TIMELINESS' => $mainActProg['C'],
-											'TYPE' => 2
+											'TYPE' => 2,
+											'tasks_MAINID' => $m['TASKID']
 										);
 
 										$this->model->addAssessmentProject($progressData);

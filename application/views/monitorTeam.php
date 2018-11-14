@@ -68,8 +68,18 @@
 												<!-- /.col -->
 												<div class="col-sm-4 border-right">
 													<div class="description-block">
+
+														<?php
+					                    $tcount = 0;
+					                  ?>
+					                  <?php foreach($taskCount as $t): ?>
+					                    <?php if($row['USERID'] == $t['users_USERID']):?>
+					                      <?php $tcount = $t['TASKCOUNT']; ?>
+					                    <?php endif;?>
+					                  <?php endforeach;?>
+
 														<h5 class="description-header">
-															<?php echo $taskCount[$key]['TASKCOUNT']; ?>
+															<?php echo $tcount; ?>
 														</h5>
 														<span class="description-text">TASKS</span>
 													</div>

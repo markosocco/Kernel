@@ -1683,7 +1683,7 @@ class model extends CI_Model
 
   public function compute_employeePerformance_perProject($userID){
     $condition = "YEAR(CURDATE()) && CATEGORY = 3 && TASKACTUALSTARTDATE != ''  && raci.status = 'Current' && role = 1 && users_USERID = " . $userID;
-    $this->db->select('projects_PROJECTID, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
+    $this->db->select('projects_PROJECTID as "PROJECTID", COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness",
     ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE, 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"');
     $this->db->from('tasks');

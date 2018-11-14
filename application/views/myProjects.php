@@ -144,7 +144,7 @@
                         <form action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b>
+                        <p class="title"><b><?php echo $value['PROJECTTITLE']; ?></b>
                           <br><i>Archiving in
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
@@ -231,7 +231,7 @@
                             <form class="gantt" action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
+                        <p class="title"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
                             days remaining
