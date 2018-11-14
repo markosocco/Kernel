@@ -2670,5 +2670,16 @@ class model extends CI_Model
 
     return $this->db->get()->row('users_SUPERVISORS');
   }
+
+  public function getTaskWeightByProject($id)
+  {
+    $condtion = "tasks.CATEGORY = 3 AND projects.PROJECTID = " . $id;
+    $this->db->select("COUNT(taskid), projects_projectid, (100 / COUNT(taskid)) AS 'weight'");
+    $this->db->from('tasks');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->where($condtion);
+
+    return $this->db->get()->row('weight');
+  }
 }
 ?>

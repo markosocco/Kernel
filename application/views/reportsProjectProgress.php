@@ -104,7 +104,21 @@
                         <!-- LAST WEEK/MONTH  -->
                         <!-- TOTAL PROGRESS -->
                         <h4>Past Progress</h4>
-                        <span class="pull-right" style="margin-left:10px;"><?php echo $pastTotalProgress; ?>%</span>
+                        <?php
+                          $mWeight = 0;
+
+                          foreach ($pastProgress as $p)
+                          {
+                            foreach ($mainWeight as $w)
+                            {
+                              if ($p['tasks_MAINID'] == $w['TASKID'] && $p['COMPLETENESS'] != 0)
+                              {
+                                $mWeight += $w['weight'];
+                              }
+                            }
+                          }
+                        ?>
+                        <span class="pull-right" style="margin-left:10px;"><?php echo round($mWeight, 2); ?>%</span>
                         <div class="progress" style="vertical-align:middle">
 
                           <?php $colorCounter = 1; ?>
@@ -113,7 +127,7 @@
 
                               <?php foreach ($pastProgress as $pastBar): ?>
                                 <?php if ($mainProgressBar['TASKID'] == $pastBar['tasks_MAINID']): ?>
-                                  <div class="progress-bar" role="progressbar" style="width:<?php echo $pastBar['COMPLETENESS'] ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
+                                  <div class="progress-bar" role="progressbar" style="width:<?php foreach ($mainWeight as $w) { if ($mainProgressBar['TASKID'] == $w['TASKID'] && $pastBar['COMPLETENESS'] != 0) { echo $w['weight']; } }; ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
                                     <?php echo "M" . ($mainProgKey + 1) . " (" . $pastBar['COMPLETENESS'] . "%)"; ?>
                                   </div>
 
@@ -151,7 +165,21 @@
                         <!-- THIS WEEK/MONTH -->
                         <!-- TOTAL PROGRESS -->
                         <h4>Current Progress</h4>
-                        <span class="pull-right" style="margin-left:10px;"><?php echo $currentTotalProgress; ?>%</span>
+                        <?php
+                          $mWeight = 0;
+
+                          foreach ($currentProgress as $p)
+                          {
+                            foreach ($mainWeight as $w)
+                            {
+                              if ($p['tasks_MAINID'] == $w['TASKID'] && $p['COMPLETENESS'] != 0)
+                              {
+                                $mWeight += $w['weight'];
+                              }
+                            }
+                          }
+                        ?>
+                        <span class="pull-right" style="margin-left:10px;"><?php echo round($mWeight, 2); ?>%</span>
                         <div class="progress" style="vertical-align:middle">
 
                           <?php $colorCounter = 1; ?>
@@ -160,7 +188,7 @@
 
                               <?php foreach ($currentProgress as $currentBar): ?>
                                 <?php if ($mainProgressBar['TASKID'] == $currentBar['tasks_MAINID']): ?>
-                                  <div class="progress-bar" role="progressbar" style="width:<?php echo $currentBar['COMPLETENESS'] ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
+                                  <div class="progress-bar" role="progressbar" style="width:<?php foreach ($mainWeight as $w) { if ($mainProgressBar['TASKID'] == $w['TASKID'] && $currentBar['COMPLETENESS'] != 0) { echo $w['weight']; } }; ?>%; background-color:<?php if ($colorCounter == 1) { echo '#03396c'; } elseif ($colorCounter == 2) { echo '#005b96'; } elseif ($colorCounter == 3) { echo '#6497b1'; } ?> !important;">
                                     <?php echo "M" . ($mainProgKey + 1) . " (" . $currentBar['COMPLETENESS'] . "%)"; ?>
                                   </div>
 
