@@ -98,7 +98,7 @@
                     <form id = 'template' action = 'projectGantt'  method="POST">
                       <input type='hidden' name='myProjects' value= "0">
                     </form>
-                    <h2 class='title'><?php echo $template['PROJECTTITLE'];?></h2>
+                    <h2 class="title"><?php echo $template['PROJECTTITLE'];?></h2>
                     <?php
                       $enddate = date_create($template['PROJECTACTUALENDDATE']);
                     ;?>
@@ -144,7 +144,7 @@
                         <form action = 'projectGantt'  method="POST">
                         </form>
 
-                        <p><b><?php echo $value['PROJECTTITLE']; ?></b>
+                        <p class="title"><b><?php echo $value['PROJECTTITLE']; ?></b>
                           <br><i>Archiving in
                           <?php echo $value['datediff'] +1;?>
                           <?php if(($value['datediff'] +1) > 1):?>
