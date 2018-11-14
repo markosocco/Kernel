@@ -2482,8 +2482,6 @@ class model extends CI_Model
      $condition = "users_SUPERVISORS = '$userID'";
      $this->db->select('*');
      $this->db->from('users');
-     $this->db->join('raci', 'raci.tasks_TASKID = tasks.TASKID');
-
      $this->db->where($condition);
 
      return $this->db->get()->result_array();
