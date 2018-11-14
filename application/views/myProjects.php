@@ -567,7 +567,7 @@
   											<form class="teamgantt" action = 'teamGantt'  method="POST">
   											</form>
 
-  											<p><b class="title"><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?>
+  											<p class="title"><b><?php echo $value['PROJECTTITLE']; ?></b><br><i>Archiving in <?php echo $value['datediff'] +1;?>
                           <?php if($value['datediff'] +1 > 1) :?>
                             days
                           <?php else:?>
