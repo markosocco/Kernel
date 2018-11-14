@@ -1618,7 +1618,7 @@ class model extends CI_Model
     $condition = "CATEGORY = 3 && TASKACTUALSTARTDATE != '' && (TASKSTATUS = 'Ongoing' || TASKSTATUS = 'Complete') && raci.status = 'Current' && role = 1 && projects_PROJECTID = " . $projectID;
     $this->db->select('departments.*, COUNT(TASKID), projects_PROJECTID, (100 / COUNT(taskstatus)),
       ROUND((COUNT(IF(TASKACTUALENDDATE <= TASKENDDATE && TASKSTATUS = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) +
-      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness"
+      ROUND((COUNT(IF(TASKENDDATE >= CURDATE() && TASKSTATUS = "Ongoing", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "timeliness",
     ROUND((COUNT(IF(taskstatus = "Complete", 1, NULL)) * (100 / COUNT(taskid))), 2) AS "completeness"');
     $this->db->from('tasks');
     $this->db->join('raci', 'tasks_TASKID = TASKID');
