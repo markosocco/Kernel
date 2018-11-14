@@ -3225,7 +3225,7 @@ class controller extends CI_Controller
 					                  else
 					                  {
 					                    // CHECK IF DELAYED TASK HAS REMARKS
-					                    if ($checkCell['F'] == NULL && ($checkCell['E'] == 'Complete' && $checkCell['C'] < $checkCell['D']))
+					                    if ($checkCell['F'] == NULL && ($checkCell['E'] == 'Complete' && $checkCell['C'] < $checkCell['D'] && $checkCell['G'] == 3))
 					                    {
 					                      $this->session->set_flashdata('danger', 'alert');
 					                      $this->session->set_flashdata('alertMessage', ' Remarks in row ' . $checkRow . ' is required for delayed tasks');
@@ -3704,6 +3704,19 @@ class controller extends CI_Controller
 						      }
 						    }
 						  }
+
+							elseif ($status = 'Planning')
+							{
+								$progressData = array(
+									'projects_PROJECTID' => $projectID,
+									'DATE' => $startDate,
+									'COMPLETENESS' => 0,
+									'TIMELINESS' => 100,
+									'TYPE' => 1
+								);
+
+								$this->model->addAssessmentProject($progressData);
+							}
 
 						  $sheetname = 'Tasks';
 
