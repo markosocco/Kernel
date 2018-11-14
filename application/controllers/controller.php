@@ -2642,6 +2642,52 @@ class controller extends CI_Controller
 					$data['pastProgress'] = $this->model->getAssessmentByMain($data['interval'], $projectID);
 					$data['currentProgress'] = $this->model->getCurrentAssessmentByMain($projectID);
 
+					$data['taskWeight'] = $this->model->getTaskWeightByProject($projectID);
+					$data['taskCountMain'] = array();
+					$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+
+					$mainActCompleteness = array();
+					$subActCompleteness = array();
+					$totalWeight = 0;
+
+					// GET TASK COUNT PER MAIN
+					foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
+					{
+						$mainCompleteness = 0;
+
+						foreach ($data['subActivities'] as $subCompKey => $subCompValue)
+						{
+							if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
+							{
+								$subCompleteness = 0;
+
+								foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
+								{
+									if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
+									{
+										if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
+										{
+											$subCompleteness += $data['taskWeight'];
+										}
+									}
+								}
+
+								$mainCompleteness += $subCompleteness;
+
+								array_push($subActCompleteness, $subCompleteness);
+							}
+						}
+
+						$mainData = array(
+							'TASKID' =>  $mainCompValue['TASKID'],
+							'weight' => $mainCompleteness
+						);
+
+						array_push($mainActCompleteness, $mainData);
+					}
+
+					$data['mainWeight'] = $mainActCompleteness;
+
 					$this->load->view("reportsProjectProgress", $data);
 				}
 			}
