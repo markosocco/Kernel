@@ -3019,6 +3019,7 @@ class controller extends CI_Controller
 						 $sheetname = 'Project Details';
 	          $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
 	          $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+						$reader->setReadDataOnly(true);
 	          $reader->setLoadSheetsOnly($sheetname);
 	          $spreadsheet = $reader->load($inputFileName);
 	          $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
@@ -3067,6 +3068,8 @@ class controller extends CI_Controller
             $sheetname = 'Project Assessment';
 
             //DATA VALIDATION FOR IMPORT
+						$filterSubset = new assessmentFilter();
+						$reader->setReadFilter($filterSubset);
             $reader->setLoadSheetsOnly($sheetname);
             $spreadsheet = $reader->load($inputFileName);
             $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
@@ -3142,12 +3145,58 @@ class controller extends CI_Controller
                     }
                   }
                 }
+
+								// CHECK IF IT IS A NUMBER
+								if (!is_Numeric($checkAssessment['B']))
+								{
+									$this->session->set_flashdata('danger', 'alert');
+									$this->session->set_flashdata('alertMessage', ' Completeness in row ' . $assessmentKey . ' in Project Assessment is a number');
+
+									unlink($inputFileName);
+
+									redirect('controller/addProjectDetails');
+								}
+
+								// CHECK IF NUMBER HAS 2 DECIMAL PLACES
+								if (!preg_match('/\.\d{2,}/', $checkAssessment['B']))
+								{
+									$this->session->set_flashdata('danger', 'alert');
+									$this->session->set_flashdata('alertMessage', ' Completeness in row ' . $assessmentKey . ' in Project Assessment does not have 2 decimal places');
+
+									unlink($inputFileName);
+
+									redirect('controller/addProjectDetails');
+								}
+
+								// CHECK IF IT IS A NUMBER
+								if (!is_Numeric($checkAssessment['C']))
+								{
+									$this->session->set_flashdata('danger', 'alert');
+									$this->session->set_flashdata('alertMessage', ' Timeliness in row ' . $assessmentKey . ' in Project Assessment is not a number');
+
+									unlink($inputFileName);
+
+									redirect('controller/addProjectDetails');
+								}
+
+								// CHECK IF NUMBER HAS 2 DECIMAL PLACES
+								if (!preg_match('/\.\d{2,}/', $checkAssessment['C']))
+								{
+									$this->session->set_flashdata('danger', 'alert');
+									$this->session->set_flashdata('alertMessage', ' Timeliness in row ' . $assessmentKey . ' in Project Assessment does not have 2 decimal places');
+
+									unlink($inputFileName);
+
+									redirect('controller/addProjectDetails');
+								}
               }
             }
 
 					  $sheetname = 'Tasks';
 
 					  //DATA VALIDATION FOR IMPORT
+						$filterSubset = new tasksFilter();
+						$reader->setReadFilter($filterSubset);
 					  $reader->setLoadSheetsOnly($sheetname);
 					  $spreadsheet_tasks = $reader->load($inputFileName);
 					  $worksheet_tasks = $spreadsheet_tasks->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
@@ -3454,7 +3503,6 @@ class controller extends CI_Controller
 							if ($checkCell['G'] == 1)
 							{
 								array_push($mainActivityTitles, $checkCell['A']);
-								// echo $checkCell['A'] . "<br>";
 							}
 					  }
 
@@ -3463,6 +3511,8 @@ class controller extends CI_Controller
             $sheetname = 'Main Activity Progress';
 
             //DATA VALIDATION FOR IMPORT
+						$filterSubset = new assessmentFilter();
+						$reader->setReadFilter($filterSubset);
             $reader->setLoadSheetsOnly($sheetname);
             $spreadsheet = $reader->load($inputFileName);
             $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
@@ -3473,7 +3523,7 @@ class controller extends CI_Controller
               {
                 if ($mainAssessmentKey == 2)
                 {
-                  if ($checkMainAssessment['A'] == NULL || $checkMainAssessment['B'] == NULL)
+                  if ($checkMainAssessment['A'] == NULL || $checkMainAssessment['B'] == NULL || $checkMainAssessment['C'] == NULL)
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' All fields in the first row of Main Activity Progress are required');
@@ -3486,7 +3536,7 @@ class controller extends CI_Controller
 
                 else
                 {
-                  if (($checkMainAssessment['A'] != NULL && $checkMainAssessment['B'] == NULL))
+                  if (($checkMainAssessment['A'] != NULL && $checkMainAssessment['B'] == NULL) || ($checkMainAssessment['A'] != NULL && $checkMainAssessment['C'] == NULL) || ($checkMainAssessment['B'] != NULL && $checkMainAssessment['C'] == NULL))
                   {
                     $this->session->set_flashdata('danger', 'alert');
                     $this->session->set_flashdata('alertMessage', ' Please make sure that all fields in row ' . $mainAssessmentKey . ' in Main Activity Progress are filled');
@@ -3501,30 +3551,27 @@ class controller extends CI_Controller
                     // CHECK IF DATE IS VALID
                     if (DateTime::createFromFormat('Y-m-d', $checkMainAssessment['A']) !== FALSE)
                     {
-											// if ($mainAssessmentKey == 2)
-											// {
-											// 	$prevRow = array();
-											// 	$prevRow['A'] = $startDate;
-											// }
-											//
-											// else
-											// {
-											// 	$prevIndex = $mainAssessmentKey - 1;
-											// 	$prevRow = $worksheet[$prevIndex];
-											// }
-											//
-											// // CHECK IF DATES ARE SEQUENTIAL
-											// $date_plusOne = date_add(date_create($prevRow['A']), date_interval_create_from_date_string("1 days"));
-											//
-											// if ($checkMainAssessment['A'] != $date_plusOne->format('Y-m-d'))
-											// {
-											// 	$this->session->set_flashdata('danger', 'alert');
-	                    //   $this->session->set_flashdata('alertMessage', ' Date in row ' . $mainAssessmentKey . ' in Main Activity Progress is not sequential');
-											//
-	                    //   unlink($inputFileName);
-											//
-	                    //   redirect('controller/addProjectDetails');
-											// }
+											// CHECK IF IT IS A NUMBER
+											if (!is_Numeric($checkMainAssessment['B']))
+											{
+												$this->session->set_flashdata('danger', 'alert');
+												$this->session->set_flashdata('alertMessage', ' Completeness in row ' . $assessmentKey . ' in Main Activity Progress is not a number');
+
+												unlink($inputFileName);
+
+												redirect('controller/addProjectDetails');
+											}
+
+											// CHECK IF NUMBER HAS 2 DECIMAL PLACES
+											if (!preg_match('/\.\d{2,}/', $checkMainAssessment['B']))
+											{
+												$this->session->set_flashdata('danger', 'alert');
+												$this->session->set_flashdata('alertMessage', ' Completeness in row ' . $assessmentKey . ' in Main Activity Progress does not have 2 decimal places');
+
+												unlink($inputFileName);
+
+												redirect('controller/addProjectDetails');
+											}
                     }
 
                     else
@@ -3540,8 +3587,7 @@ class controller extends CI_Controller
                 }
 
 								// CHECK IF TASK IS VALID TASK
-
-								if (!in_array($checkMainAssessment['D'], $mainActivityTitles))
+								if (!in_array($checkMainAssessment['C'], $mainActivityTitles))
 								{
 									$this->session->set_flashdata('danger', 'alert');
 									$this->session->set_flashdata('alertMessage', ' Main Activity in row ' . $mainAssessmentKey . ' in Main Activity Progess is not a valid task');
@@ -3643,6 +3689,8 @@ class controller extends CI_Controller
 
 						  $sheetname = 'Project Assessment';
 
+							$filterSubset = new assessmentFilter();
+							$reader->setReadFilter($filterSubset);
 						  $reader->setLoadSheetsOnly($sheetname);
 						  $spreadsheet = $reader->load($inputFileName);
 						  $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
@@ -3709,6 +3757,8 @@ class controller extends CI_Controller
 
 						  $sheetname = 'Tasks';
 
+							$filterSubset = new tasksFilter();
+							$reader->setReadFilter($filterSubset);
 						  $reader->setLoadSheetsOnly($sheetname);
 						  $spreadsheet = $reader->load($inputFileName);
 						  $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
@@ -4080,6 +4130,8 @@ class controller extends CI_Controller
 
 							$sheetname = 'Main Activity Progress';
 
+							$filterSubset = new assessmentFilter();
+							$reader->setReadFilter($filterSubset);
 						  $reader->setLoadSheetsOnly($sheetname);
 						  $spreadsheet = $reader->load($inputFileName);
 						  $worksheet = $spreadsheet->getActiveSheet()->toArray(NULL, 'true', 'true', 'true');
@@ -4088,13 +4140,12 @@ class controller extends CI_Controller
 							{
 								foreach ($data['mainActivity'] as $m)
 								{
-									if ($mainActProg['D'] == $m['TASKTITLE'])
+									if ($mainActProg['C'] == $m['TASKTITLE'])
 									{
 										$progressData = array(
 											'projects_PROJECTID' => $projectID,
 											'DATE' => $mainActProg['A'],
 											'COMPLETENESS' => $mainActProg['B'],
-											'TIMELINESS' => $mainActProg['C'],
 											'TYPE' => 2,
 											'tasks_MAINID' => $m['TASKID']
 										);
@@ -4103,7 +4154,6 @@ class controller extends CI_Controller
 									}
 								}
 							}
-
 
 						  // REDIRECT TO DEPENDENCIES
 						  $data['project'] = $this->model->getProjectByID($projectID);
@@ -4241,7 +4291,6 @@ class controller extends CI_Controller
 	  }
 	}
 
-// DELETE THIS MAYBE??
 	public function addTasks()
 	{
 		$id = $this->input->post('project_ID');
@@ -6322,6 +6371,32 @@ class controller extends CI_Controller
 
 		echo json_encode($affectedTasks);
 	}
+}
 
+class assessmentFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
+{
+  public function readCell($column, $row, $worksheetName = '')
+	{
+    //  Read columns A to C only
+    if (in_array($column,range('A','C')))
+		{
+        return true;
+    }
 
+    return false;
+  }
+}
+
+class tasksFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
+{
+  public function readCell($column, $row, $worksheetName = '')
+	{
+    //  Read columns A to L only
+    if (in_array($column,range('A','L')))
+		{
+        return true;
+    }
+
+    return false;
+  }
 }
