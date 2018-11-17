@@ -172,7 +172,7 @@
 									<!-- /.box-header -->
 									<div class="box-body">
 											<div class="form-group">
-												<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks (Optional)"></textarea>
+												<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks"></textarea>
 											</div>
 
 										<span data-toggle="modal" data-target="#modal-deny">
@@ -373,7 +373,7 @@
 															<td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
 															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
 															data-projectCount = "<?php echo $hasProjects;?>"
-															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
+															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?> <br><i><span style="font-size:11px"><?php echo $employee['POSITION'];?></span></i></td>
 															<td class='text-center'>
 																<div class="radio">
 																<label>

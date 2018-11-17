@@ -453,7 +453,7 @@
 															<td class='clickable moreInfo' data-id="<?php echo $employee['USERID'];?>"
 															data-name="<?php echo $employee['FIRSTNAME'];?> <?php echo $employee['LASTNAME'];?>"
 															data-projectCount = "<?php echo $hasProjects;?>"
-															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?></td>
+															data-taskCount = "<?php echo $hasTasks;?>"><?php echo $employee['FIRSTNAME'] . " " .  $employee['LASTNAME'];?> <br><i><span style="font-size:11px"><?php echo $employee['POSITION'];?></span></i></td>
 															<td class='text-center'>
 																<div class="radio">
 																<label>
