@@ -469,6 +469,7 @@
 
 							<div class="modal-header">
 								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
+								<h4 id = "empJobDescription">Job Description: </h4>
 								<h4 id = "workloadProjects">Total Number of Projects: </h4>
 								<h4 id = "workloadTasks">Total Number of Tasks: </h4>
 							</div>
@@ -1385,6 +1386,10 @@
 								}
 							 });
 						 }
+						 if(data['userData'].JOBDESCRIPTION != null)
+							$("#empJobDescription").html("Job Description: " + data['userData'].JOBDESCRIPTION);
+						 else
+							$("#empJobDescription").html("Job Description: -");
 					 },
 					 error:function()
 					 {

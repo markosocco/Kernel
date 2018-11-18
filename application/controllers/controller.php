@@ -2183,6 +2183,7 @@ class controller extends CI_Controller
 	{
 		$userID = $this->input->post('userID');
 		$projectID = $this->input->post('projectID');
+		$data['userData'] = $this->model->getUserByID($userID);
 		$data['workloadTasks'] = $this->model->getWorkloadTasksUnique($userID, $projectID);
 
 		echo json_encode($data);

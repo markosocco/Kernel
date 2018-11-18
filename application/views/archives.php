@@ -35,6 +35,7 @@
 							<thead>
 							<tr>
 								<th width="35%">Project</th>
+								<th>Project Type</th>
 								<th>Owner</th>
 								<th width = "15%" class='text-center'>Start Date</th>
 								<th width = "15%" class='text-center'>Target<br>End Date</th>
@@ -57,6 +58,21 @@
 										;?>
 
 										<td><?php echo $a['PROJECTTITLE']; ?></td>
+										<td>
+											<?php
+											switch($a['PROJECTTYPE'])
+											{
+												case 1: echo 'Store Opening'; break;
+												case 2: echo 'Product Launch'; break;
+												case 3: echo 'Marketing Promotion'; break;
+												case 4: echo 'System Development'; break;
+												case 5: echo 'Employee Onboarding'; break;
+												case 6: echo 'Employee Offboarding'; break;
+												case 7: echo 'Miscellaneous'; break;
+												default: echo ''; break;
+											}
+											 ;?>
+										</td>
 										<td><?php echo $a['FIRSTNAME'] . " " . $a['LASTNAME']; ?></td>
 										<td class='text-center'><?php echo date_format($start, "M d, Y"); ?></td>
 										<td class='text-center'><?php echo date_format($end, "M d, Y"); ?></td>
