@@ -131,7 +131,7 @@
 	                    <th class="text-center" width="17.5%">A</th>
 	                    <th class="text-center" width="17.5%">C</th>
 	                    <th class="text-center" width="17.5%">I</th>
-											<th>Action</th>
+											<th class="text-center">Action</th>
 	                  </tr>
 	                </thead>
 	                <tbody>
@@ -222,7 +222,7 @@
 															<?php endif; ?>
 														<?php endforeach; ?>
 													</td>
-													<td>
+													<td align='center'>
 														<?php if($t['TASKSTATUS'] != 'Complete'):?>
 														<span data-toggle="modal" data-target="#modal-delegate">
 														<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $t['TASKID'];?>"
