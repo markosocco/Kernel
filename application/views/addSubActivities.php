@@ -159,6 +159,9 @@
 																		<td>
 																			<select class="form-control select2" multiple="multiple" name = "department[<?php echo $sKey; ?>][]" data-placeholder="Select Departments">
 																				<?php
+
+																				$selectDepts = array();
+
 																					foreach ($tasks as $row)
 																					{
 																						if($value['TASKTITLE'] == $row['TASKTITLE'])
@@ -167,9 +170,23 @@
 																							{
 																								if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																								{
-																									echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																									// echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																									array_push($selectDepts, $row2['DEPARTMENTNAME']);
 																								}
 																							}
+																						}
+																					}
+
+																					foreach ($selectDepts as $sD)
+																					{
+																						if (count($selectDepts) != 1)
+																						{
+																							echo "<option>" . $sD . "</option>";
+																						}
+
+																						else
+																						{
+																							echo "<option selected='selected'>" . $sD . "</option>";
 																						}
 																					}
 																				?>
@@ -243,6 +260,8 @@
 																	<td>
 																		<select class="form-control select2" multiple="multiple" name = "department[<?php echo (count($templateSubActivity) + $nonTemplateCounter); ?>][]" data-placeholder="Select Departments">
 																			<?php
+																			$selectDepts = array();
+
 																				foreach ($tasks as $row)
 																				{
 																					if($value['TASKTITLE'] == $row['TASKTITLE'])
@@ -251,9 +270,23 @@
 																						{
 																							if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																							{
-																								echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																								// echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																								array_push($selectDepts, $row2['DEPARTMENTNAME']);
 																							}
 																						}
+																					}
+																				}
+
+																				foreach ($selectDepts as $sD)
+																				{
+																					if (count($selectDepts) != 1)
+																					{
+																						echo "<option>" . $sD . "</option>";
+																					}
+
+																					else
+																					{
+																						echo "<option selected='selected'>" . $sD . "</option>";
 																					}
 																				}
 																			?>
@@ -384,6 +417,9 @@
 												<td>
 													<select class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-key = "<?php echo $key; ?>" data-placeholder="Select Departments">
 														<?php
+
+														$selectDepts = array();
+
 															foreach ($tasks as $row)
 															{
 																if($value['TASKTITLE'] == $row['TASKTITLE'])
@@ -392,9 +428,23 @@
 																	{
 																		if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																		{
-																			echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																			// echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																			array_push($selectDepts, $row2['DEPARTMENTNAME']);
 																		}
 																	}
+																}
+															}
+
+															foreach ($selectDepts as $sD)
+															{
+																if (count($selectDepts) != 1)
+																{
+																	echo "<option>" . $sD . "</option>";
+																}
+
+																else
+																{
+																	echo "<option selected='selected'>" . $sD . "</option>";
 																}
 															}
 														?>
@@ -489,7 +539,15 @@
 			 {
 				 for (var k = 0; k < d.length; k++)
 					{
-						department = department + "<option>" + d[k] + "</option>";
+						if (d.length == 1)
+						{
+							department = department + "<option selected='selected'>" + d[k] + "</option>";
+						}
+
+						else
+						{
+							department = department + "<option>" + d[k] + "</option>";
+						}
 					}
 
 					$('#table_' + currTable).append("<tr id='table_" +
@@ -523,7 +581,15 @@
 			 {
 				 for (var k = 0; k < d.length; k++)
 					{
-						department = department + "<option>" + d[k] + "</option>";
+						if (d.length == 1)
+						{
+							department = department + "<option selected='selected'>" + d[k] + "</option>";
+						}
+
+						else
+						{
+							department = department + "<option>" + d[k] + "</option>";
+						}
 					}
 
 					$('#table_' + currTable).append("<tr id='table_" +

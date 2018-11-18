@@ -231,6 +231,8 @@
 																					<select class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																						<option></option>
 																						<?php
+																						$selectDepts = array();
+
 																						foreach ($tasks as $row)
 																						{
 																							if($sValue['TASKTITLE'] == $row['TASKTITLE'])
@@ -239,9 +241,23 @@
 																								{
 																									if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																									{
-																										echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																										// echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																										array_push($selectDepts, $row2['DEPARTMENTNAME']);
 																									}
 																								}
+																							}
+																						}
+
+																						foreach ($selectDepts as $sD)
+																						{
+																							if (count($selectDepts) != 1)
+																							{
+																								echo "<option>" . $sD . "</option>";
+																							}
+
+																							else
+																							{
+																								echo "<option selected='selected'>" . $sD . "</option>";
 																							}
 																						}
 																						?>
@@ -299,19 +315,35 @@
 																	    <select class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																	      <option></option>
 																	      <?php
-																	      foreach ($tasks as $row)
-																	      {
-																	        if($sValue['TASKTITLE'] == $row['TASKTITLE'])
-																	        {
-																	          foreach ($departments as $row2)
-																	          {
-																	            if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
-																	            {
-																	              echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
-																	            }
-																	          }
-																	        }
-																	      }
+																				$selectDepts = array();
+
+																				foreach ($tasks as $row)
+																				{
+																					if($sValue['TASKTITLE'] == $row['TASKTITLE'])
+																					{
+																						foreach ($departments as $row2)
+																						{
+																							if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
+																							{
+																								// echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																								array_push($selectDepts, $row2['DEPARTMENTNAME']);
+																							}
+																						}
+																					}
+																				}
+
+																				foreach ($selectDepts as $sD)
+																				{
+																					if (count($selectDepts) != 1)
+																					{
+																						echo "<option>" . $sD . "</option>";
+																					}
+
+																					else
+																					{
+																						echo "<option selected='selected'>" . $sD . "</option>";
+																					}
+																				}
 																	      ?>
 																	    </select>
 																	  </td>
@@ -523,6 +555,8 @@
 																	<select id ="select<?php echo $c; ?>" class="form-control select2" name = "department[<?php echo $c; ?>][]" data-placeholder="Select Departments">
 																		<option></option>
 																		<?php
+																		$selectDepts = array();
+
 																		foreach ($tasks as $row)
 																		{
 																			if($sValue['TASKTITLE'] == $row['TASKTITLE'])
@@ -531,9 +565,23 @@
 																				{
 																					if($row['USERID'] == $row2['users_DEPARTMENTHEAD'])
 																					{
-																						echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																						// echo "<option>" . $row2['DEPARTMENTNAME'] . "</option>";
+																						array_push($selectDepts, $row2['DEPARTMENTNAME']);
 																					}
 																				}
+																			}
+																		}
+
+																		foreach ($selectDepts as $sD)
+																		{
+																			if (count($selectDepts) != 1)
+																			{
+																				echo "<option>" . $sD . "</option>";
+																			}
+
+																			else
+																			{
+																				echo "<option selected='selected'>" . $sD . "</option>";
 																			}
 																		}
 																		?>
@@ -628,7 +676,15 @@
 
 			 for (var k = 0; k < d.length; k++)
 			 {
-				 department = department + "<option>" + d[k] + "</option>";
+				 if (d.length == 1)
+				 {
+					 department = department + "<option selected='selected'>" + d[k] + "</option>";
+				 }
+
+				 else
+				 {
+					 department = department + "<option>" + d[k] + "</option>";
+				 }
 			 }
 
 				 $('#ma' + mTable + '_s' + sTable).append(
