@@ -28,6 +28,13 @@
     <!-- title row -->
     <div class="reportHeader viewCenter">
       <h3 class="viewCenter"><img class="" id = "logo" src = "<?php echo base_url("/assets/media/tei.png")?>"> Project Status Report</h3>
+      <p>from
+        <?php
+          $time = strtotime(date('Y-m-d') . ' -' . $interval . ' days');
+          echo $date = date("F d, Y", $time);?>
+          to
+        <?php echo date('F d, Y');?>
+      </p>
     </div>
     <div class="reportBody">
       <!-- LOOP START HERE -->
