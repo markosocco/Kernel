@@ -2235,7 +2235,7 @@ class model extends CI_Model
       return $query->result_array();
     }
 
-   public function getPlannedLast($projectID, $interval)
+   public function getOngoingTasks($projectID, $interval)
    {
      $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
                    && (tasks.TASKENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
@@ -2279,7 +2279,7 @@ class model extends CI_Model
      $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
                    && (tasks.TASKACTUALENDDATE > tasks.TASKADJUSTEDENDDATE || tasks.TASKACTUALENDDATE > tasks.TASKENDDATE
                    || tasks.TASKENDDATE < CURDATE() || tasks.TASKADJUSTEDENDDATE < CURDATE())
-                   && tasks.TASKSTATUS != 'Planning'
+                   && tasks.TASKSTATUS = 'Ongoing'
                    && (tasks.TASKENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
                    || tasks.TASKADJUSTEDENDDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
                    || tasks.TASKSTARTDATE BETWEEN DATE_SUB(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
@@ -2302,11 +2302,7 @@ class model extends CI_Model
    public function getPlannedNext($projectID, $interval)
    {
      $condition = "PROJECTID = '$projectID' && raci.role = '1' && raci.STATUS = 'Current' && tasks.CATEGORY = '3'
-                   && (tasks.TASKENDDATE BETWEEN DATE_ADD(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKADJUSTEDENDDATE BETWEEN DATE_ADD(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || tasks.TASKSTARTDATE BETWEEN DATE_ADD(CURDATE(), INTERVAL $interval DAY) AND CURDATE()
-                   || (tasks.TASKENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing')
-                   || (tasks.TASKADJUSTEDENDDATE <= CURDATE() && tasks.TASKSTATUS = 'Ongoing'))";
+                   && tasks.TASKSTARTDATE BETWEEN DATE_ADD(CURDATE(), INTERVAL $interval DAY) AND CURDATE()";
      $this->db->select('*');
      $this->db->from('projects');
      $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');

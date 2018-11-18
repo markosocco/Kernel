@@ -2725,7 +2725,7 @@ class controller extends CI_Controller
 
 					$data['project'] = $this->model->getProjectByID($projectID);
 					$data['users'] = $this->model->getAllUsers();
-					$data['plannedLast'] = $this->model->getPlannedLast($projectID, $data['interval']);
+					$data['ongoingTasks'] = $this->model->getAllOngoingDelayedTasksByIDRole1($projectID);
 					$data['accomplishedLast'] = $this->model->getAccomplishedLast($projectID, $data['interval']);
 					$data['problemTasks'] = $this->model->getProblemTasks($projectID, $data['interval']);
 					$data['plannedNext'] = $this->model->getPlannedNext($projectID, $data['interval']);
