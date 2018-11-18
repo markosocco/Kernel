@@ -75,22 +75,48 @@
 									<?php endif; ?>
                 </div>
 
-								<div class="row">
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="projectperiod">Project Type</label>
-											<select class="form-control select2" style="width: 100%;" required>
-												<option value="" selected disabled hidden>Choose a Project Type</option>
-												<option value="1">Store Opening</option>
-												<option value="2">New Product Launch</option>
-												<option value="3">Marketing Promotion</option>
-												<option value="4">Onboarding</option>
-												<option value="5">Offboarding</option>
-												<option value="6">System Development</option>
-												<option value="7">Miscellaneous</option>
-											</select>
+								<?php $projectTypes = array(
+									array("ID" => 1, "TYPE" => "Store Opening"),
+									array("ID" => 2, "TYPE" => "New Product Launch"),
+									array("ID" => 3, "TYPE" => "Marketing Promotion"),
+									array("ID" => 4, "TYPE" => "Onboarding"),
+									array("ID" => 5, "TYPE" => "Offboarding"),
+									array("ID" => 6, "TYPE" => "System Development"),
+									array("ID" => 7, "TYPE" => "Miscellaneous"),
+								); ?>
+
+								<?php if (isset($_SESSION['templates'])): ?>
+									<div class="row">
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="projectperiod">Project Type</label>
+												<select class="form-control select2" name="type" id="type" style="width: 100%;" required>
+													<!-- <option value="" selected disabled hidden>Choose a Project Type</option> -->
+													<?php foreach ($projectTypes as $typeKey => $types): ?>
+														<?php if ($project['PROJECTTYPE'] == $types['ID']): ?>
+															<option value="<?php echo $types['ID']; ?>" selected><?php echo $types['TYPE']; ?></option>
+														<?php else: ?>
+															<option value="<?php echo $types['ID']; ?>"><?php echo $types['TYPE']; ?></option>
+														<?php endif; ?>
+													<?php endforeach; ?>
+												</select>
+											</div>
 										</div>
-									</div>
+
+								<?php else: ?>
+									<div class="row">
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="projectperiod">Project Type</label>
+												<select class="form-control select2" name="type" id="type" style="width: 100%;" required>
+													<option value="" selected disabled hidden>Choose a Project Type</option>
+													<?php foreach ($projectTypes as $types): ?>
+														<option value="<?php echo $types['ID']; ?>"><?php echo $types['TYPE']; ?></option>
+													<?php endforeach; ?>
+												</select>
+											</div>
+										</div>
+								<?php endif; ?>
 
 
 					        <div class="col-md-3">

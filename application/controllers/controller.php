@@ -4416,8 +4416,11 @@ class controller extends CI_Controller
 	          'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
 	          'PROJECTSTATUS' => $status,
 	          'users_USERID' => $_SESSION['USERID'],
-	          'DATECREATED' => $currDate
+	          'DATECREATED' => $currDate,
+						'PROJECTTYPE' => $this->input->post('type')
 	      );
+
+				echo $this->input->post('type');
 
 	      $sDate = date_create($startDate);
 	      $eDate = date_create($this->input->post('endDate'));
