@@ -172,7 +172,11 @@
 									<!-- /.box-header -->
 									<div class="box-body">
 											<div class="form-group">
-												<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks"></textarea>
+												<?php if (isset($_SESSION['remarks'])): ?>
+													<textarea id = "remarks" name = "remarks" class="form-control" rows="5"><?php echo $_SESSION['remarks']; ?></textarea>
+												<?php else: ?>
+													<textarea id = "remarks" name = "remarks" class="form-control" rows="5" placeholder="Enter remarks"></textarea>
+												<?php endif; ?>
 											</div>
 
 										<span data-toggle="modal" data-target="#modal-deny">

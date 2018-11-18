@@ -1276,264 +1276,300 @@ class controller extends CI_Controller
 
 	public function delegateTask()
 	{
-		$taskID = $this->input->post("task_ID");
+		$responsibleEmp = $this->input->post('responsibleEmp');
+		$accountableEmp = $this->input->post("accountableEmp[]");
+		$consultedEmp = $this->input->post("consultedEmp[]");
+		$informedEmp = $this->input->post("informedEmp[]");
 
-		$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
-		$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
-		$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
-		$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
-
-		// SAVE RESPONSIBLE
-		if($this->input->post("responsibleEmp"))
+		if ($responsibleEmp == NULL)
 		{
-			$responsibleEmp = $this->input->post('responsibleEmp');
-			$responsibleType = $this->model->getUserType($responsibleEmp);
-
-			$delegate = $this->model->checkForDelegation($taskID);
-
-			if($delegate == '1')
-			{
-				$updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
-
-				if($responsibleType == '5') //if to staff, remove delegation
-				{
-					$delegateDataNew = array(
-						'ROLE' => '0',
-						'users_USERID' => $responsibleEmp,
-						'tasks_TASKID' => $taskID,
-						'STATUS' => 'Changed'
-					);
-				}
-				else
-				{
-					$delegateDataNew = array(
-						'ROLE' => '0',
-						'users_USERID' => $responsibleEmp,
-						'tasks_TASKID' => $taskID,
-						'STATUS' => 'Current'
-					);
-				}
-
-				$result = $this->model->addToRaci($delegateDataNew);
-
-				$delegateData = array(
-					'ROLE' => '5',
-					'users_USERID' => $_SESSION['USERID'],
-					'tasks_TASKID' => $taskID,
-					'STATUS' => 'Changed'
-				);
-				$result = $this->model->addToRaci($delegateData);
-			}
-
-			$responsibleData = array(
-				'ROLE' => '1',
-				'users_USERID' => $responsibleEmp,
-				'tasks_TASKID' => $taskID,
-				'STATUS' => 'Current'
-			);
-			$result = $this->model->addToRaci($responsibleData);
-
-			// START OF LOGS/NOTIFS
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-			$taskDetails = $this->model->getTaskByID($taskID);
-			$taskTitle = $taskDetails['TASKTITLE'];
-
-			$projectID = $taskDetails['projects_PROJECTID'];
-			$projectDetails = $this->model->getProjectByID($projectID);
-			$projectTitle = $projectDetails['PROJECTTITLE'];
-
-			$userDetails = $this->model->getUserByID($this->input->post('responsibleEmp'));
-			$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-			// START: LOG DETAILS
-			$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
-
-			$logData = array (
-				'LOGDETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $projectID
-			);
-
-			$this->model->addToProjectLogs($logData);
-			// END: LOG DETAILS
-
-
-			// START: Notifications
-			$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
-
-			$notificationData = array(
-				'users_USERID' => $this->input->post('responsibleEmp'),
-				'DETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'status' => 'Unread',
-				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $taskID,
-				'TYPE' => '3'
-			);
-
-			$this->model->addNotification($notificationData);
-			// END: Notification
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Select an employee to be responsible for the task');
+			$this->taskDelegate();
 		}
 
-		if ($this->input->post("accountableEmp[]"))
+		elseif ($accountableEmp == NULL)
 		{
-			foreach($this->input->post("accountableEmp[]") as $empID)
-			{
-				$accountableData = array(
-					'ROLE' => '2',
-					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($accountableData);
-
-				// START OF LOGS/NOTIFS
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-				$taskDetails = $this->model->getTaskByID($taskID);
-				$taskTitle = $taskDetails['TASKTITLE'];
-
-				$projectID = $taskDetails['projects_PROJECTID'];
-				$projectDetails = $this->model->getProjectByID($projectID);
-				$projectTitle = $projectDetails['PROJECTTITLE'];
-
-				$userDetails = $this->model->getUserByID($empID);
-				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-				// START: LOG DETAILS
-				$details = $userName . " has tagged " . $taggedUserName . " as accountable for " . $taskTitle . ".";
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-
-				$this->model->addToProjectLogs($logData);
-				// END: LOG DETAILS
-
-				// START: Notifications
-				$details =  $userName . " has tagged you accountable for " . $taskTitle . " in " . $projectTitle . ".";
-				$notificationData = array(
-					'users_USERID' => $empID,
-					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'status' => 'Unread',
-					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID,
-					'TYPE' => '4'
-				);
-
-				$this->model->addNotification($notificationData);
-				// END: Notification
-			}
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Select an employee to be accountable for the task');
+			$this->taskDelegate();
 		}
 
-		if($this->input->post("consultedEmp[]"))
+		elseif ($consultedEmp == NULL)
 		{
-			foreach($this->input->post("consultedEmp[]") as $empID)
-			{
-				$consultedData = array(
-					'ROLE' => '3',
-					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($consultedData);
-
-				// START: LOG DETAILS
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$taskDetails = $this->model->getTaskByID($taskID);
-				$taskTitle = $taskDetails['TASKTITLE'];
-				$projectID = $taskDetails['projects_PROJECTID'];
-				$userDetails = $this->model->getUserByID($empID);
-				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				$details = $userName . " has tagged " . $taggedUserName . " as consulted for " . $taskTitle . ".";
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-
-				$this->model->addToProjectLogs($logData);
-				// END: LOG DETAILS
-
-				// START: Notifications
-				$projectDetails = $this->model->getProjectByID($projectID);
-				$projectTitle = $projectDetails['PROJECTTITLE'];
-
-				$details =  $userName . " has tagged you consulted for " . $taskTitle . " in " . $projectTitle . ".";
-				$notificationData = array(
-					'users_USERID' => $empID,
-					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'status' => 'Unread',
-					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID,
-					'TYPE' => '4'
-				);
-
-				$this->model->addNotification($notificationData);
-				// END: Notification
-			}
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Select an employee to be consulted for the task');
+			$this->taskDelegate();
 		}
 
-		if($this->input->post("informedEmp[]"))
+		elseif ($informedEmp == NULL)
 		{
-			foreach($this->input->post("informedEmp[]") as $empID)
-			{
-				$informedData = array(
-					'ROLE' => '4',
-					'users_USERID' => $empID,
-					'tasks_TASKID' =>	$taskID,
-					'STATUS' => 'Current'
-				);
-				$this->model->addToRaci($informedData);
-
-				// START: LOG DETAILS
-				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-				$taskDetails = $this->model->getTaskByID($taskID);
-				$taskTitle = $taskDetails['TASKTITLE'];
-				$projectID = $taskDetails['projects_PROJECTID'];
-				$userDetails = $this->model->getUserByID($empID);
-				$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-				$details = $userName . " has tagged " . $taggedUserName . " as informed for " . $taskTitle . ".";
-
-				$logData = array (
-					'LOGDETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'projects_PROJECTID' => $projectID
-				);
-
-				$this->model->addToProjectLogs($logData);
-				// END: LOG DETAILS
-
-				// START: Notifications
-				$projectDetails = $this->model->getProjectByID($projectID);
-				$projectTitle = $projectDetails['PROJECTTITLE'];
-
-				$details =  $userName . " has tagged you informed for " . $taskTitle . " in " . $projectTitle . ".";
-
-				$notificationData = array(
-					'users_USERID' => $empID,
-					'DETAILS' => $details,
-					'TIMESTAMP' => date('Y-m-d H:i:s'),
-					'status' => 'Unread',
-					'projects_PROJECTID' => $projectID,
-					'tasks_TASKID' => $taskID,
-					'TYPE' => '4'
-				);
-
-				$this->model->addNotification($notificationData);
-				// END: Notification
-
-			}
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Select an employee to be informed for the task');
+			$this->taskDelegate();
 		}
-		$this->session->set_flashdata('success', 'alert');
-		$this->session->set_flashdata('alertMessage', ' Task has been delegated');
-		$this->taskDelegate();
+
+		else
+		{
+		  $taskID = $this->input->post("task_ID");
+
+		  $updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
+		  $updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
+		  $updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
+		  $updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
+
+		  // SAVE RESPONSIBLE
+		  if($this->input->post("responsibleEmp"))
+		  {
+		    $responsibleEmp = $this->input->post('responsibleEmp');
+		    $responsibleType = $this->model->getUserType($responsibleEmp);
+
+		    $delegate = $this->model->checkForDelegation($taskID);
+
+		    if($delegate == '1')
+		    {
+		      $updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
+
+		      if($responsibleType == '5') //if to staff, remove delegation
+		      {
+		        $delegateDataNew = array(
+		          'ROLE' => '0',
+		          'users_USERID' => $responsibleEmp,
+		          'tasks_TASKID' => $taskID,
+		          'STATUS' => 'Changed'
+		        );
+		      }
+		      else
+		      {
+		        $delegateDataNew = array(
+		          'ROLE' => '0',
+		          'users_USERID' => $responsibleEmp,
+		          'tasks_TASKID' => $taskID,
+		          'STATUS' => 'Current'
+		        );
+		      }
+
+		      $result = $this->model->addToRaci($delegateDataNew);
+
+		      $delegateData = array(
+		        'ROLE' => '5',
+		        'users_USERID' => $_SESSION['USERID'],
+		        'tasks_TASKID' => $taskID,
+		        'STATUS' => 'Changed'
+		      );
+		      $result = $this->model->addToRaci($delegateData);
+		    }
+
+		    $responsibleData = array(
+		      'ROLE' => '1',
+		      'users_USERID' => $responsibleEmp,
+		      'tasks_TASKID' => $taskID,
+		      'STATUS' => 'Current'
+		    );
+		    $result = $this->model->addToRaci($responsibleData);
+
+		    // START OF LOGS/NOTIFS
+		    $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+		    $taskDetails = $this->model->getTaskByID($taskID);
+		    $taskTitle = $taskDetails['TASKTITLE'];
+
+		    $projectID = $taskDetails['projects_PROJECTID'];
+		    $projectDetails = $this->model->getProjectByID($projectID);
+		    $projectTitle = $projectDetails['PROJECTTITLE'];
+
+		    $userDetails = $this->model->getUserByID($this->input->post('responsibleEmp'));
+		    $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+		    // START: LOG DETAILS
+		    $details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+
+		    $logData = array (
+		      'LOGDETAILS' => $details,
+		      'TIMESTAMP' => date('Y-m-d H:i:s'),
+		      'projects_PROJECTID' => $projectID
+		    );
+
+		    $this->model->addToProjectLogs($logData);
+		    // END: LOG DETAILS
+
+
+		    // START: Notifications
+		    $details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
+
+		    $notificationData = array(
+		      'users_USERID' => $this->input->post('responsibleEmp'),
+		      'DETAILS' => $details,
+		      'TIMESTAMP' => date('Y-m-d H:i:s'),
+		      'status' => 'Unread',
+		      'projects_PROJECTID' => $projectID,
+		      'tasks_TASKID' => $taskID,
+		      'TYPE' => '3'
+		    );
+
+		    $this->model->addNotification($notificationData);
+		    // END: Notification
+		  }
+
+		  if ($this->input->post("accountableEmp[]"))
+		  {
+		    foreach($this->input->post("accountableEmp[]") as $empID)
+		    {
+		      $accountableData = array(
+		        'ROLE' => '2',
+		        'users_USERID' => $empID,
+		        'tasks_TASKID' =>	$taskID,
+		        'STATUS' => 'Current'
+		      );
+		      $this->model->addToRaci($accountableData);
+
+		      // START OF LOGS/NOTIFS
+		      $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+		      $taskDetails = $this->model->getTaskByID($taskID);
+		      $taskTitle = $taskDetails['TASKTITLE'];
+
+		      $projectID = $taskDetails['projects_PROJECTID'];
+		      $projectDetails = $this->model->getProjectByID($projectID);
+		      $projectTitle = $projectDetails['PROJECTTITLE'];
+
+		      $userDetails = $this->model->getUserByID($empID);
+		      $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+		      // START: LOG DETAILS
+		      $details = $userName . " has tagged " . $taggedUserName . " as accountable for " . $taskTitle . ".";
+
+		      $logData = array (
+		        'LOGDETAILS' => $details,
+		        'TIMESTAMP' => date('Y-m-d H:i:s'),
+		        'projects_PROJECTID' => $projectID
+		      );
+
+		      $this->model->addToProjectLogs($logData);
+		      // END: LOG DETAILS
+
+		      // START: Notifications
+		      $details =  $userName . " has tagged you accountable for " . $taskTitle . " in " . $projectTitle . ".";
+		      $notificationData = array(
+		        'users_USERID' => $empID,
+		        'DETAILS' => $details,
+		        'TIMESTAMP' => date('Y-m-d H:i:s'),
+		        'status' => 'Unread',
+		        'projects_PROJECTID' => $projectID,
+		        'tasks_TASKID' => $taskID,
+		        'TYPE' => '4'
+		      );
+
+		      $this->model->addNotification($notificationData);
+		      // END: Notification
+		    }
+		  }
+
+		  if($this->input->post("consultedEmp[]"))
+		  {
+		    foreach($this->input->post("consultedEmp[]") as $empID)
+		    {
+		      $consultedData = array(
+		        'ROLE' => '3',
+		        'users_USERID' => $empID,
+		        'tasks_TASKID' =>	$taskID,
+		        'STATUS' => 'Current'
+		      );
+		      $this->model->addToRaci($consultedData);
+
+		      // START: LOG DETAILS
+		      $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		      $taskDetails = $this->model->getTaskByID($taskID);
+		      $taskTitle = $taskDetails['TASKTITLE'];
+		      $projectID = $taskDetails['projects_PROJECTID'];
+		      $userDetails = $this->model->getUserByID($empID);
+		      $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+		      $details = $userName . " has tagged " . $taggedUserName . " as consulted for " . $taskTitle . ".";
+
+		      $logData = array (
+		        'LOGDETAILS' => $details,
+		        'TIMESTAMP' => date('Y-m-d H:i:s'),
+		        'projects_PROJECTID' => $projectID
+		      );
+
+		      $this->model->addToProjectLogs($logData);
+		      // END: LOG DETAILS
+
+		      // START: Notifications
+		      $projectDetails = $this->model->getProjectByID($projectID);
+		      $projectTitle = $projectDetails['PROJECTTITLE'];
+
+		      $details =  $userName . " has tagged you consulted for " . $taskTitle . " in " . $projectTitle . ".";
+		      $notificationData = array(
+		        'users_USERID' => $empID,
+		        'DETAILS' => $details,
+		        'TIMESTAMP' => date('Y-m-d H:i:s'),
+		        'status' => 'Unread',
+		        'projects_PROJECTID' => $projectID,
+		        'tasks_TASKID' => $taskID,
+		        'TYPE' => '4'
+		      );
+
+		      $this->model->addNotification($notificationData);
+		      // END: Notification
+		    }
+		  }
+
+		  if($this->input->post("informedEmp[]"))
+		  {
+		    foreach($this->input->post("informedEmp[]") as $empID)
+		    {
+		      $informedData = array(
+		        'ROLE' => '4',
+		        'users_USERID' => $empID,
+		        'tasks_TASKID' =>	$taskID,
+		        'STATUS' => 'Current'
+		      );
+		      $this->model->addToRaci($informedData);
+
+		      // START: LOG DETAILS
+		      $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+		      $taskDetails = $this->model->getTaskByID($taskID);
+		      $taskTitle = $taskDetails['TASKTITLE'];
+		      $projectID = $taskDetails['projects_PROJECTID'];
+		      $userDetails = $this->model->getUserByID($empID);
+		      $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+		      $details = $userName . " has tagged " . $taggedUserName . " as informed for " . $taskTitle . ".";
+
+		      $logData = array (
+		        'LOGDETAILS' => $details,
+		        'TIMESTAMP' => date('Y-m-d H:i:s'),
+		        'projects_PROJECTID' => $projectID
+		      );
+
+		      $this->model->addToProjectLogs($logData);
+		      // END: LOG DETAILS
+
+		      // START: Notifications
+		      $projectDetails = $this->model->getProjectByID($projectID);
+		      $projectTitle = $projectDetails['PROJECTTITLE'];
+
+		      $details =  $userName . " has tagged you informed for " . $taskTitle . " in " . $projectTitle . ".";
+
+		      $notificationData = array(
+		        'users_USERID' => $empID,
+		        'DETAILS' => $details,
+		        'TIMESTAMP' => date('Y-m-d H:i:s'),
+		        'status' => 'Unread',
+		        'projects_PROJECTID' => $projectID,
+		        'tasks_TASKID' => $taskID,
+		        'TYPE' => '4'
+		      );
+
+		      $this->model->addNotification($notificationData);
+		      // END: Notification
+
+		    }
+		  }
+		  $this->session->set_flashdata('success', 'alert');
+		  $this->session->set_flashdata('alertMessage', ' Task has been delegated');
+		  $this->taskDelegate();
+		}
 	}
 
 
@@ -1700,297 +1736,42 @@ class controller extends CI_Controller
 		$status = $this->input->post('status');
 		$taskID = $this->input->post('task_ID');
 		$requestorID = $this->input->post('requestor_ID');
+		$responsibleEmp = $this->input->post('responsibleEmp');
 
-		$data = array(
-			'REQUESTSTATUS' => $status,
-			'REMARKS' => $remarks,
-			'users_APPROVEDBY' => $_SESSION['USERID'],
-			'APPROVEDDATE' => date('Y-m-d')
-		);
-
-		$this->model->updateRFC($requestID, $data);
-
-		// START OF LOGS/NOTIFS
-		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-		$taskDetails = $this->model->getTaskByID($taskID);
-		$taskTitle = $taskDetails['TASKTITLE'];
-
-		$projectID = $taskDetails['projects_PROJECTID'];
-		$projectDetails = $this->model->getProjectByID($projectID);
-		$projectTitle = $projectDetails['PROJECTTITLE'];
-
-		$details = $userName . " has " . $status . " change request for " . $taskTitle . ".";
-
-		// it doesn't work sa deny
-		$logData = array (
-			'LOGDETAILS' => $details,
-			'TIMESTAMP' => date('Y-m-d H:i:s'),
-			'projects_PROJECTID' => $projectID
-		);
-
-		$this->model->addToProjectLogs($logData);
-		// END: LOG DETAILS
-
-		// START: Notifications
-		$details = $userName . " has " . $status . " your change request for " . $taskTitle . ".";
-
-		$notificationData = array(
-			'users_USERID' => $requestorID,
-			'DETAILS' => $details,
-			'TIMESTAMP' => date('Y-m-d H:i:s'),
-			'status' => 'Unread',
-			'projects_PROJECTID' => $projectID,
-			'tasks_TASKID' => $taskID,
-			'TYPE' => '6'
-		);
-
-		$this->model->addNotification($notificationData);
-		// END: Notification
-
-		if($status == 'Approved' && $requestType == '1') // if approved change performer
+		if ($remarks == NULL)
 		{
-			$taskID = $this->input->post("task_ID");
+			$this->session->set_flashdata('rfcNoRemarks', $requestID);
+			$this->session->set_flashdata('projectID', $projectID);
 
-			$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
-			$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
-			$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
-			$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Remarks is a required field');
 
-				// SAVE/UPDATE RESPONSIBLE
-				if($this->input->post("responsibleEmp"))
-				{
-					$responsibleEmp = $this->input->post('responsibleEmp');
-					$responsibleData = array(
-						'ROLE' => '1',
-						'users_USERID' => $responsibleEmp,
-						'tasks_TASKID' => $taskID,
-						'STATUS' => 'Current'
-					);
-					$result = $this->model->addToRaci($responsibleData);
+			redirect("controller/projectGantt");
+		}
 
-					// START OF LOGS/NOTIFS
-					$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-					$taskDetails = $this->model->getTaskByID($taskID);
-					$taskTitle = $taskDetails['TASKTITLE'];
-
-					$projectID = $taskDetails['projects_PROJECTID'];
-					$projectDetails = $this->model->getProjectByID($projectID);
-					$projectTitle = $projectDetails['PROJECTTITLE'];
-
-					$userDetails = $this->model->getUserByID($responsibleEmp);
-					$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-					// START: LOG DETAILS
-					$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
-
-					$logData = array (
-						'LOGDETAILS' => $details,
-						'TIMESTAMP' => date('Y-m-d H:i:s'),
-						'projects_PROJECTID' => $projectID
-					);
-
-					$this->model->addToProjectLogs($logData);
-					// END: LOG DETAILS
-
-					// START: Notifications
-					$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
-					$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
-
-					$notificationData = array(
-						'users_USERID' => $responsibleEmp,
-						'DETAILS' => $details,
-						'TIMESTAMP' => date('Y-m-d H:i:s'),
-						'status' => 'Unread',
-						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $taskID,
-						'TYPE' => '3'
-					);
-
-					$this->model->addNotification($notificationData);
-					// END: Notification
-				}
-
-				// SAVE ACCOUNTABLE
-				if ($this->input->post("accountableEmp[]"))
-				{
-					foreach($this->input->post("accountableEmp[]") as $empID)
-					{
-						$accountableData = array(
-							'ROLE' => '2',
-							'users_USERID' => $empID,
-							'tasks_TASKID' =>	$taskID,
-							'STATUS' => 'Current'
-						);
-						$this->model->addToRaci($accountableData);
-
-						// START OF LOGS/NOTIFS
-						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-						$taskDetails = $this->model->getTaskByID($taskID);
-						$taskTitle = $taskDetails['TASKTITLE'];
-
-						$projectID = $taskDetails['projects_PROJECTID'];
-						$projectDetails = $this->model->getProjectByID($projectID);
-						$projectTitle = $projectDetails['PROJECTTITLE'];
-
-						$userDetails = $this->model->getUserByID($empID);
-						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-						// START: LOG DETAILS
-						$details = $userName . " has tagged " . $taggedUserName . " as accountable for " . $taskTitle . ".";
-						$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
-
-						$logData = array (
-							'LOGDETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'projects_PROJECTID' => $projectID
-						);
-
-						$this->model->addToProjectLogs($logData);
-						// END: LOG DETAILS
-
-						// START: Notifications
-						$details =  $userName . " has tagged you accountable for " . $taskTitle . " in " . $projectTitle . ".";
-
-						$notificationData = array(
-							'users_USERID' => $empID,
-							'DETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'status' => 'Unread',
-							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID,
-							'TYPE' => '4'
-						);
-
-						$this->model->addNotification($notificationData);
-						// END: Notification
-
-					}
-				}
-
-				// SAVE CONSULTED
-				if($this->input->post("consultedEmp[]"))
-				{
-					foreach($this->input->post("consultedEmp[]") as $empID)
-					{
-						$consultedData = array(
-							'ROLE' => '3',
-							'users_USERID' => $empID,
-							'tasks_TASKID' =>	$taskID,
-							'STATUS' => 'Current'
-						);
-						$this->model->addToRaci($consultedData);
-
-						// START OF LOGS/NOTIFS
-						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-						$taskDetails = $this->model->getTaskByID($taskID);
-						$taskTitle = $taskDetails['TASKTITLE'];
-
-						$projectID = $taskDetails['projects_PROJECTID'];
-						$projectDetails = $this->model->getProjectByID($projectID);
-						$projectTitle = $projectDetails['PROJECTTITLE'];
-
-						$userDetails = $this->model->getUserByID($empID);
-						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
-
-						// START: LOG DETAILS
-						$details = $userName . " has tagged " . $taggedUserName . " as consulted for " . $taskTitle . ".";
-
-						$logData = array (
-							'LOGDETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'projects_PROJECTID' => $projectID
-						);
-
-						$this->model->addToProjectLogs($logData);
-						// END: LOG DETAILS
-
-						// START: Notifications
-						$details =  $userName . " has tagged you consulted for " . $taskTitle . " in " . $projectTitle . ".";
-
-						$notificationData = array(
-							'users_USERID' => $empID,
-							'DETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'status' => 'Unread',
-							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID,
-							'TYPE' => '4'
-						);
-
-						$this->model->addNotification($notificationData);
-						// END: Notification
-					}
-				}
-
-				// SAVE INFORMED
-				if($this->input->post("informedEmp[]"))
-				{
-					foreach($this->input->post("informedEmp[]") as $empID)
-					{
-						$informedData = array(
-							'ROLE' => '4',
-							'users_USERID' => $empID,
-							'tasks_TASKID' =>	$taskID,
-							'STATUS' => 'Current'
-						);
-						$this->model->addToRaci($informedData);
-
-						// START OF LOGS/NOTIFS
-						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-						$taskDetails = $this->model->getTaskByID($taskID);
-						$taskTitle = $taskDetails['TASKTITLE'];
-
-						$projectID = $taskDetails['projects_PROJECTID'];
-						$projectDetails = $this->model->getProjectByID($projectID);
-						$projectTitle = $projectDetails['PROJECTTITLE'];
-
-						// START: LOG DETAILS
-						$details = $userName . " has tagged " . $taggedUserName . " as informed for " . $taskTitle . ".";
-
-						$logData = array (
-							'LOGDETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'projects_PROJECTID' => $projectID
-						);
-
-						$this->model->addToProjectLogs($logData);
-						// END: LOG DETAILS
-
-						// START: Notifications
-						$details =  $userName . " has tagged you informed for " . $taskTitle . " in " . $projectTitle . ".";
-						$notificationData = array(
-							'users_USERID' => $empID,
-							'DETAILS' => $details,
-							'TIMESTAMP' => date('Y-m-d H:i:s'),
-							'status' => 'Unread',
-							'projects_PROJECTID' => $projectID,
-							'tasks_TASKID' => $taskID,
-							'TYPE' => '4'
-						);
-
-						$this->model->addNotification($notificationData);
-						// END: Notification
-					}
-				}
-				$this->session->set_flashdata('success', 'alert');
-
-				$this->session->set_flashdata('alertMessage', ' Request for change approved');
-		} // end if appoved change Performer
-		else // if approved change date
+		elseif ($responsibleEmp == NULL && $requestType == 1)
 		{
-			$taskID = $this->input->post("task_ID");
-			$changeRequest = $this->model->getChangeRequestbyID($requestID);
+			$this->session->set_flashdata('rfcNoRemarks', $requestID);
+			$this->session->set_flashdata('projectID', $projectID);
 
-			$taskData = array(
-				'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
+				$this->session->set_flashdata('remarks', $remarks);
+
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Please pick an employee to be responsible for the task');
+
+			redirect("controller/projectGantt");
+		}
+
+		else
+		{
+			$data = array(
+				'REQUESTSTATUS' => $status,
+				'REMARKS' => $remarks,
+				'users_APPROVEDBY' => $_SESSION['USERID'],
+				'APPROVEDDATE' => date('Y-m-d')
 			);
 
-			$this->model->updateTaskDates($taskID, $taskData); //save adjusted dates of requested task
+			$this->model->updateRFC($requestID, $data);
 
 			// START OF LOGS/NOTIFS
 			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
@@ -2002,9 +1783,9 @@ class controller extends CI_Controller
 			$projectDetails = $this->model->getProjectByID($projectID);
 			$projectTitle = $projectDetails['PROJECTTITLE'];
 
-			// START: LOG DETAILS
-			$details = $userName . " has adjusted the end date for " . $taskTitle . ".";
+			$details = $userName . " has " . $status . " change request for " . $taskTitle . ".";
 
+			// it doesn't work sa deny
 			$logData = array (
 				'LOGDETAILS' => $details,
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
@@ -2015,94 +1796,377 @@ class controller extends CI_Controller
 			// END: LOG DETAILS
 
 			// START: Notifications
-			$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+			$details = $userName . " has " . $status . " your change request for " . $taskTitle . ".";
 
-			// notify project owner
 			$notificationData = array(
-				'users_USERID' => $projectDetails['users_USERID'],
+				'users_USERID' => $requestorID,
 				'DETAILS' => $details,
 				'TIMESTAMP' => date('Y-m-d H:i:s'),
 				'status' => 'Unread',
 				'projects_PROJECTID' => $projectID,
 				'tasks_TASKID' => $taskID,
-				'TYPE' => '1'
+				'TYPE' => '6'
 			);
 
 			$this->model->addNotification($notificationData);
+			// END: Notification
 
-			// notify next task person
-			$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
-			if($postTasksData['nextTaskID'] != NULL){
+			if($status == 'Approved' && $requestType == '1') // if approved change performer
+			{
+				$taskID = $this->input->post("task_ID");
 
-				foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
+				$updateR = $this->model->updateRACI($taskID, '1'); // change status to 'changed'
+				$updateA = $this->model->updateRACI($taskID, '2'); // change status to 'changed'
+				$updateC = $this->model->updateRACI($taskID, '3'); // change status to 'changed'
+				$updateI = $this->model->updateRACI($taskID, '4'); // change status to 'changed'
 
-					$nextTaskID = $nextTaskDetails['tasks_POSTTASKID'];
-					$postTasksData['users'] = $this->model->getRACIbyTask($nextTaskID);
+					// SAVE/UPDATE RESPONSIBLE
+					if($this->input->post("responsibleEmp"))
+					{
+						$responsibleEmp = $this->input->post('responsibleEmp');
+						$responsibleData = array(
+							'ROLE' => '1',
+							'users_USERID' => $responsibleEmp,
+							'tasks_TASKID' => $taskID,
+							'STATUS' => 'Current'
+						);
+						$result = $this->model->addToRaci($responsibleData);
 
-					foreach($postTasksData['users'] as $postTasksDataUsers){
-						$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+						// START OF LOGS/NOTIFS
+						$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+						$taskDetails = $this->model->getTaskByID($taskID);
+						$taskTitle = $taskDetails['TASKTITLE'];
+
+						$projectID = $taskDetails['projects_PROJECTID'];
+						$projectDetails = $this->model->getProjectByID($projectID);
+						$projectTitle = $projectDetails['PROJECTTITLE'];
+
+						$userDetails = $this->model->getUserByID($responsibleEmp);
+						$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+						// START: LOG DETAILS
+						$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+
+						$logData = array (
+							'LOGDETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'projects_PROJECTID' => $projectID
+						);
+
+						$this->model->addToProjectLogs($logData);
+						// END: LOG DETAILS
+
+						// START: Notifications
+						$details = $userName . " has tagged " . $taggedUserName . " as responsible for " . $taskTitle . ".";
+						$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
 
 						$notificationData = array(
-							'users_USERID' => $postTasksDataUsers['users_USERID'],
+							'users_USERID' => $responsibleEmp,
 							'DETAILS' => $details,
 							'TIMESTAMP' => date('Y-m-d H:i:s'),
 							'status' => 'Unread',
 							'projects_PROJECTID' => $projectID,
 							'tasks_TASKID' => $taskID,
-							'TYPE' => '1'
+							'TYPE' => '3'
 						);
 
 						$this->model->addNotification($notificationData);
+						// END: Notification
+					}
+
+					// SAVE ACCOUNTABLE
+					if ($this->input->post("accountableEmp[]"))
+					{
+						foreach($this->input->post("accountableEmp[]") as $empID)
+						{
+							$accountableData = array(
+								'ROLE' => '2',
+								'users_USERID' => $empID,
+								'tasks_TASKID' =>	$taskID,
+								'STATUS' => 'Current'
+							);
+							$this->model->addToRaci($accountableData);
+
+							// START OF LOGS/NOTIFS
+							$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+							$taskDetails = $this->model->getTaskByID($taskID);
+							$taskTitle = $taskDetails['TASKTITLE'];
+
+							$projectID = $taskDetails['projects_PROJECTID'];
+							$projectDetails = $this->model->getProjectByID($projectID);
+							$projectTitle = $projectDetails['PROJECTTITLE'];
+
+							$userDetails = $this->model->getUserByID($empID);
+							$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+							// START: LOG DETAILS
+							$details = $userName . " has tagged " . $taggedUserName . " as accountable for " . $taskTitle . ".";
+							$details =  $userName . " has tagged you responsible for " . $taskTitle . " in " . $projectTitle . ".";
+
+							$logData = array (
+								'LOGDETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'projects_PROJECTID' => $projectID
+							);
+
+							$this->model->addToProjectLogs($logData);
+							// END: LOG DETAILS
+
+							// START: Notifications
+							$details =  $userName . " has tagged you accountable for " . $taskTitle . " in " . $projectTitle . ".";
+
+							$notificationData = array(
+								'users_USERID' => $empID,
+								'DETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'status' => 'Unread',
+								'projects_PROJECTID' => $projectID,
+								'tasks_TASKID' => $taskID,
+								'TYPE' => '4'
+							);
+
+							$this->model->addNotification($notificationData);
+							// END: Notification
+
+						}
+					}
+
+					// SAVE CONSULTED
+					if($this->input->post("consultedEmp[]"))
+					{
+						foreach($this->input->post("consultedEmp[]") as $empID)
+						{
+							$consultedData = array(
+								'ROLE' => '3',
+								'users_USERID' => $empID,
+								'tasks_TASKID' =>	$taskID,
+								'STATUS' => 'Current'
+							);
+							$this->model->addToRaci($consultedData);
+
+							// START OF LOGS/NOTIFS
+							$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+							$taskDetails = $this->model->getTaskByID($taskID);
+							$taskTitle = $taskDetails['TASKTITLE'];
+
+							$projectID = $taskDetails['projects_PROJECTID'];
+							$projectDetails = $this->model->getProjectByID($projectID);
+							$projectTitle = $projectDetails['PROJECTTITLE'];
+
+							$userDetails = $this->model->getUserByID($empID);
+							$taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
+
+							// START: LOG DETAILS
+							$details = $userName . " has tagged " . $taggedUserName . " as consulted for " . $taskTitle . ".";
+
+							$logData = array (
+								'LOGDETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'projects_PROJECTID' => $projectID
+							);
+
+							$this->model->addToProjectLogs($logData);
+							// END: LOG DETAILS
+
+							// START: Notifications
+							$details =  $userName . " has tagged you consulted for " . $taskTitle . " in " . $projectTitle . ".";
+
+							$notificationData = array(
+								'users_USERID' => $empID,
+								'DETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'status' => 'Unread',
+								'projects_PROJECTID' => $projectID,
+								'tasks_TASKID' => $taskID,
+								'TYPE' => '4'
+							);
+
+							$this->model->addNotification($notificationData);
+							// END: Notification
+						}
+					}
+
+					// SAVE INFORMED
+					if($this->input->post("informedEmp[]"))
+					{
+						foreach($this->input->post("informedEmp[]") as $empID)
+						{
+							$informedData = array(
+								'ROLE' => '4',
+								'users_USERID' => $empID,
+								'tasks_TASKID' =>	$taskID,
+								'STATUS' => 'Current'
+							);
+							$this->model->addToRaci($informedData);
+
+							// START OF LOGS/NOTIFS
+							$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+							$taskDetails = $this->model->getTaskByID($taskID);
+							$taskTitle = $taskDetails['TASKTITLE'];
+
+							$projectID = $taskDetails['projects_PROJECTID'];
+							$projectDetails = $this->model->getProjectByID($projectID);
+							$projectTitle = $projectDetails['PROJECTTITLE'];
+
+							// START: LOG DETAILS
+							$details = $userName . " has tagged " . $taggedUserName . " as informed for " . $taskTitle . ".";
+
+							$logData = array (
+								'LOGDETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'projects_PROJECTID' => $projectID
+							);
+
+							$this->model->addToProjectLogs($logData);
+							// END: LOG DETAILS
+
+							// START: Notifications
+							$details =  $userName . " has tagged you informed for " . $taskTitle . " in " . $projectTitle . ".";
+							$notificationData = array(
+								'users_USERID' => $empID,
+								'DETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'status' => 'Unread',
+								'projects_PROJECTID' => $projectID,
+								'tasks_TASKID' => $taskID,
+								'TYPE' => '4'
+							);
+
+							$this->model->addNotification($notificationData);
+							// END: Notification
+						}
+					}
+					$this->session->set_flashdata('success', 'alert');
+
+					$this->session->set_flashdata('alertMessage', ' Request for change approved');
+			} // end if appoved change Performer
+			else // if approved change date
+			{
+				$taskID = $this->input->post("task_ID");
+				$changeRequest = $this->model->getChangeRequestbyID($requestID);
+
+				$taskData = array(
+					'TASKADJUSTEDENDDATE' => $changeRequest['NEWENDDATE']
+				);
+
+				$this->model->updateTaskDates($taskID, $taskData); //save adjusted dates of requested task
+
+				// START OF LOGS/NOTIFS
+				$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+				$taskDetails = $this->model->getTaskByID($taskID);
+				$taskTitle = $taskDetails['TASKTITLE'];
+
+				$projectID = $taskDetails['projects_PROJECTID'];
+				$projectDetails = $this->model->getProjectByID($projectID);
+				$projectTitle = $projectDetails['PROJECTTITLE'];
+
+				// START: LOG DETAILS
+				$details = $userName . " has adjusted the end date for " . $taskTitle . ".";
+
+				$logData = array (
+					'LOGDETAILS' => $details,
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
+					'projects_PROJECTID' => $projectID
+				);
+
+				$this->model->addToProjectLogs($logData);
+				// END: LOG DETAILS
+
+				// START: Notifications
+				$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+
+				// notify project owner
+				$notificationData = array(
+					'users_USERID' => $projectDetails['users_USERID'],
+					'DETAILS' => $details,
+					'TIMESTAMP' => date('Y-m-d H:i:s'),
+					'status' => 'Unread',
+					'projects_PROJECTID' => $projectID,
+					'tasks_TASKID' => $taskID,
+					'TYPE' => '1'
+				);
+
+				$this->model->addNotification($notificationData);
+
+				// notify next task person
+				$postTasksData['nextTaskID'] = $this->model->getPostDependenciesByTaskID($taskID);
+				if($postTasksData['nextTaskID'] != NULL){
+
+					foreach($postTasksData['nextTaskID'] as $nextTaskDetails) {
+
+						$nextTaskID = $nextTaskDetails['tasks_POSTTASKID'];
+						$postTasksData['users'] = $this->model->getRACIbyTask($nextTaskID);
+
+						foreach($postTasksData['users'] as $postTasksDataUsers){
+							$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+
+							$notificationData = array(
+								'users_USERID' => $postTasksDataUsers['users_USERID'],
+								'DETAILS' => $details,
+								'TIMESTAMP' => date('Y-m-d H:i:s'),
+								'status' => 'Unread',
+								'projects_PROJECTID' => $projectID,
+								'tasks_TASKID' => $taskID,
+								'TYPE' => '1'
+							);
+
+							$this->model->addNotification($notificationData);
+						}
 					}
 				}
-			}
 
-			// notify ACI
-			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
-			if($ACIdata['ACI'] != NULL) {
+				// notify ACI
+				$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
+				if($ACIdata['ACI'] != NULL) {
 
-				foreach($ACIdata['ACI'] as $ACIusers){
+					foreach($ACIdata['ACI'] as $ACIusers){
 
-					$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
+						$details = "End Date for " . $taskTitle . " in " . $projectTitle . " has been adjusted.";
 
-					$notificationData = array(
-						'users_USERID' => $ACIusers['users_USERID'],
-						'DETAILS' => $details,
-						'TIMESTAMP' => date('Y-m-d H:i:s'),
-						'status' => 'Unread',
-						'projects_PROJECTID' => $projectID,
-						'tasks_TASKID' => $taskID,
-						'TYPE' => '4'
-					);
-					$this->model->addNotification($notificationData);
+						$notificationData = array(
+							'users_USERID' => $ACIusers['users_USERID'],
+							'DETAILS' => $details,
+							'TIMESTAMP' => date('Y-m-d H:i:s'),
+							'status' => 'Unread',
+							'projects_PROJECTID' => $projectID,
+							'tasks_TASKID' => $taskID,
+							'TYPE' => '4'
+						);
+						$this->model->addNotification($notificationData);
+					}
 				}
-			}
-			// END: Notification
-			$this->session->set_flashdata('success', 'alert');
+				// END: Notification
+				$this->session->set_flashdata('success', 'alert');
 
-			$this->session->set_flashdata('alertMessage', ' Request for change denied');
-		} // end if approved change dates
+				$this->session->set_flashdata('alertMessage', ' Request for change approved');
+			} // end if approved change dates
 
-		$data['projectProfile'] = $this->model->getProjectByID($projectID);
-		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-		$data['dependencies'] = $this->model->getDependenciesByProject($projectID);
-		$data['users'] = $this->model->getAllUsers();
-		$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
-		$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
-		$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
-		$data['informed'] = $this->model->getAllInformedByProject($projectID);
-		// $data['subActivityProgress'] = $this->model->getSubActivityProgress($projectID);
+			$data['projectProfile'] = $this->model->getProjectByID($projectID);
+			$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+			$data['dependencies'] = $this->model->getDependenciesByProject($projectID);
+			$data['users'] = $this->model->getAllUsers();
+			$data['responsible'] = $this->model->getAllResponsibleByProject($projectID);
+			$data['accountable'] = $this->model->getAllAccountableByProject($projectID);
+			$data['consulted'] = $this->model->getAllConsultedByProject($projectID);
+			$data['informed'] = $this->model->getAllInformedByProject($projectID);
+			// $data['subActivityProgress'] = $this->model->getSubActivityProgress($projectID);
 
-		$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
-		$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
-		$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
-		$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+			$data['employeeCompleteness'] = $this->model->compute_completeness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
+			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
+			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
 
-		unset($_SESSION['rfc']);
-		$this->session->set_flashdata('projectID', $projectID);
-		$this->session->set_flashdata('changeRequest', 0);
+			unset($_SESSION['rfc']);
+			$this->session->set_flashdata('projectID', $projectID);
+			$this->session->set_flashdata('changeRequest', 0);
 
-		redirect("controller/projectGantt");
+			redirect("controller/projectGantt");
+		}
 
 		// $this->load->view("projectGantt", $data);
 	}
@@ -4630,10 +4694,20 @@ class controller extends CI_Controller
 			}
 
 			// RFC
-			elseif (isset($rfc))
+			elseif (isset($rfc) || isset($_SESSION['rfcNoRemarks']))
 			{
-				$rfc = $this->input->post("rfc");
-				$requestID = $this->input->post("request_ID");
+				if (isset($rfc))
+				{
+					$rfc = $this->input->post("rfc");
+					$requestID = $this->input->post("request_ID");
+				}
+
+				elseif (isset($_SESSION['rfcNoRemarks']))
+				{
+					$requestID = $_SESSION['rfcNoRemarks'];
+					$rfc = $requestID;
+				}
+
 				$this->session->set_flashdata('rfc', $rfc);
 
 				$data['changeRequest'] = $this->model->getChangeRequestbyID($requestID);
@@ -4705,6 +4779,8 @@ class controller extends CI_Controller
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($id);
 
 			$this->load->view("projectGantt", $data);
+
+			// redirect("controller/projectGantt");
 		}
 	}
 
