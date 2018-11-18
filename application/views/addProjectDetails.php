@@ -76,6 +76,23 @@
                 </div>
 
 								<div class="row">
+									<div class="col-md-3">
+										<div class="form-group">
+											<label for="projectperiod">Project Type</label>
+											<select class="form-control select2" style="width: 100%;" required>
+												<option value="" selected disabled hidden>Choose a Project Type</option>
+												<option value="1">Store Opening</option>
+												<option value="2">New Product Launch</option>
+												<option value="3">Marketing Promotion</option>
+												<option value="4">Onboarding</option>
+												<option value="5">Offboarding</option>
+												<option value="6">System Development</option>
+												<option value="7">Miscellaneous</option>
+											</select>
+										</div>
+									</div>
+
+
 					        <div class="col-md-3">
 										<div class="form-group">
 			                <label>Start Date</label>
@@ -243,6 +260,8 @@
 
 		  $(function ()
 			{
+				// $('.select2').select2()
+
 				//Date picker
  	    $('#startDate').datepicker({
 				 format: 'yyyy-mm-dd',
