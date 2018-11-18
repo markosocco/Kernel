@@ -66,8 +66,8 @@
 												case 2: echo 'Product Launch'; break;
 												case 3: echo 'Marketing Promotion'; break;
 												case 4: echo 'System Development'; break;
-												case 5: echo 'Employee Onboarding'; break;
-												case 6: echo 'Employee Offboarding'; break;
+												case 5: echo 'Onboarding'; break;
+												case 6: echo 'Offboarding'; break;
 												case 7: echo 'Miscellaneous'; break;
 												default: echo ''; break;
 											}
