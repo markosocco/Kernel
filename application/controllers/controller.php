@@ -646,7 +646,14 @@ class controller extends CI_Controller
 
 		else
 		{
-			$id = $this->input->post('employee_ID');
+			if (isset($_SESSION['employee_ID']))
+			{
+				$id = $_SESSION['employee_ID'];
+			}
+			else
+			{
+				$id = $this->input->post('employee_ID');
+			}
 			$deptID = $_SESSION['DEPARTMENTID'];
 			$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
 
@@ -1605,7 +1612,14 @@ class controller extends CI_Controller
 		  }
 		  $this->session->set_flashdata('success', 'alert');
 		  $this->session->set_flashdata('alertMessage', ' Task has been delegated');
-		  $this->taskDelegate();
+			if ($this->input->post("reassigned"))
+			{
+				$empID = $this->input->post('employee_ID');
+				$this->session->set_flashdata('employee_ID', $empID);
+				redirect('controller/monitorMembers');
+			}
+			else
+				$this->taskDelegate();
 		}
 	}
 
@@ -3026,7 +3040,8 @@ class controller extends CI_Controller
 
 				case '4':
 					$filter = "(users.usertype_USERTYPEID = '3' &&  users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."')
-					|| users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."' && users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					|| users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."' && users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'
+					|| users.USERID = '" . $_SESSION['USERID'] . "'";
 					break;
 
 				default:

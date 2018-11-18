@@ -800,7 +800,7 @@
 							{
 								for(t=0; raci['raci'].length >t; t++)
 								{
-									if(raci['raci'][t].ROLE == '1') //if task has already been delegated, enable the accept button
+									if(raci['raci'][t].ROLE == '2') //if task has already been delegated, enable the accept button
 									{
 										$("#taskAccept-" + raci['raci'][t].tasks_TASKID).prop('disabled', false);
 									}
@@ -848,6 +848,10 @@
 								if((data['raci'][x].ROLE == '3' || data['raci'][x].ROLE == '4') && <?php echo $_SESSION['usertype_USERTYPEID'];?> == '4')
 								{
 									$("#user" + data['raci'][x].users_USERID + "-" + data['raci'][x].ROLE).prop('disabled', true);
+								}
+								if(<?php echo $_SESSION['usertype_USERTYPEID'];?> == '4')
+								{
+									$("#user" + <?php echo $_SESSION['users_SUPERVISORS'];?> + "-1").prop('disabled', true);
 								}
 							}
 						},

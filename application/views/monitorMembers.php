@@ -265,6 +265,7 @@
 										<!-- /.box-header -->
 										<div class="box-body" id ='delegateDiv'>
 											<form id="raciForm" action="delegateTask" method="POST">
+												<input type='hidden' name='employee_ID' value="<?php echo $user['USERID'];?>">
 
 												<!-- TEAM DIV -->
 												<div class="form-group raciDiv" id = "teamDiv">
@@ -1348,6 +1349,7 @@
 				 var $id = $(this).attr('data-id');
 				 $("#raciForm").attr("name", "formSubmit");
 				 $("#raciForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+				 $("#raciForm").append("<input type='hidden' name='reassigned' value='1'>");
 				 $("#raciForm").submit();
 			 });
 
