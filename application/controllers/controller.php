@@ -4588,7 +4588,7 @@ class controller extends CI_Controller
 								// echo $value . ", ";
 
 								$data = array(
-										'ROLE' => '1',
+										'ROLE' => '0',
 										'users_USERID' => $deptHead,
 										'tasks_TASKID' => $a,
 										'STATUS' => 'Current'
@@ -4596,6 +4596,16 @@ class controller extends CI_Controller
 
 								// ENTER INTO RACI
 								$result = $this->model->addToRaci($data);
+
+								$data2 = array(
+										'ROLE' => '1',
+										'users_USERID' => $deptHead,
+										'tasks_TASKID' => $a,
+										'STATUS' => 'Current'
+								);
+
+								// ENTER INTO RACI
+								$result2 = $this->model->addToRaci($data2);
 
 								// START OF LOGS/NOTIFS
 								$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
