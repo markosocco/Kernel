@@ -222,7 +222,7 @@
 									<h4 id ="early" style="margin-top:0">Are you sure you have completed this task?</h4>
 									<form id = "doneForm" action="doneTask" method="POST" style="margin-bottom:0;">
 										<div class="form-group">
-											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks" required=""></textarea>
+											<textarea id = "remarks" name = "remarks" class="form-control" placeholder="Enter remarks"></textarea>
 										</div>
 										<div class="modal-footer">
 											<button id = "closeConfirmBtn" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
@@ -901,7 +901,6 @@
 			 {
 				 $("#early").hide();
 				 $("#delayed").show();
-				 $("#remarks").attr("required", true);
 				 $("#remarks").attr("placeholder", "Reason (required)");
 			 }
 		 });
