@@ -674,6 +674,32 @@ class controller extends CI_Controller
 				}
 			}
 
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '2':
+					$filter = "users.usertype_USERTYPEID = '3'";
+					break;
+
+				case '3':
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+
+				case '4':
+					$filter = "(users.usertype_USERTYPEID = '3' &&  users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."')
+					|| users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."' && users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+
+				default:
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+			}
+
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['users'] = $this->model->getAllUsers();
+			$data['wholeDept'] = $this->model->getAllUsersByUserType($filter);
+			$data['projectCount'] = $this->model->getProjectCount();
+			$data['taskCounts'] = $this->model->getTaskCount();
+
 			$data['user'] = $this->model->getUserByID($id);
 			$data['projects'] = $this->model->getAllProjectsByUser($id);
 			$data['tasks'] = $this->model->getAllTasksForAllOngoingProjects($id);

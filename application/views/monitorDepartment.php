@@ -5,14 +5,18 @@
 		<link rel = "stylesheet" href = "<?php echo base_url("/assets/css/monitorMembersStyle.css")?>">
 	</head>
 	<body class="hold-transition skin-red sidebar-mini fixed">
-		<?php require("frame.php"); ?>Department
+		<?php require("frame.php"); ?>
 
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
-
 					<a href="<?php echo base_url("index.php/controller/monitorProject"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to My Projects"><i class="fa fa-arrow-left"></i></a>
 					<br><br>
+					<h1>
+						Monitor Departments
+						<small>What's happening to the departments in this project?</small>
+					</h1>
+					<br>
 					<h1>
 						<?php echo $projectProfile['PROJECTTITLE'];?>
 						<?php

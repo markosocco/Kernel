@@ -15,6 +15,11 @@
 					<form id="backForm" action = 'monitorDepartment' method="POST" data-id="<?php echo $projectProfile['PROJECTID']; ?>">
 					</form>
 					<h1>
+						Monitor Department
+						<small>What's happening to this department in this project?</small>
+					</h1>
+					<br>
+					<h1>
 						<?php echo $projectProfile['PROJECTTITLE'];?>
 						<?php
 						$projectStart = date_create($projectProfile['PROJECTSTARTDATE']);
