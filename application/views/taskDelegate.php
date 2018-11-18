@@ -1146,32 +1146,37 @@
 
 						 if(data['raciHistory'][rh].ROLE == 1 && data['raciHistory'][rh].STATUS == 'Changed')
 						 {
-							 withHistory = true;
+							 var currentIndex = rh;
+							 var withHistory = true;
 							 $("#raciHistoryTable").append(
 								 "<tr>" +
-									 "<td id = 'changedR'></td>" +
-									 "<td id = 'changedA'></td>" +
-									 "<td id = 'changedC'></td>" +
-									 "<td id = 'changedI'></td>" +
+									 "<td id = 'changedR" + currentIndex + "'></td>" +
+									 "<td id = 'changedA" + currentIndex + "'></td>" +
+									 "<td id = 'changedC" + currentIndex + "'></td>" +
+									 "<td id = 'changedI" + currentIndex + "'></td>" +
 								 "</tr>");
 
-							 for(ro=0; ro < data['raciHistory'].length; ro++)
-							 {
-								 if(data['raciHistory'][ro].ROLE == 1 && data['raciHistory'][ro].STATUS == 'Changed')
+								 if(data['raciHistory'][currentIndex].ROLE == 1 && data['raciHistory'][currentIndex].STATUS == 'Changed')
 								 {
-									 $("#changedR").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									 $("#changedR" + currentIndex).append(data['raciHistory'][currentIndex].FIRSTNAME + " " + data['raciHistory'][currentIndex].LASTNAME);
 								 }
+							 for(ro=currentIndex; ro < data['raciHistory'].length; ro++)
+							 {
 								 if(data['raciHistory'][ro].ROLE == 2 && data['raciHistory'][ro].STATUS == 'Changed')
 								 {
-									 $("#changedA").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									 $("#changedA" + currentIndex).append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
 								 }
 								 if(data['raciHistory'][ro].ROLE == 3 && data['raciHistory'][ro].STATUS == 'Changed')
 								 {
-									 $("#changedC").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									 $("#changedC" + currentIndex).append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
 								 }
 								 if(data['raciHistory'][ro].ROLE == 4 && data['raciHistory'][ro].STATUS == 'Changed')
 								 {
-									 $("#changedI").append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+									 $("#changedI" + currentIndex).append(data['raciHistory'][ro].FIRSTNAME + " " + data['raciHistory'][ro].LASTNAME);
+								 }
+								 if(data['raciHistory'][ro+1].ROLE == 1 && data['raciHistory'][ro].STATUS == 'Changed')
+								 {
+									 break;
 								 }
 							 }
 						 }
