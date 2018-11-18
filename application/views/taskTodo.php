@@ -285,7 +285,7 @@
 									<!-- DISPLAY ON BOTH OPTIONS -->
 								<div class="form-group">
 									<label>Reason</label>
-									<textarea id="rfcReason" class="form-control" name = "reason" placeholder="Reason" required></textarea>
+									<textarea id="rfcReason" class="form-control" name = "reason" placeholder="Reason"></textarea>
 								</div>
 							</div>
 
@@ -852,13 +852,11 @@
 					 if($("#rfcSubmit").attr('data-date') == 'true') // IF TASK IS ONGOING
 					 {
 						 $(".start").hide();
-						 $("#endDate").attr("required", true);
 					 }
 					 else
 					 {
 						 $(".start").show();
 						 $(".end").show();
-						 $("#endDate").attr("required", true);
 					 }
 
 					 //Date picker

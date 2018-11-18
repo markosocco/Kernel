@@ -1586,156 +1586,189 @@ class controller extends CI_Controller
 
 	public function submitRFC()
 	{
-		if($this->input->post("rfcType") == '1')
+		if ($this->input->post("rfcType") == NULL)
 		{
-			$data = array(
-				'REQUESTTYPE' => $this->input->post("rfcType"),
-				'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
-				'REASON' => $this->input->post("reason"),
-				'REQUESTSTATUS' => "Pending",
-				'users_REQUESTEDBY' => $_SESSION['USERID'],
-				'REQUESTEDDATE' => date('Y-m-d'),
-				'users_APPROVEDBY' => '1'
-			);
-
-			// START OF LOGS/NOTIFS
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-			$taskID = $this->input->post("task_ID");
-			$taskDetails = $this->model->getTaskByID($taskID);
-			$taskTitle = $taskDetails['TASKTITLE'];
-
-			$projectID = $taskDetails['projects_PROJECTID'];
-			$projectDetails = $this->model->getProjectByID($projectID);
-			$projectTitle = $projectDetails['PROJECTTITLE'];
-
-			// START: LOG DETAILS
-			$details = $userName . " requested a change in performer for " . $taskTitle . ".";
-
-			$logData = array (
-				'LOGDETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $taskDetails['projects_PROJECTID']
-			);
-
-			$this->model->addToProjectLogs($logData);
-			// END: LOG DETAILS
-
-			// START: Notifications
-			$details =  "A change in performer was requested by " . $userName . " for " . $taskTitle . " in " . $projectTitle . ".";
-
-			// if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
-			// 	$taggedUserID = $_SESSION['users_SUPERVISORS'];
-			// } else {
-			// 	$taggedUserID = $projectDetails['users_USERID'];
-			// }
-
-			// notify PO
-			$notificationData = array(
-			  'users_USERID' => $projectDetails['users_USERID'],
-			  'DETAILS' => $details,
-			  'TIMESTAMP' => date('Y-m-d H:i:s'),
-			  'status' => 'Unread',
-			  'projects_PROJECTID' => $projectID,
-			  'tasks_TASKID' => $taskID,
-			  'TYPE' => '6'
-			);
-
-			$this->model->addNotification($notificationData);
-
-			// notify immediate head
-			$notificationData = array(
-			  'users_USERID' => $_SESSION['users_SUPERVISORS'],
-			  'DETAILS' => $details,
-			  'TIMESTAMP' => date('Y-m-d H:i:s'),
-			  'status' => 'Unread',
-			  'projects_PROJECTID' => $projectID,
-			  'tasks_TASKID' => $taskID,
-			  'TYPE' => '6'
-			);
-
-			$this->model->addNotification($notificationData);
-
-			// notify department head
-			$departmentHeadID = $this->model->getUserHead($_SESSION['users_SUPERVISORS']);
-
-			$notificationData = array(
-			  'users_USERID' => $departmentHeadID,
-			  'DETAILS' => $details,
-			  'TIMESTAMP' => date('Y-m-d H:i:s'),
-			  'status' => 'Unread',
-			  'projects_PROJECTID' => $projectID,
-			  'tasks_TASKID' => $taskID,
-			  'TYPE' => '6'
-			);
-
-			$this->model->addNotification($notificationData);
-			// END: Notification
-
+			$this->session->set_flashdata('danger', 'alert');
+		  $this->session->set_flashdata('alertMessage', ' Please select a request type');
+		  $this->taskTodo();
 		}
+
 		else
 		{
-			$data = array(
-				'REQUESTTYPE' => $this->input->post("rfcType"),
-				'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
-				'REASON' => $this->input->post("reason"),
-				'REQUESTSTATUS' => "Pending",
-				'users_REQUESTEDBY' => $_SESSION['USERID'],
-				'REQUESTEDDATE' => date('Y-m-d'),
-				'NEWSTARTDATE' => $this->input->post("startDate"),
-				'NEWENDDATE' => $this->input->post("endDate"),
-			);
-
-			// START OF LOGS/NOTIFS
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-			$taskID = $this->input->post("task_ID");
-			$taskDetails = $this->model->getTaskByID($taskID);
-			$taskTitle = $taskDetails['TASKTITLE'];
-
-			$projectID = $taskDetails['projects_PROJECTID'];
-			$projectDetails = $this->model->getProjectByID($projectID);
-			$projectTitle = $projectDetails['PROJECTTITLE'];
-
-			// START: LOG DETAILS
-			$details = $userName . " requested a change in dates for " . $taskTitle . ".";
-
-			$logData = array (
-				'LOGDETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $projectID
-			);
-
-			$this->model->addToProjectLogs($logData);
-			// END: LOG DETAILS
-
-			// START: Notifications
-			$details =  "A change in dates was requested by " . $userName . " for " . $taskTitle . " in " . $projectTitle . ".";
-			$taggedUserID = "";
-
-			if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
-				$taggedUserID = $_SESSION['users_SUPERVISORS'];
-			} else {
-				$taggedUserID = $projectDetails['users_USERID'];
+			if ($this->input->post("reason") == NULL)
+			{
+				$this->session->set_flashdata('danger', 'alert');
+				$this->session->set_flashdata('alertMessage', ' Please provide a reason for this request');
+				$this->taskTodo();
 			}
 
-			$notificationData = array(
-				'users_USERID' => $taggedUserID,
-				'DETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'status' => 'Unread',
-				'projects_PROJECTID' => $projectID,
-				'tasks_TASKID' => $taskID,
-				'TYPE' => '6'
-			);
+			else
+			{
+			  if($this->input->post("rfcType") == '1')
+			  {
+			    $data = array(
+			      'REQUESTTYPE' => $this->input->post("rfcType"),
+			      'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
+			      'REASON' => $this->input->post("reason"),
+			      'REQUESTSTATUS' => "Pending",
+			      'users_REQUESTEDBY' => $_SESSION['USERID'],
+			      'REQUESTEDDATE' => date('Y-m-d'),
+			      'users_APPROVEDBY' => '1'
+			    );
 
-			$this->model->addNotification($notificationData);
-			// END: Notification
+			    // START OF LOGS/NOTIFS
+			    $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+			    $taskID = $this->input->post("task_ID");
+			    $taskDetails = $this->model->getTaskByID($taskID);
+			    $taskTitle = $taskDetails['TASKTITLE'];
+
+			    $projectID = $taskDetails['projects_PROJECTID'];
+			    $projectDetails = $this->model->getProjectByID($projectID);
+			    $projectTitle = $projectDetails['PROJECTTITLE'];
+
+			    // START: LOG DETAILS
+			    $details = $userName . " requested a change in performer for " . $taskTitle . ".";
+
+			    $logData = array (
+			      'LOGDETAILS' => $details,
+			      'TIMESTAMP' => date('Y-m-d H:i:s'),
+			      'projects_PROJECTID' => $taskDetails['projects_PROJECTID']
+			    );
+
+			    $this->model->addToProjectLogs($logData);
+			    // END: LOG DETAILS
+
+			    // START: Notifications
+			    $details =  "A change in performer was requested by " . $userName . " for " . $taskTitle . " in " . $projectTitle . ".";
+
+			    // if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
+			    // 	$taggedUserID = $_SESSION['users_SUPERVISORS'];
+			    // } else {
+			    // 	$taggedUserID = $projectDetails['users_USERID'];
+			    // }
+
+			    // notify PO
+			    $notificationData = array(
+			      'users_USERID' => $projectDetails['users_USERID'],
+			      'DETAILS' => $details,
+			      'TIMESTAMP' => date('Y-m-d H:i:s'),
+			      'status' => 'Unread',
+			      'projects_PROJECTID' => $projectID,
+			      'tasks_TASKID' => $taskID,
+			      'TYPE' => '6'
+			    );
+
+			    $this->model->addNotification($notificationData);
+
+			    // notify immediate head
+			    $notificationData = array(
+			      'users_USERID' => $_SESSION['users_SUPERVISORS'],
+			      'DETAILS' => $details,
+			      'TIMESTAMP' => date('Y-m-d H:i:s'),
+			      'status' => 'Unread',
+			      'projects_PROJECTID' => $projectID,
+			      'tasks_TASKID' => $taskID,
+			      'TYPE' => '6'
+			    );
+
+			    $this->model->addNotification($notificationData);
+
+			    // notify department head
+			    $departmentHeadID = $this->model->getUserHead($_SESSION['users_SUPERVISORS']);
+
+			    $notificationData = array(
+			      'users_USERID' => $departmentHeadID,
+			      'DETAILS' => $details,
+			      'TIMESTAMP' => date('Y-m-d H:i:s'),
+			      'status' => 'Unread',
+			      'projects_PROJECTID' => $projectID,
+			      'tasks_TASKID' => $taskID,
+			      'TYPE' => '6'
+			    );
+
+			    $this->model->addNotification($notificationData);
+			    // END: Notification
+
+			  }
+
+			  else
+			  {
+					if ($this->input->post("endDate") == NULL)
+					{
+						$this->session->set_flashdata('danger', 'alert');
+					  $this->session->set_flashdata('alertMessage', ' Please select a new end date');
+
+					  $this->taskTodo();
+					}
+
+					else
+					{
+					  $data = array(
+					    'REQUESTTYPE' => $this->input->post("rfcType"),
+					    'tasks_REQUESTEDTASK' => $this->input->post("task_ID"),
+					    'REASON' => $this->input->post("reason"),
+					    'REQUESTSTATUS' => "Pending",
+					    'users_REQUESTEDBY' => $_SESSION['USERID'],
+					    'REQUESTEDDATE' => date('Y-m-d'),
+					    'NEWSTARTDATE' => $this->input->post("startDate"),
+					    'NEWENDDATE' => $this->input->post("endDate"),
+					  );
+
+					  // START OF LOGS/NOTIFS
+					  $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+					  $taskID = $this->input->post("task_ID");
+					  $taskDetails = $this->model->getTaskByID($taskID);
+					  $taskTitle = $taskDetails['TASKTITLE'];
+
+					  $projectID = $taskDetails['projects_PROJECTID'];
+					  $projectDetails = $this->model->getProjectByID($projectID);
+					  $projectTitle = $projectDetails['PROJECTTITLE'];
+
+					  // START: LOG DETAILS
+					  $details = $userName . " requested a change in dates for " . $taskTitle . ".";
+
+					  $logData = array (
+					    'LOGDETAILS' => $details,
+					    'TIMESTAMP' => date('Y-m-d H:i:s'),
+					    'projects_PROJECTID' => $projectID
+					  );
+
+					  $this->model->addToProjectLogs($logData);
+					  // END: LOG DETAILS
+
+					  // START: Notifications
+					  $details =  "A change in dates was requested by " . $userName . " for " . $taskTitle . " in " . $projectTitle . ".";
+					  $taggedUserID = "";
+
+					  if($_SESSION['usertype_USERTYPEID'] == 5 || 4) {
+					    $taggedUserID = $_SESSION['users_SUPERVISORS'];
+					  } else {
+					    $taggedUserID = $projectDetails['users_USERID'];
+					  }
+
+					  $notificationData = array(
+					    'users_USERID' => $taggedUserID,
+					    'DETAILS' => $details,
+					    'TIMESTAMP' => date('Y-m-d H:i:s'),
+					    'status' => 'Unread',
+					    'projects_PROJECTID' => $projectID,
+					    'tasks_TASKID' => $taskID,
+					    'TYPE' => '6'
+					  );
+
+					  $this->model->addNotification($notificationData);
+					  // END: Notification
+					}
+			  }
+
+			  $this->model->addRFC($data);
+			  $this->session->set_flashdata('success', 'alert');
+			  $this->session->set_flashdata('alertMessage', ' Request for change submitted');
+			  $this->taskTodo();
+			}
 		}
-		$this->model->addRFC($data);
-		$this->session->set_flashdata('success', 'alert');
-		$this->session->set_flashdata('alertMessage', ' Request for change submitted');
-		$this->taskTodo();
 	}
 
 	public function approveDenyRFC()
