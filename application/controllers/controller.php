@@ -3143,9 +3143,10 @@ class controller extends CI_Controller
 	          $endDate = $spreadsheet->getActiveSheet()->getCell('B4')->getFormattedValue();
 	          $actualEndDate = $spreadsheet->getActiveSheet()->getCell('B5')->getFormattedValue();
 	          $status = $spreadsheet->getActiveSheet()->getCell('B6')->getValue();
+						$type = $spreadsheet->getActiveSheet()->getCell('B7')->getValue();
 
 	          // CHECK IF SPREADSHEET IS NULL/BLANK
-	          if ($title == NULL || $description == NULL || $startDate == NULL || $endDate == NULL || $status == NULL)
+	          if ($title == NULL || $description == NULL || $startDate == NULL || $endDate == NULL || $status == NULL || $type == NULL)
 	          {
 	            $this->session->set_flashdata('danger', 'alert');
 	            $this->session->set_flashdata('alertMessage', ' Please make sure all required fields in Project Details sheet are filled');
@@ -3201,6 +3202,16 @@ class controller extends CI_Controller
 
                     redirect('controller/addProjectDetails');
                   }
+
+									if ($checkAssessment['A'] != $startDate)
+									{
+										$this->session->set_flashdata('danger', 'alert');
+                    $this->session->set_flashdata('alertMessage', ' Date in the first row should be the same as the Project Start Date');
+
+                    unlink($inputFileName);
+
+                    redirect('controller/addProjectDetails');
+									}
                 }
 
                 else
@@ -3724,6 +3735,7 @@ class controller extends CI_Controller
 						$endDate = $spreadsheet->getActiveSheet()->getCell('B4')->getFormattedValue();
 						$actualEndDate = $spreadsheet->getActiveSheet()->getCell('B5')->getFormattedValue();
 						$status = $spreadsheet->getActiveSheet()->getCell('B6')->getValue();
+						$type = $spreadsheet->getActiveSheet()->getCell('B7')->getValue();
 
 						$currDate = date("Y-m-d");
 
@@ -3737,7 +3749,8 @@ class controller extends CI_Controller
 						      'PROJECTSTATUS' => $status,
 						      'users_USERID' => $_SESSION['USERID'],
 						      'PROJECTACTUALSTARTDATE' => $startDate,
-						      'DATECREATED' => $currDate
+						      'DATECREATED' => $currDate,
+									'PROJECTTYPE' => $type
 						  );
 						}
 
@@ -3752,7 +3765,8 @@ class controller extends CI_Controller
 						      'users_USERID' => $_SESSION['USERID'],
 						      'PROJECTACTUALSTARTDATE' => $startDate,
 						      'PROJECTACTUALENDDATE' => $actualEndDate,
-						      'DATECREATED' => $currDate
+						      'DATECREATED' => $currDate,
+									'PROJECTTYPE' => $type
 						  );
 						}
 
@@ -3765,7 +3779,8 @@ class controller extends CI_Controller
 						      'PROJECTDESCRIPTION' => $description,
 						      'PROJECTSTATUS' => $status,
 						      'users_USERID' => $_SESSION['USERID'],
-						      'DATECREATED' => $currDate
+						      'DATECREATED' => $currDate,
+									'PROJECTTYPE' => $type
 						  );
 						}
 
@@ -4529,7 +4544,7 @@ class controller extends CI_Controller
 								// echo $value . ", ";
 
 								$data = array(
-										'ROLE' => '0',
+										'ROLE' => '1',
 										'users_USERID' => $deptHead,
 										'tasks_TASKID' => $a,
 										'STATUS' => 'Current'
