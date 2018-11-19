@@ -976,6 +976,13 @@
 				<!-- <input type="button" value="Day" onclick="chart.zoomTo('day', 1);"> -->
 				<input type="button" class="btn btn-default btn-sm" value="Week" onclick="chart.zoomTo('week', 1);">
 				<input type="button" class="btn btn-default btn-sm" value="Month" onclick="chart.zoomTo('month', '1')">
+				<br>
+				<br>
+				<span>Legend: </span>
+        <p class="btn bg-teal btn-xs">Completed</p>
+        <p class="btn btn-success btn-xs">Ongoing</p>
+        <p class="btn btn-danger btn-xs">Delayed</p>
+        <p class="btn btn-warning btn-xs">Planned</p>
 
 				<!-- Task Details Modal -->
 				<div class="modal fade" id="taskDetails" tabindex="-1">
@@ -1138,7 +1145,6 @@
 				<!-- /.modal -->
 
 				<div id="container" style="height: 600px;">
-					<br>
 				</div>
 
 
