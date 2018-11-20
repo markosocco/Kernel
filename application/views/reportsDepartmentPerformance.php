@@ -38,6 +38,11 @@
             <h3 class="box-title">Bar Chart</h3>
           </div> -->
           <div class="box-body">
+            <div class="viewCenter">
+  						<p style="display: inline-block">Legend:</p>
+  						<div style="width: 20px; height: 10px; background-color:#d2d6de; display:inline-block; margin-left:10px;"></div> Completeness
+  						<div style="width: 20px; height: 10px; background-color:#18A55D; display:inline-block; margin-left:10px;"></div> Timeliness
+  					</div>
             <div class="chart">
               <canvas id="barChart" style="height:180px"></canvas>
             </div>

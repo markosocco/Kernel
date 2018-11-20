@@ -63,6 +63,12 @@
             </tr>
           </table>
 
+          <div class="viewCenter">
+						<p style="display: inline-block">Legend:</p>
+						<div style="width: 20px; height: 10px; background-color:#d2d6de; display:inline-block; margin-left:10px;"></div> Completeness
+						<div style="width: 20px; height: 10px; background-color:#18A55D; display:inline-block; margin-left:10px;"></div> Timeliness
+					</div>
+
           <!-- BAR CHART -->
           <div class="box box-default">
             <!-- <div class="box-header with-border">
