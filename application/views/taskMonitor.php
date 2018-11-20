@@ -26,6 +26,7 @@
         <!-- START HERE -->
 
 				<button id = "viewAll" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="All Tasks"><i class="fa fa-eye"></i></button>
+				<button id = "viewFiltered" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="Ongoing Tasks"><i class="fa fa-eye-slash"></i></button>
 
 				<br><br>
 
@@ -172,143 +173,6 @@
 					</div>
 					</div> <!-- CLOSING ROW -->
 
-					<div class="row">
-						<!-- COMPLETED-->
-
-						<?php $delayedCompletedTasks=0;?>
-						<?php if ($uniqueCompletedACItasks != NULL): ?>
-						<div class="col-md-10">
-							<div class="box box-danger">
-								<div class="box-header">
-									<h3 class="box-title">Completed Tasks</h3>
-								</div>
-								<!-- /.box-header -->
-								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table table-hover no-margin" id="completedTaskTable">
-											<thead>
-											<tr>
-												<th width=".5%"></th>
-												<th width="4%" class="text-center">Role</th>
-												<th width="20%">Responsible</th>
-												<th width="27.5%">Project</th>
-												<th width="27.5%">Task</th>
-												<!-- <th class="text-center">Start Date</th> -->
-												<th width="12%" class="text-center">Actual<br>End Date</th>
-												<!-- <th class="text-center">Status</th> -->
-												<th width="8%" class="text-center">Days Delayed</th>
-											</tr>
-											</thead>
-											<tbody>
-
-												<?php foreach($uniqueCompletedACItasks as $uniqueCompletedACItask):?>
-													<?php
-													if($uniqueCompletedACItask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-														$endDate = $uniqueCompletedACItask['TASKENDDATE'];
-													else
-														$endDate = $uniqueCompletedACItask['TASKADJUSTEDENDDATE'];
-
-													if($uniqueCompletedACItask['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
-														$startDate = $uniqueCompletedACItask['TASKSTARTDATE'];
-													else
-														$startDate = $uniqueCompletedACItask['TASKADJUSTEDSTARTDATE'];
-
-													if($uniqueCompletedACItask['TASKADJUSTEDSTARTDATE'] != null && $uniqueCompletedACItask['TASKADJUSTEDENDDATE'] != null)
-														$taskDuration = $uniqueCompletedACItask['adjustedTaskDuration2'];
-													elseif($uniqueCompletedACItask['TASKSTARTDATE'] != null && $uniqueCompletedACItask['TASKADJUSTEDENDDATE'] != null)
-														$taskDuration = $uniqueCompletedACItask['adjustedTaskDuration1'];
-													else
-														$taskDuration = $uniqueCompletedACItask['initialTaskDuration'];
-
-													$actualEndDate = date_create($uniqueCompletedACItask['TASKACTUALENDDATE']);
-													$start = date_create($startDate);
-													$end = date_create($endDate);
-													$curdate = date_create(date('Y-m-d'));
-													$diff = date_diff($start, $curdate);
-													$delay = $diff->format("%a")+1;
-													?>
-
-													<tr class="viewProject clickable" data-id="<?php echo $uniqueCompletedACItask['PROJECTID'] ;?>">
-
-														<?php
-														$role="";
-														foreach($allCompletedACItasks as $currTask)
-														{
-															if($uniqueCompletedACItask['TASKID'] == $currTask['TASKID'])
-															{
-																switch($currTask['ROLE'])
-																{
-																	case '2': $type = "A"; break;
-																	case '3': $type = "C"; break;
-																	case '4': $type = "I"; break;
-																}
-																$role .= $type;
-															}
-														}
-														if($role == null)
-														{
-															switch($uniqueCompletedACItask['ROLE'])
-															{
-																case '2': $role = "A"; break;
-																case '3': $role = "C"; break;
-																case '4': $role = "I"; break;
-															}
-														}
-														?>
-														<td class="bg-teal"></td>
-														<td align="center"><?php echo $role;?></td>
-														<td><?php echo $uniqueCompletedACItask['FIRSTNAME'];?> <?php echo $uniqueCompletedACItask['LASTNAME'];?></td>
-														<td><?php echo $uniqueCompletedACItask['PROJECTTITLE'];?></td>
-														<td><?php echo $uniqueCompletedACItask['TASKTITLE'];?></td>
-														<!-- <td align="center"><?php echo date_format($start, 'M d, Y');?></td>
-														<td align="center"><?php echo date_format($end, 'M d, Y');?></td> -->
-														<td align="center"><?php echo date_format($actualEndDate, 'M d, Y');?></td>
-														<?php if($delay-$taskDuration <= 0):?>
-															<td align="center">0</td>
-														<?php else:?>
-															<td align="center"><?php echo $delay - $taskDuration;?></td>
-														<?php endif;?>
-													</tr>
-												<?php endforeach;?>
-
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php else:?>
-						<div class="col-md-10">
-							<div class="box box-danger">
-								<div class="box-header">
-									<h3 class="box-title">Completed Tasks</h3>
-								</div>
-								<div class="box-body">
-									<h4 align="center">You have no completed tasks</h4>
-								</div>
-							</div>
-						</div>
-					<?php endif;?>
-					<div class="col-md-2">
-						<div class="box box-danger">
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<h4 align="center"> Total <br><br><b><?php echo count($uniqueCompletedACItasks);?></b></h4>
-								</div>
-							</div>
-						</div>
-
-						<div class="box box-danger">
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<h4 align="center"> Delayed <br><br><span style='color:red'><b><?php echo $delayedCompletedTasks;?></b></span></h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					</div> <!-- CLOSING ROW -->
 				</div>
 
 				<div id = "allTasks">
@@ -330,7 +194,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Completed <br><br><b><?php echo count($uniqueCompletedACItasks);?></b></h4>
+										<h4 align="center"> Delayed <br><br><span style='color:red'><b><?php echo $delayedTasks;?></b></span></h4>
 									</div>
 								</div>
 							</div>
@@ -352,12 +216,22 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Delayed <br><br><span style='color:red'><b><?php echo $delayedTasks;?></b></span></h4>
+										<h4 align="center"> Planned <br><br><b><?php echo count($uniquePlannedACItasks);?></b></h4>
 									</div>
 								</div>
 							</div>
 						</div>
 
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center"> Completed <br><br><b><?php echo count($uniqueCompletedACItasks);?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
 
 					</div>
 
@@ -463,6 +337,7 @@
 													</tr>
 												<?php endforeach;?>
 
+												<?php $delayedCompletedTasks = 0;?>
 												<?php foreach($uniqueCompletedACItasks as $uniqueCompletedACItask):?>
 													<?php
 													if($uniqueCompletedACItask['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
@@ -633,19 +508,27 @@
 		  <?php require("footer.php"); ?>
 		</div> <!--.wrapper closing div-->
 		<script>
-      $("#tasks").addClass("active");
-      $("#taskMonitor").addClass("active");
+      $("#monitorTasks").addClass("active");
+      $("#monitor").addClass("active");
 			$("#allTasks").hide();
+			$("#viewFiltered").toggle();
 
 			$(document).on("click", "#viewAll", function()
 			{
 				$("#allTasks").toggle();
 				$("#filteredTasks").toggle();
 
-				if($("#allTasks").css("display") == "none")
-					$("#viewAll").html("<i class='fa fa-eye'></i>");
-				else
-					$("#viewAll").html("<i class='fa fa-eye-slash'></i>");
+				$("#viewAll").toggle();
+				$("#viewFiltered").toggle();
+			});
+
+			$(document).on("click", "#viewFiltered", function()
+			{
+				$("#allTasks").toggle();
+				$("#filteredTasks").toggle();
+
+				$("#viewAll").toggle();
+				$("#viewFiltered").toggle();
 			});
 
 			$(document).on("click", ".viewProject", function() {
