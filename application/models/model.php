@@ -683,7 +683,7 @@ class model extends CI_Model
 
   public function getAllACITasksByUser($id, $status)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '0' && raci.ROLE != '5'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '0' && raci.ROLE != '5'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -701,7 +701,7 @@ class model extends CI_Model
 
   public function getUniqueACITasksByUser($id, $status)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '0' && raci.ROLE != '5'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '0' && raci.ROLE != '5'";
     $this->db->select('*, CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",

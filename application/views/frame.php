@@ -321,7 +321,6 @@ desired effect
             <ul class="treeview-menu">
               <li id = 'monitorProject'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorProject"); ?>"><i class="fa fa-circle-o"></i> Project</a></li>
               <li id = 'monitorTeam'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorTeam"); ?>"><i class="fa fa-circle-o"></i> Team</a></li>
-              <li id = 'monitorTasks'><a class="menu"  href="<?php echo base_url("index.php/controller/taskMonitor"); ?>"><i class="fa fa-circle-o"></i> Tasks</a></li>
             </ul>
           </li>
         <?php else:?>
@@ -355,7 +354,7 @@ desired effect
 <!-- </div> -->
 <!-- ./wrapper -->
 
-<!-- CHANGE PASSWORD MODAL -->
+<!-- CHANGE PASSOWRD MODAL -->
 <div class="modal fade" id="modal-changePassword" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
