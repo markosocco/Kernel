@@ -647,7 +647,7 @@
 						<br><br>
 
 						<div id="divRACI" class="divDetails">
-							<table class="table table-bordered">
+							<table class="table no-margin table-hover">
 								<thead>
 									<th colspan = '4'>Current</th>
 									<tr class='text-center'><td id="raciCurrentTitle" colspan='4'></td></tr>
@@ -662,7 +662,7 @@
 								</tbody>
 							</table>
 
-							<table class="table table-bordered">
+							<table class="table no-margin table-hover">
 								<thead>
 									<th colspan = '4'>History</th>
 									<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
@@ -679,7 +679,7 @@
 						</div>
 
 						<div id="divDependency" class="divDetails">
-							<table class="table table-bordered">
+							<table class="table no-margin table-hover">
 								<thead>
 									<th colspan = '5'>Pre-Requisites</th>
 									<tr class='text-center'><td id="preReqTitle" colspan='5'></td></tr>
@@ -695,7 +695,7 @@
 								</tbody>
 							</table>
 
-							<table class="table table-bordered">
+							<table class="table no-margin table-hover">
 								<thead>
 									<th colspan = '5'>Post-Requisites</th>
 									<tr class='text-center'><td id="postReqTitle" colspan='5'></td></tr>
@@ -766,19 +766,8 @@
 				}
 			});
 
-			// $(document).on("click", ".viewProject", function() {
-			// 	var $projectID = $(this).attr('data-id');
-			// 	$("#viewProject").attr("name", "formSubmit");
-			// 	$("#viewProject").append("<input type='hidden' name='project_ID' value= " + $projectID + ">");
-			// 	$("#viewProject").submit();
-			// });
-
 			$("body").on("click", ".editBtn", function() {
 				alert("Forward to Edit Project");
-				// var $projectID = $(this).attr('data-id');
-				// $("#viewProject").attr("name", "formSubmit");
-				// $("#viewProject").append("<input type='hidden' name='project_ID' value= " + $projectID + ">");
-				// $("#viewProject").submit();
 			});
 
 			// SET BUTTON ABILITY

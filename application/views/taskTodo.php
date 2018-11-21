@@ -35,45 +35,52 @@
 					<div class="row">
 						<!-- TO DO -->
 
-						<?php if ($tasks != NULL): ?>
+						<?php if ($projectsToDo != NULL): ?>
 						<div class="col-md-10" id="taskToDoTable">
 							<div class="box box-danger">
 								<div class="box-header with-border">
 									<h3 class="box-title">To Do</h3>
 								</div>
 								<!-- /.box-header -->
-								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table table-hover no-margin" id="toDoTable">
-											<thead>
-											<tr>
-												<th width="1%"></th>
-												<th>Task</th>
-												<th>Project</th>
-												<th class="text-center">End Date</th>
-												<th class="text-center">Days Delayed</th>
-												<th class="text-center">Action</th>
-											</tr>
-											</thead>
-											<tbody id="taskTable">
+									<div class="box-body">
+										<?php foreach($projectsToDo as $project):?>
+											<?php
+											$startDate = date_create($project['PROJECTSTARTDATE']);
+											$endDate = date_create($project['PROJECTENDDATE']);
+											?>
 
-											</tbody>
-										</table>
+											<div class="box">
+												<div class="box-header with-border">
+													<h3 class="box-title">
+														<?php echo $project['PROJECTTITLE'];?>
+														(<?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>)
+													</h3>
+												</div>
+													<div class="box-body">
+														<div class="table-responsive">
+															<table class="table table-hover no-margin" id="toDoTable">
+																<thead>
+																<tr>
+																	<th width="1%"></th>
+																	<th>Task</th>
+																	<th>Project</th>
+																	<th class="text-center">End Date</th>
+																	<th class="text-center">Days Delayed</th>
+																	<th class="text-center">Action</th>
+																</tr>
+																</thead>
+																<tbody id="taskTable-<?php echo $project['PROJECTID'];?>">
+
+																</tbody>
+															</table>
+														</div>
+													</div>
+											</div>
+										<?php endforeach;?>
 									</div>
-								</div>
 							</div>
 						</div>
 
-						<div class="col-md-10" id="emptyToDoTable">
-							<div class="box box-danger">
-								<div class="box-header with-border">
-									<h3 class="box-title">To Do</h3>
-								</div>
-								<div class="box-body" id="emptyToDo">
-									<h4 align="center">You have no tasks due in 2 days</h4>
-								</div>
-							</div>
-						</div>
 					<?php else:?>
 						<div class="col-md-10" id="emptyToDoTable">
 							<div class="box box-danger">
@@ -86,7 +93,17 @@
 							</div>
 						</div>
 					<?php endif;?>
+
 					<div class="col-md-2">
+						<div class="box box-danger">
+							<!-- /.box-header -->
+							<div class="box-body">
+								<div class="table-responsive">
+									<h4 align="center"> Projects <br><br><b><?php echo count($projectsToDo);?></b></h4>
+								</div>
+							</div>
+						</div>
+
 						<div class="box box-danger">
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -112,12 +129,24 @@
 				<div id = "allTasks">
 					<!-- ALL TASKS -->
 					<div class = 'row'>
+
 						<div class="col-md-2 pull-left">
 							<div class="box box-danger">
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center" id="total"> Total <br><br><b>0</b></h4>
+										<h4 align="center" id="projects"> Projects <br><br><b><?php echo count($projects);?></b></h4>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-2 pull-left">
+							<div class="box box-danger">
+								<!-- /.box-header -->
+								<div class="box-body">
+									<div class="table-responsive">
+										<h4 align="center" id="total"> Tasks <br><br><b><?php echo count($tasks);?></b></h4>
 									</div>
 								</div>
 							</div>
@@ -157,7 +186,7 @@
 						</div>
 					</div>
 
-					<?php if ($tasks != NULL): ?>
+					<?php if ($projects != NULL): ?>
 					<div class = "row">
 						<div class="col-md-12">
 							<div class="box box-danger">
@@ -166,23 +195,40 @@
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table table-hover no-margin" id = "allTaskTable">
-											<thead>
-											<tr>
-												<th width="1%"></th>
-												<th>Task</th>
-												<th>Project</th>
-												<th class="text-center">Start Date</th>
-												<th class="text-center">End Date</th>
-												<th class="text-center">Days Delayed</th>
-												<th class="text-center">Action</th>
-											</tr>
-											</thead>
-											<tbody id="taskAll">
-											</tbody>
-										</table>
+									<?php foreach($projects as $project):?>
+										<?php
+										$startDate = date_create($project['PROJECTSTARTDATE']);
+										$endDate = date_create($project['PROJECTENDDATE']);
+										?>
+									<div class="box">
+										<div class="box-header with-border">
+											<h3 class="box-title">
+												<?php echo $project['PROJECTTITLE'];?>
+												(<?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>)
+											</h3>
+										</div>
+										<!-- /.box-header -->
+										<div class="box-body">
+											<div class="table-responsive">
+												<table class="table table-hover no-margin" id = "allTaskTable">
+													<thead>
+													<tr>
+														<th width="1%"></th>
+														<th width="30%">Task</th>
+														<th width="25%">Project</th>
+														<th width="10%" class="text-center">Start Date</th>
+														<th width="10%" class="text-center">End Date</th>
+														<th width="10%" class="text-center">Days Delayed</th>
+														<th width="10%" class="text-center">Action</th>
+													</tr>
+													</thead>
+													<tbody id="taskAll-<?php echo $project['PROJECTID'];?>">
+													</tbody>
+												</table>
+											</div>
+										</div>
 									</div>
+								<?php endforeach;?>
 								</div>
 							</div>
 						</div>
@@ -229,7 +275,7 @@
 											<button id = "doneConfirmBtn" type="button" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
 										</div>
 								</div>
-							<!-- CONFIRM RFC -->
+							<!-- CONFIRM COMPLETE -->
 							<div id="doneConfirmDiv">
 								<div class="modal-body">
 									<h4>Are you sure you have completed this task?</h4>
@@ -314,6 +360,44 @@
 				</div>
 				<!-- END RFC MODAL -->
 
+				<!-- UPDATE MODAL -->
+				<div class="modal fade" id="modal-update" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h2 class="modal-title" id = "updateTitle">Task Updates</h2>
+								<h4 id="updateDates">Start Date - End Date (Days)</h4>
+							</div>
+							<div class="modal-body">
+								<div id="updateDiv">
+									<h4 style="margin-top:0">What happened to this task?</h4>
+									<form id = "updateForm" action="updateTask" method="POST" style="margin-bottom:0;">
+										<div class="form-group">
+											<textarea id = "remarksUpdate" name = "remarks" class="form-control" placeholder="Enter update"></textarea>
+										</div>
+										<div class="modal-footer">
+											<button id = "closeConfirmUpdateBtn" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+											<button id = "updateConfirmBtn" type="button" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+										</div>
+								</div>
+							<!-- CONFIRM UPDATE -->
+							<div id="updateConfirmDiv">
+								<div class="modal-body">
+									<h4>Are you sure you want to submit task update?</h4>
+								</div>
+								<div class="modal-footer">
+									<button id="backConfirmUpdate" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+									<button id = "confirmUpdate" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- END UPDATE MODAL -->
+
 				<!-- Task Details Modal -->
 				<div class="modal fade" id="taskDetails" tabindex="-1">
 					<div class="modal-dialog">
@@ -332,7 +416,7 @@
 								<br><br>
 
 								<div id="divRACI" class="divDetails">
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead id="raciHeader">
 											<th colspan = '4'>Current</th>
 											<tr>
@@ -346,7 +430,7 @@
 										</tbody>
 									</table>
 
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead>
 											<th colspan = '4'>History</th>
 											<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
@@ -363,7 +447,7 @@
 								</div>
 
 								<div id="divRFC" class="divDetails">
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead id="rfcHeader">
 											<tr>
 												<th width="1%" class='text-center'>Type</th>
@@ -380,7 +464,7 @@
 								</div>
 
 								<div id="divDelay" class="divDetails">
-									<table class="table table-bordered" id='projectDelayTable'>
+									<table class="table no-margin table-hover" id='projectDelayTable'>
 										<thead>
 											<th colspan = '2'>Project</th>
 											<tr id="affectedDelayHeader">
@@ -392,7 +476,7 @@
 										</tbody>
 									</table>
 
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead id="affectedDelay">
 											<th colspan = '5'>Affected Tasks Projection</th>
 											<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
@@ -410,7 +494,7 @@
 								</div>
 
 								<div id="divDependency" class="divDetails">
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead>
 											<th colspan = '5'>Pre-Requisites</th>
 											<tr class='text-center'><td id="preReqTitle" colspan='5'></td></tr>
@@ -426,7 +510,7 @@
 										</tbody>
 									</table>
 
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead>
 											<th colspan = '5'>Post-Requisites</th>
 											<tr class='text-center'><td id="postReqTitle" colspan='5'></td></tr>
@@ -537,7 +621,7 @@
 							{
 								var totalToDo = totalToDo+1;
 
-								$('#taskTable').append(
+								$('#taskTable-' + data['tasks'][i].PROJECTID).append(
 														 "<tr id='" + taskID + "'>" +
 														 status + "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails'" +
 														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
@@ -560,7 +644,7 @@
 
 							var total = total+1;
 
-							$('#taskAll').append(
+							$('#taskAll-' + data['tasks'][i].PROJECTID).append(
 													 "<tr id='" + taskID + "'>" +
 													 status + "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails'" +
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
@@ -606,17 +690,17 @@
  								 '<i class="fa fa-flag"></i></button></span>');
 							}
 
+							$(".action-" + taskID).append(
+							 '<span data-toggle="modal" data-target="#modal-update"><button type="button"' +
+							 'class="btn btn-primary btn-sm updateBtn" data-id="' + taskID +
+							 '" data-title="' + data['tasks'][i].TASKTITLE +
+							 '" data-start="'+ taskStart +
+							 '" data-end="'+ taskEnd +'" data-projEnd="'+ data['tasks'][i].PROJECTENDDATE +'" data-toggle="tooltip" data-placement="top" title="Update">' +
+							 '<i class="fa fa-commenting"></i></button></span>');
+
 							if(data['tasks'][i].TASKSTATUS == 'Ongoing') //if task is ongoing
 							{
 								var totalOngoing = totalOngoing+1;
-
-								// $(".action-" + taskID).append(
-								// 	 '<span data-toggle="modal" data-target="#modal-request"><button type="button"' +
-								// 	 'class="btn btn-warning btn-sm rfcBtn" data-id="' + taskID +
-								// 	 '" data-title="' + data['tasks'][i].TASKTITLE +
-								// 	 '" data-start="'+ taskStart +
-								// 	 '" data-end="'+ taskEnd +'" data-toggle="tooltip" data-placement="top" title="Request for Change">' +
-								// 	 '<i class="fa fa-flag"></i></button></span>');
 
 										 // AJAX TO CHECK IF DEPENDENCIES ARE COMPLETE
 		 								$.ajax({
@@ -679,28 +763,14 @@
 							}
 							else
 							{
-								// $(".action-" + taskID).append(
-								// 	 '<button disabled type="button"' +
-								// 	 'class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
-								// 	 '<i class="fa fa-flag"></i></button>');
-
 								 $(".action-" + taskID).append(
 									 '<button disabled type="button"' +
 									 'class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Task is not yet ongoing">' +
 									 '<i class="fa fa-check"></i></button>');
 							}
 						}
-						if(totalToDo <= 0)
-						{
-							$("#taskToDoTable").hide();
-						}
-						else
-						{
-							$("#emptyToDoTable").hide();
-						}
-						$('#totalToDo').html("Total<br><br><b>" + totalToDo + "</b>");
+						$('#totalToDo').html("Tasks<br><br><b>" + totalToDo + "</b>");
 						$('#totalDelayedToDo').html(totalDelayedToDo);
-						$('#total').html("Total<br><br><b>" + total + "</b>");
 						$('#totalDelayed').html(totalDelayed);
 						$('#totalOngoing').html("Ongoing<br><br><b>" + totalOngoing + "</b>");
 						$('#totalPlanned').html("Planned<br><br><b>" + totalPlanned + "</b>");
@@ -712,37 +782,37 @@
 				},
 				complete:function()
 				{
-					$('#allTaskTable').DataTable({
-						'paging'      : false,
-						'lengthChange': false,
-						'searching'   : true,
-						'ordering'    : true,
-						'info'        : false,
-						'autoWidth'   : false,
-						'order'				: [[ 5, "desc" ]],
-						'columnDefs'	: [
-						{
-							'targets'		: [ 0, 6 ],
-							'orderable'	: false
-						} ]
-					});
-					if(totalToDo>=0)
-					{
-						$('#toDoTable').DataTable({
-							'paging'      : false,
-							'lengthChange': false,
-							'searching'   : true,
-							'ordering'    : true,
-							'info'        : false,
-							'autoWidth'   : false,
-							'order'				: [[ 4, "desc" ]],
-							'columnDefs'	: [
-							{
-								'targets'		: [ 0, 5 ],
-								'orderable'	: false
-							} ]
-						});
-					}
+				// 	$('#allTaskTable').DataTable({
+				// 		'paging'      : false,
+				// 		'lengthChange': false,
+				// 		'searching'   : true,
+				// 		'ordering'    : true,
+				// 		'info'        : false,
+				// 		'autoWidth'   : false,
+				// 		'order'				: [[ 5, "desc" ]],
+				// 		'columnDefs'	: [
+				// 		{
+				// 			'targets'		: [ 0, 6 ],
+				// 			'orderable'	: false
+				// 		} ]
+				// 	});
+				// 	if(totalToDo>=0)
+				// 	{
+				// 		$('#toDoTable').DataTable({
+				// 			'paging'      : false,
+				// 			'lengthChange': false,
+				// 			'searching'   : true,
+				// 			'ordering'    : true,
+				// 			'info'        : false,
+				// 			'autoWidth'   : false,
+				// 			'order'				: [[ 4, "desc" ]],
+				// 			'columnDefs'	: [
+				// 			{
+				// 				'targets'		: [ 0, 5 ],
+				// 				'orderable'	: false
+				// 			} ]
+				// 		});
+				// 	}
 				}
 			});
 
@@ -916,13 +986,8 @@
 		 });
 
 		 $("body").on('click','#doneConfirmBtn',function(){
-			 // if(!$("#remarks").val().match(/^[0-9a-zA-Z]+$/)){
-				//  alert("Please enter remarks"); //insert in line error message
-			 // }
-			 // else {
-				 $("#doneDiv").hide();
-				 $("#doneConfirmDiv").show();
-			 // }
+			 $("#doneDiv").hide();
+			 $("#doneConfirmDiv").show();
 		 });
 
 		 $("body").on('click','#backConfirmDone',function(){
@@ -1372,6 +1437,44 @@
 			 $("#divDelay").show();
 		 });
 		 // END TASK DETAILS
+
+		 // TASK UPDATE
+		 $("body").on('click','.updateBtn',function(){
+			var $id = $(this).attr('data-id');
+			var $title = $(this).attr('data-title');
+			var $start = new Date($(this).attr('data-start'));
+			var $end = new Date($(this).attr('data-end'));
+			var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+			$("#updateTitle").html($title);
+			$("#updateDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+			if($diff > 1)
+				$("#updateDates").append(" days)");
+			else
+				$("#updateDates").append(" day)");
+			$("#updateConfirmBtn").attr("data-id", $id); //pass data id to confirm button
+		});
+
+		$("body").on('click','#confirmUpdate',function(){
+			var $id = $("#updateConfirmBtn").attr('data-id');
+			$("#updateForm").attr("name", "formSubmit");
+			$("#updateForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+		});
+
+		$("#updateConfirmDiv").hide();
+
+		$("body").on('click','#closeConfirmUpdateBtn',function(){
+			$("#remarksUpdate").val("");
+		});
+
+		$("body").on('click','#updateConfirmBtn',function(){
+			$("#updateDiv").hide();
+			$("#updateConfirmDiv").show();
+		});
+
+		$("body").on('click','#backConfirmUpdate',function(){
+			$("#updateDiv").show();
+			$("#updateConfirmDiv").hide();
+		});
 
 		</script>
 	</body>

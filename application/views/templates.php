@@ -32,12 +32,12 @@
 					<!-- /.box-header -->
 
 					<div class="box-body">
-						<table id="templateList" class="table table-bordered table-hover">
+						<table id="templateList" class="table no-margin table-hover">
 							<thead>
 							<tr>
 								<th>Project</th>
 								<th>Owner</th>
-								<th>Period</th>
+								<th class=text-center>Period</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -59,7 +59,7 @@
 										$diff = (int)$dFormat + 1;
 									?>
 
-									<td>
+									<td align='center'>
 										<?php if($diff >= 1): ?>
 											<?php echo $diff . " day"; ?>
 										<?php else: ?>

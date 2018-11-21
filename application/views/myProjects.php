@@ -365,14 +365,14 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                <table id="projectList" class="table table-bordered table-hover">
+                <table id="projectList" class="table no-margin table-hover">
                   <thead>
                     <tr>
                       <th width="1%"></th>
                       <th>Project Title</th>
-                      <th>Start Date</th>
-                      <th>Target End Date</th>
-                      <th>Progress</th>
+                      <th class=text-center>Start Date</th>
+                      <th class=text-center>Target End Date</th>
+                      <th class=text-center>Progress</th>
                     </tr>
                   </thead>
 
@@ -394,9 +394,9 @@
 
                           <td class="bg-teal"></td>
                           <td><?php echo $value['PROJECTTITLE']; ?></td>
-                          <td><?php echo date_format($completedStart, "M d, Y");?></td>
-                          <td><?php echo date_format($completedEnd, "M d, Y");?></td>
-                          <td>100%</td>
+                          <td class=text-center><?php echo date_format($completedStart, "M d, Y");?></td>
+                          <td class=text-center><?php echo date_format($completedEnd, "M d, Y");?></td>
+                          <td class=text-center>100%</td>
                         </tr>
                       <?php endforeach;?>
                     </tr>
@@ -417,9 +417,9 @@
 
                             <td class="bg-red"></td>
                             <td><?php echo $value['PROJECTTITLE']; ?></td>
-                            <td><?php echo date_format($delayedStart, "M d, Y");?></td>
-                            <td><?php echo date_format($delayedEnd, "M d, Y");?></td>
-                            <td>
+                            <td class=text-center><?php echo date_format($delayedStart, "M d, Y");?></td>
+                            <td class=text-center><?php echo date_format($delayedEnd, "M d, Y");?></td>
+                            <td class=text-center>
                             <?php
                               foreach ($delayedProjectProgress as $row)
                               {
@@ -449,9 +449,9 @@
 
                           <td class="bg-green"></td>
                           <td><?php echo $value['PROJECTTITLE']; ?></td>
-                          <td><?php echo date_format($ongoingStart, "M d, Y");?></td>
-                          <td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-                          <td>
+                          <td class=text-center><?php echo date_format($ongoingStart, "M d, Y");?></td>
+                          <td class=text-center><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+                          <td class=text-center>
                           <?php
                             foreach ($ongoingProjectProgress as $row)
                             {
@@ -481,9 +481,9 @@
 
                           <td class="bg-yellow"></td>
                           <td><?php echo $row['PROJECTTITLE']; ?></td>
-                          <td><?php echo date_format($plannedStart, "M d, Y");?></td>
-                          <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-                          <td>0.00%</td>
+                          <td class=text-center><?php echo date_format($plannedStart, "M d, Y");?></td>
+                          <td class=text-center><?php echo date_format($plannedEnd, "M d, Y");?></td>
+                          <td class=text-center>0.00%</td>
                         </tr>
                       <?php endforeach;?>
                     </tr>
@@ -781,14 +781,14 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                <table id="projectList" class="table table-bordered table-hover">
+                <table id="projectList" class="table no-margin table-hover">
                   <thead>
                   <tr>
                     <th width="1%"></th>
                     <th>Project Title</th>
-                    <th>Start Date</th>
-                    <th>Target End Date</th>
-                    <th>Progress</th>
+                    <th class=text-center>Start Date</th>
+                    <th class=text-center>Target End Date</th>
+                    <th class=text-center>Progress</th>
                   </tr>
                   </thead>
 
@@ -810,9 +810,9 @@
 
                           <td class="bg-teal"></td>
                           <td><?php echo $value['PROJECTTITLE']; ?></td>
-                          <td><?php echo date_format($completedStart, "M d, Y");?></td>
-                          <td><?php echo date_format($completedEnd, "M d, Y");?></td>
-                          <td>100%</td>
+                          <td class=text-center><?php echo date_format($completedStart, "M d, Y");?></td>
+                          <td class=text-center><?php echo date_format($completedEnd, "M d, Y");?></td>
+                          <td class=text-center>100%</td>
                         </tr>
                       <?php endforeach;?>
                     </tr>
@@ -833,9 +833,9 @@
 
                         <td class="bg-red"></td>
                         <td><?php echo $value['PROJECTTITLE']; ?></td>
-                        <td><?php echo date_format($delayedStart, "M d, Y");?></td>
-                        <td><?php echo date_format($delayedEnd, "M d, Y");?></td>
-                        <td>
+                        <td class=text-center><?php echo date_format($delayedStart, "M d, Y");?></td>
+                        <td class=text-center><?php echo date_format($delayedEnd, "M d, Y");?></td>
+                        <td class=text-center>
                           <?php
                             foreach ($delayedTeamProjectProgress as $row)
                             {
@@ -866,9 +866,9 @@
 
                       <td class="bg-green"></td>
                       <td><?php echo $value['PROJECTTITLE']; ?></td>
-                      <td><?php echo date_format($ongoingStart, "M d, Y");?></td>
-                      <td><?php echo date_format($ongoingEnd, "M d, Y");?></td>
-                      <td>
+                      <td class=text-center><?php echo date_format($ongoingStart, "M d, Y");?></td>
+                      <td class=text-center><?php echo date_format($ongoingEnd, "M d, Y");?></td>
+                      <td class=text-center>
                         <?php
                           foreach ($ongoingTeamProjectProgress as $row)
                           {
@@ -898,9 +898,9 @@
 
                       <td class="bg-yellow"></td>
                       <td><?php echo $row['PROJECTTITLE']; ?></td>
-                      <td><?php echo date_format($plannedStart, "M d, Y");?></td>
-                      <td><?php echo date_format($plannedEnd, "M d, Y");?></td>
-                      <td>0.00%</td>
+                      <td class=text-center><?php echo date_format($plannedStart, "M d, Y");?></td>
+                      <td class=text-center><?php echo date_format($plannedEnd, "M d, Y");?></td>
+                      <td class=text-center>0.00%</td>
                     </tr>
                   <?php endforeach;?>
                 </tr>

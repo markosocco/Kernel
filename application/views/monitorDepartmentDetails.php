@@ -127,7 +127,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered responsive">
+							<table class="table table-hover no-margin">
                 <thead>
                   <tr>
 										<th width='.5%'></th>
@@ -234,7 +234,7 @@
 									<br><br>
 
                   <div id="divRACI" class="divDetails">
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead id="raciHeader">
 												<th colspan = '4'>Current</th>
 												<tr>
@@ -248,7 +248,7 @@
 											</tbody>
 										</table>
 
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead>
 												<th colspan = '4'>History</th>
 												<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
@@ -265,7 +265,7 @@
 									</div>
 
 									<div id="divRFC" class="divDetails">
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead id="rfcHeader">
 	                      <tr>
 	                        <th width="1%" class='text-center'>Type</th>
@@ -282,7 +282,7 @@
 									</div>
 
 									<div id="divDelay" class="divDetails">
-										<table class="table table-bordered" id='projectDelayTable'>
+										<table class="table no-margin table-hover" id='projectDelayTable'>
 											<thead>
 												<th colspan = '2'>Project</th>
 												<tr id="affectedDelayHeader">
@@ -294,7 +294,7 @@
 	                    </tbody>
                   	</table>
 
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead id="affectedDelay">
 												<th colspan = '5'>Affected Tasks Projection</th>
 												<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
@@ -312,7 +312,7 @@
 									</div>
 
 									<div id="divDependency" class="divDetails">
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead>
 												<th colspan = '5'>Pre-Requisites</th>
 												<tr class='text-center'><td id="preReqTitle" colspan='5'></td></tr>
@@ -328,7 +328,7 @@
 	                    </tbody>
                   	</table>
 
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead>
 												<th colspan = '5'>Post-Requisites</th>
 												<tr class='text-center'><td id="postReqTitle" colspan='5'></td></tr>

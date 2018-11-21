@@ -681,6 +681,42 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllTasksByUserByProject($id)
+  {
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' &&
+    projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' &&
+    tasks.CATEGORY = '3' && raci.ROLE = '1'";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllTasksByUserByProjectToDo($id)
+  {
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' &&
+    projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' &&
+    tasks.CATEGORY = '3' && raci.ROLE = '1' && DATE_ADD(CURDATE(), INTERVAL +2 day) >= tasks.TASKENDDATE";
+    $this->db->select('*');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   public function getAllACITasksByUser($id, $status)
   {
     $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '0' && raci.ROLE != '5'";
@@ -712,6 +748,38 @@ class model extends CI_Model
     $this->db->join('users', 'raci.users_USERID = users.USERID');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->group_by('tasks.TASKID');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getUniqueACIOngoingProjectsByUserByProject($id, $status)
+  {
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.TASKSTATUS = '$status' && tasks.CATEGORY = '3' && raci.ROLE != '0' && raci.ROLE != '5'";
+    $this->db->select('*, CURDATE() as "currentDate"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->group_by('projects.PROJECTID');
+    $this->db->order_by('tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getUniqueACIProjectsByUserByProject($id)
+  {
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.CATEGORY = '3' && raci.ROLE != '0' && raci.ROLE != '5'";
+    $this->db->select('*, CURDATE() as "currentDate"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->group_by('projects.PROJECTID');
     $this->db->order_by('tasks.TASKENDDATE');
     $this->db->where($condition);
 

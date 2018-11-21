@@ -481,36 +481,6 @@
 
 						</div>
 
-						<!-- <div id="workloadAssessment">
-
-							<div class="modal-header">
-								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
-								<table class="table">
-									<tbody>
-										<tr>
-											<td><h5 id = "workloadProjects">Total Projects: </h5></td>
-											<td><h5 id = "workloadDelayed">Delayed Tasks: </h5></td>
-										</tr>
-										<tr>
-											<td><h5 id = "workloadTasks">Total Tasks: </h5></td>
-											<td><h5 id = "workloadOngoing">OngoingTasks: </h5></td>
-										</tr>
-										<tr>
-											<td></td>
-											<td><h5 id = "workloadPlanned">Planned Tasks: </h5></td>
-										</tr>
-									<tbody>
-								</table>
-
-							</div>
-							<div class="modal-body" id = "workloadDiv">
-							</div>
-							<div class="modal-footer">
-								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
-							</div>
-
-						</div> -->
-
 						<!-- CONFIRM DELEGATE -->
 						<div id="delegateConfirm">
 							<div class="modal-body">
@@ -1003,7 +973,7 @@
 								<br><br>
 
 								<div id="divRFCEffect" class="divDetails">
-									<table class="table table-bordered" id="rfcEffectDateTable">
+									<table class="table no-margin table-hover" id="rfcEffectDateTable">
 										<thead id="rfcEffectDate">
 											<th colspan = '5'>Affected Tasks If Approved</th>
 											<tr class='text-center'><td id="rfcEffectDateTitle" colspan='5'></td></tr>
@@ -1021,7 +991,7 @@
 								</div>
 
 								<div id="divRACI" class="divDetails">
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead id="raciHeader">
 											<th colspan = '4'>Current</th>
 											<tr>
@@ -1035,7 +1005,7 @@
 										</tbody>
 									</table>
 
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead>
 											<th colspan = '4'>History</th>
 											<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
@@ -1052,7 +1022,7 @@
 								</div>
 
 								<div id="divRFC" class="divDetails">
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead id="rfcHeader">
 											<tr>
 												<th width="1%" class='text-center'>Type</th>
@@ -1069,7 +1039,7 @@
 								</div>
 
 								<div id="divDelay" class="divDetails">
-									<table class="table table-bordered" id='projectDelayTable'>
+									<table class="table no-margin table-hover" id='projectDelayTable'>
 										<thead>
 											<th colspan = '2'>Project</th>
 											<tr id="affectedDelayHeader">
@@ -1081,7 +1051,7 @@
 										</tbody>
 									</table>
 
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead id="affectedDelay">
 											<th colspan = '5'>Affected Tasks Projection</th>
 											<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
@@ -1099,7 +1069,7 @@
 								</div>
 
 								<div id="divDependency" class="divDetails">
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead>
 											<th colspan = '5'>Pre-Requisites</th>
 											<tr class='text-center'><td id="preReqTitle" colspan='5'></td></tr>
@@ -1115,7 +1085,7 @@
 										</tbody>
 									</table>
 
-									<table class="table table-bordered">
+									<table class="table no-margin table-hover">
 										<thead>
 											<th colspan = '5'>Post-Requisites</th>
 											<tr class='text-center'><td id="postReqTitle" colspan='5'></td></tr>

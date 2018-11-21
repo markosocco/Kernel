@@ -28,7 +28,7 @@
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-						<table id="reportList" class="table table-bordered table-hover">
+						<table id="reportList" class="table no-margin table-hover">
 							<tbody>
 								<!-- SHOW ONLY TO THOSE PO'S WITH ONGOING PROJECTS --> <!-- Change to $allOngoingProjects for restricted access -->
 								<?php if($_SESSION['usertype_USERTYPEID'] != 5 && $_SESSION['usertype_USERTYPEID'] != 1):?>

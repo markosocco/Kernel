@@ -31,15 +31,15 @@
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-						<table id="archiveList" class="table table-bordered table-hover">
+						<table id="archiveList" class="table no-margin table-hover">
 							<thead>
 							<tr>
 								<th width="35%">Project</th>
 								<th>Project Type</th>
 								<th>Owner</th>
-								<th width = "15%" class='text-center'>Start Date</th>
-								<th width = "15%" class='text-center'>Target<br>End Date</th>
-								<th width = "15%" class='text-center'>Actual End Date</th>
+								<th width = "10%" class='text-center'>Start Date</th>
+								<th width = "10%" class='text-center'>Target<br>End Date</th>
+								<th width = "10%" class='text-center'>Actual<br>End Date</th>
 							</tr>
 							</thead>
 							<tbody>

@@ -120,129 +120,146 @@
 								<h3 class = "projects" align="center">There are no projects</h3>
 							<?php else: ?>
               <?php foreach ($projects as $row): ?>
-								<h4><?php echo $row['PROJECTTITLE']; ?></h4>
-	              <table class="table table-bordered">
-	                <thead>
-	                  <tr>
-											<th width=".5%"></th>
-	                    <th width="27%">Task</th>
-	                    <th width="10%" class="text-center">Start Date</th>
-	                    <th width="10%" class="text-center">Target<br>End Date</th>
-	                    <th class="text-center" width="17.5%">A</th>
-	                    <th class="text-center" width="17.5%">C</th>
-	                    <th class="text-center" width="17.5%">I</th>
-											<th class="text-center">Action</th>
-	                  </tr>
-	                </thead>
-	                <tbody>
-	                  <?php foreach ($tasks as $t): ?>
-											<?php if ($row['PROJECTID'] == $t['PROJECTID']): ?>
-												<?php
-												if($t['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
-													$startDate = date_create($t['TASKSTARTDATE']);
-												else
-													$startDate = date_create($t['TASKADJUSTEDSTARTDATE']);
+								<?php
+								$startDate = date_create($row['PROJECTSTARTDATE']);
+								$endDate = date_create($row['PROJECTENDDATE']);
+								?>
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">
+											<?php echo $row['PROJECTTITLE'];?>
+											(<?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>)
+										</h3>
+									</div>
+										<div class="box-body">
+											<div class='table-responsive'>
 
-												if($t['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-													$endDate = $t['TASKENDDATE'];
-												else
-													$endDate = $t['TASKADJUSTEDENDDATE'];
+												<table class="table table-hover no-margin">
+					                <thead>
+					                  <tr>
+															<th width=".5%"></th>
+					                    <th width="27%">Task</th>
+					                    <th width="10%" class="text-center">Start Date</th>
+					                    <th width="10%" class="text-center">Target<br>End Date</th>
+					                    <th class="text-center" width="17.5%">A</th>
+					                    <th class="text-center" width="17.5%">C</th>
+					                    <th class="text-center" width="17.5%">I</th>
+															<th class="text-center">Action</th>
+					                  </tr>
+					                </thead>
+					                <tbody>
+					                  <?php foreach ($tasks as $t): ?>
+															<?php if ($row['PROJECTID'] == $t['PROJECTID']): ?>
+																<?php
+																if($t['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+																	$startDate = date_create($t['TASKSTARTDATE']);
+																else
+																	$startDate = date_create($t['TASKADJUSTEDSTARTDATE']);
 
-												if($endDate < $t['currDate'] && $t['TASKSTATUS'] == 'Ongoing')
-													$delay = "true";
-												else {
-													$delay = "false";
-												}
-												?>
-												<tr>
-													<?php if ($t['TASKSTATUS'] == 'Ongoing'): ?>
-														<?php if($endDate >= $t['currDate']):?>
-															<td data-toggle='modal' data-target='#taskDetails'
-															class='clickable task bg-green' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
-														<?php else:?>
-															<td data-toggle='modal' data-target='#taskDetails'
-															class='clickable task bg-red' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
-														<?php endif;?>
-													<?php elseif ($t['TASKSTATUS'] == 'Planning'): ?>
-														<td data-toggle='modal' data-target='#taskDetails'
-														class='clickable task bg-yellow' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
-													<?php elseif ($t['TASKSTATUS'] == 'Complete'): ?>
-														<td data-toggle='modal' data-target='#taskDetails'
-														class='clickable task bg-teal' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
-													<?php else: ?>
-														<td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
-													<?php endif; ?>
-													<!-- <td></td> -->
-													<td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
-														<?php echo $t['TASKTITLE']; ?>
-													</td>
+																if($t['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+																	$endDate = $t['TASKENDDATE'];
+																else
+																	$endDate = $t['TASKADJUSTEDENDDATE'];
 
-													<?php
-														if($t['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-															$endDate = $t['TASKENDDATE'];
-														else
-															$endDate = $t['TASKADJUSTEDENDDATE'];
+																if($endDate < $t['currDate'] && $t['TASKSTATUS'] == 'Ongoing')
+																	$delay = "true";
+																else {
+																	$delay = "false";
+																}
+																?>
+																<tr>
+																	<?php if ($t['TASKSTATUS'] == 'Ongoing'): ?>
+																		<?php if($endDate >= $t['currDate']):?>
+																			<td data-toggle='modal' data-target='#taskDetails'
+																			class='clickable task bg-green' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
+																		<?php else:?>
+																			<td data-toggle='modal' data-target='#taskDetails'
+																			class='clickable task bg-red' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
+																		<?php endif;?>
+																	<?php elseif ($t['TASKSTATUS'] == 'Planning'): ?>
+																		<td data-toggle='modal' data-target='#taskDetails'
+																		class='clickable task bg-yellow' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
+																	<?php elseif ($t['TASKSTATUS'] == 'Complete'): ?>
+																		<td data-toggle='modal' data-target='#taskDetails'
+																		class='clickable task bg-teal' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
+																	<?php else: ?>
+																		<td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>"></td>
+																	<?php endif; ?>
+																	<!-- <td></td> -->
+																	<td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
+																		<?php echo $t['TASKTITLE']; ?>
+																	</td>
 
-														if($t['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
-															$startDate = $t['TASKSTARTDATE'];
-														else
-															$startDate = $t['TASKADJUSTEDSTARTDATE'];
-													?>
+																	<?php
+																		if($t['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+																			$endDate = $t['TASKENDDATE'];
+																		else
+																			$endDate = $t['TASKADJUSTEDENDDATE'];
 
-			                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>" align='center'>
-														<?php echo date_format(date_create($startDate), "M d, Y"); ?>
-													</td>
-			                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>" align='center'>
-														<?php echo date_format(date_create($endDate), "M d, Y"); ?>
-													</td>
-			                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
-														<?php foreach ($raci as $raciRow): ?>
-															<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
-																<?php if ($raciRow['ROLE'] == '2'): ?>
-																	<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
-																<?php endif; ?>
+																		if($t['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+																			$startDate = $t['TASKSTARTDATE'];
+																		else
+																			$startDate = $t['TASKADJUSTEDSTARTDATE'];
+																	?>
+
+							                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>" align='center'>
+																		<?php echo date_format(date_create($startDate), "M d, Y"); ?>
+																	</td>
+							                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>" align='center'>
+																		<?php echo date_format(date_create($endDate), "M d, Y"); ?>
+																	</td>
+							                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
+																		<?php foreach ($raci as $raciRow): ?>
+																			<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
+																				<?php if ($raciRow['ROLE'] == '2'): ?>
+																					<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+																				<?php endif; ?>
+																			<?php endif; ?>
+																		<?php endforeach; ?>
+																	</td>
+							                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
+																		<?php foreach ($raci as $raciRow): ?>
+																			<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
+																				<?php if ($raciRow['ROLE'] == '3'): ?>
+																					<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+																				<?php endif; ?>
+																			<?php endif; ?>
+																		<?php endforeach; ?>
+																	</td>
+							                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
+																		<?php foreach ($raci as $raciRow): ?>
+																			<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
+																				<?php if ($raciRow['ROLE'] == '4'): ?>
+																					<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+																				<?php endif; ?>
+																			<?php endif; ?>
+																		<?php endforeach; ?>
+																	</td>
+																	<td align='center'>
+																		<?php if($t['TASKSTATUS'] != 'Complete'):?>
+																		<span data-toggle="modal" data-target="#modal-delegate">
+																		<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $t['TASKID'];?>"
+																		data-toggle="tooltip" data-placement="top" title="Delegate"
+																		data-id="<?php echo $t['TASKID'];?>"
+																		data-title="<?php echo $t['TASKTITLE'];?>"
+																		data-start="<?php echo $t['TASKSTARTDATE'];?>"
+																		data-end="<?php echo $t['TASKENDDATE'];?>">
+																			<i class="fa fa-users"></i>
+																		</button>
+																		</span>
+																	<?php else:?>
+																		<button type="button" class="btn btn-primary btn-sm" disabled><i class="fa fa-users"></i></button>
+																	<?php endif;?>
+																</td>
+							                  </tr>
 															<?php endif; ?>
 														<?php endforeach; ?>
-													</td>
-			                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
-														<?php foreach ($raci as $raciRow): ?>
-															<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
-																<?php if ($raciRow['ROLE'] == '3'): ?>
-																	<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
-																<?php endif; ?>
-															<?php endif; ?>
-														<?php endforeach; ?>
-													</td>
-			                    <td data-toggle='modal' data-target='#taskDetails' class='clickable task' data-id="<?php echo $t['TASKID'];?>" data-delay="<?php echo $delay;?>">
-														<?php foreach ($raci as $raciRow): ?>
-															<?php if ($t['TASKID'] == $raciRow['TASKID']): ?>
-																<?php if ($raciRow['ROLE'] == '4'): ?>
-																	<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
-																<?php endif; ?>
-															<?php endif; ?>
-														<?php endforeach; ?>
-													</td>
-													<td align='center'>
-														<?php if($t['TASKSTATUS'] != 'Complete'):?>
-														<span data-toggle="modal" data-target="#modal-delegate">
-														<button type="button" class="btn btn-primary btn-sm delegateBtn task-<?php echo $t['TASKID'];?>"
-														data-toggle="tooltip" data-placement="top" title="Delegate"
-														data-id="<?php echo $t['TASKID'];?>"
-														data-title="<?php echo $t['TASKTITLE'];?>"
-														data-start="<?php echo $t['TASKSTARTDATE'];?>"
-														data-end="<?php echo $t['TASKENDDATE'];?>">
-															<i class="fa fa-users"></i>
-														</button>
-														</span>
-													<?php else:?>
-														<button type="button" class="btn btn-primary btn-sm" disabled><i class="fa fa-users"></i></button>
-													<?php endif;?>
-												</td>
-			                  </tr>
-											<?php endif; ?>
-										<?php endforeach; ?>
-	                </tbody>
-	              </table>
+					                </tbody>
+					              </table>
+
+											</div>
+										</div>
+									</div>
 							<?php endforeach; ?>
 						<?php endif; ?>
               <!-- END LOOP HERE -->
@@ -511,36 +528,6 @@
 
 							</div>
 
-							<!-- <div id="workloadAssessment">
-
-								<div class="modal-header">
-									<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
-									<table class="table">
-										<tbody>
-											<tr>
-												<td><h5 id = "workloadProjects">Total Projects: </h5></td>
-												<td><h5 id = "workloadDelayed">Delayed Tasks: </h5></td>
-											</tr>
-											<tr>
-												<td><h5 id = "workloadTasks">Total Tasks: </h5></td>
-												<td><h5 id = "workloadOngoing">Ongoing Tasks: </h5></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td><h5 id = "workloadPlanned">Planned Tasks: </h5></td>
-											</tr>
-										<tbody>
-									</table>
-
-								</div>
-								<div class="modal-body" id = "workloadDiv">
-								</div>
-								<div class="modal-footer">
-									<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
-								</div>
-
-							</div> -->
-
 							<!-- CONFIRM DELEGATE -->
 							<div id="delegateConfirm">
 								<div class="modal-body">
@@ -574,7 +561,7 @@
 									<br><br>
 
                   <div id="divRACI" class="divDetails">
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead id="raciHeader">
 												<th colspan = '4'>Current</th>
 												<tr>
@@ -588,7 +575,7 @@
 											</tbody>
 										</table>
 
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead>
 												<th colspan = '4'>History</th>
 												<tr class='text-center'><td id="raciHistoryTitle" colspan='4'></td></tr>
@@ -605,7 +592,7 @@
 									</div>
 
 									<div id="divRFC" class="divDetails">
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead id="rfcHeader">
 	                      <tr>
 	                        <th width="1%" class='text-center'>Type</th>
@@ -622,7 +609,7 @@
 									</div>
 
 									<div id="divDelay" class="divDetails">
-										<table class="table table-bordered" id='projectDelayTable'>
+										<table class="table no-margin table-hover" id='projectDelayTable'>
 											<thead>
 												<th colspan = '2'>Project</th>
 												<tr id="affectedDelayHeader">
@@ -634,7 +621,7 @@
 											</tbody>
 										</table>
 
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead id="affectedDelay">
 												<th colspan = '5'>Affected Tasks Projection</th>
 												<tr class='text-center'><td id="affectedTitle" colspan='5'></td></tr>
@@ -652,7 +639,7 @@
 									</div>
 
 									<div id="divDependency" class="divDetails">
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead>
 												<th colspan = '5'>Pre-Requisites</th>
 												<tr class='text-center'><td id="preReqTitle" colspan='5'></td></tr>
@@ -668,7 +655,7 @@
 	                    </tbody>
                   	</table>
 
-										<table class="table table-bordered">
+										<table class="table no-margin table-hover">
 											<thead>
 												<th colspan = '5'>Post-Requisites</th>
 												<tr class='text-center'><td id="postReqTitle" colspan='5'></td></tr>

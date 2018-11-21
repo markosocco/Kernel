@@ -31,7 +31,7 @@
 						<!-- /.box-header -->
 
 						<div class="box-body">
-							<table id="rfcList" class="table table-bordered table-hover">
+							<table id="rfcList" class="table no-margin table-hover">
 								<thead>
 								<tr>
 									<th width="10%" class="text-center">Date Requested</th>
@@ -101,7 +101,7 @@
 							<!-- /.box-header -->
 
 							<div class="box-body">
-								<table id="userrfcList" class="table table-bordered table-hover">
+								<table id="userrfcList" class="table no-margin table-hover">
 									<thead>
 									<tr>
 										<th width="10%" class="text-center">Date Requested</th>

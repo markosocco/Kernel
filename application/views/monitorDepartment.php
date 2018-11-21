@@ -99,7 +99,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<?php if($delayedTasks != NULL):?>
-									<table class="table table-bordered responsive">
+										<table class="table table-hover no-margin">
 		                <thead>
 		                  <tr>
 		                    <th width="50%">Task</th>

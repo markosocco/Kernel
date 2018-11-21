@@ -3009,6 +3009,8 @@ class controller extends CI_Controller
 		else
 		{
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+			$data['projects'] = $this->model->getAllTasksByUserByProject($_SESSION['USERID']);
+			$data['projectsToDo'] = $this->model->getAllTasksByUserByProjectToDo($_SESSION['USERID']);
 
 			$this->load->view("taskTodo", $data);
 		}
@@ -3070,6 +3072,10 @@ class controller extends CI_Controller
 
 		else
 		{
+			$data['allOngoingACIprojects'] = $this->model->getUniqueACIOngoingProjectsByUserByProject($_SESSION['USERID'], "Ongoing");
+
+			$data['allACIprojects'] = $this->model->getUniqueACIProjectsByUserByProject($_SESSION['USERID']);
+
 			$data['allPlannedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Planning");
 			$data['uniquePlannedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Planning");
 
