@@ -71,9 +71,6 @@
 
           <!-- BAR CHART -->
           <div class="box box-default">
-            <!-- <div class="box-header with-border">
-              <h3 class="box-title">Bar Chart</h3>
-            </div> -->
             <div class="box-body">
               <div class="chart">
                 <canvas id="barChart" style="height:180px"></canvas>

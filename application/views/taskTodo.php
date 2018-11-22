@@ -58,7 +58,7 @@
 												</div>
 													<div class="box-body">
 														<div class="table-responsive">
-															<table class="table table-hover no-margin" id="toDoTable">
+															<table class="table table-hover no-margin toDoTable">
 																<thead>
 																<tr>
 																	<th width="1%"></th>
@@ -304,14 +304,15 @@
 							<div class="modal-body">
 								<div id = 'request'>
 								<form id = "requestForm" action = "submitRFC" method = "POST" style="margin-bottom:0;">
-									<div class="form-group">
-										<label>Request Type</label>
-										<select class="form-control" id="rfcType" name="rfcType">
-											<option disabled selected value="0"> -- Select Request Type -- </option>
-											<option value="1">Change Task Performer</option>
-											<option value="2">Change Task Dates</option>
-										</select>
+
+									<h5><b>Request Type: </b></h5>
+									<div class="btn-group">
+										<button type="button" id = "changePerfBtn" value = '1' class="btn btn-default requestType">Change Performer</button>
+										<button type="button" id = "changeDateBtn" value = '2' class="btn btn-default requestType">Change End Date</button>
 									</div>
+									<br><br>
+
+									<input id="rfcType" type='hidden' name='rfcType' value= "">
 
 							<div id="rfcForm">
 									<!-- DISPLAY IF CHANGE TASK DATE OPTION -->
@@ -800,37 +801,37 @@
 				},
 				complete:function()
 				{
-				// 	$('#allTaskTable').DataTable({
-				// 		'paging'      : false,
-				// 		'lengthChange': false,
-				// 		'searching'   : true,
-				// 		'ordering'    : true,
-				// 		'info'        : false,
-				// 		'autoWidth'   : false,
-				// 		'order'				: [[ 5, "desc" ]],
-				// 		'columnDefs'	: [
-				// 		{
-				// 			'targets'		: [ 0, 6 ],
-				// 			'orderable'	: false
-				// 		} ]
-				// 	});
-				// 	if(totalToDo>=0)
-				// 	{
-				// 		$('#toDoTable').DataTable({
-				// 			'paging'      : false,
-				// 			'lengthChange': false,
-				// 			'searching'   : true,
-				// 			'ordering'    : true,
-				// 			'info'        : false,
-				// 			'autoWidth'   : false,
-				// 			'order'				: [[ 4, "desc" ]],
-				// 			'columnDefs'	: [
-				// 			{
-				// 				'targets'		: [ 0, 5 ],
-				// 				'orderable'	: false
-				// 			} ]
-				// 		});
-				// 	}
+					// $('.allTasks').DataTable({
+					// 	'paging'      : false,
+					// 	'lengthChange': false,
+					// 	'searching'   : true,
+					// 	'ordering'    : true,
+					// 	'info'        : false,
+					// 	'autoWidth'   : false,
+					// 	'order'				: [[ 5, "desc" ]],
+					// 	'columnDefs'	: [
+					// 	{
+					// 		'targets'		: [ 0, 6 ],
+					// 		'orderable'	: false
+					// 	} ]
+					// });
+					// if(totalToDo>=0)
+					// {
+					// 	$('.toDoTable').DataTable({
+					// 		'paging'      : false,
+					// 		'lengthChange': false,
+					// 		'searching'   : true,
+					// 		'ordering'    : true,
+					// 		'info'        : false,
+					// 		'autoWidth'   : false,
+					// 		'order'				: [[ 4, "desc" ]],
+					// 		'columnDefs'	: [
+					// 		{
+					// 			'targets'		: [ 0, 5 ],
+					// 			'orderable'	: false
+					// 		} ]
+					// 	});
+					// }
 				}
 			});
 
@@ -903,18 +904,8 @@
 			 });
 
 			 $("body").on('click','#rfcConfirm',function(){
-				 // if($("#rfcType").val() == null)
-				 // {
-					//  alert("Please choose a request type"); //insert in line error message
-				 // }
-				 // else if(!$("#rfcReason").val().match(/^[0-9a-zA-Z]+$/) || ($("#rfcType").val() == '2' && $("#endDate").val() == ""))
-				 // {
-					//  alert("Please complete the form"); //insert in line error message
-				 // }
-				 // else {
-					 $("#request").hide();
-  				 $("#submitConfirm").show();
-				 // }
+				 $("#request").hide();
+				 $("#submitConfirm").show();
 			 });
 
 			 $("body").on('click','#backConfirm',function(){
@@ -922,40 +913,43 @@
 				 $("#submitConfirm").hide();
 			 });
 
-			 $("body").on('change','#rfcType',function(){
-				 if($(this).val() == "1") //if Change Task Performer is selected
-				 {
-					 $("#rfcForm").show();
-					 $("#newDateDiv").hide();
-					 $("#rfcReason").show();
-					 $("#startDate").attr("required", false);
-					 $("#endDate").attr("required", false);
-				 }
-				 else // if Change Task Dates is selected
-				 {
-					 $("#rfcForm").show();
-					 $("#newDateDiv").show();
-					 $("#rfcReason").show();
+			 $(".btn-group > .btn").click(function(){
+ 			    $(".btn-group > .btn").removeClass("active");
+ 			    $(this).addClass("active");
+ 					$("#rfcType").attr("value", $(this).val());
+ 			});
 
-					 if($("#rfcSubmit").attr('data-date') == 'true') // IF TASK IS ONGOING
-					 {
-						 $(".start").hide();
-					 }
-					 else
-					 {
-						 $(".start").show();
-						 $(".end").show();
-					 }
+			 $("body").on('click','#changePerfBtn',function(){
+				 $("#rfcForm").show();
+				 $("#newDateDiv").hide();
+				 $("#rfcReason").show();
+				 $("#startDate").attr("required", false);
+				 $("#endDate").attr("required", false);
+			 });
 
-					 //Date picker
-					 $('#endDate').datepicker({
-							format: 'yyyy-mm-dd',
-							startDate: $('#rfcSubmit').attr('data-end'),
-							endDate: $('#rfcSubmit').attr('data-projEnd'),
-							autoclose: true,
-							orientation: 'auto'
-						});
+			 $("body").on('click','#changeDateBtn',function(){
+				 $("#rfcForm").show();
+				 $("#newDateDiv").show();
+				 $("#rfcReason").show();
+
+				 if($("#rfcSubmit").attr('data-date') == 'true') // IF TASK IS ONGOING
+				 {
+					 $(".start").hide();
 				 }
+				 else
+				 {
+					 $(".start").show();
+					 $(".end").show();
+				 }
+
+				 //Date picker
+				 $('#endDate').datepicker({
+						format: 'yyyy-mm-dd',
+						startDate: $('#rfcSubmit').attr('data-end'),
+						endDate: $('#rfcSubmit').attr('data-projEnd'),
+						autoclose: true,
+						orientation: 'auto'
+					});
 			 });
 
 			 // END RFC SCRIPT

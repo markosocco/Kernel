@@ -110,7 +110,7 @@
                       <td>
                         <!-- LAST WEEK/MONTH  -->
                         <!-- TOTAL PROGRESS -->
-                        <h4>Past Progress</h4>
+                        <h4>Last <?php echo $intervalWord;?>'s Progress</h4>
                         <?php
                           $mWeight = 0;
 
@@ -154,16 +154,6 @@
                               <?php endforeach;?>
 
                           <?php endforeach; ?>
-
-                          <!-- <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
-                            Main 2 (10%)
-                          </div>
-                          <div class="progress-bar" role="progressbar" style="width:10%; background-color:#005b96 !important;">
-                            Main 3 (10%)
-                          </div>
-                          <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
-                            Main 1 (10%)
-                          </div> -->
                         </div>
                       </td>
                     </tr>
@@ -215,16 +205,6 @@
                               <?php endforeach;?>
 
                           <?php endforeach; ?>
-
-                          <!-- <div class="progress-bar" role="progressbar" style="width:15%; background-color:#03396c !important;">
-                            Main 2 (10%)
-                          </div>
-                          <div class="progress-bar" role="progressbar" style="width:10%; background-color:#005b96 !important;">
-                            Main 3 (10%)
-                          </div>
-                          <div class="progress-bar" role="progressbar" style="width:5%; background-color:#6497b1 !important;">
-                            Main 1 (10%)
-                          </div> -->
                         </div>
                       </td>
                     </tr>
@@ -330,7 +310,7 @@
                     </table>
     							</div>
                 <?php else:?>
-                    <h5 align="center">There were No Tasks Accomplished Last <?php echo $intervalWord;?></h5>
+                    <h5 align="center">There were no tasks accomplished last <?php echo strtolower($intervalWord);?></h5>
                 <?php endif;?>
   						</div>
   	        </div>

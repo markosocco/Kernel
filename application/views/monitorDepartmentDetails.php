@@ -103,7 +103,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Completed <br><br><b><?php echo $completed ;?></b></h4>
+										<h4 align="center"> Planned <br><br><b><?php echo $planned ;?></b></h4>
 									</div>
 								</div>
 							</div>
@@ -114,7 +114,7 @@
 								<!-- /.box-header -->
 								<div class="box-body">
 									<div class="table-responsive">
-										<h4 align="center"> Planned <br><br><b><?php echo $planned ;?></b></h4>
+										<h4 align="center"> Completed <br><br><b><?php echo $completed ;?></b></h4>
 									</div>
 								</div>
 							</div>
