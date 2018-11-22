@@ -642,6 +642,7 @@
 					<div class="modal-body">
 						<div class="btn-group">
 							<button type="button" id = "tabDependency" class="btn btn-default tabDetails">Dependencies</button>
+							<button type="button" id = "tabUpdates" class="btn btn-default tabDetails">Updates</button>
 							<button type="button" id = "tabRACI" class="btn btn-default tabDetails">RACI</button>
 						</div>
 						<br><br>
@@ -674,6 +675,22 @@
 									</tr>
 								</thead>
 								<tbody id="raciHistoryTable">
+								</tbody>
+							</table>
+						</div>
+
+						<div id="divUpdates" class="divDetails">
+							<table class="table table-hover no-margin">
+								<thead>
+									<th colspan = '3'>Task Updates</th>
+									<tr class='text-center'><td id="taskUpdatesTitle" colspan='3'></td></tr>
+									<tr id="updateHeader">
+										<th width="20%" class='text-center'>Date</th>
+										<th width="60%">Update</th>
+										<th width="20%">Updated By</th>
+									</tr>
+								</thead>
+								<tbody id="updatesTable">
 								</tbody>
 							</table>
 						</div>
@@ -1333,6 +1350,42 @@
 					alert("There was a problem in retrieving the task details");
 				}
 				});
+
+				// TASK UPDATES
+ 				$.ajax({
+ 				 type:"POST",
+ 				 url: "<?php echo base_url("index.php/controller/getTaskUpdates"); ?>",
+ 				 data: {task_ID: $taskID},
+ 				 dataType: 'json',
+ 				 success:function(taskUpdates)
+ 				 {
+					 if(taskUpdates.length > 0)
+					 {
+						 $('#updatesTable').html("");
+						 $("#taskUpdatesTitle").hide();
+						 $('#updateHeader').show();
+						 for(i=0; i< taskUpdates.length; i++)
+						 {
+							 $('#updatesTable').append(
+														"<tr>" +
+														"<td align='center'>" + moment(taskUpdates[i].COMMENTDATE).format('MMM DD, YYYY') +"</td>"+
+														"<td>" + taskUpdates[i].COMMENT +"</td>"+
+														"<td>" + taskUpdates[i].FIRSTNAME + " " + taskUpdates[i].LASTNAME + "</td>" + "</tr>");
+						 }
+					 }
+					 else
+					 {
+						 $('#taskUpdatesTitle').html("There are no task updates");
+						 $("#updateHeader").hide();
+						 $('#updatesTable').html("");
+						 $("#taskUpdatesTitle").show();
+					 }
+				 },
+ 				 error:function()
+ 				 {
+ 					 alert("There was a problem in retrieving the task updates");
+ 				 }
+ 				 });
 		 });
 
 		 // TASK DETAILS TABS
@@ -1341,6 +1394,13 @@
 			 $(".tabDetails").removeClass('active');
 			 $(this).addClass('active')
 			 $("#divDependency").show();
+		 });
+
+		 $(document).on("click", "#tabUpdates", function(){
+			 $(".divDetails").hide();
+			 $(".tabDetails").removeClass('active');
+			 $(this).addClass('active')
+			 $("#divUpdates").show();
 		 });
 
 		 $(document).on("click", "#tabRACI", function(){

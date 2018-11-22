@@ -2744,5 +2744,23 @@ class model extends CI_Model
 
     return $this->db->get()->row('weight');
   }
+
+  public function addTaskUpdate($data)
+  {
+    $this->db->insert('taskupdates', $data);
+    return true;
+  }
+
+  public function getTaskUpdatesByID($taskID)
+  {
+    $condition = "taskupdates.tasks_TASKID = '$taskID'";
+    $this->db->select('*');
+    $this->db->from('taskUpdates');
+    $this->db->join('tasks', 'tasks.taskid = taskupdates.tasks_TASKID');
+    $this->db->join('users', 'users.userid = taskupdates.users_COMMENTEDBY');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

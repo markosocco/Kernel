@@ -6614,7 +6614,42 @@ class controller extends CI_Controller
 
 		echo json_encode($affectedTasks);
 	}
+
+	public function updateTask()
+	{
+		if ($this->input->post("remarksUpdate") == NULL)
+		{
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Please provide an update for this task');
+
+		}
+		else
+		{
+			$data = array(
+				'tasks_TASKID' => $this->input->post("task_ID"),
+				'COMMENT' => $this->input->post("remarksUpdate"),
+				'users_COMMENTEDBY' => $_SESSION['USERID'],
+				'COMMENTDATE' =>date('Y-m-d')
+			);
+			$this->model->addTaskUpdate($data);
+
+			$this->session->set_flashdata('success', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Task update submitted');
+		}
+		redirect('controller/' . $this->input->post("page"));
+	}
+
+	public function getTaskUpdates()
+	{
+		$taskID = $this->input->post("task_ID");
+		$taskUpdates = $this->model->getTaskUpdatesByID($taskID);
+
+		echo json_encode($taskUpdates);
+	}
+
 }
+
+
 
 class assessmentFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
 {
