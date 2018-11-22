@@ -1374,7 +1374,7 @@ class controller extends CI_Controller
 		    {
 		      $updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
 
-		      if($responsibleType == '5') //if to staff, remove delegation
+		      if($responsibleType == '5' || $responsibleEmp == $_SESSION['USERID']) //if to staff, remove delegation
 		      {
 		        $delegateDataNew = array(
 		          'ROLE' => '0',

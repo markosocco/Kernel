@@ -242,14 +242,16 @@
 																			</button>
 																			</span>
 																			<!-- <span data-toggle="modal" data-target="#modal-accept"> -->
-																			<button disabled id="taskAccept-<?php echo $task['TASKID'];?>" type="button" class="btn btn-success btn-sm acceptBtn"
-																			data-toggle="tooltip" data-placement="top" title="Accept"
-																			data-id="<?php echo $task['TASKID'];?>"
-																			data-title="<?php echo $task['TASKTITLE'];?>"
-																			data-start="<?php echo $task['TASKSTARTDATE'];?>"
-																			data-end="<?php echo $task['TASKENDDATE'];?>">
-																				<i class="fa fa-thumbs-up"></i>
-																			</button>
+																			<?php if($_SESSION['usertype_USERTYPEID'] == '4'):?>
+																				<button disabled id="taskAccept-<?php echo $task['TASKID'];?>" type="button" class="btn btn-success btn-sm acceptBtn"
+																				data-toggle="tooltip" data-placement="top" title="Accept"
+																				data-id="<?php echo $task['TASKID'];?>"
+																				data-title="<?php echo $task['TASKTITLE'];?>"
+																				data-start="<?php echo $task['TASKSTARTDATE'];?>"
+																				data-end="<?php echo $task['TASKENDDATE'];?>">
+																					<i class="fa fa-thumbs-up"></i>
+																				</button>
+																			<?php endif;?>
 																			<!-- </span> -->
 																		</td>
 																	</tr>
@@ -330,8 +332,6 @@
 													<th class='text-center'>A</th>
 													<th class='text-center'>C</th>
 													<th class='text-center'>I</th>
-													<!-- <th>No. of Projects (Ongoing & Planned)</th>
-													<th>No. of Tasks (Ongoing & Planned)</th> -->
 												</tr>
 												</thead>
 
@@ -563,36 +563,6 @@
 							</div>
 
 						</div>
-
-						<!-- <div id="workloadAssessment">
-
-							<div class="modal-header">
-								<h3 class="modal-title" id ="workloadEmployee">Employee Name</h3>
-								<table class="table">
-									<tbody>
-										<tr>
-											<td><h5 id = "workloadProjects">Total Projects: </h5></td>
-											<td><h5 id = "workloadDelayed">Delayed Tasks: </h5></td>
-										</tr>
-										<tr>
-											<td><h5 id = "workloadTasks">Total Tasks: </h5></td>
-											<td><h5 id = "workloadOngoing">Ongoing Tasks: </h5></td>
-										</tr>
-										<tr>
-											<td></td>
-											<td><h5 id = "workloadPlanned">Planned Tasks: </h5></td>
-										</tr>
-									<tbody>
-								</table>
-
-							</div>
-							<div class="modal-body" id = "workloadDiv">
-							</div>
-							<div class="modal-footer">
-								<button type="button" id="backWorkload" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Back"><i class="fa fa-arrow-left"></i></button>
-							</div>
-
-						</div> -->
 
 						<!-- CONFIRM DELEGATE -->
 						<div id="delegateConfirm">

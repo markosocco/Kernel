@@ -198,7 +198,7 @@
 							</div>
 						</div>
 
-						<div class="box box-danger">
+						<div class="box box-danger" id="delayedToDoBox">
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="table-responsive">
