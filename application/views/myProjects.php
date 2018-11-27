@@ -1166,9 +1166,9 @@
         case "filterDrafted": var filter = 'drafted'; break;
       }
 
-      if($("#projectView").css("display") == 'none' && $("#myTeamListView").css("display") == 'none')
+      if($("#myProjectsGridView").css("display") != 'none' && $("#myTeamListView").css("display") == 'none' && $("#myProjectsListView").css("display") == 'none')
       {
-        // alert("Team Projects in Grid View");
+        // Team Projects in Grid View
         $(".teamGrid").hide();
 
         if(filter == 'all')
@@ -1180,7 +1180,7 @@
           $('#' + filter + 'TeamGrid').show();
         }
       }
-      else if($("#projectView").css("display") == 'none' && $("#myTeamGridView").css("display") == 'none')
+      else if($("#myProjectsListView").css("display") != 'none' && $("#myTeamGridView").css("display") == 'none' && $("#myProjectsGridView").css("display") == 'none')
       {
         // Team Projects in List View
         $(".myTeam").hide();
@@ -1196,9 +1196,9 @@
           $("." + filter + "TeamList").show();
         }
       }
-      else if($("#teamView").css("display") == 'none' && $("#myProjectsListView").css("display") == 'none')
+      else if($("#myTeamGridView").css("display") != 'none' && $("#myProjectsListView").css("display") == 'none')
       {
-        // alert("My Projects in Grid View");
+        // My Projects in Grid View
         $(".projectsGrid").hide();
 
         if(filter == 'all')
@@ -1210,9 +1210,9 @@
           $('#' + filter + 'ProjGrid').show();
         }
       }
-      else if($("#teamView").css("display") == 'none' && $("#myProjectsGridView").css("display") == 'none')
+      else if($("#myTeamListView").css("display") != 'none' && $("#myProjectsGridView").css("display") == 'none')
       {
-        // alert("My Projects in List View");
+        // My Projects in List View
         $(".project").hide();
 
         if(filter == 'all')
