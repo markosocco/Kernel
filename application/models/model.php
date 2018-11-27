@@ -2497,6 +2497,7 @@ class model extends CI_Model
      $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
      $this->db->where($condition);
      $this->db->order_by('tasks.TASKSTARTDATE');
+     $this->db->group_by('tasks.TASKID');
 
      return $this->db->get()->result_array();
    }
@@ -2509,6 +2510,7 @@ class model extends CI_Model
      $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
      $this->db->where($condition);
      $this->db->order_by('tasks.TASKSTARTDATE');
+     $this->db->group_by('tasks.TASKID');
 
      return $this->db->get()->result_array();
    }

@@ -54,7 +54,8 @@
 											<h3 class="box-title">
 												<?php echo $project['PROJECTTITLE'];?>
 												(<?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>)
-											</h3>											</div>
+											</h3>
+										</div>
 										<!-- /.box-header -->
 										<div class="box-body">
 											<!-- <div class="table-responsive"> -->

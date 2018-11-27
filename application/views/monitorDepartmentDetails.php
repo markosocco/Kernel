@@ -122,99 +122,242 @@
 
 					</div>
 
-          <div class="box box-danger">
-            <div class="box-header with-border">
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-							<table class="table table-hover no-margin">
-                <thead>
-                  <tr>
-										<th width='.5%'></th>
-                    <th width="23.5%">Task</th>
-										<th width="8%" class='text-center'>Start Date</th>
-										<th width="8%" class='text-center'>Target<br>End Date</th>
-                    <th width="15%" class='text-center'>R</th>
-										<th width="15%" class='text-center'>A</th>
-										<th width="15%" class='text-center'>C</th>
-										<th width="15%" class='text-center'>I</th>
-                  </tr>
-                </thead>
-                <tbody>
-									<?php foreach($tasks as $task):?>
-										<?php
-										if($task['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
-											$startDate = date_create($task['TASKSTARTDATE']);
-										else
-											$startDate = date_create($task['TASKADJUSTEDSTARTDATE']);
+					<div class="box box-danger">
+  					<div class="box-body">
 
-										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
-											$endDate = $task['TASKENDDATE'];
-										else
-											$endDate = $task['TASKADJUSTEDENDDATE'];
+            <?php foreach($mainActivities as $mainActivity):?>
+							<?php
+								$startDate = date_create($mainActivity['TASKSTARTDATE']);
 
-										if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing')
-											$delay = "true";
-										else {
-											$delay = "false";
-										}
-										?>
-                  <tr class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails">
-										<?php if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
-											<td class='bg-red'></td>
-										<?php elseif($endDate >= $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
-											<td class='bg-green'></td>
-										<?php elseif($task['TASKSTATUS'] == 'Complete'):?>
-											<td class='bg-teal'></td>
-										<?php elseif($task['TASKSTATUS'] == 'Planning'):?>
-											<td class='bg-yellow'></td>
-										<?php endif;?>
-										<td><?php echo $task['TASKTITLE'];?></td>
-										<td align='center'><?php echo date_format($startDate, "M d, Y");?></td>
-										<td align='center'><?php echo date_format(date_create($endDate), "M d, Y");?></td>
-										<td>
-											<?php foreach ($raci as $raciRow): ?>
-												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
-													<?php if ($raciRow['ROLE'] == '1'): ?>
-														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
-													<?php endif; ?>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										</td>
-										<td>
-											<?php foreach ($raci as $raciRow): ?>
-												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
-													<?php if ($raciRow['ROLE'] == '2'): ?>
-														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
-													<?php endif; ?>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										</td>
-										<td>
-											<?php foreach ($raci as $raciRow): ?>
-												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
-													<?php if ($raciRow['ROLE'] == '3'): ?>
-														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
-													<?php endif; ?>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										</td>
-										<td>
-											<?php foreach ($raci as $raciRow): ?>
-												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
-													<?php if ($raciRow['ROLE'] == '4'): ?>
-														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
-													<?php endif; ?>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										</td>
-                  </tr>
-								<?php endforeach;?>
-                </tbody>
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
+								if($mainActivity['TASKADJUSTEDENDDATE'] == "")
+									$endDate = date_create($mainActivity['TASKENDDATE']);
+								else
+									$endDate = date_create($mainActivity['TASKADJUSTEDENDDATE']);
+							?>
+              <div class="box">
+								<div class="box-header">
+									<h3 class="box-title">
+										<?php echo $mainActivity['TASKTITLE'];?>
+										(<?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>)
+									</h3>
+								</div>
+        					<div class="box-body">
+                    <table class="table no-margin table-hover">
+        							<thead>
+                      <tr>
+                        <th colspan = '9'></th>
+                      </tr>
+        							<tr>
+                        <th width='.5%'></th>
+                        <th width="23.5%">Task</th>
+                        <th width="10%" class='text-center'>Start Date</th>
+                        <th width="10%" class='text-center'>Target<br>End Date</th>
+                        <th width="12%" class='text-center'>R</th>
+                        <th width="12%" class='text-center'>A</th>
+                        <th width="12%" class='text-center'>C</th>
+                        <th width="12%" class='text-center'>I</th>
+                        <th class='text-center' width='8%'>Action</th>
+        							</tr>
+        							</thead>
+        							<tbody>
+                        <?php foreach($subActivities as $subActivity):?>
+                          <?php if($subActivity['tasks_TASKPARENT'] == $mainActivity['TASKID']):?>
+														<?php
+															$startDate = date_create($subActivity['TASKSTARTDATE']);
+
+															if($subActivity['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+																$endDate = date_create($subActivity['TASKENDDATE']);
+															else
+																$endDate = date_create($subActivity['TASKADJUSTEDENDDATE']);
+														?>
+                            <tr>
+                              <td colspan = '9'><i><?php echo $subActivity['TASKTITLE'];?> (<?php echo date_format($startDate, "F d, Y");?> - <?php echo date_format($endDate, "F d, Y");?>)</i></td>
+                            </tr>
+                          <?php foreach($tasks as $task):?>
+                            <?php if($task['tasks_TASKPARENT'] == $subActivity['TASKID']):?>
+                              <?php
+          										if($task['TASKADJUSTEDSTARTDATE'] == "") // check if start date has been previously adjusted
+          											$startDate = date_create($task['TASKSTARTDATE']);
+          										else
+          											$startDate = date_create($task['TASKADJUSTEDSTARTDATE']);
+
+          										if($task['TASKADJUSTEDENDDATE'] == "") // check if end date has been previously adjusted
+          											$endDate = $task['TASKENDDATE'];
+          										else
+          											$endDate = $task['TASKADJUSTEDENDDATE'];
+
+          										if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing')
+          											$delay = "true";
+          										else {
+          											$delay = "false";
+          										}
+          										?>
+                              <tr>
+                                <?php if($endDate < $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
+                                  <td class="clickable task bg-red" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails"></td>
+                                <?php elseif($endDate >= $task['currDate'] && $task['TASKSTATUS'] == 'Ongoing'):?>
+                                  <td class="clickable task bg-green" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails"></td>
+                                <?php elseif($task['TASKSTATUS'] == 'Complete'):?>
+                                  <td class="clickable task bg-teal" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails"></td>
+                                <?php elseif($task['TASKSTATUS'] == 'Planning'):?>
+                                  <td class="clickable task bg-yellow" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails"></td>
+                                <?php endif;?>
+																<td class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails"><?php echo $task['TASKTITLE'];?></td>
+                                <td class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails" align='center'><?php echo date_format($startDate, "M d, Y"); ?></td>
+                                <td class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails" align='center'><?php echo date_format(date_create($endDate), "M d, Y"); ?></td>
+                                <td class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails">
+            											<?php foreach ($raci as $raciRow): ?>
+            												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+            													<?php if ($raciRow['ROLE'] == '1'): ?>
+            														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+            													<?php endif; ?>
+            												<?php endif; ?>
+            											<?php endforeach; ?>
+            										</td>
+                                <td class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails">
+            											<?php foreach ($raci as $raciRow): ?>
+            												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+            													<?php if ($raciRow['ROLE'] == '2'): ?>
+            														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+            													<?php endif; ?>
+            												<?php endif; ?>
+            											<?php endforeach; ?>
+            										</td>
+                                <td class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails">
+            											<?php foreach ($raci as $raciRow): ?>
+            												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+            													<?php if ($raciRow['ROLE'] == '3'): ?>
+            														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+            													<?php endif; ?>
+            												<?php endif; ?>
+            											<?php endforeach; ?>
+            										</td>
+                                <td class="clickable task" data-id="<?php echo $task['TASKID'];?>" data-delay="<?php echo $delay;?>" data-toggle="modal" data-target="#taskDetails">
+            											<?php foreach ($raci as $raciRow): ?>
+            												<?php if ($task['TASKID'] == $raciRow['TASKID']): ?>
+            													<?php if ($raciRow['ROLE'] == '4'): ?>
+            														<?php echo $raciRow['FIRSTNAME'] . " " . $raciRow['LASTNAME']; ?>
+            													<?php endif; ?>
+            												<?php endif; ?>
+            											<?php endforeach; ?>
+            										</td>
+                                <td align='center'>
+																	<?php if($task['TASKSTATUS'] == 'Ongoing' || $task['TASKSTATUS'] == 'Planning'):?>
+																		<span data-toggle="modal" data-target="#modal-extend">
+																		<button type="button" class="btn btn-warning btn-sm extendBtn task-<?php echo $task['TASKID'];?>"
+																		data-toggle="tooltip" data-placement="top" title="Extend"
+																		data-id="<?php echo $task['TASKID'];?>"
+																		data-title="<?php echo $task['TASKTITLE'];?>"
+																		data-start="<?php echo $task['TASKSTARTDATE'];?>"
+																		data-end="<?php echo $task['TASKENDDATE'];?>">
+																			<i class="fa fa-calendar"></i>
+																		</button>
+																		</span>
+																		<span data-toggle="modal" data-target="#modal-delete">
+																		<button type="button" class="btn btn-danger btn-sm deleteBtn task-<?php echo $task['TASKID'];?>"
+																		data-toggle="tooltip" data-placement="top" title="Delete"
+																		data-id="<?php echo $task['TASKID'];?>"
+																		data-title="<?php echo $task['TASKTITLE'];?>"
+																		data-start="<?php echo $task['TASKSTARTDATE'];?>"
+																		data-end="<?php echo $task['TASKENDDATE'];?>">
+																			<i class="fa fa-trash"></i>
+																		</button>
+																		</span>
+																	<?php else:?>
+																		<button disabled type="button" class="btn btn-warning btn-sm delegateBtn">
+																			<i class="fa fa-calendar"></i>
+																		</button>
+																		<button disabled type="button" class="btn btn-danger btn-sm delegateBtn">
+																			<i class="fa fa-trash"></i>
+																		</button>
+																	<?php endif;?>
+																</td>
+                              </tr>
+                            <?php endif;?>
+                          <?php endforeach;?> <!-- TASKS -->
+													<?php endif;?>
+                        <?php endforeach;?> <!-- SUBACTIVITY -->
+        							</tbody>
+        						</table>
+        					</div>
+      				</div>
+            <?php endforeach;?> <!-- MAINACTIVITY -->
+  					</div>
+  				</div>
+
+					<!-- DELETE MODAL -->
+					<div class="modal fade" id="modal-delete" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title" id = "deleteTitle">Delete Task</h2>
+									<h4 id="deleteDates">Start Date - End Date (Days)</h4>
+								</div>
+								<div class="modal-body">
+									<div id="deleteDiv">
+										<h4>Why do you want to delete this task?</h4>
+										<form id = "deleteForm" action="deleteTask" method="POST" style="margin-bottom:0;">
+											<div class="form-group">
+												<textarea id = "reasonDelete" name = "reasonDelete" class="form-control" placeholder="Enter reason"></textarea>
+											</div>
+											<div class="modal-footer">
+												<button id = "closeDeleteBtn" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+												<button id = "deleteConfirmBtn" type="button" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+											</div>
+									</div>
+								<!-- CONFIRM DELETE -->
+								<div id="deleteConfirmDiv">
+									<div class="modal-body">
+										<h4>Are you sure you want to delete this task?</h4>
+									</div>
+									<div class="modal-footer">
+										<button id="backConfirmDelete" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "confirmDelete" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+								</div>
+							</form>
+						</div>
+							</div>
+						</div>
+					</div>
+					<!-- END DELETE MODAL -->
+
+					<!-- EXTEND MODAL -->
+					<div class="modal fade" id="modal-extend" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title" id = "extendTitle">Extend Task</h2>
+									<h4 id="extendDates">Start Date - End Date (Days)</h4>
+								</div>
+								<div class="modal-body">
+									<div id="extendDiv">
+										<h4>Why do you want to extend this task's end date?</h4>
+										<form id = "extendForm" action="extendTask" method="POST" style="margin-bottom:0;">
+											<div class="form-group">
+												<textarea id = "reasonExtend" name = "reasonExtend" class="form-control" placeholder="Enter reason"></textarea>
+											</div>
+											<div class="modal-footer">
+												<button id = "closeExtendBtn" type="button" class="btn btn-default pull-left" data-dismiss="modal" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+												<button id = "extendConfirmBtn" type="button" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+											</div>
+									</div>
+								<!-- CONFIRM EXTEND -->
+								<div id="extendConfirmDiv">
+									<div class="modal-body">
+										<h4>Are you sure you want to extend this task's end date?</h4>
+									</div>
+									<div class="modal-footer">
+										<button id="backConfirmExtend" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "confirmExtend" type="submit" class="btn btn-success" data-id="" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+								</div>
+							</form>
+						</div>
+							</div>
+						</div>
+					</div>
+					<!-- END EXTEND MODAL -->
 
           <!-- Task Details Modal -->
           <div class="modal fade" id="taskDetails" tabindex="-1">
@@ -861,6 +1004,88 @@
 				$(this).addClass('active')
 				$("#divDelay").show();
 			});
+
+			// DELETE SCRIPT
+
+		 $("body").on('click','.deleteBtn',function(){
+			var $id = $(this).attr('data-id');
+			var $title = $(this).attr('data-title');
+			var $start = new Date($(this).attr('data-start'));
+			var $end = new Date($(this).attr('data-end'));
+			var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+			$("#deleteTitle").html($title);
+			$("#deleteDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+			if($diff > 1)
+				$("#deleteDates").append(" days)");
+			else
+				$("#deleteDates").append(" day)");
+			$("#deleteConfirmBtn").attr("data-id", $id); //pass data id to confirm button
+		});
+
+		$("body").on('click','#confirmDelete',function(){
+			var $id = $("#deleteConfirmBtn").attr('data-id');
+			$("#deleteForm").attr("name", "formSubmit");
+			$("#deleteForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+		});
+
+		$("#deleteConfirmDiv").hide();
+
+		$("body").on('click','#closeDeleteBtn',function(){
+			$("#reasonDelete").val("");
+		});
+
+		$("body").on('click','#deleteConfirmBtn',function(){
+			$("#deleteDiv").hide();
+			$("#deleteConfirmDiv").show();
+		});
+
+		$("body").on('click','#backConfirmDelete',function(){
+			$("#deleteDiv").show();
+			$("#deleteConfirmDiv").hide();
+		});
+
+		// END DELETE SCRIPT
+
+		// EXTEND SCRIPT
+
+	 $("body").on('click','.extendBtn',function(){
+		var $id = $(this).attr('data-id');
+		var $title = $(this).attr('data-title');
+		var $start = new Date($(this).attr('data-start'));
+		var $end = new Date($(this).attr('data-end'));
+		var $diff = (($end - $start)/ 1000 / 60 / 60 / 24)+1;
+		$("#extendTitle").html($title);
+		$("#extendDates").html(moment($start).format('MMMM DD, YYYY') + " - " + moment($end).format('MMMM DD, YYYY') + " ("+ $diff);
+		if($diff > 1)
+			$("#extendDates").append(" days)");
+		else
+			$("#extendDates").append(" day)");
+		$("#extendConfirmBtn").attr("data-id", $id); //pass data id to confirm button
+	});
+
+	$("body").on('click','#confirmExtend',function(){
+		var $id = $("#extendConfirmBtn").attr('data-id');
+		$("#extendForm").attr("name", "formSubmit");
+		$("#extendForm").append("<input type='hidden' name='task_ID' value= " + $id + ">");
+	});
+
+	$("#extendConfirmDiv").hide();
+
+	$("body").on('click','#closeExtendBtn',function(){
+		$("#reasonExtend").val("");
+	});
+
+	$("body").on('click','#extendConfirmBtn',function(){
+		$("#extendDiv").hide();
+		$("#extendConfirmDiv").show();
+	});
+
+	$("body").on('click','#backConfirmExtend',function(){
+		$("#extendDiv").show();
+		$("#extendConfirmDiv").hide();
+	});
+
+	// END EXTEND SCRIPT
 
 		</script>
 	</body>

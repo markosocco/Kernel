@@ -579,9 +579,9 @@
 
 				<h1>
 					<?php echo $projectProfile['PROJECTTITLE']; ?>
-						<!-- <?php if ($projectProfile['PROJECTSTATUS'] == 'Planning'): ?>
+						<!-- <?php if ($projectProfile['PROJECTSTATUS'] == 'Planning' || $projectProfile['PROJECTSTATUS'] == 'Ongoing'): ?>
 
-							<form id="editProjectForm" action = 'addProjectDetails'  method="POST" style="display:inline-block">
+							<form id="editProjectForm" action = 'editProject'  method="POST" style="display:inline-block">
 								<input type='hidden' name='edit' value='<?php echo $projectProfile['PROJECTID'];?>'>
 							</form>
 

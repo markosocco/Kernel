@@ -785,6 +785,8 @@ class controller extends CI_Controller
 			$projectID = $this->input->post('project_ID');
 
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
+			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
+			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
 			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
 			$data['raci'] = $this->model->getAllACI();
 
@@ -2439,7 +2441,7 @@ class controller extends CI_Controller
 
 			$this->session->set_flashdata('edit', $edit);
 
-			$this->load->view('addMainActivities', $data);
+			$this->load->view('editProject', $data);
 		}
 
 		else
@@ -6645,6 +6647,16 @@ class controller extends CI_Controller
 		$taskUpdates = $this->model->getTaskUpdatesByID($taskID);
 
 		echo json_encode($taskUpdates);
+	}
+
+	public function deleteTask()
+	{
+		$this->monitorProjectDetails();
+	}
+
+	public function extendTask()
+	{
+		$this->monitorProjectDetails();
 	}
 
 }
