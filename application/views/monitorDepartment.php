@@ -24,6 +24,12 @@
 						$projectEnd = date_create($projectProfile['PROJECTENDDATE']);
 						?>
 						<small>(<?php echo date_format($projectStart, "F d, Y");?> to <?php echo date_format($projectEnd, "F d, Y");?>)</small>
+
+						<form id="editProjectForm" action = 'editProject'  method="POST" style="display:inline-block">
+							<input type='hidden' name='project_ID' value='<?php echo $projectProfile['PROJECTID'];?>'>
+						</form>
+
+						<a id="editProject" data-id="<?php echo $projectProfile['PROJECTID']; ?>"><i class="fa fa-edit"></i></a>
 					</h1>
 
 					<ol class="breadcrumb">
@@ -231,6 +237,10 @@
 	      $("#projForm").attr("name", "formSubmit");
 	      $("#projForm").submit();
 	    });
+
+			$(document).on("click", "#editProject", function() {
+				$("#editProjectForm").submit();
+				});
 
 		</script>
 	</body>
