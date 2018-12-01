@@ -294,6 +294,7 @@
         					</div>
       				</div>
             <?php endforeach;?> <!-- MAINACTIVITY -->
+						<button id = "saveProject" type="submit" class="btn btn-success pull-right" data-id="" data-toggle="tooltip" data-placement="top" title="Save"><i class="fa fa-check"></i></button>
   					</div>
   				</div>
 

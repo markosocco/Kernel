@@ -62,11 +62,11 @@
 																<thead>
 																<tr>
 																	<th width="1%"></th>
-																	<th>Task</th>
-																	<th>Project</th>
-																	<th class="text-center">End Date</th>
-																	<th class="text-center">Days Delayed</th>
-																	<th class="text-center">Action</th>
+																	<th width='40%'>Task</th>
+																	<th width='20%'>Project</th>
+																	<th width='12%' class="text-center">End Date</th>
+																	<th width='12%' class="text-center">Days Delayed</th>
+																	<th width='13%' class="text-center">Action</th>
 																</tr>
 																</thead>
 																<tbody id="taskTable-<?php echo $project['PROJECTID'];?>">
