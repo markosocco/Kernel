@@ -155,6 +155,9 @@
         							</tr>
         							</thead>
         							<tbody>
+												<form id='saveProject' action='saveEditedProject' method='POST'>
+													<input type='hidden' name='project_ID' value= "<?php echo $projectProfile['PROJECTID'] ;?>">
+
                         <?php foreach($subActivities as $subActivity):?>
                           <?php if($subActivity['tasks_TASKPARENT'] == $mainActivity['TASKID']):?>
 														<?php
@@ -283,20 +286,42 @@
                                 <?php endif;?>
 
 																</td>
-
                               </tr>
                             <?php endif;?>
                           <?php endforeach;?> <!-- TASKS -->
 													<?php endif;?>
                         <?php endforeach;?> <!-- SUBACTIVITY -->
+											</form>
         							</tbody>
         						</table>
         					</div>
       				</div>
             <?php endforeach;?> <!-- MAINACTIVITY -->
-						<button id = "saveProject" type="submit" class="btn btn-success pull-right" data-id="" data-toggle="tooltip" data-placement="top" title="Save"><i class="fa fa-check"></i></button>
+						<button id = "saveBtn" type="button" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Save"><i class="fa fa-check"></i></button>
   					</div>
   				</div>
+
+					<!-- SAVE MODAL -->
+					<div class="modal fade" id="modal-save" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h2 class="modal-title"><?php echo $projectProfile['PROJECTTITLE'];?></h2>
+								</div>
+								<div class="modal-body">
+									<div class="modal-body">
+										<h4>Are you sure you want to save the changes made to this project?</h4>
+									</div>
+									<div class="modal-footer">
+										<button id="closeConfirmSave" type="button" class="btn btn-default pull-left" data-toggle="tooltip" data-dismiss="modal" data-placement="right" title="Close"><i class="fa fa-close"></i></button>
+										<button id = "confirmSave" type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Confirm"><i class="fa fa-check"></i></button>
+									</div>
+							</form>
+						</div>
+							</div>
+						</div>
+					</div>
+					<!-- END SAVE MODAL -->
 
 					<!-- DELETE MODAL -->
 					<div class="modal fade" id="modal-delete" tabindex="-1">
@@ -414,6 +439,10 @@
 		});
 
 		// END DELETE SCRIPT
+
+		$("body").on('click','#saveBtn',function(){
+		 $("#modal-save").modal('show');
+		 });
 
 		</script>
 	</body>

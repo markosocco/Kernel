@@ -6642,6 +6642,14 @@ class controller extends CI_Controller
 		redirect("controller/editProject");
 	}
 
+	public function saveEditedProject()
+	{
+		$projectID = $this->input->post("project_ID");
+		$this->session->set_flashdata('saveProject', $projectID);
+
+		$this->monitorProjectDetails();
+	}
+
 }
 
 
