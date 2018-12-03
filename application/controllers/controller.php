@@ -3065,6 +3065,8 @@ class controller extends CI_Controller
 			$data['allCompletedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Complete");
 			$data['uniqueCompletedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Complete");
 
+			$data['allTasks'] = $this->model->getAllTasksToMonitor();
+
 			$this->load->view("taskMonitor", $data);
 		}
 	}
@@ -4997,14 +4999,14 @@ class controller extends CI_Controller
 			$deptID = $_SESSION['departments_DEPARTMENTID'];
 			switch($_SESSION['usertype_USERTYPEID'])
 			{
-				case '4': // if supervisor is logged in
+				case '4': // if supervisor is logged in, requests from his/her team are shown
 					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID' && REQUESTSTATUS = 'Pending')
 						|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
-				case '3': // if head is logged in
+				case '3': // if head is logged in, requests from his/her department are shown
 					$filter = "((usertype_USERTYPEID = '4' || usertype_USERTYPEID = '5') && users.departments_DEPARTMENTID = '$deptID' && REQUESTSTATUS = 'Pending')
 					|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
-				case '5': // if PO is logged in
-					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
+				case '5': // if PO is logged in, requests from department heads are shown
+					$filter = "usertype_USERTYPEID = '4' && projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
 				default:
 					$filter = "usertype_USERTYPEID = '3' && REQUESTSTATUS = 'Pending'"; break;
 			}

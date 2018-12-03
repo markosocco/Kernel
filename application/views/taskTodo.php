@@ -62,11 +62,10 @@
 																<thead>
 																<tr>
 																	<th width="1%"></th>
-																	<th width='40%'>Task</th>
-																	<th width='20%'>Project</th>
+																	<th width='50%'>Task</th>
 																	<th width='12%' class="text-center">End Date</th>
 																	<th width='12%' class="text-center">Days Delayed</th>
-																	<th width='13%' class="text-center">Action</th>
+																	<th width='15%' class="text-center">Action</th>
 																</tr>
 																</thead>
 																<tbody id="taskTable-<?php echo $project['PROJECTID'];?>">
@@ -214,12 +213,11 @@
 													<thead>
 													<tr>
 														<th width="1%"></th>
-														<th width="30%">Task</th>
-														<th width="25%">Project</th>
-														<th width="10%" class="text-center">Start Date</th>
-														<th width="10%" class="text-center">End Date</th>
-														<th width="10%" class="text-center">Days Delayed</th>
-														<th width="10%" class="text-center">Action</th>
+														<th width="50%">Task</th>
+														<th width="12%" class="text-center">Start Date</th>
+														<th width="12%" class="text-center">End Date</th>
+														<th width="12%" class="text-center">Days Delayed</th>
+														<th width="15%" class="text-center">Action</th>
 													</tr>
 													</thead>
 													<tbody id="taskAll-<?php echo $project['PROJECTID'];?>">
@@ -646,10 +644,6 @@
 														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 														 data['tasks'][i].TASKTITLE+"</td>"+
-														 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails'" +
-														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
-														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
-														 data['tasks'][i].PROJECTTITLE+"</td>"+
 														 "<td class = 'clickable taskDetails text-center' data-toggle='modal' data-target='#taskDetails'" +
 														 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 														 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
@@ -669,10 +663,6 @@
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
 													 data['tasks'][i].TASKTITLE+"</td>"+
-													 "<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails'" +
-													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
-													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
-													 data['tasks'][i].PROJECTTITLE+"</td>"+
 													 "<td class = 'clickable taskDetails text-center' data-toggle='modal' data-target='#taskDetails'" +
 													 "data-id='"+ taskID +"' data-title='" + data['tasks'][i].TASKTITLE + "'"+
 													 " data-start='" + taskStart + "' data-end='"+ taskEnd +"'>" +
@@ -688,7 +678,7 @@
 													 "<td align='center' class = 'action-" + taskID +"'></td>");
 
 
-						 if(data['tasks'][i].threshold >= endDate) //if delayed
+						 if(data['tasks'][i].threshold >= endDate || data['tasks'][i].isProjectOwner == '1') //if delayed or project owner
 							{
 								$(".action-" + taskID).append(
 								 '<button disabled type="button"' +

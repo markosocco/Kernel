@@ -64,12 +64,11 @@
 													<tr>
 														<th width=".5%"></th>
 														<th width="4%" class="text-center">Role</th>
-														<th width="27.5%">Task</th>
+														<th width="40.5%">Task</th>
 														<th width="12%" class="text-center">End Date</th>
-														<th width="8%" class="text-center">Days Delayed</th>
-														<th width="27.5%">Project</th>
-														<th width="20%">Responsible</th>
-														<th class='text-center'>Action</th>
+														<th width="10%" class="text-center">Days Delayed</th>
+														<th width="25%">Responsible</th>
+														<th width="8%" class='text-center'>Action</th>
 													</tr>
 													</thead>
 													<tbody>
@@ -143,8 +142,11 @@
 																<?php else:?>
 																	<td align="center" class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $delay - $taskDuration;?></td>
 																<?php endif;?>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $uniqueOngoingACItask['PROJECTTITLE'];?></td>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $uniqueOngoingACItask['FIRSTNAME'];?> <?php echo $uniqueOngoingACItask['LASTNAME'];?></td>
+																<?php foreach($allTasks as $checkTask):?>
+																	<?php if($checkTask['TASKID'] == $uniqueOngoingACItask['TASKID']):?>
+																		<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $checkTask['FIRSTNAME'];?> <?php echo $checkTask['LASTNAME'];?></td>
+																	<?php endif;?>
+																<?php endforeach;?>
 																<td align='center'>
 																	<span data-toggle="modal" data-target="#modal-update"><button type="button"
 																		class="btn btn-primary btn-sm updateBtn" data-id="<?php echo $uniqueOngoingACItask['TASKID'];?>"
@@ -319,9 +321,8 @@
 														<th width="10%" class="text-center">End Date</th>
 														<th width="10%" class="text-center">Actual<br>End Date</th>
 														<th width="8%" class="text-center">Days Delayed</th>
-														<th width="20%">Project</th>
 														<th width="17%">Responsible</th>
-														<th>Action</th>
+														<th width="8%" class="text-center">Action</th>
 													</tr>
 													</thead>
 													<tbody>
@@ -396,9 +397,11 @@
 																<?php else:?>
 																	<td align="center" class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $delay - $taskDuration;?></td>
 																<?php endif;?>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $uniqueOngoingACItask['PROJECTTITLE'];?></td>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $uniqueOngoingACItask['FIRSTNAME'];?> <?php echo $uniqueOngoingACItask['LASTNAME'];?></td>
-																<td align='center'>
+																<?php foreach($allTasks as $checkTask):?>
+																	<?php if($checkTask['TASKID'] == $uniqueOngoingACItask['TASKID']):?>
+																		<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueOngoingACItask['TASKID'];?>'><?php echo $checkTask['FIRSTNAME'];?> <?php echo $checkTask['LASTNAME'];?></td>
+																	<?php endif;?>
+																<?php endforeach;?>																<td align='center'>
 																	<span data-toggle="modal" data-target="#modal-update"><button type="button"
 																		class="btn btn-primary btn-sm updateBtn" data-id="<?php echo $uniqueOngoingACItask['TASKID'];?>"
 																		data-title="<?php echo $uniqueOngoingACItask['TASKTITLE'];?>"
@@ -479,8 +482,11 @@
 																	<td align="center" class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueCompletedACItask['TASKID'];?>'><?php echo $delay - $taskDuration;?></td>
 																	<?php $delayedCompletedTasks = $delayedCompletedTasks+1;?>
 																<?php endif;?>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueCompletedACItask['TASKID'];?>'><?php echo $uniqueCompletedACItask['PROJECTTITLE'];?></td>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueCompletedACItask['TASKID'];?>'><?php echo $uniqueCompletedACItask['FIRSTNAME'];?> <?php echo $uniqueCompletedACItask['LASTNAME'];?></td>
+																<?php foreach($allTasks as $checkTask):?>
+																	<?php if($checkTask['TASKID'] == $uniqueCompletedACItask['TASKID']):?>
+																		<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniqueCompletedACItask['TASKID'];?>'><?php echo $checkTask['FIRSTNAME'];?> <?php echo $checkTask['LASTNAME'];?></td>
+																	<?php endif;?>
+																<?php endforeach;?>
 																<td align='center'>
 																	<button disabled type="button" class="btn btn-primary btn-sm updateBtn"><i class="fa fa-commenting"></i></button>
 																</td>
@@ -538,8 +544,11 @@
 																<td align="center" class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniquePlannedACItask['TASKID'];?>'><?php echo date_format($enddate, 'M d, Y');?></td>
 																<td align="center" class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniquePlannedACItask['TASKID'];?>'>-</td>
 																<td align="center" class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniquePlannedACItask['TASKID'];?>'>0</td>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniquePlannedACItask['TASKID'];?>'><?php echo $uniquePlannedACItask['PROJECTTITLE'];?></td>
-																<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniquePlannedACItask['TASKID'];?>'><?php echo $uniquePlannedACItask['FIRSTNAME'];?> <?php echo $uniquePlannedACItask['LASTNAME'];?></td>
+																<?php foreach($allTasks as $checkTask):?>
+																	<?php if($checkTask['TASKID'] == $uniquePlannedACItask['TASKID']):?>
+																		<td class = 'clickable taskDetails' data-toggle='modal' data-target='#taskDetails' data-id='<?php echo $uniquePlannedACItask['TASKID'];?>'><?php echo $checkTask['FIRSTNAME'];?> <?php echo $checkTask['LASTNAME'];?></td>
+																	<?php endif;?>
+																<?php endforeach;?>
 																<td align='center'>
 																	<span data-toggle="modal" data-target="#modal-update"><button type="button"
 																		class="btn btn-primary btn-sm updateBtn" data-id="<?php echo $uniquePlannedACItask['TASKID'];?>"

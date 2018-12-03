@@ -672,7 +672,7 @@ class model extends CI_Model
   public function getAllTasksByUser($id)
   {
     $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && tasks.TASKSTATUS != 'Deleted' && tasks.CATEGORY = '3' && raci.ROLE = '1'";
-    $this->db->select('*, DATE_ADD(CURDATE(), INTERVAL +2 day) as "threshold" , DATEDIFF(CURDATE(), tasks.TASKSTARTDATE) as "delay",
+    $this->db->select('*, IF(projects.users_USERID = ' . $_SESSION['USERID'] . ', 1, 0) as "isProjectOwner", DATE_ADD(CURDATE(), INTERVAL +2 day) as "threshold" , DATEDIFF(CURDATE(), tasks.TASKSTARTDATE) as "delay",
     CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -1989,6 +1989,21 @@ class model extends CI_Model
     $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
     $this->db->join('users', 'raci.users_userid = users.userid');
     $this->db->order_by('projects.PROJECTID, tasks.TASKENDDATE');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllTasksToMonitor()
+  {
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.TASKSTATUS != 'Deleted'";
+    $this->db->select('*');
+    $this->db->from('projects');
+    $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.taskid = raci.tasks_taskid');
+    $this->db->join('users', 'raci.users_userid = users.userid');
+    $this->db->order_by('projects.PROJECTID, tasks.TASKENDDATE');
+    $this->db->group_by('tasks.TASKID');
     $this->db->where($condition);
 
     return $this->db->get()->result_array();
