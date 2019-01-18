@@ -72,7 +72,7 @@
                       <th>Name</th>
                       <th>Position</th>
                       <th class='text-center'>Projects</th>
-                      <th class='text-center'>Tasks</th>
+                      <th class='text-center'>Ongoing<br>Tasks</th>
                       <th class='text-center'>Delayed<br>Tasks</th>
                       <th class='text-center'>Average<br>Completeness</th>
                       <th class='text-center'>Average<br>Timeliness</th>

@@ -221,7 +221,7 @@ class controller extends CI_Controller
 								$data['executives'] = $this->model->getAllUsersByUserType($filter);
 								if($data['executives'] != NULL) {
 									foreach($data['executives'] as $executiveUsers){
-										$isFound = $this->model->checkNotification($currentDate, $details, $executiveUsers['users_USERID']);
+										$isFound = $this->model->checkNotification($currentDate, $details, $executiveUsers['USERID']);
 
 										if(!$isFound){
 											// START: Notifications
@@ -768,7 +768,6 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
 			$data['tasks'] = $this->model->getAllDepartmentTasksByProject($projectID, $deptID);
 			$data['raci'] = $this->model->getAllACI();
-			$this->session->set_flashdata('byDepartment', 'true');
 
 			$this->load->view("monitorDepartmentDetails", $data);
 		}
@@ -786,11 +785,8 @@ class controller extends CI_Controller
 			$projectID = $this->input->post('project_ID');
 
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
-			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
-			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
 			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
 			$data['raci'] = $this->model->getAllACI();
-			$this->session->set_flashdata('byDepartment', 'false');
 
 			$this->load->view("monitorDepartmentDetails", $data);
 		}
@@ -814,6 +810,54 @@ class controller extends CI_Controller
 			$data['delayedProjectProgress'] = $this->model->getDelayedProjectProgress();
 
 			$this->load->view("monitorProject", $data);
+		}
+	}
+
+	public function myTasks()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$data['departments'] = $this->model->getAllDepartments();
+
+			switch($_SESSION['usertype_USERTYPEID'])
+			{
+				case '2':
+					$filter = "users.usertype_USERTYPEID = '3'";
+					break;
+
+				case '3':
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+
+				case '4':
+					$filter = "users.users_SUPERVISORS = '" . $_SESSION['USERID'] ."'";
+					break;
+
+				default:
+					$filter = "users.departments_DEPARTMENTID = '". $_SESSION['departments_DEPARTMENTID'] ."'";
+					break;
+			}
+
+			$data['departments'] = $this->model->getAllDepartments();
+			$data['deptEmployees'] = $this->model->getAllUsersByUserType($filter);
+			$data['wholeDept'] = $this->model->getAllUsersByDepartment($_SESSION['departments_DEPARTMENTID']);
+			$data['projectCountR'] = $this->model->getProjectCount($_SESSION['departments_DEPARTMENTID']);
+			$data['taskCountR'] = $this->model->getTaskCount($_SESSION['departments_DEPARTMENTID']);
+			$data['projectCount'] = $this->model->getProjectCount();
+			$data['taskCount'] = $this->model->getTaskCount();
+
+			$data['users'] = $this->model->getAllUsers();
+			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+			$data['ACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Ongoing");
+			$data['mainActivity'] = $this->model->getAllMainActivitiesByUser($_SESSION['USERID']);
+			$data['subActivity'] = $this->model->getAllSubActivitiesByUser($_SESSION['USERID']);
+
+			$this->load->view("myTasks", $data);
 		}
 	}
 
@@ -1330,7 +1374,7 @@ class controller extends CI_Controller
 		    {
 		      $updateD = $this->model->updateRACI($taskID, '0'); // change status to 'changed'
 
-		      if($responsibleType == '5' || $responsibleEmp == $_SESSION['USERID']) //if to staff, remove delegation
+		      if($responsibleType == '5') //if to staff, remove delegation
 		      {
 		        $delegateDataNew = array(
 		          'ROLE' => '0',
@@ -2306,128 +2350,104 @@ class controller extends CI_Controller
 
 	public function editProject()
 	{
-		if (!isset($_SESSION['EMAIL']))
+		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
+		$startDate = $this->input->post('startDate');
+		date_default_timezone_set("Singapore");
+		$currDate = date("mm-dd-YYYY");
+
+		if ($currDate >= $startDate)
 		{
-			$this->load->view('restrictedAccess');
+			$status = 'Ongoing';
 		}
+
 		else
 		{
-			if (isset($_SESSION['projectID']))
-				$projectID = $_SESSION['projectID'];
-			else
-				$projectID = $this->input->post('project_ID');
-
-			$data['projectProfile'] = $this->model->getProjectByID($projectID);
-			$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
-			$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
-			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
-			$data['raci'] = $this->model->getAllACI();
-
-			$this->load->view("editProject", $data);
+			$status = 'Planning';
 		}
 
-	}
+		$data = array(
+				'PROJECTTITLE' => $this->input->post('projectTitle'),
+				'PROJECTSTARTDATE' => $startDate,
+				'PROJECTENDDATE' => $this->input->post('endDate'),
+				'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
+				'PROJECTSTATUS' => $status,
+				'users_USERID' => $_SESSION['USERID']
+		);
 
-	// public function editProject()
-	// {
-	// 	// CHECKS IF PROJECT HAS STARTED TO SET STATUS
-	// 	$startDate = $this->input->post('startDate');
-	// 	date_default_timezone_set("Singapore");
-	// 	$currDate = date("mm-dd-YYYY");
-	//
-	// 	if ($currDate >= $startDate)
-	// 	{
-	// 		$status = 'Ongoing';
-	// 	}
-	//
-	// 	else
-	// 	{
-	// 		$status = 'Planning';
-	// 	}
-	//
-	// 	$data = array(
-	// 			'PROJECTTITLE' => $this->input->post('projectTitle'),
-	// 			'PROJECTSTARTDATE' => $startDate,
-	// 			'PROJECTENDDATE' => $this->input->post('endDate'),
-	// 			'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
-	// 			'PROJECTSTATUS' => $status,
-	// 			'users_USERID' => $_SESSION['USERID']
-	// 	);
-	//
-	// 	$sDate = date_create($startDate);
-	// 	$eDate = date_create($this->input->post('endDate'));
-	// 	$diff = date_diff($eDate, $sDate, true);
-	// 	$dateDiff = $diff->format('%R%a');
-	//
-	// 	$edit = $this->input->post('edit');
-	//
-	// 	// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
-	// 	$editProject = $this->model->editProject($edit, $data);
-	// 	$data['project'] = $this->model->getProjectByID($edit);
-	// 	$data['dateDiff'] =$dateDiff;
-	// 	$data['departments'] = $this->model->getAllDepartments();
-	//
-	// 	if ($data)
-	// 	{
-	// 		// TODO PUT ALERT
-	//
-	// 		// START OF LOGS/NOTIFS
-	// 		$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-	//
-	// 		$projectDetails = $this->model->getProjectByID($edit);
-	// 		$projectTitle = $projectDetails['PROJECTTITLE'];
-	//
-	// 		// START: LOG DETAILS
-	// 		$details = $userName . " has edited " . $projectTitle . ".";
-	//
-	// 		$logData = array (
-	// 			'LOGDETAILS' => $details,
-	// 			'TIMESTAMP' => date('Y-m-d H:i:s'),
-	// 			'projects_PROJECTID' => $edit
-	// 		);
-	//
-	// 		$this->model->addToProjectLogs($logData);
-	// 		// END: LOG DETAILS
-	//
-	// 		// TODO NAMI: put notif "user Edited Project projectitile"
-	//
-	// 		// // START: Notifications
-	// 		// $details = "You have been tagged as accountable for " . $taskTitle . " in " . $projectTitle . ".";
-	// 		// $notificationData = array(
-	// 		// 	'users_USERID' => $empID,
-	// 		// 	'DETAILS' => $details,
-	// 		// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
-	// 		// 	'status' => 'Unread',
-	// 		// 'projects_PROJECTID' => $projectID,
-	// 		// 'tasks_TASKID' => $taskID, 'TYPE' => '4'
-	// 		// );
-	// 		//
-	// 		// $this->model->addNotification($notificationData);
-	// 		// // END: Notification
-	//
-	// 		if (isset($edit))
-	// 		{
-	// 			$data['editProject'] = $this->model->getProjectByID($edit);
-	// 			$data['editAllTasks'] = $this->model->getAllProjectTasks($edit);
-	// 			$data['editGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($edit);
-	// 			$data['editMainActivity'] = $this->model->getAllMainActivitiesByID($edit);
-	// 			$data['editSubActivity'] = $this->model->getAllSubActivitiesByID($edit);
-	// 			$data['editTasks'] = $this->model->getAllTasksByIDRole1($edit);
-	// 			$data['editRaci'] = $this->model->getRaci($edit);
-	// 			$data['editUsers'] = $this->model->getAllUsers();
-	// 		}
-	//
-	// 		$this->session->set_flashdata('edit', $edit);
-	//
-	// 		$this->load->view('editProject', $data);
-	// 	}
-	//
-	// 	else
-	// 	{
-	// 		// TODO PUT ALERT
-	// 		redirect('controller/restrictedAccess');
-	// 	}
-	// }
+		$sDate = date_create($startDate);
+		$eDate = date_create($this->input->post('endDate'));
+		$diff = date_diff($eDate, $sDate, true);
+		$dateDiff = $diff->format('%R%a');
+
+		$edit = $this->input->post('edit');
+
+		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
+		$editProject = $this->model->editProject($edit, $data);
+		$data['project'] = $this->model->getProjectByID($edit);
+		$data['dateDiff'] =$dateDiff;
+		$data['departments'] = $this->model->getAllDepartments();
+
+		if ($data)
+		{
+			// TODO PUT ALERT
+
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+			$projectDetails = $this->model->getProjectByID($edit);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
+			$details = $userName . " has edited " . $projectTitle . ".";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $edit
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
+
+			// TODO NAMI: put notif "user Edited Project projectitile"
+
+			// // START: Notifications
+			// $details = "You have been tagged as accountable for " . $taskTitle . " in " . $projectTitle . ".";
+			// $notificationData = array(
+			// 	'users_USERID' => $empID,
+			// 	'DETAILS' => $details,
+			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
+			// 	'status' => 'Unread',
+			// 'projects_PROJECTID' => $projectID,
+			// 'tasks_TASKID' => $taskID, 'TYPE' => '4'
+			// );
+			//
+			// $this->model->addNotification($notificationData);
+			// // END: Notification
+
+			if (isset($edit))
+			{
+				$data['editProject'] = $this->model->getProjectByID($edit);
+				$data['editAllTasks'] = $this->model->getAllProjectTasks($edit);
+				$data['editGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($edit);
+				$data['editMainActivity'] = $this->model->getAllMainActivitiesByID($edit);
+				$data['editSubActivity'] = $this->model->getAllSubActivitiesByID($edit);
+				$data['editTasks'] = $this->model->getAllTasksByIDRole1($edit);
+				$data['editRaci'] = $this->model->getRaci($edit);
+				$data['editUsers'] = $this->model->getAllUsers();
+			}
+
+			$this->session->set_flashdata('edit', $edit);
+
+			$this->load->view('addMainActivities', $data);
+		}
+
+		else
+		{
+			// TODO PUT ALERT
+			redirect('controller/restrictedAccess');
+		}
+	}
 
 	public function myCalendar()
 	{
@@ -2549,6 +2569,14 @@ class controller extends CI_Controller
 				$data['taskCount'] = $this->model->getTaskCountByProjectByRole($projectID);
 				$data['employeeTimeliness'] = $this->model->compute_timeliness_employeesByProject($projectID);
 				$data['delayedTaskCount'] = $this->model->getDelayedTaskCount($projectID);
+
+				// foreach ($data['employeeTimeliness'] as $key => $value) {
+				// 	echo $value['USERID'] . "<br>";
+				// 	echo $value['timeliness1'] . "<br>";
+				// 	echo $value['timeliness2'] . "<br>";
+				// 	echo $value['timeliness'] . "<br><br>";
+				//
+				// }
 
 
 				$this->load->view("reportsProjectSummary", $data);
@@ -3052,9 +3080,7 @@ class controller extends CI_Controller
 
 		else
 		{
-			$data['allOngoingACIprojects'] = $this->model->getUniqueACIOngoingProjectsByUserByProject($_SESSION['USERID'], "Ongoing");
-
-			$data['allACIprojects'] = $this->model->getUniqueACIProjectsByUserByProject($_SESSION['USERID']);
+			$data['allTasks'] = $this->model->getAllTasksToMonitor();
 
 			$data['allPlannedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Planning");
 			$data['uniquePlannedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Planning");
@@ -3065,7 +3091,8 @@ class controller extends CI_Controller
 			$data['allCompletedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Complete");
 			$data['uniqueCompletedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Complete");
 
-			$data['allTasks'] = $this->model->getAllTasksToMonitor();
+			$data['allOngoingACIprojects'] = $this->model->getUniqueACIOngoingProjectsByUserByProject($_SESSION['USERID'], "Ongoing");
+			$data['allACIprojects'] = $this->model->getUniqueACIProjectsByUserByProject($_SESSION['USERID']);
 
 			$this->load->view("taskMonitor", $data);
 		}
@@ -4999,14 +5026,14 @@ class controller extends CI_Controller
 			$deptID = $_SESSION['departments_DEPARTMENTID'];
 			switch($_SESSION['usertype_USERTYPEID'])
 			{
-				case '4': // if supervisor is logged in, requests from his/her team are shown
+				case '4': // if supervisor is logged in
 					$filter = "(usertype_USERTYPEID = '5' && users_SUPERVISORS = '$userID' && REQUESTSTATUS = 'Pending')
 						|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
-				case '3': // if head is logged in, requests from his/her department are shown
+				case '3': // if head is logged in
 					$filter = "((usertype_USERTYPEID = '4' || usertype_USERTYPEID = '5') && users.departments_DEPARTMENTID = '$deptID' && REQUESTSTATUS = 'Pending')
 					|| (projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending')"; break;
-				case '5': // if PO is logged in, requests from department heads are shown
-					$filter = "usertype_USERTYPEID = '4' && projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
+				case '5': // if PO is logged in
+					$filter = "projects.users_USERID = '$userID' && REQUESTSTATUS = 'Pending'"; break;
 				default:
 					$filter = "usertype_USERTYPEID = '3' && REQUESTSTATUS = 'Pending'"; break;
 			}
@@ -6596,65 +6623,7 @@ class controller extends CI_Controller
 
 		echo json_encode($affectedTasks);
 	}
-
-	public function updateTask()
-	{
-		if ($this->input->post("remarksUpdate") == NULL)
-		{
-			$this->session->set_flashdata('danger', 'alert');
-			$this->session->set_flashdata('alertMessage', ' Please provide an update for this task');
-
-		}
-		else
-		{
-			$data = array(
-				'tasks_TASKID' => $this->input->post("task_ID"),
-				'COMMENT' => $this->input->post("remarksUpdate"),
-				'users_COMMENTEDBY' => $_SESSION['USERID'],
-				'COMMENTDATE' =>date('Y-m-d')
-			);
-			$this->model->addTaskUpdate($data);
-
-			$this->session->set_flashdata('success', 'alert');
-			$this->session->set_flashdata('alertMessage', ' Task update submitted');
-		}
-		redirect('controller/' . $this->input->post("page"));
-	}
-
-	public function getTaskUpdates()
-	{
-		$taskID = $this->input->post("task_ID");
-		$taskUpdates = $this->model->getTaskUpdatesByID($taskID);
-
-		echo json_encode($taskUpdates);
-	}
-
-	public function deleteTask()
-	{
-		$taskID = $this->input->post("task_ID");
-		$projectID = $this->input->post("project_ID");
-
-		$data = array(
-					'TASKSTATUS' => 'Deleted',
-		);
-
-		$this->model->deleteTask($taskID, $data);
-		$this->session->set_flashdata('projectID', $projectID);
-
-		redirect("controller/editProject");
-	}
-
-	public function saveEditedProject()
-	{
-		$projectID = $this->input->post("project_ID");
-		$this->session->set_flashdata('saveProject', $projectID);
-
-		$this->monitorProjectDetails();
-	}
-
 }
-
-
 
 class assessmentFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
 {
