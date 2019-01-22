@@ -2350,103 +2350,20 @@ class controller extends CI_Controller
 
 	public function editProject()
 	{
-		// CHECKS IF PROJECT HAS STARTED TO SET STATUS
-		$startDate = $this->input->post('startDate');
-		date_default_timezone_set("Singapore");
-		$currDate = date("mm-dd-YYYY");
+		$projectID = $this->input->post('project_ID');
 
-		if ($currDate >= $startDate)
-		{
-			$status = 'Ongoing';
-		}
+		$data['project'] = $this->model->getProjectByID($projectID);
+		$data['editAllTasks'] = $this->model->getAllProjectTasks($projectID);
+		$data['editGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+		$data['editMainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+		$data['editSubActivity'] = $this->model->getAllSubActivitiesByID($projectID);
+		$data['editTasks'] = $this->model->getAllTasksByIDRole1($projectID);
+		$data['editRaci'] = $this->model->getRaci($projectID);
+		$data['editUsers'] = $this->model->getAllUsers();
 
-		else
-		{
-			$status = 'Planning';
-		}
+		$this->session->set_flashdata('edit', $projectID);
 
-		$data = array(
-				'PROJECTTITLE' => $this->input->post('projectTitle'),
-				'PROJECTSTARTDATE' => $startDate,
-				'PROJECTENDDATE' => $this->input->post('endDate'),
-				'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
-				'PROJECTSTATUS' => $status,
-				'users_USERID' => $_SESSION['USERID']
-		);
-
-		$sDate = date_create($startDate);
-		$eDate = date_create($this->input->post('endDate'));
-		$diff = date_diff($eDate, $sDate, true);
-		$dateDiff = $diff->format('%R%a');
-
-		$edit = $this->input->post('edit');
-
-		// PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
-		$editProject = $this->model->editProject($edit, $data);
-		$data['project'] = $this->model->getProjectByID($edit);
-		$data['dateDiff'] =$dateDiff;
-		$data['departments'] = $this->model->getAllDepartments();
-
-		if ($data)
-		{
-			// TODO PUT ALERT
-
-			// START OF LOGS/NOTIFS
-			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
-
-			$projectDetails = $this->model->getProjectByID($edit);
-			$projectTitle = $projectDetails['PROJECTTITLE'];
-
-			// START: LOG DETAILS
-			$details = $userName . " has edited " . $projectTitle . ".";
-
-			$logData = array (
-				'LOGDETAILS' => $details,
-				'TIMESTAMP' => date('Y-m-d H:i:s'),
-				'projects_PROJECTID' => $edit
-			);
-
-			$this->model->addToProjectLogs($logData);
-			// END: LOG DETAILS
-
-			// TODO NAMI: put notif "user Edited Project projectitile"
-
-			// // START: Notifications
-			// $details = "You have been tagged as accountable for " . $taskTitle . " in " . $projectTitle . ".";
-			// $notificationData = array(
-			// 	'users_USERID' => $empID,
-			// 	'DETAILS' => $details,
-			// 	'TIMESTAMP' => date('Y-m-d H:i:s'),
-			// 	'status' => 'Unread',
-			// 'projects_PROJECTID' => $projectID,
-			// 'tasks_TASKID' => $taskID, 'TYPE' => '4'
-			// );
-			//
-			// $this->model->addNotification($notificationData);
-			// // END: Notification
-
-			if (isset($edit))
-			{
-				$data['editProject'] = $this->model->getProjectByID($edit);
-				$data['editAllTasks'] = $this->model->getAllProjectTasks($edit);
-				$data['editGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($edit);
-				$data['editMainActivity'] = $this->model->getAllMainActivitiesByID($edit);
-				$data['editSubActivity'] = $this->model->getAllSubActivitiesByID($edit);
-				$data['editTasks'] = $this->model->getAllTasksByIDRole1($edit);
-				$data['editRaci'] = $this->model->getRaci($edit);
-				$data['editUsers'] = $this->model->getAllUsers();
-			}
-
-			$this->session->set_flashdata('edit', $edit);
-
-			$this->load->view('addMainActivities', $data);
-		}
-
-		else
-		{
-			// TODO PUT ALERT
-			redirect('controller/restrictedAccess');
-		}
+		$this->load->view('addProjectDetails', $data);
 	}
 
 	public function myCalendar()
@@ -5489,186 +5406,337 @@ class controller extends CI_Controller
 
 		public function editMainActivity()
 		{
+			$projectID = $this->input->post('edit');
+
+      $data = array(
+          'PROJECTTITLE' => $this->input->post('projectTitle'),
+          'PROJECTSTARTDATE' => $this->input->post('startDate'),
+          'PROJECTENDDATE' => $this->input->post('endDate'),
+          'PROJECTDESCRIPTION' => $this->input->post('projectDetails'),
+					'PROJECTTYPE' => $this->input->post('type')
+      );
+
+      $sDate = date_create($this->input->post('startDate'));
+      $eDate = date_create($this->input->post('endDate'));
+      $diff = date_diff($eDate, $sDate, true);
+      $dateDiff = $diff->format('%R%a');
+
+      // PLUGS DATA INTO DB AND RETURNS ARRAY OF THE PROJECT
+      $data['project'] = $this->model->editProjectDetails($projectID, $data);
+      $data['dateDiff'] =$dateDiff;
+      $data['departments'] = $this->model->getAllDepartments();
+
+      if ($data)
+      {
+        // TODO PUT ALERT
+
+        // START OF LOGS/NOTIFS
+        $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+        // START: LOG DETAILS
+        $details = $userName . " edited this project.";
+
+        $logData = array (
+          'LOGDETAILS' => $details,
+          'TIMESTAMP' => date('Y-m-d H:i:s'),
+          'projects_PROJECTID' => $projectID
+        );
+
+        $this->model->addToProjectLogs($logData);
+        // END: LOG DETAILS
+
+        if (isset($_SESSION['edit']) || isset($_SESSION['templates']))
+        {
+          $this->session->set_flashdata('edit', $projectID);
+
+          $data['templateProject'] = $this->model->getProjectByID($projectID);
+          $data['templateAllTasks'] = $this->model->getAllProjectTasks($projectID);
+          $data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
+          $data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
+          $data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($projectID);
+          $data['templateTasks'] = $this->model->getAllTasksByIDRole1($projectID);
+          $data['templateRaci'] = $this->model->getRaci($projectID);
+          $data['templateUsers'] = $this->model->getAllUsers();
+        }
+
+        $this->load->view('addMainActivities', $data);
+      }
+		}
+
+		public function editSubActivity()
+		{
 			// GET PROJECT ID
-			$id = $this->input->post("project_ID");
+		  $id = $this->input->post("project_ID");
 
-			// echo $id;
+		  // GET ARRAY OF INPUTS FROM VIEW
+		  $title = $this->input->post('title');
+		  $startDates = $this->input->post('taskStartDate');
+		  $endDates = $this->input->post('taskEndDate');
+		  $department = $this->input->post("department");
+		  $rowNum = $this->input->post('row');
+		  $taskID = $this->input->post('taskID');
 
-			// GET ARRAY OF INPUTS FROM VIEW
-			$title = $this->input->post('title');
-			$startDates = $this->input->post('taskStartDate');
-			$endDates = $this->input->post('taskEndDate');
-			$department = $this->input->post("department");
-			$rowNum = $this->input->post('row');
-			$taskID = $this->input->post('taskid');
+		  $addedTask = array();
 
-			$addedTask = array();
+			// CHANGE RACI STATUS
+		  $allMainRaci = $this->model->getRaciMain($id);
+
+		  foreach ($allMainRaci as $allR)
+		  {
+		  	$data = array(
+		  		'ROLE' => '0',
+		  		'STATUS' => 'Changed'
+		  	);
+
+		  	$changeRaci = $this->model->changeRACIStatus($allR['tasks_TASKID'], $data);
+		  }
 
 			// GET ALL DEPTS TO ASSIGN DEPT HEAD TO TASK
-			$departments = $this->model->getAllDepartments();
+		  $departments = $this->model->getAllDepartments();
 
-			foreach($departments as $row)
-			{
-				switch ($row['DEPARTMENTNAME'])
-				{
-					case 'Executive':
-						$execHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Marketing':
-						$mktHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Finance':
-						$finHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Procurement':
-						$proHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Human Resource':
-						$hrHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Management Information System':
-						$misHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Store Operations':
-						$opsHead = $row['users_DEPARTMENTHEAD'];
-						break;
-					case 'Facilities Administration':
-						$fadHead = $row['users_DEPARTMENTHEAD'];
-						break;
-				}
-			}
+		  foreach($departments as $row)
+		  {
+		    switch ($row['DEPARTMENTNAME'])
+		    {
+		      case 'Executive':
+		        $execHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		      case 'Marketing':
+		        $mktHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		      case 'Finance':
+		        $finHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		      case 'Procurement':
+		        $proHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		      case 'Human Resource':
+		        $hrHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		      case 'Management Information System':
+		        $misHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		      case 'Store Operations':
+		        $opsHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		      case 'Facilities Administration':
+		        $fadHead = $row['users_DEPARTMENTHEAD'];
+		        break;
+		    }
+		  }
 
-			foreach ($title as $key=> $row)
-			{
-				$data = array(
-	          'TASKTITLE' => $row,
-	          'TASKSTARTDATE' => $startDates[$key],
-	          'TASKENDDATE' => $endDates[$key],
-	          'TASKSTATUS' => 'Planning',
-	          'CATEGORY' => '1',
-	          'projects_PROJECTID' => $id
-	      );
+		  date_default_timezone_set("Singapore");
+		  $currDate = date("Y-m-d");
 
-				if (isset($taskID[$key]))
-				{
-					$addedTask[] = $this->model->editProjectTask($taskID[$key], $data);
-				}
+		  foreach ($title as $key=> $row)
+		  {
+		    if ($currDate >= $startDates[$key])
+		    {
+		      $tStatus = 'Ongoing';
+		    }
 
-				else
-				{
-					$addedTask[] = $this->model->addTasksToProject($data);
+		    else
+		    {
+		      $tStatus = 'Planning';
+		    }
 
-				}
-			}
+		    if (isset($taskID[$key]))
+		    {
+		      $data = array(
+		          'TASKTITLE' => $row,
+		          'TASKSTARTDATE' => $startDates[$key],
+		          'TASKENDDATE' => $endDates[$key],
+		          'TASKSTATUS' => $tStatus,
+		          'CATEGORY' => '1',
+		          'projects_PROJECTID' => $id
+		      );
+		    }
 
+		    else
+		    {
+		      $data = array(
+		          'TASKTITLE' => $row,
+		          'TASKSTARTDATE' => $startDates[$key],
+		          'TASKENDDATE' => $endDates[$key],
+		          'TASKSTATUS' => $tStatus,
+		          'CATEGORY' => '1',
+		          'projects_PROJECTID' => $id
+		      );
+		    }
 
+		    $addedTask[] = $this->model->editTask($taskID[$key], $data);
+		  }
 
 			// TESTING
-			foreach ($addedTask as $aKey=> $a)
-			{
-				foreach ($rowNum as $rKey => $row)
-				{
-					if ($aKey == $rKey)
-					{
-						foreach ($department as $dKey => $d)
-						{
-							if ($row == $dKey)
-							{
-								foreach ($d as $value)
-								{
-									switch ($value)
-									{
-										case 'Executive':
-											$deptHead = $execHead;
-											break;
-										case 'Marketing':
-											$deptHead = $mktHead;
-											break;
-										case 'Finance':
-											$deptHead = $finHead;
-											break;
-										case 'Procurement':
-											$deptHead = $proHead;
-											break;
-										case 'Human Resource':
-											$deptHead = $hrHead;
-											break;
-										case 'Management Information System':
-											$deptHead = $misHead;
-											break;
-										case 'Store Operations':
-											$deptHead = $opsHead;
-											break;
-										case 'Facilities Administration':
-											$deptHead = $fadHead;
-											break;
-									}
+		  foreach ($addedTask as $aKey=> $a)
+		  {
+		      // echo " -- " . $a . " -- <br>";
+		    foreach ($rowNum as $rKey => $row)
+		    {
+		      // echo $aKey . " == " . $rKey . "<br>";
+		      // echo $row . "<br>";
 
-									// echo $value . ", ";
+		      if ($aKey == $rKey)
+		      {
+		        foreach ($department as $dKey => $d)
+		        {
+		          if ($row == $dKey)
+		          {
+		            foreach ($d as $value)
+		            {
+		              switch ($value)
+		              {
+		                case 'Marketing':
+		                  $deptHead = $mktHead;
+		                  break;
+		                case 'Finance':
+		                  $deptHead = $finHead;
+		                  break;
+		                case 'Procurement':
+		                  $deptHead = $proHead;
+		                  break;
+		                case 'Human Resource':
+		                  $deptHead = $hrHead;
+		                  break;
+		                case 'Management Information System':
+		                  $deptHead = $misHead;
+		                  break;
+		                case 'Store Operations':
+		                  $deptHead = $opsHead;
+		                  break;
+		                case 'Facilities Administration':
+		                  $deptHead = $fadHead;
+		                  break;
+		              }
 
-									$data = array(
-											'ROLE' => '0',
-											'users_USERID' => $deptHead,
-											'tasks_TASKID' => $a,
-											'STATUS' => 'Current'
-									);
+		              // echo $value . ", ";
 
-									$status = array(
-										'STATUS' => 'Changed'
-									);
+		              if ($value == 'All')
+		              {
+		                foreach ($departments as $deptKey => $dept)
+		                {
+		                  if ($dept['DEPARTMENTNAME'] != 'Executive')
+		                  {
+		                    $data = array(
+		                        'ROLE' => '0',
+		                        'users_USERID' => $dept['users_DEPARTMENTHEAD'],
+		                        'tasks_TASKID' => $a,
+		                        'STATUS' => 'Current'
+		                    );
 
-									// ENTER INTO RACI
-									if (isset($a))
-									{
-										$updateStatus = $this->model->updateRaciStatus($a, $status);
-									}
+		                    // ENTER INTO RACI
+		                    $result = $this->model->addToRaci($data);
 
-									$result = $this->model->addToRaci($data);
-								}
-								// echo "<br>";
-							}
-						}
-					}
-				}
-			}
+		                    // START OF LOGS/NOTIFS
+		                    $userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
 
-			$status = array(
-				"PROJECTSTATUS" => "Planning");
+		                    $taskDetails = $this->model->getTaskByID($a);
+		                    $taskTitle = $taskDetails['TASKTITLE'];
 
-			$changeStatues = $this->model->updateProjectStatusPlanning($id, $status);
+		                    $projectID = $taskDetails['projects_PROJECTID'];
+		                    $projectDetails = $this->model->getProjectByID($projectID);
+		                    $projectTitle = $projectDetails['PROJECTTITLE'];
 
-				$data['project'] = $this->model->getProjectByID($id);
-				$data['tasks'] = $this->model->getAllProjectTasks($id);
-				$data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($id);
-				$data['users'] = $this->model->getAllUsers();
-				$data['departments'] = $this->model->getAllDepartments();
+		                    $userDetails = $this->model->getUserByID($dept['users_DEPARTMENTHEAD']);
+		                    $taggedUserName = $userDetails['FIRSTNAME']. " " . $userDetails['LASTNAME'];
 
-				$sDate = date_create($data['project']['PROJECTSTARTDATE']);
-				$eDate = date_create($data['project']['PROJECTENDDATE']);
-				$diff = date_diff($eDate, $sDate, true);
-				$dateDiff = $diff->format('%R%a');
+		                    // START: LOG DETAILS
+		                    $details = $userName . " has edited Main Activity - " . $taskTitle . ".";
 
-				$data['dateDiff'] = $dateDiff;
+		                    $logData = array (
+		                      'LOGDETAILS' => $details,
+		                      'TIMESTAMP' => date('Y-m-d H:i:s'),
+		                      'projects_PROJECTID' => $projectID
+		                    );
 
-				$templates = $this->input->post('templates');
+		                    $this->model->addToProjectLogs($logData);
+		                    // END: LOG DETAILS
 
-				if (isset($templates))
-				{
-					$this->session->set_flashdata('templates', $templates);
+		                    //START: Notifications
+		                    $details = "A project has been edited. " . $userName . " has tagged you to delegate Main Activity - " . $taskTitle . " in " . $projectTitle . ".";
+		                    $notificationData = array(
+		                      'users_USERID' => $dept['users_DEPARTMENTHEAD'],
+		                      'DETAILS' => $details,
+		                      'TIMESTAMP' => date('Y-m-d H:i:s'),
+		                      'status' => 'Unread',
+		                      'projects_PROJECTID' => $projectID,
+		                      'tasks_TASKID' => $a,
+		                      'TYPE' => '2'
+		                    );
 
-					$data['templateProject'] = $this->model->getProjectByID($templates);
-					$data['templateAllTasks'] = $this->model->getAllProjectTasks($templates);
-					$data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskID($templates);
-					$data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($templates);
-					$data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($templates);
-					$data['templateTasks'] = $this->model->getAllTasksByIDRole1($templates);
-					$data['templateRaci'] = $this->model->getRaci($templates);
-					$data['templateUsers'] = $this->model->getAllUsers();
-				}
+		                    $this->model->addNotification($notificationData);
+		                    // END: Notification
+		                  }
+		                }
+		              }
 
-				// $this->output->enable_profile(TRUE);
-				// $this->load->view('addSubActivities', $data);
-			}
+		              else
+		              {
+		                $data = array(
+		                    'ROLE' => '0',
+		                    'users_USERID' => $deptHead,
+		                    'tasks_TASKID' => $a,
+		                    'STATUS' => 'Current'
+		                );
+
+		                // ENTER INTO RACI
+		                $result = $this->model->addToRaci($data);
+
+		              }
+		            }
+		            // echo "<br>";
+		          }
+		        }
+		      }
+		    }
+		  }
+
+			$startDate = $this->model->getProjectByID($id);
+		  date_default_timezone_set("Singapore");
+		  $currDate = date("Y-m-d");
+
+		  if ($currDate >= $startDate['PROJECTSTARTDATE'])
+		  {
+		    $status = array(
+		      "PROJECTSTATUS" => "Ongoing");
+		  }
+
+		  else
+		  {
+		    $status = array(
+		      "PROJECTSTATUS" => "Planning");
+		  }
+
+		  $changeStatues = $this->model->updateProjectStatusPlanning($id, $status);
+
+		    $data['project'] = $this->model->getProjectByID($id);
+		    $data['tasks'] = $this->model->getAllProjectTasks($id);
+		    $data['groupedTasks'] = $this->model->getAllProjectTasksGroupByTaskIDMain($id);
+		    $data['users'] = $this->model->getAllUsers();
+		    $data['departments'] = $this->model->getAllDepartments();
+
+		    $sDate = date_create($data['project']['PROJECTSTARTDATE']);
+		    $eDate = date_create($data['project']['PROJECTENDDATE']);
+		    $diff = date_diff($eDate, $sDate, true);
+		    $dateDiff = $diff->format('%R%a');
+
+		    $data['dateDiff'] = $dateDiff;
+
+		    if (isset($_SESSION['edit']))
+		    {
+		      $data['templateProject'] = $this->model->getProjectByID($id);
+		      $data['templateAllTasks'] = $this->model->getAllProjectMainSub($id);
+		      $data['templateGroupedTasks'] = $this->model->getAllProjectTasksGroupByTaskIDMain($id);
+		      $data['templateMainActivity'] = $this->model->getAllMainActivitiesByID($id);
+		      $data['templateSubActivity'] = $this->model->getAllSubActivitiesByID($id);
+		      $data['templateTasks'] = $this->model->getAllTasksByIDRole1($id);
+		      $data['templateRaci'] = $this->model->getRaci($id);
+		      $data['templateUsers'] = $this->model->getAllUsers();
+		    }
+
+		    // $this->output->enable_profile(TRUE);
+		    $this->load->view('addSubActivities', $data);
+		}
 
 		// ADDS SUB ACTIVITIES TO MAIN ACTIVITIES OF PROJECT
 		public function addSubActivities()

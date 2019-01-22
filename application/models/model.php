@@ -2790,5 +2790,93 @@ class model extends CI_Model
 
     return $this->db->get()->result_array();
   }
+
+  public function editProjectDetails($id, $data)
+  {
+    $this->db->where('PROJECTID', $id);
+    $result = $this->db->update('projects', $data);
+  }
+
+  public function editTask($id, $data)
+  {
+    $this->db->where('TASKID', $id);
+    $result = $this->db->update('tasks', $data);
+
+    if ($result)
+    {
+      $this->db->select('*');
+      $this->db->from('tasks');
+      $this->db->where('TASKID', $id);
+      $query = $this->db->get();
+
+      return $query->row('TASKID');
+    }
+
+    else
+    {
+      return false;
+    }
+  }
+
+  public function editRaci($id, $data)
+  {
+    $this->db->where('tasks_TASKID', $id);
+    $result = $this->db->update('raci', $data);
+  }
+
+  public function changeRACIStatus($id, $data)
+  {
+    $condition = "tasks_TASKID = " . $id . " AND CATEGORY = 1";
+    $this->db->where('tasks_TASKID', $id);
+    $result = $this->db->update('raci', $data);
+  }
+
+  public function getRaciMain($id)
+  {
+    $condition = "projects.PROJECTID = '" . $id . "' AND raci.STATUS = 'Current' AND tasks.CATEGORY = 1";
+    $this->db->select('raci.*, users.departments_DEPARTMENTID as uDept, tasks.CATEGORY as tCat');
+    $this->db->from('raci');
+    $this->db->join('tasks', 'raci.tasks_TASKID = tasks.TASKID');
+    $this->db->join('projects', 'tasks.projects_PROJECTID = projects.PROJECTID');
+    $this->db->join('users', ' raci.users_USERID = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllProjectMainSub($id)
+  {
+    $condition = "raci.STATUS = 'Current' && tasks.CATEGORY != 3 && projects.PROJECTID = " . $id;
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
+  public function getAllProjectTasksGroupByTaskIDMain($id)
+  {
+    // initialTaskDuration
+    $condition = "raci.STATUS = 'Current' && tasks.CATEGORY = 1 && projects.PROJECTID = " . $id;
+    $this->db->select('*, DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
+    DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2"');
+    $this->db->from('tasks');
+    $this->db->join('projects', 'projects.PROJECTID = tasks.projects_PROJECTID');
+    $this->db->join('raci', 'tasks.TASKID = raci.tasks_TASKID');
+    $this->db->join('users', 'raci.users_USERID = users.USERID');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+    $this->db->group_by('tasks.TASKID');
+    $this->db->group_by('tasks.TASKSTARTDATE');
+
+    return $this->db->get()->result_array();
+  }
 }
 ?>

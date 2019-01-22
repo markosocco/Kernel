@@ -57,12 +57,14 @@
 		            </div>
 		            <!-- /.box-header -->
 								<?php if (isset($_SESSION['edit'])): ?>
-									<form id='addTasks' name = 'addTasks' action = 'editMainActivity' method="POST">
+									<form id='addTasks' name = 'addTasks' action = 'editSubActivity' method="POST">
+									<input type="hidden" name="project_ID" value="<?php echo $templateProject['PROJECTID']; ?>">
 								<?php else: ?>
 									<form id='addTasks' name = 'addTasks' action = 'addTasksToProject' method="POST">
+									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
 								<?php endif; ?>
 
-									<input type="hidden" name="project_ID" value="<?php echo $project['PROJECTID']; ?>">
+
 
 									<?php if (isset($_SESSION['templates'])): ?>
 									<input type="hidden" name="templates" value="<?php echo $templateProject['PROJECTID']; ?>">
@@ -164,86 +166,93 @@
 
 										<?php elseif (isset($_SESSION['edit'])): ?>
 
-												<?php foreach ($editMainActivity as $key=> $eMain): ?>
-													<tr id ="row<?php echo  $key?>">
-														<td>
-															<div class="form-group">
-																<input type="text" class="form-control" placeholder="Enter Main Activity Name" name = "title[]" value = "<?php echo $eMain['TASKTITLE']; ?>" required>
-																<input type="hidden" name="row[]" value="<?php echo $key; ?>">
-																<input type="hidden" name="taskid[]" value="<?php echo $eMain['TASKID']; ?>">
-															</div>
-														</td>
-														<td>
-															<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
-																<option>
-																	All
-																</option>
-																<?php foreach ($departments as $row): ?>
-																	<?php if ($row['DEPARTMENTNAME'] != 'Executive'): ?>
-																		<option>
-																			<?php echo $row['DEPARTMENTNAME']; ?>
-																		</option>
-																	<?php endif; ?>
-																<?php endforeach; ?>
-															</select>
-														</td>
-														<td>
-															<div class="form-group">
-																<div class="input-group date">
-																	<div class="input-group-addon">
-																		<i class="fa fa-calendar"></i>
-																	</div>
-																	<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" value="<?php echo $eMain['TASKSTARTDATE']; ?>" required>
+											<?php foreach ($templateMainActivity as $key=> $tMain): ?>
+												<tr id ="row<?php echo  $key?>">
+													<td>
+														<div class="form-group">
+															<input type="text" class="form-control" placeholder="Enter Main Activity Name" name = "title[]" value = "<?php echo $tMain['TASKTITLE']; ?>" required>
+															<input type="hidden" name="row[]" value="<?php echo $key; ?>">
+															<input type="hidden" name="taskID[]" value="<?php echo $tMain['TASKID']; ?>"
+														</div>
+													</td>
+													<td>
+														<select id ="select<?php echo $key; ?>" class="form-control select2" multiple="multiple" name = "department[<?php echo $key; ?>][]" data-placeholder="Select Departments">
+															<option>
+																All
+															</option>
+
+															<?php foreach ($departments as $row): ?>
+																	<?php foreach ($templateRaci as $tRaci): ?>
+																		<?php if ($tRaci['tasks_TASKID'] == $tMain['TASKID']): ?>
+																			<?php if ($tRaci['uDept'] == $row['DEPARTMENTID']): ?>
+																				<?php echo "<option selected='selected'>" . $row['DEPARTMENTNAME'] . "</option>"; ?>
+																			<?php else: ?>
+																				<?php echo "<option>" . $row['DEPARTMENTNAME'] . "</option>"; ?>
+																			<?php endif; ?>
+																		<?php endif; ?>
+																	<?php endforeach; ?>
+															<?php endforeach; ?>
+
+
+														</select>
+													</td>
+													<td>
+														<div class="form-group">
+															<div class="input-group date">
+																<div class="input-group-addon">
+																	<i class="fa fa-calendar"></i>
 																</div>
-																<!-- /.input group -->
+																<input type="text" class="form-control pull-right taskStartDate" name="taskStartDate[]" id="start-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" data-start="<?php echo $project['PROJECTSTARTDATE'];?>" data-end="<?php echo $project['PROJECTENDDATE'];?>" value="<?php echo $tMain['TASKSTARTDATE']; ?>" required>
 															</div>
-														</td>
-														<td>
-															<div class="form-group">
-																<div class="input-group date">
-																	<div class="input-group-addon">
-																		<i class="fa fa-calendar"></i>
-																	</div>
-																	<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" value="<?php echo $eMain['TASKENDDATE']; ?>" required>
+															<!-- /.input group -->
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+															<div class="input-group date">
+																<div class="input-group-addon">
+																	<i class="fa fa-calendar"></i>
 																</div>
+																<input type="text" class="form-control pull-right taskEndDate" name ="taskEndDate[]" id="end-<?php echo $key; ?>" data-mainAct="<?php echo $key; ?>" value="<?php echo $tMain['TASKENDDATE']; ?>" required>
 															</div>
-														</td>
-														<td>
-															<div class="form-group">
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
 
-																<?php
-																	$startdate = date_create($editProject['PROJECTSTARTDATE']);
-																	$enddate = date_create($editProject['PROJECTACTUALENDDATE']);
-																	$temp = date_diff($enddate, $startdate);
-																	$dFormat = $temp->format('%a');
-																	$diff = (int)$dFormat + 1;
+															<?php
+																$startdate = date_create($templateProject['PROJECTSTARTDATE']);
+																$enddate = date_create($templateProject['PROJECTACTUALENDDATE']);
+																$temp = date_diff($enddate, $startdate);
+																$dFormat = $temp->format('%a');
+																$diff = (int)$dFormat + 1;
 
-																	if ($diff >= 1)
-																	{
-																		$period = $diff . " day";
-																	}
+																if ($diff >= 1)
+																{
+																	$period = $diff . " day";
+																}
 
-																	else
-																	{
-																		$period = $diff . " days";
-																	}
-																?>
+																else
+																{
+																	$period = $diff . " days";
+																}
+															?>
 
-																<input id = "projectPeriod<?php echo $key; ?>" type="text" class="form-control" value="<?php echo $period; ?>" readonly>
-															</div>
-														</td>
-														<td class='btn'>
-															<a id = "del<?php echo $key; ?>" class='btn delButton' data-id = "<?php echo $key; ?>"><i class='glyphicon glyphicon-trash'></i></a>
-														</td>
-													<!-- <td class="btn"><a class="btn delButton"></a></td> -->
-													</tr>
+															<input id = "projectPeriod<?php echo $key; ?>" type="text" class="form-control" value="<?php echo $period; ?>" readonly>
+														</div>
+													</td>
+													<td class='btn'>
+														<!-- <a id = "del<?php echo $key; ?>" class='btn delButton' data-id = "<?php echo $key; ?>"><i class='glyphicon glyphicon-trash'></i></a> -->
+													</td>
+												<!-- <td class="btn"><a class="btn delButton"></a></td> -->
+												</tr>
 
-													<?php if ($key == (count($editMainActivity) - 1)): ?>
-															<tr id="row<?php echo ($key + 1) ;?>">
-															</tr>
-													<?php endif; ?>
+												<?php if ($key == (count($templateMainActivity) - 1)): ?>
+														<tr id="row<?php echo ($key + 1) ;?>">
+														</tr>
+												<?php endif; ?>
 
-												<?php endforeach; ?>
+											<?php endforeach; ?>
 
 										<?php else: ?>
 											<tr id="row0">
@@ -430,12 +439,9 @@
 
 		 $(document).ready(function() {
 
-			 <?php if (isset($_SESSION['templates'])): ?>
+			 <?php if (isset($_SESSION['templates']) || isset ($_SESSION['edit'])): ?>
 			 		var i = <?php echo (count($templateMainActivity)); ?>;
 					var x = <?php echo (count($templateMainActivity) + 1); ?>;
-					<?php elseif (isset($_SESSION['edit'])): ?>
-						var i = <?php echo (count($editMainActivity)); ?>;
-						var x = <?php echo (count($editMainActivity) + 1); ?>;
 				<?php else: ?>
 					var i = 1;
 					var x = 2;

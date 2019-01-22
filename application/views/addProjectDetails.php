@@ -46,14 +46,15 @@
             <!-- /.box-header -->
             <!-- form start -->
 						<?php if (isset($_SESSION['edit'])): ?>
-							<!-- <form role="form" name = "editProject" id = "addProject" action = "editProject" method = "POST">
-								<input type="hidden" name="edit" value="<?php echo $project['PROJECTID']; ?>"> -->
+							<form role="form" name = "editProject" id = "addProject" action = "editMainActivity" method = "POST">
+								<input type="hidden" name="edit" value="<?php echo $project['PROJECTID']; ?>">
 
 						<?php else: ?>
 							<!-- <?php echo form_open_multipart('controller/addMainActivities');?> -->
 							<form action="addMainActivities" id="newProjectForm" method="post" enctype="multipart/form-data">
 							<!-- <form role="form" name = "addProject" id = "addProject" action = "addMainActivities" method = "POST"> -->
 						<?php endif; ?>
+
 							<?php if (isset($_SESSION['templates'])): ?>
 								<input type="hidden" name="templates" value="<?php echo $project['PROJECTID']; ?>">
 							<?php endif;?>
@@ -85,7 +86,7 @@
 									array("ID" => 7, "TYPE" => "Miscellaneous"),
 								); ?>
 
-								<?php if (isset($_SESSION['templates'])): ?>
+								<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
 									<div class="row">
 										<div class="col-md-3">
 											<div class="form-group">
@@ -155,15 +156,26 @@
 										<div class="form-group">
 											<label for="projectperiod">Project Period</label>
 
-											<?php if (isset($_SESSION['templates'])): ?>
+											<?php if (isset($_SESSION['templates']) || isset($_SESSION['edit'])): ?>
+
 												<?php
 													$startdate = date_create($project['PROJECTSTARTDATE']);
-													$enddate = date_create($project['PROJECTACTUALENDDATE']);
-													$temp = date_diff($enddate, $startdate);
-													$dFormat = $temp->format('%d');
+
+													if (isset($_SESSION['templates']))
+													{
+														$projectEndDate = date_create($project['PROJECTACTUALENDDATE']);
+													}
+
+													else
+													{
+														$projectEndDate = date_create($project['PROJECTENDDATE']);
+													}
+
+													$temp = date_diff($projectEndDate, $startdate);
+													$dFormat = $temp->format('%a');
 													$diff = (int)$dFormat + 1;
 
-													if ($diff >= 1)
+													if ($diff <= 1)
 													{
 														$period = $diff . " day";
 													}
@@ -173,7 +185,9 @@
 														$period = $diff . " days";
 													}
 												?>
-												<input type="text" class="form-control" id="projectPeriod" value="<?php echo $period; ?>" readonly>
+
+												<input type="text" class="form-control" id="projectPeriod" name="period" value="<?php echo $period; ?>" readonly>
+
 											<?php else: ?>
 												<input type="text" class="form-control" id="projectPeriod" value="" readonly>
 											<?php endif; ?>
@@ -190,8 +204,11 @@
 										Add Main Activities
 									<?php endif; ?>
 								</button>
-								<button id="importBtn" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-uploadExcel" style="margin-right: 2%"><i class="fa fa-file-excel-o"></i> Import from Spreadsheet</button>
-              </div>
+
+								<?php if (!isset($_SESSION['edit'])): ?>
+									<button id="importBtn" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-uploadExcel" style="margin-right: 2%"><i class="fa fa-file-excel-o"></i> Import from Spreadsheet</button>
+								<?php endif; ?>
+							</div>
 
           </div>
 
@@ -288,29 +305,33 @@
 			{
 				// $('.select2').select2()
 
+			 <?php if (isset($_SESSION['edit'])): ?>
+
+					var startDate = new Date(<?php echo $project['PROJECTSTARTDATE']; ?>);
+					var endDate = new Date(<?php echo $project['PROJECTENDDATE']; ?>);
+
+					$('#startDate').datepicker({
+						"format": 'yyyy-mm-dd',
+		        "setDate": startDate,
+		        "autoclose": true
+					});
+
+					$('#endDate').datepicker({
+						"format": 'yyyy-mm-dd',
+		        "setDate": endDate,
+		        "autoclose": true
+					});
+
+				<?php else: ?>
+
 				//Date picker
- 	    $('#startDate').datepicker({
+			$('#startDate').datepicker({
 				 format: 'yyyy-mm-dd',
 				 startDate: currDate,
- 	       autoclose: true,
+				 autoclose: true,
 				 orientation: 'auto'
- 	     });
+			 });
 
-			 <?php if (isset($_SESSION['edit'])): ?>
-					 $('body').on('focus',"#endDate", function(){
-
-						 $(this).data('datepicker').setStartDate(new Date($("#startDate").val()));
-
-							$(this).datepicker({
-								format: 'yyyy-mm-dd',
-								 autoclose: true,
-								 orientation: 'auto'
-							});
-
-							var d = $(this).datepicker("getDate");
-
-							console.log("date: " + d);
-					});
 			 <?php endif; ?>
 
 			 $("#startDate").on("change", function() {
@@ -338,8 +359,12 @@
  	     });
 
 			 $("#endDate").on("change", function() {
+				 var ed = $("#endDate").datepicker("getDate");
+				 var sd = $("#startDate").datepicker("getDate");
+
 				var diff = new Date($("#endDate").datepicker("getDate") - $("#startDate").datepicker("getDate"));
 				var period = (diff/1000/60/60/24)+1;
+
 				if ($("#startDate").val() != "" && $("#endDate").val() != "" && period >=1)
 				{
 					if(period > 1)
