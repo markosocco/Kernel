@@ -24,8 +24,34 @@
 				<!-- Main content -->
 				<section class="content container-fluid">
 					<!-- START HERE -->
+					<div id = "departmentsGrid">
+						<?php foreach ($departments as $department):?>
+							<?php if($department['DEPARTMENTID'] != 1):?>
 
+							<div class="col-lg-3 col-xs-6">
+								<!-- small box -->
+								<a class = "dept clickable" data-id = "<?php echo $department['DEPARTMENTID']; ?>">
+								<div class="small-box bg-primary">
+									<div class="inner">
 
+										<h2 class="title"><?php echo $department['DEPT']; ?></h2>
+										<p>
+											<?php echo $department['DEPARTMENTNAME']; ?><br>
+										</p>
+									</div>
+									<div class="icon" style="margin-top:25px;">
+										<i class="ion ion-filing"></i>
+									</div>
+								</div>
+								</a>
+							</div>
+							<!-- ./col -->
+						<?php endif;?>
+						<?php endforeach;?>
+
+						<form id="deptForm" action = 'monitorTeam'  method="POST">
+						</form>
+					</div>
 				</section>
 				<!-- /.content -->
 			</div>
@@ -36,6 +62,12 @@
 			$("#monitor").addClass("active");
 			$("#monitorDepartments").addClass("active");
 
+			$(document).on("click", ".dept", function() {
+				var $id = $(this).attr('data-id');
+				$("#deptForm").attr("name", "formSubmit");
+				$("#deptForm").append("<input type='hidden' name='dept_ID' value= " + $id + ">");
+				$("#deptForm").submit();
+			});
 		</script>
 	</body>
 </html>

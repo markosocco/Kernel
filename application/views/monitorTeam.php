@@ -10,6 +10,10 @@
 			<div class="content-wrapper">
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
+					<?php if($_SESSION['departments_DEPARTMENTID'] == 1):?>
+						<a href="<?php echo base_url("index.php/controller/monitorDepartments"); ?>" class="btn btn-default btn" data-toggle="tooltip" data-placement="right" title="Return to Departments"><i class="fa fa-arrow-left"></i></a>
+						<br><br>
+					<?php endif;?>
 					<h1>
 						Monitor Team
 						<small>What's happening to my team?</small>

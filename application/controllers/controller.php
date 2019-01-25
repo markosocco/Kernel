@@ -507,7 +507,15 @@ class controller extends CI_Controller
 
 		else
 		{
-			$deptID = $_SESSION['DEPARTMENTID'];
+			if ($this->input->post('dept_ID') != null)
+			{
+				$deptID = $this->input->post('dept_ID');
+				$_SESSION['DEPARTMENTID'] = $deptID;
+			}
+			else
+			{
+				$deptID = $_SESSION['DEPARTMENTID'];
+			}
 
 			$data['performance'] = array();
 			$data['tCountStaff'] = array();
@@ -515,23 +523,14 @@ class controller extends CI_Controller
 			$taskCondition = "";
 			$projectCondition = "";
 
-			if ($_SESSION['usertype_USERTYPEID'] == 2)
+			if ($_SESSION['usertype_USERTYPEID'] == 3 || $_SESSION['usertype_USERTYPEID'] == 2)
 			{
-				// echo "executive";
-				$data['staff'] = $this->model->getAllDepartmentsForAdmin();
-				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
-			}
-
-			if ($_SESSION['usertype_USERTYPEID'] == 3)
-			{
-				// echo "head";
 				$data['staff'] = $this->model->getAllUsersByDepartment($deptID);
 				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
 			}
 
 			elseif ($_SESSION['usertype_USERTYPEID'] == 4)
 			{
-				// echo "sup";
 				$data['staff'] = $this->model->getAllUsersBySupervisor($_SESSION['USERID']);
 				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3 && users_SUPERVISORS = " . $_SESSION['USERID'];
 			}
@@ -541,7 +540,7 @@ class controller extends CI_Controller
 			$data['projectCount'] = $this->model->getProjectCountPerDepartment($deptID);
 
 
-			foreach ($data['staff'] as $keu=> $row)
+			foreach ($data['staff'] as $key=> $row)
 			{
 				$data['timeliness'][] = $this->model->compute_timeliness_employee($row['USERID']);
 				$data['completeness'][] = $this->model->compute_completeness_employee($row['USERID']);
@@ -768,7 +767,9 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("monitorDepartments");
+			$data['departments'] = $this->model->getAllDepartments();
+
+			$this->load->view("monitorDepartments", $data);
 		}
 	}
 
