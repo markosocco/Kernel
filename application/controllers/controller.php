@@ -334,68 +334,6 @@ class controller extends CI_Controller
 					}
 				}
 
-				// // Main Completeness
-				// $mainCompletenessFound = $this->model->checkMainCompleteness();
-				// if($mainCompletenessFound == NULL){
-				//
-				// 	$data['mainActivities'] = $this->model->getMainActivitiesByProject($projectID);
-				// 	$data['subActivities'] = $this->model->getSubActivitiesByProject($projectID);
-				// 	$data['allTasks'] = $this->model->getAllProjectTasksGroupByTaskID($projectID);
-				// 	$data['weight'] = $this->model->compute_completeness_project($projectID);
-				//
-				// 	$weight = $data['weight']['weight'];
-				//
-				// 	$mainActCompleteness = array();
-				// 	$subActCompleteness = array();
-				//
-				// 	// SET COMPLETENESS
-				// 	foreach ($data['mainActivities'] as $mainCompKey => $mainCompValue)
-				// 	{
-				// 		$mainCompleteness = 0;
-				//
-				// 		foreach ($data['subActivities'] as $subCompKey => $subCompValue)
-				// 		{
-				// 			if ($subCompValue['tasks_TASKPARENT'] == $mainCompValue['TASKID'])
-				// 			{
-				// 				$subCompleteness = 0;
-				//
-				// 				foreach ($data['allTasks'] as $taskCompKey => $taskCompValue)
-				// 				{
-				// 					if ($taskCompValue['CATEGORY'] == 3  && $taskCompValue['TASKSTATUS'] == 'Complete')
-				// 					{
-				// 						if ($taskCompValue['tasks_TASKPARENT'] == $subCompValue['TASKID'])
-				// 						{
-				// 							$subCompleteness += $weight;
-				// 						}
-				// 					}
-				// 				}
-				//
-				// 				$mainCompleteness += $subCompleteness;
-				//
-				// 				$subCompleteness = array(
-				// 					'TASKID' => $subCompValue['TASKID'],
-				// 					'subCompleteness' => round($subCompleteness, 2),
-				// 					'tasks_TASKPARENT' => $mainCompValue['TASKID']
-				// 				);
-				//
-				// 				array_push($subActCompleteness, $subCompleteness);
-				// 			}
-				// 		}
-				//
-				// 		$mainCompleteness = array(
-				// 			'tasks_MAINID' => $mainCompValue['TASKID'],
-				// 			'COMPLETENESS' => round($mainCompleteness, 2),
-				// 			'projects_PROJECTID' => $projectID,
-				// 			'TYPE' => 2,
-				// 			'DATE' => date('Y-m-d')
-				// 		);
-				//
-				// 		array_push($mainActCompleteness, $mainCompleteness);
-				//
-				// 		$addAssessment = $this->model->addProjectAssessment($mainCompleteness);
-				// 	}
-				// }
-
 				if ($_SESSION['USERID'] == 1)
 				{
 					redirect('controller/dashboardAdmin');
@@ -768,6 +706,7 @@ class controller extends CI_Controller
 			$data['projectProfile'] = $this->model->getProjectByID($projectID);
 			$data['tasks'] = $this->model->getAllDepartmentTasksByProject($projectID, $deptID);
 			$data['raci'] = $this->model->getAllACI();
+			$_SESSION['byDepartment'] = 'true';
 
 			$this->load->view("monitorDepartmentDetails", $data);
 		}
@@ -859,6 +798,105 @@ class controller extends CI_Controller
 
 			$this->load->view("myTasks", $data);
 		}
+	}
+
+	public function updateTask()
+	{
+		if ($this->input->post("remarksUpdate") == NULL)
+		{
+			$this->session->set_flashdata('danger', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Please provide an update for this task');
+
+		}
+		else
+		{
+			$data = array(
+				'tasks_TASKID' => $this->input->post("task_ID"),
+				'COMMENT' => $this->input->post("remarksUpdate"),
+				'users_COMMENTEDBY' => $_SESSION['USERID'],
+				'COMMENTDATE' =>date('Y-m-d')
+			);
+			$this->model->addTaskUpdate($data);
+
+			$this->session->set_flashdata('success', 'alert');
+			$this->session->set_flashdata('alertMessage', ' Task update submitted');
+
+			// START OF LOGS/NOTIFS
+			$userName = $_SESSION['FIRSTNAME'] . " " . $_SESSION['LASTNAME'];
+
+			$taskID = $this->input->post("task_ID");
+
+			$taskDetails = $this->model->getTaskByID($taskID);
+			$taskTitle = $taskDetails['TASKTITLE'];
+
+			$projectID = $taskDetails['projects_PROJECTID'];
+			$projectDetails = $this->model->getProjectByID($projectID);
+			$projectTitle = $projectDetails['PROJECTTITLE'];
+
+			// START: LOG DETAILS
+
+			$details = $userName . " has an update with " . $taskTitle . ".";
+
+			$logData = array (
+				'LOGDETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'projects_PROJECTID' => $projectID
+			);
+
+			$this->model->addToProjectLogs($logData);
+			// END: LOG DETAILS
+
+			$projectOwnerID = $projectDetails['users_USERID'];
+
+			// START: Notifications
+
+			// notify project owner
+			$details = $userName . " has an update on " . $taskTitle . " in " . $projectTitle . ".";
+
+			$notificationData = array(
+				'users_USERID' => $projectOwnerID,
+				'DETAILS' => $details,
+				'TIMESTAMP' => date('Y-m-d H:i:s'),
+				'status' => 'Unread',
+				'projects_PROJECTID' => $projectID,
+				'tasks_TASKID' => $taskID,
+				'TYPE' => '4'
+			);
+
+			$notificationID = $this->model->addNotification($notificationData);
+
+			// notify ACI
+			$ACIdata['ACI'] = $this->model->getACIbyTask($taskID);
+			if($ACIdata['ACI'] != NULL) {
+
+				foreach($ACIdata['ACI'] as $ACIusers){
+
+					$details = $userName . " has an update on " . $taskTitle . " in " . $projectTitle . ".";
+
+					$notificationData = array(
+						'users_USERID' => $ACIusers['users_USERID'],
+						'DETAILS' => $details,
+						'TIMESTAMP' => date('Y-m-d H:i:s'),
+						'status' => 'Unread',
+						'projects_PROJECTID' => $projectID,
+						'tasks_TASKID' => $taskID,
+						'TYPE' => '4'
+					);
+					$this->model->addNotification($notificationData);
+				}
+			}
+			// END: Notification
+
+		}
+		redirect('controller/' . $this->input->post("page"));
+	}
+
+	public function getTaskUpdates()
+	{
+		$taskID = $this->input->post("task_ID");
+		$taskUpdates = $this->model->getTaskUpdatesByID($taskID);
+
+		echo json_encode($taskUpdates);
 	}
 
 	public function doneTask()
@@ -4996,16 +5034,26 @@ class controller extends CI_Controller
 		} else if ($type == 3){ //taskTodo
 
 			$data['tasks'] = $this->model->getAllTasksByUser($_SESSION['USERID']);
+			$data['projects'] = $this->model->getAllTasksByUserByProject($_SESSION['USERID']);
+			$data['projectsToDo'] = $this->model->getAllTasksByUserByProjectToDo($_SESSION['USERID']);
 
 			$this->load->view("taskTodo", $data);
 
 		} else if ($type == 4){ // taskMonitor
+
+			$data['allTasks'] = $this->model->getAllTasksToMonitor();
+
+			$data['allPlannedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Planning");
+			$data['uniquePlannedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Planning");
 
 			$data['allOngoingACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Ongoing");
 			$data['uniqueOngoingACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Ongoing");
 
 			$data['allCompletedACItasks'] = $this->model->getAllACITasksByUser($_SESSION['USERID'], "Complete");
 			$data['uniqueCompletedACItasks'] = $this->model->getUniqueACITasksByUser($_SESSION['USERID'], "Complete");
+
+			$data['allOngoingACIprojects'] = $this->model->getUniqueACIOngoingProjectsByUserByProject($_SESSION['USERID'], "Ongoing");
+			$data['allACIprojects'] = $this->model->getUniqueACIProjectsByUserByProject($_SESSION['USERID']);
 
 			$this->load->view("taskMonitor", $data);
 
@@ -5089,6 +5137,9 @@ class controller extends CI_Controller
 			$data['employeeTimeliness'] = $this->model->compute_timeliness_employeeByProject($_SESSION['USERID'], $projectID);
 			$data['projectCompleteness'] = $this->model->compute_completeness_project($projectID);
 			$data['projectTimeliness'] = $this->model->compute_timeliness_project($projectID);
+
+			$data['isTemplate'] = $this->model->checkIfTemplate($projectID);
+
 
 			$this->load->view("projectGantt", $data);
 

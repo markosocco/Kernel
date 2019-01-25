@@ -592,47 +592,47 @@ desired effect
         });
       };
 
-    function checkNotif() {
-      $.ajax({
-        url: "<?php echo base_url("index.php/controller/getAllNotificationsByUser"); ?>",
-        dataType: "json",
-        success: function(data) {
-
-          if(data['notifications'].length > 0)
-          {
-            var $counter = 0;
-            // MARKO CHANGE COLOR HERE
-            var $color = "";
-
-            $('#notifCount').html("");
-            $('.menuNotifs').html("");
-
-            for(i = 0; i < data['notifications'].length; i ++){
-              if(data['notifications'][i].status == "Unread"){
-                $counter++;
-                // MARKO CHANGE COLOR HERE
-                $color = "#F5FFFA";
-              } else {
-                $color = "#ffffff";
-              }
-
-              var $notifID = data['notifications'][i].NOTIFICATIONID;
-              var $projectID = data['notifications'][i].projects_PROJECTID;
-              var $taskID = data['notifications'][i].tasks_TASKID;
-              var $notifType = data['notifications'][i].TYPE;
-
-              $('.menuNotifs').append("<li class='notification' style='background-color:" + $color + ";'" +
-                "data-notifID='" + $notifID + "' " +
-                "data-projectID='" + $projectID + "' " +
-                "data-taskID='" + $taskID + "' " +
-                "data-type='" + $notifType + "' " + "'><a ='#'><i class='fa fa-users text-aqua'></i>" + data['notifications'][i].DETAILS + "</a></li>");
-            }
-
-            $('#notifCount').html($counter);
-          }
-        }
-      });
-    } setInterval(checkNotif, 150000);
+    // function checkNotif() {
+    //   $.ajax({
+    //     url: "<?php echo base_url("index.php/controller/getAllNotificationsByUser"); ?>",
+    //     dataType: "json",
+    //     success: function(data) {
+    //
+    //       if(data['notifications'].length > 0)
+    //       {
+    //         var $counter = 0;
+    //         // MARKO CHANGE COLOR HERE
+    //         var $color = "";
+    //
+    //         $('#notifCount').html("");
+    //         $('.menuNotifs').html("");
+    //
+    //         for(i = 0; i < data['notifications'].length; i ++){
+    //           if(data['notifications'][i].status == "Unread"){
+    //             $counter++;
+    //             // MARKO CHANGE COLOR HERE
+    //             $color = "#F5FFFA";
+    //           } else {
+    //             $color = "#ffffff";
+    //           }
+    //
+    //           var $notifID = data['notifications'][i].NOTIFICATIONID;
+    //           var $projectID = data['notifications'][i].projects_PROJECTID;
+    //           var $taskID = data['notifications'][i].tasks_TASKID;
+    //           var $notifType = data['notifications'][i].TYPE;
+    //
+    //           $('.menuNotifs').append("<li class='notification' style='background-color:" + $color + ";'" +
+    //             "data-notifID='" + $notifID + "' " +
+    //             "data-projectID='" + $projectID + "' " +
+    //             "data-taskID='" + $taskID + "' " +
+    //             "data-type='" + $notifType + "' " + "'><a ='#'><i class='fa fa-users text-aqua'></i>" + data['notifications'][i].DETAILS + "</a></li>");
+    //         }
+    //
+    //         $('#notifCount').html($counter);
+    //       }
+    //     }
+    //   });
+    // } setInterval(checkNotif, 150000);
 
     $("body").on('click', '.notification', function() {
 
