@@ -515,6 +515,13 @@ class controller extends CI_Controller
 			$taskCondition = "";
 			$projectCondition = "";
 
+			if ($_SESSION['usertype_USERTYPEID'] == 2)
+			{
+				// echo "executive";
+				$data['staff'] = $this->model->getAllDepartmentsForAdmin();
+				$taskCondition = "raci.STATUS = 'Current' && raci.ROLE = '1' && departments_DEPARTMENTID = " . $deptID . " && tasks.CATEGORY = 3";
+			}
+
 			if ($_SESSION['usertype_USERTYPEID'] == 3)
 			{
 				// echo "head";
@@ -6430,35 +6437,6 @@ class controller extends CI_Controller
 
 	/******************** MY PROJECTS END ********************/
 
-	public function myprojects2(){
-
-		$data['completeness_departments'] = $this->model->getTimeliness_AllDepartments();
-
-
-		$this->load->view("myprojects2", $data);
-	}
-
-	public function gantt2(){
-
-		$filter = "tasks.TASKSTARTDATE"; // default
-		$id = 1;
-
-		// $data['ganttData'] = $this->model->getAllProjectTasks($id, $filter);
-		// $data['dependencies'] = $this->model->getDependencies();
-
-		$data['projectProfile'] = $this->model->getProjectByID($id);
-		$data['ganttData'] = $this->model->getAllProjectTasksGroupByTaskID($id);
-		$data['dependencies'] = $this->model->getDependenciesByProject($id);
-		$data['users'] = $this->model->getAllUsers();
-		$data['responsible'] = $this->model->getAllResponsibleByProject($id);
-		$data['accountable'] = $this->model->getAllAccountableByProject($id);
-		$data['consulted'] = $this->model->getAllConsultedByProject($id);
-		$data['informed'] = $this->model->getAllInformedByProject($id);
-		// $data['subActivityProgress'] = $this->model->getSubActivityProgress($id);
-
-		$this->load->view("gantt2", $data);
-	}
-
 	public function changePassword()
 	{
 		$this->load->library('form_validation');
@@ -6541,26 +6519,26 @@ class controller extends CI_Controller
 		}
 	}
 
-// DELETE THIS AFTER
-	public function frame()
-	{
-		if (!isset($_SESSION['EMAIL']))
-		{
-			$this->load->view('restrictedAccess');
-		}
-
-		else
-		{
-			// $this->load->view("frame");
-			$projectTimeliness = $this->model->compute_timeliness_projectByUser();
-			$projectCompleteness = $this->model->compute_completeness_projectByUser();
-
-			foreach ($projectCompleteness as $project) {
-				echo "project id - " . $project['projects_PROJECTID'] . "<br>";
-				echo "completeness - " . $project['completeness'] . "<br><br>";
-			}
-		}
-	}
+// // DELETE THIS AFTER
+// 	public function frame()
+// 	{
+// 		if (!isset($_SESSION['EMAIL']))
+// 		{
+// 			$this->load->view('restrictedAccess');
+// 		}
+//
+// 		else
+// 		{
+// 			// $this->load->view("frame");
+// 			$projectTimeliness = $this->model->compute_timeliness_projectByUser();
+// 			$projectCompleteness = $this->model->compute_completeness_projectByUser();
+//
+// 			foreach ($projectCompleteness as $project) {
+// 				echo "project id - " . $project['projects_PROJECTID'] . "<br>";
+// 				echo "completeness - " . $project['completeness'] . "<br><br>";
+// 			}
+// 		}
+// 	}
 
 	public function getDelayEffect()
 	{
