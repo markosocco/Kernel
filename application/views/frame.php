@@ -92,49 +92,52 @@ desired effect
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Tasks: style can be found in dropdown.less -->
-          <li class="dropdown tasks-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-o"></i>
-              <span id="taskCount" class="label label-success">
-                <?php echo $_SESSION['taskCount'];?>
-              </span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Your Tasks</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu menuTask">
+          <?php if($_SESSION['usertype_USERTYPEID'] != 2):?>
 
-                  <?php if($_SESSION['tasks'] != NULL):?>
-                    <?php foreach($_SESSION['tasks'] as $task) :?>
+            <li class="dropdown tasks-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-flag-o"></i>
+                <span id="taskCount" class="label label-success">
+                  <?php echo $_SESSION['taskCount'];?>
+                </span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="header">Your Tasks</li>
+                <li>
+                  <!-- inner menu: contains the actual data -->
+                  <ul class="menu menuTask">
 
-                      <li><!-- Task item -->
-                        <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">
-                          <h3>
-                            <?php echo $task['TASKTITLE']; ?>
-                            <small class="pull-right">
-                              <?php
-                                if($task['TASKADJUSTEDENDDATE'] != ''){
-                                  $endDate = date_create($task['TASKADJUSTEDENDDATE']);
-                                } else {
-                                  $endDate = date_create($task['TASKENDDATE']);
-                                }
-                                echo date_format($endDate, "F d, Y");
-                              ?>
-                            </small>
-                          </h3>
-                        </a>
-                      </li>
+                    <?php if($_SESSION['tasks'] != NULL):?>
+                      <?php foreach($_SESSION['tasks'] as $task) :?>
 
-                    <?php endforeach; ?>
-                  <?php endif; ?>
-                </ul>
-              </li>
-              <li class="footer">
-                <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">View all tasks</a>
-              </li>
-            </ul>
-          </li>
+                        <li><!-- Task item -->
+                          <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">
+                            <h3>
+                              <?php echo $task['TASKTITLE']; ?>
+                              <small class="pull-right">
+                                <?php
+                                  if($task['TASKADJUSTEDENDDATE'] != ''){
+                                    $endDate = date_create($task['TASKADJUSTEDENDDATE']);
+                                  } else {
+                                    $endDate = date_create($task['TASKENDDATE']);
+                                  }
+                                  echo date_format($endDate, "F d, Y");
+                                ?>
+                              </small>
+                            </h3>
+                          </a>
+                        </li>
+
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </ul>
+                </li>
+                <li class="footer">
+                  <a href="<?php echo base_url("index.php/controller/taskTodo"); ?>">View all tasks</a>
+                </li>
+              </ul>
+            </li>
+          <?php endif;?>
 
           <!-- Notifications Menu -->
           <li class="dropdown notifications-menu">
