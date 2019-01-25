@@ -752,6 +752,19 @@ class controller extends CI_Controller
 		}
 	}
 
+	public function monitorDepartments()
+	{
+		if (!isset($_SESSION['EMAIL']) || $_SESSION['usertype_USERTYPEID'] != 2)
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$this->load->view("monitorDepartments");
+		}
+	}
+
 	public function myTasks()
 	{
 		if (!isset($_SESSION['EMAIL']))

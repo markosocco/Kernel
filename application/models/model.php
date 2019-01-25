@@ -130,13 +130,6 @@ class model extends CI_Model
     }
   }
 
-  // MARK TASK AS DELETED
-  public function deleteTask($id, $data)
-  {
-    $this->db->where('TASKID', $id);
-    $result = $this->db->update('tasks', $data);
-  }
-
   // MARK TASK AS COMPLETE
   public function updateTaskDone($id, $data)
   {
@@ -671,7 +664,7 @@ class model extends CI_Model
 
   public function getAllTasksByUser($id)
   {
-    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && tasks.TASKSTATUS != 'Deleted' && tasks.CATEGORY = '3' && raci.ROLE = '1'";
+    $condition = "raci.users_USERID = '" . $id . "' && raci.STATUS = 'Current' && projects.PROJECTSTATUS != 'Complete' && tasks.TASKSTATUS != 'Complete' && tasks.CATEGORY = '3' && raci.ROLE = '1'";
     $this->db->select('*, IF(projects.users_USERID = ' . $_SESSION['USERID'] . ', 1, 0) as "isProjectOwner", DATE_ADD(CURDATE(), INTERVAL +2 day) as "threshold" , DATEDIFF(CURDATE(), tasks.TASKSTARTDATE) as "delay",
     CURDATE() as "currentDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
@@ -1130,7 +1123,7 @@ class model extends CI_Model
 
   public function getAllTasksByIDRole0($id)
   {
-    $condition = "raci.STATUS = 'Current' && raci.ROLE = '0' && tasks.TASKSTATUS != 'Deleted' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 3";
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '0' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 3";
     $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",
@@ -1986,7 +1979,7 @@ class model extends CI_Model
 
   public function getAllTasksForAllOngoingProjects($id)
   {
-    $condition = "users.USERID = " . $id . " && raci.STATUS = 'Current' && raci.ROLE = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.TASKSTATUS != 'Deleted'";
+    $condition = "users.USERID = " . $id . " && raci.STATUS = 'Current' && raci.ROLE = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived'";
     $this->db->select('*, CURDATE() as "currDate"');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
@@ -2000,7 +1993,7 @@ class model extends CI_Model
 
   public function getAllTasksToMonitor()
   {
-    $condition = "raci.STATUS = 'Current' && raci.ROLE = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived' && tasks.TASKSTATUS != 'Deleted'";
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = 1 && tasks.CATEGORY = '3' && projects.PROJECTSTATUS != 'Complete' && projects.PROJECTSTATUS != 'Archived'";
     $this->db->select('*');
     $this->db->from('projects');
     $this->db->join('tasks', 'projects.PROJECTID = tasks.projects_PROJECTID');
@@ -2115,7 +2108,7 @@ class model extends CI_Model
 
   public function getAllTasksByProject($projectID)
   {
-    $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " && tasks.CATEGORY = '3' && tasks.TASKSTATUS != 'Deleted'";
+    $condition = "raci.STATUS = 'Current' && projects_PROJECTID = " . $projectID . " && tasks.CATEGORY = '3'";
     $this->db->select('*, CURDATE() as "currDate",
     ABS(DATEDIFF(CURDATE(), TASKADJUSTEDENDDATE)) as "adjustedDelay",
     ABS(DATEDIFF(CURDATE(), TASKENDDATE)) as "initialDelay"');
@@ -2159,7 +2152,7 @@ class model extends CI_Model
 
   public function getAllTasksByIDRole1($id)
   {
-    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && tasks.TASKSTATUS != 'Deleted' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 3";
+    $condition = "raci.STATUS = 'Current' && raci.ROLE = '1' && projects.PROJECTID = " . $id . " AND tasks.CATEGORY = 3";
     $this->db->select('*, CURDATE() as "currDate", DATEDIFF(tasks.TASKENDDATE, tasks.TASKSTARTDATE) + 1 as "initialTaskDuration",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKSTARTDATE) + 1 as "adjustedTaskDuration1",
     DATEDIFF(tasks.TASKADJUSTEDENDDATE, tasks.TASKADJUSTEDSTARTDATE) + 1 as "adjustedTaskDuration2",

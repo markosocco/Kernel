@@ -267,7 +267,6 @@ desired effect
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Project Management</li>
-        <!-- Optionally, you can add icons to the links -->
 
         <!--IF STATEMENTS DEPENDING ON USER TYPE  -->
         <?php if($_SESSION['usertype_USERTYPEID'] == 1):?>
@@ -299,6 +298,7 @@ desired effect
         <?php endif;?>
 
       <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
+        <?php if($_SESSION['usertype_USERTYPEID'] != 2):?>
           <li id = 'tasks' class="treeview">
             <a href=" ">
               <i class="fa fa-check-square-o"></i><span> Tasks</span>
@@ -306,11 +306,13 @@ desired effect
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
-            <ul class="treeview-menu">
-              <li id = 'taskDelegate'><a class="menu"  href="<?php echo base_url("index.php/controller/taskDelegate"); ?>"><i class="fa fa-circle-o"></i> Delegate</a></li>
-              <li id = 'taskTodo'><a class="menu" href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-circle-o"></i> To Do</a></li>
-            </ul>
+              <ul class="treeview-menu">
+                <li id = 'taskDelegate'><a class="menu"  href="<?php echo base_url("index.php/controller/taskDelegate"); ?>"><i class="fa fa-circle-o"></i> Delegate</a></li>
+                <li id = 'taskTodo'><a class="menu" href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-circle-o"></i> To Do</a></li>
+              </ul>
           </li>
+        <?php endif;?>
+
           <li id = 'monitor' class="treeview">
             <a href=" ">
               <i class="fa fa-desktop"></i><span> Monitor</span>
@@ -319,8 +321,12 @@ desired effect
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id = 'monitorProject'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorProject"); ?>"><i class="fa fa-circle-o"></i> Project</a></li>
-              <li id = 'monitorTeam'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorTeam"); ?>"><i class="fa fa-circle-o"></i> Team</a></li>
+              <?php if($_SESSION['usertype_USERTYPEID'] != 2):?>
+                <li id = 'monitorProject'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorProject"); ?>"><i class="fa fa-circle-o"></i> Project</a></li>
+                <li id = 'monitorTeam'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorTeam"); ?>"><i class="fa fa-circle-o"></i> Team</a></li>
+              <?php else:?>
+                <li id = 'monitorDepartments'><a class="menu"  href="<?php echo base_url("index.php/controller/monitorDepartments"); ?>"><i class="fa fa-circle-o"></i> Department</a></li>
+              <?php endif;?>
               <li id = 'monitorTasks'><a class="menu"  href="<?php echo base_url("index.php/controller/taskMonitor"); ?>"><i class="fa fa-circle-o"></i> Tasks</a></li>
             </ul>
           </li>
@@ -328,13 +334,12 @@ desired effect
           <li id = 'taskTodo'><a href="<?php echo base_url("index.php/controller/taskTodo"); ?>"><i class="fa fa-check-square-o"></i> <span>To Do</span></a></li>
         <?php endif;?>
 
-        <li id = 'rfc'><a href="<?php echo base_url("index.php/controller/rfc"); ?>"><i class="fa fa-flag"></i> <span> Change Requests</span></a></li>
-        <!-- <?php //if($_SESSION['usertype_USERTYPEID'] != 2):?> NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
-          <!-- <li id = 'myTeam'><a href="<?php //echo base_url("index.php/controller/myTeam"); ?>"><i class="fa fa-users"></i> <span> My Team</span></a></li> -->
-        <?php //endif;?>
+        <?php if($_SESSION['usertype_USERTYPEID'] != 2):?>
+          <li id = 'rfc'><a href="<?php echo base_url("index.php/controller/rfc"); ?>"><i class="fa fa-flag"></i> <span> Change Requests</span></a></li>
+        <?php endif;?>
         <!-- <li id = 'myCalendar'><a href="<?php echo base_url("index.php/controller/myCalendar"); ?>"><i class="fa fa-calendar"></i><span> My Calendar</span></a></li> -->
         <li id = 'reports'><a href="<?php echo base_url("index.php/controller/reports"); ?>"><i class="fa fa-tachometer"></i><span> Reports</span></a></li>
-        <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
+        <?php if($_SESSION['usertype_USERTYPEID'] != 5 && $_SESSION['usertype_USERTYPEID'] != 2):?>
           <li id = 'templates'><a href="<?php echo base_url("index.php/controller/templates"); ?>"><i class="fa fa-window-maximize"></i><span> Templates</span></a></li>
         <?php endif;?>
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Archives</span></a></li>
