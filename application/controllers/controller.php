@@ -2908,9 +2908,80 @@ class controller extends CI_Controller
 		else
 		{
 			$data['users'] = $this->model->getAllUsersForAdmin();
+			$data['departments'] = $this->model->getAllDepartments();
 
 			$this->load->view("manageUsers", $data);
 		}
+	}
+
+	public function addNewUser()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$newUser = array(
+				'FIRSTNAME' => $this->input->post("firstName"),
+				'LASTNAME' => $this->input->post("lastName"),
+				'EMAIL' => $this->input->post("email"),
+				'PASSWORD' => $this->input->post("password"),
+				'POSITION' => $this->input->post("position"),
+				'departments_DEPARTMENTID' => $this->input->post("department"),
+				'usertype_USERTYPEID' => $this->input->post("userType"),
+				'users_SUPERVISORS' => $this->input->post("supervisor"),
+				'isAct' => $this->input->post("active"),
+				'JOBDESCRIPTION' => $this->input->post("jobDesc")
+			);
+
+			$this->session->set_flashdata('success', 'alert');
+			$this->session->set_flashdata('alertMessage', ' New user added successfully');
+
+			$this->model->addNewUser($newUser);
+
+			$this->manageUsers();
+		}
+	}
+
+	public function editUser()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$oldUser = array(
+				'FIRSTNAME' => $this->input->post("firstName"),
+				'LASTNAME' => $this->input->post("lastName"),
+				'EMAIL' => $this->input->post("email"),
+				'PASSWORD' => $this->input->post("password"),
+				'POSITION' => $this->input->post("position"),
+				'departments_DEPARTMENTID' => $this->input->post("department"),
+				'usertype_USERTYPEID' => $this->input->post("userType"),
+				'users_SUPERVISORS' => $this->input->post("supervisor"),
+				'isAct' => $this->input->post("active"),
+				'JOBDESCRIPTION' => $this->input->post("jobDesc")
+			);
+
+			$this->session->set_flashdata('success', 'alert');
+			$this->session->set_flashdata('alertMessage', ' User details updated successfully');
+
+			$this->model->updateUser($oldUser, $this->input->post("user_ID"));
+
+			$this->manageUsers();
+		}
+	}
+
+	public function getUserDetails()
+	{
+		$userID = $this->input->post("user_ID");
+		$data['userEdit'] = $this->model->getUserByID($userID);
+
+		echo json_encode($data);
 	}
 
 	public function projectLogs()

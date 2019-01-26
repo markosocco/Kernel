@@ -2644,10 +2644,12 @@ class model extends CI_Model
 
   public function getAllUsersForAdmin()
   {
+    $condition = "isAct = '1'";
     $this->db->select('*');
     $this->db->from('users');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
     $this->db->order_by('users.LASTNAME');
+    $this->db->where($condition);
 
     return $this->db->get()->result_array();
   }
@@ -2870,6 +2872,21 @@ class model extends CI_Model
     $this->db->group_by('tasks.TASKSTARTDATE');
 
     return $this->db->get()->result_array();
+  }
+
+  public function addNewUser($data){
+
+    $this->db->insert('users', $data);
+
+    return true;
+  }
+
+  public function updateUser($data, $userID){
+
+    $this->db->where('USERID', $userID);
+    $this->db->update('users', $data);
+
+    return true;
   }
 }
 ?>
