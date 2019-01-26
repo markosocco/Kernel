@@ -972,6 +972,7 @@
     <script>
 
     $("#myProjects").addClass("active");
+    $("#projects").addClass("active");
     $("#buttonGridProjects").hide();
     $("#teamView").hide();
     $("#myProjectsListView").hide();

@@ -456,8 +456,6 @@ class controller extends CI_Controller
 				$data['parkedProjects'] = $this->model->getAllParkedProjects();
 				$data['draftedProjects'] = $this->model->getAllDraftedProjects();
 				$data['completedProjects'] = $this->model->getAllCompletedProjects();
-
-
 			}
 			else
 			{

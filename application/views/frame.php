@@ -92,7 +92,7 @@ desired effect
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Tasks: style can be found in dropdown.less -->
-          <?php if($_SESSION['usertype_USERTYPEID'] != 2):?>
+          <?php if($_SESSION['usertype_USERTYPEID'] != 2 && $_SESSION['usertype_USERTYPEID'] != 1):?>
 
             <li class="dropdown tasks-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -276,12 +276,14 @@ desired effect
           <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboardAdmin"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
           <li id = 'manageUsers'><a href="<?php echo base_url("index.php/controller/manageUsers"); ?>"><i class="fa fa-users"></i> <span> Manage Users</span></a></li>
           <li id = 'manageDepartments'><a href="<?php echo base_url("index.php/controller/manageDepartments"); ?>"><i class="fa fa-chain"></i> <span> Manage Departments</span></a></li>
-         <?php endif;?>
+        <?php else:?>
          <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
-        <?php if($_SESSION['usertype_USERTYPEID'] != 2 ):?> <!-- NOT TO BE SHOW FOR EXECUTIVE LEVEL -->
+        <?php if($_SESSION['usertype_USERTYPEID'] != 2 ):?> <!-- NOT TO SHOW FOR EXECUTIVE LEVEL -->
           <li id = 'myProjects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> My Projects</span></a></li>
         <?php else:?> <!-- FOR EXECUTIVE LEVEL -->
-          <li id = 'projects' class="treeview">
+          <li id = 'projects'><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-briefcase"></i> <span> Projects</span></a></li>
+
+          <!-- <li id = 'projects' class="treeview">
             <a href="allprojects">
               <i class="fa fa-briefcase"></i> <span>Projects</span>
               <span class="pull-right-container">
@@ -289,15 +291,17 @@ desired effect
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="<?php echo base_url("index.php/controller/myProjects"); ?>"><i class="fa fa-circle-o"></i> All</a></li>
-              <li><a href=""><i class="fa fa-circle-o"></i> Finance</a></li>
-              <li><a href=""><i class="fa fa-circle-o"></i> General Service</a></li>
-              <li><a href=""><i class="fa fa-circle-o"></i> Human Resource</a></li>
-              <li><a href=""><i class="fa fa-circle-o"></i> Marketing</a></li>
-              <li><a href=""><i class="fa fa-circle-o"></i> MIS</a></li>
-              <li><a href=""><i class="fa fa-circle-o"></i> Store Operations</a></li>
+              <li id="all" class="deptProjects" data-id="0"><a><i class="fa fa-circle-o"></i> All</a></li>
+              <?php foreach($departments as $department):?>
+                <?php if($department['DEPARTMENTID'] != 1):?>
+                  <li id="<?php $department['DEPARTMENTID'];?>" class="deptProjects" data-id="<?php echo $department['DEPARTMENTID'];?>"><a><i class="fa fa-circle-o"></i> <?php echo $department['DEPT'];?></a></li>
+                <?php endif;?>
+              <?php endforeach;?>
+              <form id = 'deptProjects' action = 'myProjects'  method="POST">
+                <input type='hidden' name='deptProjects' value= "1">
+              </form>
             </ul>
-          </li>
+          </li> -->
         <?php endif;?>
 
       <?php if($_SESSION['usertype_USERTYPEID'] != 5):?>
@@ -347,7 +351,7 @@ desired effect
         <?php endif;?>
         <li id = 'projectArchives'><a href="<?php echo base_url("index.php/controller/archives"); ?>"><i class="fa fa-archive"></i><span> Archives</span></a></li>
         <!-- <li id = 'documents'><a href="<?php echo base_url("index.php/controller/documents"); ?>"><i class="fa fa-folder"></i><span> Documents</span></a></li> -->
-
+        <?php endif;?>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -698,6 +702,13 @@ desired effect
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+    });
+
+    $("body").on('click', '.deptProjects', function() {
+      var $id = $(this).attr('data-id');
+      $("#deptProjects").attr("name", "formSubmit");
+      $("#deptProjects").append("<input type='hidden' name='dept_ID' value= " + $id + ">");
+      $("#deptProjects").submit();
     });
 
   </script>
