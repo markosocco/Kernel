@@ -2655,7 +2655,7 @@ class model extends CI_Model
 
   public function getAllUsersForAdmin()
   {
-    $condition = "isAct = '1'";
+    $condition = "users.isAct = '1'";
     $this->db->select('*');
     $this->db->from('users');
     $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
@@ -2667,10 +2667,12 @@ class model extends CI_Model
 
   public function getAllDepartmentsForAdmin()
   {
+    $condition = "departments.isAct = '1'";
     $this->db->select('*');
     $this->db->from('users');
     $this->db->join('departments', 'users.USERID = departments.users_DEPARTMENTHEAD');
     $this->db->order_by('users.LASTNAME');
+    $this->db->where($condition);
 
     return $this->db->get()->result_array();
   }

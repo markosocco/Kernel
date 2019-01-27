@@ -3001,6 +3001,7 @@ class controller extends CI_Controller
 				'DEPARTMENTNAME' => $this->input->post("deptName"),
 				'DEPT' => strtoupper($this->input->post("dept")),
 				'users_DEPARTMENTHEAD' => $this->input->post("deptHead"),
+				'isAct' => $this->input->post("active")
 			);
 
 			if($this->model->addNewDepartment($newDept))
@@ -3025,6 +3026,7 @@ class controller extends CI_Controller
 				'DEPARTMENTNAME' => $this->input->post("deptName"),
 				'DEPT' => strtoupper($this->input->post("dept")),
 				'users_DEPARTMENTHEAD' => $this->input->post("deptHead"),
+				'isAct' => $this->input->post("active")
 			);
 
 			if($this->model->updateDepartment($oldDept, $this->input->post("dept_ID")))

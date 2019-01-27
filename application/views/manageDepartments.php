@@ -97,6 +97,16 @@
  										 </select>
  									 </div>
 				          </div>
+									<div class="form-group">
+				            <label for="active" class="col-sm-4 control-label"><span style="color:red">*</span>Active</label>
+										<div class="col-sm-8">
+ 										 <select name="active" id="active" class="form-control select2" required>
+ 											 <option disabled selected value = "2">-- Yes or No -- </option>
+											 <option value = "1">Yes</option>
+											 <option value = "0">No</option>
+										 </select>
+ 									 </div>
+				          </div>
 				          <p><span style="color:red">*</span><small>Required</small></p>
 				        </div>
 				      </div>
@@ -131,6 +141,7 @@
 		$("#closeAddDept").click(function()
 		{
 			$("#deptHead").val("0");
+			$("#active").val("2");
 		});
 
 		$("#addDept").click(function()
@@ -142,6 +153,7 @@
 			$("#deptName").attr("value", "");
 			$("#dept").attr("value", "");
 			$("#deptHead").val("0");
+			$("#active").val("2");
 		});
 
 		$(".editBtn").click(function()
@@ -162,6 +174,7 @@
 				 $("#deptName").attr("value", $data['deptEdit'].DEPARTMENTNAME);
 				 $("#dept").attr("value", $data['deptEdit'].DEPT);
 				 $("#deptHead").val($data['deptEdit'].users_DEPARTMENTHEAD);
+				 $("#active").val($data['deptEdit'].isAct);
 			 },
 			 error:function()
 			 {
