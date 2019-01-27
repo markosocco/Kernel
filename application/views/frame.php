@@ -280,6 +280,7 @@ desired effect
           <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboardAdmin"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
           <li id = 'manageUsers'><a href="<?php echo base_url("index.php/controller/manageUsers"); ?>"><i class="fa fa-users"></i> <span> Users</span></a></li>
           <li id = 'manageDepartments'><a href="<?php echo base_url("index.php/controller/manageDepartments"); ?>"><i class="fa fa-chain"></i> <span> Departments</span></a></li>
+          <li id = 'manageUserTypes'><a href="<?php echo base_url("index.php/controller/manageUsertypes"); ?>"><i class="fa fa-street-view"></i> <span> User Types</span></a></li>
         <?php else:?>
          <li id = 'dashboard'><a href="<?php echo base_url("index.php/controller/dashboard"); ?>"><i class="fa fa-bar-chart"></i> <span> Dashboard</span></a></li>
         <?php if($_SESSION['usertype_USERTYPEID'] != 2 ):?> <!-- NOT TO SHOW FOR EXECUTIVE LEVEL -->

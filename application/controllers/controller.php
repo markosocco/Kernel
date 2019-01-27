@@ -2913,8 +2913,24 @@ class controller extends CI_Controller
 		{
 			$data['users'] = $this->model->getAllUsersForAdmin();
 			$data['departments'] = $this->model->getAllDepartments();
+			$data['userTypes'] = $this->model->getAllUserTypesForAdmin();
 
 			$this->load->view("manageUsers", $data);
+		}
+	}
+
+	public function manageUserTypes()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$data['userTypes'] = $this->model->getAllUserTypesForAdmin();
+
+			$this->load->view("manageUserTypes", $data);
 		}
 	}
 
@@ -3061,6 +3077,62 @@ class controller extends CI_Controller
 			$data['projectID'] = $id;
 			$data['projectProfile'] = $this->model->getProjectByID($id);
 			$this->load->view("projectLogs", $data);
+		}
+	}
+
+	public function addUserType()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$newUserType = array(
+				'USERTYPE' => $this->input->post("userType"),
+				'isAct' => $this->input->post("active")
+			);
+
+			if($this->model->addNewUserType($newUserType))
+			{
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' New user type added successfully');
+				redirect('controller/manageUserTypes');
+			}
+		}
+	}
+
+	public function getUserTypeDetails()
+	{
+		$usertypeID = $this->input->post("usertype_ID");
+		$data['usertypeEdit'] = $this->model->getUserTypeByID($usertypeID);
+
+		echo json_encode($data);
+	}
+
+	public function editUserType()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$usertypeID = $this->input->post("usertype_ID");
+
+			$oldUserType = array(
+				'USERTYPE' => $this->input->post("userType"),
+				'isAct' => $this->input->post("active")
+			);
+
+			if($this->model->updateUserType($oldUserType, $usertypeID))
+			{
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' User type updated successfully');
+				redirect('controller/manageUserTypes');
+			}
 		}
 	}
 

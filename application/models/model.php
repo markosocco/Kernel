@@ -2677,6 +2677,16 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllUserTypesForAdmin()
+  {
+    $condition = "usertype.isAct = '1'";
+    $this->db->select('*');
+    $this->db->from('usertype');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   public function getAllDepartmentHeadsForAdmin()
   {
     $condition = "usertype_USERTYPEID = 2 OR usertype_USERTYPEID = 3";
@@ -2898,6 +2908,21 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function addNewUserType($data)
+  {
+    $this->db->insert('usertype', $data);
+
+    return true;
+  }
+
+  public function updateUserType($data, $usertypeID)
+  {
+    $this->db->where('USERTYPEID', $usertypeID);
+    $this->db->update('usertype', $data);
+
+    return true;
+  }
+
   public function addNewUser($data)
   {
     $this->db->insert('users', $data);
@@ -2926,6 +2951,16 @@ class model extends CI_Model
     $this->db->update('departments', $data);
 
     return true;
+  }
+
+  public function getUserTypeByID($id)
+  {
+    $condition = "USERTYPEID = " . $id;
+    $this->db->select('*');
+    $this->db->from('usertype');
+    $this->db->where($condition);
+
+    return $this->db->get()->row_array();
   }
 }
 ?>
