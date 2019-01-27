@@ -1051,6 +1051,17 @@ class model extends CI_Model
     return $this->db->get()->row_array();
   }
 
+  public function getDepartmentByID($id)
+  {
+    $condition = "DEPARTMENTID = " . $id;
+    $this->db->select('*');
+    $this->db->from('departments');
+    $this->db->join('users', 'departments.users_DEPARTMENTHEAD = users.USERID');
+    $this->db->where($condition);
+
+    return $this->db->get()->row_array();
+  }
+
   // GET DATA FOR THE GANTT CHART
   public function getAllProjectTasks($id)
   {
@@ -2664,6 +2675,17 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
+  public function getAllDepartmentHeadsForAdmin()
+  {
+    $condition = "usertype_USERTYPEID = 2 OR usertype_USERTYPEID = 3";
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->join('departments', 'users.departments_DEPARTMENTID = departments.DEPARTMENTID');
+    $this->db->where($condition);
+
+    return $this->db->get()->result_array();
+  }
+
   public function getTaskCountPerDepartment($deptID, $condition){
 
     $this->db->select('users_USERID, COUNT(IF(taskstatus = "Ongoing", 1, NULL)) + COUNT(IF(taskstatus = "Planning", 1, NULL)) AS "TASKCOUNT"');
@@ -2874,17 +2896,32 @@ class model extends CI_Model
     return $this->db->get()->result_array();
   }
 
-  public function addNewUser($data){
-
+  public function addNewUser($data)
+  {
     $this->db->insert('users', $data);
 
     return true;
   }
 
-  public function updateUser($data, $userID){
-
+  public function updateUser($data, $userID)
+  {
     $this->db->where('USERID', $userID);
     $this->db->update('users', $data);
+
+    return true;
+  }
+
+  public function addNewDepartment($data)
+  {
+    $this->db->insert('departments', $data);
+
+    return true;
+  }
+
+  public function updateDepartment($data, $deptID)
+  {
+    $this->db->where('DEPARTMENTID', $deptID);
+    $this->db->update('departments', $data);
 
     return true;
   }

@@ -2879,7 +2879,10 @@ class controller extends CI_Controller
 
 		else
 		{
-			$this->load->view("dashboardAdmin");
+			$data['departments'] = $this->model->getAllDepartmentsForAdmin();
+			$data['users'] = $this->model->getAllUsersForAdmin();
+
+			$this->load->view("dashboardAdmin", $data);
 		}
 	}
 
@@ -2893,6 +2896,7 @@ class controller extends CI_Controller
 		else
 		{
 			$data['departments'] = $this->model->getAllDepartmentsForAdmin();
+			$data['deptHeads'] = $this->model->getAllDepartmentHeadsForAdmin();
 
 			$this->load->view("manageDepartments", $data);
 		}
@@ -2936,12 +2940,12 @@ class controller extends CI_Controller
 				'JOBDESCRIPTION' => $this->input->post("jobDesc")
 			);
 
-			$this->session->set_flashdata('success', 'alert');
-			$this->session->set_flashdata('alertMessage', ' New user added successfully');
-
-			$this->model->addNewUser($newUser);
-
-			$this->manageUsers();
+			if($this->model->addNewUser($newUser))
+			{
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' New user added successfully');
+				redirect('controller/manageUsers');
+			}
 		}
 	}
 
@@ -2967,12 +2971,12 @@ class controller extends CI_Controller
 				'JOBDESCRIPTION' => $this->input->post("jobDesc")
 			);
 
-			$this->session->set_flashdata('success', 'alert');
-			$this->session->set_flashdata('alertMessage', ' User details updated successfully');
-
-			$this->model->updateUser($oldUser, $this->input->post("user_ID"));
-
-			$this->manageUsers();
+			if($this->model->updateUser($oldUser, $this->input->post("user_ID")))
+			{
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' User details updated successfully');
+				redirect('controller/manageUsers');
+			}
 		}
 	}
 
@@ -2980,6 +2984,62 @@ class controller extends CI_Controller
 	{
 		$userID = $this->input->post("user_ID");
 		$data['userEdit'] = $this->model->getUserByID($userID);
+
+		echo json_encode($data);
+	}
+
+	public function addNewDepartment()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$newDept = array(
+				'DEPARTMENTNAME' => $this->input->post("deptName"),
+				'DEPT' => strtoupper($this->input->post("dept")),
+				'users_DEPARTMENTHEAD' => $this->input->post("deptHead"),
+			);
+
+			if($this->model->addNewDepartment($newDept))
+			{
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' New department added successfully');
+				redirect('controller/manageDepartments');
+			}
+		}
+	}
+
+	public function editDepartment()
+	{
+		if (!isset($_SESSION['EMAIL']))
+		{
+			$this->load->view('restrictedAccess');
+		}
+
+		else
+		{
+			$oldDept = array(
+				'DEPARTMENTNAME' => $this->input->post("deptName"),
+				'DEPT' => strtoupper($this->input->post("dept")),
+				'users_DEPARTMENTHEAD' => $this->input->post("deptHead"),
+			);
+
+			if($this->model->updateDepartment($oldDept, $this->input->post("dept_ID")))
+			{
+				$this->session->set_flashdata('success', 'alert');
+				$this->session->set_flashdata('alertMessage', ' Department details updated successfully');
+				redirect('controller/manageDepartments');
+			}
+		}
+	}
+
+	public function getDeptDetails()
+	{
+		$userID = $this->input->post("dept_ID");
+		$data['deptEdit'] = $this->model->getDepartmentByID($userID);
 
 		echo json_encode($data);
 	}

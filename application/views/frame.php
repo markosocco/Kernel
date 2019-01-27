@@ -74,7 +74,11 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="logo">
+    <?php if($_SESSION['usertype_USERTYPEID'] == 1):?>
+      <a href="<?php echo base_url("index.php/controller/dashboardAdmin"); ?>" class="logo">
+    <?php else:?>
+      <a href="<?php echo base_url("index.php/controller/dashboard"); ?>" class="logo">
+    <?php endif;?>
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>TEI</b></span>
       <!-- logo for regular state and mobile devices -->

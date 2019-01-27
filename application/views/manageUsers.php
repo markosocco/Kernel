@@ -65,7 +65,7 @@
 				</div>
 				<!-- /.box -->
 
-				<!-- ADD USER MODAL -->
+				<!-- ADD/EDIT USER MODAL -->
 				<div class="modal fade" id="modal-addUser" tabindex="-1">
 				  <div class="modal-dialog">
 				    <div class="modal-content">
@@ -176,7 +176,7 @@
 				    </div>
 				  </div>
 				</div>
-				<!-- ADD USER MODAL -->
+				<!-- ADD/EDIT USER MODAL -->
 
 			</section>
 		</div>
