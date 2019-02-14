@@ -9,18 +9,9 @@ class model extends CI_Model
 // CHECK IF EMAIL AND PASSWORD EXIST AND MATCH IN DB
   public function checkDatabase($data)
   {
-    // NO ENCRYPTION
-    // $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' AND PASSWORD = '" . $data['password'] . "' LIMIT 1";
-
     // WITH ENCRYPTION
     $q = "SELECT * FROM USERS WHERE BINARY EMAIL = '" . $data['email'] . "' LIMIT 1";
     $query = $this->db->query($q);
-
-    // NO ENCRYPTION
-    // if ($query->num_rows() == 1)
-    // {
-    //   return true;
-    // }
 
     // ENCRYPTION START
     $hash = $query->row('PASSWORD');
@@ -88,11 +79,6 @@ class model extends CI_Model
 
     if ($result)
     {
-      // $condition = "PROJECTTITLE =" . "'" . $data['PROJECTTITLE'] ."' AND PROJECTDESCRIPTION = '" . $data['PROJECTDESCRIPTION'] . "' AND PROJECTSTARTDATE = '" . $data['PROJECTSTARTDATE'] ."' AND PROJECTENDDATE = '". $data['PROJECTENDDATE'] ."'";
-      // $this->db->select('*');
-      // $this->db->from('projects');
-      // $this->db->where($condition);
-
       $this->db->select('*');
       $this->db->from('projects');
       $this->db->order_by('PROJECTID', 'DESC');

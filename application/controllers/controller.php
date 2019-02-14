@@ -678,19 +678,6 @@ class controller extends CI_Controller
 			$data['tasks'] = $this->model->getAllTasksByProject($projectID);
 			$data['delayedTasks'] = $this->model->getAllOngoingDelayedTasksByIDRole1($projectID);
 
-			// foreach($data['departments'] as $d)
-			// {
-			// 	echo " == " . $d['DEPARTMENTNAME'] . " == <br>";
-			//
-			// 	foreach ($data['departmentsPerf'] as $p)
-			// 	{
-			// 		if ($d['DEPARTMENTID'] == $p['DEPARTMENTID'])
-			// 		{
-			// 			echo $p['timeliness'] . "<br>";
-			// 		}
-			// 	}
-			// }
-
 			$this->load->view("monitorDepartment", $data);
 		}
 	}
@@ -3327,14 +3314,6 @@ class controller extends CI_Controller
 		{
 			$projectID = $this->input->post('project_ID');
 			$templateProjSummary = $this->input->post('templateProjSummary');
-
-			// if (isset($templateProjSummary))
-			// {
-			// 	echo $templateProjSummary;
-			// }
-			// else {
-			// 	echo "hello";
-			// }
 
 			$data['project'] = $this->model->getProjectByID($projectID);
 			$data['mainActivity'] = $this->model->getAllMainActivitiesByID($projectID);
@@ -6735,27 +6714,6 @@ class controller extends CI_Controller
 			}
 		}
 	}
-
-// // DELETE THIS AFTER
-// 	public function frame()
-// 	{
-// 		if (!isset($_SESSION['EMAIL']))
-// 		{
-// 			$this->load->view('restrictedAccess');
-// 		}
-//
-// 		else
-// 		{
-// 			// $this->load->view("frame");
-// 			$projectTimeliness = $this->model->compute_timeliness_projectByUser();
-// 			$projectCompleteness = $this->model->compute_completeness_projectByUser();
-//
-// 			foreach ($projectCompleteness as $project) {
-// 				echo "project id - " . $project['projects_PROJECTID'] . "<br>";
-// 				echo "completeness - " . $project['completeness'] . "<br><br>";
-// 			}
-// 		}
-// 	}
 
 	public function getDelayEffect()
 	{
